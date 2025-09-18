@@ -160,42 +160,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+Specifies whether this node tracks the left or right hand of the player.
+*/
 func (self Instance) Hand() Hands {
 	return Hands(class(self).GetHand())
 }
 
+// SetHand sets the property returned by [GetHand].
 func (self Instance) SetHand(value Hands) {
 	class(self).SetHand(value)
 }
 
+/*
+Set the motion range (if supported) limiting the hand motion.
+*/
 func (self Instance) MotionRange() MotionRange {
 	return MotionRange(class(self).GetMotionRange())
 }
 
+// SetMotionRange sets the property returned by [GetMotionRange].
 func (self Instance) SetMotionRange(value MotionRange) {
 	class(self).SetMotionRange(value)
 }
 
+/*
+Set a [Skeleton3D] node for which the pose positions will be updated.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) HandSkeleton() string {
 	return string(class(self).GetHandSkeleton().String())
 }
 
+// SetHandSkeleton sets the property returned by [GetHandSkeleton].
 func (self Instance) SetHandSkeleton(value string) {
 	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
 }
 
+/*
+Set the type of skeleton rig the [HandSkeleton] is compliant with.
+
+[HandSkeleton]: https://pkg.go.dev/graphics.gd/classdb/OpenXRHand#Instance.HandSkeleton
+*/
 func (self Instance) SkeletonRig() SkeletonRig {
 	return SkeletonRig(class(self).GetSkeletonRig())
 }
 
+// SetSkeletonRig sets the property returned by [GetSkeletonRig].
 func (self Instance) SetSkeletonRig(value SkeletonRig) {
 	class(self).SetSkeletonRig(value)
 }
 
+/*
+Specify the type of updates to perform on the bone.
+*/
 func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
+// SetBoneUpdate sets the property returned by [GetBoneUpdate].
 func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }

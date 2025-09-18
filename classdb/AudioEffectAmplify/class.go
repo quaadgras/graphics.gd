@@ -146,18 +146,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+Amount of amplification in decibels. Positive values make the sound louder, negative values make it quieter. Value can range from -80 to 24.
+*/
 func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
+// SetVolumeDb sets the property returned by [GetVolumeDb].
 func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
+/*
+Amount of amplification as a linear value.
+
+Note: This member modifies [VolumeDb] for convenience. The returned value is equivalent to the result of [@GlobalScope.DbToLinear] on [VolumeDb]. Setting this member is equivalent to setting [VolumeDb] to the result of [@GlobalScope.LinearToDb] on a value.
+
+[@GlobalScope.DbToLinear]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.DbToLinear
+[@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
+[VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectAmplify#Instance.VolumeDb
+*/
 func (self Instance) VolumeLinear() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
+// SetVolumeLinear sets the property returned by [GetVolumeLinear].
 func (self Instance) SetVolumeLinear(value Float.X) {
 	class(self).SetVolumeLinear(float64(value))
 }

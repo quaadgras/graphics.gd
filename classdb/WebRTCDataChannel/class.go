@@ -244,10 +244,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The transfer mode to use when sending outgoing packet. Either text or binary.
+*/
 func (self Instance) WriteMode() WriteMode {
 	return WriteMode(class(self).GetWriteMode())
 }
 
+// SetWriteMode sets the property returned by [GetWriteMode].
 func (self Instance) SetWriteMode(value WriteMode) {
 	class(self).SetWriteMode(value)
 }

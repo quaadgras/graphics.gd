@@ -193,6 +193,10 @@ func (self class) Config(inherits String.Readable, path String.Readable, built_i
 		load_enabled     bool
 	}{pointers.Get(gd.InternalString(inherits)), pointers.Get(gd.InternalString(path)), built_in_enabled, load_enabled})
 }
+
+/*
+Emitted when the user clicks the OK button.
+*/
 func (self Instance) OnScriptCreated(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

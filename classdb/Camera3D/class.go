@@ -389,122 +389,240 @@ func New() Instance {
 	return casted
 }
 
+/*
+The axis to lock during [Fov]/[Size] adjustments. Can be either [KeepWidth] or [KeepHeight].
+
+[Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
+*/
 func (self Instance) KeepAspect() KeepAspect {
 	return KeepAspect(class(self).GetKeepAspectMode())
 }
 
+// SetKeepAspect sets the property returned by [GetKeepAspectMode].
 func (self Instance) SetKeepAspect(value KeepAspect) {
 	class(self).SetKeepAspectMode(value)
 }
 
+/*
+The culling mask that describes which [VisualInstance3D.Layers] are rendered by this camera. By default, all 20 user-visible layers are rendered.
+
+Note: Since the [CullMask] allows for 32 layers to be stored in total, there are an additional 12 layers that are only used internally by the engine and aren't exposed in the editor. Setting [CullMask] using a script allows you to toggle those reserved layers, which can be useful for editor plugins.
+
+To adjust [CullMask] more easily using a script, use [GetCullMaskValue] and [SetCullMaskValue].
+
+Note: [VoxelGI], SDFGI and [LightmapGI] will always take all layers into account to determine what contributes to global illumination. If this is an issue, set [GeometryInstance3D.GiMode] to [Geometryinstance3d.GiModeDisabled] for meshes and [Light3D.LightBakeMode] to [Light3d.BakeDisabled] for lights to exclude them from global illumination.
+
+[CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
+[GeometryInstance3D.GiMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiMode
+[GetCullMaskValue]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.GetCullMaskValue
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[SetCullMaskValue]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.SetCullMaskValue
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }
 
+/*
+The [Environment] to use for this camera.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+*/
 func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
+// SetEnvironment sets the property returned by [GetEnvironment].
 func (self Instance) SetEnvironment(value Environment.Instance) {
 	class(self).SetEnvironment(value)
 }
 
+/*
+The [CameraAttributes] to use for this camera.
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+*/
 func (self Instance) Attributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetAttributes())
 }
 
+// SetAttributes sets the property returned by [GetAttributes].
 func (self Instance) SetAttributes(value CameraAttributes.Instance) {
 	class(self).SetAttributes(value)
 }
 
+/*
+The [Compositor] to use for this camera.
+
+[Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
+*/
 func (self Instance) Compositor() Compositor.Instance {
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
+// SetCompositor sets the property returned by [GetCompositor].
 func (self Instance) SetCompositor(value Compositor.Instance) {
 	class(self).SetCompositor(value)
 }
 
+/*
+The horizontal (X) offset of the camera viewport.
+*/
 func (self Instance) HOffset() Float.X {
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
+// SetHOffset sets the property returned by [GetHOffset].
 func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(float64(value))
 }
 
+/*
+The vertical (Y) offset of the camera viewport.
+*/
 func (self Instance) VOffset() Float.X {
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
+// SetVOffset sets the property returned by [GetVOffset].
 func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(float64(value))
 }
 
+/*
+If not [DopplerTrackingDisabled], this camera will simulate the [Doppler effect] for objects changed in particular _process methods.
+
+Note: The Doppler effect will only be heard on [AudioStreamPlayer3D]s if [AudioStreamPlayer3D.DopplerTracking] is not set to [Audiostreamplayer3d.DopplerTrackingDisabled].
+
+[AudioStreamPlayer3D]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D
+[AudioStreamPlayer3D.DopplerTracking]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.DopplerTracking
+[Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
+*/
 func (self Instance) DopplerTracking() DopplerTracking {
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
+// SetDopplerTracking sets the property returned by [GetDopplerTracking].
 func (self Instance) SetDopplerTracking(value DopplerTracking) {
 	class(self).SetDopplerTracking(value)
 }
 
+/*
+The camera's projection mode. In [ProjectionPerspective] mode, objects' Z distance from the camera's local space scales their perceived size.
+*/
 func (self Instance) Projection() ProjectionType {
 	return ProjectionType(class(self).GetProjection())
 }
 
+// SetProjection sets the property returned by [GetProjection].
 func (self Instance) SetProjection(value ProjectionType) {
 	class(self).SetProjection(value)
 }
 
+/*
+If true, the ancestor [Viewport] is currently using this camera.
+
+If multiple cameras are in the scene, one will always be made current. For example, if two [Camera3D] nodes are present in the scene and only one is current, setting one camera's [Current] to false will cause the other camera to be made current.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Current]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Current
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) Current() bool {
 	return bool(class(self).IsCurrent())
 }
 
+// SetCurrent sets the property returned by [IsCurrent].
 func (self Instance) SetCurrent(value bool) {
 	class(self).SetCurrent(value)
 }
 
+/*
+The camera's field of view angle (in degrees). Only applicable in perspective mode. Since [KeepAspect] locks one axis, [Fov] sets the other axis' field of view angle.
+
+For reference, the default vertical field of view value (75.0) is equivalent to a horizontal FOV of:
+
+- ~91.31 degrees in a 4:3 viewport
+
+- ~101.67 degrees in a 16:10 viewport
+
+- ~107.51 degrees in a 16:9 viewport
+
+- ~121.63 degrees in a 21:9 viewport
+
+[Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
+[KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
+*/
 func (self Instance) Fov() Float.X {
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
+// SetFov sets the property returned by [GetFov].
 func (self Instance) SetFov(value Float.X) {
 	class(self).SetFov(float64(value))
 }
 
+/*
+The camera's size in meters measured as the diameter of the width or height, depending on [KeepAspect]. Only applicable in orthogonal and frustum modes.
+
+[KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
+*/
 func (self Instance) Size() Float.X {
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Float.X) {
 	class(self).SetSize(float64(value))
 }
 
+/*
+The camera's frustum offset. This can be changed from the default to create "tilted frustum" effects such as [Y-shearing].
+
+Note: Only effective if [Projection] is [ProjectionFrustum].
+
+[Projection]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Projection
+[Y-shearing]: https://zdoom.org/wiki/Y-shearing
+*/
 func (self Instance) FrustumOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetFrustumOffset())
 }
 
+// SetFrustumOffset sets the property returned by [GetFrustumOffset].
 func (self Instance) SetFrustumOffset(value Vector2.XY) {
 	class(self).SetFrustumOffset(Vector2.XY(value))
 }
 
+/*
+The distance to the near culling boundary for this camera relative to its local Z axis. Lower values allow the camera to see objects more up close to its origin, at the cost of lower precision across the entire range. Values lower than the default can lead to increased Z-fighting.
+*/
 func (self Instance) Near() Float.X {
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
+// SetNear sets the property returned by [GetNear].
 func (self Instance) SetNear(value Float.X) {
 	class(self).SetNear(float64(value))
 }
 
+/*
+The distance to the far culling boundary for this camera relative to its local Z axis. Higher values allow the camera to see further away, while decreasing [Far] can improve performance if it results in objects being partially or fully culled.
+
+[Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
+*/
 func (self Instance) Far() Float.X {
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
+// SetFar sets the property returned by [GetFar].
 func (self Instance) SetFar(value Float.X) {
 	class(self).SetFar(float64(value))
 }

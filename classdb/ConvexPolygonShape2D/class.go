@@ -169,10 +169,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The polygon's list of vertices that form a convex hull. Can be in either clockwise or counterclockwise order.
+
+Warning: Only set this property to a list of points that actually form a convex hull. Use [SetPointCloud] to generate the convex hull of an arbitrary set of points.
+
+[SetPointCloud]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape2D#Instance.SetPointCloud
+*/
 func (self Instance) Points() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
+// SetPoints sets the property returned by [GetPoints].
 func (self Instance) SetPoints(value []Vector2.XY) {
 	class(self).SetPoints(Packed.New(value...))
 }

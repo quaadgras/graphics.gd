@@ -189,146 +189,226 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text to generate mesh from.
+
+Note: Due to being a [Resource], it doesn't follow the rules of [Node.AutoTranslateMode]. If disabling translation is desired, it should be done manually with [Object.SetMessageTranslation].
+
+[Node.AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+Font configuration used to display text.
+*/
 func (self Instance) Font() Font.Instance {
 	return Font.Instance(class(self).GetFont())
 }
 
+// SetFont sets the property returned by [GetFont].
 func (self Instance) SetFont(value Font.Instance) {
 	class(self).SetFont(value)
 }
 
+/*
+Font size of the [TextMesh]'s text.
+
+[TextMesh]: https://pkg.go.dev/graphics.gd/classdb/TextMesh
+*/
 func (self Instance) FontSize() int {
 	return int(int(class(self).GetFontSize()))
 }
 
+// SetFontSize sets the property returned by [GetFontSize].
 func (self Instance) SetFontSize(value int) {
 	class(self).SetFontSize(int64(value))
 }
 
+/*
+Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
+*/
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Controls the text's vertical alignment. Supports top, center, and bottom.
+*/
 func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
+// SetVerticalAlignment sets the property returned by [GetVerticalAlignment].
 func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
+/*
+If true, all the text displays as UPPERCASE.
+*/
 func (self Instance) Uppercase() bool {
 	return bool(class(self).IsUppercase())
 }
 
+// SetUppercase sets the property returned by [IsUppercase].
 func (self Instance) SetUppercase(value bool) {
 	class(self).SetUppercase(value)
 }
 
+/*
+Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
+*/
 func (self Instance) LineSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
+// SetLineSpacing sets the property returned by [GetLineSpacing].
 func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
+/*
+If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+Line fill alignment rules.
+*/
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
+// SetJustificationFlags sets the property returned by [GetJustificationFlags].
 func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
+/*
+The size of one pixel's width on the text to scale it in 3D.
+*/
 func (self Instance) PixelSize() Float.X {
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
+// SetPixelSize sets the property returned by [GetPixelSize].
 func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(float64(value))
 }
 
+/*
+Step (in pixels) used to approximate Bézier curves.
+*/
 func (self Instance) CurveStep() Float.X {
 	return Float.X(Float.X(class(self).GetCurveStep()))
 }
 
+// SetCurveStep sets the property returned by [GetCurveStep].
 func (self Instance) SetCurveStep(value Float.X) {
 	class(self).SetCurveStep(float64(value))
 }
 
+/*
+Depths of the mesh, if set to 0.0 only front surface, is generated, and UV layout is changed to use full texture for the front face only.
+*/
 func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
+// SetDepth sets the property returned by [GetDepth].
 func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(float64(value))
 }
 
+/*
+Text width (in pixels), used for fill alignment.
+*/
 func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
+/*
+The text drawing offset (in pixels).
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() TextServer.Direction {
 	return TextServer.Direction(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value TextServer.Direction) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }

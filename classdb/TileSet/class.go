@@ -940,42 +940,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+The tile shape.
+*/
 func (self Instance) TileShape() TileShape {
 	return TileShape(class(self).GetTileShape())
 }
 
+// SetTileShape sets the property returned by [GetTileShape].
 func (self Instance) SetTileShape(value TileShape) {
 	class(self).SetTileShape(value)
 }
 
+/*
+For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), changes the way tiles are indexed in the [TileMapLayer] grid.
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) TileLayout() TileLayout {
 	return TileLayout(class(self).GetTileLayout())
 }
 
+// SetTileLayout sets the property returned by [GetTileLayout].
 func (self Instance) SetTileLayout(value TileLayout) {
 	class(self).SetTileLayout(value)
 }
 
+/*
+For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), determines the offset axis.
+*/
 func (self Instance) TileOffsetAxis() TileOffsetAxis {
 	return TileOffsetAxis(class(self).GetTileOffsetAxis())
 }
 
+// SetTileOffsetAxis sets the property returned by [GetTileOffsetAxis].
 func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) {
 	class(self).SetTileOffsetAxis(value)
 }
 
+/*
+The tile size, in pixels. For all tile shapes, this size corresponds to the encompassing rectangle of the tile shape. This is thus the minimal cell size required in an atlas.
+*/
 func (self Instance) TileSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTileSize())
 }
 
+// SetTileSize sets the property returned by [GetTileSize].
 func (self Instance) SetTileSize(value Vector2i.XY) {
 	class(self).SetTileSize(Vector2i.XY(value))
 }
 
+/*
+Enables/Disable uv clipping when rendering the tiles.
+*/
 func (self Instance) UvClipping() bool {
 	return bool(class(self).IsUvClipping())
 }
 
+// SetUvClipping sets the property returned by [IsUvClipping].
 func (self Instance) SetUvClipping(value bool) {
 	class(self).SetUvClipping(value)
 }

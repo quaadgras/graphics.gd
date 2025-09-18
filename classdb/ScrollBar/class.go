@@ -147,10 +147,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+Overrides the step used when clicking increment and decrement buttons or when using arrow keys when the [ScrollBar] is focused.
+
+[ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+*/
 func (self Instance) CustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetCustomStep()))
 }
 
+// SetCustomStep sets the property returned by [GetCustomStep].
 func (self Instance) SetCustomStep(value Float.X) {
 	class(self).SetCustomStep(float64(value))
 }
@@ -166,6 +172,10 @@ func (self class) GetCustomStep() float64 { //gd:ScrollBar.get_custom_step
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the scrollbar is being scrolled.
+*/
 func (self Instance) OnScrolling(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

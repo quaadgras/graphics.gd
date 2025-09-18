@@ -167,66 +167,105 @@ func New() Instance {
 	return casted
 }
 
+/*
+The baseline radius of the tube. The radius of a particular section ring is obtained by multiplying this radius by the value of the [Curve] at the given distance.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh#Instance.Curve
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The number of sides on the tube. For example, a value of 5 means the tube will be pentagonal. Higher values result in a more detailed tube at the cost of performance.
+*/
 func (self Instance) RadialSteps() int {
 	return int(int(class(self).GetRadialSteps()))
 }
 
+// SetRadialSteps sets the property returned by [GetRadialSteps].
 func (self Instance) SetRadialSteps(value int) {
 	class(self).SetRadialSteps(int64(value))
 }
 
+/*
+The total number of sections on the tube.
+*/
 func (self Instance) Sections() int {
 	return int(int(class(self).GetSections()))
 }
 
+// SetSections sets the property returned by [GetSections].
 func (self Instance) SetSections(value int) {
 	class(self).SetSections(int64(value))
 }
 
+/*
+The length of a section of the tube.
+*/
 func (self Instance) SectionLength() Float.X {
 	return Float.X(Float.X(class(self).GetSectionLength()))
 }
 
+// SetSectionLength sets the property returned by [GetSectionLength].
 func (self Instance) SetSectionLength(value Float.X) {
 	class(self).SetSectionLength(float64(value))
 }
 
+/*
+The number of rings in a section. The [Curve] is sampled on each ring to determine its radius. Higher values result in a more detailed tube at the cost of performance.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh#Instance.Curve
+*/
 func (self Instance) SectionRings() int {
 	return int(int(class(self).GetSectionRings()))
 }
 
+// SetSectionRings sets the property returned by [GetSectionRings].
 func (self Instance) SetSectionRings(value int) {
 	class(self).SetSectionRings(int64(value))
 }
 
+/*
+If true, generates a cap at the top of the tube. This can be set to false to speed up generation and rendering when the cap is never seen by the camera.
+*/
 func (self Instance) CapTop() bool {
 	return bool(class(self).IsCapTop())
 }
 
+// SetCapTop sets the property returned by [IsCapTop].
 func (self Instance) SetCapTop(value bool) {
 	class(self).SetCapTop(value)
 }
 
+/*
+If true, generates a cap at the bottom of the tube. This can be set to false to speed up generation and rendering when the cap is never seen by the camera.
+*/
 func (self Instance) CapBottom() bool {
 	return bool(class(self).IsCapBottom())
 }
 
+// SetCapBottom sets the property returned by [IsCapBottom].
 func (self Instance) SetCapBottom(value bool) {
 	class(self).SetCapBottom(value)
 }
 
+/*
+Determines the radius of the tube along its length. The radius of a particular section ring is obtained by multiplying the baseline [Radius] by the value of this curve at the given distance. For values smaller than 0, the faces will be inverted. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh#Instance.Radius
+*/
 func (self Instance) Curve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
+// SetCurve sets the property returned by [GetCurve].
 func (self Instance) SetCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }

@@ -156,22 +156,37 @@ func New() Instance {
 	return casted
 }
 
+/*
+The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
+*/
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+The format the texture should be generated with. When passing a CurveTexture as an input to a [Shader], this may need to be adjusted.
+
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
+*/
 func (self Instance) TextureMode() TextureMode {
 	return TextureMode(class(self).GetTextureMode())
 }
 
+// SetTextureMode sets the property returned by [GetTextureMode].
 func (self Instance) SetTextureMode(value TextureMode) {
 	class(self).SetTextureMode(value)
 }
 
+/*
+The [Curve] that is rendered onto the texture. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) Curve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
+// SetCurve sets the property returned by [GetCurve].
 func (self Instance) SetCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }

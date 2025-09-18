@@ -148,26 +148,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+Gain to apply before limiting, in decibels.
+*/
 func (self Instance) PreGainDb() Float.X {
 	return Float.X(Float.X(class(self).GetPreGainDb()))
 }
 
+// SetPreGainDb sets the property returned by [GetPreGainDb].
 func (self Instance) SetPreGainDb(value Float.X) {
 	class(self).SetPreGainDb(float64(value))
 }
 
+/*
+The waveform's maximum allowed value, in decibels. This value can range from -24.0 to 0.0.
+
+The default value of -0.3 prevents potential inter-sample peaks (ISP) from crossing over 0 dB, which can cause slight distortion on some older hardware.
+*/
 func (self Instance) CeilingDb() Float.X {
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
+// SetCeilingDb sets the property returned by [GetCeilingDb].
 func (self Instance) SetCeilingDb(value Float.X) {
 	class(self).SetCeilingDb(float64(value))
 }
 
+/*
+Time it takes in seconds for the gain reduction to fully release.
+*/
 func (self Instance) Release() Float.X {
 	return Float.X(Float.X(class(self).GetRelease()))
 }
 
+// SetRelease sets the property returned by [GetRelease].
 func (self Instance) SetRelease(value Float.X) {
 	class(self).SetRelease(float64(value))
 }

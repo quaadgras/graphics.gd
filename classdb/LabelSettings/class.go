@@ -321,98 +321,150 @@ func New() Instance {
 	return casted
 }
 
+/*
+Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
+*/
 func (self Instance) LineSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
+// SetLineSpacing sets the property returned by [GetLineSpacing].
 func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
+/*
+Vertical space between paragraphs. Added on top of [LineSpacing].
+
+[LineSpacing]: https://pkg.go.dev/graphics.gd/classdb/LabelSettings#Instance.LineSpacing
+*/
 func (self Instance) ParagraphSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetParagraphSpacing()))
 }
 
+// SetParagraphSpacing sets the property returned by [GetParagraphSpacing].
 func (self Instance) SetParagraphSpacing(value Float.X) {
 	class(self).SetParagraphSpacing(float64(value))
 }
 
+/*
+[Font] used for the text.
+
+[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
+*/
 func (self Instance) Font() Font.Instance {
 	return Font.Instance(class(self).GetFont())
 }
 
+// SetFont sets the property returned by [GetFont].
 func (self Instance) SetFont(value Font.Instance) {
 	class(self).SetFont(value)
 }
 
+/*
+Size of the text.
+*/
 func (self Instance) FontSize() int {
 	return int(int(class(self).GetFontSize()))
 }
 
+// SetFontSize sets the property returned by [GetFontSize].
 func (self Instance) SetFontSize(value int) {
 	class(self).SetFontSize(int64(value))
 }
 
+/*
+Color of the text.
+*/
 func (self Instance) FontColor() Color.RGBA {
 	return Color.RGBA(class(self).GetFontColor())
 }
 
+// SetFontColor sets the property returned by [GetFontColor].
 func (self Instance) SetFontColor(value Color.RGBA) {
 	class(self).SetFontColor(Color.RGBA(value))
 }
 
+/*
+Text outline size.
+*/
 func (self Instance) OutlineSize() int {
 	return int(int(class(self).GetOutlineSize()))
 }
 
+// SetOutlineSize sets the property returned by [GetOutlineSize].
 func (self Instance) SetOutlineSize(value int) {
 	class(self).SetOutlineSize(int64(value))
 }
 
+/*
+The color of the outline.
+*/
 func (self Instance) OutlineColor() Color.RGBA {
 	return Color.RGBA(class(self).GetOutlineColor())
 }
 
+// SetOutlineColor sets the property returned by [GetOutlineColor].
 func (self Instance) SetOutlineColor(value Color.RGBA) {
 	class(self).SetOutlineColor(Color.RGBA(value))
 }
 
+/*
+Size of the shadow effect.
+*/
 func (self Instance) ShadowSize() int {
 	return int(int(class(self).GetShadowSize()))
 }
 
+// SetShadowSize sets the property returned by [GetShadowSize].
 func (self Instance) SetShadowSize(value int) {
 	class(self).SetShadowSize(int64(value))
 }
 
+/*
+Color of the shadow effect. If alpha is 0, no shadow will be drawn.
+*/
 func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
+// SetShadowColor sets the property returned by [GetShadowColor].
 func (self Instance) SetShadowColor(value Color.RGBA) {
 	class(self).SetShadowColor(Color.RGBA(value))
 }
 
+/*
+Offset of the shadow effect, in pixels.
+*/
 func (self Instance) ShadowOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetShadowOffset())
 }
 
+// SetShadowOffset sets the property returned by [GetShadowOffset].
 func (self Instance) SetShadowOffset(value Vector2.XY) {
 	class(self).SetShadowOffset(Vector2.XY(value))
 }
 
+/*
+The number of stacked outlines.
+*/
 func (self Instance) StackedOutlineCount() int {
 	return int(int(class(self).GetStackedOutlineCount()))
 }
 
+// SetStackedOutlineCount sets the property returned by [GetStackedOutlineCount].
 func (self Instance) SetStackedOutlineCount(value int) {
 	class(self).SetStackedOutlineCount(int64(value))
 }
 
+/*
+The number of stacked shadows.
+*/
 func (self Instance) StackedShadowCount() int {
 	return int(int(class(self).GetStackedShadowCount()))
 }
 
+// SetStackedShadowCount sets the property returned by [GetStackedShadowCount].
 func (self Instance) SetStackedShadowCount(value int) {
 	class(self).SetStackedShadowCount(int64(value))
 }

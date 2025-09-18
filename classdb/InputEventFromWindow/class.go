@@ -144,10 +144,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The ID of a [Window] that received this event.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) WindowId() int {
 	return int(int(class(self).GetWindowId()))
 }
 
+// SetWindowId sets the property returned by [GetWindowId].
 func (self Instance) SetWindowId(value int) {
 	class(self).SetWindowId(int64(value))
 }

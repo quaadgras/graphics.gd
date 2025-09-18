@@ -153,26 +153,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+The light's shadow rendering algorithm.
+*/
 func (self Instance) DirectionalShadowMode() ShadowMode {
 	return ShadowMode(class(self).GetShadowMode())
 }
 
+// SetDirectionalShadowMode sets the property returned by [GetShadowMode].
 func (self Instance) SetDirectionalShadowMode(value ShadowMode) {
 	class(self).SetShadowMode(value)
 }
 
+/*
+If true, shadow detail is sacrificed in exchange for smoother transitions between splits. Enabling shadow blend splitting also has a moderate performance cost. This is ignored when [DirectionalShadowMode] is [ShadowOrthogonal].
+
+[DirectionalShadowMode]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMode
+*/
 func (self Instance) DirectionalShadowBlendSplits() bool {
 	return bool(class(self).IsBlendSplitsEnabled())
 }
 
+// SetDirectionalShadowBlendSplits sets the property returned by [IsBlendSplitsEnabled].
 func (self Instance) SetDirectionalShadowBlendSplits(value bool) {
 	class(self).SetBlendSplits(value)
 }
 
+/*
+Whether this [DirectionalLight3D] is visible in the sky, in the scene, or both in the sky and in the scene.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+*/
 func (self Instance) SkyMode() SkyMode {
 	return SkyMode(class(self).GetSkyMode())
 }
 
+// SetSkyMode sets the property returned by [GetSkyMode].
 func (self Instance) SetSkyMode(value SkyMode) {
 	class(self).SetSkyMode(value)
 }

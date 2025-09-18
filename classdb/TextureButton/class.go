@@ -177,82 +177,141 @@ func New() Instance {
 	return casted
 }
 
+/*
+Texture to display by default, when the node is not in the disabled, hover or pressed state. This texture is still displayed in the focused state, with [TextureFocused] drawn on top.
+
+[TextureFocused]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureFocused
+*/
 func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
+// SetTextureNormal sets the property returned by [GetTextureNormal].
 func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTextureNormal(value)
 }
 
+/*
+Texture to display on mouse down over the node, if the node has keyboard focus and the player presses the Enter key or if the player presses the [BaseButton.Shortcut] key. If not assigned, the [TextureButton] displays [TextureHover] instead when pressed.
+
+[BaseButton.Shortcut]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.Shortcut
+[TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
+[TextureHover]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureHover
+*/
 func (self Instance) TexturePressed() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
+// SetTexturePressed sets the property returned by [GetTexturePressed].
 func (self Instance) SetTexturePressed(value Texture2D.Instance) {
 	class(self).SetTexturePressed(value)
 }
 
+/*
+Texture to display when the mouse hovers over the node. If not assigned, the [TextureButton] displays [TextureNormal] instead when hovered over.
+
+[TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
+[TextureNormal]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureNormal
+*/
 func (self Instance) TextureHover() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureHover())
 }
 
+// SetTextureHover sets the property returned by [GetTextureHover].
 func (self Instance) SetTextureHover(value Texture2D.Instance) {
 	class(self).SetTextureHover(value)
 }
 
+/*
+Texture to display when the node is disabled. See [BaseButton.Disabled]. If not assigned, the [TextureButton] displays [TextureNormal] instead.
+
+[BaseButton.Disabled]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.Disabled
+[TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
+[TextureNormal]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureNormal
+*/
 func (self Instance) TextureDisabled() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureDisabled())
 }
 
+// SetTextureDisabled sets the property returned by [GetTextureDisabled].
 func (self Instance) SetTextureDisabled(value Texture2D.Instance) {
 	class(self).SetTextureDisabled(value)
 }
 
+/*
+Texture to overlay on the base texture when the node has mouse or keyboard focus. Because [TextureFocused] is displayed on top of the base texture, a partially transparent texture should be used to ensure the base texture remains visible. A texture that represents an outline or an underline works well for this purpose. To disable the focus visual effect, assign a fully transparent texture of any size. Note that disabling the focus visual effect will harm keyboard/controller navigation usability, so this is not recommended for accessibility reasons.
+
+[TextureFocused]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureFocused
+*/
 func (self Instance) TextureFocused() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureFocused())
 }
 
+// SetTextureFocused sets the property returned by [GetTextureFocused].
 func (self Instance) SetTextureFocused(value Texture2D.Instance) {
 	class(self).SetTextureFocused(value)
 }
 
+/*
+Pure black and white [BitMap] image to use for click detection. On the mask, white pixels represent the button's clickable area. Use it to create buttons with curved shapes.
+
+[BitMap]: https://pkg.go.dev/graphics.gd/classdb/BitMap
+*/
 func (self Instance) TextureClickMask() BitMap.Instance {
 	return BitMap.Instance(class(self).GetClickMask())
 }
 
+// SetTextureClickMask sets the property returned by [GetClickMask].
 func (self Instance) SetTextureClickMask(value BitMap.Instance) {
 	class(self).SetClickMask(value)
 }
 
+/*
+If true, the size of the texture won't be considered for minimum size calculation, so the [TextureButton] can be shrunk down past the texture size.
+
+[TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
+*/
 func (self Instance) IgnoreTextureSize() bool {
 	return bool(class(self).GetIgnoreTextureSize())
 }
 
+// SetIgnoreTextureSize sets the property returned by [GetIgnoreTextureSize].
 func (self Instance) SetIgnoreTextureSize(value bool) {
 	class(self).SetIgnoreTextureSize(value)
 }
 
+/*
+Controls the texture's behavior when you resize the node's bounding rectangle. See the [StretchMode] constants for available options.
+*/
 func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
+// SetStretchMode sets the property returned by [GetStretchMode].
 func (self Instance) SetStretchMode(value StretchMode) {
 	class(self).SetStretchMode(value)
 }
 
+/*
+If true, texture is flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
+// SetFlipH sets the property returned by [IsFlippedH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, texture is flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
+// SetFlipV sets the property returned by [IsFlippedV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }

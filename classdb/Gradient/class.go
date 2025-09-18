@@ -232,34 +232,63 @@ func New() Instance {
 	return casted
 }
 
+/*
+The algorithm used to interpolate between points of the gradient.
+*/
 func (self Instance) InterpolationMode() InterpolationMode {
 	return InterpolationMode(class(self).GetInterpolationMode())
 }
 
+// SetInterpolationMode sets the property returned by [GetInterpolationMode].
 func (self Instance) SetInterpolationMode(value InterpolationMode) {
 	class(self).SetInterpolationMode(value)
 }
 
+/*
+The color space used to interpolate between points of the gradient. It does not affect the returned colors, which will always be in sRGB space.
+
+Note: This setting has no effect when [InterpolationMode] is set to [GradientInterpolateConstant].
+
+[InterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.InterpolationMode
+*/
 func (self Instance) InterpolationColorSpace() ColorSpace {
 	return ColorSpace(class(self).GetInterpolationColorSpace())
 }
 
+// SetInterpolationColorSpace sets the property returned by [GetInterpolationColorSpace].
 func (self Instance) SetInterpolationColorSpace(value ColorSpace) {
 	class(self).SetInterpolationColorSpace(value)
 }
 
+/*
+Gradient's offsets as a []float32.
+
+Note: Setting this property updates all offsets at once. To update any offset individually use [SetOffset].
+
+[SetOffset]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.SetOffset
+*/
 func (self Instance) Offsets() []float32 {
 	return []float32(slices.Collect(class(self).GetOffsets().Values()))
 }
 
+// SetOffsets sets the property returned by [GetOffsets].
 func (self Instance) SetOffsets(value []float32) {
 	class(self).SetOffsets(Packed.New(value...))
 }
 
+/*
+Gradient's colors as a [][Color.RGBA].
+
+Note: Setting this property updates all colors at once. To update any color individually use [SetColor].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[SetColor]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.SetColor
+*/
 func (self Instance) Colors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
+// SetColors sets the property returned by [GetColors].
 func (self Instance) SetColors(value []Color.RGBA) {
 	class(self).SetColors(Packed.New(value...))
 }

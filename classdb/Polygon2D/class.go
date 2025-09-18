@@ -245,122 +245,202 @@ func New() Instance {
 	return casted
 }
 
+/*
+The polygon's fill color. If [Texture] is set, it will be multiplied by this color. It will also be the default color for vertices not set in [VertexColors].
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
+[VertexColors]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.VertexColors
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The offset applied to each vertex.
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+If true, polygon edges will be anti-aliased.
+*/
 func (self Instance) Antialiased() bool {
 	return bool(class(self).GetAntialiased())
 }
 
+// SetAntialiased sets the property returned by [GetAntialiased].
 func (self Instance) SetAntialiased(value bool) {
 	class(self).SetAntialiased(value)
 }
 
+/*
+The polygon's fill texture. Use [Uv] to set texture coordinates.
+
+[Uv]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Uv
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+Amount to offset the polygon's [Texture]. If set to Vector2(0, 0), the texture's origin (its top-left corner) will be placed at the polygon's position.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
+*/
 func (self Instance) TextureOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
+// SetTextureOffset sets the property returned by [GetTextureOffset].
 func (self Instance) SetTextureOffset(value Vector2.XY) {
 	class(self).SetTextureOffset(Vector2.XY(value))
 }
 
+/*
+Amount to multiply the [Uv] coordinates when using [Texture]. Larger values make the texture smaller, and vice versa.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
+[Uv]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Uv
+*/
 func (self Instance) TextureScale() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureScale())
 }
 
+// SetTextureScale sets the property returned by [GetTextureScale].
 func (self Instance) SetTextureScale(value Vector2.XY) {
 	class(self).SetTextureScale(Vector2.XY(value))
 }
 
+/*
+The texture's rotation in radians.
+*/
 func (self Instance) TextureRotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetTextureRotation()))
 }
 
+// SetTextureRotation sets the property returned by [GetTextureRotation].
 func (self Instance) SetTextureRotation(value Angle.Radians) {
 	class(self).SetTextureRotation(float64(value))
 }
 
+/*
+Path to a [Skeleton2D] node used for skeleton-based deformations of this polygon. If empty or invalid, skeletal deformations will not be used.
+
+[Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
+*/
 func (self Instance) Skeleton() string {
 	return string(class(self).GetSkeleton().String())
 }
 
+// SetSkeleton sets the property returned by [GetSkeleton].
 func (self Instance) SetSkeleton(value string) {
 	class(self).SetSkeleton(Path.ToNode(String.New(value)))
 }
 
+/*
+If true, the polygon will be inverted, containing the area outside the defined points and extending to the [InvertBorder].
+
+[InvertBorder]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.InvertBorder
+*/
 func (self Instance) InvertEnabled() bool {
 	return bool(class(self).GetInvertEnabled())
 }
 
+// SetInvertEnabled sets the property returned by [GetInvertEnabled].
 func (self Instance) SetInvertEnabled(value bool) {
 	class(self).SetInvertEnabled(value)
 }
 
+/*
+Added padding applied to the bounding box when [InvertEnabled] is set to true. Setting this value too small may result in a "Bad Polygon" error.
+
+[InvertEnabled]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.InvertEnabled
+*/
 func (self Instance) InvertBorder() Float.X {
 	return Float.X(Float.X(class(self).GetInvertBorder()))
 }
 
+// SetInvertBorder sets the property returned by [GetInvertBorder].
 func (self Instance) SetInvertBorder(value Float.X) {
 	class(self).SetInvertBorder(float64(value))
 }
 
+/*
+The polygon's list of vertices. The final point will be connected to the first.
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }
 
+/*
+Texture coordinates for each vertex of the polygon. There should be one UV value per polygon vertex. If there are fewer, undefined vertices will use Vector2(0, 0).
+*/
 func (self Instance) Uv() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetUv().Values()))
 }
 
+// SetUv sets the property returned by [GetUv].
 func (self Instance) SetUv(value []Vector2.XY) {
 	class(self).SetUv(Packed.New(value...))
 }
 
+/*
+Color for each vertex. Colors are interpolated between vertices, resulting in smooth gradients. There should be one per polygon vertex. If there are fewer, undefined vertices will use [Color].
+
+[Color]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Color
+*/
 func (self Instance) VertexColors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetVertexColors().Values()))
 }
 
+// SetVertexColors sets the property returned by [GetVertexColors].
 func (self Instance) SetVertexColors(value []Color.RGBA) {
 	class(self).SetVertexColors(Packed.New(value...))
 }
 
+/*
+The list of polygons, in case more than one is being represented. Every individual polygon is stored as a []int32 where each int is an index to a point in [Polygon]. If empty, this property will be ignored, and the resulting single polygon will be composed of all points in [Polygon], using the order they are stored in.
+
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Polygon
+*/
 func (self Instance) Polygons() [][]int32 {
 	return [][]int32(gd.ArrayAs[[][]int32](gd.InternalArray(class(self).GetPolygons())))
 }
 
+// SetPolygons sets the property returned by [GetPolygons].
 func (self Instance) SetPolygons(value [][]int32) {
 	class(self).SetPolygons(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Number of internal vertices, used for UV mapping.
+*/
 func (self Instance) InternalVertexCount() int {
 	return int(int(class(self).GetInternalVertexCount()))
 }
 
+// SetInternalVertexCount sets the property returned by [GetInternalVertexCount].
 func (self Instance) SetInternalVertexCount(value int) {
 	class(self).SetInternalVertexCount(int64(value))
 }

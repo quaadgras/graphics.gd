@@ -357,34 +357,65 @@ func New() Instance {
 	return casted
 }
 
+/*
+A bone name that will be used as the root bone in [AnimationTree]. This should be the bone of the parent of hips that exists at the world origin.
+
+[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+*/
 func (self Instance) RootBone() string {
 	return string(class(self).GetRootBone().String())
 }
 
+// SetRootBone sets the property returned by [GetRootBone].
 func (self Instance) SetRootBone(value string) {
 	class(self).SetRootBone(String.Name(String.New(value)))
 }
 
+/*
+A bone name which will use model's height as the coefficient for normalization. For example, [SkeletonProfileHumanoid] defines it as Hips.
+
+[SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
+*/
 func (self Instance) ScaleBaseBone() string {
 	return string(class(self).GetScaleBaseBone().String())
 }
 
+// SetScaleBaseBone sets the property returned by [GetScaleBaseBone].
 func (self Instance) SetScaleBaseBone(value string) {
 	class(self).SetScaleBaseBone(String.Name(String.New(value)))
 }
 
+/*
+The amount of groups of bones in retargeting section's [BoneMap] editor. For example, [SkeletonProfileHumanoid] has 4 groups.
+
+This property exists to separate the bone list into several sections in the editor.
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+[SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
+*/
 func (self Instance) GroupSize() int {
 	return int(int(class(self).GetGroupSize()))
 }
 
+// SetGroupSize sets the property returned by [GetGroupSize].
 func (self Instance) SetGroupSize(value int) {
 	class(self).SetGroupSize(int64(value))
 }
 
+/*
+The amount of bones in retargeting section's [BoneMap] editor. For example, [SkeletonProfileHumanoid] has 56 bones.
+
+The size of elements in [BoneMap] updates when changing this property in it's assigned [SkeletonProfile].
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+[SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
+[SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
+*/
 func (self Instance) BoneSize() int {
 	return int(int(class(self).GetBoneSize()))
 }
 
+// SetBoneSize sets the property returned by [GetBoneSize].
 func (self Instance) SetBoneSize(value int) {
 	class(self).SetBoneSize(int64(value))
 }
@@ -684,6 +715,14 @@ func (self class) SetRequired(bone_idx int64, required bool) { //gd:SkeletonProf
 		required bool
 	}{bone_idx, required})
 }
+
+/*
+This signal is emitted when change the value in profile. This is used to update key name in the [BoneMap] and to redraw the [BoneMap] editor.
+
+Note: This signal is not connected directly to editor to simplify the reference, instead it is passed on to editor through the [BoneMap].
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+*/
 func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

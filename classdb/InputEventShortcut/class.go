@@ -150,10 +150,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Shortcut] represented by this event. Its [Shortcut.MatchesEvent] method will always return true for this event.
+
+[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
+[Shortcut.MatchesEvent]: https://pkg.go.dev/graphics.gd/classdb/Shortcut#Instance.MatchesEvent
+*/
 func (self Instance) Shortcut() Shortcut.Instance {
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
+// SetShortcut sets the property returned by [GetShortcut].
 func (self Instance) SetShortcut(value Shortcut.Instance) {
 	class(self).SetShortcut(value)
 }

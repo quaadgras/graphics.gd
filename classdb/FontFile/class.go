@@ -797,158 +797,255 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contents of the dynamic font source file.
+*/
 func (self Instance) Data() []byte {
 	return []byte(class(self).GetData().Bytes())
 }
 
+// SetData sets the property returned by [GetData].
 func (self Instance) SetData(value []byte) {
 	class(self).SetData(Packed.BytesFrom(value...))
 }
 
+/*
+If set to true, generate mipmaps for the font textures.
+*/
 func (self Instance) GenerateMipmaps() bool {
 	return bool(class(self).GetGenerateMipmaps())
 }
 
+// SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps].
 func (self Instance) SetGenerateMipmaps(value bool) {
 	class(self).SetGenerateMipmaps(value)
 }
 
+/*
+If set to true, embedded font bitmap loading is disabled (bitmap-only and color fonts ignore this property).
+*/
 func (self Instance) DisableEmbeddedBitmaps() bool {
 	return bool(class(self).GetDisableEmbeddedBitmaps())
 }
 
+// SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps].
 func (self Instance) SetDisableEmbeddedBitmaps(value bool) {
 	class(self).SetDisableEmbeddedBitmaps(value)
 }
 
+/*
+Font anti-aliasing mode.
+*/
 func (self Instance) Antialiasing() TextServer.FontAntialiasing {
 	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
+// SetAntialiasing sets the property returned by [GetAntialiasing].
 func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) {
 	class(self).SetAntialiasing(value)
 }
 
+/*
+Font family name.
+*/
 func (self Instance) SetFontName(value string) {
 	class(self).SetFontName(String.New(value))
 }
 
+/*
+Font style name.
+*/
 func (self Instance) SetStyleName(value string) {
 	class(self).SetFontStyleName(String.New(value))
 }
 
+/*
+Font style flags.
+*/
 func (self Instance) SetFontStyle(value TextServer.FontStyle) {
 	class(self).SetFontStyle(value)
 }
 
+/*
+Weight (boldness) of the font. A value in the 100...999 range, normal font weight is 400, bold font weight is 700.
+*/
 func (self Instance) SetFontWeight(value int) {
 	class(self).SetFontWeight(int64(value))
 }
 
+/*
+Font stretch amount, compared to a normal width. A percentage value between 50% and 200%.
+*/
 func (self Instance) SetFontStretch(value int) {
 	class(self).SetFontStretch(int64(value))
 }
 
+/*
+Font glyph subpixel positioning mode. Subpixel positioning provides shaper text and better kerning for smaller font sizes, at the cost of higher memory usage and lower font rasterization speed. Use [Textserver.SubpixelPositioningAuto] to automatically enable it based on the font size.
+*/
 func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
 	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
+// SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning].
 func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) {
 	class(self).SetSubpixelPositioning(value)
 }
 
+/*
+If set to true, when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+*/
 func (self Instance) KeepRoundingRemainders() bool {
 	return bool(class(self).GetKeepRoundingRemainders())
 }
 
+// SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders].
 func (self Instance) SetKeepRoundingRemainders(value bool) {
 	class(self).SetKeepRoundingRemainders(value)
 }
 
+/*
+If set to true, glyphs of all sizes are rendered using single multichannel signed distance field (MSDF) generated from the dynamic font vector data. Since this approach does not rely on rasterizing the font every time its size changes, this allows for resizing the font in real-time without any performance penalty. Text will also not look grainy for [Control]s that are scaled down (or for [Label3D]s viewed from a long distance). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
+
+Note: If using font outlines, [MsdfPixelRange] must be set to at least twice the size of the largest font outline.
+
+Note: MSDF font rendering does not render glyphs with overlapping shapes correctly. Overlapping shapes are not valid per the OpenType standard, but are still commonly found in many font files, especially those converted by Google Fonts. To avoid issues with overlapping glyphs, consider downloading the font file directly from the type foundry instead of relying on Google Fonts.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Label3D]: https://pkg.go.dev/graphics.gd/classdb/Label3D
+[MsdfPixelRange]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.MsdfPixelRange
+*/
 func (self Instance) MultichannelSignedDistanceField() bool {
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
 
+// SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField].
 func (self Instance) SetMultichannelSignedDistanceField(value bool) {
 	class(self).SetMultichannelSignedDistanceField(value)
 }
 
+/*
+The width of the range around the shape between the minimum and maximum representable signed distance. If using font outlines, [MsdfPixelRange] must be set to at least twice the size of the largest font outline. The default [MsdfPixelRange] value of 16 allows outline sizes up to 8 to look correct.
+
+[MsdfPixelRange]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.MsdfPixelRange
+*/
 func (self Instance) MsdfPixelRange() int {
 	return int(int(class(self).GetMsdfPixelRange()))
 }
 
+// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange].
 func (self Instance) SetMsdfPixelRange(value int) {
 	class(self).SetMsdfPixelRange(int64(value))
 }
 
+/*
+Source font size used to generate MSDF textures. Higher values allow for more precision, but are slower to render and require more memory. Only increase this value if you notice a visible lack of precision in glyph rendering.
+*/
 func (self Instance) MsdfSize() int {
 	return int(int(class(self).GetMsdfSize()))
 }
 
+// SetMsdfSize sets the property returned by [GetMsdfSize].
 func (self Instance) SetMsdfSize(value int) {
 	class(self).SetMsdfSize(int64(value))
 }
 
+/*
+If set to true, system fonts can be automatically used as fallbacks.
+*/
 func (self Instance) AllowSystemFallback() bool {
 	return bool(class(self).IsAllowSystemFallback())
 }
 
+// SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback].
 func (self Instance) SetAllowSystemFallback(value bool) {
 	class(self).SetAllowSystemFallback(value)
 }
 
+/*
+If set to true, auto-hinting is supported and preferred over font built-in hinting. Used by dynamic fonts only (MSDF fonts don't support hinting).
+*/
 func (self Instance) ForceAutohinter() bool {
 	return bool(class(self).IsForceAutohinter())
 }
 
+// SetForceAutohinter sets the property returned by [IsForceAutohinter].
 func (self Instance) SetForceAutohinter(value bool) {
 	class(self).SetForceAutohinter(value)
 }
 
+/*
+If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
+*/
 func (self Instance) ModulateColorGlyphs() bool {
 	return bool(class(self).IsModulateColorGlyphs())
 }
 
+// SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs].
 func (self Instance) SetModulateColorGlyphs(value bool) {
 	class(self).SetModulateColorGlyphs(value)
 }
 
+/*
+Font hinting mode. Used by dynamic fonts only.
+*/
 func (self Instance) Hinting() TextServer.Hinting {
 	return TextServer.Hinting(class(self).GetHinting())
 }
 
+// SetHinting sets the property returned by [GetHinting].
 func (self Instance) SetHinting(value TextServer.Hinting) {
 	class(self).SetHinting(value)
 }
 
+/*
+Font size, used only for the bitmap fonts.
+*/
 func (self Instance) FixedSize() int {
 	return int(int(class(self).GetFixedSize()))
 }
 
+// SetFixedSize sets the property returned by [GetFixedSize].
 func (self Instance) SetFixedSize(value int) {
 	class(self).SetFixedSize(int64(value))
 }
 
+/*
+Scaling mode, used only for the bitmap fonts with [FixedSize] greater than zero.
+
+[FixedSize]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.FixedSize
+*/
 func (self Instance) FixedSizeScaleMode() TextServer.FixedSizeScaleMode {
 	return TextServer.FixedSizeScaleMode(class(self).GetFixedSizeScaleMode())
 }
 
+// SetFixedSizeScaleMode sets the property returned by [GetFixedSizeScaleMode].
 func (self Instance) SetFixedSizeScaleMode(value TextServer.FixedSizeScaleMode) {
 	class(self).SetFixedSizeScaleMode(value)
 }
 
+/*
+Font OpenType feature set override.
+*/
 func (self Instance) OpentypeFeatureOverrides() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetOpentypeFeatureOverrides()))
 }
 
+// SetOpentypeFeatureOverrides sets the property returned by [GetOpentypeFeatureOverrides].
 func (self Instance) SetOpentypeFeatureOverrides(value map[any]any) {
 	class(self).SetOpentypeFeatureOverrides(gd.DictionaryFromMap(value))
 }
 
+/*
+If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See [Viewport.Oversampling]. This value doesn't override the oversampling parameter of draw_* methods.
+
+[Viewport.Oversampling]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Oversampling
+*/
 func (self Instance) Oversampling() Float.X {
 	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
+// SetOversampling sets the property returned by [GetOversampling].
 func (self Instance) SetOversampling(value Float.X) {
 	class(self).SetOversampling(float64(value))
 }

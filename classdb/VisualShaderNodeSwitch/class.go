@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+A type of operands and returned value.
+*/
 func (self Instance) OpType() OpType {
 	return OpType(class(self).GetOpType())
 }
 
+// SetOpType sets the property returned by [GetOpType].
 func (self Instance) SetOpType(value OpType) {
 	class(self).SetOpType(value)
 }

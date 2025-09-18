@@ -168,42 +168,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+The node path to the remote node, relative to the RemoteTransform2D's position in the scene.
+*/
 func (self Instance) RemotePath() string {
 	return string(class(self).GetRemoteNode().String())
 }
 
+// SetRemotePath sets the property returned by [GetRemoteNode].
 func (self Instance) SetRemotePath(value string) {
 	class(self).SetRemoteNode(Path.ToNode(String.New(value)))
 }
 
+/*
+If true, global coordinates are used. If false, local coordinates are used.
+*/
 func (self Instance) UseGlobalCoordinates() bool {
 	return bool(class(self).GetUseGlobalCoordinates())
 }
 
+// SetUseGlobalCoordinates sets the property returned by [GetUseGlobalCoordinates].
 func (self Instance) SetUseGlobalCoordinates(value bool) {
 	class(self).SetUseGlobalCoordinates(value)
 }
 
+/*
+If true, the remote node's position is updated.
+*/
 func (self Instance) UpdatePosition() bool {
 	return bool(class(self).GetUpdatePosition())
 }
 
+// SetUpdatePosition sets the property returned by [GetUpdatePosition].
 func (self Instance) SetUpdatePosition(value bool) {
 	class(self).SetUpdatePosition(value)
 }
 
+/*
+If true, the remote node's rotation is updated.
+*/
 func (self Instance) UpdateRotation() bool {
 	return bool(class(self).GetUpdateRotation())
 }
 
+// SetUpdateRotation sets the property returned by [GetUpdateRotation].
 func (self Instance) SetUpdateRotation(value bool) {
 	class(self).SetUpdateRotation(value)
 }
 
+/*
+If true, the remote node's scale is updated.
+*/
 func (self Instance) UpdateScale() bool {
 	return bool(class(self).GetUpdateScale())
 }
 
+// SetUpdateScale sets the property returned by [GetUpdateScale].
 func (self Instance) SetUpdateScale(value bool) {
 	class(self).SetUpdateScale(value)
 }

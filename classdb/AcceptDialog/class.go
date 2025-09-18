@@ -261,42 +261,69 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text displayed by the OK button (see [GetOkButton]). If empty, a default text will be used.
+
+[GetOkButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.GetOkButton
+*/
 func (self Instance) OkButtonText() string {
 	return string(class(self).GetOkButtonText().String())
 }
 
+// SetOkButtonText sets the property returned by [GetOkButtonText].
 func (self Instance) SetOkButtonText(value string) {
 	class(self).SetOkButtonText(String.New(value))
 }
 
+/*
+The text displayed by the dialog.
+*/
 func (self Instance) DialogText() string {
 	return string(class(self).GetText().String())
 }
 
+// SetDialogText sets the property returned by [GetText].
 func (self Instance) SetDialogText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+If true, the dialog is hidden when the OK button is pressed. You can set it to false if you want to do e.g. input validation when receiving the [OnConfirmed] signal, and handle hiding the dialog in your own logic.
+
+Note: Some nodes derived from this class can have a different default value, and potentially their own built-in logic overriding this setting. For example [FileDialog] defaults to false, and has its own input validation code that is called when you press OK, which eventually hides the dialog if the input is valid. As such, this property can't be used in [FileDialog] to disable hiding the dialog when pressing OK.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+[OnConfirmed]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnConfirmed
+*/
 func (self Instance) DialogHideOnOk() bool {
 	return bool(class(self).GetHideOnOk())
 }
 
+// SetDialogHideOnOk sets the property returned by [GetHideOnOk].
 func (self Instance) SetDialogHideOnOk(value bool) {
 	class(self).SetHideOnOk(value)
 }
 
+/*
+If true, the dialog will be hidden when the ui_cancel action is pressed (by default, this action is bound to [KeyEscape]).
+*/
 func (self Instance) DialogCloseOnEscape() bool {
 	return bool(class(self).GetCloseOnEscape())
 }
 
+// SetDialogCloseOnEscape sets the property returned by [GetCloseOnEscape].
 func (self Instance) SetDialogCloseOnEscape(value bool) {
 	class(self).SetCloseOnEscape(value)
 }
 
+/*
+Sets autowrapping for the text in the dialog.
+*/
 func (self Instance) DialogAutowrap() bool {
 	return bool(class(self).HasAutowrap())
 }
 
+// SetDialogAutowrap sets the property returned by [HasAutowrap].
 func (self Instance) SetDialogAutowrap(value bool) {
 	class(self).SetAutowrap(value)
 }
@@ -450,6 +477,10 @@ func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_b
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
+/*
+Emitted when the dialog is accepted, i.e. the OK button is pressed.
+*/
 func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -462,6 +493,11 @@ func (self class) Confirmed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Confirmed`))))
 }
 
+/*
+Emitted when the dialog is closed or the button created with [AddCancelButton] is pressed.
+
+[AddCancelButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddCancelButton
+*/
 func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -474,6 +510,11 @@ func (self class) Canceled() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Canceled`))))
 }
 
+/*
+Emitted when a custom button with an action is pressed. See [AddButton].
+
+[AddButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddButton
+*/
 func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

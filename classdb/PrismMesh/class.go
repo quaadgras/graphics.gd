@@ -156,42 +156,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Displacement of the upper edge along the X axis. 0.0 positions edge straight above the bottom-left edge.
+*/
 func (self Instance) LeftToRight() Float.X {
 	return Float.X(Float.X(class(self).GetLeftToRight()))
 }
 
+// SetLeftToRight sets the property returned by [GetLeftToRight].
 func (self Instance) SetLeftToRight(value Float.X) {
 	class(self).SetLeftToRight(float64(value))
 }
 
+/*
+Size of the prism.
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+Number of added edge loops along the X axis.
+*/
 func (self Instance) SubdivideWidth() int {
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
+// SetSubdivideWidth sets the property returned by [GetSubdivideWidth].
 func (self Instance) SetSubdivideWidth(value int) {
 	class(self).SetSubdivideWidth(int64(value))
 }
 
+/*
+Number of added edge loops along the Y axis.
+*/
 func (self Instance) SubdivideHeight() int {
 	return int(int(class(self).GetSubdivideHeight()))
 }
 
+// SetSubdivideHeight sets the property returned by [GetSubdivideHeight].
 func (self Instance) SetSubdivideHeight(value int) {
 	class(self).SetSubdivideHeight(int64(value))
 }
 
+/*
+Number of added edge loops along the Z axis.
+*/
 func (self Instance) SubdivideDepth() int {
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
+// SetSubdivideDepth sets the property returned by [GetSubdivideDepth].
 func (self Instance) SetSubdivideDepth(value int) {
 	class(self).SetSubdivideDepth(int64(value))
 }

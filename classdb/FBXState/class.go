@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the import process used auxiliary nodes called geometry helper nodes. These nodes help preserve the pivots and transformations of the original 3D model during import.
+*/
 func (self Instance) AllowGeometryHelperNodes() bool {
 	return bool(class(self).GetAllowGeometryHelperNodes())
 }
 
+// SetAllowGeometryHelperNodes sets the property returned by [GetAllowGeometryHelperNodes].
 func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 	class(self).SetAllowGeometryHelperNodes(value)
 }

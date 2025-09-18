@@ -229,114 +229,191 @@ func New() Instance {
 	return casted
 }
 
+/*
+Accelerates the wheel by applying an engine force. The wheel is only sped up if it is in contact with a surface. The [RigidBody3D.Mass] of the vehicle has an effect on the acceleration of the vehicle. For a vehicle with a mass set to 1000, try a value in the 25 - 50 range for acceleration.
+
+Note: The simulation does not take the effect of gears into account, you will need to add logic for this if you wish to simulate gears.
+
+A negative value will result in the wheel reversing.
+
+[RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
+*/
 func (self Instance) EngineForce() Float.X {
 	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
+// SetEngineForce sets the property returned by [GetEngineForce].
 func (self Instance) SetEngineForce(value Float.X) {
 	class(self).SetEngineForce(float64(value))
 }
 
+/*
+Slows down the wheel by applying a braking force. The wheel is only slowed down if it is in contact with a surface. The force you need to apply to adequately slow down your vehicle depends on the [RigidBody3D.Mass] of the vehicle. For a vehicle with a mass set to 1000, try a value in the 25 - 30 range for hard braking.
+
+[RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
+*/
 func (self Instance) Brake() Float.X {
 	return Float.X(Float.X(class(self).GetBrake()))
 }
 
+// SetBrake sets the property returned by [GetBrake].
 func (self Instance) SetBrake(value Float.X) {
 	class(self).SetBrake(float64(value))
 }
 
+/*
+The steering angle for the wheel, in radians. Setting this to a non-zero value will result in the vehicle turning when it's moving.
+*/
 func (self Instance) Steering() Float.X {
 	return Float.X(Float.X(class(self).GetSteering()))
 }
 
+// SetSteering sets the property returned by [GetSteering].
 func (self Instance) SetSteering(value Float.X) {
 	class(self).SetSteering(float64(value))
 }
 
+/*
+If true, this wheel transfers engine force to the ground to propel the vehicle forward. This value is used in conjunction with [VehicleBody3D.EngineForce] and ignored if you are using the per-wheel [EngineForce] value instead.
+
+[EngineForce]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.EngineForce
+[VehicleBody3D.EngineForce]: https://pkg.go.dev/graphics.gd/classdb/VehicleBody3D#Instance.EngineForce
+*/
 func (self Instance) UseAsTraction() bool {
 	return bool(class(self).IsUsedAsTraction())
 }
 
+// SetUseAsTraction sets the property returned by [IsUsedAsTraction].
 func (self Instance) SetUseAsTraction(value bool) {
 	class(self).SetUseAsTraction(value)
 }
 
+/*
+If true, this wheel will be turned when the car steers. This value is used in conjunction with [VehicleBody3D.Steering] and ignored if you are using the per-wheel [Steering] value instead.
+
+[Steering]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.Steering
+[VehicleBody3D.Steering]: https://pkg.go.dev/graphics.gd/classdb/VehicleBody3D#Instance.Steering
+*/
 func (self Instance) UseAsSteering() bool {
 	return bool(class(self).IsUsedAsSteering())
 }
 
+// SetUseAsSteering sets the property returned by [IsUsedAsSteering].
 func (self Instance) SetUseAsSteering(value bool) {
 	class(self).SetUseAsSteering(value)
 }
 
+/*
+This value affects the roll of your vehicle. If set to 1.0 for all wheels, your vehicle will resist body roll, while a value of 0.0 will be prone to rolling over.
+*/
 func (self Instance) WheelRollInfluence() Float.X {
 	return Float.X(Float.X(class(self).GetRollInfluence()))
 }
 
+// SetWheelRollInfluence sets the property returned by [GetRollInfluence].
 func (self Instance) SetWheelRollInfluence(value Float.X) {
 	class(self).SetRollInfluence(float64(value))
 }
 
+/*
+The radius of the wheel in meters.
+*/
 func (self Instance) WheelRadius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetWheelRadius sets the property returned by [GetRadius].
 func (self Instance) SetWheelRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+This is the distance in meters the wheel is lowered from its origin point. Don't set this to 0.0 and move the wheel into position, instead move the origin point of your wheel (the gizmo in Godot) to the position the wheel will take when bottoming out, then use the rest length to move the wheel down to the position it should be in when the car is in rest.
+*/
 func (self Instance) WheelRestLength() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionRestLength()))
 }
 
+// SetWheelRestLength sets the property returned by [GetSuspensionRestLength].
 func (self Instance) SetWheelRestLength(value Float.X) {
 	class(self).SetSuspensionRestLength(float64(value))
 }
 
+/*
+This determines how much grip this wheel has. It is combined with the friction setting of the surface the wheel is in contact with. 0.0 means no grip, 1.0 is normal grip. For a drift car setup, try setting the grip of the rear wheels slightly lower than the front wheels, or use a lower value to simulate tire wear.
+
+It's best to set this to 1.0 when starting out.
+*/
 func (self Instance) WheelFrictionSlip() Float.X {
 	return Float.X(Float.X(class(self).GetFrictionSlip()))
 }
 
+// SetWheelFrictionSlip sets the property returned by [GetFrictionSlip].
 func (self Instance) SetWheelFrictionSlip(value Float.X) {
 	class(self).SetFrictionSlip(float64(value))
 }
 
+/*
+This is the distance the suspension can travel. As Godot units are equivalent to meters, keep this setting relatively low. Try a value between 0.1 and 0.3 depending on the type of car.
+*/
 func (self Instance) SuspensionTravel() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionTravel()))
 }
 
+// SetSuspensionTravel sets the property returned by [GetSuspensionTravel].
 func (self Instance) SetSuspensionTravel(value Float.X) {
 	class(self).SetSuspensionTravel(float64(value))
 }
 
+/*
+The stiffness of the suspension, measured in Newtons per millimeter (N/mm), or megagrams per second squared (Mg/s²). Use a value lower than 50 for an off-road car, a value between 50 and 100 for a race car and try something around 200 for something like a Formula 1 car.
+*/
 func (self Instance) SuspensionStiffness() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionStiffness()))
 }
 
+// SetSuspensionStiffness sets the property returned by [GetSuspensionStiffness].
 func (self Instance) SetSuspensionStiffness(value Float.X) {
 	class(self).SetSuspensionStiffness(float64(value))
 }
 
+/*
+The maximum force the spring can resist. This value should be higher than a quarter of the [RigidBody3D.Mass] of the [VehicleBody3D] or the spring will not carry the weight of the vehicle. Good results are often obtained by a value that is about 3× to 4× this number.
+
+[RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
+[VehicleBody3D]: https://pkg.go.dev/graphics.gd/classdb/VehicleBody3D
+*/
 func (self Instance) SuspensionMaxForce() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionMaxForce()))
 }
 
+// SetSuspensionMaxForce sets the property returned by [GetSuspensionMaxForce].
 func (self Instance) SetSuspensionMaxForce(value Float.X) {
 	class(self).SetSuspensionMaxForce(float64(value))
 }
 
+/*
+The damping applied to the suspension spring when being compressed, meaning when the wheel is moving up relative to the vehicle. It is measured in Newton-seconds per millimeter (N⋅s/mm), or megagrams per second (Mg/s). This value should be between 0.0 (no damping) and 1.0, but may be more. A value of 0.0 means the car will keep bouncing as the spring keeps its energy. A good value for this is around 0.3 for a normal car, 0.5 for a race car.
+*/
 func (self Instance) DampingCompression() Float.X {
 	return Float.X(Float.X(class(self).GetDampingCompression()))
 }
 
+// SetDampingCompression sets the property returned by [GetDampingCompression].
 func (self Instance) SetDampingCompression(value Float.X) {
 	class(self).SetDampingCompression(float64(value))
 }
 
+/*
+The damping applied to the suspension spring when rebounding or extending, meaning when the wheel is moving down relative to the vehicle. It is measured in Newton-seconds per millimeter (N⋅s/mm), or megagrams per second (Mg/s). This value should be between 0.0 (no damping) and 1.0, but may be more. This value should always be slightly higher than the [DampingCompression] property. For a [DampingCompression] value of 0.3, try a relaxation value of 0.5.
+
+[DampingCompression]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.DampingCompression
+*/
 func (self Instance) DampingRelaxation() Float.X {
 	return Float.X(Float.X(class(self).GetDampingRelaxation()))
 }
 
+// SetDampingRelaxation sets the property returned by [GetDampingRelaxation].
 func (self Instance) SetDampingRelaxation(value Float.X) {
 	class(self).SetDampingRelaxation(float64(value))
 }

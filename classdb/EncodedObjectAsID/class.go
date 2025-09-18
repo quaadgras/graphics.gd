@@ -148,10 +148,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Object] identifier stored in this [EncodedObjectAsID] instance. The object instance can be retrieved with [@GlobalScope.InstanceFromId].
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[EncodedObjectAsID]: https://pkg.go.dev/graphics.gd/classdb/EncodedObjectAsID
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+*/
 func (self Instance) ObjectId() int {
 	return int(int(class(self).GetObjectId()))
 }
 
+// SetObjectId sets the property returned by [GetObjectId].
 func (self Instance) SetObjectId(value int) {
 	class(self).SetObjectId(int64(value))
 }

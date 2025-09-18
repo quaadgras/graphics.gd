@@ -164,50 +164,86 @@ func New() Instance {
 	return casted
 }
 
+/*
+The ParallaxBackground's scroll value. Calculated automatically when using a [Camera2D], but can be used to manually manage scrolling when no camera is present.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+*/
 func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
+// SetScrollOffset sets the property returned by [GetScrollOffset].
 func (self Instance) SetScrollOffset(value Vector2.XY) {
 	class(self).SetScrollOffset(Vector2.XY(value))
 }
 
+/*
+The base position offset for all [ParallaxLayer] children.
+
+[ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
+*/
 func (self Instance) ScrollBaseOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollBaseOffset())
 }
 
+// SetScrollBaseOffset sets the property returned by [GetScrollBaseOffset].
 func (self Instance) SetScrollBaseOffset(value Vector2.XY) {
 	class(self).SetScrollBaseOffset(Vector2.XY(value))
 }
 
+/*
+The base motion scale for all [ParallaxLayer] children.
+
+[ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
+*/
 func (self Instance) ScrollBaseScale() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollBaseScale())
 }
 
+// SetScrollBaseScale sets the property returned by [GetScrollBaseScale].
 func (self Instance) SetScrollBaseScale(value Vector2.XY) {
 	class(self).SetScrollBaseScale(Vector2.XY(value))
 }
 
+/*
+Top-left limits for scrolling to begin. If the camera is outside of this limit, the background will stop scrolling. Must be lower than [ScrollLimitEnd] to work.
+
+[ScrollLimitEnd]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollLimitEnd
+*/
 func (self Instance) ScrollLimitBegin() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
+// SetScrollLimitBegin sets the property returned by [GetLimitBegin].
 func (self Instance) SetScrollLimitBegin(value Vector2.XY) {
 	class(self).SetLimitBegin(Vector2.XY(value))
 }
 
+/*
+Bottom-right limits for scrolling to end. If the camera is outside of this limit, the background will stop scrolling. Must be higher than [ScrollLimitBegin] to work.
+
+[ScrollLimitBegin]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollLimitBegin
+*/
 func (self Instance) ScrollLimitEnd() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
+// SetScrollLimitEnd sets the property returned by [GetLimitEnd].
 func (self Instance) SetScrollLimitEnd(value Vector2.XY) {
 	class(self).SetLimitEnd(Vector2.XY(value))
 }
 
+/*
+If true, elements in [ParallaxLayer] child aren't affected by the zoom level of the camera.
+
+[ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
+*/
 func (self Instance) ScrollIgnoreCameraZoom() bool {
 	return bool(class(self).IsIgnoreCameraZoom())
 }
 
+// SetScrollIgnoreCameraZoom sets the property returned by [IsIgnoreCameraZoom].
 func (self Instance) SetScrollIgnoreCameraZoom(value bool) {
 	class(self).SetIgnoreCameraZoom(value)
 }

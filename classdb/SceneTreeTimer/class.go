@@ -172,10 +172,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The time remaining (in seconds).
+*/
 func (self Instance) TimeLeft() Float.X {
 	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 
+// SetTimeLeft sets the property returned by [GetTimeLeft].
 func (self Instance) SetTimeLeft(value Float.X) {
 	class(self).SetTimeLeft(float64(value))
 }
@@ -191,6 +195,10 @@ func (self class) GetTimeLeft() float64 { //gd:SceneTreeTimer.get_time_left
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the timer reaches 0.
+*/
 func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

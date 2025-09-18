@@ -146,26 +146,59 @@ func New() Instance {
 	return casted
 }
 
+/*
+The type of tracker.
+*/
 func (self Instance) Type() Type {
 	return Type(class(self).GetTrackerType())
 }
 
+// SetType sets the property returned by [GetTrackerType].
 func (self Instance) SetType(value Type) {
 	class(self).SetTrackerType(value)
 }
 
+/*
+The unique name of this tracker. The trackers that are available differ between various XR runtimes and can often be configured by the user. Godot maintains a number of reserved names that it expects the [XRInterface] to implement if applicable:
+
+- "head" identifies the [XRPositionalTracker] of the player's head
+
+- "left_hand" identifies the [XRControllerTracker] in the player's left hand
+
+- "right_hand" identifies the [XRControllerTracker] in the player's right hand
+
+- "/user/hand_tracker/left" identifies the [XRHandTracker] for the player's left hand
+
+- "/user/hand_tracker/right" identifies the [XRHandTracker] for the player's right hand
+
+- "/user/body_tracker" identifies the [XRBodyTracker] for the player's body
+
+- "/user/face_tracker" identifies the [XRFaceTracker] for the player's face
+
+[XRBodyTracker]: https://pkg.go.dev/graphics.gd/classdb/XRBodyTracker
+[XRControllerTracker]: https://pkg.go.dev/graphics.gd/classdb/XRControllerTracker
+[XRFaceTracker]: https://pkg.go.dev/graphics.gd/classdb/XRFaceTracker
+[XRHandTracker]: https://pkg.go.dev/graphics.gd/classdb/XRHandTracker
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+[XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
+*/
 func (self Instance) Name() string {
 	return string(class(self).GetTrackerName().String())
 }
 
+// SetName sets the property returned by [GetTrackerName].
 func (self Instance) SetName(value string) {
 	class(self).SetTrackerName(String.Name(String.New(value)))
 }
 
+/*
+The description of this tracker.
+*/
 func (self Instance) Description() string {
 	return string(class(self).GetTrackerDesc().String())
 }
 
+// SetDescription sets the property returned by [GetTrackerDesc].
 func (self Instance) SetDescription(value string) {
 	class(self).SetTrackerDesc(String.New(value))
 }

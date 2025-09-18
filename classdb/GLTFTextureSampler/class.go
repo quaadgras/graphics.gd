@@ -149,34 +149,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+Texture's magnification filter, used when texture appears larger on screen than the source image.
+*/
 func (self Instance) MagFilter() int {
 	return int(int(class(self).GetMagFilter()))
 }
 
+// SetMagFilter sets the property returned by [GetMagFilter].
 func (self Instance) SetMagFilter(value int) {
 	class(self).SetMagFilter(int64(value))
 }
 
+/*
+Texture's minification filter, used when the texture appears smaller on screen than the source image.
+*/
 func (self Instance) MinFilter() int {
 	return int(int(class(self).GetMinFilter()))
 }
 
+// SetMinFilter sets the property returned by [GetMinFilter].
 func (self Instance) SetMinFilter(value int) {
 	class(self).SetMinFilter(int64(value))
 }
 
+/*
+Wrapping mode to use for S-axis (horizontal) texture coordinates.
+*/
 func (self Instance) WrapS() int {
 	return int(int(class(self).GetWrapS()))
 }
 
+// SetWrapS sets the property returned by [GetWrapS].
 func (self Instance) SetWrapS(value int) {
 	class(self).SetWrapS(int64(value))
 }
 
+/*
+Wrapping mode to use for T-axis (vertical) texture coordinates.
+*/
 func (self Instance) WrapT() int {
 	return int(int(class(self).GetWrapT()))
 }
 
+// SetWrapT sets the property returned by [GetWrapT].
 func (self Instance) SetWrapT(value int) {
 	class(self).SetWrapT(int64(value))
 }

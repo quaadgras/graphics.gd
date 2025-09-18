@@ -161,58 +161,99 @@ func New() Instance {
 	return casted
 }
 
+/*
+The distance along the path, in pixels. Changing this value sets this node's position to a point within the path.
+*/
 func (self Instance) Progress() Float.X {
 	return Float.X(Float.X(class(self).GetProgress()))
 }
 
+// SetProgress sets the property returned by [GetProgress].
 func (self Instance) SetProgress(value Float.X) {
 	class(self).SetProgress(float64(value))
 }
 
+/*
+The distance along the path as a number in the range 0.0 (for the first vertex) to 1.0 (for the last). This is just another way of expressing the progress within the path, as the offset supplied is multiplied internally by the path's length.
+
+It can be set or get only if the [PathFollow2D] is the child of a [Path2D] which is part of the scene tree, and that this [Path2D] has a [Curve2D] with a non-zero length. Otherwise, trying to set this field will print an error, and getting this field will return 0.0.
+
+[Curve2D]: https://pkg.go.dev/graphics.gd/classdb/Curve2D
+[Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
+[PathFollow2D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow2D
+*/
 func (self Instance) ProgressRatio() Float.X {
 	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
+// SetProgressRatio sets the property returned by [GetProgressRatio].
 func (self Instance) SetProgressRatio(value Float.X) {
 	class(self).SetProgressRatio(float64(value))
 }
 
+/*
+The node's offset along the curve.
+*/
 func (self Instance) HOffset() Float.X {
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
+// SetHOffset sets the property returned by [GetHOffset].
 func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(float64(value))
 }
 
+/*
+The node's offset perpendicular to the curve.
+*/
 func (self Instance) VOffset() Float.X {
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
+// SetVOffset sets the property returned by [GetVOffset].
 func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(float64(value))
 }
 
+/*
+If true, this node rotates to follow the path, with the +X direction facing forward on the path.
+*/
 func (self Instance) Rotates() bool {
 	return bool(class(self).IsRotating())
 }
 
+// SetRotates sets the property returned by [IsRotating].
 func (self Instance) SetRotates(value bool) {
 	class(self).SetRotates(value)
 }
 
+/*
+If true, the position between two cached points is interpolated cubically, and linearly otherwise.
+
+The points along the [Curve2D] of the [Path2D] are precomputed before use, for faster calculations. The point at the requested offset is then calculated interpolating between two adjacent cached points. This may present a problem if the curve makes sharp turns, as the cached points may not follow the curve closely enough.
+
+There are two answers to this problem: either increase the number of cached points and increase memory consumption, or make a cubic interpolation between two points at the cost of (slightly) slower calculations.
+
+[Curve2D]: https://pkg.go.dev/graphics.gd/classdb/Curve2D
+[Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
+*/
 func (self Instance) CubicInterp() bool {
 	return bool(class(self).GetCubicInterpolation())
 }
 
+// SetCubicInterp sets the property returned by [GetCubicInterpolation].
 func (self Instance) SetCubicInterp(value bool) {
 	class(self).SetCubicInterpolation(value)
 }
 
+/*
+If true, any offset outside the path's length will wrap around, instead of stopping at the ends. Use it for cyclic paths.
+*/
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
+// SetLoop sets the property returned by [HasLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }

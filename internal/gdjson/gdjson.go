@@ -18,8 +18,9 @@ type Enum struct {
 }
 
 type Signal struct {
-	Name      string `json:"name"`
-	Arguments []struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Arguments   []struct {
 		Name string `json:"name"`
 		Type string `json:"type"`
 		Meta string `json:"meta"`

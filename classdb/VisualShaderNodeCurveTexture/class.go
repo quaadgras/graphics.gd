@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The source texture.
+*/
 func (self Instance) Texture() CurveTexture.Instance {
 	return CurveTexture.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value CurveTexture.Instance) {
 	class(self).SetTexture(value)
 }

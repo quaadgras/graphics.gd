@@ -369,18 +369,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+Amount of clips contained in this interactive player.
+*/
 func (self Instance) ClipCount() Clip {
 	return Clip(Clip(class(self).GetClipCount()))
 }
 
+// SetClipCount sets the property returned by [GetClipCount].
 func (self Instance) SetClipCount(value Clip) {
 	class(self).SetClipCount(int64(value))
 }
 
+/*
+Index of the initial clip, which will be played first when this stream is played.
+*/
 func (self Instance) InitialClip() Clip {
 	return Clip(Clip(class(self).GetInitialClip()))
 }
 
+// SetInitialClip sets the property returned by [GetInitialClip].
 func (self Instance) SetInitialClip(value Clip) {
 	class(self).SetInitialClip(int64(value))
 }

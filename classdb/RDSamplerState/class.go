@@ -173,122 +173,197 @@ func New() Instance {
 	return casted
 }
 
+/*
+The sampler's magnification filter. It is the filtering method used when sampling texels that appear bigger than on-screen pixels.
+*/
 func (self Instance) MagFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMagFilter())
 }
 
+// SetMagFilter sets the property returned by [GetMagFilter].
 func (self Instance) SetMagFilter(value Rendering.SamplerFilter) {
 	class(self).SetMagFilter(value)
 }
 
+/*
+The sampler's minification filter. It is the filtering method used when sampling texels that appear smaller than on-screen pixels.
+*/
 func (self Instance) MinFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMinFilter())
 }
 
+// SetMinFilter sets the property returned by [GetMinFilter].
 func (self Instance) SetMinFilter(value Rendering.SamplerFilter) {
 	class(self).SetMinFilter(value)
 }
 
+/*
+The filtering method to use for mipmaps.
+*/
 func (self Instance) MipFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMipFilter())
 }
 
+// SetMipFilter sets the property returned by [GetMipFilter].
 func (self Instance) SetMipFilter(value Rendering.SamplerFilter) {
 	class(self).SetMipFilter(value)
 }
 
+/*
+The repeat mode to use along the U axis of UV coordinates. This affects the returned values if sampling outside the UV bounds.
+*/
 func (self Instance) RepeatU() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatU())
 }
 
+// SetRepeatU sets the property returned by [GetRepeatU].
 func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatU(value)
 }
 
+/*
+The repeat mode to use along the V axis of UV coordinates. This affects the returned values if sampling outside the UV bounds.
+*/
 func (self Instance) RepeatV() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatV())
 }
 
+// SetRepeatV sets the property returned by [GetRepeatV].
 func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatV(value)
 }
 
+/*
+The repeat mode to use along the W axis of UV coordinates. This affects the returned values if sampling outside the UV bounds. Only effective for 3D samplers.
+*/
 func (self Instance) RepeatW() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatW())
 }
 
+// SetRepeatW sets the property returned by [GetRepeatW].
 func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatW(value)
 }
 
+/*
+The mipmap LOD bias to use. Positive values will make the sampler blurrier at a given distance, while negative values will make the sampler sharper at a given distance (at the risk of looking grainy). Recommended values are between -0.5 and 0.0. Only effective if the sampler has mipmaps available.
+*/
 func (self Instance) LodBias() Float.X {
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
+// SetLodBias sets the property returned by [GetLodBias].
 func (self Instance) SetLodBias(value Float.X) {
 	class(self).SetLodBias(float64(value))
 }
 
+/*
+If true, perform anisotropic sampling. See [AnisotropyMax].
+
+[AnisotropyMax]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.AnisotropyMax
+*/
 func (self Instance) UseAnisotropy() bool {
 	return bool(class(self).GetUseAnisotropy())
 }
 
+// SetUseAnisotropy sets the property returned by [GetUseAnisotropy].
 func (self Instance) SetUseAnisotropy(value bool) {
 	class(self).SetUseAnisotropy(value)
 }
 
+/*
+Maximum anisotropy that can be used when sampling. Only effective if [UseAnisotropy] is true. Higher values result in a sharper sampler at oblique angles, at the cost of performance (due to memory bandwidth). This value may be limited by the graphics hardware in use. Most graphics hardware only supports values up to 16.0.
+
+If [AnisotropyMax] is 1.0, forcibly disables anisotropy even if [UseAnisotropy] is true.
+
+[AnisotropyMax]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.AnisotropyMax
+[UseAnisotropy]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.UseAnisotropy
+*/
 func (self Instance) AnisotropyMax() Float.X {
 	return Float.X(Float.X(class(self).GetAnisotropyMax()))
 }
 
+// SetAnisotropyMax sets the property returned by [GetAnisotropyMax].
 func (self Instance) SetAnisotropyMax(value Float.X) {
 	class(self).SetAnisotropyMax(float64(value))
 }
 
+/*
+If true, returned values will be based on the comparison operation defined in [CompareOp]. This is a hardware-based approach and is therefore faster than performing this manually in a shader. For example, compare operations are used for shadow map rendering by comparing depth values from a shadow sampler.
+
+[CompareOp]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.CompareOp
+*/
 func (self Instance) EnableCompare() bool {
 	return bool(class(self).GetEnableCompare())
 }
 
+// SetEnableCompare sets the property returned by [GetEnableCompare].
 func (self Instance) SetEnableCompare(value bool) {
 	class(self).SetEnableCompare(value)
 }
 
+/*
+The compare operation to use. Only effective if [EnableCompare] is true.
+
+[EnableCompare]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.EnableCompare
+*/
 func (self Instance) CompareOp() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetCompareOp())
 }
 
+// SetCompareOp sets the property returned by [GetCompareOp].
 func (self Instance) SetCompareOp(value Rendering.CompareOperator) {
 	class(self).SetCompareOp(value)
 }
 
+/*
+The minimum mipmap LOD bias to display (highest resolution). Only effective if the sampler has mipmaps available.
+*/
 func (self Instance) MinLod() Float.X {
 	return Float.X(Float.X(class(self).GetMinLod()))
 }
 
+// SetMinLod sets the property returned by [GetMinLod].
 func (self Instance) SetMinLod(value Float.X) {
 	class(self).SetMinLod(float64(value))
 }
 
+/*
+The maximum mipmap LOD bias to display (lowest resolution). Only effective if the sampler has mipmaps available.
+*/
 func (self Instance) MaxLod() Float.X {
 	return Float.X(Float.X(class(self).GetMaxLod()))
 }
 
+// SetMaxLod sets the property returned by [GetMaxLod].
 func (self Instance) SetMaxLod(value Float.X) {
 	class(self).SetMaxLod(float64(value))
 }
 
+/*
+The border color that will be returned when sampling outside the sampler's bounds and the [RepeatU], [RepeatV] or [RepeatW] modes have repeating disabled.
+
+[RepeatU]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.RepeatU
+[RepeatV]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.RepeatV
+[RepeatW]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.RepeatW
+*/
 func (self Instance) BorderColor() Rendering.SamplerBorderColor {
 	return Rendering.SamplerBorderColor(class(self).GetBorderColor())
 }
 
+// SetBorderColor sets the property returned by [GetBorderColor].
 func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) {
 	class(self).SetBorderColor(value)
 }
 
+/*
+If true, the texture will be sampled with coordinates ranging from 0 to the texture's resolution. Otherwise, the coordinates will be normalized and range from 0 to 1.
+*/
 func (self Instance) UnnormalizedUvw() bool {
 	return bool(class(self).GetUnnormalizedUvw())
 }
 
+// SetUnnormalizedUvw sets the property returned by [GetUnnormalizedUvw].
 func (self Instance) SetUnnormalizedUvw(value bool) {
 	class(self).SetUnnormalizedUvw(value)
 }

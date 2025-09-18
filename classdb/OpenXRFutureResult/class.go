@@ -229,6 +229,10 @@ func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_res
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
+
+/*
+Emitted when the asynchronous function is finished or has been cancelled.
+*/
 func (self Instance) OnCompleted(cb func(result Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -152,10 +152,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The attractor sphere's radius in 3D units.
+
+Note: Stretched ellipses can be obtained by using non-uniform scaling on the [GPUParticlesAttractorSphere3D] node.
+
+[GPUParticlesAttractorSphere3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorSphere3D
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }

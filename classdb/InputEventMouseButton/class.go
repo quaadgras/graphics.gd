@@ -159,34 +159,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The amount (or delta) of the event. When used for high-precision scroll events, this indicates the scroll amount (vertical or horizontal). This is only supported on some platforms; the reported sensitivity varies depending on the platform. May be 0 if not supported.
+*/
 func (self Instance) Factor() Float.X {
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
+// SetFactor sets the property returned by [GetFactor].
 func (self Instance) SetFactor(value Float.X) {
 	class(self).SetFactor(float64(value))
 }
 
+/*
+The mouse button identifier, one of the [MouseButton] button or button wheel constants.
+*/
 func (self Instance) ButtonIndex() Input.MouseButton {
 	return Input.MouseButton(class(self).GetButtonIndex())
 }
 
+// SetButtonIndex sets the property returned by [GetButtonIndex].
 func (self Instance) SetButtonIndex(value Input.MouseButton) {
 	class(self).SetButtonIndex(value)
 }
 
+/*
+If true, the mouse button event has been canceled.
+*/
 func (self Instance) SetCanceled(value bool) {
 	class(self).SetCanceled(value)
 }
 
+/*
+If true, the mouse button's state is pressed. If false, the mouse button's state is released.
+*/
 func (self Instance) SetPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
+/*
+If true, the mouse button's state is a double-click.
+*/
 func (self Instance) DoubleClick() bool {
 	return bool(class(self).IsDoubleClick())
 }
 
+// SetDoubleClick sets the property returned by [IsDoubleClick].
 func (self Instance) SetDoubleClick(value bool) {
 	class(self).SetDoubleClick(value)
 }

@@ -157,26 +157,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The minimum radius around the focal point where full quality is guaranteed if VRS is used as a percentage of screen size.
+*/
 func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
 func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(float64(value))
 }
 
+/*
+The strength used to calculate the VRS density map. The greater this value, the more noticeable VRS is.
+*/
 func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
+// SetVrsStrength sets the property returned by [GetVrsStrength].
 func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(float64(value))
 }
 
+/*
+The render region that the VRS texture will be scaled to when generated.
+*/
 func (self Instance) VrsRenderRegion() Rect2i.PositionSize {
 	return Rect2i.PositionSize(class(self).GetVrsRenderRegion())
 }
 
+// SetVrsRenderRegion sets the property returned by [GetVrsRenderRegion].
 func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) {
 	class(self).SetVrsRenderRegion(Rect2i.PositionSize(value))
 }

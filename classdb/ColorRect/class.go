@@ -148,10 +148,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The fill color of the rectangle.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }

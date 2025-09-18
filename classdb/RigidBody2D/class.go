@@ -430,186 +430,359 @@ func New() Instance {
 	return casted
 }
 
+/*
+The body's mass.
+*/
 func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
+// SetMass sets the property returned by [GetMass].
 func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(float64(value))
 }
 
+/*
+The physics material override for the body.
+
+If a material is assigned to this property, it will be used instead of any other physics material, such as an inherited one.
+*/
 func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
+// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride].
 func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
+/*
+Multiplies the gravity applied to the body. The body's gravity is calculated from the [ProjectSettings] "physics/2d/default_gravity" project setting and/or any additional gravity vector applied by [Area2D]s.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) GravityScale() Float.X {
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
+// SetGravityScale sets the property returned by [GetGravityScale].
 func (self Instance) SetGravityScale(value Float.X) {
 	class(self).SetGravityScale(float64(value))
 }
 
+/*
+Defines the way the body's center of mass is set.
+*/
 func (self Instance) CenterOfMassMode() CenterOfMassMode {
 	return CenterOfMassMode(class(self).GetCenterOfMassMode())
 }
 
+// SetCenterOfMassMode sets the property returned by [GetCenterOfMassMode].
 func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) {
 	class(self).SetCenterOfMassMode(value)
 }
 
+/*
+The body's custom center of mass, relative to the body's origin position, when [CenterOfMassMode] is set to [CenterOfMassModeCustom]. This is the balanced point of the body, where applied forces only cause linear acceleration. Applying forces outside of the center of mass causes angular acceleration.
+
+When [CenterOfMassMode] is set to [CenterOfMassModeAuto] (default value), the center of mass is automatically determined, but this does not update the value of [CenterOfMass].
+
+[CenterOfMass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CenterOfMass
+[CenterOfMassMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CenterOfMassMode
+*/
 func (self Instance) CenterOfMass() Vector2.XY {
 	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
+// SetCenterOfMass sets the property returned by [GetCenterOfMass].
 func (self Instance) SetCenterOfMass(value Vector2.XY) {
 	class(self).SetCenterOfMass(Vector2.XY(value))
 }
 
+/*
+The body's moment of inertia. This is like mass, but for rotation: it determines how much torque it takes to rotate the body. The moment of inertia is usually computed automatically from the mass and the shapes, but this property allows you to set a custom value.
+
+If set to 0, inertia is automatically computed (default value).
+
+Note: This value does not change when inertia is automatically computed. Use [PhysicsServer2D] to get the computed inertia.
+
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+*/
 func (self Instance) Inertia() Float.X {
 	return Float.X(Float.X(class(self).GetInertia()))
 }
 
+// SetInertia sets the property returned by [GetInertia].
 func (self Instance) SetInertia(value Float.X) {
 	class(self).SetInertia(float64(value))
 }
 
+/*
+If true, the body will not move and will not calculate forces until woken up by another body through, for example, a collision, or by using the [ApplyImpulse] or [ApplyForce] methods.
+
+[ApplyForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ApplyForce
+[ApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ApplyImpulse
+*/
 func (self Instance) Sleeping() bool {
 	return bool(class(self).IsSleeping())
 }
 
+// SetSleeping sets the property returned by [IsSleeping].
 func (self Instance) SetSleeping(value bool) {
 	class(self).SetSleeping(value)
 }
 
+/*
+If true, the body can enter sleep mode when there is no movement. See [Sleeping].
+
+[Sleeping]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Sleeping
+*/
 func (self Instance) CanSleep() bool {
 	return bool(class(self).IsAbleToSleep())
 }
 
+// SetCanSleep sets the property returned by [IsAbleToSleep].
 func (self Instance) SetCanSleep(value bool) {
 	class(self).SetCanSleep(value)
 }
 
+/*
+If true, the body cannot rotate. Gravity and forces only apply linear movement.
+*/
 func (self Instance) LockRotation() bool {
 	return bool(class(self).IsLockRotationEnabled())
 }
 
+// SetLockRotation sets the property returned by [IsLockRotationEnabled].
 func (self Instance) SetLockRotation(value bool) {
 	class(self).SetLockRotationEnabled(value)
 }
 
+/*
+If true, the body is frozen. Gravity and forces are not applied anymore.
+
+See [FreezeMode] to set the body's behavior when frozen.
+
+For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
+
+[AnimatableBody2D]: https://pkg.go.dev/graphics.gd/classdb/AnimatableBody2D
+[FreezeMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.FreezeMode
+[StaticBody2D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody2D
+*/
 func (self Instance) Freeze() bool {
 	return bool(class(self).IsFreezeEnabled())
 }
 
+// SetFreeze sets the property returned by [IsFreezeEnabled].
 func (self Instance) SetFreeze(value bool) {
 	class(self).SetFreezeEnabled(value)
 }
 
+/*
+The body's freeze mode. Can be used to set the body's behavior when [Freeze] is enabled.
+
+For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] instead.
+
+[AnimatableBody2D]: https://pkg.go.dev/graphics.gd/classdb/AnimatableBody2D
+[Freeze]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Freeze
+[StaticBody2D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody2D
+*/
 func (self Instance) FreezeMode() FreezeMode {
 	return FreezeMode(class(self).GetFreezeMode())
 }
 
+// SetFreezeMode sets the property returned by [GetFreezeMode].
 func (self Instance) SetFreezeMode(value FreezeMode) {
 	class(self).SetFreezeMode(value)
 }
 
+/*
+If true, the standard force integration (like gravity or damping) will be disabled for this body. Other than collision response, the body will only move as determined by the [IntegrateForces] method, if that virtual method is overridden.
+
+Setting this property will call the method [PhysicsServer2D.BodySetOmitForceIntegration] internally.
+
+[IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Interface
+[PhysicsServer2D.BodySetOmitForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetOmitForceIntegration
+*/
 func (self Instance) CustomIntegrator() bool {
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
+// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator].
 func (self Instance) SetCustomIntegrator(value bool) {
 	class(self).SetUseCustomIntegrator(value)
 }
 
+/*
+Continuous collision detection mode.
+
+Continuous collision detection tries to predict where a moving body will collide instead of moving it and correcting its movement after collision. Continuous collision detection is slower, but more precise and misses fewer collisions with small, fast-moving objects. Raycasting and shapecasting methods are available.
+*/
 func (self Instance) ContinuousCd() CCDMode {
 	return CCDMode(class(self).GetContinuousCollisionDetectionMode())
 }
 
+// SetContinuousCd sets the property returned by [GetContinuousCollisionDetectionMode].
 func (self Instance) SetContinuousCd(value CCDMode) {
 	class(self).SetContinuousCollisionDetectionMode(value)
 }
 
+/*
+If true, the RigidBody2D will emit signals when it collides with another body.
+
+Note: By default the maximum contacts reported is set to 0, meaning nothing will be recorded, see [MaxContactsReported].
+
+[MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
+*/
 func (self Instance) ContactMonitor() bool {
 	return bool(class(self).IsContactMonitorEnabled())
 }
 
+// SetContactMonitor sets the property returned by [IsContactMonitorEnabled].
 func (self Instance) SetContactMonitor(value bool) {
 	class(self).SetContactMonitor(value)
 }
 
+/*
+The maximum number of contacts that will be recorded. Requires a value greater than 0 and [ContactMonitor] to be set to true to start to register contacts. Use [GetContactCount] to retrieve the count or [GetCollidingBodies] to retrieve bodies that have been collided with.
+
+Note: The number of contacts is different from the number of collisions. Collisions between parallel edges will result in two contacts (one at each end), and collisions between parallel faces will result in four contacts (one at each corner).
+
+[ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ContactMonitor
+[GetCollidingBodies]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.GetCollidingBodies
+[GetContactCount]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.GetContactCount
+*/
 func (self Instance) MaxContactsReported() int {
 	return int(int(class(self).GetMaxContactsReported()))
 }
 
+// SetMaxContactsReported sets the property returned by [GetMaxContactsReported].
 func (self Instance) SetMaxContactsReported(value int) {
 	class(self).SetMaxContactsReported(int64(value))
 }
 
+/*
+The body's linear velocity in pixels per second. Can be used sporadically, but don't set this every frame, because physics may run in another thread and runs at a different granularity. Use [IntegrateForces] as your process loop for precise control of the body state.
+
+[IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Interface
+*/
 func (self Instance) LinearVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
+// SetLinearVelocity sets the property returned by [GetLinearVelocity].
 func (self Instance) SetLinearVelocity(value Vector2.XY) {
 	class(self).SetLinearVelocity(Vector2.XY(value))
 }
 
+/*
+Defines how [LinearDamp] is applied.
+
+[LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.LinearDamp
+*/
 func (self Instance) LinearDampMode() DampMode {
 	return DampMode(class(self).GetLinearDampMode())
 }
 
+// SetLinearDampMode sets the property returned by [GetLinearDampMode].
 func (self Instance) SetLinearDampMode(value DampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
+/*
+Damps the body's movement. By default, the body will use the [ProjectSettings] "physics/2d/default_linear_damp" setting or any value override set by an [Area2D] the body is in. Depending on [LinearDampMode], you can set [LinearDamp] to be added to or to replace the body's damping value.
+
+See [ProjectSettings] "physics/2d/default_linear_damp" for more details about damping.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.LinearDamp
+[LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.LinearDampMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
+// SetLinearDamp sets the property returned by [GetLinearDamp].
 func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(float64(value))
 }
 
+/*
+The body's rotational velocity in radians per second.
+*/
 func (self Instance) AngularVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
+// SetAngularVelocity sets the property returned by [GetAngularVelocity].
 func (self Instance) SetAngularVelocity(value Float.X) {
 	class(self).SetAngularVelocity(float64(value))
 }
 
+/*
+Defines how [AngularDamp] is applied.
+
+[AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AngularDamp
+*/
 func (self Instance) AngularDampMode() DampMode {
 	return DampMode(class(self).GetAngularDampMode())
 }
 
+// SetAngularDampMode sets the property returned by [GetAngularDampMode].
 func (self Instance) SetAngularDampMode(value DampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
+/*
+Damps the body's rotation. By default, the body will use the [ProjectSettings] "physics/2d/default_angular_damp" setting or any value override set by an [Area2D] the body is in. Depending on [AngularDampMode], you can set [AngularDamp] to be added to or to replace the body's damping value.
+
+See [ProjectSettings] "physics/2d/default_angular_damp" for more details about damping.
+
+[AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AngularDamp
+[AngularDampMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AngularDampMode
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
+// SetAngularDamp sets the property returned by [GetAngularDamp].
 func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(float64(value))
 }
 
+/*
+The body's total constant positional forces applied during each physics update.
+
+See [AddConstantForce] and [AddConstantCentralForce].
+
+[AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantCentralForce
+[AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantForce
+*/
 func (self Instance) ConstantForce() Vector2.XY {
 	return Vector2.XY(class(self).GetConstantForce())
 }
 
+// SetConstantForce sets the property returned by [GetConstantForce].
 func (self Instance) SetConstantForce(value Vector2.XY) {
 	class(self).SetConstantForce(Vector2.XY(value))
 }
 
+/*
+The body's total constant rotational forces applied during each physics update.
+
+See [AddConstantTorque].
+
+[AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantTorque
+*/
 func (self Instance) ConstantTorque() Float.X {
 	return Float.X(Float.X(class(self).GetConstantTorque()))
 }
 
+// SetConstantTorque sets the property returned by [GetConstantTorque].
 func (self Instance) SetConstantTorque(value Float.X) {
 	class(self).SetConstantTorque(float64(value))
 }
@@ -1057,6 +1230,30 @@ func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+
+/*
+Emitted when one of this RigidBody2D's [Shape2D]s collides with another [PhysicsBody2D] or [TileMap]'s [Shape2D]s. Requires [ContactMonitor] to be set to true and [MaxContactsReported] to be set high enough to detect all the collisions. [TileMap]s are detected if the [TileSet] has Collision [Shape2D]s.
+
+'body_rid' the [Resource.ID] of the other [PhysicsBody2D] or [TileSet]'s [CollisionObject2D] used by the [PhysicsServer2D].
+
+'body' the [Node], if it exists in the tree, of the other [PhysicsBody2D] or [TileMap].
+
+'body_shape_index' the index of the [Shape2D] of the other [PhysicsBody2D] or [TileMap] used by the [PhysicsServer2D]. Get the [CollisionShape2D] node with body.shape_owner_get_owner(body.shape_find_owner(body_shape_index)).
+
+'local_shape_index' the index of the [Shape2D] of this RigidBody2D used by the [PhysicsServer2D]. Get the [CollisionShape2D] node with self.shape_owner_get_owner(self.shape_find_owner(local_shape_index)).
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
+[ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ContactMonitor
+[MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1069,6 +1266,29 @@ func (self class) BodyShapeEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
 }
 
+/*
+Emitted when the collision between one of this RigidBody2D's [Shape2D]s and another [PhysicsBody2D] or [TileMap]'s [Shape2D]s ends. Requires [ContactMonitor] to be set to true and [MaxContactsReported] to be set high enough to detect all the collisions. [TileMap]s are detected if the [TileSet] has Collision [Shape2D]s.
+
+'body_rid' the [Resource.ID] of the other [PhysicsBody2D] or [TileSet]'s [CollisionObject2D] used by the [PhysicsServer2D].
+
+'body' the [Node], if it exists in the tree, of the other [PhysicsBody2D] or [TileMap].
+
+'body_shape_index' the index of the [Shape2D] of the other [PhysicsBody2D] or [TileMap] used by the [PhysicsServer2D]. Get the [CollisionShape2D] node with body.shape_owner_get_owner(body.shape_find_owner(body_shape_index)).
+
+'local_shape_index' the index of the [Shape2D] of this RigidBody2D used by the [PhysicsServer2D]. Get the [CollisionShape2D] node with self.shape_owner_get_owner(self.shape_find_owner(local_shape_index)).
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
+[ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ContactMonitor
+[MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1081,6 +1301,19 @@ func (self class) BodyShapeExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
 }
 
+/*
+Emitted when a collision with another [PhysicsBody2D] or [TileMap] occurs. Requires [ContactMonitor] to be set to true and [MaxContactsReported] to be set high enough to detect all the collisions. [TileMap]s are detected if the [TileSet] has Collision [Shape2D]s.
+
+'body' the [Node], if it exists in the tree, of the other [PhysicsBody2D] or [TileMap].
+
+[ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ContactMonitor
+[MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1093,6 +1326,19 @@ func (self class) BodyEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
 }
 
+/*
+Emitted when the collision with another [PhysicsBody2D] or [TileMap] ends. Requires [ContactMonitor] to be set to true and [MaxContactsReported] to be set high enough to detect all the collisions. [TileMap]s are detected if the [TileSet] has Collision [Shape2D]s.
+
+'body' the [Node], if it exists in the tree, of the other [PhysicsBody2D] or [TileMap].
+
+[ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ContactMonitor
+[MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1105,6 +1351,13 @@ func (self class) BodyExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
 }
 
+/*
+Emitted when the physics engine changes the body's sleeping state.
+
+Note: Changing the value [Sleeping] will not trigger this signal. It is only emitted if the sleeping state is changed by the physics engine or emit_signal("sleeping_state_changed") is used.
+
+[Sleeping]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Sleeping
+*/
 func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

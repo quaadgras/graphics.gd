@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+A function to be applied to the scalar.
+*/
 func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
+// SetFunction sets the property returned by [GetFunction].
 func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }

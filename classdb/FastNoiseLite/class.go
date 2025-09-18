@@ -187,170 +187,260 @@ func New() Instance {
 	return casted
 }
 
+/*
+The noise algorithm used.
+*/
 func (self Instance) NoiseType() NoiseType {
 	return NoiseType(class(self).GetNoiseType())
 }
 
+// SetNoiseType sets the property returned by [GetNoiseType].
 func (self Instance) SetNoiseType(value NoiseType) {
 	class(self).SetNoiseType(value)
 }
 
+/*
+The random number seed for all noise types.
+*/
 func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
+// SetSeed sets the property returned by [GetSeed].
 func (self Instance) SetSeed(value int) {
 	class(self).SetSeed(int64(value))
 }
 
+/*
+The frequency for all noise types. Low frequency results in smooth noise while high frequency results in rougher, more granular noise.
+*/
 func (self Instance) Frequency() Float.X {
 	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
+// SetFrequency sets the property returned by [GetFrequency].
 func (self Instance) SetFrequency(value Float.X) {
 	class(self).SetFrequency(float64(value))
 }
 
+/*
+Translate the noise input coordinates by the given [Vector3.XYZ].
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func (self Instance) Offset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector3.XYZ) {
 	class(self).SetOffset(Vector3.XYZ(value))
 }
 
+/*
+The method for combining octaves into a fractal.
+*/
 func (self Instance) FractalType() FractalType {
 	return FractalType(class(self).GetFractalType())
 }
 
+// SetFractalType sets the property returned by [GetFractalType].
 func (self Instance) SetFractalType(value FractalType) {
 	class(self).SetFractalType(value)
 }
 
+/*
+The number of noise layers that are sampled to get the final value for fractal noise types.
+*/
 func (self Instance) FractalOctaves() int {
 	return int(int(class(self).GetFractalOctaves()))
 }
 
+// SetFractalOctaves sets the property returned by [GetFractalOctaves].
 func (self Instance) SetFractalOctaves(value int) {
 	class(self).SetFractalOctaves(int64(value))
 }
 
+/*
+Frequency multiplier between subsequent octaves. Increasing this value results in higher octaves producing noise with finer details and a rougher appearance.
+*/
 func (self Instance) FractalLacunarity() Float.X {
 	return Float.X(Float.X(class(self).GetFractalLacunarity()))
 }
 
+// SetFractalLacunarity sets the property returned by [GetFractalLacunarity].
 func (self Instance) SetFractalLacunarity(value Float.X) {
 	class(self).SetFractalLacunarity(float64(value))
 }
 
+/*
+Determines the strength of each subsequent layer of noise in fractal noise.
+
+A low value places more emphasis on the lower frequency base layers, while a high value puts more emphasis on the higher frequency layers.
+*/
 func (self Instance) FractalGain() Float.X {
 	return Float.X(Float.X(class(self).GetFractalGain()))
 }
 
+// SetFractalGain sets the property returned by [GetFractalGain].
 func (self Instance) SetFractalGain(value Float.X) {
 	class(self).SetFractalGain(float64(value))
 }
 
+/*
+Higher weighting means higher octaves have less impact if lower octaves have a large impact.
+*/
 func (self Instance) FractalWeightedStrength() Float.X {
 	return Float.X(Float.X(class(self).GetFractalWeightedStrength()))
 }
 
+// SetFractalWeightedStrength sets the property returned by [GetFractalWeightedStrength].
 func (self Instance) SetFractalWeightedStrength(value Float.X) {
 	class(self).SetFractalWeightedStrength(float64(value))
 }
 
+/*
+Sets the strength of the fractal ping pong type.
+*/
 func (self Instance) FractalPingPongStrength() Float.X {
 	return Float.X(Float.X(class(self).GetFractalPingPongStrength()))
 }
 
+// SetFractalPingPongStrength sets the property returned by [GetFractalPingPongStrength].
 func (self Instance) SetFractalPingPongStrength(value Float.X) {
 	class(self).SetFractalPingPongStrength(float64(value))
 }
 
+/*
+Determines how the distance to the nearest/second-nearest point is computed.
+*/
 func (self Instance) CellularDistanceFunction() CellularDistanceFunction {
 	return CellularDistanceFunction(class(self).GetCellularDistanceFunction())
 }
 
+// SetCellularDistanceFunction sets the property returned by [GetCellularDistanceFunction].
 func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction) {
 	class(self).SetCellularDistanceFunction(value)
 }
 
+/*
+Maximum distance a point can move off of its grid position. Set to 0 for an even grid.
+*/
 func (self Instance) CellularJitter() Float.X {
 	return Float.X(Float.X(class(self).GetCellularJitter()))
 }
 
+// SetCellularJitter sets the property returned by [GetCellularJitter].
 func (self Instance) SetCellularJitter(value Float.X) {
 	class(self).SetCellularJitter(float64(value))
 }
 
+/*
+Return type from cellular noise calculations.
+*/
 func (self Instance) CellularReturnType() CellularReturnType {
 	return CellularReturnType(class(self).GetCellularReturnType())
 }
 
+// SetCellularReturnType sets the property returned by [GetCellularReturnType].
 func (self Instance) SetCellularReturnType(value CellularReturnType) {
 	class(self).SetCellularReturnType(value)
 }
 
+/*
+If enabled, another FastNoiseLite instance is used to warp the space, resulting in a distortion of the noise.
+*/
 func (self Instance) DomainWarpEnabled() bool {
 	return bool(class(self).IsDomainWarpEnabled())
 }
 
+// SetDomainWarpEnabled sets the property returned by [IsDomainWarpEnabled].
 func (self Instance) SetDomainWarpEnabled(value bool) {
 	class(self).SetDomainWarpEnabled(value)
 }
 
+/*
+The warp algorithm.
+*/
 func (self Instance) DomainWarpType() DomainWarpType {
 	return DomainWarpType(class(self).GetDomainWarpType())
 }
 
+// SetDomainWarpType sets the property returned by [GetDomainWarpType].
 func (self Instance) SetDomainWarpType(value DomainWarpType) {
 	class(self).SetDomainWarpType(value)
 }
 
+/*
+Sets the maximum warp distance from the origin.
+*/
 func (self Instance) DomainWarpAmplitude() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpAmplitude()))
 }
 
+// SetDomainWarpAmplitude sets the property returned by [GetDomainWarpAmplitude].
 func (self Instance) SetDomainWarpAmplitude(value Float.X) {
 	class(self).SetDomainWarpAmplitude(float64(value))
 }
 
+/*
+Frequency of the noise which warps the space. Low frequency results in smooth noise while high frequency results in rougher, more granular noise.
+*/
 func (self Instance) DomainWarpFrequency() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFrequency()))
 }
 
+// SetDomainWarpFrequency sets the property returned by [GetDomainWarpFrequency].
 func (self Instance) SetDomainWarpFrequency(value Float.X) {
 	class(self).SetDomainWarpFrequency(float64(value))
 }
 
+/*
+The method for combining octaves into a fractal which is used to warp the space.
+*/
 func (self Instance) DomainWarpFractalType() DomainWarpFractalType {
 	return DomainWarpFractalType(class(self).GetDomainWarpFractalType())
 }
 
+// SetDomainWarpFractalType sets the property returned by [GetDomainWarpFractalType].
 func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) {
 	class(self).SetDomainWarpFractalType(value)
 }
 
+/*
+The number of noise layers that are sampled to get the final value for the fractal noise which warps the space.
+*/
 func (self Instance) DomainWarpFractalOctaves() int {
 	return int(int(class(self).GetDomainWarpFractalOctaves()))
 }
 
+// SetDomainWarpFractalOctaves sets the property returned by [GetDomainWarpFractalOctaves].
 func (self Instance) SetDomainWarpFractalOctaves(value int) {
 	class(self).SetDomainWarpFractalOctaves(int64(value))
 }
 
+/*
+The change in frequency between octaves, also known as "lacunarity", of the fractal noise which warps the space. Increasing this value results in higher octaves, producing noise with finer details and a rougher appearance.
+*/
 func (self Instance) DomainWarpFractalLacunarity() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFractalLacunarity()))
 }
 
+// SetDomainWarpFractalLacunarity sets the property returned by [GetDomainWarpFractalLacunarity].
 func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) {
 	class(self).SetDomainWarpFractalLacunarity(float64(value))
 }
 
+/*
+Determines the strength of each subsequent layer of the noise which is used to warp the space.
+
+A low value places more emphasis on the lower frequency base layers, while a high value puts more emphasis on the higher frequency layers.
+*/
 func (self Instance) DomainWarpFractalGain() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFractalGain()))
 }
 
+// SetDomainWarpFractalGain sets the property returned by [GetDomainWarpFractalGain].
 func (self Instance) SetDomainWarpFractalGain(value Float.X) {
 	class(self).SetDomainWarpFractalGain(float64(value))
 }

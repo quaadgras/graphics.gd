@@ -154,22 +154,39 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Gradient] used to fill the texture.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
+// SetGradient sets the property returned by [GetGradient].
 func (self Instance) SetGradient(value Gradient.Instance) {
 	class(self).SetGradient(value)
 }
 
+/*
+The number of color samples that will be obtained from the [Gradient].
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+If true, the generated texture will support high dynamic range ([Image.FormatRgbaf] format). This allows for glow effects to work if [Environment.GlowEnabled] is true. If false, the generated texture will use low dynamic range; overbright colors will be clamped ([Image.FormatRgba8] format).
+
+[Environment.GlowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowEnabled
+*/
 func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }
 
+// SetUseHdr sets the property returned by [IsUsingHdr].
 func (self Instance) SetUseHdr(value bool) {
 	class(self).SetUseHdr(value)
 }

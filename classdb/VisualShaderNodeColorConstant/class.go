@@ -150,10 +150,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [Color.RGBA] constant which represents a state of this node.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+*/
 func (self Instance) Constant() Color.RGBA {
 	return Color.RGBA(class(self).GetConstant())
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value Color.RGBA) {
 	class(self).SetConstant(Color.RGBA(value))
 }

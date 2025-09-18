@@ -154,18 +154,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the [XRHandTracker] registered with [XRServer] to obtain the hand tracking data from.
+
+[XRHandTracker]: https://pkg.go.dev/graphics.gd/classdb/XRHandTracker
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
+*/
 func (self Instance) HandTracker() string {
 	return string(class(self).GetHandTracker().String())
 }
 
+// SetHandTracker sets the property returned by [GetHandTracker].
 func (self Instance) SetHandTracker(value string) {
 	class(self).SetHandTracker(String.Name(String.New(value)))
 }
 
+/*
+Specifies the type of updates to perform on the bones.
+*/
 func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
+// SetBoneUpdate sets the property returned by [GetBoneUpdate].
 func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }

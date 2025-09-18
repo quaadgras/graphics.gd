@@ -292,18 +292,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the modification's [Execute] function will be called by the [SkeletonModificationStack2D].
+
+[Execute]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D#Interface
+[SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
+// SetEnabled sets the property returned by [GetEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+The execution mode for the modification. This tells the modification stack when to execute the modification. Some modifications have settings that are only available in certain execution modes.
+*/
 func (self Instance) ExecutionMode() int {
 	return int(int(class(self).GetExecutionMode()))
 }
 
+// SetExecutionMode sets the property returned by [GetExecutionMode].
 func (self Instance) SetExecutionMode(value int) {
 	class(self).SetExecutionMode(int64(value))
 }

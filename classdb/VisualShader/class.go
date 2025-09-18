@@ -310,10 +310,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Deprecated.
+*/
 func (self Instance) GraphOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetGraphOffset())
 }
 
+// SetGraphOffset sets the property returned by [GetGraphOffset].
 func (self Instance) SetGraphOffset(value Vector2.XY) {
 	class(self).SetGraphOffset(Vector2.XY(value))
 }

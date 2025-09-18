@@ -183,70 +183,128 @@ func New() Instance {
 	return casted
 }
 
+/*
+Base font used to create a variation. If not set, default [Theme] font is used.
+
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
+*/
 func (self Instance) BaseFont() Font.Instance {
 	return Font.Instance(class(self).GetBaseFont())
 }
 
+// SetBaseFont sets the property returned by [GetBaseFont].
 func (self Instance) SetBaseFont(value Font.Instance) {
 	class(self).SetBaseFont(value)
 }
 
+/*
+Font OpenType variation coordinates. More info: [OpenType variation tags].
+
+Note: This data structure uses OpenType tags as keys. Variation axes can be identified both by tags (int, e.g. 0x77678674) and names (string, e.g. wght). Some axes might be accessible by multiple names. For example, wght refers to the same axis as weight. Tags on the other hand are unique. To convert between names and tags, use [TextServer.NameToTag] and [TextServer.TagToName].
+
+Note: To get available variation axes of a font, use [Font.GetSupportedVariationList].
+
+[Font.GetSupportedVariationList]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetSupportedVariationList
+[OpenType variation tags]: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
+[TextServer.NameToTag]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.NameToTag
+[TextServer.TagToName]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.TagToName
+*/
 func (self Instance) VariationOpentype() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVariationOpentype()))
 }
 
+// SetVariationOpentype sets the property returned by [GetVariationOpentype].
 func (self Instance) SetVariationOpentype(value map[any]any) {
 	class(self).SetVariationOpentype(gd.DictionaryFromMap(value))
 }
 
+/*
+Active face index in the TrueType / OpenType collection file.
+*/
 func (self Instance) VariationFaceIndex() int {
 	return int(int(class(self).GetVariationFaceIndex()))
 }
 
+// SetVariationFaceIndex sets the property returned by [GetVariationFaceIndex].
 func (self Instance) SetVariationFaceIndex(value int) {
 	class(self).SetVariationFaceIndex(int64(value))
 }
 
+/*
+If is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+
+Note: Emboldened fonts might have self-intersecting outlines, which will prevent MSDF fonts and [TextMesh] from working correctly.
+
+[TextMesh]: https://pkg.go.dev/graphics.gd/classdb/TextMesh
+*/
 func (self Instance) VariationEmbolden() Float.X {
 	return Float.X(Float.X(class(self).GetVariationEmbolden()))
 }
 
+// SetVariationEmbolden sets the property returned by [GetVariationEmbolden].
 func (self Instance) SetVariationEmbolden(value Float.X) {
 	class(self).SetVariationEmbolden(float64(value))
 }
 
+/*
+2D transform, applied to the font outlines, can be used for slanting, flipping and rotating glyphs.
+
+For example, to simulate italic typeface by slanting, apply the following transform Transform2D(1.0, slant, 0.0, 1.0, 0.0, 0.0).
+*/
 func (self Instance) VariationTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetVariationTransform())
 }
 
+// SetVariationTransform sets the property returned by [GetVariationTransform].
 func (self Instance) SetVariationTransform(value Transform2D.OriginXY) {
 	class(self).SetVariationTransform(Transform2D.OriginXY(value))
 }
 
+/*
+A set of OpenType feature tags. More info: [OpenType feature tags].
+
+[OpenType feature tags]: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags
+*/
 func (self Instance) SetOpentypeFeatures(value map[any]any) {
 	class(self).SetOpentypeFeatures(gd.DictionaryFromMap(value))
 }
 
+/*
+Extra spacing between graphical glyphs.
+*/
 func (self Instance) SetSpacingGlyph(value int) {
 	class(self).SetSpacing(0, int64(value))
 }
 
+/*
+Extra width of the space glyphs.
+*/
 func (self Instance) SetSpacingSpace(value int) {
 	class(self).SetSpacing(1, int64(value))
 }
 
+/*
+Extra spacing at the top of the line in pixels.
+*/
 func (self Instance) SetSpacingTop(value int) {
 	class(self).SetSpacing(2, int64(value))
 }
 
+/*
+Extra spacing at the bottom of the line in pixels.
+*/
 func (self Instance) SetSpacingBottom(value int) {
 	class(self).SetSpacing(3, int64(value))
 }
 
+/*
+Extra baseline offset (as a fraction of font height).
+*/
 func (self Instance) BaselineOffset() Float.X {
 	return Float.X(Float.X(class(self).GetBaselineOffset()))
 }
 
+// SetBaselineOffset sets the property returned by [GetBaselineOffset].
 func (self Instance) SetBaselineOffset(value Float.X) {
 	class(self).SetBaselineOffset(float64(value))
 }

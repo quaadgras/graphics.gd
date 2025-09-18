@@ -182,62 +182,120 @@ func New() Instance {
 	return casted
 }
 
+/*
+Width of the generated texture (in pixels).
+*/
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+Height of the generated texture (in pixels).
+*/
 func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(int64(value))
 }
 
+/*
+Depth of the generated texture (in pixels).
+*/
 func (self Instance) SetDepth(value int) {
 	class(self).SetDepth(int64(value))
 }
 
+/*
+The instance of the [Noise] object.
+
+[Noise]: https://pkg.go.dev/graphics.gd/classdb/Noise
+*/
 func (self Instance) Noise() Noise.Instance {
 	return Noise.Instance(class(self).GetNoise())
 }
 
+// SetNoise sets the property returned by [GetNoise].
 func (self Instance) SetNoise(value Noise.Instance) {
 	class(self).SetNoise(value)
 }
 
+/*
+A [Gradient] which is used to map the luminance of each pixel to a color value.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) ColorRamp() Gradient.Instance {
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
+// SetColorRamp sets the property returned by [GetColorRamp].
 func (self Instance) SetColorRamp(value Gradient.Instance) {
 	class(self).SetColorRamp(value)
 }
 
+/*
+If true, a seamless texture is requested from the [Noise] resource.
+
+Note: Seamless noise textures may take longer to generate and/or can have a lower contrast compared to non-seamless noise depending on the used [Noise] resource. This is because some implementations use higher dimensions for generating seamless noise.
+
+Note: The default [FastNoiseLite] implementation uses the fallback path for seamless generation. If using a [Width], [Height] or [Depth] lower than the default, you may need to increase [SeamlessBlendSkirt] to make seamless blending more effective.
+
+[Depth]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Depth
+[FastNoiseLite]: https://pkg.go.dev/graphics.gd/classdb/FastNoiseLite
+[Height]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Height
+[Noise]: https://pkg.go.dev/graphics.gd/classdb/Noise
+[SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.SeamlessBlendSkirt
+[Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Width
+*/
 func (self Instance) Seamless() bool {
 	return bool(class(self).GetSeamless())
 }
 
+// SetSeamless sets the property returned by [GetSeamless].
 func (self Instance) SetSeamless(value bool) {
 	class(self).SetSeamless(value)
 }
 
+/*
+If true, inverts the noise texture. White becomes black, black becomes white.
+*/
 func (self Instance) Invert() bool {
 	return bool(class(self).GetInvert())
 }
 
+// SetInvert sets the property returned by [GetInvert].
 func (self Instance) SetInvert(value bool) {
 	class(self).SetInvert(value)
 }
 
+/*
+If true, the noise image coming from the noise generator is normalized to the range 0.0 to 1.0.
+
+Turning normalization off can affect the contrast and allows you to generate non repeating tileable noise textures.
+*/
 func (self Instance) Normalize() bool {
 	return bool(class(self).IsNormalized())
 }
 
+// SetNormalize sets the property returned by [IsNormalized].
 func (self Instance) SetNormalize(value bool) {
 	class(self).SetNormalize(value)
 }
 
+/*
+Used for the default/fallback implementation of the seamless texture generation. It determines the distance over which the seams are blended. High values may result in less details and contrast. See [Noise] for further details.
+
+Note: If using a [Width], [Height] or [Depth] lower than the default, you may need to increase [SeamlessBlendSkirt] to make seamless blending more effective.
+
+[Depth]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Depth
+[Height]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Height
+[Noise]: https://pkg.go.dev/graphics.gd/classdb/Noise
+[SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.SeamlessBlendSkirt
+[Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Width
+*/
 func (self Instance) SeamlessBlendSkirt() Float.X {
 	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
+// SetSeamlessBlendSkirt sets the property returned by [GetSeamlessBlendSkirt].
 func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
 	class(self).SetSeamlessBlendSkirt(float64(value))
 }

@@ -158,42 +158,69 @@ func New() Instance {
 	return casted
 }
 
+/*
+The offset of the GraphElement, relative to the scroll offset of the [GraphEdit].
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+*/
 func (self Instance) PositionOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetPositionOffset())
 }
 
+// SetPositionOffset sets the property returned by [GetPositionOffset].
 func (self Instance) SetPositionOffset(value Vector2.XY) {
 	class(self).SetPositionOffset(Vector2.XY(value))
 }
 
+/*
+If true, the user can resize the GraphElement.
+
+Note: Dragging the handle will only emit the [OnResizeRequest] and [OnResizeEnd] signals, the GraphElement needs to be resized manually.
+
+[OnResizeEnd]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.OnResizeEnd
+[OnResizeRequest]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.OnResizeRequest
+*/
 func (self Instance) Resizable() bool {
 	return bool(class(self).IsResizable())
 }
 
+// SetResizable sets the property returned by [IsResizable].
 func (self Instance) SetResizable(value bool) {
 	class(self).SetResizable(value)
 }
 
+/*
+If true, the user can drag the GraphElement.
+*/
 func (self Instance) Draggable() bool {
 	return bool(class(self).IsDraggable())
 }
 
+// SetDraggable sets the property returned by [IsDraggable].
 func (self Instance) SetDraggable(value bool) {
 	class(self).SetDraggable(value)
 }
 
+/*
+If true, the user can select the GraphElement.
+*/
 func (self Instance) Selectable() bool {
 	return bool(class(self).IsSelectable())
 }
 
+// SetSelectable sets the property returned by [IsSelectable].
 func (self Instance) SetSelectable(value bool) {
 	class(self).SetSelectable(value)
 }
 
+/*
+If true, the GraphElement is selected.
+*/
 func (self Instance) Selected() bool {
 	return bool(class(self).IsSelected())
 }
 
+// SetSelected sets the property returned by [IsSelected].
 func (self Instance) SetSelected(value bool) {
 	class(self).SetSelected(value)
 }
@@ -257,6 +284,10 @@ func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_positio
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the GraphElement is selected.
+*/
 func (self Instance) OnNodeSelected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -269,6 +300,9 @@ func (self class) NodeSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
 }
 
+/*
+Emitted when the GraphElement is deselected.
+*/
 func (self Instance) OnNodeDeselected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -281,6 +315,9 @@ func (self class) NodeDeselected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
 }
 
+/*
+Emitted when displaying the GraphElement over other ones is requested. Happens on focusing (clicking into) the GraphElement.
+*/
 func (self Instance) OnRaiseRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -293,6 +330,9 @@ func (self class) RaiseRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RaiseRequest`))))
 }
 
+/*
+Emitted when removing the GraphElement is requested.
+*/
 func (self Instance) OnDeleteRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -305,6 +345,11 @@ func (self class) DeleteRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteRequest`))))
 }
 
+/*
+Emitted when resizing the GraphElement is requested. Happens on dragging the resizer handle (see [Resizable]).
+
+[Resizable]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.Resizable
+*/
 func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -317,6 +362,11 @@ func (self class) ResizeRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeRequest`))))
 }
 
+/*
+Emitted when releasing the mouse button after dragging the resizer handle (see [Resizable]).
+
+[Resizable]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.Resizable
+*/
 func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -329,6 +379,9 @@ func (self class) ResizeEnd() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeEnd`))))
 }
 
+/*
+Emitted when the GraphElement is dragged.
+*/
 func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -341,6 +394,9 @@ func (self class) Dragged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
 }
 
+/*
+Emitted when the GraphElement is moved.
+*/
 func (self Instance) OnPositionOffsetChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

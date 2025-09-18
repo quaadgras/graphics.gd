@@ -5889,11 +5889,15 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If false, disables rendering completely, but the engine logic is still being processed. You can call [ForceDraw] to draw a frame even with rendering disabled.
+*/
 func RenderLoopEnabled() bool {
 	once.Do(singleton)
 	return bool(class(self).IsRenderLoopEnabled())
 }
 
+// SetRenderLoopEnabled sets the property returned by [IsRenderLoopEnabled].
 func SetRenderLoopEnabled(value bool) {
 	once.Do(singleton)
 	class(self).SetRenderLoopEnabled(value)
@@ -12726,6 +12730,10 @@ func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_f
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted at the beginning of the frame, before the RenderingServer updates all the Viewports.
+*/
 func OnFramePreDraw(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -12738,6 +12746,9 @@ func (self class) FramePreDraw() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FramePreDraw`))))
 }
 
+/*
+Emitted at the end of the frame, after the RenderingServer has finished updating all the Viewports.
+*/
 func OnFramePostDraw(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -165,90 +165,141 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, clamps depth values according to the minimum and maximum depth of the associated viewport.
+*/
 func (self Instance) EnableDepthClamp() bool {
 	return bool(class(self).GetEnableDepthClamp())
 }
 
+// SetEnableDepthClamp sets the property returned by [GetEnableDepthClamp].
 func (self Instance) SetEnableDepthClamp(value bool) {
 	class(self).SetEnableDepthClamp(value)
 }
 
+/*
+If true, primitives are discarded immediately before the rasterization stage.
+*/
 func (self Instance) DiscardPrimitives() bool {
 	return bool(class(self).GetDiscardPrimitives())
 }
 
+// SetDiscardPrimitives sets the property returned by [GetDiscardPrimitives].
 func (self Instance) SetDiscardPrimitives(value bool) {
 	class(self).SetDiscardPrimitives(value)
 }
 
+/*
+If true, performs wireframe rendering for triangles instead of flat or textured rendering.
+*/
 func (self Instance) Wireframe() bool {
 	return bool(class(self).GetWireframe())
 }
 
+// SetWireframe sets the property returned by [GetWireframe].
 func (self Instance) SetWireframe(value bool) {
 	class(self).SetWireframe(value)
 }
 
+/*
+The cull mode to use when drawing polygons, which determines whether front faces or backfaces are hidden.
+*/
 func (self Instance) CullMode() Rendering.PolygonCullMode {
 	return Rendering.PolygonCullMode(class(self).GetCullMode())
 }
 
+// SetCullMode sets the property returned by [GetCullMode].
 func (self Instance) SetCullMode(value Rendering.PolygonCullMode) {
 	class(self).SetCullMode(value)
 }
 
+/*
+The winding order to use to determine which face of a triangle is considered its front face.
+*/
 func (self Instance) FrontFace() Rendering.PolygonFrontFace {
 	return Rendering.PolygonFrontFace(class(self).GetFrontFace())
 }
 
+// SetFrontFace sets the property returned by [GetFrontFace].
 func (self Instance) SetFrontFace(value Rendering.PolygonFrontFace) {
 	class(self).SetFrontFace(value)
 }
 
+/*
+If true, each generated depth value will by offset by some amount. The specific amount is generated per polygon based on the values of [DepthBiasSlopeFactor] and [DepthBiasConstantFactor].
+
+[DepthBiasConstantFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasConstantFactor
+[DepthBiasSlopeFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasSlopeFactor
+*/
 func (self Instance) DepthBiasEnabled() bool {
 	return bool(class(self).GetDepthBiasEnabled())
 }
 
+// SetDepthBiasEnabled sets the property returned by [GetDepthBiasEnabled].
 func (self Instance) SetDepthBiasEnabled(value bool) {
 	class(self).SetDepthBiasEnabled(value)
 }
 
+/*
+A constant offset added to each depth value. Applied after [DepthBiasSlopeFactor].
+
+[DepthBiasSlopeFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasSlopeFactor
+*/
 func (self Instance) DepthBiasConstantFactor() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasConstantFactor()))
 }
 
+// SetDepthBiasConstantFactor sets the property returned by [GetDepthBiasConstantFactor].
 func (self Instance) SetDepthBiasConstantFactor(value Float.X) {
 	class(self).SetDepthBiasConstantFactor(float64(value))
 }
 
+/*
+A limit for how much each depth value can be offset. If negative, it serves as a minimum value, but if positive, it serves as a maximum value.
+*/
 func (self Instance) DepthBiasClamp() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasClamp()))
 }
 
+// SetDepthBiasClamp sets the property returned by [GetDepthBiasClamp].
 func (self Instance) SetDepthBiasClamp(value Float.X) {
 	class(self).SetDepthBiasClamp(float64(value))
 }
 
+/*
+A constant scale applied to the slope of each polygons' depth. Applied before [DepthBiasConstantFactor].
+
+[DepthBiasConstantFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasConstantFactor
+*/
 func (self Instance) DepthBiasSlopeFactor() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasSlopeFactor()))
 }
 
+// SetDepthBiasSlopeFactor sets the property returned by [GetDepthBiasSlopeFactor].
 func (self Instance) SetDepthBiasSlopeFactor(value Float.X) {
 	class(self).SetDepthBiasSlopeFactor(float64(value))
 }
 
+/*
+The line width to use when drawing lines (in pixels). Thick lines may not be supported on all hardware.
+*/
 func (self Instance) LineWidth() Float.X {
 	return Float.X(Float.X(class(self).GetLineWidth()))
 }
 
+// SetLineWidth sets the property returned by [GetLineWidth].
 func (self Instance) SetLineWidth(value Float.X) {
 	class(self).SetLineWidth(float64(value))
 }
 
+/*
+The number of control points to use when drawing a patch with tessellation enabled. Higher values result in higher quality at the cost of performance.
+*/
 func (self Instance) PatchControlPoints() int {
 	return int(int(class(self).GetPatchControlPoints()))
 }
 
+// SetPatchControlPoints sets the property returned by [GetPatchControlPoints].
 func (self Instance) SetPatchControlPoints(value int) {
 	class(self).SetPatchControlPoints(int64(value))
 }

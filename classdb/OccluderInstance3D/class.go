@@ -185,26 +185,63 @@ func New() Instance {
 	return casted
 }
 
+/*
+The occluder resource for this [OccluderInstance3D]. You can generate an occluder resource by selecting an [OccluderInstance3D] node then using the Bake Occluders button at the top of the editor.
+
+You can also draw your own 2D occluder polygon by adding a new [PolygonOccluder3D] resource to the [Occluder] property in the Inspector.
+
+Alternatively, you can select a primitive occluder to use: [QuadOccluder3D], [BoxOccluder3D] or [SphereOccluder3D].
+
+[BoxOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/BoxOccluder3D
+[Occluder]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D#Instance.Occluder
+[OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
+[PolygonOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/PolygonOccluder3D
+[QuadOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/QuadOccluder3D
+[SphereOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/SphereOccluder3D
+*/
 func (self Instance) Occluder() Occluder3D.Instance {
 	return Occluder3D.Instance(class(self).GetOccluder())
 }
 
+// SetOccluder sets the property returned by [GetOccluder].
 func (self Instance) SetOccluder(value Occluder3D.Instance) {
 	class(self).SetOccluder(value)
 }
 
+/*
+The visual layers to account for when baking for occluders. Only [MeshInstance3D]s whose [VisualInstance3D.Layers] match with this [BakeMask] will be included in the generated occluder mesh. By default, all objects with opaque materials are taken into account for the occluder baking.
+
+To improve performance and avoid artifacts, it is recommended to exclude dynamic objects, small objects and fixtures from the baking process by moving them to a separate visual layer and excluding this layer in [BakeMask].
+
+[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D#Instance.BakeMask
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) BakeMask() int {
 	return int(int(class(self).GetBakeMask()))
 }
 
+// SetBakeMask sets the property returned by [GetBakeMask].
 func (self Instance) SetBakeMask(value int) {
 	class(self).SetBakeMask(int64(value))
 }
 
+/*
+The simplification distance to use for simplifying the generated occluder polygon (in 3D units). Higher values result in a less detailed occluder mesh, which improves performance but reduces culling accuracy.
+
+The occluder geometry is rendered on the CPU, so it is important to keep its geometry as simple as possible. Since the buffer is rendered at a low resolution, less detailed occluder meshes generally still work well. The default value is fairly aggressive, so you may have to decrease it if you run into false negatives (objects being occluded even though they are visible by the camera). A value of 0.01 will act conservatively, and will keep geometry perceptually unaffected in the occlusion culling buffer. Depending on the scene, a value of 0.01 may still simplify the mesh noticeably compared to disabling simplification entirely.
+
+Setting this to 0.0 disables simplification entirely, but vertices in the exact same position will still be merged. The mesh will also be re-indexed to reduce both the number of vertices and indices.
+
+Note: This uses the [meshoptimizer] library under the hood, similar to LOD generation.
+
+[meshoptimizer]: https://meshoptimizer.org/
+*/
 func (self Instance) BakeSimplificationDistance() Float.X {
 	return Float.X(Float.X(class(self).GetBakeSimplificationDistance()))
 }
 
+// SetBakeSimplificationDistance sets the property returned by [GetBakeSimplificationDistance].
 func (self Instance) SetBakeSimplificationDistance(value Float.X) {
 	class(self).SetBakeSimplificationDistance(float64(value))
 }

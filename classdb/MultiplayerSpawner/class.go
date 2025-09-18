@@ -225,26 +225,46 @@ func New() Instance {
 	return casted
 }
 
+/*
+Path to the spawn root. Spawnable scenes that are added as direct children are replicated to other peers.
+*/
 func (self Instance) SpawnPath() string {
 	return string(class(self).GetSpawnPath().String())
 }
 
+// SetSpawnPath sets the property returned by [GetSpawnPath].
 func (self Instance) SetSpawnPath(value string) {
 	class(self).SetSpawnPath(Path.ToNode(String.New(value)))
 }
 
+/*
+Maximum number of nodes allowed to be spawned by this spawner. Includes both spawnable scenes and custom spawns.
+
+When set to 0 (the default), there is no limit.
+*/
 func (self Instance) SpawnLimit() int {
 	return int(int(class(self).GetSpawnLimit()))
 }
 
+// SetSpawnLimit sets the property returned by [GetSpawnLimit].
 func (self Instance) SetSpawnLimit(value int) {
 	class(self).SetSpawnLimit(int64(value))
 }
 
+/*
+Method called on all peers when a custom [Spawn] is requested by the authority. Will receive the data parameter, and should return a [Node] that is not in the scene tree.
+
+Note: The returned node should not be added to the scene with [Node.AddChild]. This is done automatically.
+
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node.AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[Spawn]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.Spawn
+*/
 func (self Instance) SpawnFunction() func(data any) Node.Instance {
 	return (func(data any) Node.Instance)(gd.CallableAs[func(data any) Node.Instance](gd.InternalCallable(class(self).GetSpawnFunction())))
 }
 
+// SetSpawnFunction sets the property returned by [GetSpawnFunction].
 func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) {
 	class(self).SetSpawnFunction(Callable.New(value))
 }
@@ -338,6 +358,10 @@ func (self class) GetSpawnFunction() Callable.Function { //gd:MultiplayerSpawner
 func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:MultiplayerSpawner.set_spawn_function
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_function, 0|(gdextension.SizeCallable<<4), &struct{ spawn_function gdextension.Callable }{pointers.Get(gd.InternalCallable(spawn_function))})
 }
+
+/*
+Emitted when a spawnable scene or custom spawn was despawned by the multiplayer authority. Only called on remote peers.
+*/
 func (self Instance) OnDespawned(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -350,6 +374,9 @@ func (self class) Despawned() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Despawned`))))
 }
 
+/*
+Emitted when a spawnable scene or custom spawn was spawned by the multiplayer authority. Only called on remote peers.
+*/
 func (self Instance) OnSpawned(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

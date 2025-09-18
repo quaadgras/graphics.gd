@@ -158,74 +158,110 @@ func New() Instance {
 	return casted
 }
 
+/*
+The node's texture resource.
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+If true, draw the panel's center. Else, only draw the 9-slice's borders.
+*/
 func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
 func (self Instance) SetDrawCenter(value bool) {
 	class(self).SetDrawCenter(value)
 }
 
+/*
+Rectangular region of the texture to sample from. If you're working with an atlas, use this property to define the area the 9-slice should use. All other properties are relative to this one. If the rect is empty, NinePatchRect will use the whole texture.
+*/
 func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
+// SetRegionRect sets the property returned by [GetRegionRect].
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
+/*
+The width of the 9-slice's left column. A margin of 16 means the 9-slice's left corners and side will have a width of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
+*/
 func (self Instance) PatchMarginLeft() int {
 	return int(int(class(self).GetPatchMargin(0)))
 }
 
+// SetPatchMarginLeft sets the property returned by [GetPatchMargin].
 func (self Instance) SetPatchMarginLeft(value int) {
 	class(self).SetPatchMargin(0, int64(value))
 }
 
+/*
+The height of the 9-slice's top row. A margin of 16 means the 9-slice's top corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
+*/
 func (self Instance) PatchMarginTop() int {
 	return int(int(class(self).GetPatchMargin(1)))
 }
 
+// SetPatchMarginTop sets the property returned by [GetPatchMargin].
 func (self Instance) SetPatchMarginTop(value int) {
 	class(self).SetPatchMargin(1, int64(value))
 }
 
+/*
+The width of the 9-slice's right column. A margin of 16 means the 9-slice's right corners and side will have a width of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
+*/
 func (self Instance) PatchMarginRight() int {
 	return int(int(class(self).GetPatchMargin(2)))
 }
 
+// SetPatchMarginRight sets the property returned by [GetPatchMargin].
 func (self Instance) SetPatchMarginRight(value int) {
 	class(self).SetPatchMargin(2, int64(value))
 }
 
+/*
+The height of the 9-slice's bottom row. A margin of 16 means the 9-slice's bottom corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
+*/
 func (self Instance) PatchMarginBottom() int {
 	return int(int(class(self).GetPatchMargin(3)))
 }
 
+// SetPatchMarginBottom sets the property returned by [GetPatchMargin].
 func (self Instance) SetPatchMarginBottom(value int) {
 	class(self).SetPatchMargin(3, int64(value))
 }
 
+/*
+The stretch mode to use for horizontal stretching/tiling.
+*/
 func (self Instance) AxisStretchHorizontal() AxisStretchMode {
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
+// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode].
 func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
 	class(self).SetHAxisStretchMode(value)
 }
 
+/*
+The stretch mode to use for vertical stretching/tiling.
+*/
 func (self Instance) AxisStretchVertical() AxisStretchMode {
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
+// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode].
 func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 	class(self).SetVAxisStretchMode(value)
 }
@@ -310,6 +346,10 @@ func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the node's texture changes.
+*/
 func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

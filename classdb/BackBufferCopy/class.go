@@ -154,18 +154,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+Buffer mode.
+*/
 func (self Instance) CopyMode() CopyMode {
 	return CopyMode(class(self).GetCopyMode())
 }
 
+// SetCopyMode sets the property returned by [GetCopyMode].
 func (self Instance) SetCopyMode(value CopyMode) {
 	class(self).SetCopyMode(value)
 }
 
+/*
+The area covered by the [BackBufferCopy]. Only used if [CopyMode] is [CopyModeRect].
+
+[BackBufferCopy]: https://pkg.go.dev/graphics.gd/classdb/BackBufferCopy
+[CopyMode]: https://pkg.go.dev/graphics.gd/classdb/BackBufferCopy#Instance.CopyMode
+*/
 func (self Instance) Rect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
+// SetRect sets the property returned by [GetRect].
 func (self Instance) SetRect(value Rect2.PositionSize) {
 	class(self).SetRect(Rect2.PositionSize(value))
 }

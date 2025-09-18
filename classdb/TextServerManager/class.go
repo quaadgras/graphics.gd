@@ -283,6 +283,10 @@ func (self class) GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerM
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
 }
+
+/*
+Emitted when a new interface has been added.
+*/
 func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -295,6 +299,9 @@ func (self class) InterfaceAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceAdded`))))
 }
 
+/*
+Emitted when an interface is removed.
+*/
 func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

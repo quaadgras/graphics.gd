@@ -201,50 +201,91 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Color.RGBA] of the light in linear space. Defaults to white. A black color causes the light to have no effect.
+
+This value is linear to match glTF, but will be converted to nonlinear sRGB when creating a Godot [Light3D] node upon import, or converted to linear when exporting a Godot [Light3D] to glTF.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The intensity of the light. This is expressed in candelas (lumens per steradian) for point and spot lights, and lux (lumens per m²) for directional lights. When creating a Godot light, this value is converted to a unitless multiplier.
+*/
 func (self Instance) Intensity() Float.X {
 	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
+// SetIntensity sets the property returned by [GetIntensity].
 func (self Instance) SetIntensity(value Float.X) {
 	class(self).SetIntensity(float64(value))
 }
 
+/*
+The type of the light. The values accepted by Godot are "point", "spot", and "directional", which correspond to Godot's [OmniLight3D], [SpotLight3D], and [DirectionalLight3D] respectively.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) LightType() string {
 	return string(class(self).GetLightType().String())
 }
 
+// SetLightType sets the property returned by [GetLightType].
 func (self Instance) SetLightType(value string) {
 	class(self).SetLightType(String.New(value))
 }
 
+/*
+The range of the light, beyond which the light has no effect. glTF lights with no range defined behave like physical lights (which have infinite range). When creating a Godot light, the range is clamped to 4096.0.
+*/
 func (self Instance) Range() Float.X {
 	return Float.X(Float.X(class(self).GetRange()))
 }
 
+// SetRange sets the property returned by [GetRange].
 func (self Instance) SetRange(value Float.X) {
 	class(self).SetRange(float64(value))
 }
 
+/*
+The inner angle of the cone in a spotlight. Must be less than or equal to the outer cone angle.
+
+Within this angle, the light is at full brightness. Between the inner and outer cone angles, there is a transition from full brightness to zero brightness. When creating a Godot [SpotLight3D], the ratio between the inner and outer cone angles is used to calculate the attenuation of the light.
+
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) InnerConeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetInnerConeAngle()))
 }
 
+// SetInnerConeAngle sets the property returned by [GetInnerConeAngle].
 func (self Instance) SetInnerConeAngle(value Angle.Radians) {
 	class(self).SetInnerConeAngle(float64(value))
 }
 
+/*
+The outer angle of the cone in a spotlight. Must be greater than or equal to the inner angle.
+
+At this angle, the light drops off to zero brightness. Between the inner and outer cone angles, there is a transition from full brightness to zero brightness. If this angle is a half turn, then the spotlight emits in all directions. When creating a Godot [SpotLight3D], the outer cone angle is used as the angle of the spotlight.
+
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) OuterConeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetOuterConeAngle()))
 }
 
+// SetOuterConeAngle sets the property returned by [GetOuterConeAngle].
 func (self Instance) SetOuterConeAngle(value Angle.Radians) {
 	class(self).SetOuterConeAngle(float64(value))
 }

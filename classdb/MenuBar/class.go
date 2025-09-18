@@ -259,50 +259,89 @@ func New() Instance {
 	return casted
 }
 
+/*
+Flat [MenuBar] don't display item decoration.
+
+[MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
+*/
 func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
+// SetFlat sets the property returned by [IsFlat].
 func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
+/*
+Position order in the global menu to insert [MenuBar] items at. All menu items in the [MenuBar] are always inserted as a continuous range. Menus with lower [StartIndex] are inserted first. Menus with [StartIndex] equal to -1 are inserted last.
+
+[MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
+[StartIndex]: https://pkg.go.dev/graphics.gd/classdb/MenuBar#Instance.StartIndex
+*/
 func (self Instance) StartIndex() int {
 	return int(int(class(self).GetStartIndex()))
 }
 
+// SetStartIndex sets the property returned by [GetStartIndex].
 func (self Instance) SetStartIndex(value int) {
 	class(self).SetStartIndex(int64(value))
 }
 
+/*
+If true, when the cursor hovers above menu item, it will close the current [PopupMenu] and open the other one.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) SwitchOnHover() bool {
 	return bool(class(self).IsSwitchOnHover())
 }
 
+// SetSwitchOnHover sets the property returned by [IsSwitchOnHover].
 func (self Instance) SetSwitchOnHover(value bool) {
 	class(self).SetSwitchOnHover(value)
 }
 
+/*
+If true, [MenuBar] will use system global menu when supported.
+
+Note: If true and global menu is supported, this node is not displayed, has zero size, and all its child nodes except [PopupMenu]s are inaccessible.
+
+Note: This property overrides the value of the [PopupMenu.PreferNativeMenu] property of the child nodes.
+
+[MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[PopupMenu.PreferNativeMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.PreferNativeMenu
+*/
 func (self Instance) PreferGlobalMenu() bool {
 	return bool(class(self).IsPreferGlobalMenu())
 }
 
+// SetPreferGlobalMenu sets the property returned by [IsPreferGlobalMenu].
 func (self Instance) SetPreferGlobalMenu(value bool) {
 	class(self).SetPreferGlobalMenu(value)
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }

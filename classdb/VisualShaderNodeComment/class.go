@@ -149,10 +149,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+This property only exists to preserve data authored in earlier versions of Godot. It has currently no function.
+*/
 func (self Instance) Description() string {
 	return string(class(self).GetDescription().String())
 }
 
+// SetDescription sets the property returned by [GetDescription].
 func (self Instance) SetDescription(value string) {
 	class(self).SetDescription(String.New(value))
 }

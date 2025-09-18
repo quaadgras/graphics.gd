@@ -178,42 +178,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+The title of the node.
+*/
 func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
+// SetTitle sets the property returned by [GetTitle].
 func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(String.New(value))
 }
 
+/*
+If true, the frame will be tinted with the color specified in [TintColor].
+
+[TintColor]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFrame#Instance.TintColor
+*/
 func (self Instance) TintColorEnabled() bool {
 	return bool(class(self).IsTintColorEnabled())
 }
 
+// SetTintColorEnabled sets the property returned by [IsTintColorEnabled].
 func (self Instance) SetTintColorEnabled(value bool) {
 	class(self).SetTintColorEnabled(value)
 }
 
+/*
+The color of the frame when [TintColorEnabled] is true.
+
+[TintColorEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFrame#Instance.TintColorEnabled
+*/
 func (self Instance) TintColor() Color.RGBA {
 	return Color.RGBA(class(self).GetTintColor())
 }
 
+// SetTintColor sets the property returned by [GetTintColor].
 func (self Instance) SetTintColor(value Color.RGBA) {
 	class(self).SetTintColor(Color.RGBA(value))
 }
 
+/*
+If true, the frame will automatically resize to enclose all attached nodes.
+*/
 func (self Instance) Autoshrink() bool {
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
+// SetAutoshrink sets the property returned by [IsAutoshrinkEnabled].
 func (self Instance) SetAutoshrink(value bool) {
 	class(self).SetAutoshrinkEnabled(value)
 }
 
+/*
+The list of nodes attached to the frame.
+*/
 func (self Instance) AttachedNodes() []int32 {
 	return []int32(slices.Collect(class(self).GetAttachedNodes().Values()))
 }
 
+// SetAttachedNodes sets the property returned by [GetAttachedNodes].
 func (self Instance) SetAttachedNodes(value []int32) {
 	class(self).SetAttachedNodes(Packed.New(value...))
 }

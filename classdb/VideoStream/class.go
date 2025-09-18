@@ -179,10 +179,19 @@ func New() Instance {
 	return casted
 }
 
+/*
+The video file path or URI that this [VideoStream] resource handles.
+
+For [VideoStreamTheora], this filename should be an Ogg Theora video file with the .ogv extension.
+
+[VideoStream]: https://pkg.go.dev/graphics.gd/classdb/VideoStream
+[VideoStreamTheora]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamTheora
+*/
 func (self Instance) File() string {
 	return string(class(self).GetFile().String())
 }
 
+// SetFile sets the property returned by [GetFile].
 func (self Instance) SetFile(value string) {
 	class(self).SetFile(String.New(value))
 }

@@ -669,18 +669,37 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, . and .. are included when navigating the directory.
+
+Affects [ListDirBegin] and [GetDirectories].
+
+[GetDirectories]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetDirectories
+[ListDirBegin]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirBegin
+*/
 func (self Instance) IncludeNavigational() bool {
 	return bool(class(self).GetIncludeNavigational())
 }
 
+// SetIncludeNavigational sets the property returned by [GetIncludeNavigational].
 func (self Instance) SetIncludeNavigational(value bool) {
 	class(self).SetIncludeNavigational(value)
 }
 
+/*
+If true, hidden files are included when navigating the directory.
+
+Affects [ListDirBegin], [GetDirectories] and [GetFiles].
+
+[GetDirectories]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetDirectories
+[GetFiles]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetFiles
+[ListDirBegin]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirBegin
+*/
 func (self Instance) IncludeHidden() bool {
 	return bool(class(self).GetIncludeHidden())
 }
 
+// SetIncludeHidden sets the property returned by [GetIncludeHidden].
 func (self Instance) SetIncludeHidden(value bool) {
 	class(self).SetIncludeHidden(value)
 }

@@ -170,58 +170,96 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Gradient] used to fill the texture.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
+// SetGradient sets the property returned by [GetGradient].
 func (self Instance) SetGradient(value Gradient.Instance) {
 	class(self).SetGradient(value)
 }
 
+/*
+The number of horizontal color samples that will be obtained from the [Gradient], which also represents the texture's width.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+The number of vertical color samples that will be obtained from the [Gradient], which also represents the texture's height.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+*/
 func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(int64(value))
 }
 
+/*
+If true, the generated texture will support high dynamic range ([Image.FormatRgbaf] format). This allows for glow effects to work if [Environment.GlowEnabled] is true. If false, the generated texture will use low dynamic range; overbright colors will be clamped ([Image.FormatRgba8] format).
+
+[Environment.GlowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowEnabled
+*/
 func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }
 
+// SetUseHdr sets the property returned by [IsUsingHdr].
 func (self Instance) SetUseHdr(value bool) {
 	class(self).SetUseHdr(value)
 }
 
+/*
+The gradient's fill type.
+*/
 func (self Instance) Fill() Fill {
 	return Fill(class(self).GetFill())
 }
 
+// SetFill sets the property returned by [GetFill].
 func (self Instance) SetFill(value Fill) {
 	class(self).SetFill(value)
 }
 
+/*
+The initial offset used to fill the texture specified in UV coordinates.
+*/
 func (self Instance) FillFrom() Vector2.XY {
 	return Vector2.XY(class(self).GetFillFrom())
 }
 
+// SetFillFrom sets the property returned by [GetFillFrom].
 func (self Instance) SetFillFrom(value Vector2.XY) {
 	class(self).SetFillFrom(Vector2.XY(value))
 }
 
+/*
+The final offset used to fill the texture specified in UV coordinates.
+*/
 func (self Instance) FillTo() Vector2.XY {
 	return Vector2.XY(class(self).GetFillTo())
 }
 
+// SetFillTo sets the property returned by [GetFillTo].
 func (self Instance) SetFillTo(value Vector2.XY) {
 	class(self).SetFillTo(Vector2.XY(value))
 }
 
+/*
+The gradient's repeat type.
+*/
 func (self Instance) Repeat() Repeat {
 	return Repeat(class(self).GetRepeat())
 }
 
+// SetRepeat sets the property returned by [GetRepeat].
 func (self Instance) SetRepeat(value Repeat) {
 	class(self).SetRepeat(value)
 }

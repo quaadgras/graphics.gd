@@ -148,18 +148,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The sphere's radius.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+If true, the collision acts to trap the joint within the collision.
+*/
 func (self Instance) Inside() bool {
 	return bool(class(self).IsInside())
 }
 
+// SetInside sets the property returned by [IsInside].
 func (self Instance) SetInside(value bool) {
 	class(self).SetInside(value)
 }

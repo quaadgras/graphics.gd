@@ -221,266 +221,428 @@ func New() Instance {
 	return casted
 }
 
+/*
+The size of one pixel's width on the label to scale it in 3D. To make the font look more detailed when up close, increase [FontSize] while decreasing [PixelSize] at the same time.
+
+[FontSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.FontSize
+[PixelSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.PixelSize
+*/
 func (self Instance) PixelSize() Float.X {
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
+// SetPixelSize sets the property returned by [GetPixelSize].
 func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(float64(value))
 }
 
+/*
+The text drawing offset (in pixels).
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+The billboard mode to use for the label.
+*/
 func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
 	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
+// SetBillboard sets the property returned by [GetBillboardMode].
 func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
+/*
+If true, the [Light3D] in the [Environment] has effects on the label.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+*/
 func (self Instance) Shaded() bool {
 	return bool(class(self).GetDrawFlag(0))
 }
 
+// SetShaded sets the property returned by [GetDrawFlag].
 func (self Instance) SetShaded(value bool) {
 	class(self).SetDrawFlag(0, value)
 }
 
+/*
+If true, text can be seen from the back as well, if false, it is invisible when looking at it from behind.
+*/
 func (self Instance) DoubleSided() bool {
 	return bool(class(self).GetDrawFlag(1))
 }
 
+// SetDoubleSided sets the property returned by [GetDrawFlag].
 func (self Instance) SetDoubleSided(value bool) {
 	class(self).SetDrawFlag(1, value)
 }
 
+/*
+If true, depth testing is disabled and the object will be drawn in render order.
+*/
 func (self Instance) NoDepthTest() bool {
 	return bool(class(self).GetDrawFlag(2))
 }
 
+// SetNoDepthTest sets the property returned by [GetDrawFlag].
 func (self Instance) SetNoDepthTest(value bool) {
 	class(self).SetDrawFlag(2, value)
 }
 
+/*
+If true, the label is rendered at the same size regardless of distance. The label's size on screen is the same as if the camera was 1.0 units away from the label's origin, regardless of the actual distance from the camera. The [Camera3D]'s field of view (or [Camera3D.Size] when in orthogonal/frustum mode) still affects the size the label is drawn at.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
+*/
 func (self Instance) FixedSize() bool {
 	return bool(class(self).GetDrawFlag(3))
 }
 
+// SetFixedSize sets the property returned by [GetDrawFlag].
 func (self Instance) SetFixedSize(value bool) {
 	class(self).SetDrawFlag(3, value)
 }
 
+/*
+The alpha cutting mode to use for the sprite.
+*/
 func (self Instance) AlphaCut() AlphaCutMode {
 	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
+// SetAlphaCut sets the property returned by [GetAlphaCutMode].
 func (self Instance) SetAlphaCut(value AlphaCutMode) {
 	class(self).SetAlphaCutMode(value)
 }
 
+/*
+Threshold at which the alpha scissor will discard values.
+*/
 func (self Instance) AlphaScissorThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
+// SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold].
 func (self Instance) SetAlphaScissorThreshold(value Float.X) {
 	class(self).SetAlphaScissorThreshold(float64(value))
 }
 
+/*
+The hashing scale for Alpha Hash. Recommended values between 0 and 2.
+*/
 func (self Instance) AlphaHashScale() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
+// SetAlphaHashScale sets the property returned by [GetAlphaHashScale].
 func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
+/*
+The type of alpha antialiasing to apply.
+*/
 func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
 	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
+// SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing].
 func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
+/*
+Threshold at which antialiasing will be applied on the alpha channel.
+*/
 func (self Instance) AlphaAntialiasingEdge() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
+// SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge].
 func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
+/*
+Filter flags for the texture.
+*/
 func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
 	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
+// SetTextureFilter sets the property returned by [GetTextureFilter].
 func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
+/*
+Sets the render priority for the text. Higher priority objects will be sorted in front of lower priority objects.
+
+Note: This only applies if [AlphaCut] is set to [AlphaCutDisabled] (default value).
+
+Note: This only applies to sorting of transparent objects. This will not impact how transparent objects are sorted relative to opaque objects. This is because opaque objects are not sorted, while transparent objects are sorted from back to front (subject to priority).
+
+[AlphaCut]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.AlphaCut
+*/
 func (self Instance) RenderPriority() int {
 	return int(int(class(self).GetRenderPriority()))
 }
 
+// SetRenderPriority sets the property returned by [GetRenderPriority].
 func (self Instance) SetRenderPriority(value int) {
 	class(self).SetRenderPriority(int64(value))
 }
 
+/*
+Sets the render priority for the text outline. Higher priority objects will be sorted in front of lower priority objects.
+
+Note: This only applies if [AlphaCut] is set to [AlphaCutDisabled] (default value).
+
+Note: This only applies to sorting of transparent objects. This will not impact how transparent objects are sorted relative to opaque objects. This is because opaque objects are not sorted, while transparent objects are sorted from back to front (subject to priority).
+
+[AlphaCut]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.AlphaCut
+*/
 func (self Instance) OutlineRenderPriority() int {
 	return int(int(class(self).GetOutlineRenderPriority()))
 }
 
+// SetOutlineRenderPriority sets the property returned by [GetOutlineRenderPriority].
 func (self Instance) SetOutlineRenderPriority(value int) {
 	class(self).SetOutlineRenderPriority(int64(value))
 }
 
+/*
+Text [Color.RGBA] of the [Label3D].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Label3D]: https://pkg.go.dev/graphics.gd/classdb/Label3D
+*/
 func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulate sets the property returned by [GetModulate].
 func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+The tint of text outline.
+*/
 func (self Instance) OutlineModulate() Color.RGBA {
 	return Color.RGBA(class(self).GetOutlineModulate())
 }
 
+// SetOutlineModulate sets the property returned by [GetOutlineModulate].
 func (self Instance) SetOutlineModulate(value Color.RGBA) {
 	class(self).SetOutlineModulate(Color.RGBA(value))
 }
 
+/*
+The text to display on screen.
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+Font configuration used to display text.
+*/
 func (self Instance) Font() Font.Instance {
 	return Font.Instance(class(self).GetFont())
 }
 
+// SetFont sets the property returned by [GetFont].
 func (self Instance) SetFont(value Font.Instance) {
 	class(self).SetFont(value)
 }
 
+/*
+Font size of the [Label3D]'s text. To make the font look more detailed when up close, increase [FontSize] while decreasing [PixelSize] at the same time.
+
+Higher font sizes require more time to render new characters, which can cause stuttering during gameplay.
+
+[FontSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.FontSize
+[Label3D]: https://pkg.go.dev/graphics.gd/classdb/Label3D
+[PixelSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.PixelSize
+*/
 func (self Instance) FontSize() int {
 	return int(int(class(self).GetFontSize()))
 }
 
+// SetFontSize sets the property returned by [GetFontSize].
 func (self Instance) SetFontSize(value int) {
 	class(self).SetFontSize(int64(value))
 }
 
+/*
+Text outline size.
+*/
 func (self Instance) OutlineSize() int {
 	return int(int(class(self).GetOutlineSize()))
 }
 
+// SetOutlineSize sets the property returned by [GetOutlineSize].
 func (self Instance) SetOutlineSize(value int) {
 	class(self).SetOutlineSize(int64(value))
 }
 
+/*
+Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
+*/
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Controls the text's vertical alignment. Supports top, center, and bottom.
+*/
 func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
+// SetVerticalAlignment sets the property returned by [GetVerticalAlignment].
 func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
+/*
+If true, all the text displays as UPPERCASE.
+*/
 func (self Instance) Uppercase() bool {
 	return bool(class(self).IsUppercase())
 }
 
+// SetUppercase sets the property returned by [IsUppercase].
 func (self Instance) SetUppercase(value bool) {
 	class(self).SetUppercase(value)
 }
 
+/*
+Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
+*/
 func (self Instance) LineSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
+// SetLineSpacing sets the property returned by [GetLineSpacing].
 func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
+/*
+If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
+*/
 func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
 func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
 	class(self).SetAutowrapTrimFlags(value)
 }
 
+/*
+Line fill alignment rules.
+*/
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
+// SetJustificationFlags sets the property returned by [GetJustificationFlags].
 func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
+/*
+Text width (in pixels), used for autowrap and fill alignment.
+*/
 func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() TextServer.Direction {
 	return TextServer.Direction(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value TextServer.Direction) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }

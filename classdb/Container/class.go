@@ -270,6 +270,10 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 		rect  Rect2.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect})
 }
+
+/*
+Emitted when children are going to be sorted.
+*/
 func (self Instance) OnPreSortChildren(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -282,6 +286,9 @@ func (self class) PreSortChildren() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PreSortChildren`))))
 }
 
+/*
+Emitted when sorting the children is needed.
+*/
 func (self Instance) OnSortChildren(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

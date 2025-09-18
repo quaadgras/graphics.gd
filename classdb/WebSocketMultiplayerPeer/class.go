@@ -237,50 +237,84 @@ func New() Instance {
 	return casted
 }
 
+/*
+The supported WebSocket sub-protocols. See [WebSocketPeer.SupportedProtocols] for more details.
+
+[WebSocketPeer.SupportedProtocols]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.SupportedProtocols
+*/
 func (self Instance) SupportedProtocols() []string {
 	return []string(class(self).GetSupportedProtocols().Strings())
 }
 
+// SetSupportedProtocols sets the property returned by [GetSupportedProtocols].
 func (self Instance) SetSupportedProtocols(value []string) {
 	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 }
 
+/*
+The extra headers to use during handshake. See [WebSocketPeer.HandshakeHeaders] for more details.
+
+[WebSocketPeer.HandshakeHeaders]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.HandshakeHeaders
+*/
 func (self Instance) HandshakeHeaders() []string {
 	return []string(class(self).GetHandshakeHeaders().Strings())
 }
 
+// SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders].
 func (self Instance) SetHandshakeHeaders(value []string) {
 	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 }
 
+/*
+The inbound buffer size for connected peers. See [WebSocketPeer.InboundBufferSize] for more details.
+
+[WebSocketPeer.InboundBufferSize]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.InboundBufferSize
+*/
 func (self Instance) InboundBufferSize() int {
 	return int(int(class(self).GetInboundBufferSize()))
 }
 
+// SetInboundBufferSize sets the property returned by [GetInboundBufferSize].
 func (self Instance) SetInboundBufferSize(value int) {
 	class(self).SetInboundBufferSize(int64(value))
 }
 
+/*
+The outbound buffer size for connected peers. See [WebSocketPeer.OutboundBufferSize] for more details.
+
+[WebSocketPeer.OutboundBufferSize]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.OutboundBufferSize
+*/
 func (self Instance) OutboundBufferSize() int {
 	return int(int(class(self).GetOutboundBufferSize()))
 }
 
+// SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize].
 func (self Instance) SetOutboundBufferSize(value int) {
 	class(self).SetOutboundBufferSize(int64(value))
 }
 
+/*
+The maximum time each peer can stay in a connecting state before being dropped.
+*/
 func (self Instance) HandshakeTimeout() Float.X {
 	return Float.X(Float.X(class(self).GetHandshakeTimeout()))
 }
 
+// SetHandshakeTimeout sets the property returned by [GetHandshakeTimeout].
 func (self Instance) SetHandshakeTimeout(value Float.X) {
 	class(self).SetHandshakeTimeout(float64(value))
 }
 
+/*
+The maximum number of queued packets for connected peers. See [WebSocketPeer.MaxQueuedPackets] for more details.
+
+[WebSocketPeer.MaxQueuedPackets]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.MaxQueuedPackets
+*/
 func (self Instance) MaxQueuedPackets() int {
 	return int(int(class(self).GetMaxQueuedPackets()))
 }
 
+// SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets].
 func (self Instance) SetMaxQueuedPackets(value int) {
 	class(self).SetMaxQueuedPackets(int64(value))
 }

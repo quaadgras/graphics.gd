@@ -148,18 +148,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+Controls how the object faces the camera.
+*/
 func (self Instance) BillboardType() BillboardType {
 	return BillboardType(class(self).GetBillboardType())
 }
 
+// SetBillboardType sets the property returned by [GetBillboardType].
 func (self Instance) SetBillboardType(value BillboardType) {
 	class(self).SetBillboardType(value)
 }
 
+/*
+If true, the shader will keep the scale set for the mesh. Otherwise, the scale is lost when billboarding.
+*/
 func (self Instance) KeepScale() bool {
 	return bool(class(self).IsKeepScaleEnabled())
 }
 
+// SetKeepScale sets the property returned by [IsKeepScaleEnabled].
 func (self Instance) SetKeepScale(value bool) {
 	class(self).SetKeepScaleEnabled(value)
 }

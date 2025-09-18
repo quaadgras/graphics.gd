@@ -150,10 +150,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+An expression in Godot Shading Language, which will be injected at the start of the graph's matching shader function (vertex, fragment, or light), and thus cannot be used to declare functions, varyings, uniforms, or global constants.
+*/
 func (self Instance) Expression() string {
 	return string(class(self).GetExpression().String())
 }
 
+// SetExpression sets the property returned by [GetExpression].
 func (self Instance) SetExpression(value string) {
 	class(self).SetExpression(String.New(value))
 }

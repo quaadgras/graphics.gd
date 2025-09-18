@@ -149,18 +149,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The line's normal, typically a unit vector. Its direction indicates the non-colliding half-plane. Can be of any length but zero. Defaults to [Vector2.Up].
+*/
 func (self Instance) Normal() Vector2.XY {
 	return Vector2.XY(class(self).GetNormal())
 }
 
+// SetNormal sets the property returned by [GetNormal].
 func (self Instance) SetNormal(value Vector2.XY) {
 	class(self).SetNormal(Vector2.XY(value))
 }
 
+/*
+The distance from the origin to the line, expressed in terms of [Normal] (according to its direction and magnitude). Actual absolute distance from the origin to the line can be calculated as abs(distance) / normal.length().
+
+In the scalar equation of the line ax + by = d, this is d, while the (a, b) coordinates are represented by the [Normal] property.
+
+[Normal]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape2D#Instance.Normal
+*/
 func (self Instance) Distance() Float.X {
 	return Float.X(Float.X(class(self).GetDistance()))
 }
 
+// SetDistance sets the property returned by [GetDistance].
 func (self Instance) SetDistance(value Float.X) {
 	class(self).SetDistance(float64(value))
 }

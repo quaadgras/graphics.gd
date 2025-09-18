@@ -153,26 +153,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Mesh] that defines emission shape.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+If true, the particles will emit from all surfaces of the mesh.
+*/
 func (self Instance) UseAllSurfaces() bool {
 	return bool(class(self).IsUseAllSurfaces())
 }
 
+// SetUseAllSurfaces sets the property returned by [IsUseAllSurfaces].
 func (self Instance) SetUseAllSurfaces(value bool) {
 	class(self).SetUseAllSurfaces(value)
 }
 
+/*
+Index of the surface that emits particles. [UseAllSurfaces] must be false for this to take effect.
+
+[UseAllSurfaces]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeParticleMeshEmitter#Instance.UseAllSurfaces
+*/
 func (self Instance) SurfaceIndex() int {
 	return int(int(class(self).GetSurfaceIndex()))
 }
 
+// SetSurfaceIndex sets the property returned by [GetSurfaceIndex].
 func (self Instance) SetSurfaceIndex(value int) {
 	class(self).SetSurfaceIndex(int64(value))
 }

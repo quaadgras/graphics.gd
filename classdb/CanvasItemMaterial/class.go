@@ -158,50 +158,99 @@ func New() Instance {
 	return casted
 }
 
+/*
+The manner in which a material's rendering is applied to underlying textures.
+*/
 func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
+// SetBlendMode sets the property returned by [GetBlendMode].
 func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
+/*
+The manner in which material reacts to lighting.
+*/
 func (self Instance) LightMode() LightMode {
 	return LightMode(class(self).GetLightMode())
 }
 
+// SetLightMode sets the property returned by [GetLightMode].
 func (self Instance) SetLightMode(value LightMode) {
 	class(self).SetLightMode(value)
 }
 
+/*
+If true, enable spritesheet-based animation features when assigned to [GPUParticles2D] and [CPUParticles2D] nodes. The [ParticleProcessMaterial.AnimSpeedMax] or [CPUParticles2D.AnimSpeedMax] should also be set to a positive value for the animation to play.
+
+This property (and other particles_anim_* properties that depend on it) has no effect on other types of nodes.
+
+[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
+[CPUParticles2D.AnimSpeedMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AnimSpeedMax
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ParticleProcessMaterial.AnimSpeedMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AnimSpeedMax
+*/
 func (self Instance) ParticlesAnimation() bool {
 	return bool(class(self).GetParticlesAnimation())
 }
 
+// SetParticlesAnimation sets the property returned by [GetParticlesAnimation].
 func (self Instance) SetParticlesAnimation(value bool) {
 	class(self).SetParticlesAnimation(value)
 }
 
+/*
+The number of columns in the spritesheet assigned as [Texture2D] for a [GPUParticles2D] or [CPUParticles2D].
+
+Note: This property is only used and visible in the editor if [ParticlesAnimation] is true.
+
+[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) ParticlesAnimHFrames() int {
 	return int(int(class(self).GetParticlesAnimHFrames()))
 }
 
+// SetParticlesAnimHFrames sets the property returned by [GetParticlesAnimHFrames].
 func (self Instance) SetParticlesAnimHFrames(value int) {
 	class(self).SetParticlesAnimHFrames(int64(value))
 }
 
+/*
+The number of rows in the spritesheet assigned as [Texture2D] for a [GPUParticles2D] or [CPUParticles2D].
+
+Note: This property is only used and visible in the editor if [ParticlesAnimation] is true.
+
+[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) ParticlesAnimVFrames() int {
 	return int(int(class(self).GetParticlesAnimVFrames()))
 }
 
+// SetParticlesAnimVFrames sets the property returned by [GetParticlesAnimVFrames].
 func (self Instance) SetParticlesAnimVFrames(value int) {
 	class(self).SetParticlesAnimVFrames(int64(value))
 }
 
+/*
+If true, the particles animation will loop.
+
+Note: This property is only used and visible in the editor if [ParticlesAnimation] is true.
+
+[ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
+*/
 func (self Instance) ParticlesAnimLoop() bool {
 	return bool(class(self).GetParticlesAnimLoop())
 }
 
+// SetParticlesAnimLoop sets the property returned by [GetParticlesAnimLoop].
 func (self Instance) SetParticlesAnimLoop(value bool) {
 	class(self).SetParticlesAnimLoop(value)
 }

@@ -295,6 +295,12 @@ func (self class) GetAnimationListSize() int64 { //gd:AnimationLibrary.get_anima
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when an [Animation] is added, under the key 'name'.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+*/
 func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -307,6 +313,11 @@ func (self class) AnimationAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationAdded`))))
 }
 
+/*
+Emitted when an [Animation] stored with the key 'name' is removed.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+*/
 func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -319,6 +330,11 @@ func (self class) AnimationRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRemoved`))))
 }
 
+/*
+Emitted when the key for an [Animation] is changed, from 'name' to 'to_name'.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+*/
 func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -331,6 +347,13 @@ func (self class) AnimationRenamed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRenamed`))))
 }
 
+/*
+Emitted when there's a change in one of the animations, e.g. tracks are added, moved or have changed paths. 'name' is the key of the animation that was changed.
+
+See also [OnResource.Changed], which this acts as a relay for.
+
+[OnResource.Changed]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary#Instance.OnResource.Changed
+*/
 func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

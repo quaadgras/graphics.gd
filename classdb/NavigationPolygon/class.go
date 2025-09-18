@@ -358,86 +358,148 @@ func (self Instance) Vertices() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
+// SetVertices sets the property returned by [GetVertices].
 func (self Instance) SetVertices(value []Vector2.XY) {
 	class(self).SetVertices(Packed.New(value...))
 }
 
+/*
+Partitioning algorithm for creating the navigation mesh polys.
+*/
 func (self Instance) SamplePartitionType() SamplePartitionType {
 	return SamplePartitionType(class(self).GetSamplePartitionType())
 }
 
+// SetSamplePartitionType sets the property returned by [GetSamplePartitionType].
 func (self Instance) SetSamplePartitionType(value SamplePartitionType) {
 	class(self).SetSamplePartitionType(value)
 }
 
+/*
+Determines which type of nodes will be parsed as geometry.
+*/
 func (self Instance) ParsedGeometryType() ParsedGeometryType {
 	return ParsedGeometryType(class(self).GetParsedGeometryType())
 }
 
+// SetParsedGeometryType sets the property returned by [GetParsedGeometryType].
 func (self Instance) SetParsedGeometryType(value ParsedGeometryType) {
 	class(self).SetParsedGeometryType(value)
 }
 
+/*
+The physics layers to scan for static colliders.
+
+Only used when [ParsedGeometryType] is [ParsedGeometryStaticColliders] or [ParsedGeometryBoth].
+
+[ParsedGeometryType]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.ParsedGeometryType
+*/
 func (self Instance) ParsedCollisionMask() int {
 	return int(int(class(self).GetParsedCollisionMask()))
 }
 
+// SetParsedCollisionMask sets the property returned by [GetParsedCollisionMask].
 func (self Instance) SetParsedCollisionMask(value int) {
 	class(self).SetParsedCollisionMask(int64(value))
 }
 
+/*
+The source of the geometry used when baking.
+*/
 func (self Instance) SourceGeometryMode() SourceGeometryMode {
 	return SourceGeometryMode(class(self).GetSourceGeometryMode())
 }
 
+// SetSourceGeometryMode sets the property returned by [GetSourceGeometryMode].
 func (self Instance) SetSourceGeometryMode(value SourceGeometryMode) {
 	class(self).SetSourceGeometryMode(value)
 }
 
+/*
+The group name of nodes that should be parsed for baking source geometry.
+
+Only used when [SourceGeometryMode] is [SourceGeometryGroupsWithChildren] or [SourceGeometryGroupsExplicit].
+
+[SourceGeometryMode]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.SourceGeometryMode
+*/
 func (self Instance) SourceGeometryGroupName() string {
 	return string(class(self).GetSourceGeometryGroupName().String())
 }
 
+// SetSourceGeometryGroupName sets the property returned by [GetSourceGeometryGroupName].
 func (self Instance) SetSourceGeometryGroupName(value string) {
 	class(self).SetSourceGeometryGroupName(String.Name(String.New(value)))
 }
 
+/*
+The cell size used to rasterize the navigation mesh vertices. Must match with the cell size on the navigation map.
+*/
 func (self Instance) CellSize() Float.X {
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
+// SetCellSize sets the property returned by [GetCellSize].
 func (self Instance) SetCellSize(value Float.X) {
 	class(self).SetCellSize(float64(value))
 }
 
+/*
+The size of the non-navigable border around the bake bounding area defined by the [BakingRect] [Rect2.PositionSize].
+
+In conjunction with the [BakingRect] the border size can be used to bake tile aligned navigation meshes without the tile edges being shrunk by [AgentRadius].
+
+[AgentRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.AgentRadius
+[BakingRect]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.BakingRect
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+*/
 func (self Instance) BorderSize() Float.X {
 	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
+// SetBorderSize sets the property returned by [GetBorderSize].
 func (self Instance) SetBorderSize(value Float.X) {
 	class(self).SetBorderSize(float64(value))
 }
 
+/*
+The distance to erode/shrink the walkable surface when baking the navigation mesh.
+
+Note: The radius must be equal or higher than 0.0. If the radius is 0.0, it won't be possible to fix invalid outline overlaps and other precision errors during the baking process. As a result, some obstacles may be excluded incorrectly from the final navigation mesh, or may delete the navigation mesh's polygons.
+*/
 func (self Instance) AgentRadius() Float.X {
 	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
+// SetAgentRadius sets the property returned by [GetAgentRadius].
 func (self Instance) SetAgentRadius(value Float.X) {
 	class(self).SetAgentRadius(float64(value))
 }
 
+/*
+If the baking [Rect2.PositionSize] has an area the navigation mesh baking will be restricted to its enclosing area.
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+*/
 func (self Instance) BakingRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetBakingRect())
 }
 
+// SetBakingRect sets the property returned by [GetBakingRect].
 func (self Instance) SetBakingRect(value Rect2.PositionSize) {
 	class(self).SetBakingRect(Rect2.PositionSize(value))
 }
 
+/*
+The position offset applied to the [BakingRect] [Rect2.PositionSize].
+
+[BakingRect]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.BakingRect
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+*/
 func (self Instance) BakingRectOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetBakingRectOffset())
 }
 
+// SetBakingRectOffset sets the property returned by [GetBakingRectOffset].
 func (self Instance) SetBakingRectOffset(value Vector2.XY) {
 	class(self).SetBakingRectOffset(Vector2.XY(value))
 }

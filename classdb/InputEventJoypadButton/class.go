@@ -150,10 +150,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Button identifier. One of the [JoyButton] button constants.
+*/
 func (self Instance) ButtonIndex() Input.JoyButton {
 	return Input.JoyButton(class(self).GetButtonIndex())
 }
 
+// SetButtonIndex sets the property returned by [GetButtonIndex].
 func (self Instance) SetButtonIndex(value Input.JoyButton) {
 	class(self).SetButtonIndex(value)
 }
@@ -162,10 +166,14 @@ func (self Instance) Pressure() Float.X {
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
+// SetPressure sets the property returned by [GetPressure].
 func (self Instance) SetPressure(value Float.X) {
 	class(self).SetPressure(float64(value))
 }
 
+/*
+If true, the button's state is pressed. If false, the button's state is released.
+*/
 func (self Instance) SetPressed(value bool) {
 	class(self).SetPressed(value)
 }

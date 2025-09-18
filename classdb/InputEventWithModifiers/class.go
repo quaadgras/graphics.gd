@@ -177,42 +177,65 @@ func New() Instance {
 	return casted
 }
 
+/*
+Automatically use Meta (Cmd) on macOS and Ctrl on other platforms. If true, [CtrlPressed] and [MetaPressed] cannot be set.
+
+[CtrlPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEventWithModifiers#Instance.CtrlPressed
+[MetaPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEventWithModifiers#Instance.MetaPressed
+*/
 func (self Instance) CommandOrControlAutoremap() bool {
 	return bool(class(self).IsCommandOrControlAutoremap())
 }
 
+// SetCommandOrControlAutoremap sets the property returned by [IsCommandOrControlAutoremap].
 func (self Instance) SetCommandOrControlAutoremap(value bool) {
 	class(self).SetCommandOrControlAutoremap(value)
 }
 
+/*
+State of the Alt modifier.
+*/
 func (self Instance) AltPressed() bool {
 	return bool(class(self).IsAltPressed())
 }
 
+// SetAltPressed sets the property returned by [IsAltPressed].
 func (self Instance) SetAltPressed(value bool) {
 	class(self).SetAltPressed(value)
 }
 
+/*
+State of the Shift modifier.
+*/
 func (self Instance) ShiftPressed() bool {
 	return bool(class(self).IsShiftPressed())
 }
 
+// SetShiftPressed sets the property returned by [IsShiftPressed].
 func (self Instance) SetShiftPressed(value bool) {
 	class(self).SetShiftPressed(value)
 }
 
+/*
+State of the Ctrl modifier.
+*/
 func (self Instance) CtrlPressed() bool {
 	return bool(class(self).IsCtrlPressed())
 }
 
+// SetCtrlPressed sets the property returned by [IsCtrlPressed].
 func (self Instance) SetCtrlPressed(value bool) {
 	class(self).SetCtrlPressed(value)
 }
 
+/*
+State of the Meta modifier. On Windows and Linux, this represents the Windows key (sometimes called "meta" or "super" on Linux). On macOS, this represents the Command key.
+*/
 func (self Instance) MetaPressed() bool {
 	return bool(class(self).IsMetaPressed())
 }
 
+// SetMetaPressed sets the property returned by [IsMetaPressed].
 func (self Instance) SetMetaPressed(value bool) {
 	class(self).SetMetaPressed(value)
 }

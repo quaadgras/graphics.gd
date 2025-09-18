@@ -186,6 +186,10 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 		binding_modifier gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))})
 }
+
+/*
+Signal emitted when the user presses the delete binding modifier button for this modifier.
+*/
 func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

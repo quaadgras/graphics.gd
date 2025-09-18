@@ -186,170 +186,265 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, enables depth testing which allows objects to be automatically occluded by other objects based on their depth. This also allows objects to be partially occluded by other objects. If false, objects will appear in the order they were drawn (like in Godot's 2D renderer).
+*/
 func (self Instance) EnableDepthTest() bool {
 	return bool(class(self).GetEnableDepthTest())
 }
 
+// SetEnableDepthTest sets the property returned by [GetEnableDepthTest].
 func (self Instance) SetEnableDepthTest(value bool) {
 	class(self).SetEnableDepthTest(value)
 }
 
+/*
+If true, writes to the depth buffer whenever the depth test returns true. Only works when enable_depth_test is also true.
+*/
 func (self Instance) EnableDepthWrite() bool {
 	return bool(class(self).GetEnableDepthWrite())
 }
 
+// SetEnableDepthWrite sets the property returned by [GetEnableDepthWrite].
 func (self Instance) SetEnableDepthWrite(value bool) {
 	class(self).SetEnableDepthWrite(value)
 }
 
+/*
+The method used for comparing the previous and current depth values.
+*/
 func (self Instance) DepthCompareOperator() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetDepthCompareOperator())
 }
 
+// SetDepthCompareOperator sets the property returned by [GetDepthCompareOperator].
 func (self Instance) SetDepthCompareOperator(value Rendering.CompareOperator) {
 	class(self).SetDepthCompareOperator(value)
 }
 
+/*
+If true, each depth value will be tested to see if it is between [DepthRangeMin] and [DepthRangeMax]. If it is outside of these values, it is discarded.
+
+[DepthRangeMax]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.DepthRangeMax
+[DepthRangeMin]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.DepthRangeMin
+*/
 func (self Instance) EnableDepthRange() bool {
 	return bool(class(self).GetEnableDepthRange())
 }
 
+// SetEnableDepthRange sets the property returned by [GetEnableDepthRange].
 func (self Instance) SetEnableDepthRange(value bool) {
 	class(self).SetEnableDepthRange(value)
 }
 
+/*
+The minimum depth that returns true for [EnableDepthRange].
+
+[EnableDepthRange]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.EnableDepthRange
+*/
 func (self Instance) DepthRangeMin() Float.X {
 	return Float.X(Float.X(class(self).GetDepthRangeMin()))
 }
 
+// SetDepthRangeMin sets the property returned by [GetDepthRangeMin].
 func (self Instance) SetDepthRangeMin(value Float.X) {
 	class(self).SetDepthRangeMin(float64(value))
 }
 
+/*
+The maximum depth that returns true for [EnableDepthRange].
+
+[EnableDepthRange]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.EnableDepthRange
+*/
 func (self Instance) DepthRangeMax() Float.X {
 	return Float.X(Float.X(class(self).GetDepthRangeMax()))
 }
 
+// SetDepthRangeMax sets the property returned by [GetDepthRangeMax].
 func (self Instance) SetDepthRangeMax(value Float.X) {
 	class(self).SetDepthRangeMax(float64(value))
 }
 
+/*
+If true, enables stencil testing. There are separate stencil buffers for front-facing triangles and back-facing triangles. See properties that begin with "front_op" and properties with "back_op" for each.
+*/
 func (self Instance) EnableStencil() bool {
 	return bool(class(self).GetEnableStencil())
 }
 
+// SetEnableStencil sets the property returned by [GetEnableStencil].
 func (self Instance) SetEnableStencil(value bool) {
 	class(self).SetEnableStencil(value)
 }
 
+/*
+The operation to perform on the stencil buffer for front pixels that fail the stencil test.
+*/
 func (self Instance) FrontOpFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpFail())
 }
 
+// SetFrontOpFail sets the property returned by [GetFrontOpFail].
 func (self Instance) SetFrontOpFail(value Rendering.StencilOperation) {
 	class(self).SetFrontOpFail(value)
 }
 
+/*
+The operation to perform on the stencil buffer for front pixels that pass the stencil test.
+*/
 func (self Instance) FrontOpPass() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpPass())
 }
 
+// SetFrontOpPass sets the property returned by [GetFrontOpPass].
 func (self Instance) SetFrontOpPass(value Rendering.StencilOperation) {
 	class(self).SetFrontOpPass(value)
 }
 
+/*
+The operation to perform on the stencil buffer for front pixels that pass the stencil test but fail the depth test.
+*/
 func (self Instance) FrontOpDepthFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpDepthFail())
 }
 
+// SetFrontOpDepthFail sets the property returned by [GetFrontOpDepthFail].
 func (self Instance) SetFrontOpDepthFail(value Rendering.StencilOperation) {
 	class(self).SetFrontOpDepthFail(value)
 }
 
+/*
+The method used for comparing the previous front stencil value and [FrontOpReference].
+
+[FrontOpReference]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.FrontOpReference
+*/
 func (self Instance) FrontOpCompare() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetFrontOpCompare())
 }
 
+// SetFrontOpCompare sets the property returned by [GetFrontOpCompare].
 func (self Instance) SetFrontOpCompare(value Rendering.CompareOperator) {
 	class(self).SetFrontOpCompare(value)
 }
 
+/*
+Selects which bits from the front stencil value will be compared.
+*/
 func (self Instance) FrontOpCompareMask() int {
 	return int(int(class(self).GetFrontOpCompareMask()))
 }
 
+// SetFrontOpCompareMask sets the property returned by [GetFrontOpCompareMask].
 func (self Instance) SetFrontOpCompareMask(value int) {
 	class(self).SetFrontOpCompareMask(int64(value))
 }
 
+/*
+Selects which bits from the front stencil value will be changed.
+*/
 func (self Instance) FrontOpWriteMask() int {
 	return int(int(class(self).GetFrontOpWriteMask()))
 }
 
+// SetFrontOpWriteMask sets the property returned by [GetFrontOpWriteMask].
 func (self Instance) SetFrontOpWriteMask(value int) {
 	class(self).SetFrontOpWriteMask(int64(value))
 }
 
+/*
+The value the previous front stencil value will be compared to.
+*/
 func (self Instance) FrontOpReference() int {
 	return int(int(class(self).GetFrontOpReference()))
 }
 
+// SetFrontOpReference sets the property returned by [GetFrontOpReference].
 func (self Instance) SetFrontOpReference(value int) {
 	class(self).SetFrontOpReference(int64(value))
 }
 
+/*
+The operation to perform on the stencil buffer for back pixels that fail the stencil test.
+*/
 func (self Instance) BackOpFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpFail())
 }
 
+// SetBackOpFail sets the property returned by [GetBackOpFail].
 func (self Instance) SetBackOpFail(value Rendering.StencilOperation) {
 	class(self).SetBackOpFail(value)
 }
 
+/*
+The operation to perform on the stencil buffer for back pixels that pass the stencil test.
+*/
 func (self Instance) BackOpPass() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpPass())
 }
 
+// SetBackOpPass sets the property returned by [GetBackOpPass].
 func (self Instance) SetBackOpPass(value Rendering.StencilOperation) {
 	class(self).SetBackOpPass(value)
 }
 
+/*
+The operation to perform on the stencil buffer for back pixels that pass the stencil test but fail the depth test.
+*/
 func (self Instance) BackOpDepthFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpDepthFail())
 }
 
+// SetBackOpDepthFail sets the property returned by [GetBackOpDepthFail].
 func (self Instance) SetBackOpDepthFail(value Rendering.StencilOperation) {
 	class(self).SetBackOpDepthFail(value)
 }
 
+/*
+The method used for comparing the previous back stencil value and [BackOpReference].
+
+[BackOpReference]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineDepthStencilState#Instance.BackOpReference
+*/
 func (self Instance) BackOpCompare() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetBackOpCompare())
 }
 
+// SetBackOpCompare sets the property returned by [GetBackOpCompare].
 func (self Instance) SetBackOpCompare(value Rendering.CompareOperator) {
 	class(self).SetBackOpCompare(value)
 }
 
+/*
+Selects which bits from the back stencil value will be compared.
+*/
 func (self Instance) BackOpCompareMask() int {
 	return int(int(class(self).GetBackOpCompareMask()))
 }
 
+// SetBackOpCompareMask sets the property returned by [GetBackOpCompareMask].
 func (self Instance) SetBackOpCompareMask(value int) {
 	class(self).SetBackOpCompareMask(int64(value))
 }
 
+/*
+Selects which bits from the back stencil value will be changed.
+*/
 func (self Instance) BackOpWriteMask() int {
 	return int(int(class(self).GetBackOpWriteMask()))
 }
 
+// SetBackOpWriteMask sets the property returned by [GetBackOpWriteMask].
 func (self Instance) SetBackOpWriteMask(value int) {
 	class(self).SetBackOpWriteMask(int64(value))
 }
 
+/*
+The value the previous back stencil value will be compared to.
+*/
 func (self Instance) BackOpReference() int {
 	return int(int(class(self).GetBackOpReference()))
 }
 
+// SetBackOpReference sets the property returned by [GetBackOpReference].
 func (self Instance) SetBackOpReference(value int) {
 	class(self).SetBackOpReference(int64(value))
 }

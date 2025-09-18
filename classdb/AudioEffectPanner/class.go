@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Pan position. Value can range from -1 (fully left) to 1 (fully right).
+*/
 func (self Instance) Pan() Float.X {
 	return Float.X(Float.X(class(self).GetPan()))
 }
 
+// SetPan sets the property returned by [GetPan].
 func (self Instance) SetPan(value Float.X) {
 	class(self).SetPan(float64(value))
 }

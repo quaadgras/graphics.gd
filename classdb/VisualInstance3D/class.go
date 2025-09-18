@@ -235,26 +235,67 @@ func New() Instance {
 	return casted
 }
 
+/*
+The render layer(s) this [VisualInstance3D] is drawn on.
+
+This object will only be visible for [Camera3D]s whose cull mask includes any of the render layers this [VisualInstance3D] is set to.
+
+For [Light3D]s, this can be used to control which [VisualInstance3D]s are affected by a specific light. For [GPUParticles3D], this can be used to control which particles are effected by a specific attractor. For [Decal]s, this can be used to control which [VisualInstance3D]s are affected by a specific decal.
+
+To adjust [Layers] more easily using a script, use [GetLayerMaskValue] and [SetLayerMaskValue].
+
+Note: [VoxelGI], SDFGI and [LightmapGI] will always take all layers into account to determine what contributes to global illumination. If this is an issue, set [GeometryInstance3D.GiMode] to [Geometryinstance3d.GiModeDisabled] for meshes and [Light3D.LightBakeMode] to [Light3d.BakeDisabled] for lights to exclude them from global illumination.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[GeometryInstance3D.GiMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiMode
+[GetLayerMaskValue]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.GetLayerMaskValue
+[Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[SetLayerMaskValue]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.SetLayerMaskValue
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) Layers() int {
 	return int(int(class(self).GetLayerMask()))
 }
 
+// SetLayers sets the property returned by [GetLayerMask].
 func (self Instance) SetLayers(value int) {
 	class(self).SetLayerMask(int64(value))
 }
 
+/*
+The amount by which the depth of this [VisualInstance3D] will be adjusted when sorting by depth. Uses the same units as the engine (which are typically meters). Adjusting it to a higher value will make the [VisualInstance3D] reliably draw on top of other [VisualInstance3D]s that are otherwise positioned at the same spot. To ensure it always draws on top of other objects around it (not positioned at the same spot), set the value to be greater than the distance between this [VisualInstance3D] and the other nearby [VisualInstance3D]s.
+
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+*/
 func (self Instance) SortingOffset() Float.X {
 	return Float.X(Float.X(class(self).GetSortingOffset()))
 }
 
+// SetSortingOffset sets the property returned by [GetSortingOffset].
 func (self Instance) SetSortingOffset(value Float.X) {
 	class(self).SetSortingOffset(float64(value))
 }
 
+/*
+If true, the object is sorted based on the [AABB.PositionSize] center. The object will be sorted based on the global position otherwise.
+
+The [AABB.PositionSize] center based sorting is generally more accurate for 3D models. The position based sorting instead allows to better control the drawing order when working with [GPUParticles3D] and [CPUParticles3D].
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+*/
 func (self Instance) SortingUseAabbCenter() bool {
 	return bool(class(self).IsSortingUseAabbCenter())
 }
 
+// SetSortingUseAabbCenter sets the property returned by [IsSortingUseAabbCenter].
 func (self Instance) SetSortingUseAabbCenter(value bool) {
 	class(self).SetSortingUseAabbCenter(value)
 }

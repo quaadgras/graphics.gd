@@ -195,122 +195,200 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, Light2D will emit light.
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+If true, Light2D will only appear when editing the scene.
+*/
 func (self Instance) EditorOnly() bool {
 	return bool(class(self).IsEditorOnly())
 }
 
+// SetEditorOnly sets the property returned by [IsEditorOnly].
 func (self Instance) SetEditorOnly(value bool) {
 	class(self).SetEditorOnly(value)
 }
 
+/*
+The Light2D's [Color.RGBA].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The Light2D's energy value. The larger the value, the stronger the light.
+*/
 func (self Instance) Energy() Float.X {
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
+// SetEnergy sets the property returned by [GetEnergy].
 func (self Instance) SetEnergy(value Float.X) {
 	class(self).SetEnergy(float64(value))
 }
 
+/*
+The Light2D's blend mode.
+*/
 func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
+// SetBlendMode sets the property returned by [GetBlendMode].
 func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
+/*
+Minimum z value of objects that are affected by the Light2D.
+*/
 func (self Instance) RangeZMin() int {
 	return int(int(class(self).GetZRangeMin()))
 }
 
+// SetRangeZMin sets the property returned by [GetZRangeMin].
 func (self Instance) SetRangeZMin(value int) {
 	class(self).SetZRangeMin(int64(value))
 }
 
+/*
+Maximum z value of objects that are affected by the Light2D.
+*/
 func (self Instance) RangeZMax() int {
 	return int(int(class(self).GetZRangeMax()))
 }
 
+// SetRangeZMax sets the property returned by [GetZRangeMax].
 func (self Instance) SetRangeZMax(value int) {
 	class(self).SetZRangeMax(int64(value))
 }
 
+/*
+Minimum layer value of objects that are affected by the Light2D.
+*/
 func (self Instance) RangeLayerMin() int {
 	return int(int(class(self).GetLayerRangeMin()))
 }
 
+// SetRangeLayerMin sets the property returned by [GetLayerRangeMin].
 func (self Instance) SetRangeLayerMin(value int) {
 	class(self).SetLayerRangeMin(int64(value))
 }
 
+/*
+Maximum layer value of objects that are affected by the Light2D.
+*/
 func (self Instance) RangeLayerMax() int {
 	return int(int(class(self).GetLayerRangeMax()))
 }
 
+// SetRangeLayerMax sets the property returned by [GetLayerRangeMax].
 func (self Instance) SetRangeLayerMax(value int) {
 	class(self).SetLayerRangeMax(int64(value))
 }
 
+/*
+The layer mask. Only objects with a matching [CanvasItem.LightMask] will be affected by the Light2D. See also [ShadowItemCullMask], which affects which objects can cast shadows.
+
+Note: [RangeItemCullMask] is ignored by [DirectionalLight2D], which will always light a 2D node regardless of the 2D node's [CanvasItem.LightMask].
+
+[CanvasItem.LightMask]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.LightMask
+[DirectionalLight2D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D
+[RangeItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeItemCullMask
+[ShadowItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowItemCullMask
+*/
 func (self Instance) RangeItemCullMask() int {
 	return int(int(class(self).GetItemCullMask()))
 }
 
+// SetRangeItemCullMask sets the property returned by [GetItemCullMask].
 func (self Instance) SetRangeItemCullMask(value int) {
 	class(self).SetItemCullMask(int64(value))
 }
 
+/*
+If true, the Light2D will cast shadows.
+*/
 func (self Instance) ShadowEnabled() bool {
 	return bool(class(self).IsShadowEnabled())
 }
 
+// SetShadowEnabled sets the property returned by [IsShadowEnabled].
 func (self Instance) SetShadowEnabled(value bool) {
 	class(self).SetShadowEnabled(value)
 }
 
+/*
+[Color.RGBA] of shadows cast by the Light2D.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+*/
 func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
+// SetShadowColor sets the property returned by [GetShadowColor].
 func (self Instance) SetShadowColor(value Color.RGBA) {
 	class(self).SetShadowColor(Color.RGBA(value))
 }
 
+/*
+Shadow filter type.
+*/
 func (self Instance) ShadowFilter() ShadowFilter {
 	return ShadowFilter(class(self).GetShadowFilter())
 }
 
+// SetShadowFilter sets the property returned by [GetShadowFilter].
 func (self Instance) SetShadowFilter(value ShadowFilter) {
 	class(self).SetShadowFilter(value)
 }
 
+/*
+Smoothing value for shadows. Higher values will result in softer shadows, at the cost of visible streaks that can appear in shadow rendering. [ShadowFilterSmooth] only has an effect if [ShadowFilter] is [ShadowFilterPcf5] or [ShadowFilterPcf13].
+
+[ShadowFilter]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowFilter
+[ShadowFilterSmooth]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowFilterSmooth
+*/
 func (self Instance) ShadowFilterSmooth() Float.X {
 	return Float.X(Float.X(class(self).GetShadowSmooth()))
 }
 
+// SetShadowFilterSmooth sets the property returned by [GetShadowSmooth].
 func (self Instance) SetShadowFilterSmooth(value Float.X) {
 	class(self).SetShadowSmooth(float64(value))
 }
 
+/*
+The shadow mask. Used with [LightOccluder2D] to cast shadows. Only occluders with a matching [CanvasItem.LightMask] will cast shadows. See also [RangeItemCullMask], which affects which objects can receive the light.
+
+[CanvasItem.LightMask]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.LightMask
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
+[RangeItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeItemCullMask
+*/
 func (self Instance) ShadowItemCullMask() int {
 	return int(int(class(self).GetItemShadowCullMask()))
 }
 
+// SetShadowItemCullMask sets the property returned by [GetItemShadowCullMask].
 func (self Instance) SetShadowItemCullMask(value int) {
 	class(self).SetItemShadowCullMask(int64(value))
 }

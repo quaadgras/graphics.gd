@@ -153,42 +153,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+The location in the shader that this attribute is bound to.
+*/
 func (self Instance) Location() int {
 	return int(int(class(self).GetLocation()))
 }
 
+// SetLocation sets the property returned by [GetLocation].
 func (self Instance) SetLocation(value int) {
 	class(self).SetLocation(int64(value))
 }
 
+/*
+The number of bytes between the start of the vertex buffer and the first instance of this attribute.
+*/
 func (self Instance) Offset() int {
 	return int(int(class(self).GetOffset()))
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value int) {
 	class(self).SetOffset(int64(value))
 }
 
+/*
+The way that this attribute's data is interpreted when sent to a shader.
+*/
 func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
+// SetFormat sets the property returned by [GetFormat].
 func (self Instance) SetFormat(value Rendering.DataFormat) {
 	class(self).SetFormat(value)
 }
 
+/*
+The number of bytes between the starts of consecutive instances of this attribute.
+*/
 func (self Instance) Stride() int {
 	return int(int(class(self).GetStride()))
 }
 
+// SetStride sets the property returned by [GetStride].
 func (self Instance) SetStride(value int) {
 	class(self).SetStride(int64(value))
 }
 
+/*
+The rate at which this attribute is pulled from its vertex buffer.
+*/
 func (self Instance) Frequency() Rendering.VertexFrequency {
 	return Rendering.VertexFrequency(class(self).GetFrequency())
 }
 
+// SetFrequency sets the property returned by [GetFrequency].
 func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
 	class(self).SetFrequency(value)
 }

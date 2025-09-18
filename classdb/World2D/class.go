@@ -146,18 +146,41 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Resource.ID] of this world's canvas resource. Used by the [RenderingServer] for 2D drawing.
+
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Canvas() RID.Canvas {
 	return RID.Canvas(RID.Canvas(class(self).GetCanvas()))
 }
 
+/*
+The [Resource.ID] of this world's navigation map. Used by the [NavigationServer2D].
+
+[NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) NavigationMap() RID.NavigationMap2D {
 	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetNavigationMap()))
 }
 
+/*
+The [Resource.ID] of this world's physics space resource. Used by the [PhysicsServer2D] for 2D physics, treating it as both a space and an area.
+
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Space() RID.Space2D {
 	return RID.Space2D(RID.Space2D(class(self).GetSpace()))
 }
 
+/*
+Direct access to the world's physics 2D space state. Used for querying current and potential collisions. When using multi-threaded physics, access is limited to [Node.PhysicsProcess] in the main thread.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+*/
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {
 	return PhysicsDirectSpaceState2D.Instance(class(self).GetDirectSpaceState())
 }

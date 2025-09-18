@@ -609,10 +609,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets a hint to be used for lightmap resolution.
+*/
 func (self Instance) LightmapSizeHint() Vector2i.XY {
 	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
+// SetLightmapSizeHint sets the property returned by [GetLightmapSizeHint].
 func (self Instance) SetLightmapSizeHint(value Vector2i.XY) {
 	class(self).SetLightmapSizeHint(Vector2i.XY(value))
 }

@@ -642,34 +642,59 @@ func New() Instance {
 	return casted
 }
 
+/*
+Multiplies the 3D position track animation.
+
+Note: Unless this value is 1.0, the key value in animation will not match the actual position value.
+*/
 func (self Instance) MotionScale() Float.X {
 	return Float.X(Float.X(class(self).GetMotionScale()))
 }
 
+// SetMotionScale sets the property returned by [GetMotionScale].
 func (self Instance) SetMotionScale(value Float.X) {
 	class(self).SetMotionScale(float64(value))
 }
 
+/*
+If true, forces the bones in their default rest pose, regardless of their values. In the editor, this also prevents the bones from being edited.
+*/
 func (self Instance) ShowRestOnly() bool {
 	return bool(class(self).IsShowRestOnly())
 }
 
+// SetShowRestOnly sets the property returned by [IsShowRestOnly].
 func (self Instance) SetShowRestOnly(value bool) {
 	class(self).SetShowRestOnly(value)
 }
 
+/*
+Sets the processing timing for the Modifier.
+*/
 func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess {
 	return ModifierCallbackModeProcess(class(self).GetModifierCallbackModeProcess())
 }
 
+// SetModifierCallbackModeProcess sets the property returned by [GetModifierCallbackModeProcess].
 func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) {
 	class(self).SetModifierCallbackModeProcess(value)
 }
 
+/*
+If you follow the recommended workflow and explicitly have [PhysicalBoneSimulator3D] as a child of [Skeleton3D], you can control whether it is affected by raycasting without running [PhysicalBonesStartSimulation], by its [SkeletonModifier3D.Active].
+
+However, for old (deprecated) configurations, [Skeleton3D] has an internal virtual [PhysicalBoneSimulator3D] for compatibility. This property controls the internal virtual [PhysicalBoneSimulator3D]'s [SkeletonModifier3D.Active].
+
+[PhysicalBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBoneSimulator3D
+[PhysicalBonesStartSimulation]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.PhysicalBonesStartSimulation
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+[SkeletonModifier3D.Active]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Active
+*/
 func (self Instance) AnimatePhysicalBones() bool {
 	return bool(class(self).GetAnimatePhysicalBones())
 }
 
+// SetAnimatePhysicalBones sets the property returned by [GetAnimatePhysicalBones].
 func (self Instance) SetAnimatePhysicalBones(value bool) {
 	class(self).SetAnimatePhysicalBones(value)
 }
@@ -1253,6 +1278,10 @@ Works just like the [RigidBody3D] node.
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }
+
+/*
+Emitted when the rest is updated.
+*/
 func (self Instance) OnRestUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1265,6 +1294,13 @@ func (self class) RestUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RestUpdated`))))
 }
 
+/*
+Emitted when the pose is updated.
+
+Note: During the update process, this signal is not fired, so modification by [SkeletonModifier3D] is not detected.
+
+[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
+*/
 func (self Instance) OnPoseUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1277,6 +1313,14 @@ func (self class) PoseUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseUpdated`))))
 }
 
+/*
+Emitted when the final pose has been calculated will be applied to the skin in the update process.
+
+This means that all [SkeletonModifier3D] processing is complete. In order to detect the completion of the processing of each [SkeletonModifier3D], use [OnSkeletonmodifier3d.ModificationProcessed].
+
+[OnSkeletonmodifier3d.ModificationProcessed]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.OnSkeletonmodifier3d.ModificationProcessed
+[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
+*/
 func (self Instance) OnSkeletonUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1289,6 +1333,12 @@ func (self class) SkeletonUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SkeletonUpdated`))))
 }
 
+/*
+Emitted when the bone at 'bone_idx' is toggled with [SetBoneEnabled]. Use [IsBoneEnabled] to check the new value.
+
+[IsBoneEnabled]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.IsBoneEnabled
+[SetBoneEnabled]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBoneEnabled
+*/
 func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1301,6 +1351,14 @@ func (self class) BoneEnabledChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneEnabledChanged`))))
 }
 
+/*
+Emitted when the list of bones changes, such as when calling [AddBone], [SetBoneParent], [UnparentBoneAndRest], or [ClearBones].
+
+[AddBone]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.AddBone
+[ClearBones]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.ClearBones
+[SetBoneParent]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBoneParent
+[UnparentBoneAndRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.UnparentBoneAndRest
+*/
 func (self Instance) OnBoneListChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1313,6 +1371,11 @@ func (self class) BoneListChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneListChanged`))))
 }
 
+/*
+Emitted when the value of [ShowRestOnly] changes.
+
+[ShowRestOnly]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.ShowRestOnly
+*/
 func (self Instance) OnShowRestOnlyChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

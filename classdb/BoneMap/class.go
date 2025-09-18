@@ -179,10 +179,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [SkeletonProfile] of the mapping target. Key names in the [BoneMap] are synchronized with it.
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+[SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
+*/
 func (self Instance) Profile() SkeletonProfile.Instance {
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
+// SetProfile sets the property returned by [GetProfile].
 func (self Instance) SetProfile(value SkeletonProfile.Instance) {
 	class(self).SetProfile(value)
 }
@@ -235,6 +242,12 @@ func (self class) FindProfileBoneName(skeleton_bone_name String.Name) String.Nam
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
+
+/*
+This signal is emitted when change the key value in the [BoneMap]. This is used to validate mapping and to update [BoneMap] editor.
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+*/
 func (self Instance) OnBoneMapUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -247,6 +260,11 @@ func (self class) BoneMapUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneMapUpdated`))))
 }
 
+/*
+This signal is emitted when change the value in profile or change the reference of profile. This is used to update key names in the [BoneMap] and to redraw the [BoneMap] editor.
+
+[BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
+*/
 func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

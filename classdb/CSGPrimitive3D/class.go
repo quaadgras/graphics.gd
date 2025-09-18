@@ -151,10 +151,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If set, the order of the vertices in each triangle are reversed resulting in the backside of the mesh being drawn.
+*/
 func (self Instance) FlipFaces() bool {
 	return bool(class(self).GetFlipFaces())
 }
 
+// SetFlipFaces sets the property returned by [GetFlipFaces].
 func (self Instance) SetFlipFaces(value bool) {
 	class(self).SetFlipFaces(value)
 }

@@ -148,26 +148,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+The pitch scale to use. 1.0 is the default pitch and plays sounds unaffected. [PitchScale] can range from 0.0 (infinitely low pitch, inaudible) to 16 (16 times higher than the initial pitch).
+
+[PitchScale]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectPitchShift#Instance.PitchScale
+*/
 func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
+// SetPitchScale sets the property returned by [GetPitchScale].
 func (self Instance) SetPitchScale(value Float.X) {
 	class(self).SetPitchScale(float64(value))
 }
 
+/*
+The oversampling factor to use. Higher values result in better quality, but are more demanding on the CPU and may cause audio cracking if the CPU can't keep up.
+*/
 func (self Instance) Oversampling() int {
 	return int(int(class(self).GetOversampling()))
 }
 
+// SetOversampling sets the property returned by [GetOversampling].
 func (self Instance) SetOversampling(value int) {
 	class(self).SetOversampling(int64(value))
 }
 
+/*
+The size of the [Fast Fourier transform] buffer. Higher values smooth out the effect over time, but have greater latency. The effects of this higher latency are especially noticeable on sounds that have sudden amplitude changes.
+
+[Fast Fourier transform]: https://en.wikipedia.org/wiki/Fast_Fourier_transform
+*/
 func (self Instance) FftSize() FFTSize {
 	return FFTSize(class(self).GetFftSize())
 }
 
+// SetFftSize sets the property returned by [GetFftSize].
 func (self Instance) SetFftSize(value FFTSize) {
 	class(self).SetFftSize(value)
 }

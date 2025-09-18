@@ -222,10 +222,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The shape's custom solver bias. Defines how much bodies react to enforce contact separation when this shape is involved.
+
+When set to 0, the default value from [ProjectSettings] "physics/2d/solver/default_contact_bias" is used.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) CustomSolverBias() Float.X {
 	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
+// SetCustomSolverBias sets the property returned by [GetCustomSolverBias].
 func (self Instance) SetCustomSolverBias(value Float.X) {
 	class(self).SetCustomSolverBias(float64(value))
 }

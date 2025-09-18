@@ -234,10 +234,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The number of [PhysicalBone2D] nodes linked in this modification.
+
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+*/
 func (self Instance) PhysicalBoneChainLength() int {
 	return int(int(class(self).GetPhysicalBoneChainLength()))
 }
 
+// SetPhysicalBoneChainLength sets the property returned by [GetPhysicalBoneChainLength].
 func (self Instance) SetPhysicalBoneChainLength(value int) {
 	class(self).SetPhysicalBoneChainLength(int64(value))
 }

@@ -154,42 +154,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+The radius of the sphere.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The central horizontal angle of the sphere. Used to set the width.
+*/
 func (self Instance) CentralHorizontalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetCentralHorizontalAngle()))
 }
 
+// SetCentralHorizontalAngle sets the property returned by [GetCentralHorizontalAngle].
 func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) {
 	class(self).SetCentralHorizontalAngle(float64(value))
 }
 
+/*
+The upper vertical angle of the sphere. Used (together with [LowerVerticalAngle]) to set the height.
+
+[LowerVerticalAngle]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayerEquirect#Instance.LowerVerticalAngle
+*/
 func (self Instance) UpperVerticalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetUpperVerticalAngle()))
 }
 
+// SetUpperVerticalAngle sets the property returned by [GetUpperVerticalAngle].
 func (self Instance) SetUpperVerticalAngle(value Angle.Radians) {
 	class(self).SetUpperVerticalAngle(float64(value))
 }
 
+/*
+The lower vertical angle of the sphere. Used (together with [UpperVerticalAngle]) to set the height.
+
+[UpperVerticalAngle]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayerEquirect#Instance.UpperVerticalAngle
+*/
 func (self Instance) LowerVerticalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetLowerVerticalAngle()))
 }
 
+// SetLowerVerticalAngle sets the property returned by [GetLowerVerticalAngle].
 func (self Instance) SetLowerVerticalAngle(value Angle.Radians) {
 	class(self).SetLowerVerticalAngle(float64(value))
 }
 
+/*
+The number of segments to use in the fallback mesh.
+*/
 func (self Instance) FallbackSegments() int {
 	return int(int(class(self).GetFallbackSegments()))
 }
 
+// SetFallbackSegments sets the property returned by [GetFallbackSegments].
 func (self Instance) SetFallbackSegments(value int) {
 	class(self).SetFallbackSegments(int64(value))
 }

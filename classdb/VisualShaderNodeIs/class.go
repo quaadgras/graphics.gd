@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The comparison function.
+*/
 func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
+// SetFunction sets the property returned by [GetFunction].
 func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }

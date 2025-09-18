@@ -251,6 +251,10 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
+
+/*
+Emitted if a preview was invalidated (changed). 'path' corresponds to the path of the preview.
+*/
 func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

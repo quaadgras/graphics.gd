@@ -154,6 +154,7 @@ func (self Instance) InputBufferMaxSize() int {
 	return int(int(class(self).GetInputBufferMaxSize()))
 }
 
+// SetInputBufferMaxSize sets the property returned by [GetInputBufferMaxSize].
 func (self Instance) SetInputBufferMaxSize(value int) {
 	class(self).SetInputBufferMaxSize(int64(value))
 }
@@ -162,14 +163,21 @@ func (self Instance) OutputBufferMaxSize() int {
 	return int(int(class(self).GetOutputBufferMaxSize()))
 }
 
+// SetOutputBufferMaxSize sets the property returned by [GetOutputBufferMaxSize].
 func (self Instance) SetOutputBufferMaxSize(value int) {
 	class(self).SetOutputBufferMaxSize(int64(value))
 }
 
+/*
+The wrapped [StreamPeer] object.
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
+*/
 func (self Instance) StreamPeer() StreamPeer.Instance {
 	return StreamPeer.Instance(class(self).GetStreamPeer())
 }
 
+// SetStreamPeer sets the property returned by [GetStreamPeer].
 func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 	class(self).SetStreamPeer(value)
 }

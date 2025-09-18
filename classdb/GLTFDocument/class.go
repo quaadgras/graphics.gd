@@ -348,50 +348,87 @@ func New() Instance {
 	return casted
 }
 
+/*
+The user-friendly name of the export image format. This is used when exporting the glTF file, including writing to a file and writing to a byte array.
+
+By default, Godot allows the following options: "None", "PNG", "JPEG", "Lossless WebP", and "Lossy WebP". Support for more image formats can be added in [GLTFDocumentExtension] classes. A single extension class can provide multiple options for the specific format to use, or even an option that uses multiple formats at once.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+*/
 func (self Instance) ImageFormat() string {
 	return string(class(self).GetImageFormat().String())
 }
 
+// SetImageFormat sets the property returned by [GetImageFormat].
 func (self Instance) SetImageFormat(value string) {
 	class(self).SetImageFormat(String.New(value))
 }
 
+/*
+If [ImageFormat] is a lossy image format, this determines the lossy quality of the image. On a range of 0.0 to 1.0, where 0.0 is the lowest quality and 1.0 is the highest quality. A lossy quality of 1.0 is not the same as lossless.
+
+[ImageFormat]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.ImageFormat
+*/
 func (self Instance) LossyQuality() Float.X {
 	return Float.X(Float.X(class(self).GetLossyQuality()))
 }
 
+// SetLossyQuality sets the property returned by [GetLossyQuality].
 func (self Instance) SetLossyQuality(value Float.X) {
 	class(self).SetLossyQuality(float64(value))
 }
 
+/*
+The user-friendly name of the fallback image format. This is used when exporting the glTF file, including writing to a file and writing to a byte array.
+
+This property may only be one of "None", "PNG", or "JPEG", and is only used when the [ImageFormat] is not one of "None", "PNG", or "JPEG". If having multiple extension image formats is desired, that can be done using a [GLTFDocumentExtension] class - this property only covers the use case of providing a base glTF fallback image when using a custom image format.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[ImageFormat]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.ImageFormat
+*/
 func (self Instance) FallbackImageFormat() string {
 	return string(class(self).GetFallbackImageFormat().String())
 }
 
+// SetFallbackImageFormat sets the property returned by [GetFallbackImageFormat].
 func (self Instance) SetFallbackImageFormat(value string) {
 	class(self).SetFallbackImageFormat(String.New(value))
 }
 
+/*
+The quality of the fallback image, if any. For PNG files, this downscales the image on both dimensions by this factor. For JPEG files, this is the lossy quality of the image. A low value is recommended, since including multiple high quality images in a glTF file defeats the file size gains of using a more efficient image format.
+*/
 func (self Instance) FallbackImageQuality() Float.X {
 	return Float.X(Float.X(class(self).GetFallbackImageQuality()))
 }
 
+// SetFallbackImageQuality sets the property returned by [GetFallbackImageQuality].
 func (self Instance) SetFallbackImageQuality(value Float.X) {
 	class(self).SetFallbackImageQuality(float64(value))
 }
 
+/*
+How to process the root node during export. The default and recommended value is [RootNodeModeSingleRoot].
+
+Note: Regardless of how the glTF file is exported, when importing, the root node type and name can be overridden in the scene import settings tab.
+*/
 func (self Instance) RootNodeMode() RootNodeMode {
 	return RootNodeMode(class(self).GetRootNodeMode())
 }
 
+// SetRootNodeMode sets the property returned by [GetRootNodeMode].
 func (self Instance) SetRootNodeMode(value RootNodeMode) {
 	class(self).SetRootNodeMode(value)
 }
 
+/*
+How to deal with node visibility during export. This setting does nothing if all nodes are visible. The default and recommended value is [VisibilityModeIncludeRequired], which uses the KHR_node_visibility extension.
+*/
 func (self Instance) VisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
+// SetVisibilityMode sets the property returned by [GetVisibilityMode].
 func (self Instance) SetVisibilityMode(value VisibilityMode) {
 	class(self).SetVisibilityMode(value)
 }

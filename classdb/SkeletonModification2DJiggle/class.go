@@ -331,58 +331,88 @@ func New() Instance {
 	return casted
 }
 
+/*
+The NodePath to the node that is the target for the Jiggle modification. This node is what the Jiggle chain will attempt to rotate the bone chain to.
+*/
 func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNodepath sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The amount of Jiggle joints in the Jiggle modification.
+*/
 func (self Instance) JiggleDataChainLength() int {
 	return int(int(class(self).GetJiggleDataChainLength()))
 }
 
+// SetJiggleDataChainLength sets the property returned by [GetJiggleDataChainLength].
 func (self Instance) SetJiggleDataChainLength(value int) {
 	class(self).SetJiggleDataChainLength(int64(value))
 }
 
+/*
+The default amount of stiffness assigned to the Jiggle joints, if they are not overridden. Higher values act more like springs, quickly moving into the correct position.
+*/
 func (self Instance) Stiffness() Float.X {
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
+// SetStiffness sets the property returned by [GetStiffness].
 func (self Instance) SetStiffness(value Float.X) {
 	class(self).SetStiffness(float64(value))
 }
 
+/*
+The default amount of mass assigned to the Jiggle joints, if they are not overridden. Higher values lead to faster movements and more overshooting.
+*/
 func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
+// SetMass sets the property returned by [GetMass].
 func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(float64(value))
 }
 
+/*
+The default amount of damping applied to the Jiggle joints, if they are not overridden. Higher values lead to more of the calculated velocity being applied.
+*/
 func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
+// SetDamping sets the property returned by [GetDamping].
 func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(float64(value))
 }
 
+/*
+Whether the gravity vector, [Gravity], should be applied to the Jiggle joints, assuming they are not overriding the default settings.
+
+[Gravity]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2DJiggle#Instance.Gravity
+*/
 func (self Instance) UseGravity() bool {
 	return bool(class(self).GetUseGravity())
 }
 
+// SetUseGravity sets the property returned by [GetUseGravity].
 func (self Instance) SetUseGravity(value bool) {
 	class(self).SetUseGravity(value)
 }
 
+/*
+The default amount of gravity applied to the Jiggle joints, if they are not overridden.
+*/
 func (self Instance) Gravity() Vector2.XY {
 	return Vector2.XY(class(self).GetGravity())
 }
 
+// SetGravity sets the property returned by [GetGravity].
 func (self Instance) SetGravity(value Vector2.XY) {
 	class(self).SetGravity(Vector2.XY(value))
 }

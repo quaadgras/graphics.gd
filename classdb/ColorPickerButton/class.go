@@ -187,26 +187,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+The currently selected color.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetPickColor())
 }
 
+// SetColor sets the property returned by [GetPickColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetPickColor(Color.RGBA(value))
 }
 
+/*
+If true, the alpha channel in the displayed [ColorPicker] will be visible.
+
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+*/
 func (self Instance) EditAlpha() bool {
 	return bool(class(self).IsEditingAlpha())
 }
 
+// SetEditAlpha sets the property returned by [IsEditingAlpha].
 func (self Instance) SetEditAlpha(value bool) {
 	class(self).SetEditAlpha(value)
 }
 
+/*
+If true, the intensity slider in the displayed [ColorPicker] will be visible.
+
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+*/
 func (self Instance) EditIntensity() bool {
 	return bool(class(self).IsEditingIntensity())
 }
 
+// SetEditIntensity sets the property returned by [IsEditingIntensity].
 func (self Instance) SetEditIntensity(value bool) {
 	class(self).SetEditIntensity(value)
 }
@@ -276,6 +292,10 @@ func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the color changes.
+*/
 func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -288,6 +308,11 @@ func (self class) ColorChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColorChanged`))))
 }
 
+/*
+Emitted when the [ColorPicker] is closed.
+
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+*/
 func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -300,6 +325,11 @@ func (self class) PopupClosed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupClosed`))))
 }
 
+/*
+Emitted when the [ColorPicker] is created (the button is pressed for the first time).
+
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+*/
 func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

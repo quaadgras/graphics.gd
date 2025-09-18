@@ -169,18 +169,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+The VisibleOnScreenNotifier2D's bounding rectangle.
+*/
 func (self Instance) Rect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
+// SetRect sets the property returned by [GetRect].
 func (self Instance) SetRect(value Rect2.PositionSize) {
 	class(self).SetRect(Rect2.PositionSize(value))
 }
 
+/*
+If true, shows the rectangle area of [Rect] in the editor with a translucent magenta fill. Unlike changing the visibility of the VisibleOnScreenNotifier2D, this does not affect the screen culling detection.
+
+[Rect]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D#Instance.Rect
+*/
 func (self Instance) ShowRect() bool {
 	return bool(class(self).IsShowingRect())
 }
 
+// SetShowRect sets the property returned by [IsShowingRect].
 func (self Instance) SetShowRect(value bool) {
 	class(self).SetShowRect(value)
 }
@@ -222,6 +232,10 @@ func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_scree
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the VisibleOnScreenNotifier2D enters the screen.
+*/
 func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -234,6 +248,9 @@ func (self class) ScreenEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScreenEntered`))))
 }
 
+/*
+Emitted when the VisibleOnScreenNotifier2D exits the screen.
+*/
 func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

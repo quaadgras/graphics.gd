@@ -261,6 +261,10 @@ func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+
+/*
+Emitted when the selection changes.
+*/
 func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

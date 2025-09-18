@@ -918,18 +918,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The constant force that always affected bones. It is equal to the result when the parent [Skeleton3D] moves at this speed in the opposite direction.
+
+This is useful for effects such as wind and anti-gravity.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) ExternalForce() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetExternalForce())
 }
 
+// SetExternalForce sets the property returned by [GetExternalForce].
 func (self Instance) SetExternalForce(value Vector3.XYZ) {
 	class(self).SetExternalForce(Vector3.XYZ(value))
 }
 
+/*
+The number of settings.
+*/
 func (self Instance) SettingCount() int {
 	return int(int(class(self).GetSettingCount()))
 }
 
+// SetSettingCount sets the property returned by [GetSettingCount].
 func (self Instance) SetSettingCount(value int) {
 	class(self).SetSettingCount(int64(value))
 }

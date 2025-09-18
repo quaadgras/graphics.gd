@@ -196,10 +196,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The base compilation error message, which indicates errors not related to a specific shader stage if non-empty. If empty, shader compilation is not necessarily successful (check [RDShaderSPIRV]'s error message members).
+
+[RDShaderSPIRV]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV
+*/
 func (self Instance) BaseError() string {
 	return string(class(self).GetBaseError().String())
 }
 
+// SetBaseError sets the property returned by [GetBaseError].
 func (self Instance) SetBaseError(value string) {
 	class(self).SetBaseError(String.New(value))
 }

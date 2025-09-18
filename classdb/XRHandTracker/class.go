@@ -234,18 +234,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the hand tracking data is valid.
+*/
 func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
+// SetHasTrackingData sets the property returned by [GetHasTrackingData].
 func (self Instance) SetHasTrackingData(value bool) {
 	class(self).SetHasTrackingData(value)
 }
 
+/*
+The source of the hand tracking data.
+*/
 func (self Instance) HandTrackingSource() HandTrackingSource {
 	return HandTrackingSource(class(self).GetHandTrackingSource())
 }
 
+// SetHandTrackingSource sets the property returned by [GetHandTrackingSource].
 func (self Instance) SetHandTrackingSource(value HandTrackingSource) {
 	class(self).SetHandTrackingSource(value)
 }

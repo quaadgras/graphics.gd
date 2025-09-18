@@ -153,42 +153,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Defines the type of data provided by the source texture.
+*/
 func (self Instance) TextureType() TextureType {
 	return TextureType(class(self).GetTextureType())
 }
 
+// SetTextureType sets the property returned by [GetTextureType].
 func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }
 
+/*
+Sets the default color if no texture is assigned to the uniform.
+*/
 func (self Instance) ColorDefault() ColorDefault {
 	return ColorDefault(class(self).GetColorDefault())
 }
 
+// SetColorDefault sets the property returned by [GetColorDefault].
 func (self Instance) SetColorDefault(value ColorDefault) {
 	class(self).SetColorDefault(value)
 }
 
+/*
+Sets the texture filtering mode.
+*/
 func (self Instance) TextureFilter() TextureFilter {
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
+// SetTextureFilter sets the property returned by [GetTextureFilter].
 func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
+/*
+Sets the texture repeating mode.
+*/
 func (self Instance) TextureRepeat() TextureRepeat {
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
+// SetTextureRepeat sets the property returned by [GetTextureRepeat].
 func (self Instance) SetTextureRepeat(value TextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
+/*
+Sets the texture source mode. Used for reading from the screen, depth, or normal_roughness texture.
+*/
 func (self Instance) TextureSource() TextureSource {
 	return TextureSource(class(self).GetTextureSource())
 }
 
+// SetTextureSource sets the property returned by [GetTextureSource].
 func (self Instance) SetTextureSource(value TextureSource) {
 	class(self).SetTextureSource(value)
 }

@@ -156,50 +156,87 @@ func New() Instance {
 	return casted
 }
 
+/*
+The number of MSAA samples (or SSAA samples if [EnableSampleShading] is true) to perform. Higher values result in better antialiasing, at the cost of performance.
+
+[EnableSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.EnableSampleShading
+*/
 func (self Instance) SampleCount() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSampleCount())
 }
 
+// SetSampleCount sets the property returned by [GetSampleCount].
 func (self Instance) SetSampleCount(value Rendering.TextureSamples) {
 	class(self).SetSampleCount(value)
 }
 
+/*
+If true, enables per-sample shading which replaces MSAA by SSAA. This provides higher quality antialiasing that works with transparent (alpha scissor) edges. This has a very high performance cost. See also [MinSampleShading]. See the [per-sample shading Vulkan documentation] for more details.
+
+[MinSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.MinSampleShading
+[per-sample shading Vulkan documentation]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#primsrast-sampleshading
+*/
 func (self Instance) EnableSampleShading() bool {
 	return bool(class(self).GetEnableSampleShading())
 }
 
+// SetEnableSampleShading sets the property returned by [GetEnableSampleShading].
 func (self Instance) SetEnableSampleShading(value bool) {
 	class(self).SetEnableSampleShading(value)
 }
 
+/*
+The multiplier of [SampleCount] that determines how many samples are performed for each fragment. Must be between 0.0 and 1.0 (inclusive). Only effective if [EnableSampleShading] is true. If [MinSampleShading] is 1.0, fragment invocation must only read from the coverage index sample. Tile image access must not be used if [EnableSampleShading] is not 1.0.
+
+[EnableSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.EnableSampleShading
+[MinSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.MinSampleShading
+[SampleCount]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.SampleCount
+*/
 func (self Instance) MinSampleShading() Float.X {
 	return Float.X(Float.X(class(self).GetMinSampleShading()))
 }
 
+// SetMinSampleShading sets the property returned by [GetMinSampleShading].
 func (self Instance) SetMinSampleShading(value Float.X) {
 	class(self).SetMinSampleShading(float64(value))
 }
 
+/*
+If true, alpha to coverage is enabled. This generates a temporary coverage value based on the alpha component of the fragment's first color output. This allows alpha transparency to make use of multisample antialiasing.
+*/
 func (self Instance) EnableAlphaToCoverage() bool {
 	return bool(class(self).GetEnableAlphaToCoverage())
 }
 
+// SetEnableAlphaToCoverage sets the property returned by [GetEnableAlphaToCoverage].
 func (self Instance) SetEnableAlphaToCoverage(value bool) {
 	class(self).SetEnableAlphaToCoverage(value)
 }
 
+/*
+If true, alpha is forced to either 0.0 or 1.0. This allows hardening the edges of antialiased alpha transparencies. Only relevant if [EnableAlphaToCoverage] is true.
+
+[EnableAlphaToCoverage]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.EnableAlphaToCoverage
+*/
 func (self Instance) EnableAlphaToOne() bool {
 	return bool(class(self).GetEnableAlphaToOne())
 }
 
+// SetEnableAlphaToOne sets the property returned by [GetEnableAlphaToOne].
 func (self Instance) SetEnableAlphaToOne(value bool) {
 	class(self).SetEnableAlphaToOne(value)
 }
 
+/*
+The sample mask array. See the [sample mask Vulkan documentation] for more details.
+
+[sample mask Vulkan documentation]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#fragops-samplemask
+*/
 func (self Instance) SampleMasks() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetSampleMasks())))
 }
 
+// SetSampleMasks sets the property returned by [GetSampleMasks].
 func (self Instance) SetSampleMasks(value []int) {
 	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[int64]](value))
 }

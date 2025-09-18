@@ -411,6 +411,10 @@ func (self class) RenderModelGetAnimatableNodeTransform(render_model RID.Any, in
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
+
+/*
+Emitted when a new render model is added.
+*/
 func (self Instance) OnRenderModelAdded(cb func(render_model RID.Any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -423,6 +427,9 @@ func (self class) RenderModelAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelAdded`))))
 }
 
+/*
+Emitted when a render model is removed.
+*/
 func (self Instance) OnRenderModelRemoved(cb func(render_model RID.Any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -435,6 +442,9 @@ func (self class) RenderModelRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelRemoved`))))
 }
 
+/*
+Emitted when the top level path associated with a render model changed.
+*/
 func (self Instance) OnRenderModelTopLevelPathChanged(cb func(render_model RID.Any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

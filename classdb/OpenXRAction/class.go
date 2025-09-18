@@ -155,26 +155,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The localized description of this action.
+*/
 func (self Instance) LocalizedName() string {
 	return string(class(self).GetLocalizedName().String())
 }
 
+// SetLocalizedName sets the property returned by [GetLocalizedName].
 func (self Instance) SetLocalizedName(value string) {
 	class(self).SetLocalizedName(String.New(value))
 }
 
+/*
+The type of action.
+*/
 func (self Instance) ActionType() ActionType {
 	return ActionType(class(self).GetActionType())
 }
 
+// SetActionType sets the property returned by [GetActionType].
 func (self Instance) SetActionType(value ActionType) {
 	class(self).SetActionType(value)
 }
 
+/*
+A collections of toplevel paths to which this action can be bound.
+*/
 func (self Instance) ToplevelPaths() []string {
 	return []string(class(self).GetToplevelPaths().Strings())
 }
 
+// SetToplevelPaths sets the property returned by [GetToplevelPaths].
 func (self Instance) SetToplevelPaths(value []string) {
 	class(self).SetToplevelPaths(Packed.MakeStrings(value...))
 }

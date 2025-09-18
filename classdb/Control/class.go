@@ -2170,366 +2170,713 @@ func New() Instance {
 	return casted
 }
 
+/*
+Enables whether rendering of [CanvasItem] based children should be clipped to this control's rectangle. If true, parts of a child which would be visibly outside of this control's rectangle will not be rendered and won't receive input.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) ClipContents() bool {
 	return bool(class(self).IsClippingContents())
 }
 
+// SetClipContents sets the property returned by [IsClippingContents].
 func (self Instance) SetClipContents(value bool) {
 	class(self).SetClipContents(value)
 }
 
+/*
+The minimum size of the node's bounding rectangle. If you set it to a value greater than (0, 0), the node's bounding rectangle will always have at least this size. Note that [Control] nodes have their internal minimum size returned by [GetMinimumSize]. It depends on the control's contents, like text, textures, or style boxes. The actual minimum size is the maximum value of this property and the internal minimum size (see [GetCombinedMinimumSize]).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
+[GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
+*/
 func (self Instance) CustomMinimumSize() Vector2.XY {
 	return Vector2.XY(class(self).GetCustomMinimumSize())
 }
 
+// SetCustomMinimumSize sets the property returned by [GetCustomMinimumSize].
 func (self Instance) SetCustomMinimumSize(value Vector2.XY) {
 	class(self).SetCustomMinimumSize(Vector2.XY(value))
 }
 
+/*
+Controls layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew). See also [IsLayoutRtl].
+
+[IsLayoutRtl]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.IsLayoutRtl
+*/
 func (self Instance) LayoutDirection() LayoutDirection {
 	return LayoutDirection(class(self).GetLayoutDirection())
 }
 
+// SetLayoutDirection sets the property returned by [GetLayoutDirection].
 func (self Instance) SetLayoutDirection(value LayoutDirection) {
 	class(self).SetLayoutDirection(value)
 }
 
+/*
+Anchors the left edge of the node to the origin, the center or the end of its parent control. It changes how the left offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
+*/
 func (self Instance) AnchorLeft() Float.X {
 	return Float.X(Float.X(class(self).GetAnchor(0)))
 }
 
+/*
+Anchors the top edge of the node to the origin, the center or the end of its parent control. It changes how the top offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
+*/
 func (self Instance) AnchorTop() Float.X {
 	return Float.X(Float.X(class(self).GetAnchor(1)))
 }
 
+/*
+Anchors the right edge of the node to the origin, the center or the end of its parent control. It changes how the right offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
+*/
 func (self Instance) AnchorRight() Float.X {
 	return Float.X(Float.X(class(self).GetAnchor(2)))
 }
 
+/*
+Anchors the bottom edge of the node to the origin, the center, or the end of its parent control. It changes how the bottom offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
+*/
 func (self Instance) AnchorBottom() Float.X {
 	return Float.X(Float.X(class(self).GetAnchor(3)))
 }
 
+/*
+Distance between the node's left edge and its parent control, based on [AnchorLeft].
+
+Offsets are often controlled by one or multiple parent [Container] nodes, so you should not modify them manually if your node is a direct child of a [Container]. Offsets update automatically when you move or resize the node.
+
+[AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) OffsetLeft() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(0)))
 }
 
+// SetOffsetLeft sets the property returned by [GetOffset].
 func (self Instance) SetOffsetLeft(value Float.X) {
 	class(self).SetOffset(0, float64(value))
 }
 
+/*
+Distance between the node's top edge and its parent control, based on [AnchorTop].
+
+Offsets are often controlled by one or multiple parent [Container] nodes, so you should not modify them manually if your node is a direct child of a [Container]. Offsets update automatically when you move or resize the node.
+
+[AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) OffsetTop() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(1)))
 }
 
+// SetOffsetTop sets the property returned by [GetOffset].
 func (self Instance) SetOffsetTop(value Float.X) {
 	class(self).SetOffset(1, float64(value))
 }
 
+/*
+Distance between the node's right edge and its parent control, based on [AnchorRight].
+
+Offsets are often controlled by one or multiple parent [Container] nodes, so you should not modify them manually if your node is a direct child of a [Container]. Offsets update automatically when you move or resize the node.
+
+[AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) OffsetRight() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(2)))
 }
 
+// SetOffsetRight sets the property returned by [GetOffset].
 func (self Instance) SetOffsetRight(value Float.X) {
 	class(self).SetOffset(2, float64(value))
 }
 
+/*
+Distance between the node's bottom edge and its parent control, based on [AnchorBottom].
+
+Offsets are often controlled by one or multiple parent [Container] nodes, so you should not modify them manually if your node is a direct child of a [Container]. Offsets update automatically when you move or resize the node.
+
+[AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) OffsetBottom() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(3)))
 }
 
+// SetOffsetBottom sets the property returned by [GetOffset].
 func (self Instance) SetOffsetBottom(value Float.X) {
 	class(self).SetOffset(3, float64(value))
 }
 
+/*
+Controls the direction on the horizontal axis in which the control should grow if its horizontal minimum size is changed to be greater than its current size, as the control always has to be at least the minimum size.
+*/
 func (self Instance) GrowHorizontal() GrowDirection {
 	return GrowDirection(class(self).GetHGrowDirection())
 }
 
+// SetGrowHorizontal sets the property returned by [GetHGrowDirection].
 func (self Instance) SetGrowHorizontal(value GrowDirection) {
 	class(self).SetHGrowDirection(value)
 }
 
+/*
+Controls the direction on the vertical axis in which the control should grow if its vertical minimum size is changed to be greater than its current size, as the control always has to be at least the minimum size.
+*/
 func (self Instance) GrowVertical() GrowDirection {
 	return GrowDirection(class(self).GetVGrowDirection())
 }
 
+// SetGrowVertical sets the property returned by [GetVGrowDirection].
 func (self Instance) SetGrowVertical(value GrowDirection) {
 	class(self).SetVGrowDirection(value)
 }
 
+/*
+The size of the node's bounding rectangle, in the node's coordinate system. [Container] nodes update this property automatically.
+
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) Size() Vector2.XY {
 	return Vector2.XY(class(self).GetSize())
 }
 
+/*
+The node's position, relative to its containing node. It corresponds to the rectangle's top-left corner. The property is not affected by [PivotOffset].
+
+[PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+/*
+The node's global position, relative to the world (usually to the [CanvasLayer]).
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+*/
 func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
+/*
+The node's rotation around its pivot, in radians. See [PivotOffset] to change the pivot's position.
+
+Note: This property is edited in the inspector in degrees. If you want to use degrees in a script, use [RotationDegrees].
+
+[PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
+[RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RotationDegrees
+*/
 func (self Instance) Rotation() Float.X {
 	return Float.X(Float.X(class(self).GetRotation()))
 }
 
+// SetRotation sets the property returned by [GetRotation].
 func (self Instance) SetRotation(value Float.X) {
 	class(self).SetRotation(float64(value))
 }
 
+/*
+Helper property to access [Rotation] in degrees instead of radians.
+
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Rotation
+*/
 func (self Instance) RotationDegrees() Float.X {
 	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
+// SetRotationDegrees sets the property returned by [GetRotationDegrees].
 func (self Instance) SetRotationDegrees(value Float.X) {
 	class(self).SetRotationDegrees(float64(value))
 }
 
+/*
+The node's scale, relative to its [Size]. Change this property to scale the node around its [PivotOffset]. The Control's tooltip will also scale according to this value.
+
+Note: This property is mainly intended to be used for animation purposes. To support multiple resolutions in your project, use an appropriate viewport stretch mode as described in the [documentation] instead of scaling Controls individually.
+
+Note: [FontFile.Oversampling] does not take [Control] [Scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [ProjectSettings] "gui/theme/default_font_multichannel_signed_distance_field" (applies to the default project font only), or enabling Multichannel Signed Distance Field in the import options of a DynamicFont for custom fonts. On system fonts, [SystemFont.MultichannelSignedDistanceField] can be enabled in the inspector.
+
+Note: If the Control node is a child of a [Container] node, the scale will be reset to Vector2(1, 1) when the scene is instantiated. To set the Control's scale when it's instantiated, wait for one frame using await get_tree().process_frame then set its [Scale] property.
+
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[FontFile.Oversampling]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.Oversampling
+[PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
+[SystemFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MultichannelSignedDistanceField
+[documentation]: https://docs.godotengine.org/tutorials/rendering/multiple_resolutions.html
+*/
 func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
+// SetScale sets the property returned by [GetScale].
 func (self Instance) SetScale(value Vector2.XY) {
 	class(self).SetScale(Vector2.XY(value))
 }
 
+/*
+By default, the node's pivot is its top-left corner. When you change its [Rotation] or [Scale], it will rotate or scale around this pivot. Set this property to [Size] / 2 to pivot around the Control's center.
+
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Rotation
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
+*/
 func (self Instance) PivotOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetPivotOffset())
 }
 
+// SetPivotOffset sets the property returned by [GetPivotOffset].
 func (self Instance) SetPivotOffset(value Vector2.XY) {
 	class(self).SetPivotOffset(Vector2.XY(value))
 }
 
+/*
+Tells the parent [Container] nodes how they should resize and place the node on the X axis. Use a combination of the [SizeFlags] constants to change the flags. See the constants to learn what each does.
+
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) SizeFlagsHorizontal() SizeFlags {
 	return SizeFlags(class(self).GetHSizeFlags())
 }
 
+// SetSizeFlagsHorizontal sets the property returned by [GetHSizeFlags].
 func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) {
 	class(self).SetHSizeFlags(value)
 }
 
+/*
+Tells the parent [Container] nodes how they should resize and place the node on the Y axis. Use a combination of the [SizeFlags] constants to change the flags. See the constants to learn what each does.
+
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) SizeFlagsVertical() SizeFlags {
 	return SizeFlags(class(self).GetVSizeFlags())
 }
 
+// SetSizeFlagsVertical sets the property returned by [GetVSizeFlags].
 func (self Instance) SetSizeFlagsVertical(value SizeFlags) {
 	class(self).SetVSizeFlags(value)
 }
 
+/*
+If the node and at least one of its neighbors uses the [SizeExpand] size flag, the parent [Container] will let it take more or less space depending on this property. If this node has a stretch ratio of 2 and its neighbor a ratio of 1, this node will take two thirds of the available space.
+
+[Container]: https://pkg.go.dev/graphics.gd/classdb/Container
+*/
 func (self Instance) SizeFlagsStretchRatio() Float.X {
 	return Float.X(Float.X(class(self).GetStretchRatio()))
 }
 
+// SetSizeFlagsStretchRatio sets the property returned by [GetStretchRatio].
 func (self Instance) SetSizeFlagsStretchRatio(value Float.X) {
 	class(self).SetStretchRatio(float64(value))
 }
 
+/*
+If true, automatically converts code line numbers, list indices, [SpinBox] and [ProgressBar] values from the Western Arabic (0..9) to the numeral systems used in current locale.
+
+Note: Numbers within the text are not automatically converted, it can be done manually, using [TextServer.FormatNumber].
+
+[ProgressBar]: https://pkg.go.dev/graphics.gd/classdb/ProgressBar
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+[TextServer.FormatNumber]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FormatNumber
+*/
 func (self Instance) LocalizeNumeralSystem() bool {
 	return bool(class(self).IsLocalizingNumeralSystem())
 }
 
+// SetLocalizeNumeralSystem sets the property returned by [IsLocalizingNumeralSystem].
 func (self Instance) SetLocalizeNumeralSystem(value bool) {
 	class(self).SetLocalizeNumeralSystem(value)
 }
 
+/*
+Toggles if any text should automatically change to its translated version depending on the current locale.
+*/
 func (self Instance) AutoTranslate() bool {
 	return bool(class(self).IsAutoTranslating())
 }
 
+// SetAutoTranslate sets the property returned by [IsAutoTranslating].
 func (self Instance) SetAutoTranslate(value bool) {
 	class(self).SetAutoTranslate(value)
 }
 
+/*
+The default tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the [MouseFilter] property is not [MouseFilterIgnore]. The time required for the tooltip to appear can be changed with the [ProjectSettings] "gui/timers/tooltip_delay_sec" setting.
+
+This string is the default return value of [GetTooltip]. Override [GetTooltip] to generate tooltip text dynamically. Override [MakeCustomTooltip] to customize the tooltip interface and behavior.
+
+The tooltip popup will use either a default implementation, or a custom one that you can provide by overriding [MakeCustomTooltip]. The default tooltip includes a [PopupPanel] and [Label] whose theme properties can be customized using [Theme] methods with the "TooltipPanel" and "TooltipLabel" respectively. For example:
+
+[GetTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
+[MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+[PopupPanel]: https://pkg.go.dev/graphics.gd/classdb/PopupPanel
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
+*/
 func (self Instance) TooltipText() string {
 	return string(class(self).GetTooltipText().String())
 }
 
+// SetTooltipText sets the property returned by [GetTooltipText].
 func (self Instance) SetTooltipText(value string) {
 	class(self).SetTooltipText(String.New(value))
 }
 
+/*
+Defines if tooltip text should automatically change to its translated version depending on the current locale. Uses the same auto translate mode as this control when set to [Node.AutoTranslateModeInherit].
+
+Note: Tooltips customized using [MakeCustomTooltip] do not use this auto translate mode automatically.
+
+[MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+*/
 func (self Instance) TooltipAutoTranslateMode() Node.AutoTranslateMode {
 	return Node.AutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
 }
 
+// SetTooltipAutoTranslateMode sets the property returned by [GetTooltipAutoTranslateMode].
 func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) {
 	class(self).SetTooltipAutoTranslateMode(value)
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses the left arrow on the keyboard or left on a gamepad by default. You can change the key by editing the [ProjectSettings] "input/ui_left" input action. The node must be a [Control]. If this property is not set, Godot will give focus to the closest [Control] to the left of this one.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusNeighborLeft() string {
 	return string(class(self).GetFocusNeighbor(0).String())
 }
 
+// SetFocusNeighborLeft sets the property returned by [GetFocusNeighbor].
 func (self Instance) SetFocusNeighborLeft(value string) {
 	class(self).SetFocusNeighbor(0, Path.ToNode(String.New(value)))
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses the top arrow on the keyboard or top on a gamepad by default. You can change the key by editing the [ProjectSettings] "input/ui_up" input action. The node must be a [Control]. If this property is not set, Godot will give focus to the closest [Control] to the top of this one.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusNeighborTop() string {
 	return string(class(self).GetFocusNeighbor(1).String())
 }
 
+// SetFocusNeighborTop sets the property returned by [GetFocusNeighbor].
 func (self Instance) SetFocusNeighborTop(value string) {
 	class(self).SetFocusNeighbor(1, Path.ToNode(String.New(value)))
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses the right arrow on the keyboard or right on a gamepad by default. You can change the key by editing the [ProjectSettings] "input/ui_right" input action. The node must be a [Control]. If this property is not set, Godot will give focus to the closest [Control] to the right of this one.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusNeighborRight() string {
 	return string(class(self).GetFocusNeighbor(2).String())
 }
 
+// SetFocusNeighborRight sets the property returned by [GetFocusNeighbor].
 func (self Instance) SetFocusNeighborRight(value string) {
 	class(self).SetFocusNeighbor(2, Path.ToNode(String.New(value)))
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses the down arrow on the keyboard or down on a gamepad by default. You can change the key by editing the [ProjectSettings] "input/ui_down" input action. The node must be a [Control]. If this property is not set, Godot will give focus to the closest [Control] to the bottom of this one.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusNeighborBottom() string {
 	return string(class(self).GetFocusNeighbor(3).String())
 }
 
+// SetFocusNeighborBottom sets the property returned by [GetFocusNeighbor].
 func (self Instance) SetFocusNeighborBottom(value string) {
 	class(self).SetFocusNeighbor(3, Path.ToNode(String.New(value)))
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses Tab on a keyboard by default. You can change the key by editing the [ProjectSettings] "input/ui_focus_next" input action.
+
+If this property is not set, Godot will select a "best guess" based on surrounding nodes in the scene tree.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusNext() string {
 	return string(class(self).GetFocusNext().String())
 }
 
+// SetFocusNext sets the property returned by [GetFocusNext].
 func (self Instance) SetFocusNext(value string) {
 	class(self).SetFocusNext(Path.ToNode(String.New(value)))
 }
 
+/*
+Tells Godot which node it should give focus to if the user presses Shift + Tab on a keyboard by default. You can change the key by editing the [ProjectSettings] "input/ui_focus_prev" input action.
+
+If this property is not set, Godot will select a "best guess" based on surrounding nodes in the scene tree.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FocusPrevious() string {
 	return string(class(self).GetFocusPrevious().String())
 }
 
+// SetFocusPrevious sets the property returned by [GetFocusPrevious].
 func (self Instance) SetFocusPrevious(value string) {
 	class(self).SetFocusPrevious(Path.ToNode(String.New(value)))
 }
 
+/*
+Determines which controls can be focused. Only one control can be focused at a time, and the focused control will receive keyboard, gamepad, and mouse events in [GuiInput]. Use [GetFocusModeWithOverride] to determine if a control can grab focus, since [FocusBehaviorRecursive] also affects it. See also [GrabFocus].
+
+[FocusBehaviorRecursive]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusBehaviorRecursive
+[GetFocusModeWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetFocusModeWithOverride
+[GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
+[GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+*/
 func (self Instance) FocusMode() FocusMode {
 	return FocusMode(class(self).GetFocusMode())
 }
 
+// SetFocusMode sets the property returned by [GetFocusMode].
 func (self Instance) SetFocusMode(value FocusMode) {
 	class(self).SetFocusMode(value)
 }
 
+/*
+Determines which controls can be focused together with [FocusMode]. See [GetFocusModeWithOverride]. Since the default behavior is [FocusBehaviorInherited], this can be used to prevent all children controls from getting focused.
+
+[FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
+[GetFocusModeWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetFocusModeWithOverride
+*/
 func (self Instance) FocusBehaviorRecursive() FocusBehaviorRecursive {
 	return FocusBehaviorRecursive(class(self).GetFocusBehaviorRecursive())
 }
 
+// SetFocusBehaviorRecursive sets the property returned by [GetFocusBehaviorRecursive].
 func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) {
 	class(self).SetFocusBehaviorRecursive(value)
 }
 
+/*
+Determines which controls will be able to receive mouse button input events through [GuiInput] and the [OnMouseEntered], and [OnMouseExited] signals. Also determines how these events should be propagated. See the constants to learn what each does. Use [GetMouseFilterWithOverride] to determine if a control can receive mouse input, since [MouseBehaviorRecursive] also affects it.
+
+[GetMouseFilterWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMouseFilterWithOverride
+[GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+[MouseBehaviorRecursive]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseBehaviorRecursive
+[OnMouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OnMouseEntered
+[OnMouseExited]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OnMouseExited
+*/
 func (self Instance) MouseFilter() MouseFilter {
 	return MouseFilter(class(self).GetMouseFilter())
 }
 
+// SetMouseFilter sets the property returned by [GetMouseFilter].
 func (self Instance) SetMouseFilter(value MouseFilter) {
 	class(self).SetMouseFilter(value)
 }
 
+/*
+Determines which controls can receive mouse input together with [MouseFilter]. See [GetMouseFilterWithOverride]. Since the default behavior is [MouseBehaviorInherited], this can be used to prevent all children controls from receiving mouse input.
+
+[GetMouseFilterWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMouseFilterWithOverride
+[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+*/
 func (self Instance) MouseBehaviorRecursive() MouseBehaviorRecursive {
 	return MouseBehaviorRecursive(class(self).GetMouseBehaviorRecursive())
 }
 
+// SetMouseBehaviorRecursive sets the property returned by [GetMouseBehaviorRecursive].
 func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) {
 	class(self).SetMouseBehaviorRecursive(value)
 }
 
+/*
+When enabled, scroll wheel events processed by [GuiInput] will be passed to the parent control even if [MouseFilter] is set to [MouseFilterStop].
+
+You should disable it on the root of your UI if you do not want scroll events to go to the [Node.UnhandledInput] processing.
+
+Note: Because this property defaults to true, this allows nested scrollable containers to work out of the box.
+
+[GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
+[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
+*/
 func (self Instance) MouseForcePassScrollEvents() bool {
 	return bool(class(self).IsForcePassScrollEvents())
 }
 
+// SetMouseForcePassScrollEvents sets the property returned by [IsForcePassScrollEvents].
 func (self Instance) SetMouseForcePassScrollEvents(value bool) {
 	class(self).SetForcePassScrollEvents(value)
 }
 
+/*
+The default cursor shape for this control. Useful for Godot plugins and applications or games that use the system's mouse cursors.
+
+Note: On Linux, shapes may vary depending on the cursor theme of the system.
+*/
 func (self Instance) MouseDefaultCursorShape() CursorShape {
 	return CursorShape(class(self).GetDefaultCursorShape())
 }
 
+// SetMouseDefaultCursorShape sets the property returned by [GetDefaultCursorShape].
 func (self Instance) SetMouseDefaultCursorShape(value CursorShape) {
 	class(self).SetDefaultCursorShape(value)
 }
 
+/*
+The [Node] which must be a parent of the focused [Control] for the shortcut to be activated. If null, the shortcut can be activated when any control is focused (a global shortcut). This allows shortcuts to be accepted only when the user has a certain area of the GUI focused.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+*/
 func (self Instance) ShortcutContext() Node.Instance {
 	return Node.Instance(class(self).GetShortcutContext())
 }
 
+// SetShortcutContext sets the property returned by [GetShortcutContext].
 func (self Instance) SetShortcutContext(value Node.Instance) {
 	class(self).SetShortcutContext(value)
 }
 
+/*
+The human-readable node name that is reported to assistive apps.
+*/
 func (self Instance) AccessibilityName() string {
 	return string(class(self).GetAccessibilityName().String())
 }
 
+// SetAccessibilityName sets the property returned by [GetAccessibilityName].
 func (self Instance) SetAccessibilityName(value string) {
 	class(self).SetAccessibilityName(String.New(value))
 }
 
+/*
+The human-readable node description that is reported to assistive apps.
+*/
 func (self Instance) AccessibilityDescription() string {
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
+// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription].
 func (self Instance) SetAccessibilityDescription(value string) {
 	class(self).SetAccessibilityDescription(String.New(value))
 }
 
+/*
+The mode with which a live region updates. A live region is a [Node] that is updated as a result of an external event when the user's focus may be elsewhere.
+
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+*/
 func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode {
 	return DisplayServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
 }
 
+// SetAccessibilityLive sets the property returned by [GetAccessibilityLive].
 func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) {
 	class(self).SetAccessibilityLive(value)
 }
 
+/*
+The paths to the nodes which are controlled by this node.
+*/
 func (self Instance) AccessibilityControlsNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityControlsNodes())))
 }
 
+// SetAccessibilityControlsNodes sets the property returned by [GetAccessibilityControlsNodes].
 func (self Instance) SetAccessibilityControlsNodes(value []string) {
 	class(self).SetAccessibilityControlsNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
+/*
+The paths to the nodes which are describing this node.
+*/
 func (self Instance) AccessibilityDescribedByNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityDescribedByNodes())))
 }
 
+// SetAccessibilityDescribedByNodes sets the property returned by [GetAccessibilityDescribedByNodes].
 func (self Instance) SetAccessibilityDescribedByNodes(value []string) {
 	class(self).SetAccessibilityDescribedByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
+/*
+The paths to the nodes which label this node.
+*/
 func (self Instance) AccessibilityLabeledByNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityLabeledByNodes())))
 }
 
+// SetAccessibilityLabeledByNodes sets the property returned by [GetAccessibilityLabeledByNodes].
 func (self Instance) SetAccessibilityLabeledByNodes(value []string) {
 	class(self).SetAccessibilityLabeledByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
+/*
+The paths to the nodes which this node flows into.
+*/
 func (self Instance) AccessibilityFlowToNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityFlowToNodes())))
 }
 
+// SetAccessibilityFlowToNodes sets the property returned by [GetAccessibilityFlowToNodes].
 func (self Instance) SetAccessibilityFlowToNodes(value []string) {
 	class(self).SetAccessibilityFlowToNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
+/*
+The [Theme] resource this node and all its [Control] and [Window] children use. If a child node has its own [Theme] resource set, theme items are merged with child's definitions having higher priority.
+
+Note: [Window] styles will have no effect unless the window is embedded.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Theme() Theme.Instance {
 	return Theme.Instance(class(self).GetTheme())
 }
 
+// SetTheme sets the property returned by [GetTheme].
 func (self Instance) SetTheme(value Theme.Instance) {
 	class(self).SetTheme(value)
 }
 
+/*
+The name of a theme type variation used by this [Control] to look up its own theme items. When empty, the class name of the node is used (e.g. Button for the [Button] control), as well as the class names of all parent classes (in order of inheritance).
+
+When set, this property gives the highest priority to the type of the specified name. This type can in turn extend another type, forming a dependency chain. See [Theme.SetTypeVariation]. If the theme item cannot be found using this type or its base types, lookup falls back on the class names.
+
+Note: To look up [Control]'s own items use various get_theme_* methods without specifying theme_type.
+
+Note: Theme items are looked for in the tree order, from branch to root, where each [Control] node is checked for its [Theme] property. The earliest match against any type/class name is returned. The project-level Theme and the default Theme are checked last.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Theme
+[Theme.SetTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetTypeVariation
+*/
 func (self Instance) ThemeTypeVariation() string {
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
+// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation].
 func (self Instance) SetThemeTypeVariation(value string) {
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 }
@@ -4507,6 +4854,10 @@ func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the control changes size.
+*/
 func (self Instance) OnResized(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4519,6 +4870,11 @@ func (self class) Resized() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Resized`))))
 }
 
+/*
+Emitted when the node receives an [InputEvent].
+
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+*/
 func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4531,6 +4887,14 @@ func (self class) GuiInput() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GuiInput`))))
 }
 
+/*
+Emitted when the mouse cursor enters the control's (or any child control's) visible area, that is not occluded behind other Controls or Windows, provided its [MouseFilter] lets the event reach it and regardless if it's currently focused or not.
+
+Note: [CanvasItem.ZIndex] doesn't affect, which Control receives the signal.
+
+[CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
+[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+*/
 func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4543,6 +4907,16 @@ func (self class) MouseEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
+/*
+Emitted when the mouse cursor leaves the control's (and all child control's) visible area, that is not occluded behind other Controls or Windows, provided its [MouseFilter] lets the event reach it and regardless if it's currently focused or not.
+
+Note: [CanvasItem.ZIndex] doesn't affect, which Control receives the signal.
+
+Note: If you want to check whether the mouse truly left the area, ignoring any top nodes, you can use code like this:
+
+[CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
+[MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+*/
 func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4555,6 +4929,9 @@ func (self class) MouseExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
+/*
+Emitted when the node gains focus.
+*/
 func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4567,6 +4944,9 @@ func (self class) FocusEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusEntered`))))
 }
 
+/*
+Emitted when the node loses focus.
+*/
 func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4579,6 +4959,12 @@ func (self class) FocusExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusExited`))))
 }
 
+/*
+Emitted when one of the size flags changes. See [SizeFlagsHorizontal] and [SizeFlagsVertical].
+
+[SizeFlagsHorizontal]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsHorizontal
+[SizeFlagsVertical]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsVertical
+*/
 func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4591,6 +4977,9 @@ func (self class) SizeFlagsChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeFlagsChanged`))))
 }
 
+/*
+Emitted when the node's minimum size changes.
+*/
 func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4603,6 +4992,9 @@ func (self class) MinimumSizeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MinimumSizeChanged`))))
 }
 
+/*
+Emitted when the [NotificationThemeChanged] notification is sent.
+*/
 func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

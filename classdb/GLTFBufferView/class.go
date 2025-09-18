@@ -162,50 +162,78 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the buffer this buffer view is referencing. If -1, this buffer view is not referencing any buffer.
+*/
 func (self Instance) Buffer() int {
 	return int(int(class(self).GetBuffer()))
 }
 
+// SetBuffer sets the property returned by [GetBuffer].
 func (self Instance) SetBuffer(value int) {
 	class(self).SetBuffer(int64(value))
 }
 
+/*
+The offset, in bytes, from the start of the buffer to the start of this buffer view.
+*/
 func (self Instance) ByteOffset() int {
 	return int(int(class(self).GetByteOffset()))
 }
 
+// SetByteOffset sets the property returned by [GetByteOffset].
 func (self Instance) SetByteOffset(value int) {
 	class(self).SetByteOffset(int64(value))
 }
 
+/*
+The length, in bytes, of this buffer view. If 0, this buffer view is empty.
+*/
 func (self Instance) ByteLength() int {
 	return int(int(class(self).GetByteLength()))
 }
 
+// SetByteLength sets the property returned by [GetByteLength].
 func (self Instance) SetByteLength(value int) {
 	class(self).SetByteLength(int64(value))
 }
 
+/*
+The stride, in bytes, between interleaved data. If -1, this buffer view is not interleaved.
+*/
 func (self Instance) ByteStride() int {
 	return int(int(class(self).GetByteStride()))
 }
 
+// SetByteStride sets the property returned by [GetByteStride].
 func (self Instance) SetByteStride(value int) {
 	class(self).SetByteStride(int64(value))
 }
 
+/*
+true if the GLTFBufferView's OpenGL GPU buffer type is an ELEMENT_ARRAY_BUFFER used for vertex indices (integer constant 34963). false if the buffer type is any other value. See [Buffers, BufferViews, and Accessors] for possible values. This property is set on import and used on export.
+
+[Buffers, BufferViews, and Accessors]: https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
+*/
 func (self Instance) Indices() bool {
 	return bool(class(self).GetIndices())
 }
 
+// SetIndices sets the property returned by [GetIndices].
 func (self Instance) SetIndices(value bool) {
 	class(self).SetIndices(value)
 }
 
+/*
+true if the GLTFBufferView's OpenGL GPU buffer type is an ARRAY_BUFFER used for vertex attributes (integer constant 34962). false if the buffer type is any other value. See [Buffers, BufferViews, and Accessors] for possible values. This property is set on import and used on export.
+
+[Buffers, BufferViews, and Accessors]: https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
+*/
 func (self Instance) VertexAttributes() bool {
 	return bool(class(self).GetVertexAttributes())
 }
 
+// SetVertexAttributes sets the property returned by [GetVertexAttributes].
 func (self Instance) SetVertexAttributes(value bool) {
 	class(self).SetVertexAttributes(value)
 }

@@ -270,82 +270,143 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, translation is enabled. Otherwise, [Translate] and [TranslatePlural] will return the input message unchanged regardless of the current locale.
+
+[Translate]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain#Instance.Translate
+[TranslatePlural]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain#Instance.TranslatePlural
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+If true, enables pseudolocalization for the project. This can be used to spot untranslatable strings or layout issues that may occur once the project is localized to languages that have longer strings than the source language.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationEnabled() bool {
 	return bool(class(self).IsPseudolocalizationEnabled())
 }
 
+// SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled].
 func (self Instance) SetPseudolocalizationEnabled(value bool) {
 	class(self).SetPseudolocalizationEnabled(value)
 }
 
+/*
+Replace all characters with their accented variants during pseudolocalization.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationAccentsEnabled() bool {
 	return bool(class(self).IsPseudolocalizationAccentsEnabled())
 }
 
+// SetPseudolocalizationAccentsEnabled sets the property returned by [IsPseudolocalizationAccentsEnabled].
 func (self Instance) SetPseudolocalizationAccentsEnabled(value bool) {
 	class(self).SetPseudolocalizationAccentsEnabled(value)
 }
 
+/*
+Double vowels in strings during pseudolocalization to simulate the lengthening of text due to localization.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationDoubleVowelsEnabled() bool {
 	return bool(class(self).IsPseudolocalizationDoubleVowelsEnabled())
 }
 
+// SetPseudolocalizationDoubleVowelsEnabled sets the property returned by [IsPseudolocalizationDoubleVowelsEnabled].
 func (self Instance) SetPseudolocalizationDoubleVowelsEnabled(value bool) {
 	class(self).SetPseudolocalizationDoubleVowelsEnabled(value)
 }
 
+/*
+If true, emulate bidirectional (right-to-left) text when pseudolocalization is enabled. This can be used to spot issues with RTL layout and UI mirroring that will crop up if the project is localized to RTL languages such as Arabic or Hebrew.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationFakeBidiEnabled() bool {
 	return bool(class(self).IsPseudolocalizationFakeBidiEnabled())
 }
 
+// SetPseudolocalizationFakeBidiEnabled sets the property returned by [IsPseudolocalizationFakeBidiEnabled].
 func (self Instance) SetPseudolocalizationFakeBidiEnabled(value bool) {
 	class(self).SetPseudolocalizationFakeBidiEnabled(value)
 }
 
+/*
+Replace all characters in the string with *. Useful for finding non-localizable strings.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationOverrideEnabled() bool {
 	return bool(class(self).IsPseudolocalizationOverrideEnabled())
 }
 
+// SetPseudolocalizationOverrideEnabled sets the property returned by [IsPseudolocalizationOverrideEnabled].
 func (self Instance) SetPseudolocalizationOverrideEnabled(value bool) {
 	class(self).SetPseudolocalizationOverrideEnabled(value)
 }
 
+/*
+Skip placeholders for string formatting like %s or %f during pseudolocalization. Useful to identify strings which need additional control characters to display correctly.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationSkipPlaceholdersEnabled() bool {
 	return bool(class(self).IsPseudolocalizationSkipPlaceholdersEnabled())
 }
 
+// SetPseudolocalizationSkipPlaceholdersEnabled sets the property returned by [IsPseudolocalizationSkipPlaceholdersEnabled].
 func (self Instance) SetPseudolocalizationSkipPlaceholdersEnabled(value bool) {
 	class(self).SetPseudolocalizationSkipPlaceholdersEnabled(value)
 }
 
+/*
+The expansion ratio to use during pseudolocalization. A value of 0.3 is sufficient for most practical purposes, and will increase the length of each string by 30%.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationExpansionRatio() Float.X {
 	return Float.X(Float.X(class(self).GetPseudolocalizationExpansionRatio()))
 }
 
+// SetPseudolocalizationExpansionRatio sets the property returned by [GetPseudolocalizationExpansionRatio].
 func (self Instance) SetPseudolocalizationExpansionRatio(value Float.X) {
 	class(self).SetPseudolocalizationExpansionRatio(float64(value))
 }
 
+/*
+Prefix that will be prepended to the pseudolocalized string.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationPrefix() string {
 	return string(class(self).GetPseudolocalizationPrefix().String())
 }
 
+// SetPseudolocalizationPrefix sets the property returned by [GetPseudolocalizationPrefix].
 func (self Instance) SetPseudolocalizationPrefix(value string) {
 	class(self).SetPseudolocalizationPrefix(String.New(value))
 }
 
+/*
+Suffix that will be appended to the pseudolocalized string.
+
+Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
+*/
 func (self Instance) PseudolocalizationSuffix() string {
 	return string(class(self).GetPseudolocalizationSuffix().String())
 }
 
+// SetPseudolocalizationSuffix sets the property returned by [GetPseudolocalizationSuffix].
 func (self Instance) SetPseudolocalizationSuffix(value string) {
 	class(self).SetPseudolocalizationSuffix(String.New(value))
 }

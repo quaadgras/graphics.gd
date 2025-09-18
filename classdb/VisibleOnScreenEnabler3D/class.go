@@ -156,18 +156,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+Determines how the target node is enabled. Corresponds to [Node.ProcessMode]. When the node is disabled, it always uses [Node.ProcessModeDisabled].
+*/
 func (self Instance) EnableMode() EnableMode {
 	return EnableMode(class(self).GetEnableMode())
 }
 
+// SetEnableMode sets the property returned by [GetEnableMode].
 func (self Instance) SetEnableMode(value EnableMode) {
 	class(self).SetEnableMode(value)
 }
 
+/*
+The path to the target node, relative to the [VisibleOnScreenEnabler3D]. The target node is cached; it's only assigned when setting this property (if the [VisibleOnScreenEnabler3D] is inside the scene tree) and every time the [VisibleOnScreenEnabler3D] enters the scene tree. If the path is empty, no node will be affected. If the path is invalid, an error is also generated.
+
+[VisibleOnScreenEnabler3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenEnabler3D
+*/
 func (self Instance) EnableNodePath() string {
 	return string(class(self).GetEnableNodePath().String())
 }
 
+// SetEnableNodePath sets the property returned by [GetEnableNodePath].
 func (self Instance) SetEnableNodePath(value string) {
 	class(self).SetEnableNodePath(Path.ToNode(String.New(value)))
 }

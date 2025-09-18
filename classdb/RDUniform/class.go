@@ -171,18 +171,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The uniform's data type.
+*/
 func (self Instance) UniformType() Rendering.UniformType {
 	return Rendering.UniformType(class(self).GetUniformType())
 }
 
+// SetUniformType sets the property returned by [GetUniformType].
 func (self Instance) SetUniformType(value Rendering.UniformType) {
 	class(self).SetUniformType(value)
 }
 
+/*
+The uniform's binding.
+*/
 func (self Instance) Binding() int {
 	return int(int(class(self).GetBinding()))
 }
 
+// SetBinding sets the property returned by [GetBinding].
 func (self Instance) SetBinding(value int) {
 	class(self).SetBinding(int64(value))
 }

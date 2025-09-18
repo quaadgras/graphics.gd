@@ -231,50 +231,89 @@ func New() Instance {
 	return casted
 }
 
+/*
+If set, this [Expression] will be used to convert the property value from the glTF object model to the value expected by the Godot property. This is useful when the glTF object model uses a different unit system, or when the data needs to be transformed in some way. If null, the value will be copied as-is.
+
+[Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
+*/
 func (self Instance) GltfToGodotExpression() Expression.Instance {
 	return Expression.Instance(class(self).GetGltfToGodotExpression())
 }
 
+// SetGltfToGodotExpression sets the property returned by [GetGltfToGodotExpression].
 func (self Instance) SetGltfToGodotExpression(value Expression.Instance) {
 	class(self).SetGltfToGodotExpression(value)
 }
 
+/*
+If set, this [Expression] will be used to convert the property value from the Godot property to the value expected by the glTF object model. This is useful when the glTF object model uses a different unit system, or when the data needs to be transformed in some way. If null, the value will be copied as-is.
+
+[Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
+*/
 func (self Instance) GodotToGltfExpression() Expression.Instance {
 	return Expression.Instance(class(self).GetGodotToGltfExpression())
 }
 
+// SetGodotToGltfExpression sets the property returned by [GetGodotToGltfExpression].
 func (self Instance) SetGodotToGltfExpression(value Expression.Instance) {
 	class(self).SetGodotToGltfExpression(value)
 }
 
+/*
+An array of node paths that point to a property, or multiple properties, in the Godot scene tree. On import, this will either be set by [GLTFDocument], or by a [GLTFDocumentExtension] class. For simple cases, use [AppendPathToProperty] to add properties to this array.
+
+In most cases [NodePaths] will only have one item, but in some cases a single glTF JSON pointer will map to multiple Godot properties. For example, a [GLTFCamera] or [GLTFLight] used on multiple glTF nodes will be represented by multiple Godot nodes.
+
+[AppendPathToProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.AppendPathToProperty
+[GLTFCamera]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera
+[GLTFDocument]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[GLTFLight]: https://pkg.go.dev/graphics.gd/classdb/GLTFLight
+[NodePaths]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.NodePaths
+*/
 func (self Instance) NodePaths() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetNodePaths())))
 }
 
+// SetNodePaths sets the property returned by [GetNodePaths].
 func (self Instance) SetNodePaths(value []string) {
 	class(self).SetNodePaths(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
+/*
+The type of data stored in the glTF file as defined by the object model. This is a superset of the available accessor types, and determines the accessor type.
+*/
 func (self Instance) ObjectModelType() GLTFObjectModelType {
 	return GLTFObjectModelType(class(self).GetObjectModelType())
 }
 
+// SetObjectModelType sets the property returned by [GetObjectModelType].
 func (self Instance) SetObjectModelType(value GLTFObjectModelType) {
 	class(self).SetObjectModelType(value)
 }
 
+/*
+The glTF object model JSON pointers used to identify the property in the glTF object model. In most cases, there will be only one item in this array, but specific cases may require multiple pointers. The items are themselves arrays which represent the JSON pointer split into its components.
+*/
 func (self Instance) JsonPointers() [][]string {
 	return [][]string(gd.ArrayAs[[][]string](gd.InternalArray(class(self).GetJsonPointers())))
 }
 
+// SetJsonPointers sets the property returned by [GetJsonPointers].
 func (self Instance) SetJsonPointers(value [][]string) {
 	class(self).SetJsonPointers(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](value))
 }
 
+/*
+The type of data stored in the Godot property. This is the type of the property that the [NodePaths] point to.
+
+[NodePaths]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.NodePaths
+*/
 func (self Instance) VariantType() variant.Type {
 	return variant.Type(class(self).GetVariantType())
 }
 
+// SetVariantType sets the property returned by [GetVariantType].
 func (self Instance) SetVariantType(value variant.Type) {
 	class(self).SetVariantType(value)
 }

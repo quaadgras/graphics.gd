@@ -156,10 +156,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The length of the buffer to keep (in seconds). Higher values keep data around for longer, but require more memory.
+*/
 func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
+// SetBufferLength sets the property returned by [GetBufferLength].
 func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(float64(value))
 }
@@ -168,14 +172,21 @@ func (self Instance) TapBackPos() Float.X {
 	return Float.X(Float.X(class(self).GetTapBackPos()))
 }
 
+// SetTapBackPos sets the property returned by [GetTapBackPos].
 func (self Instance) SetTapBackPos(value Float.X) {
 	class(self).SetTapBackPos(float64(value))
 }
 
+/*
+The size of the [Fast Fourier transform] buffer. Higher values smooth out the spectrum analysis over time, but have greater latency. The effects of this higher latency are especially noticeable with sudden amplitude changes.
+
+[Fast Fourier transform]: https://en.wikipedia.org/wiki/Fast_Fourier_transform
+*/
 func (self Instance) FftSize() FFTSize {
 	return FFTSize(class(self).GetFftSize())
 }
 
+// SetFftSize sets the property returned by [GetFftSize].
 func (self Instance) SetFftSize(value FFTSize) {
 	class(self).SetFftSize(value)
 }

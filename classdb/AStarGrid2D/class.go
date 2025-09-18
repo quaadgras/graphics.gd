@@ -476,74 +476,129 @@ func New() Instance {
 	return casted
 }
 
+/*
+The region of grid cells available for pathfinding. If changed, [Update] needs to be called before finding the next path.
+
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
+*/
 func (self Instance) Region() Rect2i.PositionSize {
 	return Rect2i.PositionSize(class(self).GetRegion())
 }
 
+// SetRegion sets the property returned by [GetRegion].
 func (self Instance) SetRegion(value Rect2i.PositionSize) {
 	class(self).SetRegion(Rect2i.PositionSize(value))
 }
 
+/*
+The size of the grid (number of cells of size [CellSize] on each axis). If changed, [Update] needs to be called before finding the next path.
+
+[CellSize]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.CellSize
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
+*/
 func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2i.XY) {
 	class(self).SetSize(Vector2i.XY(value))
 }
 
+/*
+The offset of the grid which will be applied to calculate the resulting point position returned by [GetPointPath]. If changed, [Update] needs to be called before finding the next path.
+
+[GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.GetPointPath
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+The size of the point cell which will be applied to calculate the resulting point position returned by [GetPointPath]. If changed, [Update] needs to be called before finding the next path.
+
+[GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.GetPointPath
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
+*/
 func (self Instance) CellSize() Vector2.XY {
 	return Vector2.XY(class(self).GetCellSize())
 }
 
+// SetCellSize sets the property returned by [GetCellSize].
 func (self Instance) SetCellSize(value Vector2.XY) {
 	class(self).SetCellSize(Vector2.XY(value))
 }
 
+/*
+The cell shape. Affects how the positions are placed in the grid. If changed, [Update] needs to be called before finding the next path.
+
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
+*/
 func (self Instance) CellShape() CellShape {
 	return CellShape(class(self).GetCellShape())
 }
 
+// SetCellShape sets the property returned by [GetCellShape].
 func (self Instance) SetCellShape(value CellShape) {
 	class(self).SetCellShape(value)
 }
 
+/*
+Enables or disables jumping to skip up the intermediate points and speeds up the searching algorithm.
+
+Note: Currently, toggling it on disables the consideration of weight scaling in pathfinding.
+*/
 func (self Instance) JumpingEnabled() bool {
 	return bool(class(self).IsJumpingEnabled())
 }
 
+// SetJumpingEnabled sets the property returned by [IsJumpingEnabled].
 func (self Instance) SetJumpingEnabled(value bool) {
 	class(self).SetJumpingEnabled(value)
 }
 
+/*
+The default [Heuristic] which will be used to calculate the cost between two points if [ComputeCost] was not overridden.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
+*/
 func (self Instance) DefaultComputeHeuristic() Heuristic {
 	return Heuristic(class(self).GetDefaultComputeHeuristic())
 }
 
+// SetDefaultComputeHeuristic sets the property returned by [GetDefaultComputeHeuristic].
 func (self Instance) SetDefaultComputeHeuristic(value Heuristic) {
 	class(self).SetDefaultComputeHeuristic(value)
 }
 
+/*
+The default [Heuristic] which will be used to calculate the cost between the point and the end point if [EstimateCost] was not overridden.
+
+[EstimateCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
+*/
 func (self Instance) DefaultEstimateHeuristic() Heuristic {
 	return Heuristic(class(self).GetDefaultEstimateHeuristic())
 }
 
+// SetDefaultEstimateHeuristic sets the property returned by [GetDefaultEstimateHeuristic].
 func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) {
 	class(self).SetDefaultEstimateHeuristic(value)
 }
 
+/*
+A specific [DiagonalMode] mode which will force the path to avoid or accept the specified diagonals.
+*/
 func (self Instance) DiagonalMode() DiagonalMode {
 	return DiagonalMode(class(self).GetDiagonalMode())
 }
 
+// SetDiagonalMode sets the property returned by [GetDiagonalMode].
 func (self Instance) SetDiagonalMode(value DiagonalMode) {
 	class(self).SetDiagonalMode(value)
 }

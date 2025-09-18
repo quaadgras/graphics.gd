@@ -151,34 +151,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The spring joint's maximum length. The two attached bodies cannot stretch it past this value.
+*/
 func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
+// SetLength sets the property returned by [GetLength].
 func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
+/*
+When the bodies attached to the spring joint move they stretch or squash it. The joint always tries to resize towards this length.
+*/
 func (self Instance) RestLength() Float.X {
 	return Float.X(Float.X(class(self).GetRestLength()))
 }
 
+// SetRestLength sets the property returned by [GetRestLength].
 func (self Instance) SetRestLength(value Float.X) {
 	class(self).SetRestLength(float64(value))
 }
 
+/*
+The higher the value, the less the bodies attached to the joint will deform it. The joint applies an opposing force to the bodies, the product of the stiffness multiplied by the size difference from its resting length.
+*/
 func (self Instance) Stiffness() Float.X {
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
+// SetStiffness sets the property returned by [GetStiffness].
 func (self Instance) SetStiffness(value Float.X) {
 	class(self).SetStiffness(float64(value))
 }
 
+/*
+The spring joint's damping ratio. A value between 0 and 1. When the two bodies move into different directions the system tries to align them to the spring axis again. A high [Damping] value forces the attached bodies to align faster.
+
+[Damping]: https://pkg.go.dev/graphics.gd/classdb/DampedSpringJoint2D#Instance.Damping
+*/
 func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
+// SetDamping sets the property returned by [GetDamping].
 func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(float64(value))
 }

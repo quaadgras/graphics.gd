@@ -196,42 +196,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+The collision SDF's size in 3D units. To improve SDF quality, the [Size] should be set as small as possible while covering the parts of the scene you need.
+
+[Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Size
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The bake resolution to use for the signed distance field [Texture]. The texture must be baked again for changes to the [Resolution] property to be effective. Higher resolutions have a greater performance cost and take more time to bake. Higher resolutions also result in larger baked textures, leading to increased VRAM and storage space requirements. To improve performance and reduce bake times, use the lowest resolution possible for the object you're representing the collision of.
+
+[Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Resolution
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Texture
+*/
 func (self Instance) Resolution() Resolution {
 	return Resolution(class(self).GetResolution())
 }
 
+// SetResolution sets the property returned by [GetResolution].
 func (self Instance) SetResolution(value Resolution) {
 	class(self).SetResolution(value)
 }
 
+/*
+The collision shape's thickness. Unlike other particle colliders, [GPUParticlesCollisionSDF3D] is actually hollow on the inside. [Thickness] can be increased to prevent particles from tunneling through the collision shape at high speeds, or when the [GPUParticlesCollisionSDF3D] is moved.
+
+[GPUParticlesCollisionSDF3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D
+[Thickness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Thickness
+*/
 func (self Instance) Thickness() Float.X {
 	return Float.X(Float.X(class(self).GetThickness()))
 }
 
+// SetThickness sets the property returned by [GetThickness].
 func (self Instance) SetThickness(value Float.X) {
 	class(self).SetThickness(float64(value))
 }
 
+/*
+The visual layers to account for when baking the particle collision SDF. Only [MeshInstance3D]s whose [VisualInstance3D.Layers] match with this [BakeMask] will be included in the generated particle collision SDF. By default, all objects are taken into account for the particle collision SDF baking.
+
+[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.BakeMask
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) BakeMask() int {
 	return int(int(class(self).GetBakeMask()))
 }
 
+// SetBakeMask sets the property returned by [GetBakeMask].
 func (self Instance) SetBakeMask(value int) {
 	class(self).SetBakeMask(int64(value))
 }
 
+/*
+The 3D texture representing the signed distance field.
+*/
 func (self Instance) Texture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture3D.Instance) {
 	class(self).SetTexture(value)
 }

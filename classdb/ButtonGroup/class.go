@@ -177,10 +177,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, it is possible to unpress all buttons in this [ButtonGroup].
+
+[ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/ButtonGroup
+*/
 func (self Instance) AllowUnpress() bool {
 	return bool(class(self).IsAllowUnpress())
 }
 
+// SetAllowUnpress sets the property returned by [IsAllowUnpress].
 func (self Instance) SetAllowUnpress(value bool) {
 	class(self).SetAllowUnpress(value)
 }
@@ -220,6 +226,10 @@ func (self class) IsAllowUnpress() bool { //gd:ButtonGroup.is_allow_unpress
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when one of the buttons of the group is pressed.
+*/
 func (self Instance) OnPressed(cb func(button BaseButton.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

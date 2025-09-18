@@ -334,98 +334,170 @@ func New() Instance {
 	return casted
 }
 
+/*
+The physics layers this SoftBody3D is in. Collision objects can exist in one or more of 32 different layers. See also [CollisionMask].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The physics layers this SoftBody3D scans. Collision objects can scan one or more of 32 different layers. See also [CollisionLayer].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+node path to a [CollisionObject3D] this SoftBody3D should avoid clipping.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+*/
 func (self Instance) ParentCollisionIgnore() string {
 	return string(class(self).GetParentCollisionIgnore().String())
 }
 
+// SetParentCollisionIgnore sets the property returned by [GetParentCollisionIgnore].
 func (self Instance) SetParentCollisionIgnore(value string) {
 	class(self).SetParentCollisionIgnore(Path.ToNode(String.New(value)))
 }
 
+/*
+Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
+*/
 func (self Instance) SimulationPrecision() int {
 	return int(int(class(self).GetSimulationPrecision()))
 }
 
+// SetSimulationPrecision sets the property returned by [GetSimulationPrecision].
 func (self Instance) SetSimulationPrecision(value int) {
 	class(self).SetSimulationPrecision(int64(value))
 }
 
+/*
+The SoftBody3D's mass.
+*/
 func (self Instance) TotalMass() Float.X {
 	return Float.X(Float.X(class(self).GetTotalMass()))
 }
 
+// SetTotalMass sets the property returned by [GetTotalMass].
 func (self Instance) SetTotalMass(value Float.X) {
 	class(self).SetTotalMass(float64(value))
 }
 
+/*
+Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between 0.0 and 1.0 (inclusive).
+*/
 func (self Instance) LinearStiffness() Float.X {
 	return Float.X(Float.X(class(self).GetLinearStiffness()))
 }
 
+// SetLinearStiffness sets the property returned by [GetLinearStiffness].
 func (self Instance) SetLinearStiffness(value Float.X) {
 	class(self).SetLinearStiffness(float64(value))
 }
 
+/*
+Scales the rest lengths of [SoftBody3D]'s edge constraints. Positive values shrink the mesh, while negative values expand it. For example, a value of 0.1 shortens the edges of the mesh by 10%, while -0.1 expands the edges by 10%.
+
+Note: [ShrinkingFactor] is best used on surface meshes with pinned points.
+
+[ShrinkingFactor]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.ShrinkingFactor
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
+*/
 func (self Instance) ShrinkingFactor() Float.X {
 	return Float.X(Float.X(class(self).GetShrinkingFactor()))
 }
 
+// SetShrinkingFactor sets the property returned by [GetShrinkingFactor].
 func (self Instance) SetShrinkingFactor(value Float.X) {
 	class(self).SetShrinkingFactor(float64(value))
 }
 
+/*
+The pressure coefficient of this soft body. Simulate pressure build-up from inside this body. Higher values increase the strength of this effect.
+*/
 func (self Instance) PressureCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetPressureCoefficient()))
 }
 
+// SetPressureCoefficient sets the property returned by [GetPressureCoefficient].
 func (self Instance) SetPressureCoefficient(value Float.X) {
 	class(self).SetPressureCoefficient(float64(value))
 }
 
+/*
+The body's damping coefficient. Higher values will slow down the body more noticeably when forces are applied.
+*/
 func (self Instance) DampingCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetDampingCoefficient()))
 }
 
+// SetDampingCoefficient sets the property returned by [GetDampingCoefficient].
 func (self Instance) SetDampingCoefficient(value Float.X) {
 	class(self).SetDampingCoefficient(float64(value))
 }
 
+/*
+The body's drag coefficient. Higher values increase this body's air resistance.
+
+Note: This value is currently unused by Godot's default physics implementation.
+*/
 func (self Instance) DragCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetDragCoefficient()))
 }
 
+// SetDragCoefficient sets the property returned by [GetDragCoefficient].
 func (self Instance) SetDragCoefficient(value Float.X) {
 	class(self).SetDragCoefficient(float64(value))
 }
 
+/*
+If true, the [SoftBody3D] will respond to [RayCast3D]s.
+
+[RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
+*/
 func (self Instance) RayPickable() bool {
 	return bool(class(self).IsRayPickable())
 }
 
+// SetRayPickable sets the property returned by [IsRayPickable].
 func (self Instance) SetRayPickable(value bool) {
 	class(self).SetRayPickable(value)
 }
 
+/*
+Defines the behavior in physics when [Node.ProcessMode] is set to [Node.ProcessModeDisabled].
+
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+*/
 func (self Instance) DisableMode() DisableMode {
 	return DisableMode(class(self).GetDisableMode())
 }
 
+// SetDisableMode sets the property returned by [GetDisableMode].
 func (self Instance) SetDisableMode(value DisableMode) {
 	class(self).SetDisableMode(value)
 }

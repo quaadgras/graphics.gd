@@ -148,10 +148,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [Vector3.XYZ] constant which represents the state of this node.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func (self Instance) Constant() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetConstant())
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value Vector3.XYZ) {
 	class(self).SetConstant(Vector3.XYZ(value))
 }

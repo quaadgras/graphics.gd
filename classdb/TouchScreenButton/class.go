@@ -180,74 +180,117 @@ func New() Instance {
 	return casted
 }
 
+/*
+The button's texture for the normal state.
+*/
 func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
+// SetTextureNormal sets the property returned by [GetTextureNormal].
 func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTextureNormal(value)
 }
 
+/*
+The button's texture for the pressed state.
+*/
 func (self Instance) TexturePressed() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
+// SetTexturePressed sets the property returned by [GetTexturePressed].
 func (self Instance) SetTexturePressed(value Texture2D.Instance) {
 	class(self).SetTexturePressed(value)
 }
 
+/*
+The button's bitmask.
+*/
 func (self Instance) Bitmask() BitMap.Instance {
 	return BitMap.Instance(class(self).GetBitmask())
 }
 
+// SetBitmask sets the property returned by [GetBitmask].
 func (self Instance) SetBitmask(value BitMap.Instance) {
 	class(self).SetBitmask(value)
 }
 
+/*
+The button's shape.
+*/
 func (self Instance) Shape() Shape2D.Instance {
 	return Shape2D.Instance(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Shape2D.Instance) {
 	class(self).SetShape(value)
 }
 
+/*
+If true, the button's shape is centered in the provided texture. If no texture is used, this property has no effect.
+*/
 func (self Instance) ShapeCentered() bool {
 	return bool(class(self).IsShapeCentered())
 }
 
+// SetShapeCentered sets the property returned by [IsShapeCentered].
 func (self Instance) SetShapeCentered(value bool) {
 	class(self).SetShapeCentered(value)
 }
 
+/*
+If true, the button's shape is visible in the editor.
+*/
 func (self Instance) ShapeVisible() bool {
 	return bool(class(self).IsShapeVisible())
 }
 
+// SetShapeVisible sets the property returned by [IsShapeVisible].
 func (self Instance) SetShapeVisible(value bool) {
 	class(self).SetShapeVisible(value)
 }
 
+/*
+If true, the [OnPressed] and [OnReleased] signals are emitted whenever a pressed finger goes in and out of the button, even if the pressure started outside the active area of the button.
+
+Note: This is a "pass-by" (not "bypass") press mode.
+
+[OnPressed]: https://pkg.go.dev/graphics.gd/classdb/TouchScreenButton#Instance.OnPressed
+[OnReleased]: https://pkg.go.dev/graphics.gd/classdb/TouchScreenButton#Instance.OnReleased
+*/
 func (self Instance) PassbyPress() bool {
 	return bool(class(self).IsPassbyPressEnabled())
 }
 
+// SetPassbyPress sets the property returned by [IsPassbyPressEnabled].
 func (self Instance) SetPassbyPress(value bool) {
 	class(self).SetPassbyPress(value)
 }
 
+/*
+The button's action. Actions can be handled with [InputEventAction].
+
+[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
+*/
 func (self Instance) Action() string {
 	return string(class(self).GetAction().String())
 }
 
+// SetAction sets the property returned by [GetAction].
 func (self Instance) SetAction(value string) {
 	class(self).SetAction(String.New(value))
 }
 
+/*
+The button's visibility mode.
+*/
 func (self Instance) VisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
+// SetVisibilityMode sets the property returned by [GetVisibilityMode].
 func (self Instance) SetVisibilityMode(value VisibilityMode) {
 	class(self).SetVisibilityMode(value)
 }
@@ -369,6 +412,10 @@ func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the button is pressed (down).
+*/
 func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -381,6 +428,9 @@ func (self class) Pressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
 }
 
+/*
+Emitted when the button is released (up).
+*/
 func (self Instance) OnReleased(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

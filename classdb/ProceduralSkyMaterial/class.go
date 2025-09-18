@@ -182,114 +182,192 @@ func New() Instance {
 	return casted
 }
 
+/*
+Color of the sky at the top. Blends with [SkyHorizonColor].
+
+[SkyHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyHorizonColor
+*/
 func (self Instance) SkyTopColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyTopColor())
 }
 
+// SetSkyTopColor sets the property returned by [GetSkyTopColor].
 func (self Instance) SetSkyTopColor(value Color.RGBA) {
 	class(self).SetSkyTopColor(Color.RGBA(value))
 }
 
+/*
+Color of the sky at the horizon. Blends with [SkyTopColor].
+
+[SkyTopColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyTopColor
+*/
 func (self Instance) SkyHorizonColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyHorizonColor())
 }
 
+// SetSkyHorizonColor sets the property returned by [GetSkyHorizonColor].
 func (self Instance) SetSkyHorizonColor(value Color.RGBA) {
 	class(self).SetSkyHorizonColor(Color.RGBA(value))
 }
 
+/*
+How quickly the [SkyHorizonColor] fades into the [SkyTopColor].
+
+[SkyHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyHorizonColor
+[SkyTopColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyTopColor
+*/
 func (self Instance) SkyCurve() Float.X {
 	return Float.X(Float.X(class(self).GetSkyCurve()))
 }
 
+// SetSkyCurve sets the property returned by [GetSkyCurve].
 func (self Instance) SetSkyCurve(value Float.X) {
 	class(self).SetSkyCurve(float64(value))
 }
 
+/*
+Multiplier for sky color. A higher value will make the sky brighter.
+*/
 func (self Instance) SkyEnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetSkyEnergyMultiplier()))
 }
 
+// SetSkyEnergyMultiplier sets the property returned by [GetSkyEnergyMultiplier].
 func (self Instance) SetSkyEnergyMultiplier(value Float.X) {
 	class(self).SetSkyEnergyMultiplier(float64(value))
 }
 
+/*
+The sky cover texture to use. This texture must use an equirectangular projection (similar to [PanoramaSkyMaterial]). The texture's colors will be added to the existing sky color, and will be multiplied by [SkyEnergyMultiplier] and [SkyCoverModulate]. This is mainly suited to displaying stars at night, but it can also be used to display clouds at day or night (with a non-physically-accurate look).
+
+[PanoramaSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/PanoramaSkyMaterial
+[SkyCoverModulate]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyCoverModulate
+[SkyEnergyMultiplier]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyEnergyMultiplier
+*/
 func (self Instance) SkyCover() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetSkyCover())
 }
 
+// SetSkyCover sets the property returned by [GetSkyCover].
 func (self Instance) SetSkyCover(value Texture2D.Instance) {
 	class(self).SetSkyCover(value)
 }
 
+/*
+The tint to apply to the [SkyCover] texture. This can be used to change the sky cover's colors or opacity independently of the sky energy, which is useful for day/night or weather transitions. Only effective if a texture is defined in [SkyCover].
+
+[SkyCover]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyCover
+*/
 func (self Instance) SkyCoverModulate() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyCoverModulate())
 }
 
+// SetSkyCoverModulate sets the property returned by [GetSkyCoverModulate].
 func (self Instance) SetSkyCoverModulate(value Color.RGBA) {
 	class(self).SetSkyCoverModulate(Color.RGBA(value))
 }
 
+/*
+Color of the ground at the bottom. Blends with [GroundHorizonColor].
+
+[GroundHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundHorizonColor
+*/
 func (self Instance) GroundBottomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundBottomColor())
 }
 
+// SetGroundBottomColor sets the property returned by [GetGroundBottomColor].
 func (self Instance) SetGroundBottomColor(value Color.RGBA) {
 	class(self).SetGroundBottomColor(Color.RGBA(value))
 }
 
+/*
+Color of the ground at the horizon. Blends with [GroundBottomColor].
+
+[GroundBottomColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundBottomColor
+*/
 func (self Instance) GroundHorizonColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundHorizonColor())
 }
 
+// SetGroundHorizonColor sets the property returned by [GetGroundHorizonColor].
 func (self Instance) SetGroundHorizonColor(value Color.RGBA) {
 	class(self).SetGroundHorizonColor(Color.RGBA(value))
 }
 
+/*
+How quickly the [GroundHorizonColor] fades into the [GroundBottomColor].
+
+[GroundBottomColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundBottomColor
+[GroundHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundHorizonColor
+*/
 func (self Instance) GroundCurve() Float.X {
 	return Float.X(Float.X(class(self).GetGroundCurve()))
 }
 
+// SetGroundCurve sets the property returned by [GetGroundCurve].
 func (self Instance) SetGroundCurve(value Float.X) {
 	class(self).SetGroundCurve(float64(value))
 }
 
+/*
+Multiplier for ground color. A higher value will make the ground brighter.
+*/
 func (self Instance) GroundEnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetGroundEnergyMultiplier()))
 }
 
+// SetGroundEnergyMultiplier sets the property returned by [GetGroundEnergyMultiplier].
 func (self Instance) SetGroundEnergyMultiplier(value Float.X) {
 	class(self).SetGroundEnergyMultiplier(float64(value))
 }
 
+/*
+Distance from center of sun where it fades out completely.
+*/
 func (self Instance) SunAngleMax() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetSunAngleMax()))
 }
 
+// SetSunAngleMax sets the property returned by [GetSunAngleMax].
 func (self Instance) SetSunAngleMax(value Angle.Radians) {
 	class(self).SetSunAngleMax(float64(value))
 }
 
+/*
+How quickly the sun fades away between the edge of the sun disk and [SunAngleMax].
+
+[SunAngleMax]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SunAngleMax
+*/
 func (self Instance) SunCurve() Float.X {
 	return Float.X(Float.X(class(self).GetSunCurve()))
 }
 
+// SetSunCurve sets the property returned by [GetSunCurve].
 func (self Instance) SetSunCurve(value Float.X) {
 	class(self).SetSunCurve(float64(value))
 }
 
+/*
+If true, enables debanding. Debanding adds a small amount of noise which helps reduce banding that appears from the smooth changes in color in the sky.
+*/
 func (self Instance) UseDebanding() bool {
 	return bool(class(self).GetUseDebanding())
 }
 
+// SetUseDebanding sets the property returned by [GetUseDebanding].
 func (self Instance) SetUseDebanding(value bool) {
 	class(self).SetUseDebanding(value)
 }
 
+/*
+The sky's overall brightness multiplier. Higher values result in a brighter sky.
+*/
 func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
 func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(float64(value))
 }

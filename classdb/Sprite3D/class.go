@@ -163,58 +163,104 @@ func New() Instance {
 	return casted
 }
 
+/*
+[Texture2D] object to draw. If [GeometryInstance3D.MaterialOverride] is used, this will be overridden. The size information is still used.
+
+[GeometryInstance3D.MaterialOverride]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverride
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+The number of columns in the sprite sheet. When this property is changed, [Frame] is adjusted so that the same visual frame is maintained (same row and column). If that's impossible, [Frame] is reset to 0.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Frame
+*/
 func (self Instance) Hframes() int {
 	return int(int(class(self).GetHframes()))
 }
 
+// SetHframes sets the property returned by [GetHframes].
 func (self Instance) SetHframes(value int) {
 	class(self).SetHframes(int64(value))
 }
 
+/*
+The number of rows in the sprite sheet. When this property is changed, [Frame] is adjusted so that the same visual frame is maintained (same row and column). If that's impossible, [Frame] is reset to 0.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Frame
+*/
 func (self Instance) Vframes() int {
 	return int(int(class(self).GetVframes()))
 }
 
+// SetVframes sets the property returned by [GetVframes].
 func (self Instance) SetVframes(value int) {
 	class(self).SetVframes(int64(value))
 }
 
+/*
+Current frame to display from sprite sheet. [Hframes] or [Vframes] must be greater than 1. This property is automatically adjusted when [Hframes] or [Vframes] are changed to keep pointing to the same visual frame (same column and row). If that's impossible, this value is reset to 0.
+
+[Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Hframes
+[Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Vframes
+*/
 func (self Instance) Frame() int {
 	return int(int(class(self).GetFrame()))
 }
 
+// SetFrame sets the property returned by [GetFrame].
 func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(int64(value))
 }
 
+/*
+Coordinates of the frame to display from sprite sheet. This is as an alias for the [Frame] property. [Hframes] or [Vframes] must be greater than 1.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Frame
+[Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Hframes
+[Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Vframes
+*/
 func (self Instance) FrameCoords() Vector2i.XY {
 	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
+// SetFrameCoords sets the property returned by [GetFrameCoords].
 func (self Instance) SetFrameCoords(value Vector2i.XY) {
 	class(self).SetFrameCoords(Vector2i.XY(value))
 }
 
+/*
+If true, the sprite will use [RegionRect] and display only the specified part of its texture.
+
+[RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.RegionRect
+*/
 func (self Instance) RegionEnabled() bool {
 	return bool(class(self).IsRegionEnabled())
 }
 
+// SetRegionEnabled sets the property returned by [IsRegionEnabled].
 func (self Instance) SetRegionEnabled(value bool) {
 	class(self).SetRegionEnabled(value)
 }
 
+/*
+The region of the atlas texture to display. [RegionEnabled] must be true.
+
+[RegionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.RegionEnabled
+*/
 func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
+// SetRegionRect sets the property returned by [GetRegionRect].
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
@@ -302,6 +348,12 @@ func (self class) GetHframes() int64 { //gd:Sprite3D.get_hframes
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [Frame] changes.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Frame
+*/
 func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -314,6 +366,11 @@ func (self class) FrameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
 }
 
+/*
+Emitted when the [Texture] changes.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite3D#Instance.Texture
+*/
 func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

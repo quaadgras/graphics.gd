@@ -283,130 +283,230 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the joint type.
+*/
 func (self Instance) JointType() JointType {
 	return JointType(class(self).GetJointType())
 }
 
+// SetJointType sets the property returned by [GetJointType].
 func (self Instance) SetJointType(value JointType) {
 	class(self).SetJointType(value)
 }
 
+/*
+Sets the joint's transform.
+*/
 func (self Instance) JointOffset() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetJointOffset())
 }
 
+// SetJointOffset sets the property returned by [GetJointOffset].
 func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) {
 	class(self).SetJointOffset(Transform3D.BasisOrigin(value))
 }
 
+/*
+Sets the joint's rotation in radians.
+*/
 func (self Instance) JointRotation() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetJointRotation())
 }
 
+// SetJointRotation sets the property returned by [GetJointRotation].
 func (self Instance) SetJointRotation(value Vector3.XYZ) {
 	class(self).SetJointRotation(Vector3.XYZ(value))
 }
 
+/*
+Sets the body's transform.
+*/
 func (self Instance) BodyOffset() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetBodyOffset())
 }
 
+// SetBodyOffset sets the property returned by [GetBodyOffset].
 func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) {
 	class(self).SetBodyOffset(Transform3D.BasisOrigin(value))
 }
 
+/*
+The body's mass.
+*/
 func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
+// SetMass sets the property returned by [GetMass].
 func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(float64(value))
 }
 
+/*
+The body's friction, from 0 (frictionless) to 1 (max friction).
+*/
 func (self Instance) Friction() Float.X {
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
+// SetFriction sets the property returned by [GetFriction].
 func (self Instance) SetFriction(value Float.X) {
 	class(self).SetFriction(float64(value))
 }
 
+/*
+The body's bounciness. Values range from 0 (no bounce) to 1 (full bounciness).
+
+Note: Even with [Bounce] set to 1.0, some energy will be lost over time due to linear and angular damping. To have a [PhysicalBone3D] that preserves all its energy over time, set [Bounce] to 1.0, [LinearDampMode] to [DampModeReplace], [LinearDamp] to 0.0, [AngularDampMode] to [DampModeReplace], and [AngularDamp] to 0.0.
+
+[AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDamp
+[AngularDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDampMode
+[Bounce]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.Bounce
+[LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDamp
+[LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDampMode
+[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
+*/
 func (self Instance) Bounce() Float.X {
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
+// SetBounce sets the property returned by [GetBounce].
 func (self Instance) SetBounce(value Float.X) {
 	class(self).SetBounce(float64(value))
 }
 
+/*
+This is multiplied by [ProjectSettings] "physics/3d/default_gravity" to produce this body's gravity. For example, a value of 1.0 will apply normal gravity, 2.0 will apply double the gravity, and 0.5 will apply half the gravity to this body.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) GravityScale() Float.X {
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
+// SetGravityScale sets the property returned by [GetGravityScale].
 func (self Instance) SetGravityScale(value Float.X) {
 	class(self).SetGravityScale(float64(value))
 }
 
+/*
+If true, the standard force integration (like gravity or damping) will be disabled for this body. Other than collision response, the body will only move as determined by the [IntegrateForces] method, if that virtual method is overridden.
+
+Setting this property will call the method [PhysicsServer3D.BodySetOmitForceIntegration] internally.
+
+[IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Interface
+[PhysicsServer3D.BodySetOmitForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D#BodySetOmitForceIntegration
+*/
 func (self Instance) CustomIntegrator() bool {
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
+// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator].
 func (self Instance) SetCustomIntegrator(value bool) {
 	class(self).SetUseCustomIntegrator(value)
 }
 
+/*
+Defines how [LinearDamp] is applied.
+
+[LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDamp
+*/
 func (self Instance) LinearDampMode() DampMode {
 	return DampMode(class(self).GetLinearDampMode())
 }
 
+// SetLinearDampMode sets the property returned by [GetLinearDampMode].
 func (self Instance) SetLinearDampMode(value DampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
+/*
+Damps the body's movement. By default, the body will use [ProjectSettings] "physics/3d/default_linear_damp" or any value override set by an [Area3D] the body is in. Depending on [LinearDampMode], [LinearDamp] may be added to or replace the body's damping value.
+
+See [ProjectSettings] "physics/3d/default_linear_damp" for more details about damping.
+
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+[LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDamp
+[LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDampMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
+// SetLinearDamp sets the property returned by [GetLinearDamp].
 func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(float64(value))
 }
 
+/*
+Defines how [AngularDamp] is applied.
+
+[AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDamp
+*/
 func (self Instance) AngularDampMode() DampMode {
 	return DampMode(class(self).GetAngularDampMode())
 }
 
+// SetAngularDampMode sets the property returned by [GetAngularDampMode].
 func (self Instance) SetAngularDampMode(value DampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
+/*
+Damps the body's rotation. By default, the body will use the [ProjectSettings] "physics/3d/default_angular_damp" project setting or any value override set by an [Area3D] the body is in. Depending on [AngularDampMode], you can set [AngularDamp] to be added to or to replace the body's damping value.
+
+See [ProjectSettings] "physics/3d/default_angular_damp" for more details about damping.
+
+[AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDamp
+[AngularDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDampMode
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
+// SetAngularDamp sets the property returned by [GetAngularDamp].
 func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(float64(value))
 }
 
+/*
+The body's linear velocity in units per second. Can be used sporadically, but don't set this every frame, because physics may run in another thread and runs at a different granularity. Use [IntegrateForces] as your process loop for precise control of the body state.
+
+[IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Interface
+*/
 func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
+// SetLinearVelocity sets the property returned by [GetLinearVelocity].
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
+/*
+The PhysicalBone3D's rotational velocity in radians per second.
+*/
 func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
+// SetAngularVelocity sets the property returned by [GetAngularVelocity].
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
+/*
+If true, the body is deactivated when there is no movement, so it will not take part in the simulation until it is awakened by an external force.
+*/
 func (self Instance) CanSleep() bool {
 	return bool(class(self).IsAbleToSleep())
 }
 
+// SetCanSleep sets the property returned by [IsAbleToSleep].
 func (self Instance) SetCanSleep(value bool) {
 	class(self).SetCanSleep(value)
 }

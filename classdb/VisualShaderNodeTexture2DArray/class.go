@@ -146,10 +146,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A source texture array. Used if [VisualShaderNodeSample3D.Source] is set to [Visualshadernodesample3d.SourceTexture].
+
+[VisualShaderNodeSample3D.Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeSample3D#Instance.Source
+*/
 func (self Instance) TextureArray() TextureLayered.Instance {
 	return TextureLayered.Instance(class(self).GetTextureArray())
 }
 
+// SetTextureArray sets the property returned by [GetTextureArray].
 func (self Instance) SetTextureArray(value TextureLayered.Instance) {
 	class(self).SetTextureArray(value)
 }

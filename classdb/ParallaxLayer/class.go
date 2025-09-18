@@ -156,26 +156,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+Multiplies the ParallaxLayer's motion. If an axis is set to 0, it will not scroll.
+*/
 func (self Instance) MotionScale() Vector2.XY {
 	return Vector2.XY(class(self).GetMotionScale())
 }
 
+// SetMotionScale sets the property returned by [GetMotionScale].
 func (self Instance) SetMotionScale(value Vector2.XY) {
 	class(self).SetMotionScale(Vector2.XY(value))
 }
 
+/*
+The ParallaxLayer's offset relative to the parent ParallaxBackground's [ParallaxBackground.ScrollOffset].
+
+[ParallaxBackground.ScrollOffset]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollOffset
+*/
 func (self Instance) MotionOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetMotionOffset())
 }
 
+// SetMotionOffset sets the property returned by [GetMotionOffset].
 func (self Instance) SetMotionOffset(value Vector2.XY) {
 	class(self).SetMotionOffset(Vector2.XY(value))
 }
 
+/*
+The interval, in pixels, at which the [ParallaxLayer] is drawn repeatedly. Useful for creating an infinitely scrolling background. If an axis is set to 0, the [ParallaxLayer] will be drawn only once along that direction.
+
+Note: If you want the repetition to pixel-perfect match a [Texture2D] displayed by a child node, you should account for any scale applied to the texture when defining this interval. For example, if you use a child [Sprite2D] scaled to 0.5 to display a 600x600 texture, and want this sprite to be repeated continuously horizontally, you should set the mirroring to Vector2(300, 0).
+
+Note: If the length of the viewport axis is bigger than twice the repeated axis size, it will not repeat infinitely, as the parallax layer only draws 2 instances of the layer at any given time. The visibility window is calculated from the parent [ParallaxBackground]'s position, not the layer's own position. So, if you use mirroring, do not change the [ParallaxLayer] position relative to its parent. Instead, if you need to adjust the background's position, set the [CanvasLayer.Offset] property in the parent [ParallaxBackground].
+
+Note: Despite the name, the layer will not be mirrored, it will only be repeated.
+
+[CanvasLayer.Offset]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.Offset
+[ParallaxBackground]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground
+[ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) MotionMirroring() Vector2.XY {
 	return Vector2.XY(class(self).GetMirroring())
 }
 
+// SetMotionMirroring sets the property returned by [GetMirroring].
 func (self Instance) SetMotionMirroring(value Vector2.XY) {
 	class(self).SetMirroring(Vector2.XY(value))
 }

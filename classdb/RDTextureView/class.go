@@ -153,42 +153,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+Optional override for the data format to return sampled values in. The corresponding [RDTextureFormat] must have had this added as a shareable format. The default value of [Renderingdevice.DataFormatMax] does not override the format.
+
+[RDTextureFormat]: https://pkg.go.dev/graphics.gd/classdb/RDTextureFormat
+*/
 func (self Instance) FormatOverride() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormatOverride())
 }
 
+// SetFormatOverride sets the property returned by [GetFormatOverride].
 func (self Instance) SetFormatOverride(value Rendering.DataFormat) {
 	class(self).SetFormatOverride(value)
 }
 
+/*
+The channel to sample when sampling the red color channel.
+*/
 func (self Instance) SwizzleR() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleR())
 }
 
+// SetSwizzleR sets the property returned by [GetSwizzleR].
 func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleR(value)
 }
 
+/*
+The channel to sample when sampling the green color channel.
+*/
 func (self Instance) SwizzleG() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleG())
 }
 
+// SetSwizzleG sets the property returned by [GetSwizzleG].
 func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleG(value)
 }
 
+/*
+The channel to sample when sampling the blue color channel.
+*/
 func (self Instance) SwizzleB() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleB())
 }
 
+// SetSwizzleB sets the property returned by [GetSwizzleB].
 func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleB(value)
 }
 
+/*
+The channel to sample when sampling the alpha channel.
+*/
 func (self Instance) SwizzleA() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleA())
 }
 
+// SetSwizzleA sets the property returned by [GetSwizzleA].
 func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleA(value)
 }

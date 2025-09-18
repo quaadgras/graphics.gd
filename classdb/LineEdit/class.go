@@ -566,274 +566,455 @@ func New() Instance {
 	return casted
 }
 
+/*
+String value of the [LineEdit].
+
+Note: Changing text using this property won't emit the [OnTextChanged] signal.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[OnTextChanged]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.OnTextChanged
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+Text shown when the [LineEdit] is empty. It is not the [LineEdit]'s default value (see [Text]).
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
 func (self Instance) PlaceholderText() string {
 	return string(class(self).GetPlaceholder().String())
 }
 
+// SetPlaceholderText sets the property returned by [GetPlaceholder].
 func (self Instance) SetPlaceholderText(value string) {
 	class(self).SetPlaceholder(String.New(value))
 }
 
+/*
+Text alignment as defined in the [HorizontalAlignment] enum.
+*/
 func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Maximum number of characters that can be entered inside the [LineEdit]. If 0, there is no limit.
+
+When a limit is defined, characters that would exceed [MaxLength] are truncated. This happens both for existing [Text] contents when setting the max length, or for new text inserted in the [LineEdit], including pasting.
+
+If any input text is truncated, the [OnTextChangeRejected] signal is emitted with the truncated substring as a parameter:
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[MaxLength]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.MaxLength
+[OnTextChangeRejected]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.OnTextChangeRejected
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
 func (self Instance) MaxLength() int {
 	return int(int(class(self).GetMaxLength()))
 }
 
+// SetMaxLength sets the property returned by [GetMaxLength].
 func (self Instance) SetMaxLength(value int) {
 	class(self).SetMaxLength(int64(value))
 }
 
+/*
+If false, existing text cannot be modified and new text cannot be added.
+*/
 func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
+// SetEditable sets the property returned by [IsEditable].
 func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+/*
+If true, the [LineEdit] will not exit edit mode when text is submitted by pressing ui_text_submit action (by default: Enter or Kp Enter).
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) KeepEditingOnTextSubmit() bool {
 	return bool(class(self).IsEditingKeptOnTextSubmit())
 }
 
+// SetKeepEditingOnTextSubmit sets the property returned by [IsEditingKeptOnTextSubmit].
 func (self Instance) SetKeepEditingOnTextSubmit(value bool) {
 	class(self).SetKeepEditingOnTextSubmit(value)
 }
 
+/*
+If true, the [LineEdit] width will increase to stay longer than the [Text]. It will not compress if the [Text] is shortened.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
 func (self Instance) ExpandToTextLength() bool {
 	return bool(class(self).IsExpandToTextLengthEnabled())
 }
 
+// SetExpandToTextLength sets the property returned by [IsExpandToTextLengthEnabled].
 func (self Instance) SetExpandToTextLength(value bool) {
 	class(self).SetExpandToTextLengthEnabled(value)
 }
 
+/*
+If true, the context menu will appear when right-clicked.
+*/
 func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
 func (self Instance) SetContextMenuEnabled(value bool) {
 	class(self).SetContextMenuEnabled(value)
 }
 
+/*
+If true, "Emoji and Symbols" menu is enabled.
+*/
 func (self Instance) EmojiMenuEnabled() bool {
 	return bool(class(self).IsEmojiMenuEnabled())
 }
 
+// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled].
 func (self Instance) SetEmojiMenuEnabled(value bool) {
 	class(self).SetEmojiMenuEnabled(value)
 }
 
+/*
+If true and [CaretMidGrapheme] is false, backspace deletes an entire composite character such as ❤️‍🩹, instead of deleting part of the composite character.
+
+[CaretMidGrapheme]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.CaretMidGrapheme
+*/
 func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
 	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
 }
 
+// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled].
 func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
 	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
 }
 
+/*
+If true, the native virtual keyboard is enabled on platforms that support it.
+*/
 func (self Instance) VirtualKeyboardEnabled() bool {
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled].
 func (self Instance) SetVirtualKeyboardEnabled(value bool) {
 	class(self).SetVirtualKeyboardEnabled(value)
 }
 
+/*
+If true, the native virtual keyboard is shown on focus events on platforms that support it.
+*/
 func (self Instance) VirtualKeyboardShowOnFocus() bool {
 	return bool(class(self).GetVirtualKeyboardShowOnFocus())
 }
 
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus].
 func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
 	class(self).SetVirtualKeyboardShowOnFocus(value)
 }
 
+/*
+Specifies the type of virtual keyboard to show.
+*/
 func (self Instance) VirtualKeyboardType() VirtualKeyboardType {
 	return VirtualKeyboardType(class(self).GetVirtualKeyboardType())
 }
 
+// SetVirtualKeyboardType sets the property returned by [GetVirtualKeyboardType].
 func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) {
 	class(self).SetVirtualKeyboardType(value)
 }
 
+/*
+If true, the [LineEdit] will show a clear button if [Text] is not empty, which can be used to clear the text quickly.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
 func (self Instance) ClearButtonEnabled() bool {
 	return bool(class(self).IsClearButtonEnabled())
 }
 
+// SetClearButtonEnabled sets the property returned by [IsClearButtonEnabled].
 func (self Instance) SetClearButtonEnabled(value bool) {
 	class(self).SetClearButtonEnabled(value)
 }
 
+/*
+If true, shortcut keys for context menu items are enabled, even if the context menu is disabled.
+*/
 func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
 func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
+/*
+If false, using middle mouse button to paste clipboard will be disabled.
+
+Note: This method is only implemented on Linux.
+*/
 func (self Instance) MiddleMousePasteEnabled() bool {
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
+// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled].
 func (self Instance) SetMiddleMousePasteEnabled(value bool) {
 	class(self).SetMiddleMousePasteEnabled(value)
 }
 
+/*
+If false, it's impossible to select the text using mouse nor keyboard.
+*/
 func (self Instance) SelectingEnabled() bool {
 	return bool(class(self).IsSelectingEnabled())
 }
 
+// SetSelectingEnabled sets the property returned by [IsSelectingEnabled].
 func (self Instance) SetSelectingEnabled(value bool) {
 	class(self).SetSelectingEnabled(value)
 }
 
+/*
+If true, the selected text will be deselected when focus is lost.
+*/
 func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
 func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
 	class(self).SetDeselectOnFocusLossEnabled(value)
 }
 
+/*
+If true, allow drag and drop of selected text.
+*/
 func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
 func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
 	class(self).SetDragAndDropSelectionEnabled(value)
 }
 
+/*
+Sets the icon that will appear in the right end of the [LineEdit] if there's no [Text], or always, if [ClearButtonEnabled] is set to false.
+
+[ClearButtonEnabled]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.ClearButtonEnabled
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+*/
 func (self Instance) RightIcon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetRightIcon())
 }
 
+// SetRightIcon sets the property returned by [GetRightIcon].
 func (self Instance) SetRightIcon(value Texture2D.Instance) {
 	class(self).SetRightIcon(value)
 }
 
+/*
+If true, the [LineEdit] doesn't display decoration.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
+// SetFlat sets the property returned by [IsFlat].
 func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
+/*
+If true, control characters are displayed.
+*/
 func (self Instance) DrawControlChars() bool {
 	return bool(class(self).GetDrawControlChars())
 }
 
+// SetDrawControlChars sets the property returned by [GetDrawControlChars].
 func (self Instance) SetDrawControlChars(value bool) {
 	class(self).SetDrawControlChars(value)
 }
 
+/*
+If true, the [LineEdit] will select the whole text when it gains focus.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) SelectAllOnFocus() bool {
 	return bool(class(self).IsSelectAllOnFocus())
 }
 
+// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus].
 func (self Instance) SetSelectAllOnFocus(value bool) {
 	class(self).SetSelectAllOnFocus(value)
 }
 
+/*
+If true, makes the caret blink.
+*/
 func (self Instance) CaretBlink() bool {
 	return bool(class(self).IsCaretBlinkEnabled())
 }
 
+// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled].
 func (self Instance) SetCaretBlink(value bool) {
 	class(self).SetCaretBlinkEnabled(value)
 }
 
+/*
+The interval at which the caret blinks (in seconds).
+*/
 func (self Instance) CaretBlinkInterval() Float.X {
 	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
+// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval].
 func (self Instance) SetCaretBlinkInterval(value Float.X) {
 	class(self).SetCaretBlinkInterval(float64(value))
 }
 
+/*
+The caret's column position inside the [LineEdit]. When set, the text may scroll to accommodate it.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) CaretColumn() int {
 	return int(int(class(self).GetCaretColumn()))
 }
 
+// SetCaretColumn sets the property returned by [GetCaretColumn].
 func (self Instance) SetCaretColumn(value int) {
 	class(self).SetCaretColumn(int64(value))
 }
 
+/*
+If true, the [LineEdit] will always show the caret, even if not editing or focus is lost.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) CaretForceDisplayed() bool {
 	return bool(class(self).IsCaretForceDisplayed())
 }
 
+// SetCaretForceDisplayed sets the property returned by [IsCaretForceDisplayed].
 func (self Instance) SetCaretForceDisplayed(value bool) {
 	class(self).SetCaretForceDisplayed(value)
 }
 
+/*
+Allow moving caret, selecting and removing the individual composite character components.
+
+Note: Backspace is always removing individual composite character components.
+*/
 func (self Instance) CaretMidGrapheme() bool {
 	return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
+// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled].
 func (self Instance) SetCaretMidGrapheme(value bool) {
 	class(self).SetCaretMidGraphemeEnabled(value)
 }
 
+/*
+If true, every character is replaced with the secret character (see [SecretCharacter]).
+
+[SecretCharacter]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.SecretCharacter
+*/
 func (self Instance) Secret() bool {
 	return bool(class(self).IsSecret())
 }
 
+// SetSecret sets the property returned by [IsSecret].
 func (self Instance) SetSecret(value bool) {
 	class(self).SetSecret(value)
 }
 
+/*
+The character to use to mask secret input. Only a single character can be used as the secret character. If it is longer than one character, only the first one will be used. If it is empty, a space will be used instead.
+*/
 func (self Instance) SecretCharacter() string {
 	return string(class(self).GetSecretCharacter().String())
 }
 
+// SetSecretCharacter sets the property returned by [GetSecretCharacter].
 func (self Instance) SetSecretCharacter(value string) {
 	class(self).SetSecretCharacter(String.New(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms. If left empty, current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
@@ -1539,6 +1720,10 @@ func (self class) IsSelectAllOnFocus() bool { //gd:LineEdit.is_select_all_on_foc
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the text changes.
+*/
 func (self Instance) OnTextChanged(cb func(new_text string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1551,6 +1736,11 @@ func (self class) TextChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
 }
 
+/*
+Emitted when appending text that overflows the [MaxLength]. The appended text is truncated to fit [MaxLength], and the part that couldn't fit is passed as the 'rejected_substring' argument.
+
+[MaxLength]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.MaxLength
+*/
 func (self Instance) OnTextChangeRejected(cb func(rejected_substring string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1563,6 +1753,11 @@ func (self class) TextChangeRejected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChangeRejected`))))
 }
 
+/*
+Emitted when the user presses the ui_text_submit action (by default: Enter or Kp Enter) while the [LineEdit] has focus.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) OnTextSubmitted(cb func(new_text string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1575,6 +1770,11 @@ func (self class) TextSubmitted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSubmitted`))))
 }
 
+/*
+Emitted when the [LineEdit] switches in or out of edit mode.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) OnEditingToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

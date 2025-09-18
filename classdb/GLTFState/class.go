@@ -361,10 +361,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The original raw JSON document corresponding to this GLTFState.
+*/
 func (self Instance) Json() map[string]interface{} {
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetJson()))
 }
 
+// SetJson sets the property returned by [GetJson].
 func (self Instance) SetJson(value map[string]interface{}) {
 	class(self).SetJson(gd.DictionaryFromMap(value))
 }
@@ -373,6 +377,7 @@ func (self Instance) MajorVersion() int {
 	return int(int(class(self).GetMajorVersion()))
 }
 
+// SetMajorVersion sets the property returned by [GetMajorVersion].
 func (self Instance) SetMajorVersion(value int) {
 	class(self).SetMajorVersion(int64(value))
 }
@@ -381,22 +386,31 @@ func (self Instance) MinorVersion() int {
 	return int(int(class(self).GetMinorVersion()))
 }
 
+// SetMinorVersion sets the property returned by [GetMinorVersion].
 func (self Instance) SetMinorVersion(value int) {
 	class(self).SetMinorVersion(int64(value))
 }
 
+/*
+The copyright string in the asset header of the glTF file. This is set during import if present and export if non-empty. See the glTF asset header documentation for more information.
+*/
 func (self Instance) Copyright() string {
 	return string(class(self).GetCopyright().String())
 }
 
+// SetCopyright sets the property returned by [GetCopyright].
 func (self Instance) SetCopyright(value string) {
 	class(self).SetCopyright(String.New(value))
 }
 
+/*
+The binary buffer attached to a .glb file.
+*/
 func (self Instance) GlbData() []byte {
 	return []byte(class(self).GetGlbData().Bytes())
 }
 
+// SetGlbData sets the property returned by [GetGlbData].
 func (self Instance) SetGlbData(value []byte) {
 	class(self).SetGlbData(Packed.BytesFrom(value...))
 }
@@ -405,6 +419,7 @@ func (self Instance) UseNamedSkinBinds() bool {
 	return bool(class(self).GetUseNamedSkinBinds())
 }
 
+// SetUseNamedSkinBinds sets the property returned by [GetUseNamedSkinBinds].
 func (self Instance) SetUseNamedSkinBinds(value bool) {
 	class(self).SetUseNamedSkinBinds(value)
 }
@@ -413,6 +428,7 @@ func (self Instance) Nodes() []GLTFNode.Instance {
 	return []GLTFNode.Instance(gd.ArrayAs[[]GLTFNode.Instance](gd.InternalArray(class(self).GetNodes())))
 }
 
+// SetNodes sets the property returned by [GetNodes].
 func (self Instance) SetNodes(value []GLTFNode.Instance) {
 	class(self).SetNodes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFNode]](value))
 }
@@ -421,6 +437,7 @@ func (self Instance) Buffers() [][]byte {
 	return [][]byte(gd.ArrayAs[[][]byte](gd.InternalArray(class(self).GetBuffers())))
 }
 
+// SetBuffers sets the property returned by [GetBuffers].
 func (self Instance) SetBuffers(value [][]byte) {
 	class(self).SetBuffers(gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](value))
 }
@@ -429,6 +446,7 @@ func (self Instance) BufferViews() []GLTFBufferView.Instance {
 	return []GLTFBufferView.Instance(gd.ArrayAs[[]GLTFBufferView.Instance](gd.InternalArray(class(self).GetBufferViews())))
 }
 
+// SetBufferViews sets the property returned by [GetBufferViews].
 func (self Instance) SetBufferViews(value []GLTFBufferView.Instance) {
 	class(self).SetBufferViews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFBufferView]](value))
 }
@@ -437,6 +455,7 @@ func (self Instance) Accessors() []GLTFAccessor.Instance {
 	return []GLTFAccessor.Instance(gd.ArrayAs[[]GLTFAccessor.Instance](gd.InternalArray(class(self).GetAccessors())))
 }
 
+// SetAccessors sets the property returned by [GetAccessors].
 func (self Instance) SetAccessors(value []GLTFAccessor.Instance) {
 	class(self).SetAccessors(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAccessor]](value))
 }
@@ -445,6 +464,7 @@ func (self Instance) Meshes() []GLTFMesh.Instance {
 	return []GLTFMesh.Instance(gd.ArrayAs[[]GLTFMesh.Instance](gd.InternalArray(class(self).GetMeshes())))
 }
 
+// SetMeshes sets the property returned by [GetMeshes].
 func (self Instance) SetMeshes(value []GLTFMesh.Instance) {
 	class(self).SetMeshes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFMesh]](value))
 }
@@ -453,38 +473,55 @@ func (self Instance) Materials() []Material.Instance {
 	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetMaterials())))
 }
 
+// SetMaterials sets the property returned by [GetMaterials].
 func (self Instance) SetMaterials(value []Material.Instance) {
 	class(self).SetMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 }
 
+/*
+The name of the scene. When importing, if not specified, this will be the file name. When exporting, if specified, the scene name will be saved to the glTF file.
+*/
 func (self Instance) SceneName() string {
 	return string(class(self).GetSceneName().String())
 }
 
+// SetSceneName sets the property returned by [GetSceneName].
 func (self Instance) SetSceneName(value string) {
 	class(self).SetSceneName(String.New(value))
 }
 
+/*
+The folder path associated with this glTF data. This is used to find other files the glTF file references, like images or binary buffers. This will be set during import when appending from a file, and will be set during export when writing to a file.
+*/
 func (self Instance) BasePath() string {
 	return string(class(self).GetBasePath().String())
 }
 
+// SetBasePath sets the property returned by [GetBasePath].
 func (self Instance) SetBasePath(value string) {
 	class(self).SetBasePath(String.New(value))
 }
 
+/*
+The file name associated with this glTF data. If it ends with .gltf, this is text-based glTF, otherwise this is binary GLB. This will be set during import when appending from a file, and will be set during export when writing to a file. If writing to a buffer, this will be an empty string.
+*/
 func (self Instance) Filename() string {
 	return string(class(self).GetFilename().String())
 }
 
+// SetFilename sets the property returned by [GetFilename].
 func (self Instance) SetFilename(value string) {
 	class(self).SetFilename(String.New(value))
 }
 
+/*
+The root nodes of the glTF file. Typically, a glTF file will only have one scene, and therefore one root node. However, a glTF file may have multiple scenes and therefore multiple root nodes, which will be generated as siblings of each other and as children of the root node of the generated Godot scene.
+*/
 func (self Instance) RootNodes() []int32 {
 	return []int32(slices.Collect(class(self).GetRootNodes().Values()))
 }
 
+// SetRootNodes sets the property returned by [GetRootNodes].
 func (self Instance) SetRootNodes(value []int32) {
 	class(self).SetRootNodes(Packed.New(value...))
 }
@@ -493,6 +530,7 @@ func (self Instance) Textures() []GLTFTexture.Instance {
 	return []GLTFTexture.Instance(gd.ArrayAs[[]GLTFTexture.Instance](gd.InternalArray(class(self).GetTextures())))
 }
 
+// SetTextures sets the property returned by [GetTextures].
 func (self Instance) SetTextures(value []GLTFTexture.Instance) {
 	class(self).SetTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTexture]](value))
 }
@@ -501,6 +539,7 @@ func (self Instance) TextureSamplers() []GLTFTextureSampler.Instance {
 	return []GLTFTextureSampler.Instance(gd.ArrayAs[[]GLTFTextureSampler.Instance](gd.InternalArray(class(self).GetTextureSamplers())))
 }
 
+// SetTextureSamplers sets the property returned by [GetTextureSamplers].
 func (self Instance) SetTextureSamplers(value []GLTFTextureSampler.Instance) {
 	class(self).SetTextureSamplers(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTextureSampler]](value))
 }
@@ -509,6 +548,7 @@ func (self Instance) Images() []Texture2D.Instance {
 	return []Texture2D.Instance(gd.ArrayAs[[]Texture2D.Instance](gd.InternalArray(class(self).GetImages())))
 }
 
+// SetImages sets the property returned by [GetImages].
 func (self Instance) SetImages(value []Texture2D.Instance) {
 	class(self).SetImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Texture2D]](value))
 }
@@ -517,6 +557,7 @@ func (self Instance) Skins() []GLTFSkin.Instance {
 	return []GLTFSkin.Instance(gd.ArrayAs[[]GLTFSkin.Instance](gd.InternalArray(class(self).GetSkins())))
 }
 
+// SetSkins sets the property returned by [GetSkins].
 func (self Instance) SetSkins(value []GLTFSkin.Instance) {
 	class(self).SetSkins(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkin]](value))
 }
@@ -525,6 +566,7 @@ func (self Instance) Cameras() []GLTFCamera.Instance {
 	return []GLTFCamera.Instance(gd.ArrayAs[[]GLTFCamera.Instance](gd.InternalArray(class(self).GetCameras())))
 }
 
+// SetCameras sets the property returned by [GetCameras].
 func (self Instance) SetCameras(value []GLTFCamera.Instance) {
 	class(self).SetCameras(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFCamera]](value))
 }
@@ -533,6 +575,7 @@ func (self Instance) Lights() []GLTFLight.Instance {
 	return []GLTFLight.Instance(gd.ArrayAs[[]GLTFLight.Instance](gd.InternalArray(class(self).GetLights())))
 }
 
+// SetLights sets the property returned by [GetLights].
 func (self Instance) SetLights(value []GLTFLight.Instance) {
 	class(self).SetLights(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFLight]](value))
 }
@@ -541,6 +584,7 @@ func (self Instance) UniqueNames() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
+// SetUniqueNames sets the property returned by [GetUniqueNames].
 func (self Instance) SetUniqueNames(value []string) {
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
@@ -549,6 +593,7 @@ func (self Instance) UniqueAnimationNames() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueAnimationNames())))
 }
 
+// SetUniqueAnimationNames sets the property returned by [GetUniqueAnimationNames].
 func (self Instance) SetUniqueAnimationNames(value []string) {
 	class(self).SetUniqueAnimationNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
@@ -557,6 +602,7 @@ func (self Instance) Skeletons() []GLTFSkeleton.Instance {
 	return []GLTFSkeleton.Instance(gd.ArrayAs[[]GLTFSkeleton.Instance](gd.InternalArray(class(self).GetSkeletons())))
 }
 
+// SetSkeletons sets the property returned by [GetSkeletons].
 func (self Instance) SetSkeletons(value []GLTFSkeleton.Instance) {
 	class(self).SetSkeletons(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkeleton]](value))
 }
@@ -565,14 +611,21 @@ func (self Instance) CreateAnimations() bool {
 	return bool(class(self).GetCreateAnimations())
 }
 
+// SetCreateAnimations sets the property returned by [GetCreateAnimations].
 func (self Instance) SetCreateAnimations(value bool) {
 	class(self).SetCreateAnimations(value)
 }
 
+/*
+If true, forces all GLTFNodes in the document to be bones of a single [Skeleton3D] Godot node.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) ImportAsSkeletonBones() bool {
 	return bool(class(self).GetImportAsSkeletonBones())
 }
 
+// SetImportAsSkeletonBones sets the property returned by [GetImportAsSkeletonBones].
 func (self Instance) SetImportAsSkeletonBones(value bool) {
 	class(self).SetImportAsSkeletonBones(value)
 }
@@ -581,6 +634,7 @@ func (self Instance) Animations() []GLTFAnimation.Instance {
 	return []GLTFAnimation.Instance(gd.ArrayAs[[]GLTFAnimation.Instance](gd.InternalArray(class(self).GetAnimations())))
 }
 
+// SetAnimations sets the property returned by [GetAnimations].
 func (self Instance) SetAnimations(value []GLTFAnimation.Instance) {
 	class(self).SetAnimations(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAnimation]](value))
 }
@@ -589,14 +643,19 @@ func (self Instance) HandleBinaryImage() BinaryHandler {
 	return BinaryHandler(BinaryHandler(class(self).GetHandleBinaryImage()))
 }
 
+// SetHandleBinaryImage sets the property returned by [GetHandleBinaryImage].
 func (self Instance) SetHandleBinaryImage(value BinaryHandler) {
 	class(self).SetHandleBinaryImage(int64(value))
 }
 
+/*
+The baking fps of the animation for either import or export.
+*/
 func (self Instance) BakeFps() Float.X {
 	return Float.X(Float.X(class(self).GetBakeFps()))
 }
 
+// SetBakeFps sets the property returned by [GetBakeFps].
 func (self Instance) SetBakeFps(value Float.X) {
 	class(self).SetBakeFps(float64(value))
 }

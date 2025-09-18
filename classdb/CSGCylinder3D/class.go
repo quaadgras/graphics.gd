@@ -163,50 +163,76 @@ func New() Instance {
 	return casted
 }
 
+/*
+The radius of the cylinder.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The height of the cylinder.
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+The number of sides of the cylinder, the higher this number the more detail there will be in the cylinder.
+*/
 func (self Instance) Sides() int {
 	return int(int(class(self).GetSides()))
 }
 
+// SetSides sets the property returned by [GetSides].
 func (self Instance) SetSides(value int) {
 	class(self).SetSides(int64(value))
 }
 
+/*
+If true a cone is created, the [Radius] will only apply to one side.
+
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/CSGCylinder3D#Instance.Radius
+*/
 func (self Instance) Cone() bool {
 	return bool(class(self).IsCone())
 }
 
+// SetCone sets the property returned by [IsCone].
 func (self Instance) SetCone(value bool) {
 	class(self).SetCone(value)
 }
 
+/*
+If true the normals of the cylinder are set to give a smooth effect making the cylinder seem rounded. If false the cylinder will have a flat shaded look.
+*/
 func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
+// SetSmoothFaces sets the property returned by [GetSmoothFaces].
 func (self Instance) SetSmoothFaces(value bool) {
 	class(self).SetSmoothFaces(value)
 }
 
+/*
+The material used to render the cylinder.
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

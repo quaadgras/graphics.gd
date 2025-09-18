@@ -3003,6 +3003,10 @@ func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:Navigati
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a navigation map is updated, when a region moves or is modified.
+*/
 func OnMapChanged(cb func(map_ RID.Any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3015,6 +3019,9 @@ func (self class) MapChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MapChanged`))))
 }
 
+/*
+Emitted when navigation debug settings are changed. Only available in debug builds.
+*/
 func OnNavigationDebugChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3027,6 +3034,9 @@ func (self class) NavigationDebugChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationDebugChanged`))))
 }
 
+/*
+Emitted when avoidance debug settings are changed. Only available in debug builds.
+*/
 func OnAvoidanceDebugChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

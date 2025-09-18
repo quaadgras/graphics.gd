@@ -159,42 +159,73 @@ func New() Instance {
 	return casted
 }
 
+/*
+The actual shape owned by this collision shape.
+*/
 func (self Instance) Shape() Shape2D.Instance {
 	return Shape2D.Instance(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Shape2D.Instance) {
 	class(self).SetShape(value)
 }
 
+/*
+A disabled collision shape has no effect in the world. This property should be changed with [Object.SetDeferred].
+
+[Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
+*/
 func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
+// SetDisabled sets the property returned by [IsDisabled].
 func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
+/*
+Sets whether this collision shape should only detect collision on one side (top or bottom).
+
+Note: This property has no effect if this [CollisionShape2D] is a child of an [Area2D] node.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
+*/
 func (self Instance) OneWayCollision() bool {
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
+// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled].
 func (self Instance) SetOneWayCollision(value bool) {
 	class(self).SetOneWayCollision(value)
 }
 
+/*
+The margin used for one-way collision (in pixels). Higher values will make the shape thicker, and work better for colliders that enter the shape at a high velocity.
+*/
 func (self Instance) OneWayCollisionMargin() Float.X {
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
+// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin].
 func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 	class(self).SetOneWayCollisionMargin(float64(value))
 }
 
+/*
+The collision shape color that is displayed in the editor, or in the running project if Debug > Visible Collision Shapes is checked at the top of the editor.
+
+Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color". The Color(0, 0, 0, 0) value documented here is a placeholder, and not the actual default debug color.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
+// SetDebugColor sets the property returned by [GetDebugColor].
 func (self Instance) SetDebugColor(value Color.RGBA) {
 	class(self).SetDebugColor(Color.RGBA(value))
 }

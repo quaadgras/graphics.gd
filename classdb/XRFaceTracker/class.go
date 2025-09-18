@@ -165,10 +165,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The array of face blend shape weights with indices corresponding to the [BlendShapeEntry] enum.
+*/
 func (self Instance) BlendShapes() []float32 {
 	return []float32(slices.Collect(class(self).GetBlendShapes().Values()))
 }
 
+// SetBlendShapes sets the property returned by [GetBlendShapes].
 func (self Instance) SetBlendShapes(value []float32) {
 	class(self).SetBlendShapes(Packed.New(value...))
 }

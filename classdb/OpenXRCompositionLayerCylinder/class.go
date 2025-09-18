@@ -152,34 +152,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+The radius of the cylinder.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The aspect ratio of the slice. Used to set the height relative to the width.
+*/
 func (self Instance) AspectRatio() Float.X {
 	return Float.X(Float.X(class(self).GetAspectRatio()))
 }
 
+// SetAspectRatio sets the property returned by [GetAspectRatio].
 func (self Instance) SetAspectRatio(value Float.X) {
 	class(self).SetAspectRatio(float64(value))
 }
 
+/*
+The central angle of the cylinder. Used to set the width.
+*/
 func (self Instance) CentralAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetCentralAngle()))
 }
 
+// SetCentralAngle sets the property returned by [GetCentralAngle].
 func (self Instance) SetCentralAngle(value Angle.Radians) {
 	class(self).SetCentralAngle(float64(value))
 }
 
+/*
+The number of segments to use in the fallback mesh.
+*/
 func (self Instance) FallbackSegments() int {
 	return int(int(class(self).GetFallbackSegments()))
 }
 
+// SetFallbackSegments sets the property returned by [GetFallbackSegments].
 func (self Instance) SetFallbackSegments(value int) {
 	class(self).SetFallbackSegments(int64(value))
 }

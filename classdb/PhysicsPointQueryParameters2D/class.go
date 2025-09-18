@@ -155,50 +155,90 @@ func New() Instance {
 	return casted
 }
 
+/*
+The position being queried for, in global coordinates.
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
+/*
+If different from 0, restricts the query to a specific canvas layer specified by its instance ID. See [Object.GetInstanceId].
+
+If 0, restricts the query to the Viewport's default canvas layer.
+
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
+*/
 func (self Instance) CanvasInstanceId() int {
 	return int(int(class(self).GetCanvasInstanceId()))
 }
 
+// SetCanvasInstanceId sets the property returned by [GetCanvasInstanceId].
 func (self Instance) SetCanvasInstanceId(value int) {
 	class(self).SetCanvasInstanceId(int64(value))
 }
 
+/*
+The physics layers the query will detect (as a bitmask). By default, all collision layers are detected. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The list of object [Resource.ID]s that will be excluded from collisions. Use [CollisionObject2D.GetRid] to get the [Resource.ID] associated with a [CollisionObject2D]-derived node.
+
+Note: The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then assign it to the property again.
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Exclude() [][]RID.Body2D {
 	return [][]RID.Body2D(gd.ArrayAs[[][]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
+// SetExclude sets the property returned by [GetExclude].
 func (self Instance) SetExclude(value [][]RID.Body2D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+If true, the query will take [PhysicsBody2D]s into account.
+
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+*/
 func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
 func (self Instance) SetCollideWithBodies(value bool) {
 	class(self).SetCollideWithBodies(value)
 }
 
+/*
+If true, the query will take [Area2D]s into account.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+*/
 func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
 func (self Instance) SetCollideWithAreas(value bool) {
 	class(self).SetCollideWithAreas(value)
 }

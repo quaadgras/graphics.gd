@@ -328,6 +328,10 @@ func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.re
 		files gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(files))})
 }
+
+/*
+Emitted if the filesystem changed.
+*/
 func (self Instance) OnFilesystemChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -340,6 +344,9 @@ func (self class) FilesystemChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesystemChanged`))))
 }
 
+/*
+Emitted when the list of global script classes gets updated.
+*/
 func (self Instance) OnScriptClassesUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -352,6 +359,9 @@ func (self class) ScriptClassesUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScriptClassesUpdated`))))
 }
 
+/*
+Emitted if the source of any imported file changed.
+*/
 func (self Instance) OnSourcesChanged(cb func(exist bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -364,6 +374,9 @@ func (self class) SourcesChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SourcesChanged`))))
 }
 
+/*
+Emitted before a resource is reimported.
+*/
 func (self Instance) OnResourcesReimporting(cb func(resources []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -376,6 +389,9 @@ func (self class) ResourcesReimporting() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourcesReimporting`))))
 }
 
+/*
+Emitted if a resource is reimported.
+*/
 func (self Instance) OnResourcesReimported(cb func(resources []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -388,6 +404,9 @@ func (self class) ResourcesReimported() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourcesReimported`))))
 }
 
+/*
+Emitted if at least one resource is reloaded when the filesystem is scanned.
+*/
 func (self Instance) OnResourcesReload(cb func(resources []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

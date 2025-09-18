@@ -154,18 +154,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [MultiMesh] that will be drawn by the [MultiMeshInstance2D].
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
+*/
 func (self Instance) Multimesh() MultiMesh.Instance {
 	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
+// SetMultimesh sets the property returned by [GetMultimesh].
 func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 	class(self).SetMultimesh(value)
 }
 
+/*
+The [Texture2D] that will be used if using the default [CanvasItemMaterial]. Can be accessed as TEXTURE in CanvasItem shader.
+
+[CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
@@ -193,6 +207,12 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:MultiMeshInstance2D.g
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
+
+/*
+Emitted when the [Texture] is changed.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D#Instance.Texture
+*/
 func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

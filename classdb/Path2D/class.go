@@ -150,10 +150,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [Curve2D] describing the path.
+
+[Curve2D]: https://pkg.go.dev/graphics.gd/classdb/Curve2D
+*/
 func (self Instance) Curve() Curve2D.Instance {
 	return Curve2D.Instance(class(self).GetCurve())
 }
 
+// SetCurve sets the property returned by [GetCurve].
 func (self Instance) SetCurve(value Curve2D.Instance) {
 	class(self).SetCurve(value)
 }

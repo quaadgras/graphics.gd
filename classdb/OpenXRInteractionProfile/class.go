@@ -187,26 +187,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The interaction profile path identifying the XR device.
+*/
 func (self Instance) InteractionProfilePath() string {
 	return string(class(self).GetInteractionProfilePath().String())
 }
 
+// SetInteractionProfilePath sets the property returned by [GetInteractionProfilePath].
 func (self Instance) SetInteractionProfilePath(value string) {
 	class(self).SetInteractionProfilePath(String.New(value))
 }
 
+/*
+Action bindings for this interaction profile.
+*/
 func (self Instance) Bindings() []OpenXRIPBinding.Instance {
 	return []OpenXRIPBinding.Instance(gd.ArrayAs[[]OpenXRIPBinding.Instance](gd.InternalArray(class(self).GetBindings())))
 }
 
+// SetBindings sets the property returned by [GetBindings].
 func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) {
 	class(self).SetBindings(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Binding modifiers for this interaction profile.
+*/
 func (self Instance) BindingModifiers() []OpenXRIPBindingModifier.Instance {
 	return []OpenXRIPBindingModifier.Instance(gd.ArrayAs[[]OpenXRIPBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
+// SetBindingModifiers sets the property returned by [GetBindingModifiers].
 func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 }

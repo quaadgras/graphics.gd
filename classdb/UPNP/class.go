@@ -411,26 +411,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+Multicast interface to use for discovery. Uses the default multicast interface if empty.
+*/
 func (self Instance) DiscoverMulticastIf() string {
 	return string(class(self).GetDiscoverMulticastIf().String())
 }
 
+// SetDiscoverMulticastIf sets the property returned by [GetDiscoverMulticastIf].
 func (self Instance) SetDiscoverMulticastIf(value string) {
 	class(self).SetDiscoverMulticastIf(String.New(value))
 }
 
+/*
+If 0, the local port to use for discovery is chosen automatically by the system. If 1, discovery will be done from the source port 1900 (same as destination port). Otherwise, the value will be used as the port.
+*/
 func (self Instance) DiscoverLocalPort() int {
 	return int(int(class(self).GetDiscoverLocalPort()))
 }
 
+// SetDiscoverLocalPort sets the property returned by [GetDiscoverLocalPort].
 func (self Instance) SetDiscoverLocalPort(value int) {
 	class(self).SetDiscoverLocalPort(int64(value))
 }
 
+/*
+If true, IPv6 is used for [UPNPDevice] discovery.
+
+[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
+*/
 func (self Instance) DiscoverIpv6() bool {
 	return bool(class(self).IsDiscoverIpv6())
 }
 
+// SetDiscoverIpv6 sets the property returned by [IsDiscoverIpv6].
 func (self Instance) SetDiscoverIpv6(value bool) {
 	class(self).SetDiscoverIpv6(value)
 }

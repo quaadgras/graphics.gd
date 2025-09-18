@@ -155,26 +155,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contains the raw packets that make up this OggPacketSequence.
+*/
 func (self Instance) PacketData() [][][]interface{} {
 	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(class(self).GetPacketData())))
 }
 
+// SetPacketData sets the property returned by [GetPacketData].
 func (self Instance) SetPacketData(value [][][]interface{}) {
 	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
 }
 
+/*
+Contains the granule positions for each page in this packet sequence.
+*/
 func (self Instance) GranulePositions() []int64 {
 	return []int64(slices.Collect(class(self).GetPacketGranulePositions().Values()))
 }
 
+// SetGranulePositions sets the property returned by [GetPacketGranulePositions].
 func (self Instance) SetGranulePositions(value []int64) {
 	class(self).SetPacketGranulePositions(Packed.New(value...))
 }
 
+/*
+Holds sample rate information about this sequence. Must be set by another class that actually understands the codec.
+*/
 func (self Instance) SamplingRate() Float.X {
 	return Float.X(Float.X(class(self).GetSamplingRate()))
 }
 
+// SetSamplingRate sets the property returned by [GetSamplingRate].
 func (self Instance) SetSamplingRate(value Float.X) {
 	class(self).SetSamplingRate(float64(value))
 }

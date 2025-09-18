@@ -387,82 +387,132 @@ func New() Instance {
 	return casted
 }
 
+/*
+The location from which the user may select a file, including res://, user://, and the local file system.
+*/
 func (self Instance) Access() Access {
 	return Access(class(self).GetAccess())
 }
 
+// SetAccess sets the property returned by [GetAccess].
 func (self Instance) SetAccess(value Access) {
 	class(self).SetAccess(value)
 }
 
+/*
+The view format in which the [EditorFileDialog] displays resources to the user.
+
+[EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
+*/
 func (self Instance) DisplayMode() DisplayMode {
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
+// SetDisplayMode sets the property returned by [GetDisplayMode].
 func (self Instance) SetDisplayMode(value DisplayMode) {
 	class(self).SetDisplayMode(value)
 }
 
+/*
+The dialog's open or save mode, which affects the selection behavior.
+*/
 func (self Instance) FileMode() FileMode {
 	return FileMode(class(self).GetFileMode())
 }
 
+// SetFileMode sets the property returned by [GetFileMode].
 func (self Instance) SetFileMode(value FileMode) {
 	class(self).SetFileMode(value)
 }
 
+/*
+The currently occupied directory.
+*/
 func (self Instance) CurrentDir() string {
 	return string(class(self).GetCurrentDir().String())
 }
 
+// SetCurrentDir sets the property returned by [GetCurrentDir].
 func (self Instance) SetCurrentDir(value string) {
 	class(self).SetCurrentDir(String.New(value))
 }
 
+/*
+The currently selected file.
+*/
 func (self Instance) CurrentFile() string {
 	return string(class(self).GetCurrentFile().String())
 }
 
+// SetCurrentFile sets the property returned by [GetCurrentFile].
 func (self Instance) SetCurrentFile(value string) {
 	class(self).SetCurrentFile(String.New(value))
 }
 
+/*
+The file system path in the address bar.
+*/
 func (self Instance) CurrentPath() string {
 	return string(class(self).GetCurrentPath().String())
 }
 
+// SetCurrentPath sets the property returned by [GetCurrentPath].
 func (self Instance) SetCurrentPath(value string) {
 	class(self).SetCurrentPath(String.New(value))
 }
 
+/*
+The available file type filters. For example, this shows only .png and .gd files: set_filters(PackedStringArray(["*.png ; PNG Images","*.gd ; GDScript Files"])). Multiple file types can also be specified in a single filter. "*.png, *.jpg, *.jpeg ; Supported Images" will show both PNG and JPEG files when selected.
+*/
 func (self Instance) Filters() []string {
 	return []string(class(self).GetFilters().Strings())
 }
 
+// SetFilters sets the property returned by [GetFilters].
 func (self Instance) SetFilters(value []string) {
 	class(self).SetFilters(Packed.MakeStrings(value...))
 }
 
+/*
+The number of additional [OptionButton]s and [CheckBox]es in the dialog.
+
+[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
+[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
+*/
 func (self Instance) OptionCount() int {
 	return int(int(class(self).GetOptionCount()))
 }
 
+// SetOptionCount sets the property returned by [GetOptionCount].
 func (self Instance) SetOptionCount(value int) {
 	class(self).SetOptionCount(int64(value))
 }
 
+/*
+If true, hidden files and directories will be visible in the [EditorFileDialog]. This property is synchronized with [EditorSettings] "filesystem/file_dialog/show_hidden_files".
+
+[EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
+[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+*/
 func (self Instance) ShowHiddenFiles() bool {
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
+// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles].
 func (self Instance) SetShowHiddenFiles(value bool) {
 	class(self).SetShowHiddenFiles(value)
 }
 
+/*
+If true, the [EditorFileDialog] will not warn the user before overwriting files.
+
+[EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
+*/
 func (self Instance) DisableOverwriteWarning() bool {
 	return bool(class(self).IsOverwriteWarningDisabled())
 }
 
+// SetDisableOverwriteWarning sets the property returned by [IsOverwriteWarningDisabled].
 func (self Instance) SetDisableOverwriteWarning(value bool) {
 	class(self).SetDisableOverwriteWarning(value)
 }
@@ -808,6 +858,10 @@ Notify the [EditorFileDialog] that its view of the data is no longer accurate. U
 func (self class) Invalidate() { //gd:EditorFileDialog.invalidate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
 }
+
+/*
+Emitted when a file is selected.
+*/
 func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -820,6 +874,9 @@ func (self class) FileSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileSelected`))))
 }
 
+/*
+Emitted when multiple files are selected.
+*/
 func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -832,6 +889,9 @@ func (self class) FilesSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesSelected`))))
 }
 
+/*
+Emitted when a directory is selected.
+*/
 func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -844,6 +904,9 @@ func (self class) DirSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DirSelected`))))
 }
 
+/*
+Emitted when the filter for file names changes.
+*/
 func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

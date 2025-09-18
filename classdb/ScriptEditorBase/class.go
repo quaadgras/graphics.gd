@@ -191,6 +191,10 @@ Adds an [EditorSyntaxHighlighter] to the open script.
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))})
 }
+
+/*
+Emitted after script validation or when the edited resource has changed.
+*/
 func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -203,6 +207,9 @@ func (self class) NameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NameChanged`))))
 }
 
+/*
+Emitted after script validation.
+*/
 func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -215,6 +222,9 @@ func (self class) EditedScriptChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditedScriptChanged`))))
 }
 
+/*
+Emitted when the user requests contextual help.
+*/
 func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -227,6 +237,11 @@ func (self class) RequestHelp() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestHelp`))))
 }
 
+/*
+Emitted when the user requests to view a specific line of a script, similar to [OnGoToMethod].
+
+[OnGoToMethod]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase#Instance.OnGoToMethod
+*/
 func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -239,6 +254,9 @@ func (self class) RequestOpenScriptAtLine() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestOpenScriptAtLine`))))
 }
 
+/*
+Emitted when the user contextual goto and the item is in the same script.
+*/
 func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -251,6 +269,9 @@ func (self class) RequestSaveHistory() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestSaveHistory`))))
 }
 
+/*
+Emitted when the user changes current script or moves caret by 10 or more columns within the same script.
+*/
 func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -263,6 +284,9 @@ func (self class) RequestSavePreviousState() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestSavePreviousState`))))
 }
 
+/*
+Emitted when the user requests a specific documentation page.
+*/
 func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -275,6 +299,9 @@ func (self class) GoToHelp() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GoToHelp`))))
 }
 
+/*
+Emitted when the user request to search text in the file system.
+*/
 func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -287,6 +314,9 @@ func (self class) SearchInFilesRequested() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SearchInFilesRequested`))))
 }
 
+/*
+Emitted when the user request to find and replace text in the file system.
+*/
 func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -299,6 +329,11 @@ func (self class) ReplaceInFilesRequested() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReplaceInFilesRequested`))))
 }
 
+/*
+Emitted when the user requests to view a specific method of a script, similar to [OnRequestOpenScriptAtLine].
+
+[OnRequestOpenScriptAtLine]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase#Instance.OnRequestOpenScriptAtLine
+*/
 func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

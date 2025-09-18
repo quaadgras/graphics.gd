@@ -164,34 +164,61 @@ func New() Instance {
 	return casted
 }
 
+/*
+Path to the first body (A) attached to the joint. The node must inherit [PhysicsBody2D].
+
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+*/
 func (self Instance) NodeA() string {
 	return string(class(self).GetNodeA().String())
 }
 
+// SetNodeA sets the property returned by [GetNodeA].
 func (self Instance) SetNodeA(value string) {
 	class(self).SetNodeA(Path.ToNode(String.New(value)))
 }
 
+/*
+Path to the second body (B) attached to the joint. The node must inherit [PhysicsBody2D].
+
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+*/
 func (self Instance) NodeB() string {
 	return string(class(self).GetNodeB().String())
 }
 
+// SetNodeB sets the property returned by [GetNodeB].
 func (self Instance) SetNodeB(value string) {
 	class(self).SetNodeB(Path.ToNode(String.New(value)))
 }
 
+/*
+When [NodeA] and [NodeB] move in different directions the [Bias] controls how fast the joint pulls them back to their original position. The lower the [Bias] the more the two bodies can pull on the joint.
+
+When set to 0, the default value from [ProjectSettings] "physics/2d/solver/default_constraint_bias" is used.
+
+[Bias]: https://pkg.go.dev/graphics.gd/classdb/Joint2D#Instance.Bias
+[NodeA]: https://pkg.go.dev/graphics.gd/classdb/Joint2D#Instance.NodeA
+[NodeB]: https://pkg.go.dev/graphics.gd/classdb/Joint2D#Instance.NodeB
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
+// SetBias sets the property returned by [GetBias].
 func (self Instance) SetBias(value Float.X) {
 	class(self).SetBias(float64(value))
 }
 
+/*
+If true, the two bodies bound together do not collide with each other.
+*/
 func (self Instance) DisableCollision() bool {
 	return bool(class(self).GetExcludeNodesFromCollision())
 }
 
+// SetDisableCollision sets the property returned by [GetExcludeNodesFromCollision].
 func (self Instance) SetDisableCollision(value bool) {
 	class(self).SetExcludeNodesFromCollision(value)
 }

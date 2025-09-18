@@ -494,34 +494,70 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the resource is duplicated for each instance of all scenes using it. At run-time, the resource can be modified in one scene without affecting other instances (see [PackedScene.Instantiate]).
+
+Note: Changing this property at run-time has no effect on already created duplicate resources.
+
+[PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
+*/
 func (self Instance) ResourceLocalToScene() bool {
 	return bool(class(self).IsLocalToScene())
 }
 
+// SetResourceLocalToScene sets the property returned by [IsLocalToScene].
 func (self Instance) SetResourceLocalToScene(value bool) {
 	class(self).SetLocalToScene(value)
 }
 
+/*
+The unique path to this resource. If it has been saved to disk, the value will be its filepath. If the resource is exclusively contained within a scene, the value will be the [PackedScene]'s filepath, followed by a unique identifier.
+
+Note: Setting this property manually may fail if a resource with the same path has already been previously loaded. If necessary, use [TakeOverPath].
+
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
+*/
 func (self Instance) ResourcePath() string {
 	return string(class(self).GetPath().String())
 }
 
+// SetResourcePath sets the property returned by [GetPath].
 func (self Instance) SetResourcePath(value string) {
 	class(self).SetPath(String.New(value))
 }
 
+/*
+An optional name for this resource. When defined, its value is displayed to represent the resource in the Inspector dock. For built-in scripts, the name is displayed as part of the tab name in the script editor.
+
+Note: Some resource formats do not support resource names. You can still set the name in the editor or via code, but it will be lost when the resource is reloaded. For example, only built-in scripts can have a resource name, while scripts stored in separate files cannot.
+*/
 func (self Instance) ResourceName() string {
 	return string(class(self).GetName().String())
 }
 
+// SetResourceName sets the property returned by [GetName].
 func (self Instance) SetResourceName(value string) {
 	class(self).SetName(String.New(value))
 }
 
+/*
+A unique identifier relative to the this resource's scene. If left empty, the ID is automatically generated when this resource is saved inside a [PackedScene]. If the resource is not inside a scene, this property is empty by default.
+
+Note: When the [PackedScene] is saved, if multiple resources in the same scene use the same ID, only the earliest resource in the scene hierarchy keeps the original ID. The other resources are assigned new IDs from [GenerateSceneUniqueId].
+
+Note: Setting this property does not emit the [OnChanged] signal.
+
+Warning: When setting, the ID must only consist of letters, numbers, and underscores. Otherwise, it will fail and default to a randomly generated ID.
+
+[OnChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.OnChanged
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+*/
 func (self Instance) ResourceSceneUniqueId() string {
 	return string(class(self).GetSceneUniqueId().String())
 }
 
+// SetResourceSceneUniqueId sets the property returned by [GetSceneUniqueId].
 func (self Instance) SetResourceSceneUniqueId(value string) {
 	class(self).SetSceneUniqueId(String.New(value))
 }
@@ -848,6 +884,14 @@ func (self class) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) [1]gdc
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
+
+/*
+Emitted when the resource changes, usually when one of its properties is modified. See also [EmitChanged].
+
+Note: This signal is not emitted automatically for properties of custom resources. If necessary, a setter needs to be created to emit the signal.
+
+[EmitChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.EmitChanged
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -860,6 +904,11 @@ func (self class) Changed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Changed`))))
 }
 
+/*
+Emitted by a newly duplicated resource with [ResourceLocalToScene] set to true.
+
+[ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
+*/
 func (self Instance) OnSetupLocalToSceneRequested(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

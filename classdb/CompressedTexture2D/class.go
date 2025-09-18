@@ -161,10 +161,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [CompressedTexture2D]'s file path to a .ctex file.
+
+[CompressedTexture2D]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture2D
+*/
 func (self Instance) LoadPath() string {
 	return string(class(self).GetLoadPath().String())
 }
 
+// SetLoadPath sets the property returned by [GetLoadPath].
 func (self Instance) SetLoadPath(value string) {
 	class(self).Load(String.New(value))
 }

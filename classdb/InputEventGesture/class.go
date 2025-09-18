@@ -147,10 +147,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The local gesture position relative to the [Viewport]. If used in [Control.GuiInput], the position is relative to the current [Control] that received this gesture.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }

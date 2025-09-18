@@ -147,18 +147,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+Enables usage of the [DefaultValue].
+
+[DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeBooleanParameter#Instance.DefaultValue
+*/
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
 func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
+/*
+A default value to be assigned within the shader.
+*/
 func (self Instance) DefaultValue() bool {
 	return bool(class(self).GetDefaultValue())
 }
 
+// SetDefaultValue sets the property returned by [GetDefaultValue].
 func (self Instance) SetDefaultValue(value bool) {
 	class(self).SetDefaultValue(value)
 }

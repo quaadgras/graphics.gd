@@ -168,10 +168,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The original name of the animation.
+*/
 func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
+// SetOriginalName sets the property returned by [GetOriginalName].
 func (self Instance) SetOriginalName(value string) {
 	class(self).SetOriginalName(String.New(value))
 }
@@ -180,6 +184,7 @@ func (self Instance) Loop() bool {
 	return bool(class(self).GetLoop())
 }
 
+// SetLoop sets the property returned by [GetLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }

@@ -252,10 +252,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Returns the shader's code as the user has written it, not the full generated code used internally.
+*/
 func (self Instance) Code() string {
 	return string(class(self).GetCode().String())
 }
 
+// SetCode sets the property returned by [GetCode].
 func (self Instance) SetCode(value string) {
 	class(self).SetCode(String.New(value))
 }

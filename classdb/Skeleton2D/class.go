@@ -340,6 +340,12 @@ func (self class) GetBoneLocalPoseOverride(bone_idx int64) Transform2D.OriginXY 
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [Bone2D] setup attached to this skeletons changes. This is primarily used internally within the skeleton.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) OnBoneSetupChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

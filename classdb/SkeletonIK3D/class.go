@@ -251,82 +251,137 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the current root bone, the first bone in the IK chain.
+*/
 func (self Instance) RootBone() string {
 	return string(class(self).GetRootBone().String())
 }
 
+// SetRootBone sets the property returned by [GetRootBone].
 func (self Instance) SetRootBone(value string) {
 	class(self).SetRootBone(String.Name(String.New(value)))
 }
 
+/*
+The name of the current tip bone, the last bone in the IK chain placed at the [Target] transform (or [TargetNode] if defined).
+
+[Target]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.Target
+[TargetNode]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.TargetNode
+*/
 func (self Instance) TipBone() string {
 	return string(class(self).GetTipBone().String())
 }
 
+// SetTipBone sets the property returned by [GetTipBone].
 func (self Instance) SetTipBone(value string) {
 	class(self).SetTipBone(String.Name(String.New(value)))
 }
 
+/*
+First target of the IK chain where the tip bone is placed and, if [OverrideTipBasis] is true, how the tip bone is rotated. If a [TargetNode] path is available the nodes transform is used instead and this property is ignored.
+
+[OverrideTipBasis]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.OverrideTipBasis
+[TargetNode]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.TargetNode
+*/
 func (self Instance) Target() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTargetTransform())
 }
 
+// SetTarget sets the property returned by [GetTargetTransform].
 func (self Instance) SetTarget(value Transform3D.BasisOrigin) {
 	class(self).SetTargetTransform(Transform3D.BasisOrigin(value))
 }
 
+/*
+If true overwrites the rotation of the tip bone with the rotation of the [Target] (or [TargetNode] if defined).
+
+[Target]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.Target
+[TargetNode]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.TargetNode
+*/
 func (self Instance) OverrideTipBasis() bool {
 	return bool(class(self).IsOverrideTipBasis())
 }
 
+// SetOverrideTipBasis sets the property returned by [IsOverrideTipBasis].
 func (self Instance) SetOverrideTipBasis(value bool) {
 	class(self).SetOverrideTipBasis(value)
 }
 
+/*
+If true, instructs the IK solver to consider the secondary magnet target (pole target) when calculating the bone chain. Use the magnet position (pole target) to control the bending of the IK chain.
+*/
 func (self Instance) UseMagnet() bool {
 	return bool(class(self).IsUsingMagnet())
 }
 
+// SetUseMagnet sets the property returned by [IsUsingMagnet].
 func (self Instance) SetUseMagnet(value bool) {
 	class(self).SetUseMagnet(value)
 }
 
+/*
+Secondary target position (first is [Target] property or [TargetNode]) for the IK chain. Use magnet position (pole target) to control the bending of the IK chain. Only works if the bone chain has more than 2 bones. The middle chain bone position will be linearly interpolated with the magnet position.
+
+[Target]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.Target
+[TargetNode]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.TargetNode
+*/
 func (self Instance) Magnet() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetMagnetPosition())
 }
 
+// SetMagnet sets the property returned by [GetMagnetPosition].
 func (self Instance) SetMagnet(value Vector3.XYZ) {
 	class(self).SetMagnetPosition(Vector3.XYZ(value))
 }
 
+/*
+Target node node path for the IK chain. If available, the node's current [Transform3D.BasisOrigin] is used instead of the [Target] property.
+
+[Target]: https://pkg.go.dev/graphics.gd/classdb/SkeletonIK3D#Instance.Target
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+*/
 func (self Instance) TargetNode() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNode sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNode(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The minimum distance between bone and goal target. If the distance is below this value, the IK solver stops further iterations.
+*/
 func (self Instance) MinDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMinDistance()))
 }
 
+// SetMinDistance sets the property returned by [GetMinDistance].
 func (self Instance) SetMinDistance(value Float.X) {
 	class(self).SetMinDistance(float64(value))
 }
 
+/*
+Number of iteration loops used by the IK solver to produce more accurate (and elegant) bone chain results.
+*/
 func (self Instance) MaxIterations() int {
 	return int(int(class(self).GetMaxIterations()))
 }
 
+// SetMaxIterations sets the property returned by [GetMaxIterations].
 func (self Instance) SetMaxIterations(value int) {
 	class(self).SetMaxIterations(int64(value))
 }
 
+/*
+Interpolation value for how much the IK results are applied to the current skeleton bone chain. A value of 1.0 will overwrite all skeleton bone transforms completely while a value of 0.0 will visually disable the SkeletonIK.
+*/
 func (self Instance) Interpolation() Float.X {
 	return Float.X(Float.X(class(self).GetInterpolation()))
 }
 
+// SetInterpolation sets the property returned by [GetInterpolation].
 func (self Instance) SetInterpolation(value Float.X) {
 	class(self).SetInterpolation(float64(value))
 }

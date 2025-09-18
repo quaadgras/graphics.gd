@@ -1021,42 +1021,75 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [TileSet] used by this [TileMap]. The textures, collisions, and additional behavior of all available tiles are stored here.
+
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) TileSet() TileSet.Instance {
 	return TileSet.Instance(class(self).GetTileset())
 }
 
+// SetTileSet sets the property returned by [GetTileset].
 func (self Instance) SetTileSet(value TileSet.Instance) {
 	class(self).SetTileset(value)
 }
 
+/*
+The TileMap's quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [RenderingQuadrantSize] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quadrant size groups together 16 * 16 = 256 tiles.
+
+The quadrant size does not apply on Y-sorted layers, as tiles are grouped by Y position instead in that case.
+
+Note: As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the TileMap's local coordinate system.
+
+[RenderingQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.RenderingQuadrantSize
+*/
 func (self Instance) RenderingQuadrantSize() int {
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
+// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize].
 func (self Instance) SetRenderingQuadrantSize(value int) {
 	class(self).SetRenderingQuadrantSize(int64(value))
 }
 
+/*
+If enabled, the TileMap will see its collisions synced to the physics tick and change its collision type from static to kinematic. This is required to create TileMap-based moving platform.
+
+Note: Enabling [CollisionAnimatable] may have a small performance impact, only do it if the TileMap is moving and has colliding tiles.
+
+[CollisionAnimatable]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.CollisionAnimatable
+*/
 func (self Instance) CollisionAnimatable() bool {
 	return bool(class(self).IsCollisionAnimatable())
 }
 
+// SetCollisionAnimatable sets the property returned by [IsCollisionAnimatable].
 func (self Instance) SetCollisionAnimatable(value bool) {
 	class(self).SetCollisionAnimatable(value)
 }
 
+/*
+Show or hide the TileMap's collision shapes. If set to [VisibilityModeDefault], this depends on the show collision debug settings.
+*/
 func (self Instance) CollisionVisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
+// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode].
 func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) {
 	class(self).SetCollisionVisibilityMode(value)
 }
 
+/*
+Show or hide the TileMap's navigation meshes. If set to [VisibilityModeDefault], this depends on the show navigation debug settings.
+*/
 func (self Instance) NavigationVisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
+// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode].
 func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) {
 	class(self).SetNavigationVisibilityMode(value)
 }
@@ -1910,6 +1943,12 @@ func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeigh
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [TileSet] of this TileMap changes.
+
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

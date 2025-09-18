@@ -154,42 +154,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Distortion type.
+*/
 func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
+// SetMode sets the property returned by [GetMode].
 func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
+/*
+Increases or decreases the volume before the effect, in decibels. Value can range from -60 to 60.
+*/
 func (self Instance) PreGain() Float.X {
 	return Float.X(Float.X(class(self).GetPreGain()))
 }
 
+// SetPreGain sets the property returned by [GetPreGain].
 func (self Instance) SetPreGain(value Float.X) {
 	class(self).SetPreGain(float64(value))
 }
 
+/*
+High-pass filter, in Hz. Frequencies higher than this value will not be affected by the distortion. Value can range from 1 to 20000.
+*/
 func (self Instance) KeepHfHz() Float.X {
 	return Float.X(Float.X(class(self).GetKeepHfHz()))
 }
 
+// SetKeepHfHz sets the property returned by [GetKeepHfHz].
 func (self Instance) SetKeepHfHz(value Float.X) {
 	class(self).SetKeepHfHz(float64(value))
 }
 
+/*
+Distortion power. Value can range from 0 to 1.
+*/
 func (self Instance) Drive() Float.X {
 	return Float.X(Float.X(class(self).GetDrive()))
 }
 
+// SetDrive sets the property returned by [GetDrive].
 func (self Instance) SetDrive(value Float.X) {
 	class(self).SetDrive(float64(value))
 }
 
+/*
+Increases or decreases the volume after the effect, in decibels. Value can range from -80 to 24.
+*/
 func (self Instance) PostGain() Float.X {
 	return Float.X(Float.X(class(self).GetPostGain()))
 }
 
+// SetPostGain sets the property returned by [GetPostGain].
 func (self Instance) SetPostGain(value Float.X) {
 	class(self).SetPostGain(float64(value))
 }

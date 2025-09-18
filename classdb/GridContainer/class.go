@@ -152,10 +152,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The number of columns in the [GridContainer]. If modified, [GridContainer] reorders its Control-derived children to accommodate the new layout.
+
+[GridContainer]: https://pkg.go.dev/graphics.gd/classdb/GridContainer
+*/
 func (self Instance) Columns() int {
 	return int(int(class(self).GetColumns()))
 }
 
+// SetColumns sets the property returned by [GetColumns].
 func (self Instance) SetColumns(value int) {
 	class(self).SetColumns(int64(value))
 }

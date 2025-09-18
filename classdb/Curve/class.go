@@ -339,50 +339,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+The minimum domain (x-coordinate) that points can have.
+*/
 func (self Instance) MinDomain() Float.X {
 	return Float.X(Float.X(class(self).GetMinDomain()))
 }
 
+// SetMinDomain sets the property returned by [GetMinDomain].
 func (self Instance) SetMinDomain(value Float.X) {
 	class(self).SetMinDomain(float64(value))
 }
 
+/*
+The maximum domain (x-coordinate) that points can have.
+*/
 func (self Instance) MaxDomain() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDomain()))
 }
 
+// SetMaxDomain sets the property returned by [GetMaxDomain].
 func (self Instance) SetMaxDomain(value Float.X) {
 	class(self).SetMaxDomain(float64(value))
 }
 
+/*
+The minimum value (y-coordinate) that points can have. Tangents can cause lower values between points.
+*/
 func (self Instance) MinValue() Float.X {
 	return Float.X(Float.X(class(self).GetMinValue()))
 }
 
+// SetMinValue sets the property returned by [GetMinValue].
 func (self Instance) SetMinValue(value Float.X) {
 	class(self).SetMinValue(float64(value))
 }
 
+/*
+The maximum value (y-coordinate) that points can have. Tangents can cause higher values between points.
+*/
 func (self Instance) MaxValue() Float.X {
 	return Float.X(Float.X(class(self).GetMaxValue()))
 }
 
+// SetMaxValue sets the property returned by [GetMaxValue].
 func (self Instance) SetMaxValue(value Float.X) {
 	class(self).SetMaxValue(float64(value))
 }
 
+/*
+The number of points to include in the baked (i.e. cached) curve data.
+*/
 func (self Instance) BakeResolution() int {
 	return int(int(class(self).GetBakeResolution()))
 }
 
+// SetBakeResolution sets the property returned by [GetBakeResolution].
 func (self Instance) SetBakeResolution(value int) {
 	class(self).SetBakeResolution(int64(value))
 }
 
+/*
+The number of points describing the curve.
+*/
 func (self Instance) PointCount() int {
 	return int(int(class(self).GetPointCount()))
 }
 
+// SetPointCount sets the property returned by [GetPointCount].
 func (self Instance) SetPointCount(value int) {
 	class(self).SetPointCount(int64(value))
 }
@@ -670,6 +694,13 @@ func (self class) GetBakeResolution() int64 { //gd:Curve.get_bake_resolution
 func (self class) SetBakeResolution(resolution int64) { //gd:Curve.set_bake_resolution
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_resolution, 0|(gdextension.SizeInt<<4), &struct{ resolution int64 }{resolution})
 }
+
+/*
+Emitted when [MaxValue] or [MinValue] is changed.
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxValue
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinValue
+*/
 func (self Instance) OnRangeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -682,6 +713,12 @@ func (self class) RangeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RangeChanged`))))
 }
 
+/*
+Emitted when [MaxDomain] or [MinDomain] is changed.
+
+[MaxDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxDomain
+[MinDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinDomain
+*/
 func (self Instance) OnDomainChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

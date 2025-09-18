@@ -526,106 +526,160 @@ func New() Instance {
 	return casted
 }
 
+/*
+Text writing direction.
+*/
 func (self Instance) Direction() TextServer.Direction {
 	return TextServer.Direction(class(self).GetDirection())
 }
 
+// SetDirection sets the property returned by [GetDirection].
 func (self Instance) SetDirection(value TextServer.Direction) {
 	class(self).SetDirection(value)
 }
 
+/*
+Custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
+*/
 func (self Instance) CustomPunctuation() string {
 	return string(class(self).GetCustomPunctuation().String())
 }
 
+// SetCustomPunctuation sets the property returned by [GetCustomPunctuation].
 func (self Instance) SetCustomPunctuation(value string) {
 	class(self).SetCustomPunctuation(String.New(value))
 }
 
+/*
+Text orientation.
+*/
 func (self Instance) Orientation() TextServer.Orientation {
 	return TextServer.Orientation(class(self).GetOrientation())
 }
 
+// SetOrientation sets the property returned by [GetOrientation].
 func (self Instance) SetOrientation(value TextServer.Orientation) {
 	class(self).SetOrientation(value)
 }
 
+/*
+If set to true text will display invalid characters.
+*/
 func (self Instance) PreserveInvalid() bool {
 	return bool(class(self).GetPreserveInvalid())
 }
 
+// SetPreserveInvalid sets the property returned by [GetPreserveInvalid].
 func (self Instance) SetPreserveInvalid(value bool) {
 	class(self).SetPreserveInvalid(value)
 }
 
+/*
+If set to true text will display control characters.
+*/
 func (self Instance) PreserveControl() bool {
 	return bool(class(self).GetPreserveControl())
 }
 
+// SetPreserveControl sets the property returned by [GetPreserveControl].
 func (self Instance) SetPreserveControl(value bool) {
 	class(self).SetPreserveControl(value)
 }
 
+/*
+Paragraph horizontal alignment.
+*/
 func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetAlignment())
 }
 
+// SetAlignment sets the property returned by [GetAlignment].
 func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetAlignment(value)
 }
 
+/*
+Line breaking rules. For more info see [TextServer].
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
+*/
 func (self Instance) BreakFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetBreakFlags())
 }
 
+// SetBreakFlags sets the property returned by [GetBreakFlags].
 func (self Instance) SetBreakFlags(value TextServer.LineBreakFlag) {
 	class(self).SetBreakFlags(value)
 }
 
+/*
+Line fill alignment rules.
+*/
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
+// SetJustificationFlags sets the property returned by [GetJustificationFlags].
 func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
+/*
+The clipping behavior when the text exceeds the paragraph's set width.
+*/
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
 func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
+/*
+Ellipsis character used for text clipping.
+*/
 func (self Instance) EllipsisChar() string {
 	return string(class(self).GetEllipsisChar().String())
 }
 
+// SetEllipsisChar sets the property returned by [GetEllipsisChar].
 func (self Instance) SetEllipsisChar(value string) {
 	class(self).SetEllipsisChar(String.New(value))
 }
 
+/*
+Paragraph width.
+*/
 func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
+/*
+Limits the lines of text shown.
+*/
 func (self Instance) MaxLinesVisible() int {
 	return int(int(class(self).GetMaxLinesVisible()))
 }
 
+// SetMaxLinesVisible sets the property returned by [GetMaxLinesVisible].
 func (self Instance) SetMaxLinesVisible(value int) {
 	class(self).SetMaxLinesVisible(int64(value))
 }
 
+/*
+Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
+*/
 func (self Instance) LineSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
+// SetLineSpacing sets the property returned by [GetLineSpacing].
 func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }

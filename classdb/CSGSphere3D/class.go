@@ -161,42 +161,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Radius of the sphere.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+Number of vertical slices for the sphere.
+*/
 func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
+// SetRadialSegments sets the property returned by [GetRadialSegments].
 func (self Instance) SetRadialSegments(value int) {
 	class(self).SetRadialSegments(int64(value))
 }
 
+/*
+Number of horizontal slices for the sphere.
+*/
 func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
+// SetRings sets the property returned by [GetRings].
 func (self Instance) SetRings(value int) {
 	class(self).SetRings(int64(value))
 }
 
+/*
+If true the normals of the sphere are set to give a smooth effect making the sphere seem rounded. If false the sphere will have a flat shaded look.
+*/
 func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
+// SetSmoothFaces sets the property returned by [GetSmoothFaces].
 func (self Instance) SetSmoothFaces(value bool) {
 	class(self).SetSmoothFaces(value)
 }
 
+/*
+The material used to render the sphere.
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

@@ -149,18 +149,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the node will have a custom default value.
+*/
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
 func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
+/*
+Default value of this parameter, which will be used if not set externally. [DefaultValueEnabled] must be enabled; defaults to 0 otherwise.
+
+[DefaultValueEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeUIntParameter#Instance.DefaultValueEnabled
+*/
 func (self Instance) DefaultValue() int {
 	return int(int(class(self).GetDefaultValue()))
 }
 
+// SetDefaultValue sets the property returned by [GetDefaultValue].
 func (self Instance) SetDefaultValue(value int) {
 	class(self).SetDefaultValue(int64(value))
 }

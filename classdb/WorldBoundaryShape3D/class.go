@@ -151,10 +151,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Plane.NormalD] used by the [WorldBoundaryShape3D] for collision.
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[WorldBoundaryShape3D]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape3D
+*/
 func (self Instance) Plane() Plane.NormalD {
 	return Plane.NormalD(class(self).GetPlane())
 }
 
+// SetPlane sets the property returned by [GetPlane].
 func (self Instance) SetPlane(value Plane.NormalD) {
 	class(self).SetPlane(Plane.NormalD(value))
 }

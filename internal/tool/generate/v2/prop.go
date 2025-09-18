@@ -78,6 +78,11 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 			continue
 		}
 		if foundGetter {
+			if prop.Description != "" {
+				fmt.Fprintln(file, "\n/*")
+				fmt.Fprint(file, gdjson.DocsToGoDoc(prop.Description, classDB, class.Name, class.Name+"_"+convertName(prop.Name)))
+				fmt.Fprint(file, "\n*/")
+			}
 			if singleton {
 				fmt.Fprintf(file, "\nfunc %s() %s {\n", convertName(prop.Name), ptype)
 				fmt.Fprintf(file, "once.Do(singleton)\n\t")
@@ -118,6 +123,15 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 			}
 			if !found {
 				continue
+			}
+			if !foundGetter {
+				if prop.Description != "" {
+					fmt.Fprintln(file, "\n/*")
+					fmt.Fprint(file, gdjson.DocsToGoDoc(prop.Description, classDB, class.Name, class.Name+"_"+convertName(prop.Name)))
+					fmt.Fprint(file, "\n*/")
+				}
+			} else {
+				fmt.Fprintf(file, "\n// Set%s sets the property returned by [%s].", convertName(prop.Name), convertName(prop.Getter))
 			}
 			if singleton {
 				fmt.Fprintf(file, "\nfunc Set%s(value %s) {\n", convertName(prop.Name), ptype)

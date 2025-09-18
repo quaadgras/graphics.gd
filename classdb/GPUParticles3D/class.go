@@ -292,162 +292,299 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, particles are being emitted. [Emitting] can be used to start and stop particles from emitting. However, if [OneShot] is true setting [Emitting] to true will not restart the emission cycle unless all active particles have finished processing. Use the [OnFinished] signal to be notified once all active particles finish processing.
+
+Note: For [OneShot] emitters, due to the particles being computed on the GPU, there may be a short period after receiving the [OnFinished] signal during which setting this to true will not restart the emission cycle.
+
+Tip: If your [OneShot] emitter needs to immediately restart emitting particles once [OnFinished] signal is received, consider calling [Restart] instead of setting [Emitting].
+
+[Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
+[OnFinished]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OnFinished
+[OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
+[Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
+*/
 func (self Instance) Emitting() bool {
 	return bool(class(self).IsEmitting())
 }
 
+// SetEmitting sets the property returned by [IsEmitting].
 func (self Instance) SetEmitting(value bool) {
 	class(self).SetEmitting(value)
 }
 
+/*
+The number of particles to emit in one emission cycle. The effective emission rate is (amount * amount_ratio) / lifetime particles per second. Higher values will increase GPU requirements, even if not all particles are visible at a given time or if [AmountRatio] is decreased.
+
+Note: Changing this value will cause the particle system to restart. To avoid this, change [AmountRatio] instead.
+
+[AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
+*/
 func (self Instance) Amount() int {
 	return int(int(class(self).GetAmount()))
 }
 
+// SetAmount sets the property returned by [GetAmount].
 func (self Instance) SetAmount(value int) {
 	class(self).SetAmount(int64(value))
 }
 
+/*
+The ratio of particles that should actually be emitted. If set to a value lower than 1.0, this will set the amount of emitted particles throughout the lifetime to amount * amount_ratio. Unlike changing [Amount], changing [AmountRatio] while emitting does not affect already-emitted particles and doesn't cause the particle system to restart. [AmountRatio] can be used to create effects that make the number of emitted particles vary over time.
+
+Note: Reducing the [AmountRatio] has no performance benefit, since resources need to be allocated and processed for the total [Amount] of particles regardless of the [AmountRatio]. If you don't intend to change the number of particles emitted while the particles are emitting, make sure [AmountRatio] is set to 1 and change [Amount] to your liking instead.
+
+[Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+[AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
+*/
 func (self Instance) AmountRatio() Float.X {
 	return Float.X(Float.X(class(self).GetAmountRatio()))
 }
 
+// SetAmountRatio sets the property returned by [GetAmountRatio].
 func (self Instance) SetAmountRatio(value Float.X) {
 	class(self).SetAmountRatio(float64(value))
 }
 
+/*
+Path to another [GPUParticles3D] node that will be used as a subemitter (see [ParticleProcessMaterial.SubEmitterMode]). Subemitters can be used to achieve effects such as fireworks, sparks on collision, bubbles popping into water drops, and more.
+
+Note: When [SubEmitter] is set, the target [GPUParticles3D] node will no longer emit particles on its own.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[ParticleProcessMaterial.SubEmitterMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.SubEmitterMode
+[SubEmitter]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SubEmitter
+*/
 func (self Instance) SubEmitter() string {
 	return string(class(self).GetSubEmitter().String())
 }
 
+// SetSubEmitter sets the property returned by [GetSubEmitter].
 func (self Instance) SetSubEmitter(value string) {
 	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
 }
 
+/*
+The amount of time each particle will exist (in seconds). The effective emission rate is (amount * amount_ratio) / lifetime particles per second.
+*/
 func (self Instance) Lifetime() Float.X {
 	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
+// SetLifetime sets the property returned by [GetLifetime].
 func (self Instance) SetLifetime(value Float.X) {
 	class(self).SetLifetime(float64(value))
 }
 
+/*
+Causes all the particles in this node to interpolate towards the end of their lifetime.
+
+Note: This only works when used with a [ParticleProcessMaterial]. It needs to be manually implemented for custom process shaders.
+
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
+*/
 func (self Instance) InterpToEnd() Float.X {
 	return Float.X(Float.X(class(self).GetInterpToEnd()))
 }
 
+// SetInterpToEnd sets the property returned by [GetInterpToEnd].
 func (self Instance) SetInterpToEnd(value Float.X) {
 	class(self).SetInterpToEnd(float64(value))
 }
 
+/*
+If true, only the number of particles equal to [Amount] will be emitted.
+
+[Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+*/
 func (self Instance) OneShot() bool {
 	return bool(class(self).GetOneShot())
 }
 
+// SetOneShot sets the property returned by [GetOneShot].
 func (self Instance) SetOneShot(value bool) {
 	class(self).SetOneShot(value)
 }
 
+/*
+Amount of time to preprocess the particles before animation starts. Lets you start the animation some time after particles have started emitting.
+
+Note: This can be very expensive if set to a high number as it requires running the particle shader a number of times equal to the [FixedFps] (or 30, if [FixedFps] is 0) for every second. In extreme cases it can even lead to a GPU crash due to the volume of work done in a single frame.
+
+[FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
+*/
 func (self Instance) Preprocess() Float.X {
 	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
+// SetPreprocess sets the property returned by [GetPreProcessTime].
 func (self Instance) SetPreprocess(value Float.X) {
 	class(self).SetPreProcessTime(float64(value))
 }
 
+/*
+Speed scaling ratio. A value of 0 can be used to pause the particles.
+*/
 func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
+// SetSpeedScale sets the property returned by [GetSpeedScale].
 func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(float64(value))
 }
 
+/*
+Time ratio between each emission. If 0, particles are emitted continuously. If 1, all particles are emitted simultaneously.
+*/
 func (self Instance) Explosiveness() Float.X {
 	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
+// SetExplosiveness sets the property returned by [GetExplosivenessRatio].
 func (self Instance) SetExplosiveness(value Float.X) {
 	class(self).SetExplosivenessRatio(float64(value))
 }
 
+/*
+Emission randomness ratio.
+*/
 func (self Instance) Randomness() Float.X {
 	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
+// SetRandomness sets the property returned by [GetRandomnessRatio].
 func (self Instance) SetRandomness(value Float.X) {
 	class(self).SetRandomnessRatio(float64(value))
 }
 
+/*
+If true, particles will use the same seed for every simulation using the seed defined in [Seed]. This is useful for situations where the visual outcome should be consistent across replays, for example when using Movie Maker mode.
+
+[Seed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Seed
+*/
 func (self Instance) UseFixedSeed() bool {
 	return bool(class(self).GetUseFixedSeed())
 }
 
+// SetUseFixedSeed sets the property returned by [GetUseFixedSeed].
 func (self Instance) SetUseFixedSeed(value bool) {
 	class(self).SetUseFixedSeed(value)
 }
 
+/*
+Sets the random seed used by the particle system. Only effective if [UseFixedSeed] is true.
+
+[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.UseFixedSeed
+*/
 func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
+// SetSeed sets the property returned by [GetSeed].
 func (self Instance) SetSeed(value int) {
 	class(self).SetSeed(int64(value))
 }
 
+/*
+The particle system's frame rate is fixed to a value. For example, changing the value to 2 will make the particles render at 2 frames per second. Note this does not slow down the simulation of the particle system itself.
+*/
 func (self Instance) FixedFps() int {
 	return int(int(class(self).GetFixedFps()))
 }
 
+// SetFixedFps sets the property returned by [GetFixedFps].
 func (self Instance) SetFixedFps(value int) {
 	class(self).SetFixedFps(int64(value))
 }
 
+/*
+Enables particle interpolation, which makes the particle movement smoother when their [FixedFps] is lower than the screen refresh rate.
+
+[FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
+*/
 func (self Instance) Interpolate() bool {
 	return bool(class(self).GetInterpolate())
 }
 
+// SetInterpolate sets the property returned by [GetInterpolate].
 func (self Instance) SetInterpolate(value bool) {
 	class(self).SetInterpolate(value)
 }
 
+/*
+If true, results in fractional delta calculation which has a smoother particles display effect.
+*/
 func (self Instance) FractDelta() bool {
 	return bool(class(self).GetFractionalDelta())
 }
 
+// SetFractDelta sets the property returned by [GetFractionalDelta].
 func (self Instance) SetFractDelta(value bool) {
 	class(self).SetFractionalDelta(value)
 }
 
+/*
+The base diameter for particle collision in meters. If particles appear to sink into the ground when colliding, increase this value. If particles appear to float when colliding, decrease this value. Only effective if [ParticleProcessMaterial.CollisionMode] is [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact].
+
+Note: Particles always have a spherical collision shape.
+
+[ParticleProcessMaterial.CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
+*/
 func (self Instance) CollisionBaseSize() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionBaseSize()))
 }
 
+// SetCollisionBaseSize sets the property returned by [GetCollisionBaseSize].
 func (self Instance) SetCollisionBaseSize(value Float.X) {
 	class(self).SetCollisionBaseSize(float64(value))
 }
 
+/*
+The [AABB.PositionSize] that determines the node's region which needs to be visible on screen for the particle system to be active. [GeometryInstance3D.ExtraCullMargin] is added on each of the AABB's axes. Particle collisions and attraction will only occur within this area.
+
+Grow the box if particles suddenly appear/disappear when the node enters/exits the screen. The [AABB.PositionSize] can be grown via code or with the Particles → Generate AABB editor tool.
+
+Note: [VisibilityAabb] is overridden by [GeometryInstance3D.CustomAabb] if that property is set to a non-default value.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[GeometryInstance3D.CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
+[GeometryInstance3D.ExtraCullMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.ExtraCullMargin
+[VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
+*/
 func (self Instance) VisibilityAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetVisibilityAabb())
 }
 
+// SetVisibilityAabb sets the property returned by [GetVisibilityAabb].
 func (self Instance) SetVisibilityAabb(value AABB.PositionSize) {
 	class(self).SetVisibilityAabb(AABB.PositionSize(value))
 }
 
+/*
+If true, particles use the parent node's coordinate space (known as local coordinates). This will cause particles to move and rotate along the [GPUParticles3D] node (and its parents) when it is moved or rotated. If false, particles use global coordinates; they will not move or rotate along the [GPUParticles3D] node (and its parents) when it is moved or rotated.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+*/
 func (self Instance) LocalCoords() bool {
 	return bool(class(self).GetUseLocalCoordinates())
 }
 
+// SetLocalCoords sets the property returned by [GetUseLocalCoordinates].
 func (self Instance) SetLocalCoords(value bool) {
 	class(self).SetUseLocalCoordinates(value)
 }
 
+/*
+Particle draw order.
+
+Note: [DrawOrderIndex] is the only option that supports motion vectors for effects like TAA. It is suggested to use this draw order if the particles are opaque to fix ghosting artifacts.
+*/
 func (self Instance) DrawOrder() DrawOrder {
 	return DrawOrder(class(self).GetDrawOrder())
 }
 
+// SetDrawOrder sets the property returned by [GetDrawOrder].
 func (self Instance) SetDrawOrder(value DrawOrder) {
 	class(self).SetDrawOrder(value)
 }
@@ -456,70 +593,127 @@ func (self Instance) TransformAlign() TransformAlign {
 	return TransformAlign(class(self).GetTransformAlign())
 }
 
+// SetTransformAlign sets the property returned by [GetTransformAlign].
 func (self Instance) SetTransformAlign(value TransformAlign) {
 	class(self).SetTransformAlign(value)
 }
 
+/*
+If true, enables particle trails using a mesh skinning system. Designed to work with [RibbonTrailMesh] and [TubeTrailMesh].
+
+Note: [BaseMaterial3D.UseParticleTrails] must also be enabled on the particle mesh's material. Otherwise, setting [TrailEnabled] to true will have no effect.
+
+Note: Unlike [GPUParticles2D], the number of trail sections and subdivisions is set in the [RibbonTrailMesh] or the [TubeTrailMesh]'s properties.
+
+[BaseMaterial3D.UseParticleTrails]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.UseParticleTrails
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
+[TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
+[TubeTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh
+*/
 func (self Instance) TrailEnabled() bool {
 	return bool(class(self).IsTrailEnabled())
 }
 
+// SetTrailEnabled sets the property returned by [IsTrailEnabled].
 func (self Instance) SetTrailEnabled(value bool) {
 	class(self).SetTrailEnabled(value)
 }
 
+/*
+The amount of time the particle's trail should represent (in seconds). Only effective if [TrailEnabled] is true.
+
+[TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
+*/
 func (self Instance) TrailLifetime() Float.X {
 	return Float.X(Float.X(class(self).GetTrailLifetime()))
 }
 
+// SetTrailLifetime sets the property returned by [GetTrailLifetime].
 func (self Instance) SetTrailLifetime(value Float.X) {
 	class(self).SetTrailLifetime(float64(value))
 }
 
+/*
+[Material] for processing particles. Can be a [ParticleProcessMaterial] or a [ShaderMaterial].
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) ProcessMaterial() Material.Instance {
 	return Material.Instance(class(self).GetProcessMaterial())
 }
 
+// SetProcessMaterial sets the property returned by [GetProcessMaterial].
 func (self Instance) SetProcessMaterial(value Material.Instance) {
 	class(self).SetProcessMaterial(value)
 }
 
+/*
+The number of draw passes when rendering particles.
+*/
 func (self Instance) DrawPasses() int {
 	return int(int(class(self).GetDrawPasses()))
 }
 
+// SetDrawPasses sets the property returned by [GetDrawPasses].
 func (self Instance) SetDrawPasses(value int) {
 	class(self).SetDrawPasses(int64(value))
 }
 
+/*
+[Mesh] that is drawn for the first draw pass.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) DrawPass1() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(0))
 }
 
+// SetDrawPass1 sets the property returned by [GetDrawPassMesh].
 func (self Instance) SetDrawPass1(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(0, value)
 }
 
+/*
+[Mesh] that is drawn for the second draw pass.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) DrawPass2() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(1))
 }
 
+// SetDrawPass2 sets the property returned by [GetDrawPassMesh].
 func (self Instance) SetDrawPass2(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(1, value)
 }
 
+/*
+[Mesh] that is drawn for the third draw pass.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) DrawPass3() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(2))
 }
 
+// SetDrawPass3 sets the property returned by [GetDrawPassMesh].
 func (self Instance) SetDrawPass3(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(2, value)
 }
 
+/*
+[Mesh] that is drawn for the fourth draw pass.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) DrawPass4() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(3))
 }
 
+// SetDrawPass4 sets the property returned by [GetDrawPassMesh].
 func (self Instance) SetDrawPass4(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(3, value)
 }
@@ -528,6 +722,7 @@ func (self Instance) DrawSkin() Skin.Instance {
 	return Skin.Instance(class(self).GetSkin())
 }
 
+// SetDrawSkin sets the property returned by [GetSkin].
 func (self Instance) SetDrawSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
@@ -936,6 +1131,18 @@ Useful for particle playback, if used in combination with [UseFixedSeed] or by c
 func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles3D.request_particles_process
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
 }
+
+/*
+Emitted when all active particles have finished processing. To immediately restart the emission cycle, call [Restart].
+
+This signal is never emitted when [OneShot] is disabled, as particles will be emitted and processed continuously.
+
+Note: For [OneShot] emitters, due to the particles being computed on the GPU, there may be a short period after receiving the signal during which setting [Emitting] to true will not restart the emission cycle. This delay is avoided by instead calling [Restart].
+
+[Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
+[OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
+[Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

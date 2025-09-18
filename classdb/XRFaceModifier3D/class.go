@@ -153,18 +153,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [XRFaceTracker] path.
+
+[XRFaceTracker]: https://pkg.go.dev/graphics.gd/classdb/XRFaceTracker
+*/
 func (self Instance) FaceTracker() string {
 	return string(class(self).GetFaceTracker().String())
 }
 
+// SetFaceTracker sets the property returned by [GetFaceTracker].
 func (self Instance) SetFaceTracker(value string) {
 	class(self).SetFaceTracker(String.Name(String.New(value)))
 }
 
+/*
+The node path of the face [MeshInstance3D].
+
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+*/
 func (self Instance) Target() string {
 	return string(class(self).GetTarget().String())
 }
 
+// SetTarget sets the property returned by [GetTarget].
 func (self Instance) SetTarget(value string) {
 	class(self).SetTarget(Path.ToNode(String.New(value)))
 }

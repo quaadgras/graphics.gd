@@ -189,42 +189,80 @@ func New() Instance {
 	return casted
 }
 
+/*
+The node path to the [Bone2D] that this [PhysicalBone2D] should simulate.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+*/
 func (self Instance) Bone2dNodepath() string {
 	return string(class(self).GetBone2dNodepath().String())
 }
 
+// SetBone2dNodepath sets the property returned by [GetBone2dNodepath].
 func (self Instance) SetBone2dNodepath(value string) {
 	class(self).SetBone2dNodepath(Path.ToNode(String.New(value)))
 }
 
+/*
+The index of the [Bone2D] that this [PhysicalBone2D] should simulate.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+*/
 func (self Instance) Bone2dIndex() int {
 	return int(int(class(self).GetBone2dIndex()))
 }
 
+// SetBone2dIndex sets the property returned by [GetBone2dIndex].
 func (self Instance) SetBone2dIndex(value int) {
 	class(self).SetBone2dIndex(int64(value))
 }
 
+/*
+If true, the [PhysicalBone2D] will automatically configure the first [Joint2D] child node. The automatic configuration is limited to setting up the node properties and positioning the [Joint2D].
+
+[Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+*/
 func (self Instance) AutoConfigureJoint() bool {
 	return bool(class(self).GetAutoConfigureJoint())
 }
 
+// SetAutoConfigureJoint sets the property returned by [GetAutoConfigureJoint].
 func (self Instance) SetAutoConfigureJoint(value bool) {
 	class(self).SetAutoConfigureJoint(value)
 }
 
+/*
+If true, the [PhysicalBone2D] will start simulating using physics. If false, the [PhysicalBone2D] will follow the transform of the [Bone2D] node.
+
+Note: To have the [Bone2D]s visually follow the [PhysicalBone2D], use a [SkeletonModification2DPhysicalBones] modification on the [Skeleton2D] node with the [Bone2D] nodes.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+[Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
+[SkeletonModification2DPhysicalBones]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2DPhysicalBones
+*/
 func (self Instance) SimulatePhysics() bool {
 	return bool(class(self).GetSimulatePhysics())
 }
 
+// SetSimulatePhysics sets the property returned by [GetSimulatePhysics].
 func (self Instance) SetSimulatePhysics(value bool) {
 	class(self).SetSimulatePhysics(value)
 }
 
+/*
+If true, the [PhysicalBone2D] will keep the transform of the bone it is bound to when simulating physics.
+
+[PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
+*/
 func (self Instance) FollowBoneWhenSimulating() bool {
 	return bool(class(self).GetFollowBoneWhenSimulating())
 }
 
+// SetFollowBoneWhenSimulating sets the property returned by [GetFollowBoneWhenSimulating].
 func (self Instance) SetFollowBoneWhenSimulating(value bool) {
 	class(self).SetFollowBoneWhenSimulating(value)
 }

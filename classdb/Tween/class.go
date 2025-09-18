@@ -1095,6 +1095,13 @@ func (self class) InterpolateValue(initial_value variant.Any, delta_value varian
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
+
+/*
+Emitted when one step of the [Tween] is complete, providing the step index. One step is either a single [Tweener] or a group of [Tweener]s running in parallel.
+
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
+*/
 func (self Instance) OnStepFinished(cb func(idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1107,6 +1114,12 @@ func (self class) StepFinished() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StepFinished`))))
 }
 
+/*
+Emitted when a full loop is complete (see [SetLoops]), providing the loop index. This signal is not emitted after the final loop, use [OnFinished] instead for this case.
+
+[OnFinished]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.OnFinished
+[SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
+*/
 func (self Instance) OnLoopFinished(cb func(loop_count int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1119,6 +1132,12 @@ func (self class) LoopFinished() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LoopFinished`))))
 }
 
+/*
+Emitted when the [Tween] has finished all tweening. Never emitted when the [Tween] is set to infinite looping (see [SetLoops]).
+
+[SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

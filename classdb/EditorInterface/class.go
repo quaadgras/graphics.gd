@@ -878,21 +878,31 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If true, enables distraction-free mode which hides side docks to increase the space available for the main view.
+*/
 func DistractionFreeMode() bool {
 	once.Do(singleton)
 	return bool(class(self).IsDistractionFreeModeEnabled())
 }
 
+// SetDistractionFreeMode sets the property returned by [IsDistractionFreeModeEnabled].
 func SetDistractionFreeMode(value bool) {
 	once.Do(singleton)
 	class(self).SetDistractionFreeMode(value)
 }
 
+/*
+If true, the Movie Maker mode is enabled in the editor. See [MovieWriter] for more information.
+
+[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+*/
 func MovieMakerEnabled() bool {
 	once.Do(singleton)
 	return bool(class(self).IsMovieMakerEnabled())
 }
 
+// SetMovieMakerEnabled sets the property returned by [IsMovieMakerEnabled].
 func SetMovieMakerEnabled(value bool) {
 	once.Do(singleton)
 	class(self).SetMovieMakerEnabled(value)

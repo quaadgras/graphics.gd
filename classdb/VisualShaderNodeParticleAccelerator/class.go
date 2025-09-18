@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Defines in what manner the particles will be accelerated.
+*/
 func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
+// SetMode sets the property returned by [GetMode].
 func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }

@@ -523,26 +523,48 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text displayed in the GraphNode's title bar.
+*/
 func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
+// SetTitle sets the property returned by [GetTitle].
 func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(String.New(value))
 }
 
+/*
+If true, you can connect ports with different types, even if the connection was not explicitly allowed in the parent [GraphEdit].
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+*/
 func (self Instance) IgnoreInvalidConnectionType() bool {
 	return bool(class(self).IsIgnoringValidConnectionType())
 }
 
+// SetIgnoreInvalidConnectionType sets the property returned by [IsIgnoringValidConnectionType].
 func (self Instance) SetIgnoreInvalidConnectionType(value bool) {
 	class(self).SetIgnoreInvalidConnectionType(value)
 }
 
+/*
+Determines how connection slots can be focused.
+
+- If set to [Control.FocusClick], connections can only be made with the mouse.
+
+- If set to [Control.FocusAll], slots can also be focused using the [ProjectSettings] "input/ui_up" and [ProjectSettings] "input/ui_down" and connected using [ProjectSettings] "input/ui_left" and [ProjectSettings] "input/ui_right" input actions.
+
+- If set to [Control.FocusAccessibility], slot input actions are only enabled when the screen reader is active.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) SlotsFocusMode() Control.FocusMode {
 	return Control.FocusMode(class(self).GetSlotsFocusMode())
 }
 
+// SetSlotsFocusMode sets the property returned by [GetSlotsFocusMode].
 func (self Instance) SetSlotsFocusMode(value Control.FocusMode) {
 	class(self).SetSlotsFocusMode(value)
 }
@@ -971,6 +993,10 @@ func (self class) GetOutputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_o
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when any GraphNode's slot is updated.
+*/
 func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -983,6 +1009,9 @@ func (self class) SlotUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SlotUpdated`))))
 }
 
+/*
+Emitted when any slot's size might have changed.
+*/
 func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

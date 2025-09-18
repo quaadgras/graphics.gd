@@ -176,10 +176,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Set the total amount of streams that will be played back synchronized.
+*/
 func (self Instance) StreamCount() int {
 	return int(int(class(self).GetStreamCount()))
 }
 
+// SetStreamCount sets the property returned by [GetStreamCount].
 func (self Instance) SetStreamCount(value int) {
 	class(self).SetStreamCount(int64(value))
 }

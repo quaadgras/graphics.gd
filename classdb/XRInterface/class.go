@@ -352,34 +352,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+true if this is the primary interface.
+*/
 func (self Instance) InterfaceIsPrimary() bool {
 	return bool(class(self).IsPrimary())
 }
 
+// SetInterfaceIsPrimary sets the property returned by [IsPrimary].
 func (self Instance) SetInterfaceIsPrimary(value bool) {
 	class(self).SetPrimary(value)
 }
 
+/*
+The play area mode for this interface.
+*/
 func (self Instance) XrPlayAreaMode() PlayAreaMode {
 	return PlayAreaMode(class(self).GetPlayAreaMode())
 }
 
+// SetXrPlayAreaMode sets the property returned by [GetPlayAreaMode].
 func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) {
 	class(self).SetPlayAreaMode(value)
 }
 
+/*
+Specify how XR should blend in the environment. This is specific to certain AR and passthrough devices where camera images are blended in by the XR compositor.
+*/
 func (self Instance) EnvironmentBlendMode() EnvironmentBlendMode {
 	return EnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
 }
 
+// SetEnvironmentBlendMode sets the property returned by [GetEnvironmentBlendMode].
 func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) {
 	class(self).SetEnvironmentBlendMode(value)
 }
 
+/*
+On an AR interface, true if anchor detection is enabled.
+*/
 func (self Instance) ArIsAnchorDetectionEnabled() bool {
 	return bool(class(self).GetAnchorDetectionIsEnabled())
 }
 
+// SetArIsAnchorDetectionEnabled sets the property returned by [GetAnchorDetectionIsEnabled].
 func (self Instance) SetArIsAnchorDetectionEnabled(value bool) {
 	class(self).SetAnchorDetectionIsEnabled(value)
 }
@@ -710,6 +726,10 @@ func (self class) GetEnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterf
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the play area is changed. This can be a result of the player resetting the boundary or entering a new play area, the player changing the play area mode, the world scale changing or the player resetting their headset orientation.
+*/
 func (self Instance) OnPlayAreaChanged(cb func(mode int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

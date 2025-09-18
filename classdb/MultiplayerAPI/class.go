@@ -314,10 +314,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The peer object to handle the RPC system (effectively enabling networking when set). Depending on the peer itself, the MultiplayerAPI will become a network server (check with [IsServer]) and will set root node's network mode to authority, or it will become a regular client peer. All child nodes are set to inherit the network mode by default. Handling of networking-related events (connection, disconnection, new clients) is done by connecting to MultiplayerAPI's signals.
+
+[IsServer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.IsServer
+*/
 func (self Instance) MultiplayerPeer() MultiplayerPeer.Instance {
 	return MultiplayerPeer.Instance(class(self).GetMultiplayerPeer())
 }
 
+// SetMultiplayerPeer sets the property returned by [GetMultiplayerPeer].
 func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) {
 	class(self).SetMultiplayerPeer(value)
 }
@@ -501,6 +507,12 @@ func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:Mult
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }
+
+/*
+Emitted when this MultiplayerAPI's [MultiplayerPeer] connects with a new peer. ID is the peer ID of the new peer. Clients get notified when other clients connect to the same server. Upon connecting to a server, a client also receives this signal for the server (with ID being 1).
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -513,6 +525,11 @@ func (self class) PeerConnected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerConnected`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerPeer] disconnects from a peer. Clients get notified when other clients disconnect from the same server.
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -525,6 +542,11 @@ func (self class) PeerDisconnected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerDisconnected`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerPeer] successfully connected to a server. Only emitted on clients.
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -537,6 +559,11 @@ func (self class) ConnectedToServer() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectedToServer`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerPeer] fails to establish a connection to a server. Only emitted on clients.
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -549,6 +576,11 @@ func (self class) ConnectionFailed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFailed`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerPeer] disconnects from server. Only emitted on clients.
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -158,50 +158,81 @@ func New() Instance {
 	return casted
 }
 
+/*
+The higher this value, the more the bond to the pinned partner can flex.
+*/
 func (self Instance) Softness() Float.X {
 	return Float.X(Float.X(class(self).GetSoftness()))
 }
 
+// SetSoftness sets the property returned by [GetSoftness].
 func (self Instance) SetSoftness(value Float.X) {
 	class(self).SetSoftness(float64(value))
 }
 
+/*
+If true, the pin maximum and minimum rotation, defined by [AngularLimitLower] and [AngularLimitUpper] are applied.
+
+[AngularLimitLower]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitLower
+[AngularLimitUpper]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitUpper
+*/
 func (self Instance) AngularLimitEnabled() bool {
 	return bool(class(self).IsAngularLimitEnabled())
 }
 
+// SetAngularLimitEnabled sets the property returned by [IsAngularLimitEnabled].
 func (self Instance) SetAngularLimitEnabled(value bool) {
 	class(self).SetAngularLimitEnabled(value)
 }
 
+/*
+The minimum rotation. Only active if [AngularLimitEnabled] is true.
+
+[AngularLimitEnabled]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitEnabled
+*/
 func (self Instance) AngularLimitLower() Float.X {
 	return Float.X(Float.X(class(self).GetAngularLimitLower()))
 }
 
+// SetAngularLimitLower sets the property returned by [GetAngularLimitLower].
 func (self Instance) SetAngularLimitLower(value Float.X) {
 	class(self).SetAngularLimitLower(float64(value))
 }
 
+/*
+The maximum rotation. Only active if [AngularLimitEnabled] is true.
+
+[AngularLimitEnabled]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitEnabled
+*/
 func (self Instance) AngularLimitUpper() Float.X {
 	return Float.X(Float.X(class(self).GetAngularLimitUpper()))
 }
 
+// SetAngularLimitUpper sets the property returned by [GetAngularLimitUpper].
 func (self Instance) SetAngularLimitUpper(value Float.X) {
 	class(self).SetAngularLimitUpper(float64(value))
 }
 
+/*
+When activated, a motor turns the pin.
+*/
 func (self Instance) MotorEnabled() bool {
 	return bool(class(self).IsMotorEnabled())
 }
 
+// SetMotorEnabled sets the property returned by [IsMotorEnabled].
 func (self Instance) SetMotorEnabled(value bool) {
 	class(self).SetMotorEnabled(value)
 }
 
+/*
+Target speed for the motor. In radians per second.
+*/
 func (self Instance) MotorTargetVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetMotorTargetVelocity()))
 }
 
+// SetMotorTargetVelocity sets the property returned by [GetMotorTargetVelocity].
 func (self Instance) SetMotorTargetVelocity(value Float.X) {
 	class(self).SetMotorTargetVelocity(float64(value))
 }

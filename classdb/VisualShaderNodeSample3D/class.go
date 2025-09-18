@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+An input source type.
+*/
 func (self Instance) Source() Source {
 	return Source(class(self).GetSource())
 }
 
+// SetSource sets the property returned by [GetSource].
 func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }

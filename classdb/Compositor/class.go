@@ -146,10 +146,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The custom [CompositorEffect]s that are applied during rendering of viewports using this compositor.
+
+[CompositorEffect]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect
+*/
 func (self Instance) CompositorEffects() []CompositorEffect.Instance {
 	return []CompositorEffect.Instance(gd.ArrayAs[[]CompositorEffect.Instance](gd.InternalArray(class(self).GetCompositorEffects())))
 }
 
+// SetCompositorEffects sets the property returned by [GetCompositorEffects].
 func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 	class(self).SetCompositorEffects(gd.ArrayFromSlice[Array.Contains[[1]gdclass.CompositorEffect]](value))
 }

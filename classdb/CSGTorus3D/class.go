@@ -163,50 +163,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+The inner radius of the torus.
+*/
 func (self Instance) InnerRadius() Float.X {
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
+// SetInnerRadius sets the property returned by [GetInnerRadius].
 func (self Instance) SetInnerRadius(value Float.X) {
 	class(self).SetInnerRadius(float64(value))
 }
 
+/*
+The outer radius of the torus.
+*/
 func (self Instance) OuterRadius() Float.X {
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
+// SetOuterRadius sets the property returned by [GetOuterRadius].
 func (self Instance) SetOuterRadius(value Float.X) {
 	class(self).SetOuterRadius(float64(value))
 }
 
+/*
+The number of slices the torus is constructed of.
+*/
 func (self Instance) Sides() int {
 	return int(int(class(self).GetSides()))
 }
 
+// SetSides sets the property returned by [GetSides].
 func (self Instance) SetSides(value int) {
 	class(self).SetSides(int64(value))
 }
 
+/*
+The number of edges each ring of the torus is constructed of.
+*/
 func (self Instance) RingSides() int {
 	return int(int(class(self).GetRingSides()))
 }
 
+// SetRingSides sets the property returned by [GetRingSides].
 func (self Instance) SetRingSides(value int) {
 	class(self).SetRingSides(int64(value))
 }
 
+/*
+If true the normals of the torus are set to give a smooth effect making the torus seem rounded. If false the torus will have a flat shaded look.
+*/
 func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
+// SetSmoothFaces sets the property returned by [GetSmoothFaces].
 func (self Instance) SetSmoothFaces(value bool) {
 	class(self).SetSmoothFaces(value)
 }
 
+/*
+The material used to render the torus.
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

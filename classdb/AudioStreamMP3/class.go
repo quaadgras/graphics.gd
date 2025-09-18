@@ -180,10 +180,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contains the audio data in bytes.
+
+You can load a file without having to import it beforehand using the code snippet below. Keep in mind that this snippet loads the whole file into memory and may not be ideal for huge files (hundreds of megabytes or more).
+*/
 func (self Instance) Data() []byte {
 	return []byte(class(self).GetData().Bytes())
 }
 
+// SetData sets the property returned by [GetData].
 func (self Instance) SetData(value []byte) {
 	class(self).SetData(Packed.BytesFrom(value...))
 }
@@ -192,6 +198,7 @@ func (self Instance) Bpm() Float.X {
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
+// SetBpm sets the property returned by [GetBpm].
 func (self Instance) SetBpm(value Float.X) {
 	class(self).SetBpm(float64(value))
 }
@@ -200,6 +207,7 @@ func (self Instance) BeatCount() int {
 	return int(int(class(self).GetBeatCount()))
 }
 
+// SetBeatCount sets the property returned by [GetBeatCount].
 func (self Instance) SetBeatCount(value int) {
 	class(self).SetBeatCount(int64(value))
 }
@@ -208,22 +216,31 @@ func (self Instance) BarBeats() int {
 	return int(int(class(self).GetBarBeats()))
 }
 
+// SetBarBeats sets the property returned by [GetBarBeats].
 func (self Instance) SetBarBeats(value int) {
 	class(self).SetBarBeats(int64(value))
 }
 
+/*
+If true, the stream will automatically loop when it reaches the end.
+*/
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
+// SetLoop sets the property returned by [HasLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
+/*
+Time in seconds at which the stream starts after being looped.
+*/
 func (self Instance) LoopOffset() Float.X {
 	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
+// SetLoopOffset sets the property returned by [GetLoopOffset].
 func (self Instance) SetLoopOffset(value Float.X) {
 	class(self).SetLoopOffset(float64(value))
 }

@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the angle will be interpreted in degrees instead of radians.
+*/
 func (self Instance) DegreesMode() bool {
 	return bool(class(self).IsDegreesMode())
 }
 
+// SetDegreesMode sets the property returned by [IsDegreesMode].
 func (self Instance) SetDegreesMode(value bool) {
 	class(self).SetDegreesMode(value)
 }

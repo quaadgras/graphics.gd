@@ -145,10 +145,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Returns the code of the shader include file. The returned text is what the user has written, not the full generated code used internally.
+*/
 func (self Instance) Code() string {
 	return string(class(self).GetCode().String())
 }
 
+// SetCode sets the property returned by [GetCode].
 func (self Instance) SetCode(value string) {
 	class(self).SetCode(String.New(value))
 }

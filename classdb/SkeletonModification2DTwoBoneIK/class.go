@@ -235,34 +235,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The NodePath to the node that is the target for the TwoBoneIK modification. This node is what the modification will use when bending the [Bone2D] nodes.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNodepath sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The minimum distance the target can be at. If the target is closer than this distance, the modification will solve as if it's at this minimum distance. When set to 0, the modification will solve without distance constraints.
+*/
 func (self Instance) TargetMinimumDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetMinimumDistance()))
 }
 
+// SetTargetMinimumDistance sets the property returned by [GetTargetMinimumDistance].
 func (self Instance) SetTargetMinimumDistance(value Float.X) {
 	class(self).SetTargetMinimumDistance(float64(value))
 }
 
+/*
+The maximum distance the target can be at. If the target is farther than this distance, the modification will solve as if it's at this maximum distance. When set to 0, the modification will solve without distance constraints.
+*/
 func (self Instance) TargetMaximumDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetMaximumDistance()))
 }
 
+// SetTargetMaximumDistance sets the property returned by [GetTargetMaximumDistance].
 func (self Instance) SetTargetMaximumDistance(value Float.X) {
 	class(self).SetTargetMaximumDistance(float64(value))
 }
 
+/*
+If true, the bones in the modification will bend outward as opposed to inwards when contracting. If false, the bones will bend inwards when contracting.
+*/
 func (self Instance) FlipBendDirection() bool {
 	return bool(class(self).GetFlipBendDirection())
 }
 
+// SetFlipBendDirection sets the property returned by [GetFlipBendDirection].
 func (self Instance) SetFlipBendDirection(value bool) {
 	class(self).SetFlipBendDirection(value)
 }

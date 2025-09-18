@@ -288,82 +288,137 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [SpriteFrames] resource containing the animation(s). Allows you the option to load, edit, clear, make unique and save the states of the [SpriteFrames] resource.
+
+[SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames
+*/
 func (self Instance) SpriteFrames() SpriteFrames.Instance {
 	return SpriteFrames.Instance(class(self).GetSpriteFrames())
 }
 
+// SetSpriteFrames sets the property returned by [GetSpriteFrames].
 func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) {
 	class(self).SetSpriteFrames(value)
 }
 
+/*
+The current animation from the [SpriteFrames] resource. If this value is changed, the [Frame] counter and the [FrameProgress] are reset.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.Frame
+[FrameProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.FrameProgress
+[SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.SpriteFrames
+*/
 func (self Instance) Animation() string {
 	return string(class(self).GetAnimation().String())
 }
 
+// SetAnimation sets the property returned by [GetAnimation].
 func (self Instance) SetAnimation(value string) {
 	class(self).SetAnimation(String.Name(String.New(value)))
 }
 
+/*
+The key of the animation to play when the scene loads.
+*/
 func (self Instance) Autoplay() string {
 	return string(class(self).GetAutoplay().String())
 }
 
+// SetAutoplay sets the property returned by [GetAutoplay].
 func (self Instance) SetAutoplay(value string) {
 	class(self).SetAutoplay(String.New(value))
 }
 
+/*
+The displayed animation frame's index. Setting this property also resets [FrameProgress]. If this is not desired, use [SetFrameAndProgress].
+
+[FrameProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.FrameProgress
+[SetFrameAndProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.SetFrameAndProgress
+*/
 func (self Instance) Frame() int {
 	return int(int(class(self).GetFrame()))
 }
 
+// SetFrame sets the property returned by [GetFrame].
 func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(int64(value))
 }
 
+/*
+The progress value between 0.0 and 1.0 until the current frame transitions to the next frame. If the animation is playing backwards, the value transitions from 1.0 to 0.0.
+*/
 func (self Instance) FrameProgress() Float.X {
 	return Float.X(Float.X(class(self).GetFrameProgress()))
 }
 
+// SetFrameProgress sets the property returned by [GetFrameProgress].
 func (self Instance) SetFrameProgress(value Float.X) {
 	class(self).SetFrameProgress(float64(value))
 }
 
+/*
+The speed scaling ratio. For example, if this value is 1, then the animation plays at normal speed. If it's 0.5, then it plays at half speed. If it's 2, then it plays at double speed.
+
+If set to a negative value, the animation is played in reverse. If set to 0, the animation will not advance.
+*/
 func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
+// SetSpeedScale sets the property returned by [GetSpeedScale].
 func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(float64(value))
 }
 
+/*
+If true, texture will be centered.
+
+Note: For games with a pixel art aesthetic, textures may appear deformed when centered. This is caused by their position being between pixels. To prevent this, set this property to false, or consider enabling [ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel" and [ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) Centered() bool {
 	return bool(class(self).IsCentered())
 }
 
+// SetCentered sets the property returned by [IsCentered].
 func (self Instance) SetCentered(value bool) {
 	class(self).SetCentered(value)
 }
 
+/*
+The texture's drawing offset.
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+If true, texture is flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
+// SetFlipH sets the property returned by [IsFlippedH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, texture is flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
+// SetFlipV sets the property returned by [IsFlippedV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }
@@ -591,6 +646,12 @@ func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite2D.get_playing_
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when [SpriteFrames] changes.
+
+[SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.SpriteFrames
+*/
 func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -603,6 +664,11 @@ func (self class) SpriteFramesChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SpriteFramesChanged`))))
 }
 
+/*
+Emitted when [Animation] changes.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.Animation
+*/
 func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -615,6 +681,11 @@ func (self class) AnimationChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
 }
 
+/*
+Emitted when [Frame] changes.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.Frame
+*/
 func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -627,6 +698,9 @@ func (self class) FrameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
 }
 
+/*
+Emitted when the animation loops.
+*/
 func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -639,6 +713,11 @@ func (self class) AnimationLooped() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationLooped`))))
 }
 
+/*
+Emitted when the animation reaches the end, or the start if it is played in reverse. When the animation finishes, it pauses the playback.
+
+Note: This signal is not emitted if an animation is looping.
+*/
 func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

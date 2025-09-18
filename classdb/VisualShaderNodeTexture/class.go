@@ -149,26 +149,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+Determines the source for the lookup.
+*/
 func (self Instance) Source() Source {
 	return Source(class(self).GetSource())
 }
 
+// SetSource sets the property returned by [GetSource].
 func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
+/*
+The source texture, if needed for the selected [Source].
+
+[Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeTexture#Instance.Source
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+Specifies the type of the texture if [Source] is set to [SourceTexture].
+
+[Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeTexture#Instance.Source
+*/
 func (self Instance) TextureType() TextureType {
 	return TextureType(class(self).GetTextureType())
 }
 
+// SetTextureType sets the property returned by [GetTextureType].
 func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }

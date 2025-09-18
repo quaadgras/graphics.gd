@@ -217,26 +217,45 @@ func New() Instance {
 	return casted
 }
 
+/*
+Number of vertices in the width of the height map. Changing this will resize the [MapData].
+
+[MapData]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapData
+*/
 func (self Instance) MapWidth() int {
 	return int(int(class(self).GetMapWidth()))
 }
 
+// SetMapWidth sets the property returned by [GetMapWidth].
 func (self Instance) SetMapWidth(value int) {
 	class(self).SetMapWidth(int64(value))
 }
 
+/*
+Number of vertices in the depth of the height map. Changing this will resize the [MapData].
+
+[MapData]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapData
+*/
 func (self Instance) MapDepth() int {
 	return int(int(class(self).GetMapDepth()))
 }
 
+// SetMapDepth sets the property returned by [GetMapDepth].
 func (self Instance) SetMapDepth(value int) {
 	class(self).SetMapDepth(int64(value))
 }
 
+/*
+Height map data. The array's size must be equal to [MapWidth] multiplied by [MapDepth].
+
+[MapDepth]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapDepth
+[MapWidth]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D#Instance.MapWidth
+*/
 func (self Instance) MapData() []float32 {
 	return []float32(slices.Collect(class(self).GetMapData().Values()))
 }
 
+// SetMapData sets the property returned by [GetMapData].
 func (self Instance) SetMapData(value []float32) {
 	class(self).SetMapData(Packed.New(value...))
 }

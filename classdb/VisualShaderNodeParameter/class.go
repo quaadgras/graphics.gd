@@ -148,18 +148,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+Name of the parameter, by which it can be accessed through the [ShaderMaterial] properties.
+
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) ParameterName() string {
 	return string(class(self).GetParameterName().String())
 }
 
+// SetParameterName sets the property returned by [GetParameterName].
 func (self Instance) SetParameterName(value string) {
 	class(self).SetParameterName(String.New(value))
 }
 
+/*
+Defines the scope of the parameter.
+*/
 func (self Instance) Qualifier() Qualifier {
 	return Qualifier(class(self).GetQualifier())
 }
 
+// SetQualifier sets the property returned by [GetQualifier].
 func (self Instance) SetQualifier(value Qualifier) {
 	class(self).SetQualifier(value)
 }

@@ -151,26 +151,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [OccluderPolygon2D] used to compute the shadow.
+
+[OccluderPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/OccluderPolygon2D
+*/
 func (self Instance) Occluder() OccluderPolygon2D.Instance {
 	return OccluderPolygon2D.Instance(class(self).GetOccluderPolygon())
 }
 
+// SetOccluder sets the property returned by [GetOccluderPolygon].
 func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) {
 	class(self).SetOccluderPolygon(value)
 }
 
+/*
+If enabled, the occluder will be part of a real-time generated signed distance field that can be used in custom shaders.
+*/
 func (self Instance) SdfCollision() bool {
 	return bool(class(self).IsSetAsSdfCollision())
 }
 
+// SetSdfCollision sets the property returned by [IsSetAsSdfCollision].
 func (self Instance) SetSdfCollision(value bool) {
 	class(self).SetAsSdfCollision(value)
 }
 
+/*
+The LightOccluder2D's occluder light mask. The LightOccluder2D will cast shadows only from Light2D(s) that have the same light mask(s).
+*/
 func (self Instance) OccluderLightMask() int {
 	return int(int(class(self).GetOccluderLightMask()))
 }
 
+// SetOccluderLightMask sets the property returned by [GetOccluderLightMask].
 func (self Instance) SetOccluderLightMask(value int) {
 	class(self).SetOccluderLightMask(int64(value))
 }

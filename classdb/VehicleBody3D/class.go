@@ -165,26 +165,51 @@ func New() Instance {
 	return casted
 }
 
+/*
+Accelerates the vehicle by applying an engine force. The vehicle is only sped up if the wheels that have [VehicleWheel3D.UseAsTraction] set to true and are in contact with a surface. The [RigidBody3D.Mass] of the vehicle has an effect on the acceleration of the vehicle. For a vehicle with a mass set to 1000, try a value in the 25 - 50 range for acceleration.
+
+Note: The simulation does not take the effect of gears into account, you will need to add logic for this if you wish to simulate gears.
+
+A negative value will result in the vehicle reversing.
+
+[RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
+[VehicleWheel3D.UseAsTraction]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.UseAsTraction
+*/
 func (self Instance) EngineForce() Float.X {
 	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
+// SetEngineForce sets the property returned by [GetEngineForce].
 func (self Instance) SetEngineForce(value Float.X) {
 	class(self).SetEngineForce(float64(value))
 }
 
+/*
+Slows down the vehicle by applying a braking force. The vehicle is only slowed down if the wheels are in contact with a surface. The force you need to apply to adequately slow down your vehicle depends on the [RigidBody3D.Mass] of the vehicle. For a vehicle with a mass set to 1000, try a value in the 25 - 30 range for hard braking.
+
+[RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
+*/
 func (self Instance) Brake() Float.X {
 	return Float.X(Float.X(class(self).GetBrake()))
 }
 
+// SetBrake sets the property returned by [GetBrake].
 func (self Instance) SetBrake(value Float.X) {
 	class(self).SetBrake(float64(value))
 }
 
+/*
+The steering angle for the vehicle. Setting this to a non-zero value will result in the vehicle turning when it's moving. Wheels that have [VehicleWheel3D.UseAsSteering] set to true will automatically be rotated.
+
+Note: This property is edited in the inspector in degrees. In code the property is set in radians.
+
+[VehicleWheel3D.UseAsSteering]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.UseAsSteering
+*/
 func (self Instance) Steering() Float.X {
 	return Float.X(Float.X(class(self).GetSteering()))
 }
 
+// SetSteering sets the property returned by [GetSteering].
 func (self Instance) SetSteering(value Float.X) {
 	class(self).SetSteering(float64(value))
 }

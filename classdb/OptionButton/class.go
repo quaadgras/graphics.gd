@@ -463,30 +463,47 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the currently selected item, or -1 if no item is selected.
+*/
 func (self Instance) Selected() int {
 	return int(int(class(self).GetSelected()))
 }
 
+/*
+If true, minimum size will be determined by the longest item's text, instead of the currently selected one's.
+
+Note: For performance reasons, the minimum size doesn't update immediately when adding, removing or modifying items.
+*/
 func (self Instance) FitToLongestItem() bool {
 	return bool(class(self).IsFitToLongestItem())
 }
 
+// SetFitToLongestItem sets the property returned by [IsFitToLongestItem].
 func (self Instance) SetFitToLongestItem(value bool) {
 	class(self).SetFitToLongestItem(value)
 }
 
+/*
+If true, the currently selected item can be selected again.
+*/
 func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
+// SetAllowReselect sets the property returned by [GetAllowReselect].
 func (self Instance) SetAllowReselect(value bool) {
 	class(self).SetAllowReselect(value)
 }
 
+/*
+The number of items to select from.
+*/
 func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
+// SetItemCount sets the property returned by [GetItemCount].
 func (self Instance) SetItemCount(value int) {
 	class(self).SetItemCount(int64(value))
 }
@@ -847,6 +864,14 @@ If true, shortcuts are disabled and cannot be used to trigger the button.
 func (self class) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
+
+/*
+Emitted when the current item has been changed by the user. The index of the item selected is passed as argument.
+
+[AllowReselect] must be enabled to reselect an item.
+
+[AllowReselect]: https://pkg.go.dev/graphics.gd/classdb/OptionButton#Instance.AllowReselect
+*/
 func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -859,6 +884,11 @@ func (self class) ItemSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
 }
 
+/*
+Emitted when the user navigates to an item using the [ProjectSettings] "input/ui_up" or [ProjectSettings] "input/ui_down" input actions. The index of the item selected is passed as argument.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) OnItemFocused(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

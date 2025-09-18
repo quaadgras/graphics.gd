@@ -176,42 +176,73 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the attached bone.
+*/
 func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
+// SetBoneName sets the property returned by [GetBoneName].
 func (self Instance) SetBoneName(value string) {
 	class(self).SetBoneName(String.New(value))
 }
 
+/*
+The index of the attached bone.
+*/
 func (self Instance) BoneIdx() int {
 	return int(int(class(self).GetBoneIdx()))
 }
 
+// SetBoneIdx sets the property returned by [GetBoneIdx].
 func (self Instance) SetBoneIdx(value int) {
 	class(self).SetBoneIdx(int64(value))
 }
 
+/*
+Whether the [BoneAttachment3D] node will override the bone pose of the bone it is attached to. When set to true, the [BoneAttachment3D] node can change the pose of the bone. When set to false, the [BoneAttachment3D] will always be set to the bone's transform.
+
+Note: This override performs interruptively in the skeleton update process using signals due to the old design. It may cause unintended behavior when used at the same time with [SkeletonModifier3D].
+
+[BoneAttachment3D]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D
+[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
+*/
 func (self Instance) OverridePose() bool {
 	return bool(class(self).GetOverridePose())
 }
 
+// SetOverridePose sets the property returned by [GetOverridePose].
 func (self Instance) SetOverridePose(value bool) {
 	class(self).SetOverridePose(value)
 }
 
+/*
+Whether the [BoneAttachment3D] node will use an external [Skeleton3D] node rather than attempting to use its parent node as the [Skeleton3D]. When set to true, the [BoneAttachment3D] node will use the external [Skeleton3D] node set in [ExternalSkeleton].
+
+[BoneAttachment3D]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D
+[ExternalSkeleton]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D#Instance.ExternalSkeleton
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) UseExternalSkeleton() bool {
 	return bool(class(self).GetUseExternalSkeleton())
 }
 
+// SetUseExternalSkeleton sets the property returned by [GetUseExternalSkeleton].
 func (self Instance) SetUseExternalSkeleton(value bool) {
 	class(self).SetUseExternalSkeleton(value)
 }
 
+/*
+The node path to the external [Skeleton3D] node.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) ExternalSkeleton() string {
 	return string(class(self).GetExternalSkeleton().String())
 }
 
+// SetExternalSkeleton sets the property returned by [GetExternalSkeleton].
 func (self Instance) SetExternalSkeleton(value string) {
 	class(self).SetExternalSkeleton(Path.ToNode(String.New(value)))
 }

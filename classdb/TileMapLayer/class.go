@@ -719,106 +719,185 @@ func New() Instance {
 	return casted
 }
 
+/*
+The raw tile map data as a byte array.
+*/
 func (self Instance) TileMapData() []byte {
 	return []byte(class(self).GetTileMapDataAsArray().Bytes())
 }
 
+// SetTileMapData sets the property returned by [GetTileMapDataAsArray].
 func (self Instance) SetTileMapData(value []byte) {
 	class(self).SetTileMapDataFromArray(Packed.BytesFrom(value...))
 }
 
+/*
+If false, disables this [TileMapLayer] completely (rendering, collision, navigation, scene tiles, etc.)
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+The [TileSet] used by this layer. The textures, collisions, and additional behavior of all available tiles are stored here.
+
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) TileSet() TileSet.Instance {
 	return TileSet.Instance(class(self).GetTileSet())
 }
 
+// SetTileSet sets the property returned by [GetTileSet].
 func (self Instance) SetTileSet(value TileSet.Instance) {
 	class(self).SetTileSet(value)
 }
 
+/*
+Enable or disable light occlusion.
+*/
 func (self Instance) OcclusionEnabled() bool {
 	return bool(class(self).IsOcclusionEnabled())
 }
 
+// SetOcclusionEnabled sets the property returned by [IsOcclusionEnabled].
 func (self Instance) SetOcclusionEnabled(value bool) {
 	class(self).SetOcclusionEnabled(value)
 }
 
+/*
+This Y-sort origin value is added to each tile's Y-sort origin value. This allows, for example, to fake a different height level. This can be useful for top-down view games.
+*/
 func (self Instance) YSortOrigin() int {
 	return int(int(class(self).GetYSortOrigin()))
 }
 
+// SetYSortOrigin sets the property returned by [GetYSortOrigin].
 func (self Instance) SetYSortOrigin(value int) {
 	class(self).SetYSortOrigin(int64(value))
 }
 
+/*
+If [CanvasItem.YSortEnabled] is enabled, setting this to true will reverse the order the tiles are drawn on the X-axis.
+
+[CanvasItem.YSortEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.YSortEnabled
+*/
 func (self Instance) XDrawOrderReversed() bool {
 	return bool(class(self).IsXDrawOrderReversed())
 }
 
+// SetXDrawOrderReversed sets the property returned by [IsXDrawOrderReversed].
 func (self Instance) SetXDrawOrderReversed(value bool) {
 	class(self).SetXDrawOrderReversed(value)
 }
 
+/*
+The [TileMapLayer]'s rendering quadrant size. A quadrant is a group of tiles to be drawn together on a single canvas item, for optimization purposes. [RenderingQuadrantSize] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quadrant size groups together 16 * 16 = 256 tiles.
+
+The quadrant size does not apply on a Y-sorted [TileMapLayer], as tiles are grouped by Y position instead in that case.
+
+Note: As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the [TileMapLayer]'s local coordinate system.
+
+[RenderingQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.RenderingQuadrantSize
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) RenderingQuadrantSize() int {
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
+// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize].
 func (self Instance) SetRenderingQuadrantSize(value int) {
 	class(self).SetRenderingQuadrantSize(int64(value))
 }
 
+/*
+Enable or disable collisions.
+*/
 func (self Instance) CollisionEnabled() bool {
 	return bool(class(self).IsCollisionEnabled())
 }
 
+// SetCollisionEnabled sets the property returned by [IsCollisionEnabled].
 func (self Instance) SetCollisionEnabled(value bool) {
 	class(self).SetCollisionEnabled(value)
 }
 
+/*
+If true, this [TileMapLayer] collision shapes will be instantiated as kinematic bodies. This can be needed for moving [TileMapLayer] nodes (i.e. moving platforms).
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) UseKinematicBodies() bool {
 	return bool(class(self).IsUsingKinematicBodies())
 }
 
+// SetUseKinematicBodies sets the property returned by [IsUsingKinematicBodies].
 func (self Instance) SetUseKinematicBodies(value bool) {
 	class(self).SetUseKinematicBodies(value)
 }
 
+/*
+Show or hide the [TileMapLayer]'s collision shapes. If set to [DebugVisibilityModeDefault], this depends on the show collision debug settings.
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) CollisionVisibilityMode() DebugVisibilityMode {
 	return DebugVisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
+// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode].
 func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) {
 	class(self).SetCollisionVisibilityMode(value)
 }
 
+/*
+The [TileMapLayer]'s physics quadrant size. Within a physics quadrant, cells with similar physics properties are grouped together and their collision shapes get merged. [PhysicsQuadrantSize] defines the length of a square's side, in the map's coordinate system, that forms the quadrant. Thus, the default quadrant size groups together 16 * 16 = 256 tiles.
+
+Note: As quadrants are created according to the map's coordinate system, the quadrant's "square shape" might not look like square in the [TileMapLayer]'s local coordinate system.
+
+Note: This impacts the value returned by [GetCoordsForBodyRid].
+
+[GetCoordsForBodyRid]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.GetCoordsForBodyRid
+[PhysicsQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.PhysicsQuadrantSize
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) PhysicsQuadrantSize() int {
 	return int(int(class(self).GetPhysicsQuadrantSize()))
 }
 
+// SetPhysicsQuadrantSize sets the property returned by [GetPhysicsQuadrantSize].
 func (self Instance) SetPhysicsQuadrantSize(value int) {
 	class(self).SetPhysicsQuadrantSize(int64(value))
 }
 
+/*
+If true, navigation regions are enabled.
+*/
 func (self Instance) NavigationEnabled() bool {
 	return bool(class(self).IsNavigationEnabled())
 }
 
+// SetNavigationEnabled sets the property returned by [IsNavigationEnabled].
 func (self Instance) SetNavigationEnabled(value bool) {
 	class(self).SetNavigationEnabled(value)
 }
 
+/*
+Show or hide the [TileMapLayer]'s navigation meshes. If set to [DebugVisibilityModeDefault], this depends on the show navigation debug settings.
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) NavigationVisibilityMode() DebugVisibilityMode {
 	return DebugVisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
+// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode].
 func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) {
 	class(self).SetNavigationVisibilityMode(value)
 }
@@ -1456,6 +1535,16 @@ func (self class) GetNavigationVisibilityMode() DebugVisibilityMode { //gd:TileM
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when this [TileMapLayer]'s properties changes. This includes modified cells, properties, or changes made to its assigned [TileSet].
+
+Note: This signal may be emitted very often when batch-modifying a [TileMapLayer]. Avoid executing complex processing in a connected function, and consider delaying it to the end of the frame instead (i.e. calling [Object.CallDeferred]).
+
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

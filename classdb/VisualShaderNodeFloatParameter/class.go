@@ -155,50 +155,82 @@ func New() Instance {
 	return casted
 }
 
+/*
+A hint applied to the uniform, which controls the values it can take when set through the Inspector.
+*/
 func (self Instance) Hint() Hint {
 	return Hint(class(self).GetHint())
 }
 
+// SetHint sets the property returned by [GetHint].
 func (self Instance) SetHint(value Hint) {
 	class(self).SetHint(value)
 }
 
+/*
+Maximum value for range hints. Used if [Hint] is set to [HintRange] or [HintRangeStep].
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
+*/
 func (self Instance) Min() Float.X {
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
+// SetMin sets the property returned by [GetMin].
 func (self Instance) SetMin(value Float.X) {
 	class(self).SetMin(float64(value))
 }
 
+/*
+Minimum value for range hints. Used if [Hint] is set to [HintRange] or [HintRangeStep].
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
+*/
 func (self Instance) Max() Float.X {
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
+// SetMax sets the property returned by [GetMax].
 func (self Instance) SetMax(value Float.X) {
 	class(self).SetMax(float64(value))
 }
 
+/*
+Step (increment) value for the range hint with step. Used if [Hint] is set to [HintRangeStep].
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
+*/
 func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
+// SetStep sets the property returned by [GetStep].
 func (self Instance) SetStep(value Float.X) {
 	class(self).SetStep(float64(value))
 }
 
+/*
+Enables usage of the [DefaultValue].
+
+[DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.DefaultValue
+*/
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
 func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
+/*
+A default value to be assigned within the shader.
+*/
 func (self Instance) DefaultValue() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultValue()))
 }
 
+// SetDefaultValue sets the property returned by [GetDefaultValue].
 func (self Instance) SetDefaultValue(value Float.X) {
 	class(self).SetDefaultValue(float64(value))
 }

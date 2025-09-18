@@ -165,74 +165,132 @@ func New() Instance {
 	return casted
 }
 
+/*
+The time to cross-fade between this state and the next.
+
+Note: [AnimationNodeStateMachine] transitions the current state immediately after the start of the fading. The precise remaining time can only be inferred from the main animation. When [AnimationNodeOutput] is considered as the most upstream, so the [XfadeTime] is not scaled depending on the downstream delta. See also [AnimationNodeOneShot.FadeoutTime].
+
+[AnimationNodeOneShot.FadeoutTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.FadeoutTime
+[AnimationNodeOutput]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOutput
+[AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
+[XfadeTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.XfadeTime
+*/
 func (self Instance) XfadeTime() Float.X {
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
+// SetXfadeTime sets the property returned by [GetXfadeTime].
 func (self Instance) SetXfadeTime(value Float.X) {
 	class(self).SetXfadeTime(float64(value))
 }
 
+/*
+Ease curve for better control over cross-fade between this state and the next. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) XfadeCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
+// SetXfadeCurve sets the property returned by [GetXfadeCurve].
 func (self Instance) SetXfadeCurve(value Curve.Instance) {
 	class(self).SetXfadeCurve(value)
 }
 
+/*
+If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
+*/
 func (self Instance) BreakLoopAtEnd() bool {
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
+// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd].
 func (self Instance) SetBreakLoopAtEnd(value bool) {
 	class(self).SetBreakLoopAtEnd(value)
 }
 
+/*
+If true, the destination animation is played back from the beginning when switched.
+*/
 func (self Instance) Reset() bool {
 	return bool(class(self).IsReset())
 }
 
+// SetReset sets the property returned by [IsReset].
 func (self Instance) SetReset(value bool) {
 	class(self).SetReset(value)
 }
 
+/*
+Lower priority transitions are preferred when travelling through the tree via [AnimationNodeStateMachinePlayback.Travel] or [AdvanceMode] is set to [AdvanceModeAuto].
+
+[AdvanceMode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceMode
+[AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
+*/
 func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
+// SetPriority sets the property returned by [GetPriority].
 func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(int64(value))
 }
 
+/*
+The transition type.
+*/
 func (self Instance) SwitchMode() SwitchMode {
 	return SwitchMode(class(self).GetSwitchMode())
 }
 
+// SetSwitchMode sets the property returned by [GetSwitchMode].
 func (self Instance) SetSwitchMode(value SwitchMode) {
 	class(self).SetSwitchMode(value)
 }
 
+/*
+Determines whether the transition should be disabled, enabled when using [AnimationNodeStateMachinePlayback.Travel], or traversed automatically if the [AdvanceCondition] and [AdvanceExpression] checks are true (if assigned).
+
+[AdvanceCondition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceCondition
+[AdvanceExpression]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceExpression
+[AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
+*/
 func (self Instance) AdvanceMode() AdvanceMode {
 	return AdvanceMode(class(self).GetAdvanceMode())
 }
 
+// SetAdvanceMode sets the property returned by [GetAdvanceMode].
 func (self Instance) SetAdvanceMode(value AdvanceMode) {
 	class(self).SetAdvanceMode(value)
 }
 
+/*
+Turn on auto advance when this condition is set. The provided name will become a boolean parameter on the [AnimationTree] that can be controlled from code (see [Using AnimationTree]). For example, if [AnimationTree.TreeRoot] is an [AnimationNodeStateMachine] and [AdvanceCondition] is set to "idle":
+
+[AdvanceCondition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceCondition
+[AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
+[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+[AnimationTree.TreeRoot]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.TreeRoot
+[Using AnimationTree]: https://docs.godotengine.org/tutorials/animation/animation_tree.html#controlling-from-code
+*/
 func (self Instance) AdvanceCondition() string {
 	return string(class(self).GetAdvanceCondition().String())
 }
 
+// SetAdvanceCondition sets the property returned by [GetAdvanceCondition].
 func (self Instance) SetAdvanceCondition(value string) {
 	class(self).SetAdvanceCondition(String.Name(String.New(value)))
 }
 
+/*
+Use an expression as a condition for state machine transitions. It is possible to create complex animation advance conditions for switching between states and gives much greater flexibility for creating complex state machines by directly interfacing with the script code.
+*/
 func (self Instance) AdvanceExpression() string {
 	return string(class(self).GetAdvanceExpression().String())
 }
 
+// SetAdvanceExpression sets the property returned by [GetAdvanceExpression].
 func (self Instance) SetAdvanceExpression(value string) {
 	class(self).SetAdvanceExpression(String.New(value))
 }
@@ -344,6 +402,12 @@ func (self class) GetAdvanceExpression() String.Readable { //gd:AnimationNodeSta
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
+/*
+Emitted when [AdvanceCondition] is changed.
+
+[AdvanceCondition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceCondition
+*/
 func (self Instance) OnAdvanceConditionChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

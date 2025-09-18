@@ -153,6 +153,9 @@ func New() Instance {
 	return casted
 }
 
+/*
+The texture's size (in pixels).
+*/
 func (self Instance) SetSize(value Vector2.XY) {
 	class(self).SetSize(Vector2.XY(value))
 }

@@ -246,50 +246,97 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the key's state is pressed. If false, the key's state is released.
+*/
 func (self Instance) SetPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
+/*
+Latin label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants.
+
+To get a human-readable representation of the [InputEventKey], use OS.get_keycode_string(event.keycode) where event is the [InputEventKey].
+
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+*/
 func (self Instance) Keycode() Input.Key {
 	return Input.Key(class(self).GetKeycode())
 }
 
+// SetKeycode sets the property returned by [GetKeycode].
 func (self Instance) SetKeycode(value Input.Key) {
 	class(self).SetKeycode(value)
 }
 
+/*
+Represents the physical location of a key on the 101/102-key US QWERTY keyboard, which corresponds to one of the [Key] constants.
+
+To get a human-readable representation of the [InputEventKey], use [OS.GetKeycodeString] in combination with [DisplayServer.KeyboardGetKeycodeFromPhysical]:
+
+[DisplayServer.KeyboardGetKeycodeFromPhysical]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#KeyboardGetKeycodeFromPhysical
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[OS.GetKeycodeString]: https://pkg.go.dev/graphics.gd/classdb/OS#GetKeycodeString
+*/
 func (self Instance) PhysicalKeycode() Input.Key {
 	return Input.Key(class(self).GetPhysicalKeycode())
 }
 
+// SetPhysicalKeycode sets the property returned by [GetPhysicalKeycode].
 func (self Instance) SetPhysicalKeycode(value Input.Key) {
 	class(self).SetPhysicalKeycode(value)
 }
 
+/*
+Represents the localized label printed on the key in the current keyboard layout, which corresponds to one of the [Key] constants or any valid Unicode character.
+
+For keyboard layouts with a single label on the key, it is equivalent to [Keycode].
+
+To get a human-readable representation of the [InputEventKey], use OS.get_keycode_string(event.key_label) where event is the [InputEventKey].
+
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[Keycode]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey#Instance.Keycode
+*/
 func (self Instance) KeyLabel() Input.Key {
 	return Input.Key(class(self).GetKeyLabel())
 }
 
+// SetKeyLabel sets the property returned by [GetKeyLabel].
 func (self Instance) SetKeyLabel(value Input.Key) {
 	class(self).SetKeyLabel(value)
 }
 
+/*
+The key Unicode character code (when relevant), shifted by modifier keys. Unicode character codes for composite characters and complex scripts may not be available unless IME input mode is active. See [Window.SetImeActive] for more information.
+
+[Window.SetImeActive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetImeActive
+*/
 func (self Instance) Unicode() int {
 	return int(int(class(self).GetUnicode()))
 }
 
+// SetUnicode sets the property returned by [GetUnicode].
 func (self Instance) SetUnicode(value int) {
 	class(self).SetUnicode(int64(value))
 }
 
+/*
+Represents the location of a key which has both left and right versions, such as Shift or Alt.
+*/
 func (self Instance) Location() Input.KeyLocation {
 	return Input.KeyLocation(class(self).GetLocation())
 }
 
+// SetLocation sets the property returned by [GetLocation].
 func (self Instance) SetLocation(value Input.KeyLocation) {
 	class(self).SetLocation(value)
 }
 
+/*
+If true, the key was already pressed before this event. An echo event is a repeated key event sent when the user is holding down the key.
+
+Note: The rate at which echo events are sent is typically around 20 events per second (after holding down the key for roughly half a second). However, the key repeat delay/speed can be changed by the user or disabled entirely in the operating system settings. To ensure your project works correctly on all configurations, do not assume the user has a specific key repeat configuration in your project's behavior.
+*/
 func (self Instance) SetEcho(value bool) {
 	class(self).SetEcho(value)
 }

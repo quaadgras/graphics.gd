@@ -152,26 +152,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The waveform's maximum allowed value, in decibels. Value can range from -20 to -0.1.
+*/
 func (self Instance) CeilingDb() Float.X {
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
+// SetCeilingDb sets the property returned by [GetCeilingDb].
 func (self Instance) SetCeilingDb(value Float.X) {
 	class(self).SetCeilingDb(float64(value))
 }
 
+/*
+Threshold from which the limiter begins to be active, in decibels. Value can range from -30 to 0.
+*/
 func (self Instance) ThresholdDb() Float.X {
 	return Float.X(Float.X(class(self).GetThresholdDb()))
 }
 
+// SetThresholdDb sets the property returned by [GetThresholdDb].
 func (self Instance) SetThresholdDb(value Float.X) {
 	class(self).SetThresholdDb(float64(value))
 }
 
+/*
+Applies a gain to the limited waves, in decibels. Value can range from 0 to 6.
+*/
 func (self Instance) SoftClipDb() Float.X {
 	return Float.X(Float.X(class(self).GetSoftClipDb()))
 }
 
+// SetSoftClipDb sets the property returned by [GetSoftClipDb].
 func (self Instance) SetSoftClipDb(value Float.X) {
 	class(self).SetSoftClipDb(float64(value))
 }
@@ -180,6 +192,7 @@ func (self Instance) SoftClipRatio() Float.X {
 	return Float.X(Float.X(class(self).GetSoftClipRatio()))
 }
 
+// SetSoftClipRatio sets the property returned by [GetSoftClipRatio].
 func (self Instance) SetSoftClipRatio(value Float.X) {
 	class(self).SetSoftClipRatio(float64(value))
 }

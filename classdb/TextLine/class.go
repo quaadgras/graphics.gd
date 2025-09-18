@@ -362,74 +362,112 @@ func New() Instance {
 	return casted
 }
 
+/*
+Text writing direction.
+*/
 func (self Instance) Direction() TextServer.Direction {
 	return TextServer.Direction(class(self).GetDirection())
 }
 
+// SetDirection sets the property returned by [GetDirection].
 func (self Instance) SetDirection(value TextServer.Direction) {
 	class(self).SetDirection(value)
 }
 
+/*
+Text orientation.
+*/
 func (self Instance) Orientation() TextServer.Orientation {
 	return TextServer.Orientation(class(self).GetOrientation())
 }
 
+// SetOrientation sets the property returned by [GetOrientation].
 func (self Instance) SetOrientation(value TextServer.Orientation) {
 	class(self).SetOrientation(value)
 }
 
+/*
+If set to true text will display invalid characters.
+*/
 func (self Instance) PreserveInvalid() bool {
 	return bool(class(self).GetPreserveInvalid())
 }
 
+// SetPreserveInvalid sets the property returned by [GetPreserveInvalid].
 func (self Instance) SetPreserveInvalid(value bool) {
 	class(self).SetPreserveInvalid(value)
 }
 
+/*
+If set to true text will display control characters.
+*/
 func (self Instance) PreserveControl() bool {
 	return bool(class(self).GetPreserveControl())
 }
 
+// SetPreserveControl sets the property returned by [GetPreserveControl].
 func (self Instance) SetPreserveControl(value bool) {
 	class(self).SetPreserveControl(value)
 }
 
+/*
+Text line width.
+*/
 func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
+/*
+Sets text alignment within the line as if the line was horizontal.
+*/
 func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Line alignment rules. For more info see [TextServer].
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
+*/
 func (self Instance) Flags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetFlags())
 }
 
+// SetFlags sets the property returned by [GetFlags].
 func (self Instance) SetFlags(value TextServer.JustificationFlag) {
 	class(self).SetFlags(value)
 }
 
+/*
+The clipping behavior when the text exceeds the text line's set width.
+*/
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
 func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
+/*
+Ellipsis character used for text clipping.
+*/
 func (self Instance) EllipsisChar() string {
 	return string(class(self).GetEllipsisChar().String())
 }
 
+// SetEllipsisChar sets the property returned by [GetEllipsisChar].
 func (self Instance) SetEllipsisChar(value string) {
 	class(self).SetEllipsisChar(String.New(value))
 }

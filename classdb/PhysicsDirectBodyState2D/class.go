@@ -506,82 +506,130 @@ func New() Instance {
 	return casted
 }
 
+/*
+The timestep (delta) used for the simulation.
+*/
 func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
+/*
+The inverse of the mass of the body.
+*/
 func (self Instance) InverseMass() Float.X {
 	return Float.X(Float.X(class(self).GetInverseMass()))
 }
 
+/*
+The inverse of the inertia of the body.
+*/
 func (self Instance) InverseInertia() Float.X {
 	return Float.X(Float.X(class(self).GetInverseInertia()))
 }
 
+/*
+The rate at which the body stops rotating, if there are not any other forces moving it.
+*/
 func (self Instance) TotalAngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetTotalAngularDamp()))
 }
 
+/*
+The rate at which the body stops moving, if there are not any other forces moving it.
+*/
 func (self Instance) TotalLinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetTotalLinearDamp()))
 }
 
+/*
+The total gravity vector being currently applied to this body.
+*/
 func (self Instance) TotalGravity() Vector2.XY {
 	return Vector2.XY(class(self).GetTotalGravity())
 }
 
+/*
+The body's center of mass position relative to the body's center in the global coordinate system.
+*/
 func (self Instance) CenterOfMass() Vector2.XY {
 	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
+/*
+The body's center of mass position in the body's local coordinate system.
+*/
 func (self Instance) CenterOfMassLocal() Vector2.XY {
 	return Vector2.XY(class(self).GetCenterOfMassLocal())
 }
 
+/*
+The body's rotational velocity in radians per second.
+*/
 func (self Instance) AngularVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
+// SetAngularVelocity sets the property returned by [GetAngularVelocity].
 func (self Instance) SetAngularVelocity(value Float.X) {
 	class(self).SetAngularVelocity(float64(value))
 }
 
+/*
+The body's linear velocity in pixels per second.
+*/
 func (self Instance) LinearVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
+// SetLinearVelocity sets the property returned by [GetLinearVelocity].
 func (self Instance) SetLinearVelocity(value Vector2.XY) {
 	class(self).SetLinearVelocity(Vector2.XY(value))
 }
 
+/*
+If true, this body is currently sleeping (not active).
+*/
 func (self Instance) Sleeping() bool {
 	return bool(class(self).IsSleeping())
 }
 
+// SetSleeping sets the property returned by [IsSleeping].
 func (self Instance) SetSleeping(value bool) {
 	class(self).SetSleepState(value)
 }
 
+/*
+The body's collision layer.
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The body's collision mask.
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The body's transformation matrix.
+*/
 func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }

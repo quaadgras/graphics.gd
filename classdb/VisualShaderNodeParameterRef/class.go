@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the parameter which this reference points to.
+*/
 func (self Instance) ParameterName() string {
 	return string(class(self).GetParameterName().String())
 }
 
+// SetParameterName sets the property returned by [GetParameterName].
 func (self Instance) SetParameterName(value string) {
 	class(self).SetParameterName(String.New(value))
 }

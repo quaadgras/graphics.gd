@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Size of the gizmo cross that appears in the editor.
+*/
 func (self Instance) GizmoExtents() Float.X {
 	return Float.X(Float.X(class(self).GetGizmoExtents()))
 }
 
+// SetGizmoExtents sets the property returned by [GetGizmoExtents].
 func (self Instance) SetGizmoExtents(value Float.X) {
 	class(self).SetGizmoExtents(float64(value))
 }

@@ -589,10 +589,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true enables the filtering of neighbors via [FilterNeighbor].
+
+[FilterNeighbor]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
+*/
 func (self Instance) NeighborFilterEnabled() bool {
 	return bool(class(self).IsNeighborFilterEnabled())
 }
 
+// SetNeighborFilterEnabled sets the property returned by [IsNeighborFilterEnabled].
 func (self Instance) SetNeighborFilterEnabled(value bool) {
 	class(self).SetNeighborFilterEnabled(value)
 }

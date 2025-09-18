@@ -343,82 +343,141 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, collisions will be reported.
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+If true, this raycast will not report collisions with its parent node. This property only has an effect if the parent node is a [CollisionObject3D]. See also [Node.GetParent] and [AddException].
+
+[AddException]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D#Instance.AddException
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+[Node.GetParent]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetParent
+*/
 func (self Instance) ExcludeParent() bool {
 	return bool(class(self).GetExcludeParentBody())
 }
 
+// SetExcludeParent sets the property returned by [GetExcludeParentBody].
 func (self Instance) SetExcludeParent(value bool) {
 	class(self).SetExcludeParentBody(value)
 }
 
+/*
+The ray's destination point, relative to this raycast's [Node3D.Position].
+
+[Node3D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
+*/
 func (self Instance) TargetPosition() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
+// SetTargetPosition sets the property returned by [GetTargetPosition].
 func (self Instance) SetTargetPosition(value Vector3.XYZ) {
 	class(self).SetTargetPosition(Vector3.XYZ(value))
 }
 
+/*
+The ray's collision mask. Only objects in at least one collision layer enabled in the mask will be detected. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+If true, the ray will detect a hit when starting inside shapes. In this case the collision normal will be Vector3(0, 0, 0). Does not affect shapes with no volume like concave polygon or heightmap.
+*/
 func (self Instance) HitFromInside() bool {
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
+// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled].
 func (self Instance) SetHitFromInside(value bool) {
 	class(self).SetHitFromInside(value)
 }
 
+/*
+If true, the ray will hit back faces with concave polygon shapes with back face enabled or heightmap shapes.
+*/
 func (self Instance) HitBackFaces() bool {
 	return bool(class(self).IsHitBackFacesEnabled())
 }
 
+// SetHitBackFaces sets the property returned by [IsHitBackFacesEnabled].
 func (self Instance) SetHitBackFaces(value bool) {
 	class(self).SetHitBackFaces(value)
 }
 
+/*
+If true, collisions with [Area3D]s will be reported.
+
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+*/
 func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
 func (self Instance) SetCollideWithAreas(value bool) {
 	class(self).SetCollideWithAreas(value)
 }
 
+/*
+If true, collisions with [PhysicsBody3D]s will be reported.
+
+[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+*/
 func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
 func (self Instance) SetCollideWithBodies(value bool) {
 	class(self).SetCollideWithBodies(value)
 }
 
+/*
+The custom color to use to draw the shape in the editor and at run-time if Visible Collision Shapes is enabled in the Debug menu. This color will be highlighted at run-time if the [RayCast3D] is colliding with something.
+
+If set to Color(0.0, 0.0, 0.0) (by default), the color set in [ProjectSettings] "debug/shapes/collision/shape_color" is used.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
+*/
 func (self Instance) DebugShapeCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugShapeCustomColor())
 }
 
+// SetDebugShapeCustomColor sets the property returned by [GetDebugShapeCustomColor].
 func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) {
 	class(self).SetDebugShapeCustomColor(Color.RGBA(value))
 }
 
+/*
+If set to 1, a line is used as the debug shape. Otherwise, a truncated pyramid is drawn to represent the [RayCast3D]. Requires Visible Collision Shapes to be enabled in the Debug menu for the debug shape to be visible at run-time.
+
+[RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
+*/
 func (self Instance) DebugShapeThickness() int {
 	return int(int(class(self).GetDebugShapeThickness()))
 }
 
+// SetDebugShapeThickness sets the property returned by [GetDebugShapeThickness].
 func (self Instance) SetDebugShapeThickness(value int) {
 	class(self).SetDebugShapeThickness(int64(value))
 }

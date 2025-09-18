@@ -244,6 +244,7 @@ func (self Instance) Vertices() []float32 {
 	return []float32(slices.Collect(class(self).GetVertices().Values()))
 }
 
+// SetVertices sets the property returned by [GetVertices].
 func (self Instance) SetVertices(value []float32) {
 	class(self).SetVertices(Packed.New(value...))
 }
@@ -252,6 +253,7 @@ func (self Instance) Indices() []int32 {
 	return []int32(slices.Collect(class(self).GetIndices().Values()))
 }
 
+// SetIndices sets the property returned by [GetIndices].
 func (self Instance) SetIndices(value []int32) {
 	class(self).SetIndices(Packed.New(value...))
 }
@@ -260,6 +262,7 @@ func (self Instance) ProjectedObstructions() []ProjectedObstruction3D {
 	return []ProjectedObstruction3D(gd.ArrayAs[[]ProjectedObstruction3D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
+// SetProjectedObstructions sets the property returned by [GetProjectedObstructions].
 func (self Instance) SetProjectedObstructions(value []ProjectedObstruction3D) {
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }

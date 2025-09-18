@@ -234,26 +234,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the [Bone2D] node that the modification will operate on.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) BoneIndex() int {
 	return int(int(class(self).GetBoneIndex()))
 }
 
+// SetBoneIndex sets the property returned by [GetBoneIndex].
 func (self Instance) SetBoneIndex(value int) {
 	class(self).SetBoneIndex(int64(value))
 }
 
+/*
+The [Bone2D] node that the modification will operate on.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) Bone2dNode() string {
 	return string(class(self).GetBone2dNode().String())
 }
 
+// SetBone2dNode sets the property returned by [GetBone2dNode].
 func (self Instance) SetBone2dNode(value string) {
 	class(self).SetBone2dNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The NodePath to the node that is the target for the LookAt modification. This node is what the modification will rotate the [Bone2D] to.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNodepath sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }

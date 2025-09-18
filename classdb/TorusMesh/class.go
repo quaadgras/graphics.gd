@@ -153,34 +153,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+The inner radius of the torus.
+*/
 func (self Instance) InnerRadius() Float.X {
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
+// SetInnerRadius sets the property returned by [GetInnerRadius].
 func (self Instance) SetInnerRadius(value Float.X) {
 	class(self).SetInnerRadius(float64(value))
 }
 
+/*
+The outer radius of the torus.
+*/
 func (self Instance) OuterRadius() Float.X {
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
+// SetOuterRadius sets the property returned by [GetOuterRadius].
 func (self Instance) SetOuterRadius(value Float.X) {
 	class(self).SetOuterRadius(float64(value))
 }
 
+/*
+The number of slices the torus is constructed of.
+*/
 func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
+// SetRings sets the property returned by [GetRings].
 func (self Instance) SetRings(value int) {
 	class(self).SetRings(int64(value))
 }
 
+/*
+The number of edges each ring of the torus is constructed of.
+*/
 func (self Instance) RingSegments() int {
 	return int(int(class(self).GetRingSegments()))
 }
 
+// SetRingSegments sets the property returned by [GetRingSegments].
 func (self Instance) SetRingSegments(value int) {
 	class(self).SetRingSegments(int64(value))
 }

@@ -149,18 +149,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+The ray's length.
+*/
 func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
+// SetLength sets the property returned by [GetLength].
 func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
+/*
+If false (default), the shape always separates and returns a normal along its own direction.
+
+If true, the shape can return the correct normal and separate in any direction, allowing sliding motion on slopes.
+*/
 func (self Instance) SlideOnSlope() bool {
 	return bool(class(self).GetSlideOnSlope())
 }
 
+// SetSlideOnSlope sets the property returned by [GetSlideOnSlope].
 func (self Instance) SetSlideOnSlope(value bool) {
 	class(self).SetSlideOnSlope(value)
 }

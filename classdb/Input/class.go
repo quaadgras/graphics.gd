@@ -841,41 +841,65 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+Controls the mouse mode.
+*/
 func MouseMode() MouseModeValue {
 	once.Do(singleton)
 	return MouseModeValue(class(self).GetMouseMode())
 }
 
+// SetMouseMode sets the property returned by [GetMouseMode].
 func SetMouseMode(value MouseModeValue) {
 	once.Do(singleton)
 	class(self).SetMouseMode(value)
 }
 
+/*
+If true, similar input events sent by the operating system are accumulated. When input accumulation is enabled, all input events generated during a frame will be merged and emitted when the frame is done rendering. Therefore, this limits the number of input method calls per second to the rendering FPS.
+
+Input accumulation can be disabled to get slightly more precise/reactive input at the cost of increased CPU usage. In applications where drawing freehand lines is required, input accumulation should generally be disabled while the user is drawing the line to get results that closely follow the actual input.
+
+Note: Input accumulation is enabled by default.
+*/
 func UseAccumulatedInput() bool {
 	once.Do(singleton)
 	return bool(class(self).IsUsingAccumulatedInput())
 }
 
+// SetUseAccumulatedInput sets the property returned by [IsUsingAccumulatedInput].
 func SetUseAccumulatedInput(value bool) {
 	once.Do(singleton)
 	class(self).SetUseAccumulatedInput(value)
 }
 
+/*
+If true, sends mouse input events when tapping or swiping on the touchscreen. See also [ProjectSettings] "input_devices/pointing/emulate_mouse_from_touch".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func EmulateMouseFromTouch() bool {
 	once.Do(singleton)
 	return bool(class(self).IsEmulatingMouseFromTouch())
 }
 
+// SetEmulateMouseFromTouch sets the property returned by [IsEmulatingMouseFromTouch].
 func SetEmulateMouseFromTouch(value bool) {
 	once.Do(singleton)
 	class(self).SetEmulateMouseFromTouch(value)
 }
 
+/*
+If true, sends touch input events when clicking or dragging the mouse. See also [ProjectSettings] "input_devices/pointing/emulate_touch_from_mouse".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func EmulateTouchFromMouse() bool {
 	once.Do(singleton)
 	return bool(class(self).IsEmulatingTouchFromMouse())
 }
 
+// SetEmulateTouchFromMouse sets the property returned by [IsEmulatingTouchFromMouse].
 func SetEmulateTouchFromMouse(value bool) {
 	once.Do(singleton)
 	class(self).SetEmulateTouchFromMouse(value)
@@ -1660,6 +1684,10 @@ func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_tou
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a joypad device has been connected or disconnected.
+*/
 func OnJoyConnectionChanged(cb func(device Device, connected bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

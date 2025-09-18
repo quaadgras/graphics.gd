@@ -182,11 +182,19 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If true, the server is actively monitoring available camera feeds.
+
+This has a performance cost, so only set it to true when you're actively accessing the camera.
+
+Note: After setting it to true, you can receive updated camera feeds through the [OnCameraFeedsUpdated] signal.
+*/
 func MonitoringFeeds() bool {
 	once.Do(singleton)
 	return bool(class(self).IsMonitoringFeeds())
 }
 
+// SetMonitoringFeeds sets the property returned by [IsMonitoringFeeds].
 func SetMonitoringFeeds(value bool) {
 	once.Do(singleton)
 	class(self).SetMonitoringFeeds(value)
@@ -255,6 +263,12 @@ Removes the specified camera 'feed'.
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), &struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))})
 }
+
+/*
+Emitted when a [CameraFeed] is added (e.g. a webcam is plugged in).
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+*/
 func OnCameraFeedAdded(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -267,6 +281,11 @@ func (self class) CameraFeedAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedAdded`))))
 }
 
+/*
+Emitted when a [CameraFeed] is removed (e.g. a webcam is unplugged).
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+*/
 func OnCameraFeedRemoved(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -279,6 +298,9 @@ func (self class) CameraFeedRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedRemoved`))))
 }
 
+/*
+Emitted when camera feeds are updated.
+*/
 func OnCameraFeedsUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

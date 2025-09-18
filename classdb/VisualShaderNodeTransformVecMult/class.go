@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The multiplication type to be performed.
+*/
 func (self Instance) Operator() Operator {
 	return Operator(class(self).GetOperator())
 }
 
+// SetOperator sets the property returned by [GetOperator].
 func (self Instance) SetOperator(value Operator) {
 	class(self).SetOperator(value)
 }

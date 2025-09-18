@@ -191,26 +191,47 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the size of a margin used to expand the drawable rect of this [CanvasGroup]. The size of the [CanvasGroup] is determined by fitting a rect around its children then expanding that rect by [FitMargin]. This increases both the backbuffer area used and the area covered by the [CanvasGroup] both of which can reduce performance. This should be kept as small as possible and should only be expanded when an increased size is needed (e.g. for custom shader effects).
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[FitMargin]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup#Instance.FitMargin
+*/
 func (self Instance) FitMargin() Float.X {
 	return Float.X(Float.X(class(self).GetFitMargin()))
 }
 
+// SetFitMargin sets the property returned by [GetFitMargin].
 func (self Instance) SetFitMargin(value Float.X) {
 	class(self).SetFitMargin(float64(value))
 }
 
+/*
+Sets the size of the margin used to expand the clearing rect of this [CanvasGroup]. This expands the area of the backbuffer that will be used by the [CanvasGroup]. A smaller margin will reduce the area of the backbuffer used which can increase performance, however if [UseMipmaps] is enabled, a small margin may result in mipmap errors at the edge of the [CanvasGroup]. Accordingly, this should be left as small as possible, but should be increased if artifacts appear along the edges of the canvas group.
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[UseMipmaps]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup#Instance.UseMipmaps
+*/
 func (self Instance) ClearMargin() Float.X {
 	return Float.X(Float.X(class(self).GetClearMargin()))
 }
 
+// SetClearMargin sets the property returned by [GetClearMargin].
 func (self Instance) SetClearMargin(value Float.X) {
 	class(self).SetClearMargin(float64(value))
 }
 
+/*
+If true, calculates mipmaps for the backbuffer before drawing the [CanvasGroup] so that mipmaps can be used in a custom [ShaderMaterial] attached to the [CanvasGroup]. Generating mipmaps has a performance cost so this should not be enabled unless required.
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) UseMipmaps() bool {
 	return bool(class(self).IsUsingMipmaps())
 }
 
+// SetUseMipmaps sets the property returned by [IsUsingMipmaps].
 func (self Instance) SetUseMipmaps(value bool) {
 	class(self).SetUseMipmaps(value)
 }

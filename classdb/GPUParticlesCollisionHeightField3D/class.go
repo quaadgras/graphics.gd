@@ -188,42 +188,83 @@ func New() Instance {
 	return casted
 }
 
+/*
+The collision heightmap's size in 3D units. To improve heightmap quality, [Size] should be set as small as possible while covering the parts of the scene you need.
+
+[Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Size
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+Higher resolutions can represent small details more accurately in large scenes, at the cost of lower performance. If [UpdateMode] is [UpdateModeAlways], consider using the lowest resolution possible.
+
+[UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.UpdateMode
+*/
 func (self Instance) Resolution() Resolution {
 	return Resolution(class(self).GetResolution())
 }
 
+// SetResolution sets the property returned by [GetResolution].
 func (self Instance) SetResolution(value Resolution) {
 	class(self).SetResolution(value)
 }
 
+/*
+The update policy to use for the generated heightmap.
+*/
 func (self Instance) UpdateMode() UpdateMode {
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
+// SetUpdateMode sets the property returned by [GetUpdateMode].
 func (self Instance) SetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
+/*
+If true, the [GPUParticlesCollisionHeightField3D] will follow the current camera in global space. The [GPUParticlesCollisionHeightField3D] does not need to be a child of the [Camera3D] node for this to work.
+
+Following the camera has a performance cost, as it will force the heightmap to update whenever the camera moves. Consider lowering [Resolution] to improve performance if [FollowCameraEnabled] is true.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[FollowCameraEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.FollowCameraEnabled
+[GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
+[Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Resolution
+*/
 func (self Instance) FollowCameraEnabled() bool {
 	return bool(class(self).IsFollowCameraEnabled())
 }
 
+// SetFollowCameraEnabled sets the property returned by [IsFollowCameraEnabled].
 func (self Instance) SetFollowCameraEnabled(value bool) {
 	class(self).SetFollowCameraEnabled(value)
 }
 
+/*
+The visual layers to account for when updating the heightmap. Only [MeshInstance3D]s whose [VisualInstance3D.Layers] match with this [HeightfieldMask] will be included in the heightmap collision update. By default, all 20 user-visible layers are taken into account for updating the heightmap collision.
+
+Note: Since the [HeightfieldMask] allows for 32 layers to be stored in total, there are an additional 12 layers that are only used internally by the engine and aren't exposed in the editor. Setting [HeightfieldMask] using a script allows you to toggle those reserved layers, which can be useful for editor plugins.
+
+To adjust [HeightfieldMask] more easily using a script, use [GetHeightfieldMaskValue] and [SetHeightfieldMaskValue].
+
+[GetHeightfieldMaskValue]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.GetHeightfieldMaskValue
+[HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[SetHeightfieldMaskValue]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.SetHeightfieldMaskValue
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) HeightfieldMask() int {
 	return int(int(class(self).GetHeightfieldMask()))
 }
 
+// SetHeightfieldMask sets the property returned by [GetHeightfieldMask].
 func (self Instance) SetHeightfieldMask(value int) {
 	class(self).SetHeightfieldMask(int64(value))
 }

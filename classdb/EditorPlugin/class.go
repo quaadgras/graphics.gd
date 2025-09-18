@@ -3027,6 +3027,10 @@ func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plu
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
+/*
+Emitted when the scene is changed in the editor. The argument will return the root node of the scene that has just become active. If this scene is new and empty, the argument will be null.
+*/
 func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3039,6 +3043,9 @@ func (self class) SceneChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
 }
 
+/*
+Emitted when user closes a scene. The argument is a file path to the closed scene.
+*/
 func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3051,6 +3058,9 @@ func (self class) SceneClosed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneClosed`))))
 }
 
+/*
+Emitted when user changes the workspace (2D, 3D, Script, Game, AssetLib). Also works with custom screens defined by plugins.
+*/
 func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3063,6 +3073,11 @@ func (self class) MainScreenChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MainScreenChanged`))))
 }
 
+/*
+Emitted when the given 'resource' was saved on disc. See also [OnSceneSaved].
+
+[OnSceneSaved]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.OnSceneSaved
+*/
 func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3075,6 +3090,11 @@ func (self class) ResourceSaved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSaved`))))
 }
 
+/*
+Emitted when a scene was saved on disc. The argument is a file path to the saved scene. See also [OnResourceSaved].
+
+[OnResourceSaved]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.OnResourceSaved
+*/
 func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3087,6 +3107,9 @@ func (self class) SceneSaved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneSaved`))))
 }
 
+/*
+Emitted when any project setting has changed.
+*/
 func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

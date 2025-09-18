@@ -150,6 +150,11 @@ func New() Instance {
 	return casted
 }
 
+/*
+The smallest [AABB.PositionSize] enclosing this mesh in local space.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+*/
 func (self Instance) SetAabb(value AABB.PositionSize) {
 	class(self).SetAabb(AABB.PositionSize(value))
 }

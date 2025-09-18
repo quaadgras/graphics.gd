@@ -158,58 +158,100 @@ func New() Instance {
 	return casted
 }
 
+/*
+Transform in global space where the motion should start. Usually set to [Node2D.GlobalTransform] for the current body's transform.
+
+[Node2D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalTransform
+*/
 func (self Instance) From() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetFrom())
 }
 
+// SetFrom sets the property returned by [GetFrom].
 func (self Instance) SetFrom(value Transform2D.OriginXY) {
 	class(self).SetFrom(Transform2D.OriginXY(value))
 }
 
+/*
+Motion vector to define the length and direction of the motion to test.
+*/
 func (self Instance) Motion() Vector2.XY {
 	return Vector2.XY(class(self).GetMotion())
 }
 
+// SetMotion sets the property returned by [GetMotion].
 func (self Instance) SetMotion(value Vector2.XY) {
 	class(self).SetMotion(Vector2.XY(value))
 }
 
+/*
+Increases the size of the shapes involved in the collision detection.
+*/
 func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }
 
+/*
+If set to true, shapes of type [Physicsserver2d.ShapeSeparationRay] are used to detect collisions and can stop the motion. Can be useful when snapping to the ground.
+
+If set to false, shapes of type [Physicsserver2d.ShapeSeparationRay] are only used for separation when overlapping with other bodies. That's the main use for separation ray shapes.
+*/
 func (self Instance) CollideSeparationRay() bool {
 	return bool(class(self).IsCollideSeparationRayEnabled())
 }
 
+// SetCollideSeparationRay sets the property returned by [IsCollideSeparationRayEnabled].
 func (self Instance) SetCollideSeparationRay(value bool) {
 	class(self).SetCollideSeparationRayEnabled(value)
 }
 
+/*
+Optional array of body [Resource.ID] to exclude from collision. Use [CollisionObject2D.GetRid] to get the [Resource.ID] associated with a [CollisionObject2D]-derived node.
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) ExcludeBodies() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludeBodies())))
 }
 
+// SetExcludeBodies sets the property returned by [GetExcludeBodies].
 func (self Instance) SetExcludeBodies(value []RID.Any) {
 	class(self).SetExcludeBodies(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+Optional array of object unique instance ID to exclude from collision. See [Object.GetInstanceId].
+
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
+*/
 func (self Instance) ExcludeObjects() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetExcludeObjects())))
 }
 
+// SetExcludeObjects sets the property returned by [GetExcludeObjects].
 func (self Instance) SetExcludeObjects(value []int) {
 	class(self).SetExcludeObjects(gd.ArrayFromSlice[Array.Contains[int64]](value))
 }
 
+/*
+If set to true, any depenetration from the recovery phase is reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
+
+If set to false, only collisions resulting from the motion are reported, which is generally the desired behavior.
+
+[CharacterBody2D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D
+*/
 func (self Instance) RecoveryAsCollision() bool {
 	return bool(class(self).IsRecoveryAsCollisionEnabled())
 }
 
+// SetRecoveryAsCollision sets the property returned by [IsRecoveryAsCollisionEnabled].
 func (self Instance) SetRecoveryAsCollision(value bool) {
 	class(self).SetRecoveryAsCollisionEnabled(value)
 }

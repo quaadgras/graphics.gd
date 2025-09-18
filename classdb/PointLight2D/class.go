@@ -151,26 +151,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+[Texture2D] used for the light's appearance.
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+The offset of the light's [Texture].
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
+// SetOffset sets the property returned by [GetTextureOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetTextureOffset(Vector2.XY(value))
 }
 
+/*
+The [Texture]'s scale factor.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
+*/
 func (self Instance) TextureScale() Float.X {
 	return Float.X(Float.X(class(self).GetTextureScale()))
 }
 
+// SetTextureScale sets the property returned by [GetTextureScale].
 func (self Instance) SetTextureScale(value Float.X) {
 	class(self).SetTextureScale(float64(value))
 }

@@ -216,26 +216,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+[SkeletonProfile] for retargeting bones with names matching the bone list.
+
+[SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
+*/
 func (self Instance) Profile() SkeletonProfile.Instance {
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
+// SetProfile sets the property returned by [GetProfile].
 func (self Instance) SetProfile(value SkeletonProfile.Instance) {
 	class(self).SetProfile(value)
 }
 
+/*
+If false, in case the target skeleton has fewer bones than the source skeleton, the source bone parent's transform will be ignored.
+
+Instead, it is possible to retarget between models with different body shapes, and position, rotation, and scale can be retargeted separately.
+
+If true, retargeting is performed taking into account global pose.
+
+In case the target skeleton has fewer bones than the source skeleton, the source bone parent's transform is taken into account. However, bone length between skeletons must match exactly, if not, the bones will be forced to expand or shrink.
+
+This is useful for using dummy bone with length 0 to match postures when retargeting between models with different number of bones.
+*/
 func (self Instance) UseGlobalPose() bool {
 	return bool(class(self).IsUsingGlobalPose())
 }
 
+// SetUseGlobalPose sets the property returned by [IsUsingGlobalPose].
 func (self Instance) SetUseGlobalPose(value bool) {
 	class(self).SetUseGlobalPose(value)
 }
 
+/*
+Flags to control the process of the transform elements individually when [UseGlobalPose] is disabled.
+
+[UseGlobalPose]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.UseGlobalPose
+*/
 func (self Instance) Enable() TransformFlag {
 	return TransformFlag(class(self).GetEnableFlags())
 }
 
+// SetEnable sets the property returned by [GetEnableFlags].
 func (self Instance) SetEnable(value TransformFlag) {
 	class(self).SetEnableFlags(value)
 }

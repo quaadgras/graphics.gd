@@ -220,58 +220,111 @@ func New() Instance {
 	return casted
 }
 
+/*
+Changes the alignment of the underlying [LineEdit].
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+*/
 func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+If true, the [SpinBox] will be editable. Otherwise, it will be read only.
+
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
+// SetEditable sets the property returned by [IsEditable].
 func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+/*
+Sets the value of the [Range] for this [SpinBox] when the [LineEdit] text is changed instead of submitted. See [OnLineedit.TextChanged] and [OnLineedit.TextSubmitted].
+
+Note: If set to true, this will interfere with entering mathematical expressions in the [SpinBox]. The [SpinBox] will try to evaluate the expression as you type, which means symbols like a trailing + are removed immediately by the expression being evaluated.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[OnLineedit.TextChanged]: https://pkg.go.dev/graphics.gd/classdb/SpinBox#Instance.OnLineedit.TextChanged
+[OnLineedit.TextSubmitted]: https://pkg.go.dev/graphics.gd/classdb/SpinBox#Instance.OnLineedit.TextSubmitted
+[Range]: https://pkg.go.dev/graphics.gd/classdb/Range
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) UpdateOnTextChanged() bool {
 	return bool(class(self).GetUpdateOnTextChanged())
 }
 
+// SetUpdateOnTextChanged sets the property returned by [GetUpdateOnTextChanged].
 func (self Instance) SetUpdateOnTextChanged(value bool) {
 	class(self).SetUpdateOnTextChanged(value)
 }
 
+/*
+Adds the specified prefix string before the numerical value of the [SpinBox].
+
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) Prefix() string {
 	return string(class(self).GetPrefix().String())
 }
 
+// SetPrefix sets the property returned by [GetPrefix].
 func (self Instance) SetPrefix(value string) {
 	class(self).SetPrefix(String.New(value))
 }
 
+/*
+Adds the specified suffix string after the numerical value of the [SpinBox].
+
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) Suffix() string {
 	return string(class(self).GetSuffix().String())
 }
 
+// SetSuffix sets the property returned by [GetSuffix].
 func (self Instance) SetSuffix(value string) {
 	class(self).SetSuffix(String.New(value))
 }
 
+/*
+If not 0, sets the step when interacting with the arrow buttons of the [SpinBox].
+
+Note: [Range.Value] will still be rounded to a multiple of [Range.Step].
+
+[Range.Step]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Step
+[Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) CustomArrowStep() Float.X {
 	return Float.X(Float.X(class(self).GetCustomArrowStep()))
 }
 
+// SetCustomArrowStep sets the property returned by [GetCustomArrowStep].
 func (self Instance) SetCustomArrowStep(value Float.X) {
 	class(self).SetCustomArrowStep(float64(value))
 }
 
+/*
+If true, the [SpinBox] will select the whole text when the [LineEdit] gains focus. Clicking the up and down arrows won't trigger this behavior.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) SelectAllOnFocus() bool {
 	return bool(class(self).IsSelectAllOnFocus())
 }
 
+// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus].
 func (self Instance) SetSelectAllOnFocus(value bool) {
 	class(self).SetSelectAllOnFocus(value)
 }

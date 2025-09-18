@@ -432,50 +432,90 @@ func New() Instance {
 	return casted
 }
 
+/*
+Defines the behavior in physics when [Node.ProcessMode] is set to [Node.ProcessModeDisabled].
+
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+*/
 func (self Instance) DisableMode() DisableMode {
 	return DisableMode(class(self).GetDisableMode())
 }
 
+// SetDisableMode sets the property returned by [GetDisableMode].
 func (self Instance) SetDisableMode(value DisableMode) {
 	class(self).SetDisableMode(value)
 }
 
+/*
+The physics layers this CollisionObject3D is in. Collision objects can exist in one or more of 32 different layers. See also [CollisionMask].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The physics layers this CollisionObject3D scans. Collision objects can scan one or more of 32 different layers. See also [CollisionLayer].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The priority used to solve colliding when occurring penetration. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
+*/
 func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
+// SetCollisionPriority sets the property returned by [GetCollisionPriority].
 func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(float64(value))
 }
 
+/*
+If true, this object is pickable. A pickable object can detect the mouse pointer entering/leaving, and if the mouse is inside it, report input events. Requires at least one [CollisionLayer] bit to be set.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
+*/
 func (self Instance) InputRayPickable() bool {
 	return bool(class(self).IsRayPickable())
 }
 
+// SetInputRayPickable sets the property returned by [IsRayPickable].
 func (self Instance) SetInputRayPickable(value bool) {
 	class(self).SetRayPickable(value)
 }
 
+/*
+If true, the [CollisionObject3D] will continue to receive input events as the mouse is dragged across its shapes.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+*/
 func (self Instance) InputCaptureOnDrag() bool {
 	return bool(class(self).GetCaptureInputOnDrag())
 }
 
+// SetInputCaptureOnDrag sets the property returned by [GetCaptureInputOnDrag].
 func (self Instance) SetInputCaptureOnDrag(value bool) {
 	class(self).SetCaptureInputOnDrag(value)
 }
@@ -833,6 +873,12 @@ func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the object receives an unhandled [InputEvent]. 'event_position' is the location in world space of the mouse pointer on the surface of the shape with index 'shape_idx' and 'normal' is the normal vector of the surface at that point.
+
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+*/
 func (self Instance) OnInputEvent(cb func(camera Node.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -845,6 +891,15 @@ func (self class) InputEvent() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputEvent`))))
 }
 
+/*
+Emitted when the mouse pointer enters any of this object's shapes. Requires [InputRayPickable] to be true and at least one [CollisionLayer] bit to be set.
+
+Note: Due to the lack of continuous collision detection, this signal may not be emitted in the expected order if the mouse moves fast enough and the [CollisionObject3D]'s area is small. This signal may also not be emitted if another [CollisionObject3D] is overlapping the [CollisionObject3D] in question.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+[InputRayPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.InputRayPickable
+*/
 func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -857,6 +912,15 @@ func (self class) MouseEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
+/*
+Emitted when the mouse pointer exits all this object's shapes. Requires [InputRayPickable] to be true and at least one [CollisionLayer] bit to be set.
+
+Note: Due to the lack of continuous collision detection, this signal may not be emitted in the expected order if the mouse moves fast enough and the [CollisionObject3D]'s area is small. This signal may also not be emitted if another [CollisionObject3D] is overlapping the [CollisionObject3D] in question.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+[InputRayPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.InputRayPickable
+*/
 func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

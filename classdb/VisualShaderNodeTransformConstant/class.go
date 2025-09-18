@@ -148,10 +148,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [Transform3D.BasisOrigin] constant which represents the state of this node.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+*/
 func (self Instance) Constant() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetConstant())
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 	class(self).SetConstant(Transform3D.BasisOrigin(value))
 }

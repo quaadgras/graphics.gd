@@ -159,34 +159,61 @@ func New() Instance {
 	return casted
 }
 
+/*
+The alignment of the container's children (must be one of [AlignmentBegin], [AlignmentCenter], or [AlignmentEnd]).
+*/
 func (self Instance) Alignment() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignment())
 }
 
+// SetAlignment sets the property returned by [GetAlignment].
 func (self Instance) SetAlignment(value AlignmentMode) {
 	class(self).SetAlignment(value)
 }
 
+/*
+The wrap behavior of the last, partially filled row or column (must be one of [LastWrapAlignmentInherit], [LastWrapAlignmentBegin], [LastWrapAlignmentCenter], or [LastWrapAlignmentEnd]).
+*/
 func (self Instance) LastWrapAlignment() LastWrapAlignmentMode {
 	return LastWrapAlignmentMode(class(self).GetLastWrapAlignment())
 }
 
+// SetLastWrapAlignment sets the property returned by [GetLastWrapAlignment].
 func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) {
 	class(self).SetLastWrapAlignment(value)
 }
 
+/*
+If true, the [FlowContainer] will arrange its children vertically, rather than horizontally.
+
+Can't be changed when using [HFlowContainer] and [VFlowContainer].
+
+[FlowContainer]: https://pkg.go.dev/graphics.gd/classdb/FlowContainer
+[HFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/HFlowContainer
+[VFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/VFlowContainer
+*/
 func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
+// SetVertical sets the property returned by [IsVertical].
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }
 
+/*
+If true, reverses fill direction. Horizontal [FlowContainer]s will fill rows bottom to top, vertical [FlowContainer]s will fill columns right to left.
+
+When using a vertical [FlowContainer] with a right to left [Control.LayoutDirection], columns will fill left to right instead.
+
+[Control.LayoutDirection]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.LayoutDirection
+[FlowContainer]: https://pkg.go.dev/graphics.gd/classdb/FlowContainer
+*/
 func (self Instance) ReverseFill() bool {
 	return bool(class(self).IsReverseFill())
 }
 
+// SetReverseFill sets the property returned by [IsReverseFill].
 func (self Instance) SetReverseFill(value bool) {
 	class(self).SetReverseFill(value)
 }

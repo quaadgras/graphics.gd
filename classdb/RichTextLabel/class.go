@@ -1247,242 +1247,404 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the label uses BBCode formatting.
+
+Note: This only affects the contents of [Text], not the tag stack.
+
+[Text]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Text
+*/
 func (self Instance) BbcodeEnabled() bool {
 	return bool(class(self).IsUsingBbcode())
 }
 
+// SetBbcodeEnabled sets the property returned by [IsUsingBbcode].
 func (self Instance) SetBbcodeEnabled(value bool) {
 	class(self).SetUseBbcode(value)
 }
 
+/*
+The label's text in BBCode format. Is not representative of manual modifications to the internal tag stack. Erases changes made by other methods when edited.
+
+Note: If [BbcodeEnabled] is true, it is unadvised to use the += operator with [Text] (e.g. text += "some string") as it replaces the whole text and can cause slowdowns. It will also erase all BBCode that was added to stack using push_* methods. Use [AppendText] for adding text instead, unless you absolutely need to close a tag that was opened in an earlier method call.
+
+[AppendText]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AppendText
+[BbcodeEnabled]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.BbcodeEnabled
+[Text]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Text
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+If true, the label's minimum size will be automatically updated to fit its content, matching the behavior of [Label].
+
+[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
+*/
 func (self Instance) FitContent() bool {
 	return bool(class(self).IsFitContentEnabled())
 }
 
+// SetFitContent sets the property returned by [IsFitContentEnabled].
 func (self Instance) SetFitContent(value bool) {
 	class(self).SetFitContent(value)
 }
 
+/*
+If true, the scrollbar is visible. Setting this to false does not block scrolling completely. See [ScrollToLine].
+
+[ScrollToLine]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.ScrollToLine
+*/
 func (self Instance) ScrollActive() bool {
 	return bool(class(self).IsScrollActive())
 }
 
+// SetScrollActive sets the property returned by [IsScrollActive].
 func (self Instance) SetScrollActive(value bool) {
 	class(self).SetScrollActive(value)
 }
 
+/*
+If true, the window scrolls down to display new content automatically.
+*/
 func (self Instance) ScrollFollowing() bool {
 	return bool(class(self).IsScrollFollowing())
 }
 
+// SetScrollFollowing sets the property returned by [IsScrollFollowing].
 func (self Instance) SetScrollFollowing(value bool) {
 	class(self).SetScrollFollow(value)
 }
 
+/*
+If true, the window scrolls to display the last visible line when [VisibleCharacters] or [VisibleRatio] is changed.
+
+[VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
+[VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
+*/
 func (self Instance) ScrollFollowingVisibleCharacters() bool {
 	return bool(class(self).IsScrollFollowingVisibleCharacters())
 }
 
+// SetScrollFollowingVisibleCharacters sets the property returned by [IsScrollFollowingVisibleCharacters].
 func (self Instance) SetScrollFollowingVisibleCharacters(value bool) {
 	class(self).SetScrollFollowVisibleCharacters(value)
 }
 
+/*
+If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle.
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
+*/
 func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
 func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
 	class(self).SetAutowrapTrimFlags(value)
 }
 
+/*
+The number of spaces associated with a single tab length. Does not affect \t in text tags, only indent tags.
+*/
 func (self Instance) TabSize() int {
 	return int(int(class(self).GetTabSize()))
 }
 
+// SetTabSize sets the property returned by [GetTabSize].
 func (self Instance) SetTabSize(value int) {
 	class(self).SetTabSize(int64(value))
 }
 
+/*
+If true, a right-click displays the context menu.
+*/
 func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
 func (self Instance) SetContextMenuEnabled(value bool) {
 	class(self).SetContextMenuEnabled(value)
 }
 
+/*
+If true, shortcut keys for context menu items are enabled, even if the context menu is disabled.
+*/
 func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
 func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
+/*
+Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
+*/
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Controls the text's vertical alignment. Supports top, center, bottom, and fill.
+*/
 func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
+// SetVerticalAlignment sets the property returned by [GetVerticalAlignment].
 func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
+/*
+Line fill alignment rules.
+*/
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
+// SetJustificationFlags sets the property returned by [GetJustificationFlags].
 func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
+/*
+Aligns text to the given tab-stops.
+*/
 func (self Instance) TabStops() []float32 {
 	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
+// SetTabStops sets the property returned by [GetTabStops].
 func (self Instance) SetTabStops(value []float32) {
 	class(self).SetTabStops(Packed.New(value...))
 }
 
+/*
+The currently installed custom effects. This is an array of [RichTextEffect]s.
+
+To add a custom effect, it's more convenient to use [InstallEffect].
+
+[InstallEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.InstallEffect
+[RichTextEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextEffect
+*/
 func (self Instance) CustomEffects() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetEffects())))
 }
 
+// SetCustomEffects sets the property returned by [GetEffects].
 func (self Instance) SetCustomEffects(value []any) {
 	class(self).SetEffects(gd.EngineArrayFromSlice(value))
 }
 
+/*
+If true, the label underlines meta tags such as [url]{text}[/url]. These tags can call a function when clicked if [OnMetaClicked] is connected to a function.
+
+[OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
+*/
 func (self Instance) MetaUnderlined() bool {
 	return bool(class(self).IsMetaUnderlined())
 }
 
+// SetMetaUnderlined sets the property returned by [IsMetaUnderlined].
 func (self Instance) SetMetaUnderlined(value bool) {
 	class(self).SetMetaUnderline(value)
 }
 
+/*
+If true, the label underlines hint tags such as [hint=description]{text}[/hint].
+*/
 func (self Instance) HintUnderlined() bool {
 	return bool(class(self).IsHintUnderlined())
 }
 
+// SetHintUnderlined sets the property returned by [IsHintUnderlined].
 func (self Instance) SetHintUnderlined(value bool) {
 	class(self).SetHintUnderline(value)
 }
 
+/*
+If true, text processing is done in a background thread.
+*/
 func (self Instance) Threaded() bool {
 	return bool(class(self).IsThreaded())
 }
 
+// SetThreaded sets the property returned by [IsThreaded].
 func (self Instance) SetThreaded(value bool) {
 	class(self).SetThreaded(value)
 }
 
+/*
+The delay after which the loading progress bar is displayed, in milliseconds. Set to -1 to disable progress bar entirely.
+
+Note: Progress bar is displayed only if [Threaded] is enabled.
+
+[Threaded]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Threaded
+*/
 func (self Instance) ProgressBarDelay() int {
 	return int(int(class(self).GetProgressBarDelay()))
 }
 
+// SetProgressBarDelay sets the property returned by [GetProgressBarDelay].
 func (self Instance) SetProgressBarDelay(value int) {
 	class(self).SetProgressBarDelay(int64(value))
 }
 
+/*
+If true, the label allows text selection.
+*/
 func (self Instance) SelectionEnabled() bool {
 	return bool(class(self).IsSelectionEnabled())
 }
 
+// SetSelectionEnabled sets the property returned by [IsSelectionEnabled].
 func (self Instance) SetSelectionEnabled(value bool) {
 	class(self).SetSelectionEnabled(value)
 }
 
+/*
+If true, the selected text will be deselected when focus is lost.
+*/
 func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
 func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
 	class(self).SetDeselectOnFocusLossEnabled(value)
 }
 
+/*
+If true, allow drag and drop of selected text.
+*/
 func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
 func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
 	class(self).SetDragAndDropSelectionEnabled(value)
 }
 
+/*
+The number of characters to display. If set to -1, all characters are displayed. This can be useful when animating the text appearing in a dialog box.
+
+Note: Setting this property updates [VisibleRatio] accordingly.
+
+Note: Characters are counted as Unicode codepoints. A single visible grapheme may contain multiple codepoints (e.g. certain emoji use three codepoints). A single codepoint may contain two UTF-16 characters, which are used in C# strings.
+
+[VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
+*/
 func (self Instance) VisibleCharacters() int {
 	return int(int(class(self).GetVisibleCharacters()))
 }
 
+// SetVisibleCharacters sets the property returned by [GetVisibleCharacters].
 func (self Instance) SetVisibleCharacters(value int) {
 	class(self).SetVisibleCharacters(int64(value))
 }
 
+/*
+The clipping behavior when [VisibleCharacters] or [VisibleRatio] is set.
+
+[VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
+[VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
+*/
 func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior {
 	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
+// SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior].
 func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) {
 	class(self).SetVisibleCharactersBehavior(value)
 }
 
+/*
+The fraction of characters to display, relative to the total number of characters (see [GetTotalCharacterCount]). If set to 1.0, all characters are displayed. If set to 0.5, only half of the characters will be displayed. This can be useful when animating the text appearing in a dialog box.
+
+Note: Setting this property updates [VisibleCharacters] accordingly.
+
+[GetTotalCharacterCount]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.GetTotalCharacterCount
+[VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
+*/
 func (self Instance) VisibleRatio() Float.X {
 	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
+// SetVisibleRatio sets the property returned by [GetVisibleRatio].
 func (self Instance) SetVisibleRatio(value Float.X) {
 	class(self).SetVisibleRatio(float64(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
@@ -2871,6 +3033,16 @@ Executes a given action as defined in the [MenuItems] enum.
 func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 }
+
+/*
+Triggered when the user clicks on content between meta (URL) tags. If the meta is defined in BBCode, e.g. [url={"key": "value"}]Text[/url], then the parameter for this signal will always be a string type. If a particular type or an object is desired, the [PushMeta] method must be used to manually insert the data into the tag stack. Alternatively, you can convert the string input to the desired type based on its contents (such as calling [JSON.Parse] on it).
+
+For example, the following method can be connected to [OnMetaClicked] to open clicked URLs using the user's default web browser:
+
+[JSON.Parse]: https://pkg.go.dev/graphics.gd/classdb/JSON#Instance.Parse
+[OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
+[PushMeta]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.PushMeta
+*/
 func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2883,6 +3055,9 @@ func (self class) MetaClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaClicked`))))
 }
 
+/*
+Triggers when the mouse enters a meta tag.
+*/
 func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2895,6 +3070,9 @@ func (self class) MetaHoverStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverStarted`))))
 }
 
+/*
+Triggers when the mouse exits a meta tag.
+*/
 func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2907,6 +3085,11 @@ func (self class) MetaHoverEnded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverEnded`))))
 }
 
+/*
+Triggered when the document is fully loaded.
+
+Note: This can happen before the text is processed for drawing. Scrolling values may not be valid until the document is drawn for the first time after this signal.
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

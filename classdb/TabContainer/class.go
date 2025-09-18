@@ -419,90 +419,151 @@ func New() Instance {
 	return casted
 }
 
+/*
+The position at which tabs will be placed.
+*/
 func (self Instance) TabAlignment() TabBar.AlignmentMode {
 	return TabBar.AlignmentMode(class(self).GetTabAlignment())
 }
 
+// SetTabAlignment sets the property returned by [GetTabAlignment].
 func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) {
 	class(self).SetTabAlignment(value)
 }
 
+/*
+The current tab index. When set, this index's [Control] node's visible property is set to true and all others are set to false.
+
+A value of -1 means that no tab is selected.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+*/
 func (self Instance) CurrentTab() int {
 	return int(int(class(self).GetCurrentTab()))
 }
 
+// SetCurrentTab sets the property returned by [GetCurrentTab].
 func (self Instance) SetCurrentTab(value int) {
 	class(self).SetCurrentTab(int64(value))
 }
 
+/*
+The position of the tab bar.
+*/
 func (self Instance) TabsPosition() TabPosition {
 	return TabPosition(class(self).GetTabsPosition())
 }
 
+// SetTabsPosition sets the property returned by [GetTabsPosition].
 func (self Instance) SetTabsPosition(value TabPosition) {
 	class(self).SetTabsPosition(value)
 }
 
+/*
+If true, tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.
+*/
 func (self Instance) ClipTabs() bool {
 	return bool(class(self).GetClipTabs())
 }
 
+// SetClipTabs sets the property returned by [GetClipTabs].
 func (self Instance) SetClipTabs(value bool) {
 	class(self).SetClipTabs(value)
 }
 
+/*
+If true, tabs are visible. If false, tabs' content and titles are hidden.
+*/
 func (self Instance) TabsVisible() bool {
 	return bool(class(self).AreTabsVisible())
 }
 
+// SetTabsVisible sets the property returned by [AreTabsVisible].
 func (self Instance) SetTabsVisible(value bool) {
 	class(self).SetTabsVisible(value)
 }
 
+/*
+If true, all tabs are drawn in front of the panel. If false, inactive tabs are drawn behind the panel.
+*/
 func (self Instance) AllTabsInFront() bool {
 	return bool(class(self).IsAllTabsInFront())
 }
 
+// SetAllTabsInFront sets the property returned by [IsAllTabsInFront].
 func (self Instance) SetAllTabsInFront(value bool) {
 	class(self).SetAllTabsInFront(value)
 }
 
+/*
+If true, tabs can be rearranged with mouse drag.
+*/
 func (self Instance) DragToRearrangeEnabled() bool {
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
+// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled].
 func (self Instance) SetDragToRearrangeEnabled(value bool) {
 	class(self).SetDragToRearrangeEnabled(value)
 }
 
+/*
+[TabContainer]s with the same rearrange group ID will allow dragging the tabs between them. Enable drag with [DragToRearrangeEnabled].
+
+Setting this to -1 will disable rearranging between [TabContainer]s.
+
+[DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.DragToRearrangeEnabled
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
+*/
 func (self Instance) TabsRearrangeGroup() int {
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
+// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup].
 func (self Instance) SetTabsRearrangeGroup(value int) {
 	class(self).SetTabsRearrangeGroup(int64(value))
 }
 
+/*
+If true, child [Control] nodes that are hidden have their minimum size take into account in the total, instead of only the currently visible one.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+*/
 func (self Instance) UseHiddenTabsForMinSize() bool {
 	return bool(class(self).GetUseHiddenTabsForMinSize())
 }
 
+// SetUseHiddenTabsForMinSize sets the property returned by [GetUseHiddenTabsForMinSize].
 func (self Instance) SetUseHiddenTabsForMinSize(value bool) {
 	class(self).SetUseHiddenTabsForMinSize(value)
 }
 
+/*
+The focus access mode for the internal [TabBar] node.
+
+[TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
+*/
 func (self Instance) TabFocusMode() Control.FocusMode {
 	return Control.FocusMode(class(self).GetTabFocusMode())
 }
 
+// SetTabFocusMode sets the property returned by [GetTabFocusMode].
 func (self Instance) SetTabFocusMode(value Control.FocusMode) {
 	class(self).SetTabFocusMode(value)
 }
 
+/*
+If true, all tabs can be deselected so that no tab is selected. Click on the [CurrentTab] to deselect it.
+
+Only the tab header will be shown if no tabs are selected.
+
+[CurrentTab]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.CurrentTab
+*/
 func (self Instance) DeselectEnabled() bool {
 	return bool(class(self).GetDeselectEnabled())
 }
 
+// SetDeselectEnabled sets the property returned by [GetDeselectEnabled].
 func (self Instance) SetDeselectEnabled(value bool) {
 	class(self).SetDeselectEnabled(value)
 }
@@ -944,6 +1005,12 @@ func (self class) GetDeselectEnabled() bool { //gd:TabContainer.get_deselect_ena
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the active tab is rearranged via mouse drag. See [DragToRearrangeEnabled].
+
+[DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.DragToRearrangeEnabled
+*/
 func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -956,6 +1023,9 @@ func (self class) ActiveTabRearranged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ActiveTabRearranged`))))
 }
 
+/*
+Emitted when switching to another tab.
+*/
 func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -968,6 +1038,9 @@ func (self class) TabChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabChanged`))))
 }
 
+/*
+Emitted when a tab is clicked, even if it is the current tab.
+*/
 func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -980,6 +1053,9 @@ func (self class) TabClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClicked`))))
 }
 
+/*
+Emitted when a tab is hovered by the mouse.
+*/
 func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -992,6 +1068,9 @@ func (self class) TabHovered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabHovered`))))
 }
 
+/*
+Emitted when a tab is selected via click, directional input, or script, even if it is the current tab.
+*/
 func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1004,6 +1083,9 @@ func (self class) TabSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabSelected`))))
 }
 
+/*
+Emitted when the user clicks on the button icon on this tab.
+*/
 func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1016,6 +1098,13 @@ func (self class) TabButtonPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabButtonPressed`))))
 }
 
+/*
+Emitted when the [TabContainer]'s [Popup] button is clicked. See [SetPopup] for details.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[SetPopup]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetPopup
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
+*/
 func (self Instance) OnPrePopupPressed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

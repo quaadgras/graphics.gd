@@ -1455,31 +1455,55 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If true, the engine optimizes for low processor usage by only refreshing the screen if needed. Can improve battery consumption on mobile.
+
+Note: On start-up, this is the same as [ProjectSettings] "application/run/low_processor_mode".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func LowProcessorUsageMode() bool {
 	once.Do(singleton)
 	return bool(class(self).IsInLowProcessorUsageMode())
 }
 
+// SetLowProcessorUsageMode sets the property returned by [IsInLowProcessorUsageMode].
 func SetLowProcessorUsageMode(value bool) {
 	once.Do(singleton)
 	class(self).SetLowProcessorUsageMode(value)
 }
 
+/*
+The amount of sleeping between frames when the low-processor usage mode is enabled, in microseconds. Higher values will result in lower CPU usage. See also [LowProcessorUsageMode].
+
+Note: On start-up, this is the same as [ProjectSettings] "application/run/low_processor_mode_sleep_usec".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func LowProcessorUsageModeSleepUsec() int {
 	once.Do(singleton)
 	return int(int(class(self).GetLowProcessorUsageModeSleepUsec()))
 }
 
+// SetLowProcessorUsageModeSleepUsec sets the property returned by [GetLowProcessorUsageModeSleepUsec].
 func SetLowProcessorUsageModeSleepUsec(value int) {
 	once.Do(singleton)
 	class(self).SetLowProcessorUsageModeSleepUsec(int64(value))
 }
 
+/*
+If true, the engine filters the time delta measured between each frame, and attempts to compensate for random variation. This only works on systems where V-Sync is active.
+
+Note: On start-up, this is the same as [ProjectSettings] "application/run/delta_smoothing".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func DeltaSmoothing() bool {
 	once.Do(singleton)
 	return bool(class(self).IsDeltaSmoothingEnabled())
 }
 
+// SetDeltaSmoothing sets the property returned by [IsDeltaSmoothingEnabled].
 func SetDeltaSmoothing(value bool) {
 	once.Do(singleton)
 	class(self).SetDeltaSmoothing(value)

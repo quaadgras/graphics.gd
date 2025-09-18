@@ -151,18 +151,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+Limits render models to the specified tracker. Include: 0 = All render models, 1 = Render models not related to a tracker, 2 = Render models related to the left hand tracker, 3 = Render models related to the right hand tracker.
+*/
 func (self Instance) Tracker() RenderModelTracker {
 	return RenderModelTracker(class(self).GetTracker())
 }
 
+// SetTracker sets the property returned by [GetTracker].
 func (self Instance) SetTracker(value RenderModelTracker) {
 	class(self).SetTracker(value)
 }
 
+/*
+Position render models local to this pose (this will adjust the position of the render models container node).
+*/
 func (self Instance) MakeLocalToPose() string {
 	return string(class(self).GetMakeLocalToPose().String())
 }
 
+// SetMakeLocalToPose sets the property returned by [GetMakeLocalToPose].
 func (self Instance) SetMakeLocalToPose(value string) {
 	class(self).SetMakeLocalToPose(String.New(value))
 }
@@ -190,6 +198,10 @@ func (self class) GetMakeLocalToPose() String.Readable { //gd:OpenXRRenderModelM
 func (self class) SetMakeLocalToPose(make_local_to_pose String.Readable) { //gd:OpenXRRenderModelManager.set_make_local_to_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_make_local_to_pose, 0|(gdextension.SizeString<<4), &struct{ make_local_to_pose gdextension.String }{pointers.Get(gd.InternalString(make_local_to_pose))})
 }
+
+/*
+Emitted when a render model node is added as a child to this node.
+*/
 func (self Instance) OnRenderModelAdded(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -202,6 +214,9 @@ func (self class) RenderModelAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelAdded`))))
 }
 
+/*
+Emitted when a render model child node is about to be removed from this node.
+*/
 func (self Instance) OnRenderModelRemoved(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

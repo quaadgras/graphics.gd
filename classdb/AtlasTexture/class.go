@@ -165,34 +165,60 @@ func New() Instance {
 	return casted
 }
 
+/*
+The texture that contains the atlas. Can be any type inheriting from [Texture2D], including another [AtlasTexture].
+
+[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Atlas() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetAtlas())
 }
 
+// SetAtlas sets the property returned by [GetAtlas].
 func (self Instance) SetAtlas(value Texture2D.Instance) {
 	class(self).SetAtlas(value)
 }
 
+/*
+The region used to draw the [Atlas]. If either dimension of the region's size is 0, the value from [Atlas] size will be used for that axis instead.
+
+[Atlas]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture#Instance.Atlas
+*/
 func (self Instance) Region() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegion())
 }
 
+// SetRegion sets the property returned by [GetRegion].
 func (self Instance) SetRegion(value Rect2.PositionSize) {
 	class(self).SetRegion(Rect2.PositionSize(value))
 }
 
+/*
+The margin around the [Region]. Useful for small adjustments. If the [Rect2.Size] of this property ("w" and "h" in the editor) is set, the drawn texture is resized to fit within the margin.
+
+[Rect2.Size]: https://pkg.go.dev/graphics.gd/classdb/Rect2#Instance.Size
+[Region]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture#Instance.Region
+*/
 func (self Instance) Margin() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetMargin())
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Rect2.PositionSize) {
 	class(self).SetMargin(Rect2.PositionSize(value))
 }
 
+/*
+If true, the area outside of the [Region] is clipped to avoid bleeding of the surrounding texture pixels.
+
+[Region]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture#Instance.Region
+*/
 func (self Instance) FilterClip() bool {
 	return bool(class(self).HasFilterClip())
 }
 
+// SetFilterClip sets the property returned by [HasFilterClip].
 func (self Instance) SetFilterClip(value bool) {
 	class(self).SetFilterClip(value)
 }

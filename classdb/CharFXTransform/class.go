@@ -172,106 +172,189 @@ func New() Instance {
 	return casted
 }
 
+/*
+The current transform of the current glyph. It can be overridden (for example, by driving the position and rotation from a curve). You can also alter the existing value to apply transforms on top of other effects.
+*/
 func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
+/*
+Absolute character range in the string, corresponding to the glyph.
+
+Note: Read-only. Setting this property won't affect drawing.
+*/
 func (self Instance) Range() Vector2i.XY {
 	return Vector2i.XY(class(self).GetRange())
 }
 
+// SetRange sets the property returned by [GetRange].
 func (self Instance) SetRange(value Vector2i.XY) {
 	class(self).SetRange(Vector2i.XY(value))
 }
 
+/*
+The time elapsed since the [RichTextLabel] was added to the scene tree (in seconds). Time stops when the [RichTextLabel] is paused (see [Node.ProcessMode]). Resets when the text in the [RichTextLabel] is changed.
+
+Note: Time still passes while the [RichTextLabel] is hidden.
+
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+[RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
+*/
 func (self Instance) ElapsedTime() Float.X {
 	return Float.X(Float.X(class(self).GetElapsedTime()))
 }
 
+// SetElapsedTime sets the property returned by [GetElapsedTime].
 func (self Instance) SetElapsedTime(value Float.X) {
 	class(self).SetElapsedTime(float64(value))
 }
 
+/*
+If true, the character will be drawn. If false, the character will be hidden. Characters around hidden characters will reflow to take the space of hidden characters. If this is not desired, set their [Color] to Color(1, 1, 1, 0) instead.
+
+[Color]: https://pkg.go.dev/graphics.gd/classdb/CharFXTransform#Instance.Color
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisibility(value)
 }
 
+/*
+If true, FX transform is called for outline drawing.
+
+Note: Read-only. Setting this property won't affect drawing.
+*/
 func (self Instance) Outline() bool {
 	return bool(class(self).IsOutline())
 }
 
+// SetOutline sets the property returned by [IsOutline].
 func (self Instance) SetOutline(value bool) {
 	class(self).SetOutline(value)
 }
 
+/*
+The position offset the character will be drawn with (in pixels).
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+The color the character will be drawn with.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+Contains the arguments passed in the opening BBCode tag. By default, arguments are strings; if their contents match a type such as bool, int or [Float.X], they will be converted automatically. Color codes in the form #rrggbb or #rgb will be converted to an opaque [Color.RGBA]. String arguments may not contain spaces, even if they're quoted. If present, quotes will also be present in the final string.
+
+For example, the opening BBCode tag [example foo=hello bar=true baz=42 color=#ffffff] will map to the following data structure:
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+*/
 func (self Instance) Env() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetEnvironment()))
 }
 
+// SetEnv sets the property returned by [GetEnvironment].
 func (self Instance) SetEnv(value map[any]any) {
 	class(self).SetEnvironment(gd.DictionaryFromMap(value))
 }
 
+/*
+Glyph index specific to the [Font]. If you want to replace this glyph, use [TextServer.FontGetGlyphIndex] with [Font] to get a new glyph index for a single character.
+
+[Font]: https://pkg.go.dev/graphics.gd/classdb/CharFXTransform#Instance.Font
+[TextServer.FontGetGlyphIndex]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FontGetGlyphIndex
+*/
 func (self Instance) GlyphIndex() int {
 	return int(int(class(self).GetGlyphIndex()))
 }
 
+// SetGlyphIndex sets the property returned by [GetGlyphIndex].
 func (self Instance) SetGlyphIndex(value int) {
 	class(self).SetGlyphIndex(int64(value))
 }
 
+/*
+Number of glyphs in the grapheme cluster. This value is set in the first glyph of a cluster.
+
+Note: Read-only. Setting this property won't affect drawing.
+*/
 func (self Instance) GlyphCount() int {
 	return int(int(class(self).GetGlyphCount()))
 }
 
+// SetGlyphCount sets the property returned by [GetGlyphCount].
 func (self Instance) SetGlyphCount(value int) {
 	class(self).SetGlyphCount(int64(value))
 }
 
+/*
+Glyph flags. See [TextServer.GraphemeFlag] for more info.
+
+Note: Read-only. Setting this property won't affect drawing.
+*/
 func (self Instance) GlyphFlags() int {
 	return int(int(class(self).GetGlyphFlags()))
 }
 
+// SetGlyphFlags sets the property returned by [GetGlyphFlags].
 func (self Instance) SetGlyphFlags(value int) {
 	class(self).SetGlyphFlags(int64(value))
 }
 
+/*
+The character offset of the glyph, relative to the current [RichTextEffect] custom block.
+
+Note: Read-only. Setting this property won't affect drawing.
+
+[RichTextEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextEffect
+*/
 func (self Instance) RelativeIndex() int {
 	return int(int(class(self).GetRelativeIndex()))
 }
 
+// SetRelativeIndex sets the property returned by [GetRelativeIndex].
 func (self Instance) SetRelativeIndex(value int) {
 	class(self).SetRelativeIndex(int64(value))
 }
 
+/*
+[TextServer] RID of the font used to render glyph, this value can be used with TextServer.font_* methods to retrieve font information.
+
+Note: Read-only. Setting this property won't affect drawing.
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
+*/
 func (self Instance) Font() RID.Font {
 	return RID.Font(RID.Font(class(self).GetFont()))
 }
 
+// SetFont sets the property returned by [GetFont].
 func (self Instance) SetFont(value RID.Font) {
 	class(self).SetFont(RID.Any(value))
 }

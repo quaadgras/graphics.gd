@@ -158,42 +158,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+Path to an [AnimationMixer] node to use as a basis for root motion.
+
+[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
+*/
 func (self Instance) AnimationPath() string {
 	return string(class(self).GetAnimationPath().String())
 }
 
+// SetAnimationPath sets the property returned by [GetAnimationPath].
 func (self Instance) SetAnimationPath(value string) {
 	class(self).SetAnimationPath(Path.ToNode(String.New(value)))
 }
 
+/*
+The grid's color.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The grid's cell size in 3D units.
+*/
 func (self Instance) CellSize() Float.X {
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
+// SetCellSize sets the property returned by [GetCellSize].
 func (self Instance) SetCellSize(value Float.X) {
 	class(self).SetCellSize(float64(value))
 }
 
+/*
+The grid's radius in 3D units. The grid's opacity will fade gradually as the distance from the origin increases until this [Radius] is reached.
+
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView#Instance.Radius
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+If true, the grid's points will all be on the same Y coordinate (local Y = 0). If false, the points' original Y coordinate is preserved.
+*/
 func (self Instance) ZeroY() bool {
 	return bool(class(self).GetZeroY())
 }
 
+// SetZeroY sets the property returned by [GetZeroY].
 func (self Instance) SetZeroY(value bool) {
 	class(self).SetZeroY(value)
 }

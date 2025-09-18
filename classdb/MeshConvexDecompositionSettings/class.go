@@ -168,106 +168,158 @@ func New() Instance {
 	return casted
 }
 
+/*
+Maximum concavity. Ranges from 0.0 to 1.0.
+*/
 func (self Instance) MaxConcavity() Float.X {
 	return Float.X(Float.X(class(self).GetMaxConcavity()))
 }
 
+// SetMaxConcavity sets the property returned by [GetMaxConcavity].
 func (self Instance) SetMaxConcavity(value Float.X) {
 	class(self).SetMaxConcavity(float64(value))
 }
 
+/*
+Controls the bias toward clipping along symmetry planes. Ranges from 0.0 to 1.0.
+*/
 func (self Instance) SymmetryPlanesClippingBias() Float.X {
 	return Float.X(Float.X(class(self).GetSymmetryPlanesClippingBias()))
 }
 
+// SetSymmetryPlanesClippingBias sets the property returned by [GetSymmetryPlanesClippingBias].
 func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) {
 	class(self).SetSymmetryPlanesClippingBias(float64(value))
 }
 
+/*
+Controls the bias toward clipping along revolution axes. Ranges from 0.0 to 1.0.
+*/
 func (self Instance) RevolutionAxesClippingBias() Float.X {
 	return Float.X(Float.X(class(self).GetRevolutionAxesClippingBias()))
 }
 
+// SetRevolutionAxesClippingBias sets the property returned by [GetRevolutionAxesClippingBias].
 func (self Instance) SetRevolutionAxesClippingBias(value Float.X) {
 	class(self).SetRevolutionAxesClippingBias(float64(value))
 }
 
+/*
+Controls the adaptive sampling of the generated convex-hulls. Ranges from 0.0 to 0.01.
+*/
 func (self Instance) MinVolumePerConvexHull() Float.X {
 	return Float.X(Float.X(class(self).GetMinVolumePerConvexHull()))
 }
 
+// SetMinVolumePerConvexHull sets the property returned by [GetMinVolumePerConvexHull].
 func (self Instance) SetMinVolumePerConvexHull(value Float.X) {
 	class(self).SetMinVolumePerConvexHull(float64(value))
 }
 
+/*
+Maximum number of voxels generated during the voxelization stage.
+*/
 func (self Instance) Resolution() int {
 	return int(int(class(self).GetResolution()))
 }
 
+// SetResolution sets the property returned by [GetResolution].
 func (self Instance) SetResolution(value int) {
 	class(self).SetResolution(int64(value))
 }
 
+/*
+Controls the maximum number of triangles per convex-hull. Ranges from 4 to 1024.
+*/
 func (self Instance) MaxNumVerticesPerConvexHull() int {
 	return int(int(class(self).GetMaxNumVerticesPerConvexHull()))
 }
 
+// SetMaxNumVerticesPerConvexHull sets the property returned by [GetMaxNumVerticesPerConvexHull].
 func (self Instance) SetMaxNumVerticesPerConvexHull(value int) {
 	class(self).SetMaxNumVerticesPerConvexHull(int64(value))
 }
 
+/*
+Controls the granularity of the search for the "best" clipping plane. Ranges from 1 to 16.
+*/
 func (self Instance) PlaneDownsampling() int {
 	return int(int(class(self).GetPlaneDownsampling()))
 }
 
+// SetPlaneDownsampling sets the property returned by [GetPlaneDownsampling].
 func (self Instance) SetPlaneDownsampling(value int) {
 	class(self).SetPlaneDownsampling(int64(value))
 }
 
+/*
+Controls the precision of the convex-hull generation process during the clipping plane selection stage. Ranges from 1 to 16.
+*/
 func (self Instance) ConvexHullDownsampling() int {
 	return int(int(class(self).GetConvexHullDownsampling()))
 }
 
+// SetConvexHullDownsampling sets the property returned by [GetConvexHullDownsampling].
 func (self Instance) SetConvexHullDownsampling(value int) {
 	class(self).SetConvexHullDownsampling(int64(value))
 }
 
+/*
+If true, normalizes the mesh before applying the convex decomposition.
+*/
 func (self Instance) NormalizeMesh() bool {
 	return bool(class(self).GetNormalizeMesh())
 }
 
+// SetNormalizeMesh sets the property returned by [GetNormalizeMesh].
 func (self Instance) SetNormalizeMesh(value bool) {
 	class(self).SetNormalizeMesh(value)
 }
 
+/*
+Mode for the approximate convex decomposition.
+*/
 func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
+// SetMode sets the property returned by [GetMode].
 func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
+/*
+If true, uses approximation for computing convex hulls.
+*/
 func (self Instance) ConvexHullApproximation() bool {
 	return bool(class(self).GetConvexHullApproximation())
 }
 
+// SetConvexHullApproximation sets the property returned by [GetConvexHullApproximation].
 func (self Instance) SetConvexHullApproximation(value bool) {
 	class(self).SetConvexHullApproximation(value)
 }
 
+/*
+The maximum number of convex hulls to produce from the merge operation.
+*/
 func (self Instance) MaxConvexHulls() int {
 	return int(int(class(self).GetMaxConvexHulls()))
 }
 
+// SetMaxConvexHulls sets the property returned by [GetMaxConvexHulls].
 func (self Instance) SetMaxConvexHulls(value int) {
 	class(self).SetMaxConvexHulls(int64(value))
 }
 
+/*
+If true, projects output convex hull vertices onto the original source mesh to increase floating-point accuracy of the results.
+*/
 func (self Instance) ProjectHullVertices() bool {
 	return bool(class(self).GetProjectHullVertices())
 }
 
+// SetProjectHullVertices sets the property returned by [GetProjectHullVertices].
 func (self Instance) SetProjectHullVertices(value bool) {
 	class(self).SetProjectHullVertices(value)
 }

@@ -398,26 +398,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, execution will block until all data is read from the response.
+*/
 func (self Instance) BlockingModeEnabled() bool {
 	return bool(class(self).IsBlockingModeEnabled())
 }
 
+// SetBlockingModeEnabled sets the property returned by [IsBlockingModeEnabled].
 func (self Instance) SetBlockingModeEnabled(value bool) {
 	class(self).SetBlockingMode(value)
 }
 
+/*
+The connection to use for this client.
+*/
 func (self Instance) Connection() StreamPeer.Instance {
 	return StreamPeer.Instance(class(self).GetConnection())
 }
 
+// SetConnection sets the property returned by [GetConnection].
 func (self Instance) SetConnection(value StreamPeer.Instance) {
 	class(self).SetConnection(value)
 }
 
+/*
+The size of the buffer used and maximum bytes to read per iteration. See [ReadResponseBodyChunk].
+
+[ReadResponseBodyChunk]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ReadResponseBodyChunk
+*/
 func (self Instance) ReadChunkSize() int {
 	return int(int(class(self).GetReadChunkSize()))
 }
 
+// SetReadChunkSize sets the property returned by [GetReadChunkSize].
 func (self Instance) SetReadChunkSize(value int) {
 	class(self).SetReadChunkSize(int64(value))
 }

@@ -284,50 +284,84 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [NavigationMesh] resource to use.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
+*/
 func (self Instance) NavigationMesh() NavigationMesh.Instance {
 	return NavigationMesh.Instance(class(self).GetNavigationMesh())
 }
 
+// SetNavigationMesh sets the property returned by [GetNavigationMesh].
 func (self Instance) SetNavigationMesh(value NavigationMesh.Instance) {
 	class(self).SetNavigationMesh(value)
 }
 
+/*
+Determines if the [NavigationRegion3D] is enabled or disabled.
+
+[NavigationRegion3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+If enabled the navigation region will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+*/
 func (self Instance) UseEdgeConnections() bool {
 	return bool(class(self).GetUseEdgeConnections())
 }
 
+// SetUseEdgeConnections sets the property returned by [GetUseEdgeConnections].
 func (self Instance) SetUseEdgeConnections(value bool) {
 	class(self).SetUseEdgeConnections(value)
 }
 
+/*
+A bitfield determining all navigation layers the region belongs to. These navigation layers can be checked upon when requesting a path with [NavigationServer3D.MapGetPath].
+
+[NavigationServer3D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D#MapGetPath
+*/
 func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
+// SetNavigationLayers sets the property returned by [GetNavigationLayers].
 func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
+/*
+When pathfinding enters this region's navigation mesh from another regions navigation mesh the [EnterCost] value is added to the path distance for determining the shortest path.
+
+[EnterCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.EnterCost
+*/
 func (self Instance) EnterCost() Float.X {
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
+// SetEnterCost sets the property returned by [GetEnterCost].
 func (self Instance) SetEnterCost(value Float.X) {
 	class(self).SetEnterCost(float64(value))
 }
 
+/*
+When pathfinding moves inside this region's navigation mesh the traveled distances are multiplied with [TravelCost] for determining the shortest path.
+
+[TravelCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.TravelCost
+*/
 func (self Instance) TravelCost() Float.X {
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
+// SetTravelCost sets the property returned by [GetTravelCost].
 func (self Instance) SetTravelCost(value Float.X) {
 	class(self).SetTravelCost(float64(value))
 }
@@ -511,6 +545,12 @@ func (self class) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bo
 	var ret = r_ret
 	return ret
 }
+
+/*
+Notifies when the [NavigationMesh] has changed.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
+*/
 func (self Instance) OnNavigationMeshChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -523,6 +563,9 @@ func (self class) NavigationMeshChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationMeshChanged`))))
 }
 
+/*
+Notifies when the navigation mesh bake operation is completed.
+*/
 func (self Instance) OnBakeFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

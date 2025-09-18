@@ -178,10 +178,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Shader] program used to render this material.
+
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
+*/
 func (self Instance) Shader() Shader.Instance {
 	return Shader.Instance(class(self).GetShader())
 }
 
+// SetShader sets the property returned by [GetShader].
 func (self Instance) SetShader(value Shader.Instance) {
 	class(self).SetShader(value)
 }

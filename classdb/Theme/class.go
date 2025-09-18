@@ -909,26 +909,53 @@ func New() Instance {
 	return casted
 }
 
+/*
+The default base scale factor of this theme resource. Used by some controls to scale their visual properties based on the global scale factor. If this value is set to 0.0, the global scale factor is used (see [ThemeDB.FallbackBaseScale]).
+
+Use [HasDefaultBaseScale] to check if this value is valid.
+
+[HasDefaultBaseScale]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultBaseScale
+[ThemeDB.FallbackBaseScale]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackBaseScale
+*/
 func (self Instance) DefaultBaseScale() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultBaseScale()))
 }
 
+// SetDefaultBaseScale sets the property returned by [GetDefaultBaseScale].
 func (self Instance) SetDefaultBaseScale(value Float.X) {
 	class(self).SetDefaultBaseScale(float64(value))
 }
 
+/*
+The default font of this theme resource. Used as the default value when trying to fetch a font resource that doesn't exist in this theme or is in invalid state. If the default font is also missing or invalid, the engine fallback value is used (see [ThemeDB.FallbackFont]).
+
+Use [HasDefaultFont] to check if this value is valid.
+
+[HasDefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFont
+[ThemeDB.FallbackFont]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFont
+*/
 func (self Instance) DefaultFont() Font.Instance {
 	return Font.Instance(class(self).GetDefaultFont())
 }
 
+// SetDefaultFont sets the property returned by [GetDefaultFont].
 func (self Instance) SetDefaultFont(value Font.Instance) {
 	class(self).SetDefaultFont(value)
 }
 
+/*
+The default font size of this theme resource. Used as the default value when trying to fetch a font size value that doesn't exist in this theme or is in invalid state. If the default font size is also missing or invalid, the engine fallback value is used (see [ThemeDB.FallbackFontSize]).
+
+Values below 1 are invalid and can be used to unset the property. Use [HasDefaultFontSize] to check if this value is valid.
+
+[HasDefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFontSize
+[ThemeDB.FallbackFontSize]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFontSize
+*/
 func (self Instance) DefaultFontSize() int {
 	return int(int(class(self).GetDefaultFontSize()))
 }
 
+// SetDefaultFontSize sets the property returned by [GetDefaultFontSize].
 func (self Instance) SetDefaultFontSize(value int) {
 	class(self).SetDefaultFontSize(int64(value))
 }

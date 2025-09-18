@@ -286,66 +286,107 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the blend space is triangulated automatically. The mesh updates every time you add or remove points with [AddBlendPoint] and [RemoveBlendPoint].
+
+[AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
+[RemoveBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.RemoveBlendPoint
+*/
 func (self Instance) AutoTriangles() bool {
 	return bool(class(self).GetAutoTriangles())
 }
 
+// SetAutoTriangles sets the property returned by [GetAutoTriangles].
 func (self Instance) SetAutoTriangles(value bool) {
 	class(self).SetAutoTriangles(value)
 }
 
+/*
+The blend space's X and Y axes' lower limit for the points' position. See [AddBlendPoint].
+
+[AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
+*/
 func (self Instance) MinSpace() Vector2.XY {
 	return Vector2.XY(class(self).GetMinSpace())
 }
 
+// SetMinSpace sets the property returned by [GetMinSpace].
 func (self Instance) SetMinSpace(value Vector2.XY) {
 	class(self).SetMinSpace(Vector2.XY(value))
 }
 
+/*
+The blend space's X and Y axes' upper limit for the points' position. See [AddBlendPoint].
+
+[AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
+*/
 func (self Instance) MaxSpace() Vector2.XY {
 	return Vector2.XY(class(self).GetMaxSpace())
 }
 
+// SetMaxSpace sets the property returned by [GetMaxSpace].
 func (self Instance) SetMaxSpace(value Vector2.XY) {
 	class(self).SetMaxSpace(Vector2.XY(value))
 }
 
+/*
+Position increment to snap to when moving a point.
+*/
 func (self Instance) Snap() Vector2.XY {
 	return Vector2.XY(class(self).GetSnap())
 }
 
+// SetSnap sets the property returned by [GetSnap].
 func (self Instance) SetSnap(value Vector2.XY) {
 	class(self).SetSnap(Vector2.XY(value))
 }
 
+/*
+Name of the blend space's X axis.
+*/
 func (self Instance) XLabel() string {
 	return string(class(self).GetXLabel().String())
 }
 
+// SetXLabel sets the property returned by [GetXLabel].
 func (self Instance) SetXLabel(value string) {
 	class(self).SetXLabel(String.New(value))
 }
 
+/*
+Name of the blend space's Y axis.
+*/
 func (self Instance) YLabel() string {
 	return string(class(self).GetYLabel().String())
 }
 
+// SetYLabel sets the property returned by [GetYLabel].
 func (self Instance) SetYLabel(value string) {
 	class(self).SetYLabel(String.New(value))
 }
 
+/*
+Controls the interpolation between animations.
+*/
 func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
+// SetBlendMode sets the property returned by [GetBlendMode].
 func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
+/*
+If false, the blended animations' frame are stopped when the blend value is 0.
+
+If true, forcing the blended animations to advance frame.
+*/
 func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
+// SetSync sets the property returned by [IsUsingSync].
 func (self Instance) SetSync(value bool) {
 	class(self).SetUseSync(value)
 }
@@ -565,6 +606,10 @@ func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_s
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted every time the blend space's triangles are created, removed, or when one of their vertices changes position.
+*/
 func (self Instance) OnTrianglesUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

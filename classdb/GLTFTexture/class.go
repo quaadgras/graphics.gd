@@ -142,18 +142,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the image associated with this texture, see [GLTFState.GetImages]. If -1, then this texture does not have an image assigned.
+
+[GLTFState.GetImages]: https://pkg.go.dev/graphics.gd/classdb/GLTFState#Instance.GetImages
+*/
 func (self Instance) SrcImage() int {
 	return int(int(class(self).GetSrcImage()))
 }
 
+// SetSrcImage sets the property returned by [GetSrcImage].
 func (self Instance) SetSrcImage(value int) {
 	class(self).SetSrcImage(int64(value))
 }
 
+/*
+ID of the texture sampler to use when sampling the image. If -1, then the default texture sampler is used (linear filtering, and repeat wrapping in both axes).
+*/
 func (self Instance) Sampler() int {
 	return int(int(class(self).GetSampler()))
 }
 
+// SetSampler sets the property returned by [GetSampler].
 func (self Instance) SetSampler(value int) {
 	class(self).SetSampler(int64(value))
 }

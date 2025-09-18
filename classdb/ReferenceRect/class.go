@@ -152,26 +152,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the border color of the [ReferenceRect].
+
+[ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
+*/
 func (self Instance) BorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
+// SetBorderColor sets the property returned by [GetBorderColor].
 func (self Instance) SetBorderColor(value Color.RGBA) {
 	class(self).SetBorderColor(Color.RGBA(value))
 }
 
+/*
+Sets the border width of the [ReferenceRect]. The border grows both inwards and outwards with respect to the rectangle box.
+
+[ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
+*/
 func (self Instance) BorderWidth() Float.X {
 	return Float.X(Float.X(class(self).GetBorderWidth()))
 }
 
+// SetBorderWidth sets the property returned by [GetBorderWidth].
 func (self Instance) SetBorderWidth(value Float.X) {
 	class(self).SetBorderWidth(float64(value))
 }
 
+/*
+If true, the [ReferenceRect] will only be visible while in editor. Otherwise, [ReferenceRect] will be visible in the running project.
+
+[ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
+*/
 func (self Instance) EditorOnly() bool {
 	return bool(class(self).GetEditorOnly())
 }
 
+// SetEditorOnly sets the property returned by [GetEditorOnly].
 func (self Instance) SetEditorOnly(value bool) {
 	class(self).SetEditorOnly(value)
 }

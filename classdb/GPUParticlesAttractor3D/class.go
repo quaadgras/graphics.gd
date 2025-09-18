@@ -160,34 +160,67 @@ func New() Instance {
 	return casted
 }
 
+/*
+Adjusts the strength of the attractor. If [Strength] is negative, particles will be pushed in the opposite direction. Particles will be pushed away from the attractor's origin if [Directionality] is 0.0, or towards local +Z if [Directionality] is greater than 0.0.
+
+[Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
+[Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
+*/
 func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
+// SetStrength sets the property returned by [GetStrength].
 func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(float64(value))
 }
 
+/*
+The particle attractor's attenuation. Higher values result in more gradual pushing of particles as they come closer to the attractor's origin. Zero or negative values will cause particles to be pushed very fast as soon as the touch the attractor's edges.
+*/
 func (self Instance) Attenuation() Float.X {
 	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
+// SetAttenuation sets the property returned by [GetAttenuation].
 func (self Instance) SetAttenuation(value Float.X) {
 	class(self).SetAttenuation(float64(value))
 }
 
+/*
+Adjusts how directional the attractor is. At 0.0, the attractor is not directional at all: it will attract particles towards its center. At 1.0, the attractor is fully directional: particles will always be pushed towards local -Z (or +Z if [Strength] is negative).
+
+Note: If [Directionality] is greater than 0.0, the direction in which particles are pushed can be changed by rotating the [GPUParticlesAttractor3D] node.
+
+[Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
+[GPUParticlesAttractor3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D
+[Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
+*/
 func (self Instance) Directionality() Float.X {
 	return Float.X(Float.X(class(self).GetDirectionality()))
 }
 
+// SetDirectionality sets the property returned by [GetDirectionality].
 func (self Instance) SetDirectionality(value Float.X) {
 	class(self).SetDirectionality(float64(value))
 }
 
+/*
+The particle rendering layers ([VisualInstance3D.Layers]) that will be affected by the attractor. By default, all particles are affected by an attractor.
+
+After configuring particle nodes accordingly, specific layers can be unchecked to prevent certain particles from being affected by attractors. For example, this can be used if you're using an attractor as part of a spell effect but don't want the attractor to affect unrelated weather particles at the same position.
+
+Particle attraction can also be disabled on a per-process material basis by setting [ParticleProcessMaterial.AttractorInteractionEnabled] on the [GPUParticles3D] node.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[ParticleProcessMaterial.AttractorInteractionEnabled]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AttractorInteractionEnabled
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }

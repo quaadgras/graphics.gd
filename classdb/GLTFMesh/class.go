@@ -177,34 +177,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The original name of the mesh.
+*/
 func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
+// SetOriginalName sets the property returned by [GetOriginalName].
 func (self Instance) SetOriginalName(value string) {
 	class(self).SetOriginalName(String.New(value))
 }
 
+/*
+The [ImporterMesh] object representing the mesh itself.
+
+[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
+*/
 func (self Instance) Mesh() ImporterMesh.Instance {
 	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value ImporterMesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+An array of floats representing the blend weights of the mesh.
+*/
 func (self Instance) BlendWeights() []float32 {
 	return []float32(slices.Collect(class(self).GetBlendWeights().Values()))
 }
 
+// SetBlendWeights sets the property returned by [GetBlendWeights].
 func (self Instance) SetBlendWeights(value []float32) {
 	class(self).SetBlendWeights(Packed.New(value...))
 }
 
+/*
+An array of Material objects representing the materials used in the mesh.
+*/
 func (self Instance) InstanceMaterials() []Material.Instance {
 	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetInstanceMaterials())))
 }
 
+// SetInstanceMaterials sets the property returned by [GetInstanceMaterials].
 func (self Instance) SetInstanceMaterials(value []Material.Instance) {
 	class(self).SetInstanceMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 }

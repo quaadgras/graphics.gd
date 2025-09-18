@@ -247,6 +247,10 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 	var ret = [1]gdclass.EditorProperty{gd.PointerMustAssertInstanceID[gdclass.EditorProperty](r_ret)}
 	return ret
 }
+
+/*
+Emitted when a property is selected in the inspector.
+*/
 func (self Instance) OnPropertySelected(cb func(property string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -259,6 +263,9 @@ func (self class) PropertySelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertySelected`))))
 }
 
+/*
+Emitted when a property is keyed in the inspector. Properties can be keyed by clicking the "key" icon next to a property when the Animation panel is toggled.
+*/
 func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -271,6 +278,9 @@ func (self class) PropertyKeyed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyed`))))
 }
 
+/*
+Emitted when a property is removed from the inspector.
+*/
 func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -283,6 +293,9 @@ func (self class) PropertyDeleted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyDeleted`))))
 }
 
+/*
+Emitted when a resource is selected in the inspector.
+*/
 func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -295,6 +308,11 @@ func (self class) ResourceSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
 }
 
+/*
+Emitted when the Edit button of an [Object] has been pressed in the inspector. This is mainly used in the remote scene tree Inspector.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+*/
 func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -307,6 +325,9 @@ func (self class) ObjectIdSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ObjectIdSelected`))))
 }
 
+/*
+Emitted when a property is edited in the inspector.
+*/
 func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -319,6 +340,11 @@ func (self class) PropertyEdited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyEdited`))))
 }
 
+/*
+Emitted when a boolean property is toggled in the inspector.
+
+Note: This signal is never emitted if the internal autoclear property enabled. Since this property is always enabled in the editor inspector, this signal is never emitted by the editor itself.
+*/
 func (self Instance) OnPropertyToggled(cb func(property string, checked bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -331,6 +357,9 @@ func (self class) PropertyToggled() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyToggled`))))
 }
 
+/*
+Emitted when the object being edited by the inspector has changed.
+*/
 func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -343,6 +372,9 @@ func (self class) EditedObjectChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditedObjectChanged`))))
 }
 
+/*
+Emitted when a property that requires a restart to be applied is edited in the inspector. This is only used in the Project Settings and Editor Settings.
+*/
 func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

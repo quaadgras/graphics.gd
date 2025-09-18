@@ -274,26 +274,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, this [MultiplayerPeer] refuses new connections.
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer
+*/
 func (self Instance) RefuseNewConnections() bool {
 	return bool(class(self).IsRefusingNewConnections())
 }
 
+// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections].
 func (self Instance) SetRefuseNewConnections(value bool) {
 	class(self).SetRefuseNewConnections(value)
 }
 
+/*
+The manner in which to send packets to the target peer. See the [SetTargetPeer] method.
+
+[SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
+*/
 func (self Instance) TransferMode() TransferMode {
 	return TransferMode(class(self).GetTransferMode())
 }
 
+// SetTransferMode sets the property returned by [GetTransferMode].
 func (self Instance) SetTransferMode(value TransferMode) {
 	class(self).SetTransferMode(value)
 }
 
+/*
+The channel to use to send packets. Many network APIs such as ENet and WebRTC allow the creation of multiple independent channels which behaves, in a way, like separate connections. This means that reliable data will only block delivery of other packets on that channel, and ordering will only be in respect to the channel the packet is being sent on. Using different channels to send different and independent state updates is a common way to optimize network usage and decrease latency in fast-paced games.
+
+Note: The default channel (0) actually works as 3 separate channels (one for each [TransferMode]) so that [TransferModeReliable] and [TransferModeUnreliableOrdered] does not interact with each other by default. Refer to the specific network API documentation (e.g. ENet or WebRTC) to learn how to set up channels correctly.
+*/
 func (self Instance) TransferChannel() int {
 	return int(int(class(self).GetTransferChannel()))
 }
 
+// SetTransferChannel sets the property returned by [GetTransferChannel].
 func (self Instance) SetTransferChannel(value int) {
 	class(self).SetTransferChannel(int64(value))
 }
@@ -455,6 +473,10 @@ func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a remote peer connects.
+*/
 func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -467,6 +489,9 @@ func (self class) PeerConnected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerConnected`))))
 }
 
+/*
+Emitted when a remote peer has disconnected.
+*/
 func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

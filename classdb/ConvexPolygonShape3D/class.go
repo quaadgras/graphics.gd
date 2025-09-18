@@ -159,10 +159,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The list of 3D points forming the convex polygon shape.
+*/
 func (self Instance) Points() []Vector3.XYZ {
 	return []Vector3.XYZ(slices.Collect(class(self).GetPoints().Values()))
 }
 
+// SetPoints sets the property returned by [GetPoints].
 func (self Instance) SetPoints(value []Vector3.XYZ) {
 	class(self).SetPoints(Packed.New(value...))
 }

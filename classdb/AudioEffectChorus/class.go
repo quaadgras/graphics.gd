@@ -197,26 +197,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The number of voices in the effect.
+*/
 func (self Instance) VoiceCount() int {
 	return int(int(class(self).GetVoiceCount()))
 }
 
+// SetVoiceCount sets the property returned by [GetVoiceCount].
 func (self Instance) SetVoiceCount(value int) {
 	class(self).SetVoiceCount(int64(value))
 }
 
+/*
+The effect's raw signal.
+*/
 func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
+// SetDry sets the property returned by [GetDry].
 func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(float64(value))
 }
 
+/*
+The effect's processed signal.
+*/
 func (self Instance) Wet() Float.X {
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
+// SetWet sets the property returned by [GetWet].
 func (self Instance) SetWet(value Float.X) {
 	class(self).SetWet(float64(value))
 }

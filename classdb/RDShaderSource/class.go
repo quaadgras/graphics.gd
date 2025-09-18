@@ -152,50 +152,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+Source code for the shader's vertex stage.
+*/
 func (self Instance) SourceVertex() string {
 	return string(class(self).GetStageSource(0).String())
 }
 
+// SetSourceVertex sets the property returned by [GetStageSource].
 func (self Instance) SetSourceVertex(value string) {
 	class(self).SetStageSource(0, String.New(value))
 }
 
+/*
+Source code for the shader's fragment stage.
+*/
 func (self Instance) SourceFragment() string {
 	return string(class(self).GetStageSource(1).String())
 }
 
+// SetSourceFragment sets the property returned by [GetStageSource].
 func (self Instance) SetSourceFragment(value string) {
 	class(self).SetStageSource(1, String.New(value))
 }
 
+/*
+Source code for the shader's tessellation control stage.
+*/
 func (self Instance) SourceTesselationControl() string {
 	return string(class(self).GetStageSource(2).String())
 }
 
+// SetSourceTesselationControl sets the property returned by [GetStageSource].
 func (self Instance) SetSourceTesselationControl(value string) {
 	class(self).SetStageSource(2, String.New(value))
 }
 
+/*
+Source code for the shader's tessellation evaluation stage.
+*/
 func (self Instance) SourceTesselationEvaluation() string {
 	return string(class(self).GetStageSource(3).String())
 }
 
+// SetSourceTesselationEvaluation sets the property returned by [GetStageSource].
 func (self Instance) SetSourceTesselationEvaluation(value string) {
 	class(self).SetStageSource(3, String.New(value))
 }
 
+/*
+Source code for the shader's compute stage.
+*/
 func (self Instance) SourceCompute() string {
 	return string(class(self).GetStageSource(4).String())
 }
 
+// SetSourceCompute sets the property returned by [GetStageSource].
 func (self Instance) SetSourceCompute(value string) {
 	class(self).SetStageSource(4, String.New(value))
 }
 
+/*
+The language the shader is written in.
+*/
 func (self Instance) Language() Rendering.ShaderLanguage {
 	return Rendering.ShaderLanguage(class(self).GetLanguage())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value Rendering.ShaderLanguage) {
 	class(self).SetLanguage(value)
 }

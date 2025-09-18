@@ -186,122 +186,255 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the size of the [AABB.PositionSize] used by the decal. All dimensions must be set to a value greater than zero (they will be clamped to 0.001 if this is not the case). The AABB goes from -size/2 to size/2.
+
+Note: To improve culling efficiency of "hard surface" decals, set their [UpperFade] and [LowerFade] to 0.0 and set the Y component of the [Size] as low as possible. This will reduce the decals' AABB size without affecting their appearance.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Size
+[UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+[Texture2D] with the base [Color.RGBA] of the Decal. Either this or the [TextureEmission] must be set for the Decal to be visible. Use the alpha channel like a mask to smoothly blend the edges of the decal with the underlying object.
+
+Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-material basis, the filter mode for [Decal] textures is set globally with [ProjectSettings] "rendering/textures/decals/filter".
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+[TextureEmission]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureEmission
+*/
 func (self Instance) TextureAlbedo() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
+// SetTextureAlbedo sets the property returned by [GetTexture].
 func (self Instance) SetTextureAlbedo(value Texture2D.Instance) {
 	class(self).SetTexture(0, value)
 }
 
+/*
+[Texture2D] with the per-pixel normal map for the decal. Use this to add extra detail to decals.
+
+Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-material basis, the filter mode for [Decal] textures is set globally with [ProjectSettings] "rendering/textures/decals/filter".
+
+Note: Setting this texture alone will not result in a visible decal, as [TextureAlbedo] must also be set. To create a normal-only decal, load an albedo texture into [TextureAlbedo] and set [AlbedoMix] to 0.0. The albedo texture's alpha channel will be used to determine where the underlying surface's normal map should be overridden (and its intensity).
+
+[AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+[TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
+*/
 func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
+// SetTextureNormal sets the property returned by [GetTexture].
 func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTexture(1, value)
 }
 
+/*
+[Texture2D] storing ambient occlusion, roughness, and metallic for the decal. Use this to add extra detail to decals.
+
+Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-material basis, the filter mode for [Decal] textures is set globally with [ProjectSettings] "rendering/textures/decals/filter".
+
+Note: Setting this texture alone will not result in a visible decal, as [TextureAlbedo] must also be set. To create an ORM-only decal, load an albedo texture into [TextureAlbedo] and set [AlbedoMix] to 0.0. The albedo texture's alpha channel will be used to determine where the underlying surface's ORM map should be overridden (and its intensity).
+
+[AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+[TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
+*/
 func (self Instance) TextureOrm() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
+// SetTextureOrm sets the property returned by [GetTexture].
 func (self Instance) SetTextureOrm(value Texture2D.Instance) {
 	class(self).SetTexture(2, value)
 }
 
+/*
+[Texture2D] with the emission [Color.RGBA] of the Decal. Either this or the [TextureAlbedo] must be set for the Decal to be visible. Use the alpha channel like a mask to smoothly blend the edges of the decal with the underlying object.
+
+Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-material basis, the filter mode for [Decal] textures is set globally with [ProjectSettings] "rendering/textures/decals/filter".
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+[TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
+*/
 func (self Instance) TextureEmission() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
+// SetTextureEmission sets the property returned by [GetTexture].
 func (self Instance) SetTextureEmission(value Texture2D.Instance) {
 	class(self).SetTexture(3, value)
 }
 
+/*
+Energy multiplier for the emission texture. This will make the decal emit light at a higher or lower intensity, independently of the albedo color. See also [Modulate].
+
+[Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
+*/
 func (self Instance) EmissionEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionEnergy()))
 }
 
+// SetEmissionEnergy sets the property returned by [GetEmissionEnergy].
 func (self Instance) SetEmissionEnergy(value Float.X) {
 	class(self).SetEmissionEnergy(float64(value))
 }
 
+/*
+Changes the [Color.RGBA] of the Decal by multiplying the albedo and emission colors with this value. The alpha component is only taken into account when multiplying the albedo color, not the emission color. See also [EmissionEnergy] and [AlbedoMix] to change the emission and albedo intensity independently of each other.
+
+[AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[EmissionEnergy]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.EmissionEnergy
+*/
 func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulate sets the property returned by [GetModulate].
 func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+Blends the albedo [Color.RGBA] of the decal with albedo [Color.RGBA] of the underlying mesh. This can be set to 0.0 to create a decal that only affects normal or ORM. In this case, an albedo texture is still required as its alpha channel will determine where the normal and ORM will be overridden. See also [Modulate].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
+*/
 func (self Instance) AlbedoMix() Float.X {
 	return Float.X(Float.X(class(self).GetAlbedoMix()))
 }
 
+// SetAlbedoMix sets the property returned by [GetAlbedoMix].
 func (self Instance) SetAlbedoMix(value Float.X) {
 	class(self).SetAlbedoMix(float64(value))
 }
 
+/*
+Fades the Decal if the angle between the Decal's [AABB.PositionSize] and the target surface becomes too large. A value of 0 projects the Decal regardless of angle, a value of 1 limits the Decal to surfaces that are nearly perpendicular.
+
+Note: Setting [NormalFade] to a value greater than 0.0 has a small performance cost due to the added normal angle computations.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[NormalFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.NormalFade
+*/
 func (self Instance) NormalFade() Float.X {
 	return Float.X(Float.X(class(self).GetNormalFade()))
 }
 
+// SetNormalFade sets the property returned by [GetNormalFade].
 func (self Instance) SetNormalFade(value Float.X) {
 	class(self).SetNormalFade(float64(value))
 }
 
+/*
+Sets the curve over which the decal will fade as the surface gets further from the center of the [AABB.PositionSize]. Only positive values are valid (negative values will be clamped to 0.0). See also [LowerFade].
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
+*/
 func (self Instance) UpperFade() Float.X {
 	return Float.X(Float.X(class(self).GetUpperFade()))
 }
 
+// SetUpperFade sets the property returned by [GetUpperFade].
 func (self Instance) SetUpperFade(value Float.X) {
 	class(self).SetUpperFade(float64(value))
 }
 
+/*
+Sets the curve over which the decal will fade as the surface gets further from the center of the [AABB.PositionSize]. Only positive values are valid (negative values will be clamped to 0.0). See also [UpperFade].
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
+*/
 func (self Instance) LowerFade() Float.X {
 	return Float.X(Float.X(class(self).GetLowerFade()))
 }
 
+// SetLowerFade sets the property returned by [GetLowerFade].
 func (self Instance) SetLowerFade(value Float.X) {
 	class(self).SetLowerFade(float64(value))
 }
 
+/*
+If true, decals will smoothly fade away when far from the active [Camera3D] starting at [DistanceFadeBegin]. The Decal will fade out over [DistanceFadeBegin] + [DistanceFadeLength], after which it will be culled and not sent to the shader at all. Use this to reduce the number of active Decals in a scene and thus improve performance.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeBegin
+[DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeLength
+*/
 func (self Instance) DistanceFadeEnabled() bool {
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
+// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled].
 func (self Instance) SetDistanceFadeEnabled(value bool) {
 	class(self).SetEnableDistanceFade(value)
 }
 
+/*
+The distance from the camera at which the Decal begins to fade away (in 3D units).
+*/
 func (self Instance) DistanceFadeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
+// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin].
 func (self Instance) SetDistanceFadeBegin(value Float.X) {
 	class(self).SetDistanceFadeBegin(float64(value))
 }
 
+/*
+The distance over which the Decal fades (in 3D units). The Decal becomes slowly more transparent over this distance and is completely invisible at the end. Higher values result in a smoother fade-out transition, which is more suited when the camera moves fast.
+*/
 func (self Instance) DistanceFadeLength() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
+// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength].
 func (self Instance) SetDistanceFadeLength(value Float.X) {
 	class(self).SetDistanceFadeLength(float64(value))
 }
 
+/*
+Specifies which [VisualInstance3D.Layers] this decal will project on. By default, Decals affect all layers. This is used so you can specify which types of objects receive the Decal and which do not. This is especially useful so you can ensure that dynamic objects don't accidentally receive a Decal intended for the terrain under them.
+
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }

@@ -162,50 +162,96 @@ func New() Instance {
 	return casted
 }
 
+/*
+The density of the [FogVolume]. Denser objects are more opaque, but may suffer from under-sampling artifacts that look like stripes. Negative values can be used to subtract fog from other [FogVolume]s or global volumetric fog.
+
+Note: Due to limited precision, [Density] values between -0.001 and 0.001 (exclusive) act like 0.0. This does not apply to [Environment.VolumetricFogDensity].
+
+[Density]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial#Instance.Density
+[Environment.VolumetricFogDensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogDensity
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) Density() Float.X {
 	return Float.X(Float.X(class(self).GetDensity()))
 }
 
+// SetDensity sets the property returned by [GetDensity].
 func (self Instance) SetDensity(value Float.X) {
 	class(self).SetDensity(float64(value))
 }
 
+/*
+The single-scattering [Color.RGBA] of the [FogVolume]. Internally, [Albedo] is converted into single-scattering, which is additively blended with other [FogVolume]s and the [Environment.VolumetricFogAlbedo].
+
+[Albedo]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial#Instance.Albedo
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Environment.VolumetricFogAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogAlbedo
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) Albedo() Color.RGBA {
 	return Color.RGBA(class(self).GetAlbedo())
 }
 
+// SetAlbedo sets the property returned by [GetAlbedo].
 func (self Instance) SetAlbedo(value Color.RGBA) {
 	class(self).SetAlbedo(Color.RGBA(value))
 }
 
+/*
+The [Color.RGBA] of the light emitted by the [FogVolume]. Emitted light will not cast light or shadows on other objects, but can be useful for modulating the [Color.RGBA] of the [FogVolume] independently from light sources.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) Emission() Color.RGBA {
 	return Color.RGBA(class(self).GetEmission())
 }
 
+// SetEmission sets the property returned by [GetEmission].
 func (self Instance) SetEmission(value Color.RGBA) {
 	class(self).SetEmission(Color.RGBA(value))
 }
 
+/*
+The rate by which the height-based fog decreases in density as height increases in world space. A high falloff will result in a sharp transition, while a low falloff will result in a smoother transition. A value of 0.0 results in uniform-density fog. The height threshold is determined by the height of the associated [FogVolume].
+
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) HeightFalloff() Float.X {
 	return Float.X(Float.X(class(self).GetHeightFalloff()))
 }
 
+// SetHeightFalloff sets the property returned by [GetHeightFalloff].
 func (self Instance) SetHeightFalloff(value Float.X) {
 	class(self).SetHeightFalloff(float64(value))
 }
 
+/*
+The hardness of the edges of the [FogVolume]. A higher value will result in softer edges, while a lower value will result in harder edges.
+
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) EdgeFade() Float.X {
 	return Float.X(Float.X(class(self).GetEdgeFade()))
 }
 
+// SetEdgeFade sets the property returned by [GetEdgeFade].
 func (self Instance) SetEdgeFade(value Float.X) {
 	class(self).SetEdgeFade(float64(value))
 }
 
+/*
+The 3D texture that is used to scale the [Density] of the [FogVolume]. This can be used to vary fog density within the [FogVolume] with any kind of static pattern. For animated effects, consider using a custom [fog shader].
+
+[Density]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial#Instance.Density
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+[fog shader]: https://docs.godotengine.org/tutorials/shaders/shader_reference/fog_shader.html
+*/
 func (self Instance) DensityTexture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetDensityTexture())
 }
 
+// SetDensityTexture sets the property returned by [GetDensityTexture].
 func (self Instance) SetDensityTexture(value Texture3D.Instance) {
 	class(self).SetDensityTexture(value)
 }

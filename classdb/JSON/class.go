@@ -346,10 +346,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contains the parsed JSON data in any form.
+*/
 func (self Instance) Data() any {
 	return any(class(self).GetData().Interface())
 }
 
+// SetData sets the property returned by [GetData].
 func (self Instance) SetData(value any) {
 	class(self).SetData(variant.New(value))
 }

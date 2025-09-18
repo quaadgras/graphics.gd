@@ -474,90 +474,141 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the tile will have its texture flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).GetFlipH())
 }
 
+// SetFlipH sets the property returned by [GetFlipH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, the tile will have its texture flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).GetFlipV())
 }
 
+// SetFlipV sets the property returned by [GetFlipV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }
 
+/*
+If true, the tile will display transposed, i.e. with horizontal and vertical texture UVs swapped.
+*/
 func (self Instance) Transpose() bool {
 	return bool(class(self).GetTranspose())
 }
 
+// SetTranspose sets the property returned by [GetTranspose].
 func (self Instance) SetTranspose(value bool) {
 	class(self).SetTranspose(value)
 }
 
+/*
+Offsets the position of where the tile is drawn.
+*/
 func (self Instance) TextureOrigin() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTextureOrigin())
 }
 
+// SetTextureOrigin sets the property returned by [GetTextureOrigin].
 func (self Instance) SetTextureOrigin(value Vector2i.XY) {
 	class(self).SetTextureOrigin(Vector2i.XY(value))
 }
 
+/*
+Color modulation of the tile.
+*/
 func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulate sets the property returned by [GetModulate].
 func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+The [Material] to use for this [TileData]. This can be a [CanvasItemMaterial] to use the default shader, or a [ShaderMaterial] to use a custom shader.
+
+[CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[TileData]: https://pkg.go.dev/graphics.gd/classdb/TileData
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 
+/*
+Ordering index of this tile, relative to [TileMapLayer].
+
+[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
+*/
 func (self Instance) ZIndex() int {
 	return int(int(class(self).GetZIndex()))
 }
 
+// SetZIndex sets the property returned by [GetZIndex].
 func (self Instance) SetZIndex(value int) {
 	class(self).SetZIndex(int64(value))
 }
 
+/*
+Vertical point of the tile used for determining y-sorted order.
+*/
 func (self Instance) YSortOrigin() int {
 	return int(int(class(self).GetYSortOrigin()))
 }
 
+// SetYSortOrigin sets the property returned by [GetYSortOrigin].
 func (self Instance) SetYSortOrigin(value int) {
 	class(self).SetYSortOrigin(int64(value))
 }
 
+/*
+ID of the terrain set that the tile uses.
+*/
 func (self Instance) TerrainSet() int {
 	return int(int(class(self).GetTerrainSet()))
 }
 
+// SetTerrainSet sets the property returned by [GetTerrainSet].
 func (self Instance) SetTerrainSet(value int) {
 	class(self).SetTerrainSet(int64(value))
 }
 
+/*
+ID of the terrain from the terrain set that the tile uses.
+*/
 func (self Instance) Terrain() int {
 	return int(int(class(self).GetTerrain()))
 }
 
+// SetTerrain sets the property returned by [GetTerrain].
 func (self Instance) SetTerrain(value int) {
 	class(self).SetTerrain(int64(value))
 }
 
+/*
+Relative probability of this tile being selected when drawing a pattern of random tiles.
+*/
 func (self Instance) Probability() Float.X {
 	return Float.X(Float.X(class(self).GetProbability()))
 }
 
+// SetProbability sets the property returned by [GetProbability].
 func (self Instance) SetProbability(value Float.X) {
 	class(self).SetProbability(float64(value))
 }
@@ -1065,6 +1116,10 @@ func (self class) GetCustomDataByLayerId(layer_id int64) variant.Any { //gd:Tile
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
+
+/*
+Emitted when any of the properties are changed.
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -155,14 +155,21 @@ func New() Instance {
 	return casted
 }
 
+/*
+The size of each texture layer (in pixels).
+*/
 func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2i.XY) {
 	class(self).SetSize(Vector2i.XY(value))
 }
 
+/*
+The number of layers in the texture array.
+*/
 func (self Instance) SetLayers(value int) {
 	class(self).SetLayers(int64(value))
 }

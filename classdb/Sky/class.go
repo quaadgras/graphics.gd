@@ -151,26 +151,48 @@ func New() Instance {
 	return casted
 }
 
+/*
+[Material] used to draw the background. Can be [PanoramaSkyMaterial], [ProceduralSkyMaterial], [PhysicalSkyMaterial], or even a [ShaderMaterial] if you want to use your own custom shader.
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[PanoramaSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/PanoramaSkyMaterial
+[PhysicalSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/PhysicalSkyMaterial
+[ProceduralSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) SkyMaterial() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetSkyMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetSkyMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 
+/*
+The method for generating the radiance map from the sky. The radiance map is a cubemap with increasingly blurry versions of the sky corresponding to different levels of roughness. Radiance maps can be expensive to calculate.
+*/
 func (self Instance) ProcessMode() ProcessMode {
 	return ProcessMode(class(self).GetProcessMode())
 }
 
+// SetProcessMode sets the property returned by [GetProcessMode].
 func (self Instance) SetProcessMode(value ProcessMode) {
 	class(self).SetProcessMode(value)
 }
 
+/*
+The [Sky]'s radiance map size. The higher the radiance map size, the more detailed the lighting from the [Sky] will be.
+
+Note: Some hardware will have trouble with higher radiance sizes, especially [RadianceSize512] and above. Only use such high values on high-end hardware.
+
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
+*/
 func (self Instance) RadianceSize() RadianceSize {
 	return RadianceSize(class(self).GetRadianceSize())
 }
 
+// SetRadianceSize sets the property returned by [GetRadianceSize].
 func (self Instance) SetRadianceSize(value RadianceSize) {
 	class(self).SetRadianceSize(value)
 }

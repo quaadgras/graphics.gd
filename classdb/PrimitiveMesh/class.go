@@ -214,42 +214,76 @@ func New() Instance {
 	return casted
 }
 
+/*
+The current [Material] of the primitive mesh.
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 
+/*
+Overrides the [AABB.PositionSize] with one defined by user for use with frustum culling. Especially useful to avoid unexpected culling when using a shader to offset vertices.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+*/
 func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
+// SetCustomAabb sets the property returned by [GetCustomAabb].
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
+/*
+If true, the order of the vertices in each triangle is reversed, resulting in the backside of the mesh being drawn.
+
+This gives the same result as using [Basematerial3d.CullFront] in [BaseMaterial3D.CullMode].
+
+[BaseMaterial3D.CullMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.CullMode
+*/
 func (self Instance) FlipFaces() bool {
 	return bool(class(self).GetFlipFaces())
 }
 
+// SetFlipFaces sets the property returned by [GetFlipFaces].
 func (self Instance) SetFlipFaces(value bool) {
 	class(self).SetFlipFaces(value)
 }
 
+/*
+If set, generates UV2 UV coordinates applying a padding using the [Uv2Padding] setting. UV2 is needed for lightmapping.
+
+[Uv2Padding]: https://pkg.go.dev/graphics.gd/classdb/PrimitiveMesh#Instance.Uv2Padding
+*/
 func (self Instance) AddUv2() bool {
 	return bool(class(self).GetAddUv2())
 }
 
+// SetAddUv2 sets the property returned by [GetAddUv2].
 func (self Instance) SetAddUv2(value bool) {
 	class(self).SetAddUv2(value)
 }
 
+/*
+If [AddUv2] is set, specifies the padding in pixels applied along seams of the mesh. Lower padding values allow making better use of the lightmap texture (resulting in higher texel density), but may introduce visible lightmap bleeding along edges.
+
+If the size of the lightmap texture can't be determined when generating the mesh, UV2 is calculated assuming a texture size of 1024x1024.
+
+[AddUv2]: https://pkg.go.dev/graphics.gd/classdb/PrimitiveMesh#Instance.AddUv2
+*/
 func (self Instance) Uv2Padding() Float.X {
 	return Float.X(Float.X(class(self).GetUv2Padding()))
 }
 
+// SetUv2Padding sets the property returned by [GetUv2Padding].
 func (self Instance) SetUv2Padding(value Float.X) {
 	class(self).SetUv2Padding(float64(value))
 }

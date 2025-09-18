@@ -233,50 +233,82 @@ func New() Instance {
 	return casted
 }
 
+/*
+Node path that replicated properties are relative to.
+
+If [RootPath] was spawned by a [MultiplayerSpawner], the node will be also be spawned and despawned based on this synchronizer visibility options.
+
+[MultiplayerSpawner]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner
+[RootPath]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.RootPath
+*/
 func (self Instance) RootPath() string {
 	return string(class(self).GetRootPath().String())
 }
 
+// SetRootPath sets the property returned by [GetRootPath].
 func (self Instance) SetRootPath(value string) {
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
 }
 
+/*
+Time interval between synchronizations. Used when the replication is set to [Scenereplicationconfig.ReplicationModeAlways]. If set to 0.0 (the default), synchronizations happen every network process frame.
+*/
 func (self Instance) ReplicationInterval() Float.X {
 	return Float.X(Float.X(class(self).GetReplicationInterval()))
 }
 
+// SetReplicationInterval sets the property returned by [GetReplicationInterval].
 func (self Instance) SetReplicationInterval(value Float.X) {
 	class(self).SetReplicationInterval(float64(value))
 }
 
+/*
+Time interval between delta synchronizations. Used when the replication is set to [Scenereplicationconfig.ReplicationModeOnChange]. If set to 0.0 (the default), delta synchronizations happen every network process frame.
+*/
 func (self Instance) DeltaInterval() Float.X {
 	return Float.X(Float.X(class(self).GetDeltaInterval()))
 }
 
+// SetDeltaInterval sets the property returned by [GetDeltaInterval].
 func (self Instance) SetDeltaInterval(value Float.X) {
 	class(self).SetDeltaInterval(float64(value))
 }
 
+/*
+Resource containing which properties to synchronize.
+*/
 func (self Instance) ReplicationConfig() SceneReplicationConfig.Instance {
 	return SceneReplicationConfig.Instance(class(self).GetReplicationConfig())
 }
 
+// SetReplicationConfig sets the property returned by [GetReplicationConfig].
 func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) {
 	class(self).SetReplicationConfig(value)
 }
 
+/*
+Specifies when visibility filters are updated.
+*/
 func (self Instance) VisibilityUpdateMode() VisibilityUpdateMode {
 	return VisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
+// SetVisibilityUpdateMode sets the property returned by [GetVisibilityUpdateMode].
 func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) {
 	class(self).SetVisibilityUpdateMode(value)
 }
 
+/*
+Whether synchronization should be visible to all peers by default. See [SetVisibilityFor] and [AddVisibilityFilter] for ways of configuring fine-grained visibility options.
+
+[AddVisibilityFilter]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.AddVisibilityFilter
+[SetVisibilityFor]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.SetVisibilityFor
+*/
 func (self Instance) PublicVisibility() bool {
 	return bool(class(self).IsVisibilityPublic())
 }
 
+// SetPublicVisibility sets the property returned by [IsVisibilityPublic].
 func (self Instance) SetPublicVisibility(value bool) {
 	class(self).SetVisibilityPublic(value)
 }
@@ -401,6 +433,10 @@ func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchroniz
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a new synchronization state is received by this synchronizer after the properties have been updated.
+*/
 func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -413,6 +449,9 @@ func (self class) Synchronized() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Synchronized`))))
 }
 
+/*
+Emitted when a new delta synchronization state is received by this synchronizer after the properties have been updated.
+*/
 func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -425,6 +464,11 @@ func (self class) DeltaSynchronized() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeltaSynchronized`))))
 }
 
+/*
+Emitted when visibility of 'for_peer' is updated. See [UpdateVisibility].
+
+[UpdateVisibility]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.UpdateVisibility
+*/
 func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

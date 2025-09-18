@@ -174,26 +174,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The localized name of this action set.
+*/
 func (self Instance) LocalizedName() string {
 	return string(class(self).GetLocalizedName().String())
 }
 
+// SetLocalizedName sets the property returned by [GetLocalizedName].
 func (self Instance) SetLocalizedName(value string) {
 	class(self).SetLocalizedName(String.New(value))
 }
 
+/*
+The priority for this action set.
+*/
 func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
+// SetPriority sets the property returned by [GetPriority].
 func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(int64(value))
 }
 
+/*
+Collection of actions for this action set.
+*/
 func (self Instance) Actions() []OpenXRAction.Instance {
 	return []OpenXRAction.Instance(gd.ArrayAs[[]OpenXRAction.Instance](gd.InternalArray(class(self).GetActions())))
 }
 
+// SetActions sets the property returned by [GetActions].
 func (self Instance) SetActions(value []OpenXRAction.Instance) {
 	class(self).SetActions(gd.EngineArrayFromSlice(value))
 }

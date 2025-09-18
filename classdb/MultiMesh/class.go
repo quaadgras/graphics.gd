@@ -297,58 +297,104 @@ func New() Instance {
 	return casted
 }
 
+/*
+Format of transform used to transform mesh, either 2D or 3D.
+*/
 func (self Instance) TransformFormat() TransformFormat {
 	return TransformFormat(class(self).GetTransformFormat())
 }
 
+// SetTransformFormat sets the property returned by [GetTransformFormat].
 func (self Instance) SetTransformFormat(value TransformFormat) {
 	class(self).SetTransformFormat(value)
 }
 
+/*
+If true, the [MultiMesh] will use color data (see [SetInstanceColor]). Can only be set when [InstanceCount] is 0 or less. This means that you need to call this method before setting the instance count, or temporarily reset it to 0.
+
+[InstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.InstanceCount
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
+*/
 func (self Instance) UseColors() bool {
 	return bool(class(self).IsUsingColors())
 }
 
+// SetUseColors sets the property returned by [IsUsingColors].
 func (self Instance) SetUseColors(value bool) {
 	class(self).SetUseColors(value)
 }
 
+/*
+If true, the [MultiMesh] will use custom data (see [SetInstanceCustomData]). Can only be set when [InstanceCount] is 0 or less. This means that you need to call this method before setting the instance count, or temporarily reset it to 0.
+
+[InstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.InstanceCount
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
+*/
 func (self Instance) UseCustomData() bool {
 	return bool(class(self).IsUsingCustomData())
 }
 
+// SetUseCustomData sets the property returned by [IsUsingCustomData].
 func (self Instance) SetUseCustomData(value bool) {
 	class(self).SetUseCustomData(value)
 }
 
+/*
+Custom AABB for this MultiMesh resource. Setting this manually prevents costly runtime AABB recalculations.
+*/
 func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
+// SetCustomAabb sets the property returned by [GetCustomAabb].
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
+/*
+Number of instances that will get drawn. This clears and (re)sizes the buffers. Setting data format or flags afterwards will have no effect.
+
+By default, all instances are drawn but you can limit this with [VisibleInstanceCount].
+
+[VisibleInstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.VisibleInstanceCount
+*/
 func (self Instance) InstanceCount() int {
 	return int(int(class(self).GetInstanceCount()))
 }
 
+// SetInstanceCount sets the property returned by [GetInstanceCount].
 func (self Instance) SetInstanceCount(value int) {
 	class(self).SetInstanceCount(int64(value))
 }
 
+/*
+Limits the number of instances drawn, -1 draws all instances. Changing this does not change the sizes of the buffers.
+*/
 func (self Instance) VisibleInstanceCount() int {
 	return int(int(class(self).GetVisibleInstanceCount()))
 }
 
+// SetVisibleInstanceCount sets the property returned by [GetVisibleInstanceCount].
 func (self Instance) SetVisibleInstanceCount(value int) {
 	class(self).SetVisibleInstanceCount(int64(value))
 }
 
+/*
+[Mesh] resource to be instanced.
+
+The looks of the individual instances can be modified using [SetInstanceColor] and [SetInstanceCustomData].
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
+[SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
@@ -357,14 +403,23 @@ func (self Instance) Buffer() []float32 {
 	return []float32(slices.Collect(class(self).GetBuffer().Values()))
 }
 
+// SetBuffer sets the property returned by [GetBuffer].
 func (self Instance) SetBuffer(value []float32) {
 	class(self).SetBuffer(Packed.New(value...))
 }
 
+/*
+Choose whether to use an interpolation method that favors speed or quality.
+
+When using low physics tick rates (typically below 20) or high rates of object rotation, you may get better results from the high quality setting.
+
+Note: Fast quality does not equate to low quality. Except in the special cases mentioned above, the quality should be comparable to high quality.
+*/
 func (self Instance) PhysicsInterpolationQuality() PhysicsInterpolationQuality {
 	return PhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
 }
 
+// SetPhysicsInterpolationQuality sets the property returned by [GetPhysicsInterpolationQuality].
 func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) {
 	class(self).SetPhysicsInterpolationQuality(value)
 }

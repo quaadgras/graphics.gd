@@ -154,34 +154,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The touch index in the case of a multi-touch event. One index = one finger.
+*/
 func (self Instance) Index() int {
 	return int(int(class(self).GetIndex()))
 }
 
+// SetIndex sets the property returned by [GetIndex].
 func (self Instance) SetIndex(value int) {
 	class(self).SetIndex(int64(value))
 }
 
+/*
+The touch position in the viewport the node is in, using the coordinate system of this viewport.
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
+/*
+If true, the touch event has been canceled.
+*/
 func (self Instance) SetCanceled(value bool) {
 	class(self).SetCanceled(value)
 }
 
+/*
+If true, the touch's state is pressed. If false, the touch's state is released.
+*/
 func (self Instance) SetPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
+/*
+If true, the touch's state is a double tap.
+*/
 func (self Instance) DoubleTap() bool {
 	return bool(class(self).IsDoubleTap())
 }
 
+// SetDoubleTap sets the property returned by [IsDoubleTap].
 func (self Instance) SetDoubleTap(value bool) {
 	class(self).SetDoubleTap(value)
 }

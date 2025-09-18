@@ -250,18 +250,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the render priority for objects in 3D scenes. Higher priority objects will be sorted in front of lower priority objects. In other words, all objects with [RenderPriority] 1 will render on top of all objects with [RenderPriority] 0.
+
+Note: This only applies to [StandardMaterial3D]s and [ShaderMaterial]s with type "Spatial".
+
+Note: This will not impact how transparent objects are sorted relative to opaque objects or how dynamic meshes will be sorted relative to other opaque meshes. This is because all transparent objects are drawn after all opaque objects and all dynamic opaque meshes are drawn before other opaque meshes.
+
+[RenderPriority]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.RenderPriority
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
+*/
 func (self Instance) RenderPriority() RenderPriority {
 	return RenderPriority(RenderPriority(class(self).GetRenderPriority()))
 }
 
+// SetRenderPriority sets the property returned by [GetRenderPriority].
 func (self Instance) SetRenderPriority(value RenderPriority) {
 	class(self).SetRenderPriority(int64(value))
 }
 
+/*
+Sets the [Material] to be used for the next pass. This renders the object again using a different material.
+
+Note: [NextPass] materials are not necessarily drawn immediately after the source [Material]. Draw order is determined by material properties, [RenderPriority], and distance to camera.
+
+Note: This only applies to [StandardMaterial3D]s and [ShaderMaterial]s with type "Spatial".
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[NextPass]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.NextPass
+[RenderPriority]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.RenderPriority
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
+*/
 func (self Instance) NextPass() Instance {
 	return Instance(class(self).GetNextPass())
 }
 
+// SetNextPass sets the property returned by [GetNextPass].
 func (self Instance) SetNextPass(value Instance) {
 	class(self).SetNextPass(value)
 }

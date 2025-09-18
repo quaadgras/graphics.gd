@@ -172,6 +172,9 @@ func New() Instance {
 	return casted
 }
 
+/*
+External texture size.
+*/
 func (self Instance) SetSize(value Vector2.XY) {
 	class(self).SetSize(Vector2.XY(value))
 }

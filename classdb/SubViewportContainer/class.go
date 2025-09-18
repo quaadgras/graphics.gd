@@ -189,26 +189,57 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the sub-viewport will be automatically resized to the control's size.
+
+Note: If true, this will prohibit changing [SubViewport.Size] of its children manually.
+
+[SubViewport.Size]: https://pkg.go.dev/graphics.gd/classdb/SubViewport#Instance.Size
+*/
 func (self Instance) Stretch() bool {
 	return bool(class(self).IsStretchEnabled())
 }
 
+// SetStretch sets the property returned by [IsStretchEnabled].
 func (self Instance) SetStretch(value bool) {
 	class(self).SetStretch(value)
 }
 
+/*
+Divides the sub-viewport's effective resolution by this value while preserving its scale. This can be used to speed up rendering.
+
+For example, a 1280×720 sub-viewport with [StretchShrink] set to 2 will be rendered at 640×360 while occupying the same size in the container.
+
+Note: [Stretch] must be true for this property to work.
+
+[Stretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.Stretch
+[StretchShrink]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.StretchShrink
+*/
 func (self Instance) StretchShrink() int {
 	return int(int(class(self).GetStretchShrink()))
 }
 
+// SetStretchShrink sets the property returned by [GetStretchShrink].
 func (self Instance) SetStretchShrink(value int) {
 	class(self).SetStretchShrink(int64(value))
 }
 
+/*
+Configure, if either the [SubViewportContainer] or alternatively the [Control] nodes of its [SubViewport] children should be available as targets of mouse-related functionalities, like identifying the drop target in drag-and-drop operations or cursor shape of hovered [Control] node.
+
+If false, the [Control] nodes inside its [SubViewport] children are considered as targets.
+
+If true, the [SubViewportContainer] itself will be considered as a target.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
+[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
+*/
 func (self Instance) MouseTarget() bool {
 	return bool(class(self).IsMouseTargetEnabled())
 }
 
+// SetMouseTarget sets the property returned by [IsMouseTargetEnabled].
 func (self Instance) SetMouseTarget(value bool) {
 	class(self).SetMouseTarget(value)
 }

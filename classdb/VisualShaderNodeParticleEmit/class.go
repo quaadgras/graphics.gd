@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Flags used to override the properties defined in the sub-emitter's process material.
+*/
 func (self Instance) Flags() EmitFlags {
 	return EmitFlags(class(self).GetFlags())
 }
 
+// SetFlags sets the property returned by [GetFlags].
 func (self Instance) SetFlags(value EmitFlags) {
 	class(self).SetFlags(value)
 }

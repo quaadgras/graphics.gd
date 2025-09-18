@@ -146,10 +146,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+If false, the blended animations' frame are stopped when the blend value is 0.
+
+If true, forcing the blended animations to advance frame.
+*/
 func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
+// SetSync sets the property returned by [IsUsingSync].
 func (self Instance) SetSync(value bool) {
 	class(self).SetUseSync(value)
 }

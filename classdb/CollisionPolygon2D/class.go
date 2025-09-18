@@ -161,42 +161,73 @@ func New() Instance {
 	return casted
 }
 
+/*
+Collision build mode.
+*/
 func (self Instance) BuildMode() BuildMode {
 	return BuildMode(class(self).GetBuildMode())
 }
 
+// SetBuildMode sets the property returned by [GetBuildMode].
 func (self Instance) SetBuildMode(value BuildMode) {
 	class(self).SetBuildMode(value)
 }
 
+/*
+The polygon's list of vertices. Each point will be connected to the next, and the final point will be connected to the first.
+
+Note: The returned vertices are in the local coordinate space of the given [CollisionPolygon2D].
+
+[CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }
 
+/*
+If true, no collisions will be detected. This property should be changed with [Object.SetDeferred].
+
+[Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
+*/
 func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
+// SetDisabled sets the property returned by [IsDisabled].
 func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
+/*
+If true, only edges that face up, relative to [CollisionPolygon2D]'s rotation, will collide with other objects.
+
+Note: This property has no effect if this [CollisionPolygon2D] is a child of an [Area2D] node.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
+*/
 func (self Instance) OneWayCollision() bool {
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
+// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled].
 func (self Instance) SetOneWayCollision(value bool) {
 	class(self).SetOneWayCollision(value)
 }
 
+/*
+The margin used for one-way collision (in pixels). Higher values will make the shape thicker, and work better for colliders that enter the polygon at a high velocity.
+*/
 func (self Instance) OneWayCollisionMargin() Float.X {
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
+// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin].
 func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 	class(self).SetOneWayCollisionMargin(float64(value))
 }

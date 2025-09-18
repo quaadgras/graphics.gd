@@ -242,18 +242,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+Initializes the random number generator state based on the given seed value. A given seed will give a reproducible sequence of pseudo-random numbers.
+
+Note: The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
+
+Note: Setting this property produces a side effect of changing the internal [State], so make sure to initialize the seed before modifying the [State]:
+
+Note: The default value of this property is pseudo-random, and changes when calling [Randomize]. The 0 value documented here is a placeholder, and not the actual default seed.
+
+[Randomize]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Randomize
+[State]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.State
+*/
 func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
+// SetSeed sets the property returned by [GetSeed].
 func (self Instance) SetSeed(value int) {
 	class(self).SetSeed(int64(value))
 }
 
+/*
+The current state of the random number generator. Save and restore this property to restore the generator to a previous state:
+
+Note: Do not set state to arbitrary values, since the random number generator requires the state to have certain qualities to behave properly. It should only be set to values that came from the state property itself. To initialize the random number generator with arbitrary input, use [Seed] instead.
+
+Note: The default value of this property is pseudo-random, and changes when calling [Randomize]. The 0 value documented here is a placeholder, and not the actual default state.
+
+[Randomize]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Randomize
+[Seed]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Seed
+*/
 func (self Instance) State() int {
 	return int(int(class(self).GetState()))
 }
 
+// SetState sets the property returned by [GetState].
 func (self Instance) SetState(value int) {
 	class(self).SetState(int64(value))
 }

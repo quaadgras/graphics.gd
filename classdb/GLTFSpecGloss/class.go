@@ -153,42 +153,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+The diffuse texture.
+*/
 func (self Instance) DiffuseImg() Image.Instance {
 	return Image.Instance(class(self).GetDiffuseImg())
 }
 
+// SetDiffuseImg sets the property returned by [GetDiffuseImg].
 func (self Instance) SetDiffuseImg(value Image.Instance) {
 	class(self).SetDiffuseImg(value)
 }
 
+/*
+The reflected diffuse factor of the material.
+*/
 func (self Instance) DiffuseFactor() Color.RGBA {
 	return Color.RGBA(class(self).GetDiffuseFactor())
 }
 
+// SetDiffuseFactor sets the property returned by [GetDiffuseFactor].
 func (self Instance) SetDiffuseFactor(value Color.RGBA) {
 	class(self).SetDiffuseFactor(Color.RGBA(value))
 }
 
+/*
+The glossiness or smoothness of the material.
+*/
 func (self Instance) GlossFactor() Float.X {
 	return Float.X(Float.X(class(self).GetGlossFactor()))
 }
 
+// SetGlossFactor sets the property returned by [GetGlossFactor].
 func (self Instance) SetGlossFactor(value Float.X) {
 	class(self).SetGlossFactor(float64(value))
 }
 
+/*
+The specular RGB color of the material. The alpha channel is unused.
+*/
 func (self Instance) SpecularFactor() Color.RGBA {
 	return Color.RGBA(class(self).GetSpecularFactor())
 }
 
+// SetSpecularFactor sets the property returned by [GetSpecularFactor].
 func (self Instance) SetSpecularFactor(value Color.RGBA) {
 	class(self).SetSpecularFactor(Color.RGBA(value))
 }
 
+/*
+The specular-glossiness texture.
+*/
 func (self Instance) SpecGlossImg() Image.Instance {
 	return Image.Instance(class(self).GetSpecGlossImg())
 }
 
+// SetSpecGlossImg sets the property returned by [GetSpecGlossImg].
 func (self Instance) SetSpecGlossImg(value Image.Instance) {
 	class(self).SetSpecGlossImg(value)
 }

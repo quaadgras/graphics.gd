@@ -451,98 +451,162 @@ func New() Instance {
 	return casted
 }
 
+/*
+The assigned [MeshLibrary].
+
+[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
+*/
 func (self Instance) MeshLibrary() MeshLibrary.Instance {
 	return MeshLibrary.Instance(class(self).GetMeshLibrary())
 }
 
+// SetMeshLibrary sets the property returned by [GetMeshLibrary].
 func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) {
 	class(self).SetMeshLibrary(value)
 }
 
+/*
+Overrides the default friction and bounce physics properties for the whole [GridMap].
+
+[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
+*/
 func (self Instance) PhysicsMaterial() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterial())
 }
 
+// SetPhysicsMaterial sets the property returned by [GetPhysicsMaterial].
 func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterial(value)
 }
 
+/*
+The dimensions of the grid's cells.
+
+This does not affect the size of the meshes. See [CellScale].
+
+[CellScale]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CellScale
+*/
 func (self Instance) CellSize() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCellSize())
 }
 
+// SetCellSize sets the property returned by [GetCellSize].
 func (self Instance) SetCellSize(value Vector3.XYZ) {
 	class(self).SetCellSize(Vector3.XYZ(value))
 }
 
+/*
+The size of each octant measured in number of cells. This applies to all three axis.
+*/
 func (self Instance) CellOctantSize() int {
 	return int(int(class(self).GetOctantSize()))
 }
 
+// SetCellOctantSize sets the property returned by [GetOctantSize].
 func (self Instance) SetCellOctantSize(value int) {
 	class(self).SetOctantSize(int64(value))
 }
 
+/*
+If true, grid items are centered on the X axis.
+*/
 func (self Instance) CellCenterX() bool {
 	return bool(class(self).GetCenterX())
 }
 
+// SetCellCenterX sets the property returned by [GetCenterX].
 func (self Instance) SetCellCenterX(value bool) {
 	class(self).SetCenterX(value)
 }
 
+/*
+If true, grid items are centered on the Y axis.
+*/
 func (self Instance) CellCenterY() bool {
 	return bool(class(self).GetCenterY())
 }
 
+// SetCellCenterY sets the property returned by [GetCenterY].
 func (self Instance) SetCellCenterY(value bool) {
 	class(self).SetCenterY(value)
 }
 
+/*
+If true, grid items are centered on the Z axis.
+*/
 func (self Instance) CellCenterZ() bool {
 	return bool(class(self).GetCenterZ())
 }
 
+// SetCellCenterZ sets the property returned by [GetCenterZ].
 func (self Instance) SetCellCenterZ(value bool) {
 	class(self).SetCenterZ(value)
 }
 
+/*
+The scale of the cell items.
+
+This does not affect the size of the grid cells themselves, only the items in them. This can be used to make cell items overlap their neighbors.
+*/
 func (self Instance) CellScale() Float.X {
 	return Float.X(Float.X(class(self).GetCellScale()))
 }
 
+// SetCellScale sets the property returned by [GetCellScale].
 func (self Instance) SetCellScale(value Float.X) {
 	class(self).SetCellScale(float64(value))
 }
 
+/*
+The physics layers this GridMap is in.
+
+GridMaps act as static bodies, meaning they aren't affected by gravity or other forces. They only affect other physics bodies that collide with them.
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The physics layers this GridMap detects collisions in. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The priority used to solve colliding when occurring penetration. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
+*/
 func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
+// SetCollisionPriority sets the property returned by [GetCollisionPriority].
 func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(float64(value))
 }
 
+/*
+If true, this GridMap creates a navigation region for each cell that uses a [MeshLibrary] item with a navigation mesh. The created navigation region will use the navigation layers bitmask assigned to the [MeshLibrary]'s item.
+
+[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
+*/
 func (self Instance) BakeNavigation() bool {
 	return bool(class(self).IsBakingNavigation())
 }
 
+// SetBakeNavigation sets the property returned by [IsBakingNavigation].
 func (self Instance) SetBakeNavigation(value bool) {
 	class(self).SetBakeNavigation(value)
 }
@@ -967,6 +1031,12 @@ func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size f
 		lightmap_uv_texel_size float64
 	}{gen_lightmap_uv, lightmap_uv_texel_size})
 }
+
+/*
+Emitted when [CellSize] changes.
+
+[CellSize]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CellSize
+*/
 func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -979,6 +1049,11 @@ func (self class) CellSizeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CellSizeChanged`))))
 }
 
+/*
+Emitted when the [MeshLibrary] of this GridMap changes.
+
+[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

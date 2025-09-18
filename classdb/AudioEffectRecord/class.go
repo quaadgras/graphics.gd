@@ -180,10 +180,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Specifies the format in which the sample will be recorded.
+*/
 func (self Instance) Format() AudioStreamWAV.Format {
 	return AudioStreamWAV.Format(class(self).GetFormat())
 }
 
+// SetFormat sets the property returned by [GetFormat].
 func (self Instance) SetFormat(value AudioStreamWAV.Format) {
 	class(self).SetFormat(value)
 }

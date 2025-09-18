@@ -150,26 +150,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, closes the polygon. A closed OccluderPolygon2D occludes the light coming from any direction. An opened OccluderPolygon2D occludes the light only at its outline's direction.
+*/
 func (self Instance) Closed() bool {
 	return bool(class(self).IsClosed())
 }
 
+// SetClosed sets the property returned by [IsClosed].
 func (self Instance) SetClosed(value bool) {
 	class(self).SetClosed(value)
 }
 
+/*
+The culling mode to use.
+*/
 func (self Instance) CullMode() CullMode {
 	return CullMode(class(self).GetCullMode())
 }
 
+// SetCullMode sets the property returned by [GetCullMode].
 func (self Instance) SetCullMode(value CullMode) {
 	class(self).SetCullMode(value)
 }
 
+/*
+A [Vector2.XY] array with the index for polygon's vertices positions.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }

@@ -176,50 +176,80 @@ func New() Instance {
 	return casted
 }
 
+/*
+Title of the frame.
+*/
 func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
+// SetTitle sets the property returned by [GetTitle].
 func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(String.New(value))
 }
 
+/*
+If true, the frame's rect will be adjusted automatically to enclose all attached [GraphElement]s.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) AutoshrinkEnabled() bool {
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
+// SetAutoshrinkEnabled sets the property returned by [IsAutoshrinkEnabled].
 func (self Instance) SetAutoshrinkEnabled(value bool) {
 	class(self).SetAutoshrinkEnabled(value)
 }
 
+/*
+The margin around the attached nodes that is used to calculate the size of the frame when [AutoshrinkEnabled] is true.
+
+[AutoshrinkEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkEnabled
+*/
 func (self Instance) AutoshrinkMargin() int {
 	return int(int(class(self).GetAutoshrinkMargin()))
 }
 
+// SetAutoshrinkMargin sets the property returned by [GetAutoshrinkMargin].
 func (self Instance) SetAutoshrinkMargin(value int) {
 	class(self).SetAutoshrinkMargin(int64(value))
 }
 
+/*
+The margin inside the frame that can be used to drag the frame.
+*/
 func (self Instance) DragMargin() int {
 	return int(int(class(self).GetDragMargin()))
 }
 
+// SetDragMargin sets the property returned by [GetDragMargin].
 func (self Instance) SetDragMargin(value int) {
 	class(self).SetDragMargin(int64(value))
 }
 
+/*
+If true, the tint color will be used to tint the frame.
+*/
 func (self Instance) TintColorEnabled() bool {
 	return bool(class(self).IsTintColorEnabled())
 }
 
+// SetTintColorEnabled sets the property returned by [IsTintColorEnabled].
 func (self Instance) SetTintColorEnabled(value bool) {
 	class(self).SetTintColorEnabled(value)
 }
 
+/*
+The color of the frame when [TintColorEnabled] is true.
+
+[TintColorEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.TintColorEnabled
+*/
 func (self Instance) TintColor() Color.RGBA {
 	return Color.RGBA(class(self).GetTintColor())
 }
 
+// SetTintColor sets the property returned by [GetTintColor].
 func (self Instance) SetTintColor(value Color.RGBA) {
 	class(self).SetTintColor(Color.RGBA(value))
 }
@@ -310,6 +340,13 @@ func (self class) GetTintColor() Color.RGBA { //gd:GraphFrame.get_tint_color
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when [AutoshrinkEnabled] or [AutoshrinkMargin] changes.
+
+[AutoshrinkEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkEnabled
+[AutoshrinkMargin]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkMargin
+*/
 func (self Instance) OnAutoshrinkChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

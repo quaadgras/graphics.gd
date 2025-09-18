@@ -203,162 +203,276 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, texture will be centered.
+*/
 func (self Instance) Centered() bool {
 	return bool(class(self).IsCentered())
 }
 
+// SetCentered sets the property returned by [IsCentered].
 func (self Instance) SetCentered(value bool) {
 	class(self).SetCentered(value)
 }
 
+/*
+The texture's drawing offset.
+
+Note: When you increase [Offset].y in Sprite3D, the sprite moves upward in world space (i.e., +Y is up).
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D#Instance.Offset
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+If true, texture is flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
+// SetFlipH sets the property returned by [IsFlippedH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, texture is flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
+// SetFlipV sets the property returned by [IsFlippedV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }
 
+/*
+A color value used to multiply the texture's colors. Can be used for mood-coloring or to simulate the color of ambient light.
+
+Note: Unlike [CanvasItem.Modulate] for 2D, colors with values above 1.0 (overbright) are not supported.
+
+Note: If a [GeometryInstance3D.MaterialOverride] is defined on the [SpriteBase3D], the material override must be configured to take vertex colors into account for albedo. Otherwise, the color defined in [Modulate] will be ignored. For a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
+[GeometryInstance3D.MaterialOverride]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverride
+[Modulate]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D#Instance.Modulate
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[SpriteBase3D]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D
+*/
 func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulate sets the property returned by [GetModulate].
 func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+The size of one pixel's width on the sprite to scale it in 3D.
+*/
 func (self Instance) PixelSize() Float.X {
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
+// SetPixelSize sets the property returned by [GetPixelSize].
 func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(float64(value))
 }
 
+/*
+The direction in which the front of the texture faces.
+*/
 func (self Instance) Axis() Vector3.Axis {
 	return Vector3.Axis(class(self).GetAxis())
 }
 
+// SetAxis sets the property returned by [GetAxis].
 func (self Instance) SetAxis(value Vector3.Axis) {
 	class(self).SetAxis(value)
 }
 
+/*
+The billboard mode to use for the sprite.
+
+Note: When billboarding is enabled and the material also casts shadows, billboards will face the camera in the scene when rendering shadows. In scenes with multiple cameras, the intended shadow cannot be determined and this will result in undefined behavior. See [GitHub Pull Request #72638] for details.
+
+[GitHub Pull Request #72638]: https://github.com/godotengine/godot/pull/72638
+*/
 func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
 	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
+// SetBillboard sets the property returned by [GetBillboardMode].
 func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
+/*
+If true, the texture's transparency and the opacity are used to make those parts of the sprite invisible.
+*/
 func (self Instance) Transparent() bool {
 	return bool(class(self).GetDrawFlag(0))
 }
 
+// SetTransparent sets the property returned by [GetDrawFlag].
 func (self Instance) SetTransparent(value bool) {
 	class(self).SetDrawFlag(0, value)
 }
 
+/*
+If true, the [Light3D] in the [Environment] has effects on the sprite.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+*/
 func (self Instance) Shaded() bool {
 	return bool(class(self).GetDrawFlag(1))
 }
 
+// SetShaded sets the property returned by [GetDrawFlag].
 func (self Instance) SetShaded(value bool) {
 	class(self).SetDrawFlag(1, value)
 }
 
+/*
+If true, texture can be seen from the back as well, if false, it is invisible when looking at it from behind.
+*/
 func (self Instance) DoubleSided() bool {
 	return bool(class(self).GetDrawFlag(2))
 }
 
+// SetDoubleSided sets the property returned by [GetDrawFlag].
 func (self Instance) SetDoubleSided(value bool) {
 	class(self).SetDrawFlag(2, value)
 }
 
+/*
+If true, depth testing is disabled and the object will be drawn in render order.
+*/
 func (self Instance) NoDepthTest() bool {
 	return bool(class(self).GetDrawFlag(3))
 }
 
+// SetNoDepthTest sets the property returned by [GetDrawFlag].
 func (self Instance) SetNoDepthTest(value bool) {
 	class(self).SetDrawFlag(3, value)
 }
 
+/*
+If true, the texture is rendered at the same size regardless of distance. The texture's size on screen is the same as if the camera was 1.0 units away from the texture's origin, regardless of the actual distance from the camera. The [Camera3D]'s field of view (or [Camera3D.Size] when in orthogonal/frustum mode) still affects the size the sprite is drawn at.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
+*/
 func (self Instance) FixedSize() bool {
 	return bool(class(self).GetDrawFlag(4))
 }
 
+// SetFixedSize sets the property returned by [GetDrawFlag].
 func (self Instance) SetFixedSize(value bool) {
 	class(self).SetDrawFlag(4, value)
 }
 
+/*
+The alpha cutting mode to use for the sprite.
+*/
 func (self Instance) AlphaCut() AlphaCutMode {
 	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
+// SetAlphaCut sets the property returned by [GetAlphaCutMode].
 func (self Instance) SetAlphaCut(value AlphaCutMode) {
 	class(self).SetAlphaCutMode(value)
 }
 
+/*
+Threshold at which the alpha scissor will discard values.
+*/
 func (self Instance) AlphaScissorThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
+// SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold].
 func (self Instance) SetAlphaScissorThreshold(value Float.X) {
 	class(self).SetAlphaScissorThreshold(float64(value))
 }
 
+/*
+The hashing scale for Alpha Hash. Recommended values between 0 and 2.
+*/
 func (self Instance) AlphaHashScale() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
+// SetAlphaHashScale sets the property returned by [GetAlphaHashScale].
 func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
+/*
+The type of alpha antialiasing to apply.
+*/
 func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
 	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
+// SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing].
 func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
+/*
+Threshold at which antialiasing will be applied on the alpha channel.
+*/
 func (self Instance) AlphaAntialiasingEdge() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
+// SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge].
 func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
+/*
+Filter flags for the texture.
+
+Note: Linear filtering may cause artifacts around the edges, which are especially noticeable on opaque textures. To prevent this, use textures with transparent or identical colors around the edges.
+*/
 func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
 	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
+// SetTextureFilter sets the property returned by [GetTextureFilter].
 func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
+/*
+Sets the render priority for the sprite. Higher priority objects will be sorted in front of lower priority objects.
+
+Note: This only applies if [AlphaCut] is set to [AlphaCutDisabled] (default value).
+
+Note: This only applies to sorting of transparent objects. This will not impact how transparent objects are sorted relative to opaque objects. This is because opaque objects are not sorted, while transparent objects are sorted from back to front (subject to priority).
+
+[AlphaCut]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D#Instance.AlphaCut
+*/
 func (self Instance) RenderPriority() int {
 	return int(int(class(self).GetRenderPriority()))
 }
 
+// SetRenderPriority sets the property returned by [GetRenderPriority].
 func (self Instance) SetRenderPriority(value int) {
 	class(self).SetRenderPriority(int64(value))
 }

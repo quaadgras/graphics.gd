@@ -146,10 +146,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+A 4D vector (represented as a [Quaternion.IJKX]) constant which represents the state of this node.
+
+[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
+*/
 func (self Instance) Constant() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetConstant())
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value Quaternion.IJKX) {
 	class(self).SetConstant(value)
 }

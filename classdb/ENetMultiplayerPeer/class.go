@@ -242,6 +242,13 @@ func New() Instance {
 	return casted
 }
 
+/*
+The underlying [ENetConnection] created after [CreateClient] and [CreateServer].
+
+[CreateClient]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.CreateClient
+[CreateServer]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.CreateServer
+[ENetConnection]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection
+*/
 func (self Instance) Host() ENetConnection.Instance {
 	return ENetConnection.Instance(class(self).GetHost())
 }

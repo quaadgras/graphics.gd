@@ -326,6 +326,10 @@ func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) 
 		enabled bool
 	}{pointers.Get(gd.InternalString(path)), line, enabled})
 }
+
+/*
+Emitted when a remote instance is attached to this session (i.e. the session becomes active).
+*/
 func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -338,6 +342,9 @@ func (self class) Started() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Started`))))
 }
 
+/*
+Emitted when a remote instance is detached from this session (i.e. the session becomes inactive).
+*/
 func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -350,6 +357,9 @@ func (self class) Stopped() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Stopped`))))
 }
 
+/*
+Emitted when the attached remote instance enters a break state. If 'can_debug' is true, the remote instance will enter the debug loop.
+*/
 func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -362,6 +372,9 @@ func (self class) Breaked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Breaked`))))
 }
 
+/*
+Emitted when the attached remote instance exits a break state.
+*/
 func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

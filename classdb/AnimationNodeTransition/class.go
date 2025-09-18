@@ -223,30 +223,54 @@ func New() Instance {
 	return casted
 }
 
+/*
+Cross-fading time (in seconds) between each animation connected to the inputs.
+
+Note: [AnimationNodeTransition] transitions the current state immediately after the start of the fading. The precise remaining time can only be inferred from the main animation. When [AnimationNodeOutput] is considered as the most upstream, so the [XfadeTime] is not scaled depending on the downstream delta. See also [AnimationNodeOneShot.FadeoutTime].
+
+[AnimationNodeOneShot.FadeoutTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.FadeoutTime
+[AnimationNodeOutput]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOutput
+[AnimationNodeTransition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition
+[XfadeTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition#Instance.XfadeTime
+*/
 func (self Instance) XfadeTime() Float.X {
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
+// SetXfadeTime sets the property returned by [GetXfadeTime].
 func (self Instance) SetXfadeTime(value Float.X) {
 	class(self).SetXfadeTime(float64(value))
 }
 
+/*
+Determines how cross-fading between animations is eased. If empty, the transition will be linear. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) XfadeCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
+// SetXfadeCurve sets the property returned by [GetXfadeCurve].
 func (self Instance) SetXfadeCurve(value Curve.Instance) {
 	class(self).SetXfadeCurve(value)
 }
 
+/*
+If true, allows transition to the self state. When the reset option is enabled in input, the animation is restarted. If false, nothing happens on the transition to the self state.
+*/
 func (self Instance) AllowTransitionToSelf() bool {
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
+// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf].
 func (self Instance) SetAllowTransitionToSelf(value bool) {
 	class(self).SetAllowTransitionToSelf(value)
 }
 
+/*
+The number of enabled input ports for this animation node.
+*/
 func (self Instance) SetInputCount(value int) {
 	class(self).SetInputCount(int64(value))
 }

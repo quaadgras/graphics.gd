@@ -147,18 +147,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the class this resource was supposed to be (see [Object.GetClass]).
+
+[Object.GetClass]: https://pkg.go.dev/graphics.gd/variant/Object#GetClass
+*/
 func (self Instance) OriginalClass() string {
 	return string(class(self).GetOriginalClass().String())
 }
 
+// SetOriginalClass sets the property returned by [GetOriginalClass].
 func (self Instance) SetOriginalClass(value string) {
 	class(self).SetOriginalClass(String.New(value))
 }
 
+/*
+If set to true, allows new properties to be added on top of the existing ones with [Object.Set].
+
+[Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
+*/
 func (self Instance) RecordingProperties() bool {
 	return bool(class(self).IsRecordingProperties())
 }
 
+// SetRecordingProperties sets the property returned by [IsRecordingProperties].
 func (self Instance) SetRecordingProperties(value bool) {
 	class(self).SetRecordingProperties(value)
 }

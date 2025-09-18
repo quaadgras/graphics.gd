@@ -170,26 +170,47 @@ func New() Instance {
 	return casted
 }
 
+/*
+The root animation node of this [AnimationTree]. See [AnimationRootNode].
+
+[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
+[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+*/
 func (self Instance) TreeRoot() AnimationRootNode.Instance {
 	return AnimationRootNode.Instance(class(self).GetTreeRoot())
 }
 
+// SetTreeRoot sets the property returned by [GetTreeRoot].
 func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) {
 	class(self).SetTreeRoot(value)
 }
 
+/*
+The path to the [Node] used to evaluate the [AnimationNode] [Expression] if one is not explicitly specified internally.
+
+[AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
+[Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+*/
 func (self Instance) AdvanceExpressionBaseNode() string {
 	return string(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
+// SetAdvanceExpressionBaseNode sets the property returned by [GetAdvanceExpressionBaseNode].
 func (self Instance) SetAdvanceExpressionBaseNode(value string) {
 	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The path to the [AnimationPlayer] used for animating.
+
+[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
+*/
 func (self Instance) AnimPlayer() string {
 	return string(class(self).GetAnimationPlayer().String())
 }
 
+// SetAnimPlayer sets the property returned by [GetAnimationPlayer].
 func (self Instance) SetAnimPlayer(value string) {
 	class(self).SetAnimationPlayer(Path.ToNode(String.New(value)))
 }
@@ -247,6 +268,12 @@ func (self class) GetProcessCallback() AnimationProcessCallback { //gd:Animation
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [AnimPlayer] is changed.
+
+[AnimPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.AnimPlayer
+*/
 func (self Instance) OnAnimationPlayerChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -185,18 +185,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the body tracking data is valid.
+*/
 func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
+// SetHasTrackingData sets the property returned by [GetHasTrackingData].
 func (self Instance) SetHasTrackingData(value bool) {
 	class(self).SetHasTrackingData(value)
 }
 
+/*
+The type of body tracking data captured.
+*/
 func (self Instance) BodyFlags() BodyFlags {
 	return BodyFlags(class(self).GetBodyFlags())
 }
 
+// SetBodyFlags sets the property returned by [GetBodyFlags].
 func (self Instance) SetBodyFlags(value BodyFlags) {
 	class(self).SetBodyFlags(value)
 }

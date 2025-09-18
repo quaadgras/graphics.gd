@@ -155,42 +155,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+The line's color.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The number of pixels the line will extend before the [StyleBoxLine]'s bounds. If set to a negative value, the line will begin inside the [StyleBoxLine]'s bounds.
+
+[StyleBoxLine]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxLine
+*/
 func (self Instance) GrowBegin() Float.X {
 	return Float.X(Float.X(class(self).GetGrowBegin()))
 }
 
+// SetGrowBegin sets the property returned by [GetGrowBegin].
 func (self Instance) SetGrowBegin(value Float.X) {
 	class(self).SetGrowBegin(float64(value))
 }
 
+/*
+The number of pixels the line will extend past the [StyleBoxLine]'s bounds. If set to a negative value, the line will end inside the [StyleBoxLine]'s bounds.
+
+[StyleBoxLine]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxLine
+*/
 func (self Instance) GrowEnd() Float.X {
 	return Float.X(Float.X(class(self).GetGrowEnd()))
 }
 
+// SetGrowEnd sets the property returned by [GetGrowEnd].
 func (self Instance) SetGrowEnd(value Float.X) {
 	class(self).SetGrowEnd(float64(value))
 }
 
+/*
+The line's thickness in pixels.
+*/
 func (self Instance) Thickness() int {
 	return int(int(class(self).GetThickness()))
 }
 
+// SetThickness sets the property returned by [GetThickness].
 func (self Instance) SetThickness(value int) {
 	class(self).SetThickness(int64(value))
 }
 
+/*
+If true, the line will be vertical. If false, the line will be horizontal.
+*/
 func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
+// SetVertical sets the property returned by [IsVertical].
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }

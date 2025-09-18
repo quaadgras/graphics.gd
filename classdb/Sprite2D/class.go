@@ -200,98 +200,179 @@ func New() Instance {
 	return casted
 }
 
+/*
+[Texture2D] object to draw.
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+If true, texture is centered.
+
+Note: For games with a pixel art aesthetic, textures may appear deformed when centered. This is caused by their position being between pixels. To prevent this, set this property to false, or consider enabling [ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel" and [ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) Centered() bool {
 	return bool(class(self).IsCentered())
 }
 
+// SetCentered sets the property returned by [IsCentered].
 func (self Instance) SetCentered(value bool) {
 	class(self).SetCentered(value)
 }
 
+/*
+The texture's drawing offset.
+
+Note: When you increase [Offset].y in Sprite2D, the sprite moves downward on screen (i.e., +Y is down).
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Offset
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+If true, texture is flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
+// SetFlipH sets the property returned by [IsFlippedH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, texture is flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
+// SetFlipV sets the property returned by [IsFlippedV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }
 
+/*
+The number of columns in the sprite sheet. When this property is changed, [Frame] is adjusted so that the same visual frame is maintained (same row and column). If that's impossible, [Frame] is reset to 0.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
+*/
 func (self Instance) Hframes() int {
 	return int(int(class(self).GetHframes()))
 }
 
+// SetHframes sets the property returned by [GetHframes].
 func (self Instance) SetHframes(value int) {
 	class(self).SetHframes(int64(value))
 }
 
+/*
+The number of rows in the sprite sheet. When this property is changed, [Frame] is adjusted so that the same visual frame is maintained (same row and column). If that's impossible, [Frame] is reset to 0.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
+*/
 func (self Instance) Vframes() int {
 	return int(int(class(self).GetVframes()))
 }
 
+// SetVframes sets the property returned by [GetVframes].
 func (self Instance) SetVframes(value int) {
 	class(self).SetVframes(int64(value))
 }
 
+/*
+Current frame to display from sprite sheet. [Hframes] or [Vframes] must be greater than 1. This property is automatically adjusted when [Hframes] or [Vframes] are changed to keep pointing to the same visual frame (same column and row). If that's impossible, this value is reset to 0.
+
+[Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Hframes
+[Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Vframes
+*/
 func (self Instance) Frame() int {
 	return int(int(class(self).GetFrame()))
 }
 
+// SetFrame sets the property returned by [GetFrame].
 func (self Instance) SetFrame(value int) {
 	class(self).SetFrame(int64(value))
 }
 
+/*
+Coordinates of the frame to display from sprite sheet. This is as an alias for the [Frame] property. [Hframes] or [Vframes] must be greater than 1.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
+[Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Hframes
+[Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Vframes
+*/
 func (self Instance) FrameCoords() Vector2i.XY {
 	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
+// SetFrameCoords sets the property returned by [GetFrameCoords].
 func (self Instance) SetFrameCoords(value Vector2i.XY) {
 	class(self).SetFrameCoords(Vector2i.XY(value))
 }
 
+/*
+If true, texture is cut from a larger atlas texture. See [RegionRect].
+
+Note: When using a custom [Shader] on a [Sprite2D], the UV shader built-in will refer to the entire texture space. Use the REGION_RECT built-in to get the currently visible region defined in [RegionRect] instead. See [CanvasItem shaders] for details.
+
+[CanvasItem shaders]: https://docs.godotengine.org/tutorials/shaders/shader_reference/canvas_item_shader.html
+[RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
+*/
 func (self Instance) RegionEnabled() bool {
 	return bool(class(self).IsRegionEnabled())
 }
 
+// SetRegionEnabled sets the property returned by [IsRegionEnabled].
 func (self Instance) SetRegionEnabled(value bool) {
 	class(self).SetRegionEnabled(value)
 }
 
+/*
+The region of the atlas texture to display. [RegionEnabled] must be true.
+
+[RegionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionEnabled
+*/
 func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
+// SetRegionRect sets the property returned by [GetRegionRect].
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
+/*
+If true, the area outside of the [RegionRect] is clipped to avoid bleeding of the surrounding texture pixels. [RegionEnabled] must be true.
+
+[RegionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionEnabled
+[RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
+*/
 func (self Instance) RegionFilterClipEnabled() bool {
 	return bool(class(self).IsRegionFilterClipEnabled())
 }
 
+// SetRegionFilterClipEnabled sets the property returned by [IsRegionFilterClipEnabled].
 func (self Instance) SetRegionFilterClipEnabled(value bool) {
 	class(self).SetRegionFilterClipEnabled(value)
 }
@@ -475,6 +556,12 @@ func (self class) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [Frame] changes.
+
+[Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
+*/
 func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -487,6 +574,11 @@ func (self class) FrameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
 }
 
+/*
+Emitted when the [Texture] changes.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
+*/
 func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

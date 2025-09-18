@@ -167,6 +167,11 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [VisibleOnScreenNotifier3D]'s bounding box.
+
+[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
+*/
 func (self Instance) SetAabb(value AABB.PositionSize) {
 	class(self).SetAabb(AABB.PositionSize(value))
 }
@@ -189,6 +194,12 @@ func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_scree
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [VisibleOnScreenNotifier3D] enters the screen.
+
+[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
+*/
 func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -201,6 +212,11 @@ func (self class) ScreenEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScreenEntered`))))
 }
 
+/*
+Emitted when the [VisibleOnScreenNotifier3D] exits the screen.
+
+[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
+*/
 func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

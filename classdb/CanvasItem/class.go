@@ -1290,122 +1290,245 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, this [CanvasItem] may be drawn. Whether this [CanvasItem] is actually drawn depends on the visibility of all of its [CanvasItem] ancestors. In other words: this [CanvasItem] will be drawn when [IsVisibleInTree] returns true and all [CanvasItem] ancestors share at least one [VisibilityLayer] with this [CanvasItem].
+
+Note: For controls that inherit [Popup], the correct way to make them visible is to call one of the multiple popup*() functions instead.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.IsVisibleInTree
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[VisibilityLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.VisibilityLayer
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
+/*
+The color applied to this [CanvasItem]. This property does affect child [CanvasItem]s, unlike [SelfModulate] which only affects the node itself.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[SelfModulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SelfModulate
+*/
 func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulate sets the property returned by [GetModulate].
 func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+The color applied to this [CanvasItem]. This property does not affect child [CanvasItem]s, unlike [Modulate] which affects both the node itself and its children.
+
+Note: Internal children are also not affected by this property (see the include_internal parameter in [Node.AddChild]). For built-in nodes this includes sliders in [ColorPicker], and the tab bar in [TabContainer].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+[Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
+[Node.AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
+*/
 func (self Instance) SelfModulate() Color.RGBA {
 	return Color.RGBA(class(self).GetSelfModulate())
 }
 
+// SetSelfModulate sets the property returned by [GetSelfModulate].
 func (self Instance) SetSelfModulate(value Color.RGBA) {
 	class(self).SetSelfModulate(Color.RGBA(value))
 }
 
+/*
+If true, this node draws behind its parent.
+*/
 func (self Instance) ShowBehindParent() bool {
 	return bool(class(self).IsDrawBehindParentEnabled())
 }
 
+// SetShowBehindParent sets the property returned by [IsDrawBehindParentEnabled].
 func (self Instance) SetShowBehindParent(value bool) {
 	class(self).SetDrawBehindParent(value)
 }
 
+/*
+If true, this [CanvasItem] will not inherit its transform from parent [CanvasItem]s. Its draw order will also be changed to make it draw on top of other [CanvasItem]s that do not have [TopLevel] set to true. The [CanvasItem] will effectively act as if it was placed as a child of a bare [Node].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[TopLevel]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TopLevel
+*/
 func (self Instance) TopLevel() bool {
 	return bool(class(self).IsSetAsTopLevel())
 }
 
+// SetTopLevel sets the property returned by [IsSetAsTopLevel].
 func (self Instance) SetTopLevel(value bool) {
 	class(self).SetAsTopLevel(value)
 }
 
+/*
+The mode in which this node clips its children, acting as a mask.
+
+Note: Clipping nodes cannot be nested or placed within a [CanvasGroup]. If an ancestor of this node clips its children or is a [CanvasGroup], then this node's clip mode should be set to [ClipChildrenDisabled] to avoid unexpected behavior.
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+*/
 func (self Instance) ClipChildren() ClipChildrenMode {
 	return ClipChildrenMode(class(self).GetClipChildrenMode())
 }
 
+// SetClipChildren sets the property returned by [GetClipChildrenMode].
 func (self Instance) SetClipChildren(value ClipChildrenMode) {
 	class(self).SetClipChildrenMode(value)
 }
 
+/*
+The rendering layers in which this [CanvasItem] responds to [Light2D] nodes.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
+*/
 func (self Instance) LightMask() int {
 	return int(int(class(self).GetLightMask()))
 }
 
+// SetLightMask sets the property returned by [GetLightMask].
 func (self Instance) SetLightMask(value int) {
 	class(self).SetLightMask(int64(value))
 }
 
+/*
+The rendering layer in which this [CanvasItem] is rendered by [Viewport] nodes. A [Viewport] will render a [CanvasItem] if it and all its parents share a layer with the [Viewport]'s canvas cull mask.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) VisibilityLayer() int {
 	return int(int(class(self).GetVisibilityLayer()))
 }
 
+// SetVisibilityLayer sets the property returned by [GetVisibilityLayer].
 func (self Instance) SetVisibilityLayer(value int) {
 	class(self).SetVisibilityLayer(int64(value))
 }
 
+/*
+The order in which this node is drawn. A node with a higher Z index will display in front of others. Must be between [Renderingserver.CanvasItemZMin] and [Renderingserver.CanvasItemZMax] (inclusive).
+
+Note: The Z index does not affect the order in which [CanvasItem] nodes are processed or the way input events are handled. This is especially important to keep in mind for [Control] nodes.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+*/
 func (self Instance) ZIndex() int {
 	return int(int(class(self).GetZIndex()))
 }
 
+// SetZIndex sets the property returned by [GetZIndex].
 func (self Instance) SetZIndex(value int) {
 	class(self).SetZIndex(int64(value))
 }
 
+/*
+If true, this node's final Z index is relative to its parent's Z index.
+
+For example, if [ZIndex] is 2 and its parent's final Z index is 3, then this node's final Z index will be 5 (2 + 3).
+
+[ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
+*/
 func (self Instance) ZAsRelative() bool {
 	return bool(class(self).IsZRelative())
 }
 
+// SetZAsRelative sets the property returned by [IsZRelative].
 func (self Instance) SetZAsRelative(value bool) {
 	class(self).SetZAsRelative(value)
 }
 
+/*
+If true, this and child [CanvasItem] nodes with a higher Y position are rendered in front of nodes with a lower Y position. If false, this and child [CanvasItem] nodes are rendered normally in scene tree order.
+
+With Y-sorting enabled on a parent node ('A') but disabled on a child node ('B'), the child node ('B') is sorted but its children ('C1', 'C2', etc.) render together on the same Y position as the child node ('B'). This allows you to organize the render order of a scene without changing the scene tree.
+
+Nodes sort relative to each other only if they are on the same [ZIndex].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
+*/
 func (self Instance) YSortEnabled() bool {
 	return bool(class(self).IsYSortEnabled())
 }
 
+// SetYSortEnabled sets the property returned by [IsYSortEnabled].
 func (self Instance) SetYSortEnabled(value bool) {
 	class(self).SetYSortEnabled(value)
 }
 
+/*
+The filtering mode used to render this [CanvasItem]'s texture(s).
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) TextureFilter() TextureFilter {
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
+// SetTextureFilter sets the property returned by [GetTextureFilter].
 func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
+/*
+The repeating mode used to render this [CanvasItem]'s texture(s). It affects what happens when the texture is sampled outside its extents, for example by setting a [Sprite2D.RegionRect] that is larger than the texture or assigning [Polygon2D] UV points outside the texture.
+
+Note: [TextureRect] is not affected by [TextureRepeat], as it uses its own texture repeating implementation.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
+[Sprite2D.RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
+[TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
+[TextureRepeat]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureRepeat
+*/
 func (self Instance) TextureRepeat() TextureRepeat {
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
+// SetTextureRepeat sets the property returned by [GetTextureRepeat].
 func (self Instance) SetTextureRepeat(value TextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
+/*
+The material applied to this [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 
+/*
+If true, the parent [CanvasItem]'s [Material] is used as this node's material.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Material]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Material
+*/
 func (self Instance) UseParentMaterial() bool {
 	return bool(class(self).GetUseParentMaterial())
 }
 
+// SetUseParentMaterial sets the property returned by [GetUseParentMaterial].
 func (self Instance) SetUseParentMaterial(value bool) {
 	class(self).SetUseParentMaterial(value)
 }
@@ -2577,6 +2700,15 @@ func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_c
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [CanvasItem] must redraw, after the related [NotificationDraw] notification, and before [Draw] is called.
+
+Note: Deferred connections do not allow drawing through the draw_* methods.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Draw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Interface
+*/
 func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2589,6 +2721,15 @@ func (self class) Draw() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Draw`))))
 }
 
+/*
+Emitted when the [CanvasItem]'s visibility changes, either because its own [Visible] property changed or because its visibility in the tree changed (see [IsVisibleInTree]).
+
+This signal is emitted after the related [NotificationVisibilityChanged] notification.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.IsVisibleInTree
+[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
+*/
 func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2601,6 +2742,11 @@ func (self class) VisibilityChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
 }
 
+/*
+Emitted when this node becomes hidden, i.e. it's no longer visible in the tree (see [IsVisibleInTree]).
+
+[IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.IsVisibleInTree
+*/
 func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2613,6 +2759,12 @@ func (self class) Hidden() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Hidden`))))
 }
 
+/*
+Emitted when the [CanvasItem]'s boundaries (position or size) change, or when an action took place that may have affected these boundaries (e.g. changing [Sprite2D.Texture]).
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
+*/
 func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

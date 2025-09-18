@@ -172,10 +172,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, it is possible to fold all containers in this FoldableGroup.
+*/
 func (self Instance) AllowFoldingAll() bool {
 	return bool(class(self).IsAllowFoldingAll())
 }
 
+// SetAllowFoldingAll sets the property returned by [IsAllowFoldingAll].
 func (self Instance) SetAllowFoldingAll(value bool) {
 	class(self).SetAllowFoldingAll(value)
 }
@@ -215,6 +219,10 @@ func (self class) IsAllowFoldingAll() bool { //gd:FoldableGroup.is_allow_folding
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when one of the containers of the group is expanded.
+*/
 func (self Instance) OnExpanded(cb func(container FoldableContainer.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
