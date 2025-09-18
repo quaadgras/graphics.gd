@@ -110,6 +110,11 @@ Sets up [PolygonPathFinder] with an array of points that define the vertices of 
 
 The length of 'connections' must be even, returns an error if odd.
 
+	var polygon_path_finder = PolygonPathFinder.New()
+	var points = []Vector2.XY{{0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}}
+	var connections = []int32{0, 1, 1, 2, 2, 0}
+	polygon_path_finder.Setup(points, connections)
+
 [PolygonPathFinder]: https://pkg.go.dev/graphics.gd/classdb/PolygonPathFinder
 */
 func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
@@ -127,6 +132,13 @@ func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:Polygon
 
 /*
 Returns true if 'point' falls inside the polygon area.
+
+	var polygonPathFinder = PolygonPathFinder.New()
+	points := []Vector2.XY{{0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}}
+	connections := []int32{0, 1, 1, 2, 2, 0}
+	polygonPathFinder.Setup(points, connections)
+	fmt.Println(polygonPathFinder.IsPointInside(Vector2.New(0.2, 0.2))) // Prints true
+	fmt.Println(polygonPathFinder.IsPointInside(Vector2.New(1.0, 1.0))) // Prints false
 */
 func (self Instance) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
 	return bool(Advanced(self).IsPointInside(Vector2.XY(point)))
@@ -190,6 +202,11 @@ Sets up [PolygonPathFinder] with an array of points that define the vertices of 
 The length of 'connections' must be even, returns an error if odd.
 
 
+	var polygon_path_finder = PolygonPathFinder.New()
+	var points = []Vector2.XY{{0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}}
+	var connections = []int32{0, 1, 1, 2, 2, 0}
+	polygon_path_finder.Setup(points, connections)
+
 
 [PolygonPathFinder]: https://pkg.go.dev/graphics.gd/classdb/PolygonPathFinder
 */
@@ -231,6 +248,13 @@ func (self class) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPat
 /*
 Returns true if 'point' falls inside the polygon area.
 
+
+	var polygonPathFinder = PolygonPathFinder.New()
+	points := []Vector2.XY{{0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}}
+	connections := []int32{0, 1, 1, 2, 2, 0}
+	polygonPathFinder.Setup(points, connections)
+	fmt.Println(polygonPathFinder.IsPointInside(Vector2.New(0.2, 0.2))) // Prints true
+	fmt.Println(polygonPathFinder.IsPointInside(Vector2.New(1.0, 1.0))) // Prints false
 
 */
 //go:nosplit

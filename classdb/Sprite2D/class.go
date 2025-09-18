@@ -144,6 +144,14 @@ Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coo
 
 Example: Detect if the Sprite2D was clicked:
 
+	Input := func(event InputEvent.Instance) {
+		if inputEventMouse, ok := Object.As[InputEventMouseButton.Instance](event); ok {
+			if Rect2.HasPoint(sprite.GetRect(), sprite.AsNode2D().ToLocal(inputEventMouse.AsInputEventMouse().Position())) {
+				fmt.Println("A click!")
+			}
+		}
+	}
+
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
@@ -449,6 +457,14 @@ Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coo
 
 Example: Detect if the Sprite2D was clicked:
 
+
+	Input := func(event InputEvent.Instance) {
+		if inputEventMouse, ok := Object.As[InputEventMouseButton.Instance](event); ok {
+			if Rect2.HasPoint(sprite.GetRect(), sprite.AsNode2D().ToLocal(inputEventMouse.AsInputEventMouse().Position())) {
+				fmt.Println("A click!")
+			}
+		}
+	}
 
 
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize

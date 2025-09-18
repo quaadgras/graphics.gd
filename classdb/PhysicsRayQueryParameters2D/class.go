@@ -118,6 +118,9 @@ type Any interface {
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
 
+	var query = PhysicsRayQueryParameters2D.Create(node2d.GlobalPosition(), Vector2.Add(node2d.GlobalPosition(), Vector2.XY{0, 100}), nil)
+	var collision = node2d.AsCanvasItem().GetWorld2d().DirectSpaceState().IntersectRay(query)
+
 [PhysicsRayQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D
 */
 func Create(from Vector2.XY, to Vector2.XY, exclude [][]RID.Body2D) Instance { //gd:PhysicsRayQueryParameters2D.create
@@ -127,6 +130,9 @@ func Create(from Vector2.XY, to Vector2.XY, exclude [][]RID.Body2D) Instance { /
 
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
+
+	var query = PhysicsRayQueryParameters2D.Create(node2d.GlobalPosition(), Vector2.Add(node2d.GlobalPosition(), Vector2.XY{0, 100}), nil)
+	var collision = node2d.AsCanvasItem().GetWorld2d().DirectSpaceState().IntersectRay(query)
 
 [PhysicsRayQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D
 */
@@ -237,6 +243,9 @@ func (self Instance) SetHitFromInside(value bool) {
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
 
+
+	var query = PhysicsRayQueryParameters2D.Create(node2d.GlobalPosition(), Vector2.Add(node2d.GlobalPosition(), Vector2.XY{0, 100}), nil)
+	var collision = node2d.AsCanvasItem().GetWorld2d().DirectSpaceState().IntersectRay(query)
 
 
 [PhysicsRayQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D

@@ -922,7 +922,7 @@ Sets the search 'flags'. This is used with [SetSearchText] to highlight occurren
 
 [SetSearchText]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSearchText
 */
-func (self Instance) SetSearchFlags(flags int) { //gd:TextEdit.set_search_flags
+func (self Instance) SetSearchFlags(flags SearchFlags) { //gd:TextEdit.set_search_flags
 	Advanced(self).SetSearchFlags(int64(flags))
 }
 
@@ -930,9 +930,12 @@ func (self Instance) SetSearchFlags(flags int) { //gd:TextEdit.set_search_flags
 Perform a search inside the text. Search flags can be specified in the [SearchFlags] enum.
 
 In the returned vector, x is the column, y is the line. If no results are found, both are equal to -1.
+
+	line, column := textEdit.Search("print", TextEdit.SearchWholeWords, 0, 0)
 */
-func (self Instance) Search(text string, flags int, from_line int, from_column int) Vector2i.XY { //gd:TextEdit.search
-	return Vector2i.XY(Advanced(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column)))
+func (self Instance) Search(text string, flags SearchFlags, from_line int, from_column int) (int, int) { //gd:TextEdit.search
+	results := Advanced(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column))
+	return int(results.X), int(results.Y)
 }
 
 /*
@@ -1140,6 +1143,17 @@ func (self Instance) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_
 
 /*
 Starts an edit for multiple carets. The edit must be ended with [EndMulticaretEdit]. Multicaret edits can be used to edit text at multiple carets and delay merging the carets until the end, so the caret indexes aren't affected immediately. [BeginMulticaretEdit] and [EndMulticaretEdit] can be nested, and the merge will happen at the last [EndMulticaretEdit].
+
+	textEdit.BeginComplexOperation()
+	textEdit.BeginMulticaretEdit()
+	for i := 0; i < textEdit.GetCaretCount(); i++ {
+		if textEdit.MulticaretEditIgnoreCaret(i) {
+			continue
+		}
+		// Logic here.
+	}
+	textEdit.EndMulticaretEdit()
+	textEdit.EndComplexOperation()
 
 [BeginMulticaretEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.BeginMulticaretEdit
 [EndMulticaretEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.EndMulticaretEdit
@@ -2132,6 +2146,19 @@ func (self Instance) GetLineBackgroundColor(line int) Color.RGBA { //gd:TextEdit
 Returns the [PopupMenu] of this [TextEdit]. By default, this menu is displayed when right-clicking on the [TextEdit].
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
+
+	var menu = textEdit.GetMenu()
+	// Remove all items after "Redo".
+	menu.SetItemCount(menu.GetItemIndex(int(TextEdit.MenuRedo)) + 1)
+	// Add custom items.
+	menu.AddSeparator()
+	menu.MoreArgs().AddItem("Insert Date", int(TextEdit.MenuMax)+1, 0)
+	// Connect callback.
+	menu.OnIdPressed(func(id int) {
+		if id == int(TextEdit.MenuMax)+1 {
+			textEdit.InsertTextAtCaret(Time.GetDateStringFromSystem(false))
+		}
+	})
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.
 
@@ -3379,6 +3406,8 @@ Perform a search inside the text. Search flags can be specified in the [SearchFl
 In the returned vector, x is the column, y is the line. If no results are found, both are equal to -1.
 
 
+	line, column := textEdit.Search("print", TextEdit.SearchWholeWords, 0, 0)
+
 */
 //go:nosplit
 func (self class) Search(text String.Readable, flags int64, from_line int64, from_column int64) Vector2i.XY { //gd:TextEdit.search
@@ -3697,6 +3726,17 @@ func (self class) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_car
 /*
 Starts an edit for multiple carets. The edit must be ended with [EndMulticaretEdit]. Multicaret edits can be used to edit text at multiple carets and delay merging the carets until the end, so the caret indexes aren't affected immediately. [BeginMulticaretEdit] and [EndMulticaretEdit] can be nested, and the merge will happen at the last [EndMulticaretEdit].
 
+
+	textEdit.BeginComplexOperation()
+	textEdit.BeginMulticaretEdit()
+	for i := 0; i < textEdit.GetCaretCount(); i++ {
+		if textEdit.MulticaretEditIgnoreCaret(i) {
+			continue
+		}
+		// Logic here.
+	}
+	textEdit.EndMulticaretEdit()
+	textEdit.EndComplexOperation()
 
 
 [BeginMulticaretEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.BeginMulticaretEdit
@@ -4998,6 +5038,19 @@ Returns the [PopupMenu] of this [TextEdit]. By default, this menu is displayed w
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
 
+
+	var menu = textEdit.GetMenu()
+	// Remove all items after "Redo".
+	menu.SetItemCount(menu.GetItemIndex(int(TextEdit.MenuRedo)) + 1)
+	// Add custom items.
+	menu.AddSeparator()
+	menu.MoreArgs().AddItem("Insert Date", int(TextEdit.MenuMax)+1, 0)
+	// Connect callback.
+	menu.OnIdPressed(func(id int) {
+		if id == int(TextEdit.MenuMax)+1 {
+			textEdit.InsertTextAtCaret(Time.GetDateStringFromSystem(false))
+		}
+	})
 
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.

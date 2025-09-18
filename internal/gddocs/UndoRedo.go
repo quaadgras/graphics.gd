@@ -13,7 +13,7 @@ func _on_my_button_pressed():
 	undo_redo.create_action("Move the node")
 	undo_redo.add_do_method(do_something)
 	undo_redo.add_undo_method(undo_something)
-	undo_redo.add_do_property(node, "position", Vector2(100,100))
+	undo_redo.add_do_property(node, "position", Vector2(100, 100))
 	undo_redo.add_undo_property(node, "position", node.position)
 	undo_redo.commit_action()
 [/gdscript]

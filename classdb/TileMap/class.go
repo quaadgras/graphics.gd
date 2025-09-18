@@ -633,6 +633,16 @@ Returns the [TileData] object associated with the given cell, or null if the cel
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+	GetClickedTilePower := func() int {
+		var clickedCell = tileMap.LocalToMap(tileMap.AsCanvasItem().GetLocalMousePosition())
+		var data = tileMap.GetCellTileData(0, clickedCell)
+		if data != TileData.Nil {
+			return data.GetCustomData("power").(int)
+		} else {
+			return 0
+		}
+	}
+
 If 'use_proxies' is false, ignores the [TileSet]'s tile proxies. See [TileSet.MapTileProxy].
 
 [TileData]: https://pkg.go.dev/graphics.gd/classdb/TileData
@@ -648,6 +658,16 @@ func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) TileData.Ins
 Returns the [TileData] object associated with the given cell, or null if the cell does not exist or is not a [TileSetAtlasSource].
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+	GetClickedTilePower := func() int {
+		var clickedCell = tileMap.LocalToMap(tileMap.AsCanvasItem().GetLocalMousePosition())
+		var data = tileMap.GetCellTileData(0, clickedCell)
+		if data != TileData.Nil {
+			return data.GetCustomData("power").(int)
+		} else {
+			return 0
+		}
+	}
 
 If 'use_proxies' is false, ignores the [TileSet]'s tile proxies. See [TileSet.MapTileProxy].
 
@@ -1549,6 +1569,16 @@ Returns the [TileData] object associated with the given cell, or null if the cel
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+
+	GetClickedTilePower := func() int {
+		var clickedCell = tileMap.LocalToMap(tileMap.AsCanvasItem().GetLocalMousePosition())
+		var data = tileMap.GetCellTileData(0, clickedCell)
+		if data != TileData.Nil {
+			return data.GetCustomData("power").(int)
+		} else {
+			return 0
+		}
+	}
 
 
 If 'use_proxies' is false, ignores the [TileSet]'s tile proxies. See [TileSet.MapTileProxy].

@@ -157,6 +157,11 @@ Ensures the given 'control' is visible (must be a direct or indirect child of th
 
 Note: This will not work on a node that was just added during the same frame. If you want to scroll to a newly added child, you must wait until the next frame using [OnScenetree.ProcessFrame]:
 
+	scrollContainer.AsNode().AddChild(control.AsNode())
+	SceneTree.Get(scrollContainer.AsNode()).OnPhysicsFrame(func() {
+		scrollContainer.EnsureControlVisible(control)
+	})
+
 [FollowFocus]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.FollowFocus
 [OnScenetree.ProcessFrame]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.OnScenetree.ProcessFrame
 */
@@ -411,6 +416,11 @@ Ensures the given 'control' is visible (must be a direct or indirect child of th
 
 Note: This will not work on a node that was just added during the same frame. If you want to scroll to a newly added child, you must wait until the next frame using [OnScenetree.ProcessFrame]:
 
+
+	scrollContainer.AsNode().AddChild(control.AsNode())
+	SceneTree.Get(scrollContainer.AsNode()).OnPhysicsFrame(func() {
+		scrollContainer.EnsureControlVisible(control)
+	})
 
 
 [FollowFocus]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.FollowFocus

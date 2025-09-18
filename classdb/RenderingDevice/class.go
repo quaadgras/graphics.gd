@@ -373,6 +373,10 @@ Note: At the moment, the delay corresponds to the amount of frames specified by 
 
 Note: Downloading large textures can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [ProjectSettings] "rendering/rendering_device/staging_buffer/texture_download_region_size_px" and [ProjectSettings] "rendering/rendering_device/staging_buffer/block_size_kb" to improve the transfer speed at the cost of extra memory.
 
+	rd.TextureGetDataAsync(tex_rid, 0, func(array []byte) {
+		// do something with texture data
+	})
+
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [TextureGetData]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureGetData
 */
@@ -1012,6 +1016,10 @@ Note: At the moment, the delay corresponds to the amount of frames specified by 
 
 Note: Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [ProjectSettings] "rendering/rendering_device/staging_buffer/block_size_kb" to improve the transfer speed at the cost of extra memory.
 
+	rd.BufferGetDataAsync(buf_rid, func(array []byte) {
+		// do something with buffer data
+	})
+
 [BufferGetData]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.BufferGetData
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
@@ -1025,6 +1033,10 @@ Asynchronous version of [BufferGetData]. RenderingDevice will call 'callback' in
 Note: At the moment, the delay corresponds to the amount of frames specified by [ProjectSettings] "rendering/rendering_device/vsync/frame_queue_size".
 
 Note: Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [ProjectSettings] "rendering/rendering_device/staging_buffer/block_size_kb" to improve the transfer speed at the cost of extra memory.
+
+	rd.BufferGetDataAsync(buf_rid, func(array []byte) {
+		// do something with buffer data
+	})
 
 [BufferGetData]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.BufferGetData
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
@@ -1209,6 +1221,16 @@ Multiple draw lists cannot be created at the same time; you must finish the prev
 
 A simple drawing operation might look like this (code is not a complete example):
 
+	var clear_colors = [3]Color.RGBA{}
+	var draw_list = rd.MoreArgs().DrawListBegin(framebuffers[i], Rendering.DrawClearColorAll, clear_colors[:], 0, 0, Rect2.PositionSize{}, 0)
+
+	rd.DrawListBindRenderPipeline(draw_list, raster_pipeline)
+	rd.DrawListBindUniformSet(draw_list, raster_base_uniform, 0)
+	rd.DrawListSetPushConstant(draw_list, raster_push_constant, len(raster_push_constant))
+	rd.MoreArgs().DrawListDraw(draw_list, false, 1, slice_triangle_count[i]*3)
+
+	rd.DrawListEnd()
+
 The 'draw_flags' indicates if the texture attachments of the framebuffer should be cleared or ignored. Only one of the two flags can be used for each individual attachment. Ignoring an attachment means that any contents that existed before the draw list will be completely discarded, reducing the memory bandwidth used by the render pass but producing garbage results if the pixels aren't replaced. The default behavior allows the engine to figure out the right operation to use if the texture is discardable, which can result in increased performance. See [RDTextureFormat] or [TextureSetDiscardable].
 
 The 'breadcrumb' parameter can be an arbitrary 32-bit integer that is useful to diagnose GPU crashes. If Godot is built in dev or debug mode; when the GPU crashes Godot will dump all shaders that were being executed at the time of the crash and the breadcrumb is useful to diagnose what passes did those shaders belong to.
@@ -1229,6 +1251,16 @@ Starts a list of raster drawing commands created with the draw_* methods. The re
 Multiple draw lists cannot be created at the same time; you must finish the previous draw list first using [DrawListEnd].
 
 A simple drawing operation might look like this (code is not a complete example):
+
+	var clear_colors = [3]Color.RGBA{}
+	var draw_list = rd.MoreArgs().DrawListBegin(framebuffers[i], Rendering.DrawClearColorAll, clear_colors[:], 0, 0, Rect2.PositionSize{}, 0)
+
+	rd.DrawListBindRenderPipeline(draw_list, raster_pipeline)
+	rd.DrawListBindUniformSet(draw_list, raster_base_uniform, 0)
+	rd.DrawListSetPushConstant(draw_list, raster_push_constant, len(raster_push_constant))
+	rd.MoreArgs().DrawListDraw(draw_list, false, 1, slice_triangle_count[i]*3)
+
+	rd.DrawListEnd()
 
 The 'draw_flags' indicates if the texture attachments of the framebuffer should be cleared or ignored. Only one of the two flags can be used for each individual attachment. Ignoring an attachment means that any contents that existed before the draw list will be completely discarded, reducing the memory bandwidth used by the render pass but producing garbage results if the pixels aren't replaced. The default behavior allows the engine to figure out the right operation to use if the texture is discardable, which can result in increased performance. See [RDTextureFormat] or [TextureSetDiscardable].
 
@@ -1392,6 +1424,17 @@ Starts a list of compute commands created with the compute_* methods. The return
 Multiple compute lists cannot be created at the same time; you must finish the previous compute list first using [ComputeListEnd].
 
 A simple compute operation might look like this (code is not a complete example):
+
+	var compute_list = rd.ComputeListBegin()
+	rd.ComputeListBindComputePipeline(compute_list, compute_shader_dilate_pipeline)
+	rd.ComputeListBindUniformSet(compute_list, compute_base_uniform_set, 0)
+	rd.ComputeListBindUniformSet(compute_list, dilate_uniform_set, 1)
+	for range atlas_slices {
+		rd.ComputeListSetPushConstant(compute_list, push_constant, len(push_constant))
+		rd.ComputeListDispatch(compute_list, int(group_size.X), int(group_size.Y), int(group_size.Z))
+		// No barrier, let them run all together.
+	}
+	rd.ComputeListEnd()
 
 [ComputeListEnd]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ComputeListEnd
 */
@@ -2034,6 +2077,10 @@ Note: At the moment, the delay corresponds to the amount of frames specified by 
 
 Note: Downloading large textures can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [ProjectSettings] "rendering/rendering_device/staging_buffer/texture_download_region_size_px" and [ProjectSettings] "rendering/rendering_device/staging_buffer/block_size_kb" to improve the transfer speed at the cost of extra memory.
 
+
+	rd.TextureGetDataAsync(tex_rid, 0, func(array []byte) {
+		// do something with texture data
+	})
 
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
@@ -2735,6 +2782,10 @@ Note: At the moment, the delay corresponds to the amount of frames specified by 
 Note: Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [ProjectSettings] "rendering/rendering_device/staging_buffer/block_size_kb" to improve the transfer speed at the cost of extra memory.
 
 
+	rd.BufferGetDataAsync(buf_rid, func(array []byte) {
+		// do something with buffer data
+	})
+
 
 [BufferGetData]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.BufferGetData
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
@@ -2899,6 +2950,17 @@ Starts a list of raster drawing commands created with the draw_* methods. The re
 Multiple draw lists cannot be created at the same time; you must finish the previous draw list first using [DrawListEnd].
 
 A simple drawing operation might look like this (code is not a complete example):
+
+
+	var clear_colors = [3]Color.RGBA{}
+	var draw_list = rd.MoreArgs().DrawListBegin(framebuffers[i], Rendering.DrawClearColorAll, clear_colors[:], 0, 0, Rect2.PositionSize{}, 0)
+
+	rd.DrawListBindRenderPipeline(draw_list, raster_pipeline)
+	rd.DrawListBindUniformSet(draw_list, raster_base_uniform, 0)
+	rd.DrawListSetPushConstant(draw_list, raster_push_constant, len(raster_push_constant))
+	rd.MoreArgs().DrawListDraw(draw_list, false, 1, slice_triangle_count[i]*3)
+
+	rd.DrawListEnd()
 
 
 
@@ -3111,6 +3173,17 @@ Multiple compute lists cannot be created at the same time; you must finish the p
 
 A simple compute operation might look like this (code is not a complete example):
 
+
+	var compute_list = rd.ComputeListBegin()
+	rd.ComputeListBindComputePipeline(compute_list, compute_shader_dilate_pipeline)
+	rd.ComputeListBindUniformSet(compute_list, compute_base_uniform_set, 0)
+	rd.ComputeListBindUniformSet(compute_list, dilate_uniform_set, 1)
+	for range atlas_slices {
+		rd.ComputeListSetPushConstant(compute_list, push_constant, len(push_constant))
+		rd.ComputeListDispatch(compute_list, int(group_size.X), int(group_size.Y), int(group_size.Z))
+		// No barrier, let them run all together.
+	}
+	rd.ComputeListEnd()
 
 
 [ComputeListEnd]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.ComputeListEnd

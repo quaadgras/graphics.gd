@@ -33,7 +33,7 @@ using System.Collections.Generic;
 public partial class ServerNode : Node
 {
 	private UdpServer _server = new UdpServer();
-	private List<PacketPeerUdp> _peers	= new List<PacketPeerUdp>();
+	private List<PacketPeerUdp> _peers  = new List<PacketPeerUdp>();
 
 	public override void _Ready()
 	{

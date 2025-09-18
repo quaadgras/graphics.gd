@@ -214,7 +214,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	fmt.Fprint(&call, ")")
 	if len(resultsSimple) < 2 {
 		fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
-	} else if len(skips) == 0 {
+	} else if len(skips) == 0 && strings.HasPrefix(method.ReturnValue.Type, "Array") {
 		fmt.Fprint(w, "gd.InternalArray(", call.String(), ")")
 	} else {
 		fmt.Fprint(w, call.String())
@@ -242,11 +242,15 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo("results", resultSimple))
 		} else {
 			fmt.Fprint(w, "\n\treturn ")
-			for i, ret := range resultsSimple[1:] {
-				if i > 0 {
-					fmt.Fprint(w, ",")
+			if resultSimple == "Vector2i.XY" || resultSimple == "Vector2.XY" {
+				fmt.Fprintf(w, "%s(results.X), %s(results.Y)", resultsSimple[1], resultsSimple[1])
+			} else {
+				for i, ret := range resultsSimple[1:] {
+					if i > 0 {
+						fmt.Fprint(w, ",")
+					}
+					fmt.Fprintf(w, "gd.VariantAs[%s](results.Index(%d))", ret, i)
 				}
-				fmt.Fprintf(w, "gd.VariantAs[%s](results.Index(%d))", ret, i)
 			}
 		}
 	}

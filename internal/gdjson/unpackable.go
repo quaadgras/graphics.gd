@@ -34,6 +34,10 @@ var Unpackables = map[string][]reflect.Type{
 		TypeFromString("", "Vector2i.XY"),
 		reflect.TypeFor[int](),
 	},
+	"TextEdit.search": {
+		reflect.TypeFor[int](),
+		reflect.TypeFor[int](),
+	},
 	"StreamPeer.put_partial_data": {
 		reflect.TypeFor[error](),
 		reflect.TypeFor[int](),

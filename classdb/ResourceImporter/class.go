@@ -137,6 +137,15 @@ func (self implementation) GetBuildDependencies(path string) (_ []string) { retu
 /*
 Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [ResourceImporterDynamicFont] has a property called [ResourceImporterDynamicFont.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
 
+	GetBuildDependencies := func(path string) []string {
+		var resource = Resource.Load[Resource.Instance](path)
+		var dependencies []string
+		if font, ok := Object.As[FontFile.Instance](resource); ok && font.MultichannelSignedDistanceField() {
+			dependencies = append(dependencies, "module_msdfgen_enabled")
+		}
+		return dependencies
+	}
+
 [ResourceImporterDynamicFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont
 [ResourceImporterDynamicFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont#Instance.MultichannelSignedDistanceField
 */
@@ -200,6 +209,15 @@ func New() Instance {
 
 /*
 Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [ResourceImporterDynamicFont] has a property called [ResourceImporterDynamicFont.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
+
+	GetBuildDependencies := func(path string) []string {
+		var resource = Resource.Load[Resource.Instance](path)
+		var dependencies []string
+		if font, ok := Object.As[FontFile.Instance](resource); ok && font.MultichannelSignedDistanceField() {
+			dependencies = append(dependencies, "module_msdfgen_enabled")
+		}
+		return dependencies
+	}
 
 [ResourceImporterDynamicFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont
 [ResourceImporterDynamicFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont#Instance.MultichannelSignedDistanceField

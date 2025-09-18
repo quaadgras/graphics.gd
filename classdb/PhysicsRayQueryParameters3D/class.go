@@ -120,6 +120,9 @@ type Any interface {
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters3D] object. Use it to quickly create query parameters using the most common options.
 
+	var query = PhysicsRayQueryParameters3D.Create(node3d.Position(), Vector3.Add(node3d.Position(), Vector3.XYZ{0, -10, 0}), nil)
+	var collision = node3d.GetWorld3d().DirectSpaceState().IntersectRay(query)
+
 [PhysicsRayQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters3D
 */
 func Create(from Vector3.XYZ, to Vector3.XYZ, exclude [][]RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
@@ -129,6 +132,9 @@ func Create(from Vector3.XYZ, to Vector3.XYZ, exclude [][]RID.Body3D) Instance {
 
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters3D] object. Use it to quickly create query parameters using the most common options.
+
+	var query = PhysicsRayQueryParameters3D.Create(node3d.Position(), Vector3.Add(node3d.Position(), Vector3.XYZ{0, -10, 0}), nil)
+	var collision = node3d.GetWorld3d().DirectSpaceState().IntersectRay(query)
 
 [PhysicsRayQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters3D
 */
@@ -247,6 +253,9 @@ func (self Instance) SetHitBackFaces(value bool) {
 /*
 Returns a new, pre-configured [PhysicsRayQueryParameters3D] object. Use it to quickly create query parameters using the most common options.
 
+
+	var query = PhysicsRayQueryParameters3D.Create(node3d.Position(), Vector3.Add(node3d.Position(), Vector3.XYZ{0, -10, 0}), nil)
+	var collision = node3d.GetWorld3d().DirectSpaceState().IntersectRay(query)
 
 
 [PhysicsRayQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters3D

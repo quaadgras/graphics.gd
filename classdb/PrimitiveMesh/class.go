@@ -154,6 +154,10 @@ Returns the mesh arrays used to make up the surface of this primitive mesh.
 
 Example: Pass the result to [ArrayMesh.AddSurfaceFromArrays] to create a new surface:
 
+	var c = CylinderMesh.New()
+	var arrMesh = ArrayMesh.New()
+	arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveTriangles, c.AsPrimitiveMesh().GetMeshArrays())
+
 [ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
 */
 func (self Instance) GetMeshArrays() []any { //gd:PrimitiveMesh.get_mesh_arrays
@@ -283,6 +287,10 @@ Returns the mesh arrays used to make up the surface of this primitive mesh.
 
 Example: Pass the result to [ArrayMesh.AddSurfaceFromArrays] to create a new surface:
 
+
+	var c = CylinderMesh.New()
+	var arrMesh = ArrayMesh.New()
+	arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveTriangles, c.AsPrimitiveMesh().GetMeshArrays())
 
 
 [ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays

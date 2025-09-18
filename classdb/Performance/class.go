@@ -115,6 +115,8 @@ func singleton() {
 /*
 Returns the value of one of the available built-in monitors. You should provide one of the [Monitor] constants as the argument, like this:
 
+	fmt.Println(Performance.GetMonitor(Performance.TimeFps)) // Prints the FPS to the console.
+
 See [GetCustomMonitor] to query custom performance monitors' values.
 */
 func GetMonitor(monitor Monitor) Float.X { //gd:Performance.get_monitor
@@ -124,6 +126,23 @@ func GetMonitor(monitor Monitor) Float.X { //gd:Performance.get_monitor
 
 /*
 Adds a custom monitor with the name 'id'. You can specify the category of the monitor using slash delimiters in 'id' (for example: "Game/NumberOfNPCs"). If there is more than one slash delimiter, then the default category is used. The default category is "Custom". Prints an error if given 'id' is already present.
+
+	var monitorValue = func() int {
+		return rand.IntN(25)
+	}
+	// Adds monitor with name "MyName" to category "MyCategory".
+	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyName" to category "Custom".
+	// Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
+	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyName" to category "Custom".
+	// Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
+	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
+	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil)
 
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 
@@ -203,6 +222,8 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 Returns the value of one of the available built-in monitors. You should provide one of the [Monitor] constants as the argument, like this:
 
 
+	fmt.Println(Performance.GetMonitor(Performance.TimeFps)) // Prints the FPS to the console.
+
 
 See [GetCustomMonitor] to query custom performance monitors' values.
 */
@@ -216,6 +237,23 @@ func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_mon
 /*
 Adds a custom monitor with the name 'id'. You can specify the category of the monitor using slash delimiters in 'id' (for example: "Game/NumberOfNPCs"). If there is more than one slash delimiter, then the default category is used. The default category is "Custom". Prints an error if given 'id' is already present.
 
+
+	var monitorValue = func() int {
+		return rand.IntN(25)
+	}
+	// Adds monitor with name "MyName" to category "MyCategory".
+	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyName" to category "Custom".
+	// Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
+	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyName" to category "Custom".
+	// Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
+	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil)
+
+	// Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
+	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil)
 
 
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.

@@ -135,6 +135,8 @@ func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 /*
 Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
 
+	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControl().AsNode())
+
 Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
 
 Warning: This is a required internal node, removing and freeing it may cause a crash.
@@ -392,6 +394,8 @@ func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContaine
 /*
 Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
 
+
+	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControl().AsNode())
 
 
 Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.

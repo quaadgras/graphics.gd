@@ -123,6 +123,13 @@ You can optionally specify 'on_success', it will be invoked on successful comple
 
 Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
 
+	var future_result = openXRFutureExtension.RegisterFuture(future)
+	future_result.OnCompleted(func(result OpenXRFutureResult.Instance) {
+		if result.GetStatus() == OpenXRFutureResult.ResultFinished {
+			// Handle your success
+		}
+	}, Signal.OneShot)
+
 [OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
 [OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
 */
@@ -136,6 +143,13 @@ Register an OpenXR Future object so we monitor for completion. 'future' must be 
 You can optionally specify 'on_success', it will be invoked on successful completion of the future.
 
 Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
+
+	var future_result = openXRFutureExtension.RegisterFuture(future)
+	future_result.OnCompleted(func(result OpenXRFutureResult.Instance) {
+		if result.GetStatus() == OpenXRFutureResult.ResultFinished {
+			// Handle your success
+		}
+	}, Signal.OneShot)
 
 [OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
 [OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
@@ -210,6 +224,13 @@ You can optionally specify 'on_success', it will be invoked on successful comple
 
 Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
 
+
+	var future_result = openXRFutureExtension.RegisterFuture(future)
+	future_result.OnCompleted(func(result OpenXRFutureResult.Instance) {
+		if result.GetStatus() == OpenXRFutureResult.ResultFinished {
+			// Handle your success
+		}
+	}, Signal.OneShot)
 
 
 [OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed

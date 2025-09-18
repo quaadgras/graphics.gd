@@ -199,6 +199,11 @@ Returns the shape ID of the first object that the ray intersects, or 0 if no obj
 
 To get the intersected shape node, for a [CollisionObject3D] target, use:
 
+	var target = Object.To[CollisionObject3D.Instance](rayCast3D.GetCollider()) // A CollisionObject3D.
+	var shapeID int = rayCast3D.GetColliderShape()
+	var ownerID int = target.ShapeFindOwner(shapeID)
+	var shape = target.ShapeOwnerGetOwner(ownerID)
+
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 [IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D#Instance.IsColliding
 */
@@ -499,6 +504,11 @@ Returns the shape ID of the first object that the ray intersects, or 0 if no obj
 
 To get the intersected shape node, for a [CollisionObject3D] target, use:
 
+
+	var target = Object.To[CollisionObject3D.Instance](rayCast3D.GetCollider()) // A CollisionObject3D.
+	var shapeID int = rayCast3D.GetColliderShape()
+	var ownerID int = target.ShapeFindOwner(shapeID)
+	var shape = target.ShapeOwnerGetOwner(ownerID)
 
 
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
