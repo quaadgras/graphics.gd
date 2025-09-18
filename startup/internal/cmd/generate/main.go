@@ -58,6 +58,7 @@ func generate_startup_cgo() error {
 	fmt.Fprint(f, "//go:build cgo\n\n")
 	fmt.Fprint(f, "package startup\n\n")
 	fmt.Fprint(f, "import \"unsafe\"\n")
+	fmt.Fprint(f, "import \"runtime\"\n")
 	fmt.Fprint(f, "import \"graphics.gd/internal/gdextension\"\n\n")
 	fmt.Fprint(f, "// #include \"gdextension_interface.h\"\n")
 	fmt.Fprint(f, "// #include \"startup_cgo_v2.h\"\n")
@@ -77,6 +78,8 @@ func generate_startup_cgo() error {
 		}
 		fmt.Fprintf(f, "%s", out)
 		fmt.Fprintf(f, " {\n\t")
+		fmt.Fprintf(f, " runtime.LockOSThread()\n\t")
+		fmt.Fprintf(f, " defer runtime.UnlockOSThread()\n\t")
 		if result := getReturn(fn.Type); fn.NumOut() == 1 && result != nil {
 			fmt.Fprintf(f, "return %s(", cgoTypeOf(result))
 		} else if fn.NumOut() > 0 && result != nil {
