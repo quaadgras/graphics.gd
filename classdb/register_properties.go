@@ -244,12 +244,12 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 				break
 			}
 		}
-		if !field.IsValid() {
-			return gd.Variant{}, false
-		}
-		if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Signal.Pointer]()) {
-			return gd.Variant{}, false
-		}
+	}
+	if !field.IsValid() {
+		return gd.Variant{}, false
+	}
+	if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Signal.Pointer]()) {
+		return gd.Variant{}, false
 	}
 	if field.Type().Implements(reflect.TypeFor[interface{ superType() reflect.Type }]()) {
 		if field.IsZero() {
