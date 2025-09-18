@@ -146,16 +146,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Canvas() RID.Any {
-	return RID.Any(RID.Any(class(self).GetCanvas()))
+func (self Instance) Canvas() RID.Canvas {
+	return RID.Canvas(RID.Canvas(class(self).GetCanvas()))
 }
 
-func (self Instance) NavigationMap() RID.Any {
-	return RID.Any(RID.Any(class(self).GetNavigationMap()))
+func (self Instance) NavigationMap() RID.NavigationMap2D {
+	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetNavigationMap()))
 }
 
-func (self Instance) Space() RID.Any {
-	return RID.Any(RID.Any(class(self).GetSpace()))
+func (self Instance) Space() RID.Space2D {
+	return RID.Space2D(RID.Space2D(class(self).GetSpace()))
 }
 
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {

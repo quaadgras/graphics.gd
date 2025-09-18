@@ -303,8 +303,8 @@ func (self Instance) SetFeedTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
-func (self Instance) Formats() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetFormats())))
+func (self Instance) Formats() []Format {
+	return []Format(gd.ArrayAs[[]Format](gd.InternalArray(class(self).GetFormats())))
 }
 
 /*
@@ -575,6 +575,13 @@ const (
 	FeedCbcrImage ImageType = 1
 )
 
+type Format struct {
+	Width            int    `gd:"width"`
+	Height           int    `gd:"height"`
+	Format           string `gd:"format"`
+	FrameNumerator   int    `gd:"frame_numerator"`
+	FrameDenominator int    `gd:"frame_denominator"`
+}
 type FormatParameters struct {
 	Output string `gd:"output"`
 }

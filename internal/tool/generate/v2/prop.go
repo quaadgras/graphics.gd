@@ -50,7 +50,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 					continue
 				}
 				if method.Name == prop.Getter {
-					ptype = classDB.convertTypeSimple(class, class.Name+"."+prop.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
+					ptype = classDB.convertTypeSimple(class, class.Name+"."+prop.Getter+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 					foundGetter = true
 					expert = gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 					break

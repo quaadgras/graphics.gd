@@ -400,8 +400,8 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
-func (self Instance) CollisionResult() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetCollisionResult())))
+func (self Instance) CollisionResult() []PhysicsDirectSpaceState2D_RestInfo {
+	return []PhysicsDirectSpaceState2D_RestInfo(gd.ArrayAs[[]PhysicsDirectSpaceState2D_RestInfo](gd.InternalArray(class(self).GetCollisionResult())))
 }
 
 func (self Instance) CollideWithAreas() bool {
@@ -768,4 +768,22 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("ShapeCast2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ShapeCast2D](ptr)} })
+}
+
+type PhysicsDirectSpaceState2D_RestInfo struct {
+	ColliderID     Object.ID `gd:"collider_id"`
+	LinearVelocity struct {
+		X float32
+		Y float32
+	} `gd:"linear_velocity"`
+	Normal struct {
+		X float32
+		Y float32
+	} `gd:"normal"`
+	Point struct {
+		X float32
+		Y float32
+	} `gd:"point"`
+	RID   RID.Any `gd:"rid"`
+	Shape int     `gd:"shape"`
 }
