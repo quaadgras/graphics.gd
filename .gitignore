@@ -15,3 +15,6 @@ node_modules
 internal/graphics
 releases/
 **/graphics/.gitignore
+icon.svg
+icon.svg.import
+/3d/third-person-controller/third-person-controller
