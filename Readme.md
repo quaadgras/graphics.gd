@@ -74,6 +74,9 @@ $ `go build -o example.so -buildmode=c-shared`
 Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
 much more!
 
+There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
+branch. All of the samples are designed to be able to run with `gd run` without any additional setup.
+
 ## TLDR
 
 Each engine class is available as a package under `classdb`. To import the
@@ -131,10 +134,6 @@ available for each class which allow more fine-grained control over memory alloc
 
 Benchmarks show that `Advanced` method calls from Go -> Godot don't typically allocate any
 memory.
-
-## Examples
-There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
-branch. All of the samples are designed to be able to run with `gd run` without any additional setup.
 
 ## Supported Platforms
 
