@@ -159,7 +159,7 @@ that you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
-Don't forget to spread the word and let others know about your experience with graphics.gd!
+Also, write a blog, share a post and let others know about your experience with graphics.gd!
 
 ## See Also
 
