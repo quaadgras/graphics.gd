@@ -55,31 +55,30 @@ You can also help support the project, motivate development and prioritise issue
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
-makes it easy to work with projects that run within the runtime.
-It enables you to start developing a new project from a single `main.go` file,
-to install it, make sure that your `$GOPATH/bin` is in your `$PATH` and run:
+makes it easy to work with projects that run within the runtime (including `.gd` 
+script projects). It also enables you to start developing a new project starting from
+a single  `main.go` file, to install it, make sure that your `$GOPATH/bin` is in your 
+`$PATH` and run:
 
 $ `go install graphics.gd/cmd/gd@release`
 
 Now when you can run `gd run`, `gd test` on the main package in your project's
 directory, things will work as expected. The tool will create a "graphics"
-subdirectory where you can manage your assets via the Engine's Editor.
+subdirectory where you can manage your assets via the
+[Godot Engine](https://godotengine.org/) editor.
 
-Running the command without any arguments will startup the editor.
+Running the command without any additional arguments will startup the editor.
 
-If you don't want to use the `gd` command, you can build a shared library with
-the `go` command directly:
+If you don't want to use the `gd` command, you can also build a shared library with
+the standard `go` command (this can be included in an existing 
+[Godot Engine](https://godotengine.org/) project):
 
 $ `go build -o example.so -buildmode=c-shared`
 
-The `gd` command is also compatible with standard GDScript-based Godot projects
-and can be used to initialise export configurations and launch projects on Web,
-Android and iOS (on any platform). To use it this way, run it from the directory
-where `project.godot` is located.
-
 ## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, much more!
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
+much more!
 
 ## TLDR
 
@@ -114,11 +113,12 @@ _NOTE_ in order to avoid circular dependencies, a handful of functions have move
 for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
 ## Performance
-It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible and avoid
-allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
-which allow more fine-grained control over memory allocations.
+It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
+and avoid allocating memory on the heap in frequently called functions. `Advanced` instances are 
+available for each class which allow more fine-grained control over memory allocations.
 
-Benchmarks show that `Advanced` method calls from Go -> Engine do not allocate.
+Benchmarks show that `Advanced` method calls from Go -> Godot don't typically allocate any
+memory.
 
 ## Examples
 There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
@@ -162,7 +162,10 @@ Lastly, spread the word and let people know about graphics.gd!
 
 ## See Also
 
-* [godot-go](https://github.com/godot-go/godot-go) (Another project aiming to support Go + Godot integration)
+* [godot-go](https://github.com/godot-go/godot-go) (a different project that provides Godot bindings for Go)
+* [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
+* [g3n](https://github.com/g3n/engine) (a 3D game engine for Go)
+* [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4) 
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
