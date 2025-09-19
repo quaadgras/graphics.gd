@@ -124,7 +124,9 @@ The API surface of the [Godot Engine] is huge, not everything has been translate
 Go optimally, the best thing you can do is to [report] anything that seems 'off', this way
 you can reduce the likelihood of being affected by any breaking changes in the future.
 
-*Public sponsors receive priority support!* Secure the development of `graphics.gd` and prioritise 
+*Public sponsors receive priority support!* 
+
+Secure the development of `graphics.gd` and prioritise 
 having issues resolved by [sponsoring me](https://github.com/sponsors/Splizard). 
 
 ## Performance
