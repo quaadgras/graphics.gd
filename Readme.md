@@ -13,7 +13,7 @@ _Why use graphics.gd?_
 * After an initial build, recompile quickly, with an experience similar to scripting languages.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
-* Neither Xcode nor MacOS is needed to build iOS apps.
+* Neither Xcode nor macOS is needed to build macOS/iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 
 Not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
