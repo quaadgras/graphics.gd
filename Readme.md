@@ -150,15 +150,16 @@ optimize functionality and/or improve test coverage of these packages is more th
 
 If you enjoy hunting down memory-safety issues, we would appreciate this.
 
-Thirdly, the project needs more tests to ensure that everything is working, the best way you can
-guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
-you need!
+`graphics.gd` is looking for someone to create benchmarks to compare this project with `.gd` script 
+and/or other gdextension-based development options.
+
+The project also needs more tests to ensure that everything is working, the best way you can
+guarantee that graphics.gd won't break on you is to contribute tests that cover any functionality
+that you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
-> **Note** we are looking for somebody to create benchmarks for the project.
-
-Lastly, spread the word and let people know about graphics.gd!
+Don't forget to spread the word and let others know about your experience with graphics.gd!
 
 ## See Also
 
