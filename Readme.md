@@ -3,6 +3,19 @@
 A cross platform 2D/3D graphics runtime for Go suitable for building native mobile apps, gdextensions,
 multimedia applications, games and more.
 
+_Why use graphics.gd?_
+
+* [Write shaders in Go!](./shaders/Readme.md)
+* Full compatibility with the [Godot Engine](https://godotengine.org/) ecosystem.
+* Unlike C++/C#/GDScript/Rust/Swift, all RIDs, Callables and Dictionary arguments are strongly typed.
+* Fully documented on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
+* General purpose pure-Go 'variant' math packages, reuse them in any Go project.
+* After the first build, recompile quickly, with an experience similar to a scripting language.
+* Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
+* Neither Java, nor an Android SDK/NDK is needed to build Android apps.
+* Neither Xcode nor MacOS is needed to build iOS apps.
+* Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
+
 This is not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesive
 and curated experience for using Go on top of Godot + GDExtension.
 
@@ -31,18 +44,6 @@ func main() {
 	startup.Scene() // starts up the scene and blocks until the engine shuts down.
 }
 ```
-
-_Why use graphics.gd?_
-
-* [Write shaders in Go!](./shaders/Readme.md)
-* Unlike C++/C#/GDScript/Rust/Swift, all RIDs, Callables and Dictionary arguments are strongly typed.
-* Fully documented on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
-* General purpose pure-Go 'variant' math packages, reuse them in any Go project.
-* After the first build, recompile quickly, with an experience similar to a scripting language.
-* Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
-* Neither Java, nor an Android SDK/NDK is needed to build Android apps.
-* Neither Xcode nor MacOS is needed to build iOS apps.
-* Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
 
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
