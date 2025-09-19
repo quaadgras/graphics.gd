@@ -47,7 +47,7 @@ func main() {
 }
 ```
 
-## Getting Started
+## Quickstart
 The module includes a drop-in replacement for the go command called `gd` that
 makes it easy to work with projects that run within the runtime (including `.gd` 
 script projects). It also enables you to start developing a new project starting from
