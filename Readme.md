@@ -111,9 +111,12 @@ for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 Join the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-You can also help support the project, motivate development and prioritise fixes by 
-[sponsoring me](https://github.com/sponsors/Splizard). Sponsors receive priority 
-support!
+The API surface of the [Godot Engine] is huge, not everything has been translated to
+Go optimally, the best thing you can do is to [report] anything that seems 'off' this way
+you can reduce the likelihood of being affected by any breaking changes in the future.
+
+Sponsors receive priority support! Secure the development of `graphics.gd` and prioritise 
+solutions to issues by [sponsoring me](https://github.com/sponsors/Splizard). 
 
 ## Performance
 It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
