@@ -153,7 +153,7 @@ memory.
 
 ## Contributing
 
-The best way you can contribute to graphics.gd is to **try it**, this project needs you to find out
+The best way you can contribute to `graphics.gd` is to **try it**, this project needs you to find out
 what's working and what doesn't, so do please let us know of any trouble that you run into! Any
 examples you can contribute are more than welcome.
 
