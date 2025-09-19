@@ -74,8 +74,8 @@ $ `go build -o example.so -buildmode=c-shared`
 Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
 much more!
 
-There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
-branch. All of the samples are designed to be able to run with `gd run` without any additional setup.
+There are also a number of example projects in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
+branch. All of these samples are designed to be able to run with `gd run` without any additional setup.
 
 ## TLDR
 
