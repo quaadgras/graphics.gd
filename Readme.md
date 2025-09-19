@@ -19,12 +19,6 @@ _Why use graphics.gd?_
 This is not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
 provide a cohesive and curated experience for using Go on top of Godot + GDExtension.
 
-Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
-with any questions, comments or feedback you may have. Show us what you're building!
-
-You can also help support the project, motivate development and prioritise fixes 
-[by sponsoring me](https://github.com/sponsors/Splizard).
-
 ## Hello World
 
 ```go
@@ -79,6 +73,12 @@ $ `go build -o example.so -buildmode=c-shared`
 
 Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
 much more!
+
+You can also join us in the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
+with any questions, comments or feedback you may have. Show us what you're building!
+
+You can also help support the project, motivate development and prioritise fixes 
+[by sponsoring me](https://github.com/sponsors/Splizard).
 
 ## TLDR
 
