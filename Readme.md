@@ -16,7 +16,7 @@ _Why use graphics.gd?_
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 
-This is not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
+Not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
 provide a cohesive and curated experience for using Go on top of Godot + GDExtension.
 
 ## Hello World
@@ -157,7 +157,7 @@ optimize functionality and/or improve test coverage of these packages is more th
 If you enjoy hunting down memory-safety issues, we would appreciate this.
 
 `graphics.gd` is looking for someone to create benchmarks to compare this project with `.gd` script 
-and/or other gdextension-based development options.
+and/or other gdextension-based alternatives.
 
 The project also needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover any functionality
