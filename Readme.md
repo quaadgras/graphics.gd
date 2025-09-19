@@ -9,15 +9,15 @@ _Why use graphics.gd?_
 * Full compatibility with the [Godot Engine](https://godotengine.org/) ecosystem.
 * Unlike C++/C#/GDScript/Rust/Swift, RIDs, Callables and Dictionary arguments are strongly typed.
 * Fully documented on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
-* General purpose pure-Go 'variant' math packages, reuse them in any Go project.
-* After the first build, recompile quickly, with an experience similar to a scripting language.
+* Pure-Go ported `variant` packages, for vector math and more, reuse them in any Go project.
+* After an initial build, recompile quickly, with an experience similar to scripting languages.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
 * Neither Xcode nor MacOS is needed to build iOS apps.
-* Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
+* Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 
-This is not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesive
-and curated experience for using Go on top of Godot + GDExtension.
+This is not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
+provide a cohesive and curated experience for using Go on top of Godot + GDExtension.
 
 ```go
 // This file is all you need to start a project.
@@ -48,7 +48,8 @@ func main() {
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-You can also help support the project, motivate development and prioritise issues [by sponsoring me](https://github.com/sponsors/Splizard).
+You can also help support the project, motivate development and prioritise issues 
+[by sponsoring me](https://github.com/sponsors/Splizard).
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
