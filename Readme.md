@@ -56,8 +56,8 @@ a single  `main.go` file, to install it, make sure that your `$GOPATH/bin` is in
 
 $ `go install graphics.gd/cmd/gd@release`
 
-Now when you can run `gd run`, `gd test` on the main package in your project's
-directory, things will work as expected. The tool will create a "graphics"
+Now you can run `gd run`, `gd test` on the main package in your project's
+directory and things should work as expected. This tool will create a "graphics"
 subdirectory where you can manage your assets via the
 [Godot Engine](https://godotengine.org/) editor.
 
@@ -78,8 +78,8 @@ much more!
 
 Each engine class is available as a package under `classdb`. To import the
 `Node` class you can import `"graphics.gd/classdb/Node"` There's no inheritance,
-so to access a 'super' class, you need to call `Super()` on an extension 'class'.
-All engine classes have methods to cast to any sub-classes they extend for example
+so to access a 'super' class, you need to call `AsClassName()` on an extension 'class'.
+All engine classes have methods to cast to any classes that they extend from, for example
 `AsObject()` or `AsNode2D()`.
 
 Methods have been renamed to follow Go conventions, so instead of
@@ -88,11 +88,17 @@ referring to Godot documentation.
 
 https://docs.godotengine.org/en/latest/index.html
 
-Optional arguments are omitted by default, convert an `Instance` into either the `Expanded`
-or `Advanced` type to use them. ie. for a `Node.Instance` called `node`, it can be converted:
+The complete API reference for Godot has been ported to Go, including code snippets, so you can 
+use pkg.go.dev as a drop-in replacement for Godot's API documentation.
+
+https://pkg.go.dev/graphics.gd
+
+**Note**
+Optional arguments are omitted by default, convert an `Instance` into either the `MoreArgs`
+or `Advanced` types to specify them.
 
 ```go
-Node.Expanded(node).AddChild(...)
+node.MoreArgs().AddChild(...)
 ```
 
 ## Where Do I Find?
@@ -103,8 +109,8 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 * Utility Functions      -> `//gd:utility_function_name`
 * Enum                   -> `//gd:ClassName.EnumName`
 ```
-_NOTE_ in order to avoid circular dependencies, a handful of functions have moved packages,
-for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
+_NOTE_ in order to avoid circular dependencies, a small selection of functions have moved 
+packages, for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
 ## Community & Support
 
@@ -112,7 +118,7 @@ Join the [active discussions](https://github.com/quaadgras/graphics.gd/discussio
 with any questions, comments or feedback you may have. Show us what you're building!
 
 The API surface of the [Godot Engine] is huge, not everything has been translated to
-Go optimally, the best thing you can do is to [report] anything that seems 'off' this way
+Go optimally, the best thing you can do is to [report] anything that seems 'off', this way
 you can reduce the likelihood of being affected by any breaking changes in the future.
 
 *Sponsors receive priority support!* Secure the development of `graphics.gd` and prioritise 
@@ -128,7 +134,7 @@ memory.
 
 ## Examples
 There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
-branch. All the samples are designed to be run with `gd run` without any additional setup.
+branch. All of the samples are designed to be able to run with `gd run` without any additional setup.
 
 ## Supported Platforms
 
@@ -142,7 +148,7 @@ branch. All the samples are designed to be run with `gd run` without any additio
 ## Platform Restrictions
 
 * 64bit only (arm64 && amd64).
-* No support for Playstation/Xbox/Switch (achievable in the future with WASI, wasm2c or hitsumabushi).
+* No support for Playstation/Xbox/Switch yet (achievable in the future with WASI, wasm2c or hitsumabushi).
 
 ## Contributing
 
