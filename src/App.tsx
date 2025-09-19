@@ -732,7 +732,7 @@ func main() {
                 issues.
               </p>
               <a
-                href="https://buy.stripe.com/4gw14maETbnX3vOcMM"
+                href="https://github.com/sponsors/Splizard"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-500 to-orange-500 text-white px-8 py-4 rounded-xl hover:from-pink-600 hover:to-orange-600 transition-all duration-200 hover:shadow-lg"
@@ -829,7 +829,7 @@ func main() {
                   GitHub
                 </a>
                 <a
-                  href="https://buy.stripe.com/4gw14maETbnX3vOcMM"
+                  href="https://github.com/sponsors/Splizard"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-gray-300 hover:text-white transition-colors"
