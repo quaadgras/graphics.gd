@@ -1,7 +1,10 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
 A cross platform 2D/3D graphics runtime for Go suitable for building native mobile apps, gdextensions,
-multimedia applications, games and more!
+multimedia applications, games and more.
+
+This is not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesive
+and curated experience for using Go on top of Godot + GDExtension.
 
 ```go
 // This file is all you need to start a project.
@@ -41,13 +44,10 @@ _Why use graphics.gd?_
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
 
-This project is not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesive
-and curated experience for using Go on top of Godot + GDExtension.
-
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-You can also help support the project, motivate development and prioritise issues [by sponsoring](https://buy.stripe.com/4gw14maETbnX3vOcMM).
+You can also help support the project, motivate development and prioritise issues [by sponsoring me](https://github.com/sponsors/Splizard).
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
@@ -163,4 +163,4 @@ Lastly, spread the word and let people know about graphics.gd!
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
 you can use the Godot engine. If you use this project for any commercially successful products, please
-consider [financially supporting the project](https://buy.stripe.com/4gw14maETbnX3vOcMM) to show your appreciation!
+consider [sponsoring the maintainer](https://github.com/sponsors/Splizard) to show your appreciation!
