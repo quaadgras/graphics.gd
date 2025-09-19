@@ -92,7 +92,7 @@ referring to Godot documentation.
 https://docs.godotengine.org/en/latest/index.html
 
 The complete API reference for Godot has been ported to Go, including code snippets, so you can 
-use pkg.go.dev as a drop-in replacement for Godot's API documentation.
+use `pkg.go.dev` as a drop-in replacement for Godot's API documentation.
 
 https://pkg.go.dev/graphics.gd
 
