@@ -116,7 +116,7 @@ Go optimally, the best thing you can do is to [report] anything that seems 'off'
 you can reduce the likelihood of being affected by any breaking changes in the future.
 
 *Sponsors receive priority support!* Secure the development of `graphics.gd` and prioritise 
-solutions to issues by [sponsoring me](https://github.com/sponsors/Splizard). 
+having issues resolved by [sponsoring me](https://github.com/sponsors/Splizard). 
 
 ## Performance
 It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
