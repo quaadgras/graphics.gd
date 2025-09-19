@@ -162,7 +162,7 @@ Lastly, spread the word and let people know about graphics.gd!
 
 ## See Also
 
-* [godot-go](https://github.com/godot-go/godot-go) (a different project that provides Godot bindings for Go)
+* [godot-go](https://github.com/godot-go/godot-go) (another project that provides Godot bindings for Go)
 * [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
 * [g3n](https://github.com/g3n/engine) (a 3D game engine for Go)
 * [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4) 
