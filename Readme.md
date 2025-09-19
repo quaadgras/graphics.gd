@@ -74,12 +74,6 @@ $ `go build -o example.so -buildmode=c-shared`
 Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
 much more!
 
-You can also join us in the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
-with any questions, comments or feedback you may have. Show us what you're building!
-
-You can also help support the project, motivate development and prioritise fixes 
-[by sponsoring me](https://github.com/sponsors/Splizard).
-
 ## TLDR
 
 Each engine class is available as a package under `classdb`. To import the
@@ -111,6 +105,15 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 ```
 _NOTE_ in order to avoid circular dependencies, a handful of functions have moved packages,
 for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
+
+## Community & Support
+
+Join the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
+with any questions, comments or feedback you may have. Show us what you're building!
+
+You can also help support the project, motivate development and prioritise fixes by 
+[sponsoring me](https://github.com/sponsors/Splizard). Sponsors receive priority 
+support!
 
 ## Performance
 It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
@@ -173,5 +176,5 @@ If you're interested in graphics.gd, you may also wish to explore:
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
-you can use the Godot engine. If you use this project for any commercially successful products, please
+you can use the Godot engine. If you do use this project for any commercially successful products, please
 consider [sponsoring the maintainer](https://github.com/sponsors/Splizard) to show your appreciation!
