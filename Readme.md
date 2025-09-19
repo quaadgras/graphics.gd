@@ -19,6 +19,8 @@ _Why use graphics.gd?_
 This is not just a 1:1 wrapper for gdextension! graphics.gd has been designed from the ground up to 
 provide a cohesive and curated experience for using Go on top of Godot + GDExtension.
 
+## Hello World
+
 ```go
 // This file is all you need to start a project.
 // Save it somewhere, install the `gd` command and use `gd run` to get started.
