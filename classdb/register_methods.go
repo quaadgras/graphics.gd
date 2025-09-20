@@ -16,7 +16,7 @@ import (
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/String"
 
-	EngineClass "graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/Engine"
 )
 
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
@@ -135,7 +135,7 @@ func variantCallStatic(fn reflect.Value) func(instance any, v ...gd.Variant) (gd
 		for i := 0; i < fn.Type().NumIn()-1; i++ {
 			args[i], err = gd.ConvertToDesiredGoType(v[i], fn.Type().In(i+1))
 			if err != nil {
-				EngineClass.Raise(err)
+				Engine.Raise(err)
 				return gd.Variant{}, err
 			}
 		}
@@ -153,7 +153,7 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 		for i := 0; i < method.Type.NumIn()-1; i++ {
 			args[i], err = gd.ConvertToDesiredGoType(v[i], method.Type.In(i+1))
 			if err != nil {
-				EngineClass.Raise(err)
+				Engine.Raise(err)
 				return gd.Variant{}, err
 			}
 		}
