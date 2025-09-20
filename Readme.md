@@ -185,7 +185,7 @@ If you're interested in graphics.gd, you may also wish to explore:
 
 * [godot-go](https://github.com/godot-go/godot-go) (a different Go + Godot project)
 * [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
-* [g3n](https://github.com/g3n/engine) (a 3D game engine for Go, includes `math32` vectors that are compatible with `graphics.gd`)
+* [g3n](https://github.com/g3n/engine) (a 3D game engine for Go, includes `math32` vector types that are compatible with `graphics.gd`)
 * [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4) 
 
 ## Licensing
