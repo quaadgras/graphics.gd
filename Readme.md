@@ -152,7 +152,7 @@ memory.
 
 ## Platform Restrictions
 
-* 64bit only (arm64 && amd64).
+* 64bit only (`arm64`, `amd64` and `wasm`).
 * No support for Playstation/Xbox/Switch yet (achievable in the future with WASI, wasm2c or hitsumabushi).
 
 ## Contributing
