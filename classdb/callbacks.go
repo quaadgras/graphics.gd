@@ -5,6 +5,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Object"
 )
 
 func init() {
@@ -97,7 +98,7 @@ func init() {
 				gdmemory.Set(gdextension.Pointer(rid), uint64(0))
 			},
 			Notification: func(instance gdextension.ExtensionInstanceID, what int32, reverse bool) {
-				cgoHandle(instance).Value().(*instanceImplementation).Notification(what, reverse)
+				cgoHandle(instance).Value().(*instanceImplementation).Notification(Object.Notification(what), reverse)
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
 				defer gd.Recover()

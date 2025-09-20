@@ -17,14 +17,14 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	EditorInterfaceClass "graphics.gd/classdb/EditorInterface"
-	EditorPluginClass "graphics.gd/classdb/EditorPlugin"
-	EngineClass "graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/EditorInterface"
+	"graphics.gd/classdb/EditorPlugin"
+	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/MainLoop"
-	NodeClass "graphics.gd/classdb/Node"
-	ScriptClass "graphics.gd/classdb/Script"
-	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
-	ShaderMaterialClass "graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Script"
+	"graphics.gd/classdb/ScriptLanguage"
+	"graphics.gd/classdb/ShaderMaterial"
 
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
@@ -94,7 +94,7 @@ passed which name begins with 'New' and accepts no arguments, returning T,
 then it will be registered as the constructor for the class when it is
 instantiated from within The Engine.
 
-If the Struct extends [EditorPluginClass] then it will be added
+If the Struct extends [EditorPlugin] then it will be added
 to the editor as a plugin.
 */
 func Register[T Class](exports ...any) {
@@ -119,12 +119,12 @@ func Register[T Class](exports ...any) {
 		var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
 		var tool = false
 		switch super.(type) {
-		case interface{ AsScript() ScriptClass.Instance },
+		case interface{ AsScript() Script.Instance },
 			interface {
-				AsEditorPlugin() EditorPluginClass.Instance
+				AsEditorPlugin() EditorPlugin.Instance
 			},
 			interface {
-				AsScriptLanguage() ScriptLanguageClass.Instance
+				AsScriptLanguage() ScriptLanguage.Instance
 			}:
 			tool = true
 		}
@@ -228,7 +228,7 @@ func Register[T Class](exports ...any) {
 		}
 		switch super.(type) {
 		case interface {
-			AsShaderMaterial() ShaderMaterialClass.Instance
+			AsShaderMaterial() ShaderMaterial.Instance
 		}:
 		default:
 			registerClassInformation(className, rename, nameOf(superType), classType, documentation, method_renames)
@@ -238,20 +238,20 @@ func Register[T Class](exports ...any) {
 		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 			registrator.OnRegister()
 		}
-		if EngineClass.IsEditorHint() {
+		if Engine.IsEditorHint() {
 			switch super.(type) {
-			case EditorPluginClass.Any:
+			case EditorPlugin.Any:
 				gdextension.Host.Editor.AddPlugin(pointers.Get(className))
 			}
 		}
 	}
 	switch super.(type) {
-	case interface{ AsScript() ScriptClass.Instance },
+	case interface{ AsScript() Script.Instance },
 		interface {
-			AsEditorPlugin() EditorPluginClass.Instance
+			AsEditorPlugin() EditorPlugin.Instance
 		},
 		interface {
-			AsScriptLanguage() ScriptLanguageClass.Instance
+			AsScriptLanguage() ScriptLanguage.Instance
 		}:
 		gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, register)
 	default:
@@ -282,7 +282,7 @@ var preloaded_documentation = make(map[string]docgen.Class)
 
 func init() {
 	gd.StartupFunctions = append(gd.StartupFunctions, func() {
-		if EngineClass.IsEditorHint() {
+		if Engine.IsEditorHint() {
 			path := pointers.New[gd.String](gdextension.Host.Library.Location())
 			data, err := os.Open(filepath.Join(filepath.Dir(path.String()), "library_documentation.xml"))
 			if err != nil {
@@ -290,7 +290,7 @@ func init() {
 					return
 				}
 
-				EngineClass.Raise(err)
+				Engine.Raise(err)
 			}
 			var dec = xml.NewDecoder(data)
 			var docs docgen.XML
@@ -299,7 +299,7 @@ func init() {
 					if err == io.EOF {
 						break
 					}
-					EngineClass.Raise(fmt.Errorf("failed to unmarshal library documentation: %w", err))
+					Engine.Raise(fmt.Errorf("failed to unmarshal library documentation: %w", err))
 					break
 				}
 			}
@@ -440,7 +440,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 	}
 	gd.NewCallable(func() {
-		if EngineClass.IsEditorHint() {
+		if Engine.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
 			gdextension.Host.Editor.AddDocumentation(string(docs))
 		}
@@ -556,13 +556,13 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		object:     pointers.Get(super[0])[0],
 		Value:      value.Addr().Interface().(gdclass.Pointer),
 		signals:    signals,
-		isEditor:   !class.Tool && EngineClass.IsEditorHint(),
+		isEditor:   !class.Tool && Engine.IsEditorHint(),
 		isMainLoop: class.isMainLoop,
 	}
 }
 
 func (class classImplementation) GetVirtual(name gd.StringName) any {
-	if !class.Tool && EngineClass.IsEditorHint() {
+	if !class.Tool && Engine.IsEditorHint() {
 		return nil
 	}
 	var virtual = class.VirtualMethods(name.String())
@@ -633,17 +633,19 @@ func (instance *instanceImplementation) OnCreate(value reflect.Value) {
 	}
 }
 
-func (instance *instanceImplementation) Notification(what int32, reversed bool) {
-	if what == 13 { // NOTIFICATION_READY
+func (instance *instanceImplementation) Notification(what Object.Notification, reversed bool) {
+	if what == Node.NotificationReady {
 		instance.ready()
 	}
-	if instance.isMainLoop && what == 2012 { // NOTIFICATION_CRASH
+	if instance.isMainLoop && what == MainLoop.NotificationCrash {
 		debug.PrintStack()
 	}
 	if !instance.isEditor {
 		switch notify := instance.Value.(type) {
 		case interface{ Notification(gd.NotificationType) }:
 			notify.Notification(gd.NotificationType(what))
+		case interface{ Notification(Object.Notification) }:
+			notify.Notification(what)
 		case interface{ Notification(int, bool) }:
 			notify.Notification(int(what), reversed)
 		default:
@@ -692,7 +694,7 @@ func (instance *instanceImplementation) Free() {
 			continue
 		}
 		type isNode interface {
-			AsNode() NodeClass.Instance
+			AsNode() Node.Instance
 		}
 		nodeType := reflect.TypeOf([0]isNode{}).Elem()
 		if field.Type.Implements(nodeType) || reflect.PointerTo(field.Type).Implements(nodeType) {
@@ -722,7 +724,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := Object.As[NodeClass.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
+	parent, ok := Object.As[Node.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
 	if !ok {
 		return
 	}
@@ -743,7 +745,7 @@ func (instance *instanceImplementation) ready() {
 
 func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner [1]gdclass.Node) {
 	type isNode interface {
-		AsNode() NodeClass.Instance
+		AsNode() Node.Instance
 	}
 	var (
 		rvalue = reflect.ValueOf(value)
@@ -783,7 +785,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		name = tag
 	}
 	path := Path.ToNode(String.New(name))
-	if !NodeClass.Advanced(parent).HasNode(path) {
+	if !Node.Advanced(parent).HasNode(path) {
 		child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
 		child[0].Notification(0, false)
 		defer pointers.End(child[0])
@@ -794,18 +796,18 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		} else {
 			class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
 		}
-		var mode NodeClass.InternalMode = NodeClass.InternalModeDisabled
+		var mode Node.InternalMode = Node.InternalModeDisabled
 		if !field.IsExported() {
-			mode = NodeClass.InternalModeFront
+			mode = Node.InternalModeFront
 		}
-		NodeClass.Advanced(class.AsNode()).SetName(String.Name(String.New(field.Name)))
-		NodeClass.Advanced(parent).AddChild(class.AsNode(), true, mode)
-		if EngineClass.IsEditorHint() {
-			NodeClass.Advanced(class.AsNode()).SetOwner(EditorInterfaceClass.GetEditedSceneRoot())
+		Node.Advanced(class.AsNode()).SetName(String.Name(String.New(field.Name)))
+		Node.Advanced(parent).AddChild(class.AsNode(), true, mode)
+		if Engine.IsEditorHint() {
+			Node.Advanced(class.AsNode()).SetOwner(EditorInterface.GetEditedSceneRoot())
 		}
 		return
 	}
-	var node = NodeClass.Advanced(parent).GetNode(path)
+	var node = Node.Advanced(parent).GetNode(path)
 	native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(node[0])[0]))
 	if native != nil {
 		if reflect.ValueOf(native).Type() != rvalue.Elem().Type() {

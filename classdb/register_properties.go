@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"reflect"
 
-	EngineClass "graphics.gd/classdb/Engine"
-	NodeClass "graphics.gd/classdb/Node"
-	ResourceClass "graphics.gd/classdb/Resource"
+	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
@@ -48,7 +48,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 				hintString += fmt.Sprintf("%s:%d", name, value)
 				first = false
 			}
-		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
+		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() Resource.Instance }{}).Elem()):
 			vtype = gdextension.TypeObject
 			hint |= PropertyHintResourceType
 			hintString = nameOf(field.Type.Elem())
@@ -63,7 +63,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 				if !ok {
 					return false
 				}
-				if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
+				if elem.Implements(reflect.TypeFor[Resource.Any]()) {
 					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
 				} else if etype != gdextension.TypeNil {
 					hint |= PropertyHintArrayType
@@ -83,10 +83,10 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 			}
 		}
 	}
-	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() ResourceClass.Instance }{}).Elem()) {
+	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() Resource.Instance }{}).Elem()) {
 		hint |= PropertyHintResourceType
 	}
-	if field.Type.Implements(reflect.TypeOf([0]interface{ AsNode() NodeClass.Instance }{}).Elem()) {
+	if field.Type.Implements(reflect.TypeOf([0]interface{ AsNode() Node.Instance }{}).Elem()) {
 		hint |= PropertyHintNodeType
 	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor
@@ -177,7 +177,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		var err error
 		converted, err = gd.ConvertToDesiredGoType(value, field.Type())
 		if err != nil {
-			EngineClass.Raise(err)
+			Engine.Raise(err)
 			return false
 		}
 	}
