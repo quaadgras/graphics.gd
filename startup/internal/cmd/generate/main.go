@@ -453,6 +453,7 @@ func main() {
 		generate_startup_cgo(),
 		generate_gdextension_web_cgo_callbacks(),
 		generate_startup_wasip1(),
+		generate_reloads_go(),
 	); err != nil {
 		fmt.Fprintf(os.Stderr, "Error generating files: %v\n", err)
 		os.Exit(1)
