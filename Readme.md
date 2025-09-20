@@ -1,7 +1,7 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-A cross platform 2D/3D graphics runtime for Go suitable for building native mobile apps, gdextensions,
-multimedia applications, games and more.
+A cross platform 2D/3D graphics runtime for [Go](https://go.dev/) suitable for building native mobile apps, 
+gdextensions, multimedia applications, games and more.
 
 _Why use graphics.gd?_
 
@@ -17,7 +17,9 @@ _Why use graphics.gd?_
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 
 Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to 
-provide a cohesive and curated experience for using Go on top of Godot + GDExtension.
+provide a cohesive and curated experience for using [Go](https://go.dev/) on top of 
+[Godot](https://godotengine.org/) + 
+[GDExtension](https://docs.godotengine.org/en/4.4/tutorials/scripting/gdextension/what_is_gdextension.html).
 
 ## Hello World
 
@@ -91,8 +93,8 @@ referring to Godot documentation.
 
 https://docs.godotengine.org/en/latest/index.html
 
-The complete API reference for Godot has been ported to Go, including code snippets, so you can 
-use `pkg.go.dev` as a drop-in replacement for Godot's API documentation.
+The complete API reference for Godot has been ported to Go, including code snippets, so you 
+can use `pkg.go.dev` as a drop-in replacement for Godot's API documentation.
 
 https://pkg.go.dev/graphics.gd
 
@@ -120,9 +122,11 @@ packages, for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()
 Join the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-The API surface of the [Godot Engine] is huge, not everything has been translated to
-Go optimally, the best thing you can do is to [report] anything that seems 'off', this way
-you can reduce the likelihood of being affected by any breaking changes in the future.
+The API surface of the [Godot Engine](https://godotengine.org/) is huge, not everything has 
+been translated to Go optimally, the best thing you can do is to 
+[report](https://github.com/quaadgras/graphics.gd/issues/new/choose) 
+anything that seems 'off', this way you can reduce the likelihood of being affected by any 
+breaking changes in the future.
 
 *Public sponsors receive priority support!* 
 
