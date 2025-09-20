@@ -158,7 +158,7 @@ memory.
 ## Contributing
 
 The best way you can contribute to `graphics.gd` is to **try it**, this project needs you to find out
-what's working and what doesn't, so do please let us know of any trouble that you run into! Any
+what works best and what doesn't, so do please let us know of any trouble that you run into! Any
 examples you can contribute are more than welcome.
 
 The next best thing you can do to help is improve the Variant packages, these are general-purpose
