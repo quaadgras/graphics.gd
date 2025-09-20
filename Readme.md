@@ -130,8 +130,8 @@ breaking changes in the future.
 
 *Public sponsors receive priority support!* 
 
-Secure the development of `graphics.gd` and prioritise 
-having issues resolved by [sponsoring me](https://github.com/sponsors/Splizard). 
+Secure the development of `graphics.gd` and prioritise issues by 
+[sponsoring me](https://github.com/sponsors/Splizard). 
 
 ## Performance
 It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
