@@ -181,7 +181,7 @@ experience with `graphics.gd`!
 
 ## See Also
 
-If you're interested in graphics.gd, you may also wish to explore:
+If you're interested in graphics.gd, you may also like to explore:
 
 * [godot-go](https://github.com/godot-go/godot-go) (a different Go + Godot project)
 * [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
