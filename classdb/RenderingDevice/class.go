@@ -564,7 +564,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
-func (self Instance) FramebufferCreate(textures [][]RID.Texture) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
+func (self Instance) FramebufferCreate(textures []RID.Texture) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
 	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(-1), int64(1))))
 }
 
@@ -575,7 +575,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
-func (self MoreArgs) FramebufferCreate(textures [][]RID.Texture, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
+func (self MoreArgs) FramebufferCreate(textures []RID.Texture, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
 	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(validate_with_format), int64(view_count))))
 }
 
@@ -586,7 +586,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
-func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
+func (self Instance) FramebufferCreateMultipass(textures []RID.Texture, passes []RDFramebufferPass.Instance) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
 	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(-1), int64(1))))
 }
 
@@ -597,7 +597,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 
 [FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
 */
-func (self MoreArgs) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
+func (self MoreArgs) FramebufferCreateMultipass(textures []RID.Texture, passes []RDFramebufferPass.Instance, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
 	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(validate_with_format), int64(view_count))))
 }
 
@@ -687,14 +687,14 @@ func (self Instance) VertexFormatCreate(vertex_descriptions []RDVertexAttribute.
 /*
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
 */
-func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
+func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
 	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New([1][]int64{}[0]...))))
 }
 
 /*
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
 */
-func (self MoreArgs) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer, offsets []int64) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
+func (self MoreArgs) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers []RID.VertexBuffer, offsets []int64) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
 	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New(offsets...))))
 }
 
@@ -1286,7 +1286,7 @@ func (self Instance) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int,
 /*
 This method does nothing and always returns an empty []int64.
 */
-func (self MoreArgs) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values []Color.RGBA, clear_depth Float.X, clear_stencil int, region Rect2.PositionSize, storage_textures [][]RID.Texture) []int64 { //gd:RenderingDevice.draw_list_begin_split
+func (self MoreArgs) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values []Color.RGBA, clear_depth Float.X, clear_stencil int, region Rect2.PositionSize, storage_textures []RID.Texture) []int64 { //gd:RenderingDevice.draw_list_begin_split
 	return []int64(slices.Collect(Advanced(self).DrawListBeginSplit(RID.Any(framebuffer), int64(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New(clear_color_values...), float64(clear_depth), int64(clear_stencil), Rect2.PositionSize(region), gd.ArrayFromSlice[Array.Contains[RID.Any]](storage_textures)).Values()))
 }
 

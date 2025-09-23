@@ -1763,14 +1763,14 @@ func (self Instance) ShapedGetSpanObject(shaped RID.TextBuffer, index int) any {
 /*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (self Instance) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int) { //gd:TextServer.shaped_set_span_update_font
+func (self Instance) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts []RID.Font, size int) { //gd:TextServer.shaped_set_span_update_font
 	Advanced(self).ShapedSetSpanUpdateFont(RID.Any(shaped), int64(index), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), Dictionary.Nil)
 }
 
 /*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (self MoreArgs) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int, opentype_features map[string]uint32) { //gd:TextServer.shaped_set_span_update_font
+func (self MoreArgs) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts []RID.Font, size int, opentype_features map[string]uint32) { //gd:TextServer.shaped_set_span_update_font
 	Advanced(self).ShapedSetSpanUpdateFont(RID.Any(shaped), int64(index), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), gd.DictionaryFromMap(opentype_features))
 }
 

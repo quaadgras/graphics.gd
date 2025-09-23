@@ -102,7 +102,7 @@ type Any interface {
 /*
 Creates, or obtains a cached, framebuffer. 'textures' lists textures accessed. 'passes' defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. 'views' defines the number of views used when rendering.
 */
-func GetCacheMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
+func GetCacheMultipass(textures []RID.Texture, passes []RDFramebufferPass.Instance, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
 	self := Instance{}
 	return RID.Framebuffer(RID.Framebuffer(Advanced(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(views))))
 }

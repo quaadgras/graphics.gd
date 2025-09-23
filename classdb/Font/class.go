@@ -169,8 +169,8 @@ Returns slice of valid [Font] [Resource.ID]s, which can be passed to the [TextSe
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self Instance) GetRids() [][]RID.Font { //gd:Font.get_rids
-	return [][]RID.Font(gd.ArrayAs[[][]RID.Font](gd.InternalArray(Advanced(self).GetRids())))
+func (self Instance) GetRids() []RID.Font { //gd:Font.get_rids
+	return []RID.Font(gd.ArrayAs[[]RID.Font](gd.InternalArray(Advanced(self).GetRids())))
 }
 
 /*
