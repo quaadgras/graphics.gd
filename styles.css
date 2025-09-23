@@ -3,3 +3,20 @@ body {
     background-color: #f0f0f0;
     margin: 20px;
 }
+
+#examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+a {
+    display: flex;
+    flex-direction: column;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
