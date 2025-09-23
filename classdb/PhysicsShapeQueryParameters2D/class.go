@@ -186,12 +186,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Exclude() [][]RID.Body2D {
-	return [][]RID.Body2D(gd.ArrayAs[[][]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() []RID.Body2D {
+	return []RID.Body2D(gd.ArrayAs[[]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
 // SetExclude sets the property returned by [GetExclude].
-func (self Instance) SetExclude(value [][]RID.Body2D) {
+func (self Instance) SetExclude(value []RID.Body2D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 

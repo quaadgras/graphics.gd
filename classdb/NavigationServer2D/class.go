@@ -267,9 +267,9 @@ Returns all created navigation map [Resource.ID]s on the NavigationServer. This 
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func GetMaps() [][]RID.NavigationMap2D { //gd:NavigationServer2D.get_maps
+func GetMaps() []RID.NavigationMap2D { //gd:NavigationServer2D.get_maps
 	once.Do(singleton)
-	return [][]RID.NavigationMap2D(gd.ArrayAs[[][]RID.NavigationMap2D](gd.InternalArray(Advanced().GetMaps())))
+	return []RID.NavigationMap2D(gd.ArrayAs[[]RID.NavigationMap2D](gd.InternalArray(Advanced().GetMaps())))
 }
 
 /*
@@ -413,9 +413,9 @@ Returns all navigation link [Resource.ID]s that are currently assigned to the re
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func MapGetLinks(map_ RID.NavigationMap2D) [][]RID.NavigationLink2D { //gd:NavigationServer2D.map_get_links
+func MapGetLinks(map_ RID.NavigationMap2D) []RID.NavigationLink2D { //gd:NavigationServer2D.map_get_links
 	once.Do(singleton)
-	return [][]RID.NavigationLink2D(gd.ArrayAs[[][]RID.NavigationLink2D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(map_)))))
+	return []RID.NavigationLink2D(gd.ArrayAs[[]RID.NavigationLink2D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(map_)))))
 }
 
 /*
@@ -423,9 +423,9 @@ Returns all navigation regions [Resource.ID]s that are currently assigned to the
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func MapGetRegions(map_ RID.NavigationMap2D) [][]RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_regions
+func MapGetRegions(map_ RID.NavigationMap2D) []RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_regions
 	once.Do(singleton)
-	return [][]RID.NavigationRegion2D(gd.ArrayAs[[][]RID.NavigationRegion2D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(map_)))))
+	return []RID.NavigationRegion2D(gd.ArrayAs[[]RID.NavigationRegion2D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(map_)))))
 }
 
 /*
@@ -433,9 +433,9 @@ Returns all navigation agents [Resource.ID]s that are currently assigned to the 
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func MapGetAgents(map_ RID.NavigationMap2D) [][]RID.NavigationAgent2D { //gd:NavigationServer2D.map_get_agents
+func MapGetAgents(map_ RID.NavigationMap2D) []RID.NavigationAgent2D { //gd:NavigationServer2D.map_get_agents
 	once.Do(singleton)
-	return [][]RID.NavigationAgent2D(gd.ArrayAs[[][]RID.NavigationAgent2D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(map_)))))
+	return []RID.NavigationAgent2D(gd.ArrayAs[[]RID.NavigationAgent2D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(map_)))))
 }
 
 /*
@@ -443,9 +443,9 @@ Returns all navigation obstacle [Resource.ID]s that are currently assigned to th
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func MapGetObstacles(map_ RID.NavigationMap2D) [][]RID.NavigationObstacle2D { //gd:NavigationServer2D.map_get_obstacles
+func MapGetObstacles(map_ RID.NavigationMap2D) []RID.NavigationObstacle2D { //gd:NavigationServer2D.map_get_obstacles
 	once.Do(singleton)
-	return [][]RID.NavigationObstacle2D(gd.ArrayAs[[][]RID.NavigationObstacle2D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(map_)))))
+	return []RID.NavigationObstacle2D(gd.ArrayAs[[]RID.NavigationObstacle2D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(map_)))))
 }
 
 /*

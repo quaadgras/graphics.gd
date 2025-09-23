@@ -124,8 +124,8 @@ func (self Instance) ClearIds() { //gd:RDUniform.clear_ids
 /*
 Returns an array of all ids currently bound to the uniform.
 */
-func (self Instance) GetIds() [][]RID.Any { //gd:RDUniform.get_ids
-	return [][]RID.Any(gd.ArrayAs[[][]RID.Any](gd.InternalArray(Advanced(self).GetIds())))
+func (self Instance) GetIds() []RID.Any { //gd:RDUniform.get_ids
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(Advanced(self).GetIds())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -477,7 +477,7 @@ type Interface interface {
 	// Returns the text span embedded object key.
 	ShapedGetSpanObject(shaped RID.TextBuffer, index int) any
 	// Changes text span font, font size, and OpenType features, without changing the text.
-	ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int, opentype_features map[string]uint32)
+	ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts []RID.Font, size int, opentype_features map[string]uint32)
 	// Returns the number of uniform text runs in the buffer.
 	ShapedGetRunCount(shaped RID.TextBuffer) int
 	// Returns the source text of the 'index' text run (in visual order).
@@ -928,7 +928,7 @@ func (self implementation) ShapedGetSpanEmbeddedObject(shaped RID.TextBuffer, in
 }
 func (self implementation) ShapedGetSpanText(shaped RID.TextBuffer, index int) (_ string) { return }
 func (self implementation) ShapedGetSpanObject(shaped RID.TextBuffer, index int) (_ any)  { return }
-func (self implementation) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int, opentype_features map[string]uint32) {
+func (self implementation) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts []RID.Font, size int, opentype_features map[string]uint32) {
 	return
 }
 func (self implementation) ShapedGetRunCount(shaped RID.TextBuffer) (_ int)              { return }
@@ -3381,7 +3381,7 @@ func (Instance) _shaped_get_span_object(impl func(ptr gdclass.Receiver, shaped R
 /*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (Instance) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int, opentype_features map[string]uint32)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, index int, fonts []RID.Font, size int, opentype_features map[string]uint32)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
@@ -3391,7 +3391,7 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, sha
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.TextBuffer(shaped), int(index), gd.ArrayAs[[][]RID.Font](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features))
+		impl(self, RID.TextBuffer(shaped), int(index), gd.ArrayAs[[]RID.Font](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features))
 	}
 }
 

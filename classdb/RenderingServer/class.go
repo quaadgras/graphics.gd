@@ -3586,7 +3586,7 @@ func CompositorCreate() RID.Compositor { //gd:RenderingServer.compositor_create
 /*
 Sets the compositor effects for the specified compositor RID. 'effects' should be an array containing RIDs created with [CompositorEffectCreate].
 */
-func CompositorSetCompositorEffects(compositor RID.Compositor, effects [][]RID.CompositorEffect) { //gd:RenderingServer.compositor_set_compositor_effects
+func CompositorSetCompositorEffects(compositor RID.Compositor, effects []RID.CompositorEffect) { //gd:RenderingServer.compositor_set_compositor_effects
 	once.Do(singleton)
 	Advanced().CompositorSetCompositorEffects(RID.Any(compositor), gd.ArrayFromSlice[Array.Contains[RID.Any]](effects))
 }
@@ -4376,7 +4376,7 @@ Bakes the material data of the Mesh passed in the 'base' parameter with optional
 
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
-func BakeRenderUv2(base RID.Mesh, material_overrides [][]RID.Material, image_size Vector2i.XY) []Image.Instance { //gd:RenderingServer.bake_render_uv2
+func BakeRenderUv2(base RID.Mesh, material_overrides []RID.Material, image_size Vector2i.XY) []Image.Instance { //gd:RenderingServer.bake_render_uv2
 	once.Do(singleton)
 	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced().BakeRenderUv2(RID.Any(base), gd.ArrayFromSlice[Array.Contains[RID.Any]](material_overrides), Vector2i.XY(image_size)))))
 }

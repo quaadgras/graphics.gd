@@ -125,7 +125,7 @@ Returns a new, pre-configured [PhysicsRayQueryParameters3D] object. Use it to qu
 
 [PhysicsRayQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters3D
 */
-func Create(from Vector3.XYZ, to Vector3.XYZ, exclude [][]RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
+func Create(from Vector3.XYZ, to Vector3.XYZ, exclude []RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
 	return Instance(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }
@@ -138,7 +138,7 @@ Returns a new, pre-configured [PhysicsRayQueryParameters3D] object. Use it to qu
 
 [PhysicsRayQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters3D
 */
-func CreateOptions(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude [][]RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
+func CreateOptions(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude []RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
 	return Instance(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }
@@ -233,12 +233,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [CollisionObject3D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Exclude() [][]RID.Body3D {
-	return [][]RID.Body3D(gd.ArrayAs[[][]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() []RID.Body3D {
+	return []RID.Body3D(gd.ArrayAs[[]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
 }
 
 // SetExclude sets the property returned by [GetExclude].
-func (self Instance) SetExclude(value [][]RID.Body3D) {
+func (self Instance) SetExclude(value []RID.Body3D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 

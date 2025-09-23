@@ -192,12 +192,12 @@ The [Resource.ID]s of the regions and links that each point of the path goes thr
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) PathRids() [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D] {
-	return [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D](gd.ArrayAs[[][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]](gd.InternalArray(class(self).GetPathRids())))
+func (self Instance) PathRids() []RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D] {
+	return []RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D](gd.ArrayAs[[]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]](gd.InternalArray(class(self).GetPathRids())))
 }
 
 // SetPathRids sets the property returned by [GetPathRids].
-func (self Instance) SetPathRids(value [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]) {
+func (self Instance) SetPathRids(value []RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]) {
 	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
