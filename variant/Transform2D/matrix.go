@@ -89,6 +89,15 @@ func RotationScaleSkewPosition(rotation Angle.Radians, scale Vector2.XY, skew An
 	}
 }
 
+// Translates returns a transform that translates by the given offset.
+func Translates(offset Vector2.XY) OriginXY {
+	return OriginXY{
+		X:      Vector2.Right,
+		Y:      Vector2.Up,
+		Origin: offset,
+	}
+}
+
 func tdotx(t OriginXY, v Vector2.XY) Float.X { return t.X.X*v.X + t.Y.X*v.Y }
 func tdoty(t OriginXY, v Vector2.XY) Float.X { return t.X.Y*v.X + t.Y.Y*v.Y }
 
