@@ -65,6 +65,9 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 				return
 			}
 			skips[ptr] = struct{}{}
+			if is_extension_class {
+				Object.Use((*Object.Instance)(ptr))
+			}
 			for _, keepalive := range keepalives {
 				keepalive.handle(unsafe.Add(ptr, keepalive.offset))
 			}
@@ -82,7 +85,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 	case reflect.Pointer:
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
 			return func(ptr unsafe.Pointer) {
-				p := reflect.NewAt(rtype, ptr).Elem()
+				p := reflect.NewAt(rtype, ptr)
 				if p.IsNil() {
 					return
 				}
