@@ -9,7 +9,12 @@ import (
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
+
+	_ "unsafe"
 )
+
+//go:linkname keep_reachable_instances_alive graphics.gd/classdb.keep_reachable_instances_alive
+func keep_reachable_instances_alive()
 
 // TODO: switch to mainloop callbacks for Godot 4.5
 
@@ -32,6 +37,7 @@ func (gr goRuntime) ExitTree() {
 func (goRuntime) Process(delta Float.X) {
 	gd.NewCallable(func() {
 		Callable.Cycle()
+		keep_reachable_instances_alive()
 		pointers.Cycle()
 	}).CallDeferred()
 }
