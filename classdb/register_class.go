@@ -796,7 +796,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
-		if rvalue.IsZero() {
+		if rvalue.Elem().IsZero() {
 			child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
 			child[0].Notification(0, false)
 			defer pointers.End(child[0])
