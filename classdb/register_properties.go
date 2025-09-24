@@ -251,14 +251,6 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Signal.Pointer]()) {
 		return gd.Variant{}, false
 	}
-	if field.Type().Implements(reflect.TypeFor[interface{ superType() reflect.Type }]()) {
-		if field.IsZero() {
-			return gd.Variant{}, false
-		}
-		obj := field.Addr().Interface().(interface{ AsObject() [1]gd.Object }).AsObject()[0]
-		vary := gd.NewVariant(obj)
-		return vary, true
-	}
 	return gd.NewVariant(field.Interface()), true
 }
 
