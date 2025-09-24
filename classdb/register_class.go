@@ -766,7 +766,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		return
 	}
 	if rvalue.Elem().Kind() == reflect.Pointer {
-		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
+		if rvalue.Elem().IsNil() {
+			rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
+		}
 		value = rvalue.Elem().Interface()
 	}
 	class := value.(isNode)
@@ -787,15 +789,17 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
-		child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
-		child[0].Notification(0, false)
-		defer pointers.End(child[0])
-		native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(child[0])[0]))
-		if native != nil {
-			rvalue.Elem().Set(reflect.ValueOf(native))
-			class = native.(isNode)
-		} else {
-			class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
+		if rvalue.IsZero() {
+			child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
+			child[0].Notification(0, false)
+			defer pointers.End(child[0])
+			native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(child[0])[0]))
+			if native != nil {
+				rvalue.Elem().Set(reflect.ValueOf(native))
+				class = native.(isNode)
+			} else {
+				class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
+			}
 		}
 		var mode Node.InternalMode = Node.InternalModeDisabled
 		if !field.IsExported() {
