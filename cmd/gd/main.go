@@ -130,6 +130,10 @@ func gd(args ...string) error {
 	default:
 		switch args[1] {
 		case "build":
+			// we need to make sure export templates are installed before building.
+			if err := AssertExportTemplates(tooling.Godot.Version); err != nil {
+				return xray.New(err)
+			}
 			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
 				return xray.New(err)
 			}
