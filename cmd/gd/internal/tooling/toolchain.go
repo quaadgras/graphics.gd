@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/schollz/progressbar/v3"
 	"runtime.link/api/xray"
 )
 
@@ -195,7 +196,6 @@ func (exe *toolchain) Lookup() (string, error) {
 			exe.Name, exe.RequiredFor, exe.DownloadHint,
 		)
 	}
-	fmt.Printf("gd: downloading %s v%s\n", exe.Name, exe.Version)
 	if err := os.MkdirAll(install_dir, 0755); err != nil {
 		return "", xray.New(err)
 	}
@@ -241,7 +241,11 @@ func (exe *toolchain) Lookup() (string, error) {
 		)
 	}
 	if resp.StatusCode != 416 {
-		if _, err := io.Copy(out, resp.Body); err != nil {
+		bar := progressbar.DefaultBytes(
+			resp.ContentLength,
+			fmt.Sprintf("gd: downloading %s v%s\n", exe.Name, exe.Version),
+		)
+		if _, err := io.Copy(io.MultiWriter(out, bar), resp.Body); err != nil {
 			return "", xray.New(err)
 		}
 	}
