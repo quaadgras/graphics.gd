@@ -706,6 +706,7 @@ func (instance *instanceImplementation) Free() {
 			raw, kind := pointers.Ask(gd.Object(ref))
 			if kind == pointers.Pinned {
 				if ref.Unreference() {
+					pointers.End(gd.Object(ref))
 					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 				}
 			}

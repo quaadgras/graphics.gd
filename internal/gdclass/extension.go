@@ -80,7 +80,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 			class.setObject(obj)
 		}
 	}
-	pointers.Get(obj[0])
+	pointers.Bad(obj[0])
 	return obj
 }
 
