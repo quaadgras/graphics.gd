@@ -202,8 +202,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }\n")
 		}
 		fmt.Fprintf(file, "/*\n")
-		fmt.Fprintf(file, "Extension can be embedded in a new struct to create an extension of this class.\n")
-		fmt.Fprintf(file, "T should be the type that is embedding this [Extension]")
+		fmt.Fprintf(file, "Extension can be embedded in a new struct to create a Go extension of this class.\n")
+		fmt.Fprintf(file, "T must be a type that is embedding this [Extension] as the first field.\n")
+		fmt.Fprintf(file, "It is unsafe and invalid to use this type directly, or embedded in any other way.\n")
 		if hasVirtual {
 			fmt.Fprintf(file, "See [Interface] for methods that can be overridden by T.\n")
 		}
