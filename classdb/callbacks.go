@@ -1,6 +1,8 @@
 package classdb
 
 import (
+	"reflect"
+
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
@@ -15,6 +17,19 @@ func init() {
 			return nil
 		}
 		return val.(*instanceImplementation).Value
+	}
+	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) {
+		val, ok := handles.Load(uintptr(gdextension.Host.Objects.Extension.Fetch(obj)))
+		if !ok {
+			return
+		}
+		impl := val.(*instanceImplementation)
+		key := reflect.ValueOf(impl.Value).UnsafePointer()
+		if goOnly {
+			roots.Remove(key)
+		} else {
+			roots.Insert(key, compile_keepalive(reflect.TypeOf(impl.Value).Elem()))
+		}
 	}
 	gd.RegisterCleanup(func() {
 		handles.Range(func(key any, value any) bool {

@@ -1,6 +1,7 @@
 package classdb
 
 import (
+	"fmt"
 	"reflect"
 	"unsafe"
 
@@ -17,7 +18,9 @@ var skips = make(map[unsafe.Pointer]struct{})
 func keep_reachable_instances_alive() {
 	clear(skips)
 	for ptr, keepalive := range roots.Iter() {
-		keepalive(ptr)
+		if keepalive != nil {
+			keepalive(ptr)
+		}
 	}
 }
 
@@ -36,6 +39,8 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 	defer func() {
 		if keepalive != nil {
 			compiled_keepalives[rtype] = keepalive
+		} else {
+			delete(compiled_keepalives, rtype)
 		}
 	}()
 	switch rtype.Kind() {
@@ -50,6 +55,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 			if is_extension_class && i == 0 {
 				continue
 			}
+			fmt.Println(field.Name, field.Type)
 			if keepalive := compile_keepalive(field.Type); keepalive != nil {
 				keepalives = append(keepalives, keep_struct_field_alive{
 					offset: field.Offset,
@@ -140,11 +146,15 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 			if i.IsNil() {
 				return
 			}
-			ptr = i.Elem().UnsafePointer()
+			elem := i.Elem()
+			if elem.IsZero() {
+				return
+			}
+			ptr = elem.UnsafePointer()
 			if ptr == nil {
 				return
 			}
-			switch i.Elem().Kind() {
+			switch elem.Kind() {
 			case reflect.Map, reflect.Interface, reflect.Pointer:
 			default:
 				return
@@ -153,10 +163,9 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 				return
 			}
 			skips[ptr] = struct{}{}
-			if keepalive := compile_keepalive(i.Elem().Type()); keepalive != nil {
-				keepalive(i.Elem().UnsafePointer())
+			if keepalive := compile_keepalive(elem.Type()); keepalive != nil {
+				keepalive(elem.UnsafePointer())
 			}
-
 		}
 	default:
 		return nil
