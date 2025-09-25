@@ -28,7 +28,9 @@ func init() {
 		if goOnly {
 			roots.Remove(key)
 		} else {
-			roots.Insert(key, compile_keepalive(reflect.TypeOf(impl.Value).Elem()))
+			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value).Elem()); keepalive != nil {
+				roots.Insert(key, keepalive)
+			}
 		}
 	}
 	gd.RegisterCleanup(func() {
