@@ -83,7 +83,7 @@ func (linux Linux) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return tooling.Godot.Exec()
+	return tooling.Godot.Exec(args...)
 }
 
 func (Linux) Test(args ...string) error {
