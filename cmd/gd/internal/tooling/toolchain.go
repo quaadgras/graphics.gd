@@ -243,7 +243,7 @@ func (exe *toolchain) Lookup() (string, error) {
 	if resp.StatusCode != 416 {
 		bar := progressbar.DefaultBytes(
 			resp.ContentLength,
-			fmt.Sprintf("gd: downloading %s v%s\n", exe.Name, exe.Version),
+			fmt.Sprintf("gd: downloading %s v%s", exe.Name, exe.Version),
 		)
 		if _, err := io.Copy(io.MultiWriter(out, bar), resp.Body); err != nil {
 			return "", xray.New(err)
