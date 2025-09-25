@@ -765,9 +765,11 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if field.Anonymous {
 		return
 	}
+	var not_initialised = rvalue.Elem().IsZero()
 	if rvalue.Elem().Kind() == reflect.Pointer {
 		if rvalue.Elem().IsNil() {
 			rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
+			not_initialised = true
 		}
 		value = rvalue.Elem().Interface()
 	}
@@ -789,7 +791,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
-		if rvalue.Elem().IsZero() {
+		if not_initialised {
 			child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
 			child[0].Notification(0, false)
 			defer pointers.End(child[0])
