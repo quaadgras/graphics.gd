@@ -149,5 +149,6 @@ func (MacOS) Test(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
+	args = append(args, "--headless")
 	return tooling.Godot.Exec(args...)
 }
