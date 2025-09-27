@@ -1,7 +1,6 @@
 package classdb
 
 import (
-	"fmt"
 	"reflect"
 	"unsafe"
 
@@ -55,7 +54,6 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 			if is_extension_class && i == 0 {
 				continue
 			}
-			fmt.Println(field.Name, field.Type)
 			if keepalive := compile_keepalive(field.Type); keepalive != nil {
 				keepalives = append(keepalives, keep_struct_field_alive{
 					offset: field.Offset,
@@ -89,6 +87,11 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 		}
 		return nil
 	case reflect.Pointer:
+		if rtype.Implements(reflect.TypeFor[gdclass.Pointer]()) {
+			return func(ptr unsafe.Pointer) {
+				Object.Use(*(**Object.Instance)(ptr))
+			}
+		}
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
 			return func(ptr unsafe.Pointer) {
 				p := reflect.NewAt(rtype, ptr)
@@ -140,33 +143,6 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 			}
 		}
 		return nil
-	case reflect.Interface:
-		return func(ptr unsafe.Pointer) {
-			i := reflect.NewAt(rtype, ptr).Elem()
-			if i.IsNil() {
-				return
-			}
-			elem := i.Elem()
-			if elem.IsZero() {
-				return
-			}
-			ptr = elem.UnsafePointer()
-			if ptr == nil {
-				return
-			}
-			switch elem.Kind() {
-			case reflect.Map, reflect.Interface, reflect.Pointer:
-			default:
-				return
-			}
-			if _, ok := skips[ptr]; ok {
-				return
-			}
-			skips[ptr] = struct{}{}
-			if keepalive := compile_keepalive(elem.Type()); keepalive != nil {
-				keepalive(elem.UnsafePointer())
-			}
-		}
 	default:
 		return nil
 	}
