@@ -29,9 +29,12 @@ type functionCall struct {
 
 // queue of functions to call later.
 var queue = Array.New[functionCall]()
+var mutex sync.Mutex
 
 // Cycle calls all functions in the defer queue.
 func Cycle() {
+	mutex.Lock()
+	defer mutex.Unlock()
 	for _, queued := range queue.Iter() {
 		queued.function.Call(queued.arguments...)
 	}
@@ -150,11 +153,14 @@ func (fn Function) Call(args ...variant.Any) variant.Any { //gd:Callable.call Ca
 }
 
 // Defer calls the function represented by this callable at the end of the current frame.
-// Arguments can be passed and should match the method's signature.
+// Arguments can be passed and should match the method's signature. This is safe to call
+// from multiple goroutines.
 func Defer(fn Function, args ...variant.Any) { //gd:Callable.call_deferred
 	if fn == Nil {
 		return
 	}
+	mutex.Lock()
+	defer mutex.Unlock()
 	queue.Append(functionCall{
 		function:  fn,
 		arguments: args,
