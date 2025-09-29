@@ -26,6 +26,11 @@ func keep_reachable_instances_alive() {
 var compiled_keepalives = make(map[reflect.Type]func(unsafe.Pointer))
 
 func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
+	if reflect.PointerTo(rtype).Implements(reflect.TypeFor[gdclass.Pointer]()) {
+		return func(ptr unsafe.Pointer) {
+			Object.Use((*Object.Instance)(ptr))
+		}
+	}
 	if rtype.Name() == "Instance" && rtype.Implements(reflect.TypeFor[Object.Any]()) && rtype.Kind() == reflect.Array && rtype.Len() == 1 { // FIXME
 		return func(ptr unsafe.Pointer) {
 			Object.Use((*Object.Instance)(ptr))
@@ -87,11 +92,6 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 		}
 		return nil
 	case reflect.Pointer:
-		if rtype.Implements(reflect.TypeFor[gdclass.Pointer]()) {
-			return func(ptr unsafe.Pointer) {
-				Object.Use(*(**Object.Instance)(ptr))
-			}
-		}
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
 			return func(ptr unsafe.Pointer) {
 				p := reflect.NewAt(rtype, ptr)
