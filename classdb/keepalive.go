@@ -10,8 +10,8 @@ import (
 	"graphics.gd/variant/Object"
 )
 
-var roots threadsafe.Map[unsafe.Pointer, func(unsafe.Pointer)]
-var skips = make(map[unsafe.Pointer]struct{})
+var roots threadsafe.Map[reflect.Value, func(reflect.Value)]
+var skips = make(map[reflect.Value]struct{}) // only accessed from [keep_reachable_instances_alive]
 
 //go:linkname keep_reachable_instances_alive
 func keep_reachable_instances_alive() {
@@ -23,17 +23,16 @@ func keep_reachable_instances_alive() {
 	}
 }
 
-var compiled_keepalives = make(map[reflect.Type]func(unsafe.Pointer))
+var compiled_keepalives = make(map[reflect.Type]func(reflect.Value))
 
-func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
-	if reflect.PointerTo(rtype).Implements(reflect.TypeFor[gdclass.Pointer]()) {
-		return func(ptr unsafe.Pointer) {
-			Object.Use((*Object.Instance)(ptr))
-		}
-	}
+func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 	if rtype.Name() == "Instance" && rtype.Implements(reflect.TypeFor[Object.Any]()) && rtype.Kind() == reflect.Array && rtype.Len() == 1 { // FIXME
-		return func(ptr unsafe.Pointer) {
-			Object.Use((*Object.Instance)(ptr))
+		return func(ptr reflect.Value) {
+			if ptr.CanAddr() {
+				Object.Use((*Object.Instance)(ptr.Addr().UnsafePointer()))
+			} else {
+				Object.Use(ptr.Interface().(Object.Any))
+			}
 		}
 	}
 	if cached, ok := compiled_keepalives[rtype]; ok {
@@ -61,6 +60,8 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 			}
 			if keepalive := compile_keepalive(field.Type); keepalive != nil {
 				keepalives = append(keepalives, keep_struct_field_alive{
+					rtype:  field.Type,
+					index:  field.Index[0],
 					offset: field.Offset,
 					handle: keepalive,
 				})
@@ -69,86 +70,97 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 		if len(keepalives) == 0 {
 			return nil
 		}
-		return func(ptr unsafe.Pointer) {
-			if _, ok := skips[ptr]; ok {
+		return func(val reflect.Value) {
+			if _, ok := skips[val]; ok {
 				return
 			}
-			skips[ptr] = struct{}{}
+			skips[val] = struct{}{}
+			var can_addr = val.CanAddr()
 			if is_extension_class {
-				Object.Use((*Object.Instance)(ptr))
+				if can_addr {
+					Object.Use((*Object.Instance)(val.Addr().UnsafePointer()))
+				} else {
+					Object.Use(Object.Instance(gdclass.GetObject(val.Interface().(gdclass.Interface))))
+				}
 			}
-			for _, keepalive := range keepalives {
-				keepalive.handle(unsafe.Add(ptr, keepalive.offset))
+			if can_addr {
+				ptr := val.Addr().UnsafePointer()
+				for _, keepalive := range keepalives {
+					keepalive.handle(reflect.NewAt(keepalive.rtype, unsafe.Add(ptr, keepalive.offset)).Elem())
+				}
+			} else {
+				for _, keepalive := range keepalives {
+					keepalive.handle(val.Field(keepalive.index))
+				}
 			}
 		}
 	case reflect.Array:
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil && rtype.Len() > 0 {
-			return func(ptr unsafe.Pointer) {
-				array := reflect.NewAt(rtype, ptr).Elem()
-				for i := 0; i < array.Len(); i++ {
-					keepalive(array.Index(i).Addr().UnsafePointer())
+			return func(val reflect.Value) {
+				for i := 0; i < val.Len(); i++ {
+					keepalive(val.Index(i))
 				}
 			}
 		}
 		return nil
 	case reflect.Pointer:
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
-			return func(ptr unsafe.Pointer) {
-				p := reflect.NewAt(rtype, ptr)
-				if p.IsNil() {
+			return func(val reflect.Value) {
+				if val.IsNil() {
 					return
 				}
-				keepalive(p.UnsafePointer())
+				keepalive(val.Elem())
 			}
 		}
 		return nil
 	case reflect.Slice:
 		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
-			return func(ptr unsafe.Pointer) {
-				slice := reflect.NewAt(rtype, ptr).Elem()
-				ptr = slice.UnsafePointer()
-				if ptr == nil {
-					return
-				}
-				if _, ok := skips[ptr]; ok {
-					return
-				}
-				skips[ptr] = struct{}{}
-				for i := 0; i < slice.Len(); i++ {
-					keepalive(slice.Index(i).Addr().UnsafePointer())
+			return func(val reflect.Value) {
+				for i := 0; i < val.Len(); i++ {
+					keepalive(val.Index(i))
 				}
 			}
 		}
 		return nil
 	case reflect.Map:
 		if keyKeepalive, valKeepalive := compile_keepalive(rtype.Key()), compile_keepalive(rtype.Elem()); keyKeepalive != nil || valKeepalive != nil {
-			return func(ptr unsafe.Pointer) {
-				m := reflect.NewAt(rtype, ptr).Elem()
-				ptr = m.UnsafePointer()
-				if ptr == nil {
+			var map_iter reflect.MapIter
+			return func(val reflect.Value) {
+				if _, ok := skips[val]; ok {
 					return
 				}
-				if _, ok := skips[ptr]; ok {
-					return
-				}
-				skips[ptr] = struct{}{}
-				for iter := m.MapRange(); iter.Next(); {
+				skips[val] = struct{}{}
+				map_iter.Reset(val)
+				for map_iter.Next() {
 					if keyKeepalive != nil {
-						keyKeepalive(iter.Key().Addr().UnsafePointer())
+						keyKeepalive(map_iter.Key())
 					}
 					if valKeepalive != nil {
-						valKeepalive(iter.Value().Addr().UnsafePointer())
+						valKeepalive(map_iter.Value())
 					}
 				}
 			}
 		}
 		return nil
+	case reflect.Interface:
+		return func(val reflect.Value) {
+			if val.IsNil() {
+				return
+			}
+			val = val.Elem()
+			if keepalive := compile_keepalive(val.Type()); keepalive != nil {
+				keepalive(val)
+			}
+		}
 	default:
 		return nil
 	}
 }
 
 type keep_struct_field_alive struct {
+	index int
+	rtype reflect.Type
+
 	offset uintptr
-	handle func(unsafe.Pointer)
+	handle func(reflect.Value)
 }

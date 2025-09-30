@@ -24,11 +24,11 @@ func init() {
 			return
 		}
 		impl := val.(*instanceImplementation)
-		key := reflect.ValueOf(impl.Value).UnsafePointer()
+		key := reflect.ValueOf(impl.Value)
 		if goOnly {
 			roots.Remove(key)
 		} else {
-			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value).Elem()); keepalive != nil {
+			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value)); keepalive != nil {
 				roots.Insert(key, keepalive)
 			}
 		}
