@@ -102,7 +102,7 @@ func Register[T Class](exports ...any) {
 	var super = reflect.New(superType).Elem().Interface()
 	register := func() {
 		var classType = reflect.TypeFor[T]()
-		compile_keepalive(classType)
+		compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
 		for base.Field(0).Anonymous {
 			if base.Field(0).Name == "Class" {
@@ -487,8 +487,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, super)
 	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
 
-	if keepalive := compile_keepalive(class.Type); keepalive != nil {
-		roots.Insert(value.UnsafePointer(), keepalive)
+	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
+		roots.Insert(value, keepalive)
 	}
 
 	if notify_postinitialize {
@@ -688,7 +688,7 @@ func (instance *instanceImplementation) Free() {
 	if instance.freed {
 		return
 	}
-	roots.Remove(reflect.ValueOf(instance.Value).UnsafePointer())
+	roots.Remove(reflect.ValueOf(instance.Value))
 	for _, signal := range instance.signals {
 		if signal.rvalue.IsValid() {
 			signal.rvalue.Close()
