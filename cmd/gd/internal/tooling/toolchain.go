@@ -169,8 +169,8 @@ func (exe *toolchain) Lookup() (string, error) {
 		path, err := exec.LookPath(exe.Name)
 		if err != nil {
 			return "", fmt.Errorf(
-				"'%v' not found in $PATH (required for %v) and automatic-downloads are disabled, please install it, ie. %v",
-				exe.Name, exe.RequiredFor, exe.DownloadHint,
+				"'%v' %s not found in $PATH (required for %v) and automatic-downloads are disabled, please install it, ie. %v",
+				exe.Name, exe.Version, exe.RequiredFor, exe.DownloadHint,
 			)
 		}
 		exe.path = path
@@ -192,8 +192,8 @@ func (exe *toolchain) Lookup() (string, error) {
 	}
 	if url == "" || strings.Contains(url, "$(MISSING)") {
 		return "", fmt.Errorf(
-			"'%v' not found in $PATH (required for %v) and no automatic-download is available, please install it, ie. %v",
-			exe.Name, exe.RequiredFor, exe.DownloadHint,
+			"'%v' %s not found in $PATH (required for %v) and no automatic-download is available, please install it, ie. %v",
+			exe.Name, exe.Version, exe.RequiredFor, exe.DownloadHint,
 		)
 	}
 	if err := os.MkdirAll(install_dir, 0755); err != nil {
