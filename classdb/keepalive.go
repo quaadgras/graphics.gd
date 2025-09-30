@@ -53,7 +53,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(unsafe.Pointer)) {
 		var keepalives []keep_struct_field_alive
 		for i := 0; i < rtype.NumField(); i++ {
 			field := rtype.Field(i)
-			if is_extension_class && field.Type.Implements(reflect.TypeFor[Node.Any]()) {
+			if is_extension_class && field.Type.Implements(reflect.TypeFor[Node.Any]()) && field.IsExported() {
 				continue
 			}
 			if is_extension_class && i == 0 {
