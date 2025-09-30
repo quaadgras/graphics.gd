@@ -14,6 +14,7 @@ import (
 type ExtensionClassCallVirtualFunc func(any, gdextension.Pointer, gdextension.Pointer)
 
 var ExtensionInstanceLookup func(gdextension.Object) any
+var ExtensionInstanceGoOnly func(gdextension.Object, bool)
 
 type NotificationType int32
 
@@ -21,6 +22,7 @@ func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr g
 	if ptr == 0 {
 		return T{}
 	}
+	ExtensionInstanceGoOnly(ptr, true)
 	return pointers.New[T]([3]uint64{uint64(ptr)})
 }
 
@@ -35,6 +37,7 @@ func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](pt
 	raw := pointers.Get(ptr)
 	var id gdextension.ObjectID
 	gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	ExtensionInstanceGoOnly(gdextension.Object(raw[0]), false)
 	pointers.Set(ptr, [3]uint64{raw[0], uint64(id)})
 	pointers.Lay(ptr)
 	if raw[1] != 0 {
