@@ -36,7 +36,11 @@ func Cycle() {
 	mutex.Lock()
 	defer mutex.Unlock()
 	for _, queued := range queue.Iter() {
-		queued.function.Call(queued.arguments...)
+		func() {
+			mutex.Unlock()
+			defer mutex.Lock()
+			queued.function.Call(queued.arguments...)
+		}()
 	}
 	Array.Clear(queue)
 }
