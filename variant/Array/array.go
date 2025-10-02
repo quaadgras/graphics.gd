@@ -582,7 +582,7 @@ func SortFunc[T any](less func(a, b T) bool, array Contains[T]) { //gd:Array.sor
 // Iter returns a new iterator for this array.
 func (a Contains[T]) Iter() iter.Seq2[int, T] {
 	return func(yield func(int, T) bool) {
-		for i := range a.Len() {
+		for i := 0; i < a.Len(); i++ {
 			if !yield(i, a.Index(i)) {
 				return
 			}
