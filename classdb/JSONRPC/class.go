@@ -12,6 +12,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -266,7 +269,7 @@ Registers a callback for the given method name.
 */
 //go:nosplit
 func (self class) SetMethod(name String.Readable, callback Callable.Function) { //gd:JSONRPC.set_method
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name     gdextension.String
 		callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback))})
@@ -283,7 +286,7 @@ To add new supported methods extend the JSONRPC class and call [ProcessAction] o
 */
 //go:nosplit
 func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { //gd:JSONRPC.process_action
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.process_action, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.process_action, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		action  gdextension.Variant
 		recurse bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(action))), recurse})
@@ -293,7 +296,7 @@ func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { 
 
 //go:nosplit
 func (self class) ProcessString(action String.Readable) String.Readable { //gd:JSONRPC.process_string
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.process_string, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ action gdextension.String }{pointers.Get(gd.InternalString(action))})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.process_string, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ action gdextension.String }{pointers.Get(gd.InternalString(action))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -309,7 +312,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 */
 //go:nosplit
 func (self class) MakeRequest(method String.Readable, params variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_request
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_request, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_request, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), &struct {
 		method gdextension.String
 		params gdextension.Variant
 		id     gdextension.Variant
@@ -327,7 +330,7 @@ When a server has received and processed a request, it is expected to send a res
 */
 //go:nosplit
 func (self class) MakeResponse(result variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response, gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response, gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), &struct {
 		result gdextension.Variant
 		id     gdextension.Variant
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(result))), gdextension.Variant(pointers.Get(gd.InternalVariant(id)))})
@@ -344,7 +347,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 */
 //go:nosplit
 func (self class) MakeNotification(method String.Readable, params variant.Any) Dictionary.Any { //gd:JSONRPC.make_notification
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_notification, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_notification, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		method gdextension.String
 		params gdextension.Variant
 	}{pointers.Get(gd.InternalString(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(params)))})
@@ -363,7 +366,7 @@ Creates a response which indicates a previous reply has failed in some way.
 */
 //go:nosplit
 func (self class) MakeResponseError(code int64, message String.Readable, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response_error
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response_error, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_response_error, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		code    int64
 		message gdextension.String
 		id      gdextension.Variant

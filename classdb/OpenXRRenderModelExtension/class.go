@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -268,7 +271,7 @@ Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:OpenXRRenderModelExtension.is_active
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +283,7 @@ Note: This function is exposed for dependent OpenXR extensions that provide rend
 */
 //go:nosplit
 func (self class) RenderModelCreate(render_model_id int64) RID.Any { //gd:OpenXRRenderModelExtension.render_model_create
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.render_model_create, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ render_model_id int64 }{render_model_id})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.render_model_create, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ render_model_id int64 }{render_model_id})
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +297,7 @@ Note: This function is exposed for dependent OpenXR extensions that provide rend
 */
 //go:nosplit
 func (self class) RenderModelDestroy(render_model RID.Any) { //gd:OpenXRRenderModelExtension.render_model_destroy
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.render_model_destroy, 0|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.render_model_destroy, 0|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 }
 
 /*
@@ -302,7 +305,7 @@ Returns an array of all currently active render models registered with this exte
 */
 //go:nosplit
 func (self class) RenderModelGetAll() Array.Contains[RID.Any] { //gd:OpenXRRenderModelExtension.render_model_get_all
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.render_model_get_all, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.render_model_get_all, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -314,7 +317,7 @@ Returns an instance of a subscene that contains all [MeshInstance3D] nodes that 
 */
 //go:nosplit
 func (self class) RenderModelNewSceneInstance(render_model RID.Any) [1]gdclass.Node3D { //gd:OpenXRRenderModelExtension.render_model_new_scene_instance
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.render_model_new_scene_instance, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.render_model_new_scene_instance, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = [1]gdclass.Node3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Node3D](r_ret)}
 	return ret
 }
@@ -326,7 +329,7 @@ Note: If different devices are bound to your actions than available in suggested
 */
 //go:nosplit
 func (self class) RenderModelGetSubactionPaths(render_model RID.Any) Packed.Strings { //gd:OpenXRRenderModelExtension.render_model_get_subaction_paths
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.render_model_get_subaction_paths, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.render_model_get_subaction_paths, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -336,7 +339,7 @@ Returns the top level path associated with this 'render_model'. If provided this
 */
 //go:nosplit
 func (self class) RenderModelGetTopLevelPath(render_model RID.Any) String.Readable { //gd:OpenXRRenderModelExtension.render_model_get_top_level_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_top_level_path, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_top_level_path, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -346,7 +349,7 @@ Returns the tracking confidence of the tracking data for the render model.
 */
 //go:nosplit
 func (self class) RenderModelGetConfidence(render_model RID.Any) XRPose.TrackingConfidence { //gd:OpenXRRenderModelExtension.render_model_get_confidence
-	var r_ret = noescape.Call[XRPose.TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.render_model_get_confidence, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[XRPose.TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.render_model_get_confidence, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = r_ret
 	return ret
 }
@@ -358,7 +361,7 @@ Returns the root transform of a render model. This is the tracked position relat
 */
 //go:nosplit
 func (self class) RenderModelGetRootTransform(render_model RID.Any) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_root_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_root_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_root_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -368,7 +371,7 @@ Returns the number of animatable nodes this render model has.
 */
 //go:nosplit
 func (self class) RenderModelGetAnimatableNodeCount(render_model RID.Any) int64 { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 	var ret = r_ret
 	return ret
 }
@@ -378,7 +381,7 @@ Returns the name of the given animatable node.
 */
 //go:nosplit
 func (self class) RenderModelGetAnimatableNodeName(render_model RID.Any, index int64) String.Readable { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_name, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_name, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any
 		index        int64
 	}{render_model, index})
@@ -391,7 +394,7 @@ Returns true if this animatable node should be visible.
 */
 //go:nosplit
 func (self class) RenderModelIsAnimatableNodeVisible(render_model RID.Any, index int64) bool { //gd:OpenXRRenderModelExtension.render_model_is_animatable_node_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.render_model_is_animatable_node_visible, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.render_model_is_animatable_node_visible, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any
 		index        int64
 	}{render_model, index})
@@ -404,7 +407,7 @@ Returns the current local transform for an animatable node. This is updated ever
 */
 //go:nosplit
 func (self class) RenderModelGetAnimatableNodeTransform(render_model RID.Any, index int64) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_animatable_node_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.render_model_get_animatable_node_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		render_model RID.Any
 		index        int64
 	}{render_model, index})

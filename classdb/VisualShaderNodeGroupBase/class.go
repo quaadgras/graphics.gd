@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -334,7 +337,7 @@ Defines all input ports using a string formatted as a colon-separated list: id,t
 */
 //go:nosplit
 func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_inputs
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inputs, 0|(gdextension.SizeString<<4), &struct{ inputs gdextension.String }{pointers.Get(gd.InternalString(inputs))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inputs, 0|(gdextension.SizeString<<4), &struct{ inputs gdextension.String }{pointers.Get(gd.InternalString(inputs))})
 }
 
 /*
@@ -344,7 +347,7 @@ Returns a string description of the input ports as a colon-separated list using 
 */
 //go:nosplit
 func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_inputs
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_inputs, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_inputs, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -356,7 +359,7 @@ Defines all output ports using a string formatted as a colon-separated list: id,
 */
 //go:nosplit
 func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_outputs
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outputs, 0|(gdextension.SizeString<<4), &struct{ outputs gdextension.String }{pointers.Get(gd.InternalString(outputs))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outputs, 0|(gdextension.SizeString<<4), &struct{ outputs gdextension.String }{pointers.Get(gd.InternalString(outputs))})
 }
 
 /*
@@ -366,7 +369,7 @@ Returns a string description of the output ports as a colon-separated list using
 */
 //go:nosplit
 func (self class) GetOutputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_outputs
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_outputs, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_outputs, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -376,7 +379,7 @@ Returns true if the specified port name does not override an existed port name a
 */
 //go:nosplit
 func (self class) IsValidPortName(name String.Readable) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_port_name, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_port_name, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -386,7 +389,7 @@ Adds an input port with the specified 'type' (see [VisualShaderNode.PortType]) a
 */
 //go:nosplit
 func (self class) AddInputPort(id int64, atype int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_input_port
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_input_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_input_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		id    int64
 		atype int64
 		name  gdextension.String
@@ -398,7 +401,7 @@ Removes the specified input port.
 */
 //go:nosplit
 func (self class) RemoveInputPort(id int64) { //gd:VisualShaderNodeGroupBase.remove_input_port
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input_port, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input_port, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -408,7 +411,7 @@ Returns the number of input ports in use. Alternative for [GetFreeInputPortId].
 */
 //go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_input_port_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -418,7 +421,7 @@ Returns true if the specified input port exists.
 */
 //go:nosplit
 func (self class) HasInputPort(id int64) bool { //gd:VisualShaderNodeGroupBase.has_input_port
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_input_port, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_input_port, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -428,7 +431,7 @@ Removes all previously specified input ports.
 */
 //go:nosplit
 func (self class) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_input_ports
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_input_ports, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_input_ports, 0, &struct{}{})
 }
 
 /*
@@ -436,7 +439,7 @@ Adds an output port with the specified 'type' (see [VisualShaderNode.PortType]) 
 */
 //go:nosplit
 func (self class) AddOutputPort(id int64, atype int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_output_port
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_output_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_output_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		id    int64
 		atype int64
 		name  gdextension.String
@@ -448,7 +451,7 @@ Removes the specified output port.
 */
 //go:nosplit
 func (self class) RemoveOutputPort(id int64) { //gd:VisualShaderNodeGroupBase.remove_output_port
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_output_port, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_output_port, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -458,7 +461,7 @@ Returns the number of output ports in use. Alternative for [GetFreeOutputPortId]
 */
 //go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_output_port_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -468,7 +471,7 @@ Returns true if the specified output port exists.
 */
 //go:nosplit
 func (self class) HasOutputPort(id int64) bool { //gd:VisualShaderNodeGroupBase.has_output_port
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_output_port, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_output_port, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -478,7 +481,7 @@ Removes all previously specified output ports.
 */
 //go:nosplit
 func (self class) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_output_ports
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_output_ports, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_output_ports, 0, &struct{}{})
 }
 
 /*
@@ -486,7 +489,7 @@ Renames the specified input port.
 */
 //go:nosplit
 func (self class) SetInputPortName(id int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_input_port_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
@@ -497,7 +500,7 @@ Sets the specified input port's type (see [VisualShaderNode.PortType]).
 */
 //go:nosplit
 func (self class) SetInputPortType(id int64, atype int64) { //gd:VisualShaderNodeGroupBase.set_input_port_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		id    int64
 		atype int64
 	}{id, atype})
@@ -508,7 +511,7 @@ Renames the specified output port.
 */
 //go:nosplit
 func (self class) SetOutputPortName(id int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_output_port_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
@@ -519,7 +522,7 @@ Sets the specified output port's type (see [VisualShaderNode.PortType]).
 */
 //go:nosplit
 func (self class) SetOutputPortType(id int64, atype int64) { //gd:VisualShaderNodeGroupBase.set_output_port_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		id    int64
 		atype int64
 	}{id, atype})
@@ -532,7 +535,7 @@ Returns a free input port ID which can be used in [AddInputPort].
 */
 //go:nosplit
 func (self class) GetFreeInputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_input_port_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_input_port_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_input_port_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -544,7 +547,7 @@ Returns a free output port ID which can be used in [AddOutputPort].
 */
 //go:nosplit
 func (self class) GetFreeOutputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_output_port_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_output_port_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_output_port_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

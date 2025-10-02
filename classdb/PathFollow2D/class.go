@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -260,84 +263,84 @@ func (self Instance) SetLoop(value bool) {
 
 //go:nosplit
 func (self class) SetProgress(progress float64) { //gd:PathFollow2D.set_progress
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 
 //go:nosplit
 func (self class) GetProgress() float64 { //gd:PathFollow2D.get_progress
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHOffset(h_offset float64) { //gd:PathFollow2D.set_h_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ h_offset float64 }{h_offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ h_offset float64 }{h_offset})
 }
 
 //go:nosplit
 func (self class) GetHOffset() float64 { //gd:PathFollow2D.get_h_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVOffset(v_offset float64) { //gd:PathFollow2D.set_v_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ v_offset float64 }{v_offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ v_offset float64 }{v_offset})
 }
 
 //go:nosplit
 func (self class) GetVOffset() float64 { //gd:PathFollow2D.get_v_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressRatio(ratio float64) { //gd:PathFollow2D.set_progress_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetProgressRatio() float64 { //gd:PathFollow2D.get_progress_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotates(enabled bool) { //gd:PathFollow2D.set_rotates
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotates, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotates, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsRotating() bool { //gd:PathFollow2D.is_rotating
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotating, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotating, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCubicInterpolation(enabled bool) { //gd:PathFollow2D.set_cubic_interpolation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cubic_interpolation, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cubic_interpolation, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetCubicInterpolation() bool { //gd:PathFollow2D.get_cubic_interpolation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cubic_interpolation, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cubic_interpolation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:PathFollow2D.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:PathFollow2D.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -32,6 +33,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -66,8 +68,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -190,36 +193,36 @@ func (self Instance) SetSurround(value Float.X) {
 
 //go:nosplit
 func (self class) SetPanPullout(amount float64) { //gd:AudioEffectStereoEnhance.set_pan_pullout
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pan_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pan_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetPanPullout() float64 { //gd:AudioEffectStereoEnhance.get_pan_pullout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pan_pullout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pan_pullout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimePullout(amount float64) { //gd:AudioEffectStereoEnhance.set_time_pullout
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_pullout, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetTimePullout() float64 { //gd:AudioEffectStereoEnhance.get_time_pullout
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_pullout, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_pullout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSurround(amount float64) { //gd:AudioEffectStereoEnhance.set_surround
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surround, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surround, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetSurround() float64 { //gd:AudioEffectStereoEnhance.get_surround
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surround, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surround, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

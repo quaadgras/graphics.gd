@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -162,12 +165,12 @@ func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 
 //go:nosplit
 func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor_effects, 0|(gdextension.SizeArray<<4), &struct{ compositor_effects gdextension.Array }{pointers.Get(gd.InternalArray(compositor_effects))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor_effects, 0|(gdextension.SizeArray<<4), &struct{ compositor_effects gdextension.Array }{pointers.Get(gd.InternalArray(compositor_effects))})
 }
 
 //go:nosplit
 func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_compositor_effects, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_compositor_effects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

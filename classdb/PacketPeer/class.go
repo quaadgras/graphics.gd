@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -32,6 +33,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -66,8 +68,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -264,7 +267,7 @@ Warning: Deserialized objects can contain code which gets executed. Do not use t
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_var
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), &struct{ allow_objects bool }{allow_objects})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), &struct{ allow_objects bool }{allow_objects})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -278,7 +281,7 @@ Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToByte
 */
 //go:nosplit
 func (self class) PutVar(v variant.Any, full_objects bool) Error.Code { //gd:PacketPeer.put_var
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_var, gdextension.SizeInt|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_var, gdextension.SizeInt|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		v            gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects})
@@ -291,7 +294,7 @@ Gets a raw packet.
 */
 //go:nosplit
 func (self class) GetPacket() Packed.Bytes { //gd:PacketPeer.get_packet
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -301,7 +304,7 @@ Sends a raw packet.
 */
 //go:nosplit
 func (self class) PutPacket(buffer Packed.Bytes) Error.Code { //gd:PacketPeer.put_packet
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -314,7 +317,7 @@ Returns the error state of the last packet received (via [GetPacket] and [GetVar
 */
 //go:nosplit
 func (self class) GetPacketError() Error.Code { //gd:PacketPeer.get_packet_error
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_error, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -324,21 +327,21 @@ Returns the number of packets currently available in the ring-buffer.
 */
 //go:nosplit
 func (self class) GetAvailablePacketCount() int64 { //gd:PacketPeer.get_available_packet_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_packet_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_packet_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEncodeBufferMaxSize() int64 { //gd:PacketPeer.get_encode_buffer_max_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_encode_buffer_max_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_encode_buffer_max_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEncodeBufferMaxSize(max_size int64) { //gd:PacketPeer.set_encode_buffer_max_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_encode_buffer_max_size, 0|(gdextension.SizeInt<<4), &struct{ max_size int64 }{max_size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_encode_buffer_max_size, 0|(gdextension.SizeInt<<4), &struct{ max_size int64 }{max_size})
 }
 func (self class) AsPacketPeer() Advanced { return Advanced{pointers.AsA[gdclass.PacketPeer](self[0])} }
 func (self Instance) AsPacketPeer() Instance {

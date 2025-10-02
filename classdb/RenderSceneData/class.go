@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -207,7 +210,7 @@ Note: If more than one view is rendered, this will return a centered transform.
 */
 //go:nosplit
 func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_cam_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_cam_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -219,7 +222,7 @@ Note: If more than one view is rendered, this will return a combined projection.
 */
 //go:nosplit
 func (self class) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
-	var r_ret = noescape.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_cam_projection, gdextension.SizeProjection, &struct{}{})
+	var r_ret = mainthread.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_cam_projection, gdextension.SizeProjection, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -229,7 +232,7 @@ Returns the number of views being rendered.
 */
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneData.get_view_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -239,7 +242,7 @@ Returns the eye offset per view used to render this frame. This is the offset be
 */
 //go:nosplit
 func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_view_eye_offset, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_view_eye_offset, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
 	var ret = r_ret
 	return ret
 }
@@ -251,7 +254,7 @@ Note: If a single view is rendered, this returns the camera projection. If more 
 */
 //go:nosplit
 func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSceneData.get_view_projection
-	var r_ret = noescape.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_view_projection, gdextension.SizeProjection|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
+	var r_ret = mainthread.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_view_projection, gdextension.SizeProjection|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
 	var ret = r_ret
 	return ret
 }
@@ -263,7 +266,7 @@ Return the [Resource.ID] of the uniform buffer containing the scene data as a UB
 */
 //go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_uniform_buffer, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_uniform_buffer, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

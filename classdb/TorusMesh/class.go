@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -203,48 +206,48 @@ func (self Instance) SetRingSegments(value int) {
 
 //go:nosplit
 func (self class) SetInnerRadius(radius float64) { //gd:TorusMesh.set_inner_radius
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetInnerRadius() float64 { //gd:TorusMesh.get_inner_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOuterRadius(radius float64) { //gd:TorusMesh.set_outer_radius
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetOuterRadius() float64 { //gd:TorusMesh.get_outer_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRings(rings int64) { //gd:TorusMesh.set_rings
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
 
 //go:nosplit
 func (self class) GetRings() int64 { //gd:TorusMesh.get_rings
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRingSegments(rings int64) { //gd:TorusMesh.set_ring_segments
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ring_segments, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ring_segments, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
 
 //go:nosplit
 func (self class) GetRingSegments() int64 { //gd:TorusMesh.get_ring_segments
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ring_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ring_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

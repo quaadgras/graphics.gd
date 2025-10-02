@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -220,60 +223,60 @@ func (self Instance) SetFallbackSegments(value int) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:OpenXRCompositionLayerEquirect.set_radius
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:OpenXRCompositionLayerEquirect.get_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCentralHorizontalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_central_horizontal_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_central_horizontal_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_central_horizontal_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 
 //go:nosplit
 func (self class) GetCentralHorizontalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_central_horizontal_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_horizontal_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_horizontal_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpperVerticalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_upper_vertical_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 
 //go:nosplit
 func (self class) GetUpperVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_upper_vertical_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_vertical_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_vertical_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLowerVerticalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_lower_vertical_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_vertical_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 
 //go:nosplit
 func (self class) GetLowerVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_lower_vertical_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_vertical_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_vertical_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackSegments(segments int64) { //gd:OpenXRCompositionLayerEquirect.set_fallback_segments
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 
 //go:nosplit
 func (self class) GetFallbackSegments() int64 { //gd:OpenXRCompositionLayerEquirect.get_fallback_segments
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -16,6 +16,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -299,7 +302,7 @@ Returns the 1D noise value at the given (x) coordinate.
 */
 //go:nosplit
 func (self class) GetNoise1d(x float64) float64 { //gd:Noise.get_noise_1d
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_1d, gdextension.SizeFloat|(gdextension.SizeFloat<<4), &struct{ x float64 }{x})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_1d, gdextension.SizeFloat|(gdextension.SizeFloat<<4), &struct{ x float64 }{x})
 	var ret = r_ret
 	return ret
 }
@@ -309,7 +312,7 @@ Returns the 2D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise2d(x float64, y float64) float64 { //gd:Noise.get_noise_2d
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
 		x float64
 		y float64
 	}{x, y})
@@ -322,7 +325,7 @@ Returns the 2D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise2dv(v Vector2.XY) float64 { //gd:Noise.get_noise_2dv
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2dv, gdextension.SizeFloat|(gdextension.SizeVector2<<4), &struct{ v Vector2.XY }{v})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2dv, gdextension.SizeFloat|(gdextension.SizeVector2<<4), &struct{ v Vector2.XY }{v})
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +335,7 @@ Returns the 3D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise3d(x float64, y float64, z float64) float64 { //gd:Noise.get_noise_3d
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		x float64
 		y float64
 		z float64
@@ -346,7 +349,7 @@ Returns the 3D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise3dv(v Vector3.XYZ) float64 { //gd:Noise.get_noise_3dv
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3dv, gdextension.SizeFloat|(gdextension.SizeVector3<<4), &struct{ v Vector3.XYZ }{v})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3dv, gdextension.SizeFloat|(gdextension.SizeVector3<<4), &struct{ v Vector3.XYZ }{v})
 	var ret = r_ret
 	return ret
 }
@@ -360,7 +363,7 @@ Note: With 'normalize' set to false, the default implementation expects the nois
 */
 //go:nosplit
 func (self class) GetImage(width int64, height int64, invert bool, in_3d_space bool, normalize bool) [1]gdclass.Image { //gd:Noise.get_image
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		width       int64
 		height      int64
 		invert      bool
@@ -380,7 +383,7 @@ Note: With 'normalize' set to false, the default implementation expects the nois
 */
 //go:nosplit
 func (self class) GetSeamlessImage(width int64, height int64, invert bool, in_3d_space bool, skirt float64, normalize bool) [1]gdclass.Image { //gd:Noise.get_seamless_image
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		width       int64
 		height      int64
 		invert      bool
@@ -402,7 +405,7 @@ Note: With 'normalize' set to false, the default implementation expects the nois
 */
 //go:nosplit
 func (self class) GetImage3d(width int64, height int64, depth int64, invert bool, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_image_3d
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		width     int64
 		height    int64
 		depth     int64
@@ -423,7 +426,7 @@ Note: With 'normalize' set to false, the default implementation expects the nois
 */
 //go:nosplit
 func (self class) GetSeamlessImage3d(width int64, height int64, depth int64, invert bool, skirt float64, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_seamless_image_3d
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		width     int64
 		height    int64
 		depth     int64

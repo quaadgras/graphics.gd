@@ -54,12 +54,13 @@
 GDExtensionClassLibraryPtr cgo_library = NULL;
 GDExtensionGodotVersion2 cgo_cached_godot_version = {};
 
-typedef struct { uint64_t part[2]; } result_16;
-typedef struct { uint64_t part[3]; } result_24;
-typedef struct { uint64_t part[4]; } result_32;
-typedef struct { uint64_t part[8]; } result_64;
+typedef struct { uint64_t safe; uint64_t part[1]; } result_8;
+typedef struct { uint64_t safe; uint64_t part[2]; } result_16;
+typedef struct { uint64_t safe; uint64_t part[3]; } result_24;
+typedef struct { uint64_t safe; uint64_t part[4]; } result_32;
+typedef struct { uint64_t safe; uint64_t part[8]; } result_64;
 
-void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_init(level); }
+
 void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_exit(level); }
 void cgo_callable_call_func(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
     go_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, r_error);
@@ -284,6 +285,32 @@ GDExtensionInterfaceImagePtr gdextension_image_ptr = NULL;
 GDExtensionInterfaceRegisterMainLoopCallbacks gdextension_register_main_loop_callbacks = NULL;
 GDExtensionInterfaceGetGodotVersion2 gdextension_get_godot_version2 = NULL;
 
+GDExtensionObjectPtr OS = NULL;
+GDExtensionMethodBindPtr OS_get_thread_caller_id = NULL;
+GDExtensionMethodBindPtr OS_get_main_thread_id = NULL;
+uint64_t main_thread_id = 0;
+
+uint64_t get_thread_caller_id() {
+    uint64_t thread_id = 0;
+    gdextension_object_method_bind_ptrcall(OS_get_thread_caller_id, OS, NULL, &thread_id);
+    return thread_id;
+}
+
+void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) {
+    if (level == GDEXTENSION_INITIALIZATION_CORE) {
+        uintptr_t string_name_OS;
+        gdextension_string_name_new_with_latin1_chars(&string_name_OS, "OS", true);
+        OS = gdextension_global_get_singleton(&string_name_OS);
+        uintptr_t string_name_get_thread_caller_id;
+        gdextension_string_name_new_with_latin1_chars(&string_name_get_thread_caller_id, "get_thread_caller_id", true);
+        OS_get_thread_caller_id = gdextension_classdb_get_method_bind(&string_name_OS, &string_name_get_thread_caller_id, 3905245786);
+        uintptr_t string_name_get_main_thread_id;
+        gdextension_string_name_new_with_latin1_chars(&string_name_get_main_thread_id, "get_main_thread_id", true);
+        OS_get_main_thread_id = gdextension_classdb_get_method_bind(&string_name_OS, &string_name_get_main_thread_id, 3905245786);
+        gdextension_object_method_bind_ptrcall(OS_get_main_thread_id, OS, NULL, &main_thread_id);
+    }
+    go_on_engine_init(level);
+}
 
 EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     LOAD_PROC_ADDRESS(mem_alloc, GDExtensionInterfaceMemAlloc);
@@ -1096,31 +1123,71 @@ void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(s
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
 
-uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
+uint64_t gd_object_unsafe_call_0(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args, uintptr_t mainthread) {
+    if (mainthread) {
+        uint64_t thread_id = get_thread_caller_id();
+        if (thread_id != main_thread_id) {
+            return thread_id;
+        }
+    }
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
-    uint64_t result = 0;
-    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], NULL);
+    return 0;
+};
+
+result_8 gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args, uintptr_t mainthread) {
+    result_8 result = {};
+    if (mainthread) {
+        uint64_t thread_id = get_thread_caller_id();
+        if (thread_id != main_thread_id) {
+            result.safe = thread_id;
+            return result;
+        }
+    }
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result.part[0]);
     return result;
 };
 
-result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args, uintptr_t mainthread) {
     result_16 result = {};
-    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    if (mainthread) {
+        uint64_t thread_id = get_thread_caller_id();
+        if (thread_id != main_thread_id) {
+            result.safe = thread_id;
+            return result;
+        }
+    }
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result.part[0]);
     return result;
 };
 
-result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args, uintptr_t mainthread) {
     result_32 result = {};
-    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    if (mainthread) {
+        uint64_t thread_id = get_thread_caller_id();
+        if (thread_id != main_thread_id) {
+            result.safe = thread_id;
+            return result;
+        }
+    }
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result.part[0]);
     return result;
 };
 
-result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args, uintptr_t mainthread) {
     result_64 result = {};
-    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    if (mainthread) {
+        uint64_t thread_id = get_thread_caller_id();
+        if (thread_id != main_thread_id) {
+            result.safe = thread_id;
+            return result;
+        }
+    }
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result.part[0]);
     return result;
 };
 

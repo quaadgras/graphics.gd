@@ -28,6 +28,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -57,6 +58,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -91,8 +93,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -804,156 +808,156 @@ func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:RigidBody2D.set_mass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:RigidBody2D.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInertia() float64 { //gd:RigidBody2D.get_inertia
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inertia, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inertia, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertia(inertia float64) { //gd:RigidBody2D.set_inertia
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia, 0|(gdextension.SizeFloat<<4), &struct{ inertia float64 }{inertia})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia, 0|(gdextension.SizeFloat<<4), &struct{ inertia float64 }{inertia})
 }
 
 //go:nosplit
 func (self class) SetCenterOfMassMode(mode CenterOfMassMode) { //gd:RigidBody2D.set_center_of_mass_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CenterOfMassMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CenterOfMassMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetCenterOfMassMode() CenterOfMassMode { //gd:RigidBody2D.get_center_of_mass_mode
-	var r_ret = noescape.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOfMass(center_of_mass Vector2.XY) { //gd:RigidBody2D.set_center_of_mass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector2<<4), &struct{ center_of_mass Vector2.XY }{center_of_mass})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector2<<4), &struct{ center_of_mass Vector2.XY }{center_of_mass})
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector2.XY { //gd:RigidBody2D.get_center_of_mass
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:RigidBody2D.set_physics_material_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:RigidBody2D.get_physics_material_override
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityScale(gravity_scale float64) { //gd:RigidBody2D.set_gravity_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), &struct{ gravity_scale float64 }{gravity_scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), &struct{ gravity_scale float64 }{gravity_scale})
 }
 
 //go:nosplit
 func (self class) GetGravityScale() float64 { //gd:RigidBody2D.get_gravity_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:RigidBody2D.set_linear_damp_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ linear_damp_mode DampMode }{linear_damp_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ linear_damp_mode DampMode }{linear_damp_mode})
 }
 
 //go:nosplit
 func (self class) GetLinearDampMode() DampMode { //gd:RigidBody2D.get_linear_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:RigidBody2D.set_angular_damp_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ angular_damp_mode DampMode }{angular_damp_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ angular_damp_mode DampMode }{angular_damp_mode})
 }
 
 //go:nosplit
 func (self class) GetAngularDampMode() DampMode { //gd:RigidBody2D.get_angular_damp_mode
-	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:RigidBody2D.set_linear_damp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
 
 //go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:RigidBody2D.get_linear_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:RigidBody2D.set_angular_damp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
 
 //go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:RigidBody2D.get_angular_damp
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector2.XY) { //gd:RigidBody2D.set_linear_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector2<<4), &struct{ linear_velocity Vector2.XY }{linear_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector2<<4), &struct{ linear_velocity Vector2.XY }{linear_velocity})
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector2.XY { //gd:RigidBody2D.get_linear_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(angular_velocity float64) { //gd:RigidBody2D.set_angular_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ angular_velocity float64 }{angular_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ angular_velocity float64 }{angular_velocity})
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() float64 { //gd:RigidBody2D.get_angular_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxContactsReported(amount int64) { //gd:RigidBody2D.set_max_contacts_reported
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_contacts_reported, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_contacts_reported, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetMaxContactsReported() int64 { //gd:RigidBody2D.get_max_contacts_reported
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_contacts_reported, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_contacts_reported, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -968,43 +972,43 @@ Note: To retrieve the colliding bodies, use [GetCollidingBodies].
 */
 //go:nosplit
 func (self class) GetContactCount() int64 { //gd:RigidBody2D.get_contact_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomIntegrator(enable bool) { //gd:RigidBody2D.set_use_custom_integrator
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingCustomIntegrator() bool { //gd:RigidBody2D.is_using_custom_integrator
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContactMonitor(enabled bool) { //gd:RigidBody2D.set_contact_monitor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_contact_monitor, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_contact_monitor, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsContactMonitorEnabled() bool { //gd:RigidBody2D.is_contact_monitor_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_contact_monitor_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_contact_monitor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContinuousCollisionDetectionMode(mode CCDMode) { //gd:RigidBody2D.set_continuous_collision_detection_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_continuous_collision_detection_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CCDMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_continuous_collision_detection_mode, 0|(gdextension.SizeInt<<4), &struct{ mode CCDMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetContinuousCollisionDetectionMode() CCDMode { //gd:RigidBody2D.get_continuous_collision_detection_mode
-	var r_ret = noescape.Call[CCDMode](gd.ObjectChecked(self.AsObject()), methods.get_continuous_collision_detection_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[CCDMode](gd.ObjectChecked(self.AsObject()), methods.get_continuous_collision_detection_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1014,7 +1018,7 @@ Sets the body's velocity on the given axis. The velocity in the given vector axi
 */
 //go:nosplit
 func (self class) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_velocity, 0|(gdextension.SizeVector2<<4), &struct{ axis_velocity Vector2.XY }{axis_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_velocity, 0|(gdextension.SizeVector2<<4), &struct{ axis_velocity Vector2.XY }{axis_velocity})
 }
 
 /*
@@ -1028,7 +1032,7 @@ This is equivalent to using [ApplyImpulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_central_impulse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector2<<4), &struct{ impulse Vector2.XY }{impulse})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector2<<4), &struct{ impulse Vector2.XY }{impulse})
 }
 
 /*
@@ -1040,7 +1044,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_impulse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		impulse  Vector2.XY
 		position Vector2.XY
 	}{impulse, position})
@@ -1058,7 +1062,7 @@ Note: [Inertia] is required for this to work. To have [Inertia], an active [Coll
 */
 //go:nosplit
 func (self class) ApplyTorqueImpulse(torque float64) { //gd:RigidBody2D.apply_torque_impulse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 /*
@@ -1070,7 +1074,7 @@ This is equivalent to using [ApplyForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralForce(force Vector2.XY) { //gd:RigidBody2D.apply_central_force
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 /*
@@ -1080,7 +1084,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) ApplyForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_force
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position})
@@ -1096,7 +1100,7 @@ Note: [Inertia] is required for this to work. To have [Inertia], an active [Coll
 */
 //go:nosplit
 func (self class) ApplyTorque(torque float64) { //gd:RigidBody2D.apply_torque
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 /*
@@ -1108,7 +1112,7 @@ This is equivalent to using [AddConstantForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) AddConstantCentralForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_central_force
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 /*
@@ -1118,7 +1122,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) AddConstantForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.add_constant_force
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position})
@@ -1129,89 +1133,89 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) AddConstantTorque(torque float64) { //gd:RigidBody2D.add_constant_torque
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 //go:nosplit
 func (self class) SetConstantForce(force Vector2.XY) { //gd:RigidBody2D.set_constant_force
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 //go:nosplit
 func (self class) GetConstantForce() Vector2.XY { //gd:RigidBody2D.get_constant_force
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConstantTorque(torque float64) { //gd:RigidBody2D.set_constant_torque
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 //go:nosplit
 func (self class) GetConstantTorque() float64 { //gd:RigidBody2D.get_constant_torque
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSleeping(sleeping bool) { //gd:RigidBody2D.set_sleeping
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleeping, 0|(gdextension.SizeBool<<4), &struct{ sleeping bool }{sleeping})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleeping, 0|(gdextension.SizeBool<<4), &struct{ sleeping bool }{sleeping})
 }
 
 //go:nosplit
 func (self class) IsSleeping() bool { //gd:RigidBody2D.is_sleeping
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanSleep(able_to_sleep bool) { //gd:RigidBody2D.set_can_sleep
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
 }
 
 //go:nosplit
 func (self class) IsAbleToSleep() bool { //gd:RigidBody2D.is_able_to_sleep
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLockRotationEnabled(lock_rotation bool) { //gd:RigidBody2D.set_lock_rotation_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lock_rotation_enabled, 0|(gdextension.SizeBool<<4), &struct{ lock_rotation bool }{lock_rotation})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lock_rotation_enabled, 0|(gdextension.SizeBool<<4), &struct{ lock_rotation bool }{lock_rotation})
 }
 
 //go:nosplit
 func (self class) IsLockRotationEnabled() bool { //gd:RigidBody2D.is_lock_rotation_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lock_rotation_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lock_rotation_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFreezeEnabled(freeze_mode bool) { //gd:RigidBody2D.set_freeze_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_enabled, 0|(gdextension.SizeBool<<4), &struct{ freeze_mode bool }{freeze_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_enabled, 0|(gdextension.SizeBool<<4), &struct{ freeze_mode bool }{freeze_mode})
 }
 
 //go:nosplit
 func (self class) IsFreezeEnabled() bool { //gd:RigidBody2D.is_freeze_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_freeze_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_freeze_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFreezeMode(freeze_mode FreezeMode) { //gd:RigidBody2D.set_freeze_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_mode, 0|(gdextension.SizeInt<<4), &struct{ freeze_mode FreezeMode }{freeze_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_mode, 0|(gdextension.SizeInt<<4), &struct{ freeze_mode FreezeMode }{freeze_mode})
 }
 
 //go:nosplit
 func (self class) GetFreezeMode() FreezeMode { //gd:RigidBody2D.get_freeze_mode
-	var r_ret = noescape.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), methods.get_freeze_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), methods.get_freeze_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1226,7 +1230,7 @@ Note: The result of this test is not immediate after moving objects. For perform
 */
 //go:nosplit
 func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:RigidBody2D.get_colliding_bodies
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_colliding_bodies, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_colliding_bodies, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

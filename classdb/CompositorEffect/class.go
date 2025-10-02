@@ -12,6 +12,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -312,84 +316,84 @@ func (class) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_ty
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:CompositorEffect.set_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:CompositorEffect.get_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEffectCallbackType(effect_callback_type EffectCallbackType) { //gd:CompositorEffect.set_effect_callback_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effect_callback_type, 0|(gdextension.SizeInt<<4), &struct{ effect_callback_type EffectCallbackType }{effect_callback_type})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effect_callback_type, 0|(gdextension.SizeInt<<4), &struct{ effect_callback_type EffectCallbackType }{effect_callback_type})
 }
 
 //go:nosplit
 func (self class) GetEffectCallbackType() EffectCallbackType { //gd:CompositorEffect.get_effect_callback_type
-	var r_ret = noescape.Call[EffectCallbackType](gd.ObjectChecked(self.AsObject()), methods.get_effect_callback_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[EffectCallbackType](gd.ObjectChecked(self.AsObject()), methods.get_effect_callback_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessResolvedColor(enable bool) { //gd:CompositorEffect.set_access_resolved_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_color, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_color, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetAccessResolvedColor() bool { //gd:CompositorEffect.get_access_resolved_color
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_color, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_color, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessResolvedDepth(enable bool) { //gd:CompositorEffect.set_access_resolved_depth
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_depth, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_depth, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetAccessResolvedDepth() bool { //gd:CompositorEffect.get_access_resolved_depth
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_depth, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_depth, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsMotionVectors(enable bool) { //gd:CompositorEffect.set_needs_motion_vectors
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_motion_vectors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_motion_vectors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetNeedsMotionVectors() bool { //gd:CompositorEffect.get_needs_motion_vectors
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_motion_vectors, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_motion_vectors, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsNormalRoughness(enable bool) { //gd:CompositorEffect.set_needs_normal_roughness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_normal_roughness, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_normal_roughness, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetNeedsNormalRoughness() bool { //gd:CompositorEffect.get_needs_normal_roughness
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_normal_roughness, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_normal_roughness, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsSeparateSpecular(enable bool) { //gd:CompositorEffect.set_needs_separate_specular
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_separate_specular, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_separate_specular, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetNeedsSeparateSpecular() bool { //gd:CompositorEffect.get_needs_separate_specular
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_separate_specular, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_separate_specular, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

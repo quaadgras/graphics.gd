@@ -25,6 +25,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -46,6 +47,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -80,8 +82,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -289,7 +292,7 @@ Returns [Ok] on success, or [ErrCantCreate] on failure.
 */
 //go:nosplit
 func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callable gdextension.Callable
 		priority Priority
 	}{pointers.Get(gd.InternalCallable(callable)), priority})
@@ -305,7 +308,7 @@ Returns the current [Thread]'s ID, uniquely identifying it among all threads. If
 */
 //go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -319,7 +322,7 @@ Returns true if this [Thread] has been started. Once started, this will return t
 */
 //go:nosplit
 func (self class) IsStarted() bool { //gd:Thread.is_started
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -335,7 +338,7 @@ To check if a [Thread] is joinable, use [IsStarted].
 */
 //go:nosplit
 func (self class) IsAlive() bool { //gd:Thread.is_alive
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -353,7 +356,7 @@ To determine if this can be called without blocking the calling thread, check if
 */
 //go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -380,7 +383,7 @@ Note: Even in the case of having disabled the checks in a [WorkerThreadPool] tas
 */
 //go:nosplit
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
-	noescape.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) AsThread() Advanced         { return Advanced{pointers.AsA[gdclass.Thread](self[0])} }
 func (self Instance) AsThread() Instance      { return Instance{pointers.AsA[gdclass.Thread](self[0])} }

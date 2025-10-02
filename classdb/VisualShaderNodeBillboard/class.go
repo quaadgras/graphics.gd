@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -174,24 +177,24 @@ func (self Instance) SetKeepScale(value bool) {
 
 //go:nosplit
 func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_type, 0|(gdextension.SizeInt<<4), &struct{ billboard_type BillboardType }{billboard_type})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_type, 0|(gdextension.SizeInt<<4), &struct{ billboard_type BillboardType }{billboard_type})
 }
 
 //go:nosplit
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
-	var r_ret = noescape.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

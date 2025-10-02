@@ -38,6 +38,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -62,6 +63,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -96,8 +98,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -262,38 +265,38 @@ func (self Instance) SetMapData(value []float32) {
 
 //go:nosplit
 func (self class) SetMapWidth(width int64) { //gd:HeightMapShape3D.set_map_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
 
 //go:nosplit
 func (self class) GetMapWidth() int64 { //gd:HeightMapShape3D.get_map_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMapDepth(height int64) { //gd:HeightMapShape3D.set_map_depth
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_depth, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_depth, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
 
 //go:nosplit
 func (self class) GetMapDepth() int64 { //gd:HeightMapShape3D.get_map_depth
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_depth, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_map_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMapData(data Packed.Array[float32]) { //gd:HeightMapShape3D.set_map_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_data, 0|(gdextension.SizePackedArray<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map_data, 0|(gdextension.SizePackedArray<<4), &struct {
 		data gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](data))})
 }
 
 //go:nosplit
 func (self class) GetMapData() Packed.Array[float32] { //gd:HeightMapShape3D.get_map_data
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_map_data, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_map_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -305,7 +308,7 @@ Returns the smallest height value found in [MapData]. Recalculates only when [Ma
 */
 //go:nosplit
 func (self class) GetMinHeight() float64 { //gd:HeightMapShape3D.get_min_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -317,7 +320,7 @@ Returns the largest height value found in [MapData]. Recalculates only when [Map
 */
 //go:nosplit
 func (self class) GetMaxHeight() float64 { //gd:HeightMapShape3D.get_max_height
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -338,7 +341,7 @@ Note: Using a heightmap with 16-bit or 32-bit data, stored in EXR or HDR format 
 */
 //go:nosplit
 func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min float64, height_max float64) { //gd:HeightMapShape3D.update_map_data_from_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_map_data_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_map_data_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		image      gdextension.Object
 		height_min float64
 		height_max float64

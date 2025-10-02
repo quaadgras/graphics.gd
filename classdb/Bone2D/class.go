@@ -22,6 +22,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -47,6 +48,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -81,8 +83,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -272,12 +275,12 @@ func (self Instance) SetRest(value Transform2D.OriginXY) {
 
 //go:nosplit
 func (self class) SetRest(rest Transform2D.OriginXY) { //gd:Bone2D.set_rest
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest, 0|(gdextension.SizeTransform2D<<4), &struct{ rest Transform2D.OriginXY }{rest})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest, 0|(gdextension.SizeTransform2D<<4), &struct{ rest Transform2D.OriginXY }{rest})
 }
 
 //go:nosplit
 func (self class) GetRest() Transform2D.OriginXY { //gd:Bone2D.get_rest
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = mainthread.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -290,7 +293,7 @@ Resets the bone to the rest pose. This is equivalent to setting [Node2D.Transfor
 */
 //go:nosplit
 func (self class) ApplyRest() { //gd:Bone2D.apply_rest
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_rest, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_rest, 0, &struct{}{})
 }
 
 /*
@@ -301,7 +304,7 @@ Returns the node's [Rest] [Transform2D.OriginXY] if it doesn't have a parent, or
 */
 //go:nosplit
 func (self class) GetSkeletonRest() Transform2D.OriginXY { //gd:Bone2D.get_skeleton_rest
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rest, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = mainthread.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rest, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -313,7 +316,7 @@ Returns the node's index as part of the entire skeleton. See [Skeleton2D].
 */
 //go:nosplit
 func (self class) GetIndexInSkeleton() int64 { //gd:Bone2D.get_index_in_skeleton
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index_in_skeleton, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index_in_skeleton, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -325,7 +328,7 @@ When set to true, the [Bone2D] node will attempt to automatically calculate the 
 */
 //go:nosplit
 func (self class) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bone2D.set_autocalculate_length_and_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autocalculate_length_and_angle, 0|(gdextension.SizeBool<<4), &struct{ auto_calculate bool }{auto_calculate})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autocalculate_length_and_angle, 0|(gdextension.SizeBool<<4), &struct{ auto_calculate bool }{auto_calculate})
 }
 
 /*
@@ -335,7 +338,7 @@ Returns whether this [Bone2D] is going to autocalculate its length and bone angl
 */
 //go:nosplit
 func (self class) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autocalculate_length_and_angle
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -347,7 +350,7 @@ Sets the length of the bone in the [Bone2D].
 */
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:Bone2D.set_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 /*
@@ -357,7 +360,7 @@ Returns the length of the bone in the [Bone2D] node.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:Bone2D.get_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -372,7 +375,7 @@ Note: This is different from the [Bone2D]'s rotation. The bone's angle is the ro
 */
 //go:nosplit
 func (self class) SetBoneAngle(angle float64) { //gd:Bone2D.set_bone_angle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
 
 /*
@@ -385,7 +388,7 @@ Note: This is different from the [Bone2D]'s rotation. The bone's angle is the ro
 */
 //go:nosplit
 func (self class) GetBoneAngle() float64 { //gd:Bone2D.get_bone_angle
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

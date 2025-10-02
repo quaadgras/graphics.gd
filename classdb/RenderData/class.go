@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -192,7 +195,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 */
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret)}
 	return ret
 }
@@ -204,7 +207,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 */
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneData{gd.PointerMustAssertInstanceID[gdclass.RenderSceneData](r_ret)}
 	return ret
 }
@@ -217,7 +220,7 @@ Returns the [Resource.ID] of the environment object in the [RenderingServer] bei
 */
 //go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -230,7 +233,7 @@ Returns the [Resource.ID] of the camera attributes object in the [RenderingServe
 */
 //go:nosplit
 func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_attributes
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

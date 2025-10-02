@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -197,24 +200,24 @@ func (self Instance) SetBinding(value int) {
 
 //go:nosplit
 func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
 }
 
 //go:nosplit
 func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
-	var r_ret = noescape.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -224,7 +227,7 @@ Binds the given id to the uniform. The data associated with the id is then used 
 */
 //go:nosplit
 func (self class) AddId(id RID.Any) { //gd:RDUniform.add_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 
 /*
@@ -232,7 +235,7 @@ Unbinds all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) ClearIds() { //gd:RDUniform.clear_ids
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_ids, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_ids, 0, &struct{}{})
 }
 
 /*
@@ -240,7 +243,7 @@ Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) GetIds() Array.Contains[RID.Any] { //gd:RDUniform.get_ids
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_ids, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_ids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

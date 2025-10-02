@@ -34,6 +34,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -59,6 +60,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -93,8 +95,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -311,67 +314,67 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationOpentype(coords Dictionary.Any) { //gd:FontVariation.set_variation_opentype
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_opentype, 0|(gdextension.SizeDictionary<<4), &struct{ coords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(coords))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_opentype, 0|(gdextension.SizeDictionary<<4), &struct{ coords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(coords))})
 }
 
 //go:nosplit
 func (self class) GetVariationOpentype() Dictionary.Any { //gd:FontVariation.get_variation_opentype
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_variation_opentype, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_variation_opentype, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationEmbolden(strength float64) { //gd:FontVariation.set_variation_embolden
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_embolden, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_embolden, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 //go:nosplit
 func (self class) GetVariationEmbolden() float64 { //gd:FontVariation.get_variation_embolden
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationFaceIndex(face_index int64) { //gd:FontVariation.set_variation_face_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_face_index, 0|(gdextension.SizeInt<<4), &struct{ face_index int64 }{face_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_face_index, 0|(gdextension.SizeInt<<4), &struct{ face_index int64 }{face_index})
 }
 
 //go:nosplit
 func (self class) GetVariationFaceIndex() int64 { //gd:FontVariation.get_variation_face_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationTransform(transform Transform2D.OriginXY) { //gd:FontVariation.set_variation_transform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 
 //go:nosplit
 func (self class) GetVariationTransform() Transform2D.OriginXY { //gd:FontVariation.get_variation_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = mainthread.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOpentypeFeatures(features Dictionary.Any) { //gd:FontVariation.set_opentype_features
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_opentype_features, 0|(gdextension.SizeDictionary<<4), &struct{ features gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(features))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_opentype_features, 0|(gdextension.SizeDictionary<<4), &struct{ features gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(features))})
 }
 
 /*
@@ -379,7 +382,7 @@ Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font si
 */
 //go:nosplit
 func (self class) SetSpacing(spacing TextServer.SpacingType, value int64) { //gd:FontVariation.set_spacing
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spacing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spacing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		spacing TextServer.SpacingType
 		value   int64
 	}{spacing, value})
@@ -387,12 +390,12 @@ func (self class) SetSpacing(spacing TextServer.SpacingType, value int64) { //gd
 
 //go:nosplit
 func (self class) SetBaselineOffset(baseline_offset float64) { //gd:FontVariation.set_baseline_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baseline_offset, 0|(gdextension.SizeFloat<<4), &struct{ baseline_offset float64 }{baseline_offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baseline_offset, 0|(gdextension.SizeFloat<<4), &struct{ baseline_offset float64 }{baseline_offset})
 }
 
 //go:nosplit
 func (self class) GetBaselineOffset() float64 { //gd:FontVariation.get_baseline_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

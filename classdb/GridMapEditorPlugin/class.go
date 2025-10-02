@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -243,7 +246,7 @@ Returns the [GridMap] node currently edited by the grid map editor.
 */
 //go:nosplit
 func (self class) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.GridMap{gd.PointerMustAssertInstanceID[gdclass.GridMap](r_ret)}
 	return ret
 }
@@ -253,7 +256,7 @@ Selects the cells inside the given bounds from 'begin' to 'end'.
 */
 //go:nosplit
 func (self class) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), &struct {
 		begin Vector3i.XYZ
 		end   Vector3i.XYZ
 	}{begin, end})
@@ -264,7 +267,7 @@ Deselects any currently selected cells.
 */
 //go:nosplit
 func (self class) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, &struct{}{})
 }
 
 /*
@@ -274,7 +277,7 @@ Returns the cell coordinate bounds of the current selection. Use [HasSelection] 
 */
 //go:nosplit
 func (self class) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, &struct{}{})
+	var r_ret = mainthread.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +287,7 @@ Returns true if there are selected cells.
 */
 //go:nosplit
 func (self class) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -296,7 +299,7 @@ Returns an array of [Vector3i.XYZ]s with the selected cells' coordinates.
 */
 //go:nosplit
 func (self class) GetSelectedCells() Array.Any { //gd:GridMapEditorPlugin.get_selected_cells
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -310,7 +313,7 @@ Note: The indices might not be in the same order as they appear in the editor's 
 */
 //go:nosplit
 func (self class) SetSelectedPaletteItem(item int64) { //gd:GridMapEditorPlugin.set_selected_palette_item
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
 }
 
 /*
@@ -322,7 +325,7 @@ Note: The indices might not be in the same order as they appear in the editor's 
 */
 //go:nosplit
 func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_selected_palette_item
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

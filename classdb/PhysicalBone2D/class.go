@@ -21,6 +21,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -49,6 +50,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -83,8 +85,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -275,31 +278,31 @@ Returns the first [Joint2D] child node, if one exists. This is mainly a helper f
 */
 //go:nosplit
 func (self class) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Joint2D{gd.PointerMustAssertInstanceID[gdclass.Joint2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAutoConfigureJoint() bool { //gd:PhysicalBone2D.get_auto_configure_joint
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_configure_joint, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_configure_joint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoConfigureJoint(auto_configure_joint bool) { //gd:PhysicalBone2D.set_auto_configure_joint
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_configure_joint, 0|(gdextension.SizeBool<<4), &struct{ auto_configure_joint bool }{auto_configure_joint})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_configure_joint, 0|(gdextension.SizeBool<<4), &struct{ auto_configure_joint bool }{auto_configure_joint})
 }
 
 //go:nosplit
 func (self class) SetSimulatePhysics(simulate_physics bool) { //gd:PhysicalBone2D.set_simulate_physics
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulate_physics, 0|(gdextension.SizeBool<<4), &struct{ simulate_physics bool }{simulate_physics})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulate_physics, 0|(gdextension.SizeBool<<4), &struct{ simulate_physics bool }{simulate_physics})
 }
 
 //go:nosplit
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone2D.get_simulate_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,43 +314,43 @@ Returns a boolean that indicates whether the [PhysicalBone2D] is running and sim
 */
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone2dNodepath(nodepath Path.ToNode) { //gd:PhysicalBone2D.set_bone2d_nodepath
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_nodepath, 0|(gdextension.SizeNodePath<<4), &struct{ nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(nodepath))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_nodepath, 0|(gdextension.SizeNodePath<<4), &struct{ nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(nodepath))})
 }
 
 //go:nosplit
 func (self class) GetBone2dNodepath() Path.ToNode { //gd:PhysicalBone2D.get_bone2d_nodepath
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_nodepath, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_nodepath, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone2dIndex(bone_index int64) { //gd:PhysicalBone2D.set_bone2d_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_index, 0|(gdextension.SizeInt<<4), &struct{ bone_index int64 }{bone_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_index, 0|(gdextension.SizeInt<<4), &struct{ bone_index int64 }{bone_index})
 }
 
 //go:nosplit
 func (self class) GetBone2dIndex() int64 { //gd:PhysicalBone2D.get_bone2d_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowBoneWhenSimulating(follow_bone bool) { //gd:PhysicalBone2D.set_follow_bone_when_simulating
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_bone_when_simulating, 0|(gdextension.SizeBool<<4), &struct{ follow_bone bool }{follow_bone})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_bone_when_simulating, 0|(gdextension.SizeBool<<4), &struct{ follow_bone bool }{follow_bone})
 }
 
 //go:nosplit
 func (self class) GetFollowBoneWhenSimulating() bool { //gd:PhysicalBone2D.get_follow_bone_when_simulating
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_bone_when_simulating, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_bone_when_simulating, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -197,7 +200,7 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_x
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
 	}{param, value})
@@ -205,14 +208,14 @@ func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamX(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_x
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_y
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
 	}{param, value})
@@ -220,14 +223,14 @@ func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamY(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_y
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_z
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
 	}{param, value})
@@ -235,14 +238,14 @@ func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamZ(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_z
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
 	}{flag, value})
@@ -250,14 +253,14 @@ func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
 	}{flag, value})
@@ -265,14 +268,14 @@ func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
 	}{flag, value})
@@ -280,7 +283,7 @@ func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }

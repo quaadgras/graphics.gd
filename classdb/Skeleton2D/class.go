@@ -16,6 +16,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -43,6 +44,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -77,8 +79,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -248,7 +251,7 @@ Returns the number of [Bone2D] nodes in the node hierarchy parented by Skeleton2
 */
 //go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Skeleton2D.get_bone_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -260,7 +263,7 @@ Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to
 */
 //go:nosplit
 func (self class) GetBone(idx int64) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.Bone2D{gd.PointerMustAssertInstanceID[gdclass.Bone2D](r_ret)}
 	return ret
 }
@@ -272,7 +275,7 @@ Returns the [Resource.ID] of a Skeleton2D instance.
 */
 //go:nosplit
 func (self class) GetSkeleton() RID.Any { //gd:Skeleton2D.get_skeleton
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +287,7 @@ Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
 //go:nosplit
 func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), &struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))})
 }
 
 /*
@@ -294,7 +297,7 @@ Returns the [SkeletonModificationStack2D] attached to this skeleton, if one exis
 */
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }
@@ -306,7 +309,7 @@ Executes all the modifications on the [SkeletonModificationStack2D], if the Skel
 */
 //go:nosplit
 func (self class) ExecuteModifications(delta float64, execution_mode int64) { //gd:Skeleton2D.execute_modifications
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.execute_modifications, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.execute_modifications, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
 		delta          float64
 		execution_mode int64
 	}{delta, execution_mode})
@@ -323,7 +326,7 @@ Note: The pose transform needs to be a local transform relative to the [Bone2D] 
 */
 //go:nosplit
 func (self class) SetBoneLocalPoseOverride(bone_idx int64, override_pose Transform2D.OriginXY, strength float64, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_local_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_local_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		bone_idx      int64
 		override_pose Transform2D.OriginXY
 		strength      float64
@@ -336,7 +339,7 @@ Returns the local pose override transform for 'bone_idx'.
 */
 //go:nosplit
 func (self class) GetBoneLocalPoseOverride(bone_idx int64) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_bone_local_pose_override, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
+	var r_ret = mainthread.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_bone_local_pose_override, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }

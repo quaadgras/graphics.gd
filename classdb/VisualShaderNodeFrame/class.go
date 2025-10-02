@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -244,48 +247,48 @@ func (self Instance) SetAttachedNodes(value []int32) {
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:VisualShaderNodeFrame.set_title
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:VisualShaderNodeFrame.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColorEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_tint_color_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsTintColorEnabled() bool { //gd:VisualShaderNodeFrame.is_tint_color_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColor(color Color.RGBA) { //gd:VisualShaderNodeFrame.set_tint_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetTintColor() Color.RGBA { //gd:VisualShaderNodeFrame.get_tint_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoshrinkEnabled(enable bool) { //gd:VisualShaderNodeFrame.set_autoshrink_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsAutoshrinkEnabled() bool { //gd:VisualShaderNodeFrame.is_autoshrink_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +300,7 @@ Adds a node to the list of nodes attached to the frame. Should not be called dir
 */
 //go:nosplit
 func (self class) AddAttachedNode(node int64) { //gd:VisualShaderNodeFrame.add_attached_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_attached_node, 0|(gdextension.SizeInt<<4), &struct{ node int64 }{node})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_attached_node, 0|(gdextension.SizeInt<<4), &struct{ node int64 }{node})
 }
 
 /*
@@ -307,19 +310,19 @@ Removes a node from the list of nodes attached to the frame. Should not be calle
 */
 //go:nosplit
 func (self class) RemoveAttachedNode(node int64) { //gd:VisualShaderNodeFrame.remove_attached_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_attached_node, 0|(gdextension.SizeInt<<4), &struct{ node int64 }{node})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_attached_node, 0|(gdextension.SizeInt<<4), &struct{ node int64 }{node})
 }
 
 //go:nosplit
 func (self class) SetAttachedNodes(attached_nodes Packed.Array[int32]) { //gd:VisualShaderNodeFrame.set_attached_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attached_nodes, 0|(gdextension.SizePackedArray<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attached_nodes, 0|(gdextension.SizePackedArray<<4), &struct {
 		attached_nodes gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes))})
 }
 
 //go:nosplit
 func (self class) GetAttachedNodes() Packed.Array[int32] { //gd:VisualShaderNodeFrame.get_attached_nodes
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_attached_nodes, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_attached_nodes, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

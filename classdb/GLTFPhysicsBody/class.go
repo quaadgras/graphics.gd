@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -318,7 +321,7 @@ Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] 
 */
 //go:nosplit
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(body_node[0].AsObject()))})
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(body_node[0].AsObject()))})
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret)}
 	return ret
 }
@@ -330,7 +333,7 @@ Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CollisionObject3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionObject3D](r_ret)}
 	return ret
 }
@@ -340,7 +343,7 @@ Creates a new GLTFPhysicsBody instance by parsing the given data structure in th
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret)}
 	return ret
 }
@@ -350,105 +353,105 @@ Serializes this GLTFPhysicsBody instance into a data structure. It will be in th
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictionary
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBodyType() String.Readable { //gd:GLTFPhysicsBody.get_body_type
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyType(body_type String.Readable) { //gd:GLTFPhysicsBody.set_body_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_type, 0|(gdextension.SizeString<<4), &struct{ body_type gdextension.String }{pointers.Get(gd.InternalString(body_type))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_type, 0|(gdextension.SizeString<<4), &struct{ body_type gdextension.String }{pointers.Get(gd.InternalString(body_type))})
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:GLTFPhysicsBody.get_mass
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:GLTFPhysicsBody.set_mass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_linear_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_angular_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:GLTFPhysicsBody.get_center_of_mass
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOfMass(center_of_mass Vector3.XYZ) { //gd:GLTFPhysicsBody.set_center_of_mass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector3<<4), &struct{ center_of_mass Vector3.XYZ }{center_of_mass})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector3<<4), &struct{ center_of_mass Vector3.XYZ }{center_of_mass})
 }
 
 //go:nosplit
 func (self class) GetInertiaDiagonal() Vector3.XYZ { //gd:GLTFPhysicsBody.get_inertia_diagonal
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_diagonal, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_diagonal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaDiagonal(inertia_diagonal Vector3.XYZ) { //gd:GLTFPhysicsBody.set_inertia_diagonal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_diagonal, 0|(gdextension.SizeVector3<<4), &struct{ inertia_diagonal Vector3.XYZ }{inertia_diagonal})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_diagonal, 0|(gdextension.SizeVector3<<4), &struct{ inertia_diagonal Vector3.XYZ }{inertia_diagonal})
 }
 
 //go:nosplit
 func (self class) GetInertiaOrientation() Quaternion.IJKX { //gd:GLTFPhysicsBody.get_inertia_orientation
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_inertia_orientation, gdextension.SizeQuaternion, &struct{}{})
+	var r_ret = mainthread.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_inertia_orientation, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaOrientation(inertia_orientation Quaternion.IJKX) { //gd:GLTFPhysicsBody.set_inertia_orientation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_orientation, 0|(gdextension.SizeQuaternion<<4), &struct{ inertia_orientation Quaternion.IJKX }{inertia_orientation})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_orientation, 0|(gdextension.SizeQuaternion<<4), &struct{ inertia_orientation Quaternion.IJKX }{inertia_orientation})
 }
 
 //go:nosplit
 func (self class) GetInertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.get_inertia_tensor
-	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_tensor, gdextension.SizeBasis, &struct{}{})
+	var r_ret = mainthread.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_tensor, gdextension.SizeBasis, &struct{}{})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaTensor(inertia_tensor Basis.XYZ) { //gd:GLTFPhysicsBody.set_inertia_tensor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_tensor, 0|(gdextension.SizeBasis<<4), &struct{ inertia_tensor Basis.XYZ }{Basis.Transposed(inertia_tensor)})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_tensor, 0|(gdextension.SizeBasis<<4), &struct{ inertia_tensor Basis.XYZ }{Basis.Transposed(inertia_tensor)})
 }
 func (self class) AsGLTFPhysicsBody() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFPhysicsBody](self[0])}

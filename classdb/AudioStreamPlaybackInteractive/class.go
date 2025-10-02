@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -181,7 +184,7 @@ Switch to a clip (by name).
 */
 //go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), &struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), &struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))})
 }
 
 /*
@@ -189,7 +192,7 @@ Switch to a clip (by index).
 */
 //go:nosplit
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
 
 /*
@@ -207,7 +210,7 @@ Example: Get the currently playing clip name from inside an [AudioStreamPlayer] 
 */
 //go:nosplit
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

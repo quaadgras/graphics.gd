@@ -19,6 +19,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -44,6 +45,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -78,8 +80,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -374,168 +377,168 @@ func (self Instance) SetEnergyMultiplier(value Float.X) {
 
 //go:nosplit
 func (self class) SetSkyTopColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_top_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_top_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_top_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetSkyTopColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_top_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_top_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_top_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyHorizonColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_horizon_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_horizon_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_horizon_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetSkyHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_horizon_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_horizon_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_horizon_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyCurve(curve float64) { //gd:ProceduralSkyMaterial.set_sky_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
 }
 
 //go:nosplit
 func (self class) GetSkyCurve() float64 { //gd:ProceduralSkyMaterial.get_sky_curve
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sky_curve, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sky_curve, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyEnergyMultiplier(multiplier float64) { //gd:ProceduralSkyMaterial.set_sky_energy_multiplier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 
 //go:nosplit
 func (self class) GetSkyEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_sky_energy_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sky_energy_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sky_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyCover(sky_cover [1]gdclass.Texture2D) { //gd:ProceduralSkyMaterial.set_sky_cover
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover, 0|(gdextension.SizeObject<<4), &struct{ sky_cover gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky_cover[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover, 0|(gdextension.SizeObject<<4), &struct{ sky_cover gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky_cover[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetSkyCover() [1]gdclass.Texture2D { //gd:ProceduralSkyMaterial.get_sky_cover
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sky_cover, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sky_cover, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyCoverModulate(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_sky_cover_modulate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_cover_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetSkyCoverModulate() Color.RGBA { //gd:ProceduralSkyMaterial.get_sky_cover_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_cover_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_sky_cover_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroundBottomColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_ground_bottom_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_bottom_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_bottom_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetGroundBottomColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_ground_bottom_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_bottom_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_bottom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroundHorizonColor(color Color.RGBA) { //gd:ProceduralSkyMaterial.set_ground_horizon_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_horizon_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_horizon_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetGroundHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.get_ground_horizon_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_horizon_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_horizon_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroundCurve(curve float64) { //gd:ProceduralSkyMaterial.set_ground_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
 }
 
 //go:nosplit
 func (self class) GetGroundCurve() float64 { //gd:ProceduralSkyMaterial.get_ground_curve
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ground_curve, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ground_curve, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroundEnergyMultiplier(energy float64) { //gd:ProceduralSkyMaterial.set_ground_energy_multiplier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 
 //go:nosplit
 func (self class) GetGroundEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_ground_energy_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ground_energy_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ground_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSunAngleMax(degrees float64) { //gd:ProceduralSkyMaterial.set_sun_angle_max
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_angle_max, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_angle_max, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 
 //go:nosplit
 func (self class) GetSunAngleMax() float64 { //gd:ProceduralSkyMaterial.get_sun_angle_max
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_angle_max, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_angle_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSunCurve(curve float64) { //gd:ProceduralSkyMaterial.set_sun_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_curve, 0|(gdextension.SizeFloat<<4), &struct{ curve float64 }{curve})
 }
 
 //go:nosplit
 func (self class) GetSunCurve() float64 { //gd:ProceduralSkyMaterial.get_sun_curve
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_curve, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_curve, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseDebanding(use_debanding bool) { //gd:ProceduralSkyMaterial.set_use_debanding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), &struct{ use_debanding bool }{use_debanding})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), &struct{ use_debanding bool }{use_debanding})
 }
 
 //go:nosplit
 func (self class) GetUseDebanding() bool { //gd:ProceduralSkyMaterial.get_use_debanding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergyMultiplier(multiplier float64) { //gd:ProceduralSkyMaterial.set_energy_multiplier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 
 //go:nosplit
 func (self class) GetEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.get_energy_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

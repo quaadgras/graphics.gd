@@ -24,6 +24,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -48,6 +49,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -82,8 +84,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -463,7 +467,7 @@ Returns the current format being used by this texture.
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:TextureLayered.get_format
-	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -475,7 +479,7 @@ Returns the [TextureLayered]'s type. The type determines how the data is accesse
 */
 //go:nosplit
 func (self class) GetLayeredType() LayeredType { //gd:TextureLayered.get_layered_type
-	var r_ret = noescape.Call[LayeredType](gd.ObjectChecked(self.AsObject()), methods.get_layered_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[LayeredType](gd.ObjectChecked(self.AsObject()), methods.get_layered_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -485,7 +489,7 @@ Returns the width of the texture in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:TextureLayered.get_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -495,7 +499,7 @@ Returns the height of the texture in pixels. Height is typically represented by 
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:TextureLayered.get_height
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -507,7 +511,7 @@ Returns the number of referenced [Image]s.
 */
 //go:nosplit
 func (self class) GetLayers() int64 { //gd:TextureLayered.get_layers
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -517,7 +521,7 @@ Returns true if the layers have generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -529,7 +533,7 @@ Returns an [Image] resource with the data from specified 'layer'.
 */
 //go:nosplit
 func (self class) GetLayerData(layer int64) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_data, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_data, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }

@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -195,36 +198,36 @@ func (self Instance) SetSkyMode(value SkyMode) {
 
 //go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ShadowMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ShadowMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:DirectionalLight3D.get_shadow_mode
-	var r_ret = noescape.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendSplits(enabled bool) { //gd:DirectionalLight3D.set_blend_splits
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_splits, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_splits, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsBlendSplitsEnabled() bool { //gd:DirectionalLight3D.is_blend_splits_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blend_splits_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blend_splits_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyMode(mode SkyMode) { //gd:DirectionalLight3D.set_sky_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SkyMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SkyMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetSkyMode() SkyMode { //gd:DirectionalLight3D.get_sky_mode
-	var r_ret = noescape.Call[SkyMode](gd.ObjectChecked(self.AsObject()), methods.get_sky_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[SkyMode](gd.ObjectChecked(self.AsObject()), methods.get_sky_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -42,6 +43,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -76,8 +78,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -240,72 +243,72 @@ func (self Instance) SetEditingInteger(value bool) {
 
 //go:nosplit
 func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))})
 }
 
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_suffix
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadOnly(read_only bool) { //gd:EditorSpinSlider.set_read_only
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), &struct{ read_only bool }{read_only})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), &struct{ read_only bool }{read_only})
 }
 
 //go:nosplit
 func (self class) IsReadOnly() bool { //gd:EditorSpinSlider.is_read_only
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ flat bool }{flat})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ flat bool }{flat})
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideSlider(hide_slider bool) { //gd:EditorSpinSlider.set_hide_slider
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_slider, 0|(gdextension.SizeBool<<4), &struct{ hide_slider bool }{hide_slider})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_slider, 0|(gdextension.SizeBool<<4), &struct{ hide_slider bool }{hide_slider})
 }
 
 //go:nosplit
 func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hiding_slider, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hiding_slider, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlider.set_editing_integer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editing_integer, 0|(gdextension.SizeBool<<4), &struct{ editing_integer bool }{editing_integer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editing_integer, 0|(gdextension.SizeBool<<4), &struct{ editing_integer bool }{editing_integer})
 }
 
 //go:nosplit
 func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

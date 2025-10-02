@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -39,6 +40,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -73,8 +75,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -227,60 +230,60 @@ func (self Instance) SetSelected(value bool) {
 
 //go:nosplit
 func (self class) SetResizable(resizable bool) { //gd:GraphElement.set_resizable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resizable, 0|(gdextension.SizeBool<<4), &struct{ resizable bool }{resizable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resizable, 0|(gdextension.SizeBool<<4), &struct{ resizable bool }{resizable})
 }
 
 //go:nosplit
 func (self class) IsResizable() bool { //gd:GraphElement.is_resizable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_resizable, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_resizable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggable(draggable bool) { //gd:GraphElement.set_draggable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draggable, 0|(gdextension.SizeBool<<4), &struct{ draggable bool }{draggable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draggable, 0|(gdextension.SizeBool<<4), &struct{ draggable bool }{draggable})
 }
 
 //go:nosplit
 func (self class) IsDraggable() bool { //gd:GraphElement.is_draggable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draggable, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draggable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectable(selectable bool) { //gd:GraphElement.set_selectable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), &struct{ selectable bool }{selectable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), &struct{ selectable bool }{selectable})
 }
 
 //go:nosplit
 func (self class) IsSelectable() bool { //gd:GraphElement.is_selectable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelected(selected bool) { //gd:GraphElement.set_selected
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeBool<<4), &struct{ selected bool }{selected})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeBool<<4), &struct{ selected bool }{selected})
 }
 
 //go:nosplit
 func (self class) IsSelected() bool { //gd:GraphElement.is_selected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionOffset(offset Vector2.XY) { //gd:GraphElement.set_position_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_position_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

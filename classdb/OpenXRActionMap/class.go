@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -269,12 +272,12 @@ func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Ins
 
 //go:nosplit
 func (self class) SetActionSets(action_sets Array.Any) { //gd:OpenXRActionMap.set_action_sets
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_sets, 0|(gdextension.SizeArray<<4), &struct{ action_sets gdextension.Array }{pointers.Get(gd.InternalArray(action_sets))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_sets, 0|(gdextension.SizeArray<<4), &struct{ action_sets gdextension.Array }{pointers.Get(gd.InternalArray(action_sets))})
 }
 
 //go:nosplit
 func (self class) GetActionSets() Array.Any { //gd:OpenXRActionMap.get_action_sets
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -284,7 +287,7 @@ Retrieve the number of actions sets in our action map.
 */
 //go:nosplit
 func (self class) GetActionSetCount() int64 { //gd:OpenXRActionMap.get_action_set_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_action_set_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_action_set_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +297,7 @@ Retrieve an action set by name.
 */
 //go:nosplit
 func (self class) FindActionSet(name String.Readable) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_action_set, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_action_set, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
 	return ret
 }
@@ -304,7 +307,7 @@ Retrieve the action set at this index.
 */
 //go:nosplit
 func (self class) GetActionSet(idx int64) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
 	return ret
 }
@@ -314,7 +317,7 @@ Add an action set.
 */
 //go:nosplit
 func (self class) AddActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.add_action_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))})
 }
 
 /*
@@ -322,17 +325,17 @@ Remove an action set.
 */
 //go:nosplit
 func (self class) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.remove_action_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetInteractionProfiles(interaction_profiles Array.Any) { //gd:OpenXRActionMap.set_interaction_profiles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profiles, 0|(gdextension.SizeArray<<4), &struct{ interaction_profiles gdextension.Array }{pointers.Get(gd.InternalArray(interaction_profiles))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profiles, 0|(gdextension.SizeArray<<4), &struct{ interaction_profiles gdextension.Array }{pointers.Get(gd.InternalArray(interaction_profiles))})
 }
 
 //go:nosplit
 func (self class) GetInteractionProfiles() Array.Any { //gd:OpenXRActionMap.get_interaction_profiles
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profiles, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profiles, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -342,7 +345,7 @@ Retrieve the number of interaction profiles in our action map.
 */
 //go:nosplit
 func (self class) GetInteractionProfileCount() int64 { //gd:OpenXRActionMap.get_interaction_profile_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -352,7 +355,7 @@ Find an interaction profile by its name (path).
 */
 //go:nosplit
 func (self class) FindInteractionProfile(name String.Readable) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interaction_profile, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interaction_profile, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret)}
 	return ret
 }
@@ -362,7 +365,7 @@ Get the interaction profile at this index.
 */
 //go:nosplit
 func (self class) GetInteractionProfile(idx int64) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret)}
 	return ret
 }
@@ -372,7 +375,7 @@ Add an interaction profile.
 */
 //go:nosplit
 func (self class) AddInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.add_interaction_profile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interaction_profile, 0|(gdextension.SizeObject<<4), &struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interaction_profile, 0|(gdextension.SizeObject<<4), &struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))})
 }
 
 /*
@@ -380,7 +383,7 @@ Remove an interaction profile.
 */
 //go:nosplit
 func (self class) RemoveInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.remove_interaction_profile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interaction_profile, 0|(gdextension.SizeObject<<4), &struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interaction_profile, 0|(gdextension.SizeObject<<4), &struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))})
 }
 
 /*
@@ -388,7 +391,7 @@ Setup this action set with our default actions.
 */
 //go:nosplit
 func (self class) CreateDefaultActionSets() { //gd:OpenXRActionMap.create_default_action_sets
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_default_action_sets, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_default_action_sets, 0, &struct{}{})
 }
 func (self class) AsOpenXRActionMap() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRActionMap](self[0])}

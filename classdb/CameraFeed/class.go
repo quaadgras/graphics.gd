@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -40,6 +41,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -74,8 +76,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -344,21 +348,21 @@ Returns the unique ID for this feed.
 */
 //go:nosplit
 func (self class) GetId() int64 { //gd:CameraFeed.get_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:CameraFeed.is_active
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:CameraFeed.set_active
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 /*
@@ -366,7 +370,7 @@ Returns the camera's name.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:CameraFeed.get_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -376,7 +380,7 @@ Sets the camera's name.
 */
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -384,7 +388,7 @@ Returns the position of camera on the device.
 */
 //go:nosplit
 func (self class) GetPosition() FeedPosition { //gd:CameraFeed.get_position
-	var r_ret = noescape.Call[FeedPosition](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FeedPosition](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -394,19 +398,19 @@ Sets the position of this camera.
 */
 //go:nosplit
 func (self class) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeInt<<4), &struct{ position FeedPosition }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeInt<<4), &struct{ position FeedPosition }{position})
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CameraFeed.get_transform
-	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = mainthread.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CameraFeed.set_transform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 
 /*
@@ -414,7 +418,7 @@ Sets RGB image for this feed.
 */
 //go:nosplit
 func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(rgb_image[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(rgb_image[0].AsObject()))})
 }
 
 /*
@@ -422,7 +426,7 @@ Sets YCbCr image for this feed.
 */
 //go:nosplit
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(ycbcr_image[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(ycbcr_image[0].AsObject()))})
 }
 
 /*
@@ -430,7 +434,7 @@ Sets the feed as external feed provided by another library.
 */
 //go:nosplit
 func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_external
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		width  int64
 		height int64
 	}{width, height})
@@ -441,7 +445,7 @@ Returns the texture backend ID (usable by some external libraries that need a ha
 */
 //go:nosplit
 func (self class) GetTextureTexId(feed_image_type ImageType) int64 { //gd:CameraFeed.get_texture_tex_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_texture_tex_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ feed_image_type ImageType }{feed_image_type})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_texture_tex_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ feed_image_type ImageType }{feed_image_type})
 	var ret = r_ret
 	return ret
 }
@@ -451,14 +455,14 @@ Returns feed image data type.
 */
 //go:nosplit
 func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
-	var r_ret = noescape.Call[FeedDataType](gd.ObjectChecked(self.AsObject()), methods.get_datatype, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FeedDataType](gd.ObjectChecked(self.AsObject()), methods.get_datatype, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_formats, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -476,7 +480,7 @@ Sets the feed format parameters for the given 'index' in the [Formats] array. Re
 */
 //go:nosplit
 func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
 		index      int64
 		parameters gdextension.Dictionary
 	}{index, pointers.Get(gd.InternalDictionary(parameters))})

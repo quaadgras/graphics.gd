@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -263,7 +266,7 @@ Sets the apply amount of the setting at 'index' to 'amount'.
 */
 //go:nosplit
 func (self class) SetAmount(index int64, amount float64) { //gd:BoneConstraint3D.set_amount
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		index  int64
 		amount float64
 	}{index, amount})
@@ -274,7 +277,7 @@ Returns the apply amount of the setting at 'index'.
 */
 //go:nosplit
 func (self class) GetAmount(index int64) float64 { //gd:BoneConstraint3D.get_amount
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +287,7 @@ Sets the apply bone of the setting at 'index' to 'bone_name'. This bone will be 
 */
 //go:nosplit
 func (self class) SetApplyBoneName(index int64, bone_name String.Readable) { //gd:BoneConstraint3D.set_apply_bone_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index     int64
 		bone_name gdextension.String
 	}{index, pointers.Get(gd.InternalString(bone_name))})
@@ -295,7 +298,7 @@ Returns the apply bone name of the setting at 'index'. This bone will be modifie
 */
 //go:nosplit
 func (self class) GetApplyBoneName(index int64) String.Readable { //gd:BoneConstraint3D.get_apply_bone_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_apply_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_apply_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -305,7 +308,7 @@ Sets the apply bone of the setting at 'index' to 'bone'. This bone will be modif
 */
 //go:nosplit
 func (self class) SetApplyBone(index int64, bone int64) { //gd:BoneConstraint3D.set_apply_bone
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_apply_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		bone  int64
 	}{index, bone})
@@ -316,7 +319,7 @@ Returns the apply bone of the setting at 'index'. This bone will be modified.
 */
 //go:nosplit
 func (self class) GetApplyBone(index int64) int64 { //gd:BoneConstraint3D.get_apply_bone
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_apply_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_apply_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +331,7 @@ This bone will be only referenced and not modified by this modifier.
 */
 //go:nosplit
 func (self class) SetReferenceBoneName(index int64, bone_name String.Readable) { //gd:BoneConstraint3D.set_reference_bone_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		index     int64
 		bone_name gdextension.String
 	}{index, pointers.Get(gd.InternalString(bone_name))})
@@ -341,7 +344,7 @@ This bone will be only referenced and not modified by this modifier.
 */
 //go:nosplit
 func (self class) GetReferenceBoneName(index int64) String.Readable { //gd:BoneConstraint3D.get_reference_bone_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_reference_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_reference_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -353,7 +356,7 @@ This bone will be only referenced and not modified by this modifier.
 */
 //go:nosplit
 func (self class) SetReferenceBone(index int64, bone int64) { //gd:BoneConstraint3D.set_reference_bone
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reference_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		bone  int64
 	}{index, bone})
@@ -366,7 +369,7 @@ This bone will be only referenced and not modified by this modifier.
 */
 //go:nosplit
 func (self class) GetReferenceBone(index int64) int64 { //gd:BoneConstraint3D.get_reference_bone
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reference_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reference_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -376,7 +379,7 @@ Sets the number of settings in the modifier.
 */
 //go:nosplit
 func (self class) SetSettingCount(count int64) { //gd:BoneConstraint3D.set_setting_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_setting_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_setting_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 /*
@@ -384,7 +387,7 @@ Returns the number of settings in the modifier.
 */
 //go:nosplit
 func (self class) GetSettingCount() int64 { //gd:BoneConstraint3D.get_setting_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_setting_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_setting_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -394,7 +397,7 @@ Clear all settings.
 */
 //go:nosplit
 func (self class) ClearSetting() { //gd:BoneConstraint3D.clear_setting
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_setting, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_setting, 0, &struct{}{})
 }
 func (self class) AsBoneConstraint3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.BoneConstraint3D](self[0])}

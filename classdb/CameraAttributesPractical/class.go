@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -40,6 +41,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -74,8 +76,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -302,108 +305,108 @@ func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
 
 //go:nosplit
 func (self class) SetDofBlurFarEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_far_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDofBlurFarEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_far_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_far_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_far_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurFarDistance(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_far_distance
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDofBlurFarDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurFarTransition(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_far_transition
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDofBlurFarTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_transition
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_transition, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_transition, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_near_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDofBlurNearEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_near_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_near_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_near_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearDistance(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_near_distance
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDofBlurNearDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_distance
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearTransition(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_near_transition
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_transition, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDofBlurNearTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_transition
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_transition, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_transition, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurAmount(amount float64) { //gd:CameraAttributesPractical.set_dof_blur_amount
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_amount, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetDofBlurAmount() float64 { //gd:CameraAttributesPractical.get_dof_blur_amount
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_amount, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_amount, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMaxSensitivity(max_sensitivity float64) { //gd:CameraAttributesPractical.set_auto_exposure_max_sensitivity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ max_sensitivity float64 }{max_sensitivity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ max_sensitivity float64 }{max_sensitivity})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMaxSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_max_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMinSensitivity(min_sensitivity float64) { //gd:CameraAttributesPractical.set_auto_exposure_min_sensitivity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ min_sensitivity float64 }{min_sensitivity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ min_sensitivity float64 }{min_sensitivity})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMinSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_min_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

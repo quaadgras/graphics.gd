@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -207,7 +210,7 @@ Pushes a single audio data frame to the buffer. This is usually less efficient t
 */
 //go:nosplit
 func (self class) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
 	var ret = r_ret
 	return ret
 }
@@ -217,7 +220,7 @@ Returns true if a buffer of the size 'amount' can be pushed to the audio sample 
 */
 //go:nosplit
 func (self class) CanPushBuffer(amount int64) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 	var ret = r_ret
 	return ret
 }
@@ -230,7 +233,7 @@ Pushes several audio data frames to the buffer. This is usually more efficient t
 */
 //go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		frames gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))})
 	var ret = r_ret
@@ -242,7 +245,7 @@ Returns the number of frames that can be pushed to the audio sample data buffer 
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioStreamGeneratorPlayback.get_frames_available
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -252,7 +255,7 @@ Returns the number of times the playback skipped due to a buffer underrun in the
 */
 //go:nosplit
 func (self class) GetSkips() int64 { //gd:AudioStreamGeneratorPlayback.get_skips
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -262,7 +265,7 @@ Clears the audio sample data buffer.
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
 }
 func (self class) AsAudioStreamGeneratorPlayback() Advanced {
 	return Advanced{pointers.AsA[gdclass.AudioStreamGeneratorPlayback](self[0])}

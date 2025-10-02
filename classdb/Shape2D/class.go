@@ -15,6 +15,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -240,12 +243,12 @@ func (self Instance) SetCustomSolverBias(value Float.X) {
 
 //go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape2D.set_custom_solver_bias
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 
 //go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape2D.get_custom_solver_bias
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -257,7 +260,7 @@ This method needs the transformation matrix for this shape ('local_xform'), the 
 */
 //go:nosplit
 func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
@@ -273,7 +276,7 @@ This method needs the transformation matrix for this shape ('local_xform'), the 
 */
 //go:nosplit
 func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
 		local_xform  Transform2D.OriginXY
 		local_motion Vector2.XY
 		with_shape   gdextension.Object
@@ -295,7 +298,7 @@ This method needs the transformation matrix for this shape ('local_xform'), the 
 */
 //go:nosplit
 func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_and_get_contacts
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
@@ -315,7 +318,7 @@ This method needs the transformation matrix for this shape ('local_xform'), the 
 */
 //go:nosplit
 func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_with_motion_and_get_contacts
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
 		local_xform  Transform2D.OriginXY
 		local_motion Vector2.XY
 		with_shape   gdextension.Object
@@ -334,7 +337,7 @@ Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled wi
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		canvas_item RID.Any
 		color       Color.RGBA
 	}{canvas_item, color})
@@ -347,7 +350,7 @@ Returns a [Rect2.PositionSize] representing the shapes boundary.
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = mainthread.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

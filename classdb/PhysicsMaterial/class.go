@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -31,6 +32,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -65,8 +67,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -203,48 +206,48 @@ func (self Instance) SetAbsorbent(value bool) {
 
 //go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
 
 //go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), &struct{ rough bool }{rough})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), &struct{ rough bool }{rough})
 }
 
 //go:nosplit
 func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
 
 //go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), &struct{ absorbent bool }{absorbent})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), &struct{ absorbent bool }{absorbent})
 }
 
 //go:nosplit
 func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -48,6 +48,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -69,6 +70,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -103,8 +105,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -970,7 +973,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 //go:nosplit
 func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.open, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.open, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		path  gdextension.String
 		flags ModeFlags
 	}{pointers.Get(gd.InternalString(path)), flags})
@@ -989,7 +992,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 //go:nosplit
 func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.open_encrypted, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.open_encrypted, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), &struct {
 		path       gdextension.String
 		mode_flags ModeFlags
 		key        gdextension.PackedArray[byte]
@@ -1008,7 +1011,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 //go:nosplit
 func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.open_encrypted_with_pass, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.open_encrypted_with_pass, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		path       gdextension.String
 		mode_flags ModeFlags
 		pass       gdextension.String
@@ -1029,7 +1032,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 //go:nosplit
 func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, compression_mode CompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.open_compressed, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.open_compressed, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		path             gdextension.String
 		mode_flags       ModeFlags
 		compression_mode CompressionMode
@@ -1043,7 +1046,7 @@ Returns the result of the last [Open] call in the current thread.
 */
 //go:nosplit
 func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
-	var r_ret = noescape.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1063,7 +1066,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 //go:nosplit
 func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_temp, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.create_temp, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
 		mode_flags int64
 		prefix     gdextension.String
 		extension  gdextension.String
@@ -1080,7 +1083,7 @@ Returns an empty []byte if an error occurred while opening the file. You can use
 */
 //go:nosplit
 func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileAccess.get_file_as_bytes
-	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_file_as_bytes, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = mainthread.CallStatic[gd.PackedPointers](methods.get_file_as_bytes, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -1092,7 +1095,7 @@ Returns an empty string if an error occurred while opening the file. You can use
 */
 //go:nosplit
 func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:FileAccess.get_file_as_string
-	var r_ret = noescape.CallStatic[gdextension.String](methods.get_file_as_string, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = mainthread.CallStatic[gdextension.String](methods.get_file_as_string, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1102,7 +1105,7 @@ Resizes the file to a specified length. The file must be open in a mode that per
 */
 //go:nosplit
 func (self class) Resize(length int64) Error.Code { //gd:FileAccess.resize
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.resize, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.resize, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1116,7 +1119,7 @@ Note: Only call [Flush] when you actually need it. Otherwise, it will decrease p
 */
 //go:nosplit
 func (self class) Flush() { //gd:FileAccess.flush
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
 }
 
 /*
@@ -1124,7 +1127,7 @@ Returns the path as a string for the current open file.
 */
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1134,7 +1137,7 @@ Returns the absolute path as a string for the current open file.
 */
 //go:nosplit
 func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path_absolute, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1144,7 +1147,7 @@ Returns true if the file is currently opened.
 */
 //go:nosplit
 func (self class) IsOpen() bool { //gd:FileAccess.is_open
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_open, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_open, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1156,7 +1159,7 @@ Changes the file reading/writing cursor to the specified position (in bytes from
 */
 //go:nosplit
 func (self class) SeekTo(position int64) { //gd:FileAccess.seek
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
 }
 
 /*
@@ -1168,7 +1171,7 @@ Note: This is an offset, so you should use negative numbers or the file cursor w
 */
 //go:nosplit
 func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek_end, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek_end, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
 }
 
 /*
@@ -1179,7 +1182,7 @@ Returns the file cursor's position in bytes from the beginning of the file. This
 */
 //go:nosplit
 func (self class) GetPosition() int64 { //gd:FileAccess.get_position
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1189,7 +1192,7 @@ Returns the size of the file in bytes. For a pipe, returns the number of bytes a
 */
 //go:nosplit
 func (self class) GetLength() int64 { //gd:FileAccess.get_length
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1203,7 +1206,7 @@ Note: eof_reached() == false cannot be used to check whether there is more data 
 */
 //go:nosplit
 func (self class) EofReached() bool { //gd:FileAccess.eof_reached
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.eof_reached, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.eof_reached, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1215,7 +1218,7 @@ Returns the next 8 bits from the file as an integer. This advances the file curs
 */
 //go:nosplit
 func (self class) Get8() int64 { //gd:FileAccess.get_8
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_8, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_8, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1227,7 +1230,7 @@ Returns the next 16 bits from the file as an integer. This advances the file cur
 */
 //go:nosplit
 func (self class) Get16() int64 { //gd:FileAccess.get_16
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_16, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_16, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1239,7 +1242,7 @@ Returns the next 32 bits from the file as an integer. This advances the file cur
 */
 //go:nosplit
 func (self class) Get32() int64 { //gd:FileAccess.get_32
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_32, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_32, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1251,7 +1254,7 @@ Returns the next 64 bits from the file as an integer. This advances the file cur
 */
 //go:nosplit
 func (self class) Get64() int64 { //gd:FileAccess.get_64
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_64, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_64, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1261,7 +1264,7 @@ Returns the next 16 bits from the file as a half-precision floating-point number
 */
 //go:nosplit
 func (self class) GetHalf() float64 { //gd:FileAccess.get_half
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_half, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_half, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1271,7 +1274,7 @@ Returns the next 32 bits from the file as a floating-point number. This advances
 */
 //go:nosplit
 func (self class) GetFloat() float64 { //gd:FileAccess.get_float
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_float, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_float, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1281,7 +1284,7 @@ Returns the next 64 bits from the file as a floating-point number. This advances
 */
 //go:nosplit
 func (self class) GetDouble() float64 { //gd:FileAccess.get_double
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_double, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_double, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1293,7 +1296,7 @@ If the file was saved by a Godot build compiled with the precision=single option
 */
 //go:nosplit
 func (self class) GetReal() float64 { //gd:FileAccess.get_real
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_real, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_real, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1303,7 +1306,7 @@ Returns next 'length' bytes of the file as a []byte. This advances the file curs
 */
 //go:nosplit
 func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buffer
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -1315,7 +1318,7 @@ Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
 func (self class) GetLine() String.Readable { //gd:FileAccess.get_line
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_line, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_line, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1333,7 +1336,7 @@ Note how the second line can omit the enclosing quotes as it does not include th
 */
 //go:nosplit
 func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAccess.get_csv_line
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_csv_line, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ delim gdextension.String }{pointers.Get(gd.InternalString(delim))})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_csv_line, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ delim gdextension.String }{pointers.Get(gd.InternalString(delim))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1345,7 +1348,7 @@ If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when p
 */
 //go:nosplit
 func (self class) GetAsText(skip_cr bool) String.Readable { //gd:FileAccess.get_as_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ skip_cr bool }{skip_cr})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ skip_cr bool }{skip_cr})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1355,7 +1358,7 @@ Returns an MD5 String representing the file at the given path or an empty string
 */
 //go:nosplit
 func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess.get_md5
-	var r_ret = noescape.CallStatic[gdextension.String](methods.get_md5, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = mainthread.CallStatic[gdextension.String](methods.get_md5, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1365,21 +1368,21 @@ Returns an SHA-256 string representing the file at the given path or an empty st
 */
 //go:nosplit
 func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAccess.get_sha256
-	var r_ret = noescape.CallStatic[gdextension.String](methods.get_sha256, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = mainthread.CallStatic[gdextension.String](methods.get_sha256, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) IsBigEndian() bool { //gd:FileAccess.is_big_endian
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_big_endian, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_big_endian, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBigEndian(big_endian bool) { //gd:FileAccess.set_big_endian
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_big_endian, 0|(gdextension.SizeBool<<4), &struct{ big_endian bool }{big_endian})
 }
 
 /*
@@ -1387,7 +1390,7 @@ Returns the last error that happened when trying to perform operations. Compare 
 */
 //go:nosplit
 func (self class) GetError() Error.Code { //gd:FileAccess.get_error
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1404,7 +1407,7 @@ Warning: Deserialized objects can contain code which gets executed. Do not use t
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_var
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), &struct{ allow_objects bool }{allow_objects})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), &struct{ allow_objects bool }{allow_objects})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1423,7 +1426,7 @@ To store a signed integer, use [Store64], or convert it manually (see [Store16] 
 */
 //go:nosplit
 func (self class) Store8(value int64) bool { //gd:FileAccess.store_8
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_8, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_8, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1443,7 +1446,7 @@ To store a signed integer, use [Store64] or store a signed integer from the inte
 */
 //go:nosplit
 func (self class) Store16(value int64) bool { //gd:FileAccess.store_16
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_16, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_16, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1462,7 +1465,7 @@ To store a signed integer, use [Store64], or convert it manually (see [Store16] 
 */
 //go:nosplit
 func (self class) Store32(value int64) bool { //gd:FileAccess.store_32
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_32, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_32, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1476,7 +1479,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) Store64(value int64) bool { //gd:FileAccess.store_64
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_64, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_64, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1488,7 +1491,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreHalf(value float64) bool { //gd:FileAccess.store_half
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_half, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_half, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1500,7 +1503,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreFloat(value float64) bool { //gd:FileAccess.store_float
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_float, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_float, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1512,7 +1515,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreDouble(value float64) bool { //gd:FileAccess.store_double
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_double, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_double, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1526,7 +1529,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreReal(value float64) bool { //gd:FileAccess.store_real
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_real, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_real, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 	var ret = r_ret
 	return ret
 }
@@ -1538,7 +1541,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_buffer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = r_ret
 	return ret
 }
@@ -1552,7 +1555,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_line
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_line, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ line gdextension.String }{pointers.Get(gd.InternalString(line))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_line, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ line gdextension.String }{pointers.Get(gd.InternalString(line))})
 	var ret = r_ret
 	return ret
 }
@@ -1566,7 +1569,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) bool { //gd:FileAccess.store_csv_line
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_csv_line, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_csv_line, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8), &struct {
 		values gdextension.PackedArray[gdextension.String]
 		delim  gdextension.String
 	}{pointers.Get(gd.InternalPackedStrings(values)), pointers.Get(gd.InternalString(delim))})
@@ -1587,7 +1590,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_string
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_string, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_string, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = r_ret
 	return ret
 }
@@ -1607,7 +1610,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:FileAccess.store_var
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_var, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_var, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		value        gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(value))), full_objects})
@@ -1624,7 +1627,7 @@ Note: If an error occurs, the resulting value of the file position indicator is 
 */
 //go:nosplit
 func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.store_pascal_string
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_pascal_string, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_pascal_string, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = r_ret
 	return ret
 }
@@ -1638,7 +1641,7 @@ Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
 func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal_string
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pascal_string, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pascal_string, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1653,7 +1656,7 @@ Note: [FileAccess] will automatically close when it's freed, which happens when 
 */
 //go:nosplit
 func (self class) Close() { //gd:FileAccess.close
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
 
 /*
@@ -1668,7 +1671,7 @@ For a non-static, relative equivalent, use [DirAccess.FileExists].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_exists
-	var r_ret = noescape.CallStatic[bool](methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = mainthread.CallStatic[bool](methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
@@ -1680,7 +1683,7 @@ Returns the last time the 'file' was modified in Unix timestamp format, or 0 on 
 */
 //go:nosplit
 func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
-	var r_ret = noescape.CallStatic[int64](methods.get_modified_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[int64](methods.get_modified_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1692,7 +1695,7 @@ Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on 
 */
 //go:nosplit
 func (self class) GetAccessTime(file String.Readable) int64 { //gd:FileAccess.get_access_time
-	var r_ret = noescape.CallStatic[int64](methods.get_access_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[int64](methods.get_access_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1702,7 +1705,7 @@ Returns file size in bytes, or -1 on error.
 */
 //go:nosplit
 func (self class) GetSize(file String.Readable) int64 { //gd:FileAccess.get_size
-	var r_ret = noescape.CallStatic[int64](methods.get_size, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[int64](methods.get_size, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1714,7 +1717,7 @@ Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
 func (self class) GetUnixPermissions(file String.Readable) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
-	var r_ret = noescape.CallStatic[UnixPermissionFlags](methods.get_unix_permissions, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[UnixPermissionFlags](methods.get_unix_permissions, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1726,7 +1729,7 @@ Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
 func (self class) SetUnixPermissions(file String.Readable, permissions UnixPermissionFlags) Error.Code { //gd:FileAccess.set_unix_permissions
-	var r_ret = noescape.CallStatic[int64](methods.set_unix_permissions, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.CallStatic[int64](methods.set_unix_permissions, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		file        gdextension.String
 		permissions UnixPermissionFlags
 	}{pointers.Get(gd.InternalString(file)), permissions})
@@ -1741,7 +1744,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
 func (self class) GetHiddenAttribute(file String.Readable) bool { //gd:FileAccess.get_hidden_attribute
-	var r_ret = noescape.CallStatic[bool](methods.get_hidden_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[bool](methods.get_hidden_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1753,7 +1756,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
 func (self class) SetHiddenAttribute(file String.Readable, hidden bool) Error.Code { //gd:FileAccess.set_hidden_attribute
-	var r_ret = noescape.CallStatic[int64](methods.set_hidden_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.CallStatic[int64](methods.set_hidden_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		file   gdextension.String
 		hidden bool
 	}{pointers.Get(gd.InternalString(file)), hidden})
@@ -1768,7 +1771,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
 func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) Error.Code { //gd:FileAccess.set_read_only_attribute
-	var r_ret = noescape.CallStatic[int64](methods.set_read_only_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.CallStatic[int64](methods.set_read_only_attribute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		file gdextension.String
 		ro   bool
 	}{pointers.Get(gd.InternalString(file)), ro})
@@ -1783,7 +1786,7 @@ Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
 func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAccess.get_read_only_attribute
-	var r_ret = noescape.CallStatic[bool](methods.get_read_only_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var r_ret = mainthread.CallStatic[bool](methods.get_read_only_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }

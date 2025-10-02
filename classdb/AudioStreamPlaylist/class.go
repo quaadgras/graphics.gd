@@ -6,6 +6,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -29,6 +30,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -63,8 +65,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -783,12 +786,12 @@ func (self Instance) SetStream63(value AudioStream.Instance) {
 
 //go:nosplit
 func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamPlaylist.set_stream_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), &struct{ stream_count int64 }{stream_count})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), &struct{ stream_count int64 }{stream_count})
 }
 
 //go:nosplit
 func (self class) GetStreamCount() int64 { //gd:AudioStreamPlaylist.get_stream_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -798,7 +801,7 @@ Returns the BPM of the playlist, which can vary depending on the clip being play
 */
 //go:nosplit
 func (self class) GetBpm() float64 { //gd:AudioStreamPlaylist.get_bpm
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -808,7 +811,7 @@ Sets the stream at playback position index.
 */
 //go:nosplit
 func (self class) SetListStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamPlaylist.set_list_stream
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_list_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_list_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		stream_index int64
 		audio_stream gdextension.Object
 	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))})
@@ -819,43 +822,43 @@ Returns the stream at playback position index.
 */
 //go:nosplit
 func (self class) GetListStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamPlaylist.get_list_stream
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_list_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_list_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShuffle(shuffle bool) { //gd:AudioStreamPlaylist.set_shuffle
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shuffle, 0|(gdextension.SizeBool<<4), &struct{ shuffle bool }{shuffle})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shuffle, 0|(gdextension.SizeBool<<4), &struct{ shuffle bool }{shuffle})
 }
 
 //go:nosplit
 func (self class) GetShuffle() bool { //gd:AudioStreamPlaylist.get_shuffle
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shuffle, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shuffle, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFadeTime(dec float64) { //gd:AudioStreamPlaylist.set_fade_time
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fade_time, 0|(gdextension.SizeFloat<<4), &struct{ dec float64 }{dec})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fade_time, 0|(gdextension.SizeFloat<<4), &struct{ dec float64 }{dec})
 }
 
 //go:nosplit
 func (self class) GetFadeTime() float64 { //gd:AudioStreamPlaylist.get_fade_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fade_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fade_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:AudioStreamPlaylist.set_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:AudioStreamPlaylist.has_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

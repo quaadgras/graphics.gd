@@ -12,6 +12,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -191,36 +194,36 @@ func (self Instance) SetCondition(value Condition) {
 
 //go:nosplit
 func (self class) SetComparisonType(atype ComparisonType) { //gd:VisualShaderNodeCompare.set_comparison_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comparison_type, 0|(gdextension.SizeInt<<4), &struct{ atype ComparisonType }{atype})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comparison_type, 0|(gdextension.SizeInt<<4), &struct{ atype ComparisonType }{atype})
 }
 
 //go:nosplit
 func (self class) GetComparisonType() ComparisonType { //gd:VisualShaderNodeCompare.get_comparison_type
-	var r_ret = noescape.Call[ComparisonType](gd.ObjectChecked(self.AsObject()), methods.get_comparison_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[ComparisonType](gd.ObjectChecked(self.AsObject()), methods.get_comparison_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeCompare.set_function
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeCompare.get_function
-	var r_ret = noescape.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCondition(condition Condition) { //gd:VisualShaderNodeCompare.set_condition
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_condition, 0|(gdextension.SizeInt<<4), &struct{ condition Condition }{condition})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_condition, 0|(gdextension.SizeInt<<4), &struct{ condition Condition }{condition})
 }
 
 //go:nosplit
 func (self class) GetCondition() Condition { //gd:VisualShaderNodeCompare.get_condition
-	var r_ret = noescape.Call[Condition](gd.ObjectChecked(self.AsObject()), methods.get_condition, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Condition](gd.ObjectChecked(self.AsObject()), methods.get_condition, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

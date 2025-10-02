@@ -32,6 +32,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -60,6 +61,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -94,8 +96,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -269,7 +272,7 @@ Begin a new surface.
 */
 //go:nosplit
 func (self class) SurfaceBegin(primitive Mesh.PrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		primitive Mesh.PrimitiveType
 		material  gdextension.Object
 	}{primitive, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
@@ -280,7 +283,7 @@ Set the color attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -288,7 +291,7 @@ Set the normal attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.surface_set_normal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_normal, 0|(gdextension.SizeVector3<<4), &struct{ normal Vector3.XYZ }{normal})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_normal, 0|(gdextension.SizeVector3<<4), &struct{ normal Vector3.XYZ }{normal})
 }
 
 /*
@@ -296,7 +299,7 @@ Set the tangent attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_tangent, 0|(gdextension.SizePlane<<4), &struct{ tangent Plane.NormalD }{tangent})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_tangent, 0|(gdextension.SizePlane<<4), &struct{ tangent Plane.NormalD }{tangent})
 }
 
 /*
@@ -304,7 +307,7 @@ Set the UV attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetUv(uv Vector2.XY) { //gd:ImmediateMesh.surface_set_uv
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv, 0|(gdextension.SizeVector2<<4), &struct{ uv Vector2.XY }{uv})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv, 0|(gdextension.SizeVector2<<4), &struct{ uv Vector2.XY }{uv})
 }
 
 /*
@@ -312,7 +315,7 @@ Set the UV2 attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetUv2(uv2 Vector2.XY) { //gd:ImmediateMesh.surface_set_uv2
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv2, 0|(gdextension.SizeVector2<<4), &struct{ uv2 Vector2.XY }{uv2})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv2, 0|(gdextension.SizeVector2<<4), &struct{ uv2 Vector2.XY }{uv2})
 }
 
 /*
@@ -320,7 +323,7 @@ Add a 3D vertex using the current attributes previously set.
 */
 //go:nosplit
 func (self class) SurfaceAddVertex(vertex Vector3.XYZ) { //gd:ImmediateMesh.surface_add_vertex
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex, 0|(gdextension.SizeVector3<<4), &struct{ vertex Vector3.XYZ }{vertex})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex, 0|(gdextension.SizeVector3<<4), &struct{ vertex Vector3.XYZ }{vertex})
 }
 
 /*
@@ -328,7 +331,7 @@ Add a 2D vertex using the current attributes previously set.
 */
 //go:nosplit
 func (self class) SurfaceAddVertex2d(vertex Vector2.XY) { //gd:ImmediateMesh.surface_add_vertex_2d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex_2d, 0|(gdextension.SizeVector2<<4), &struct{ vertex Vector2.XY }{vertex})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex_2d, 0|(gdextension.SizeVector2<<4), &struct{ vertex Vector2.XY }{vertex})
 }
 
 /*
@@ -336,7 +339,7 @@ End and commit current surface. Note that surface being created will not be visi
 */
 //go:nosplit
 func (self class) SurfaceEnd() { //gd:ImmediateMesh.surface_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_end, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_end, 0, &struct{}{})
 }
 
 /*
@@ -344,7 +347,7 @@ Clear all surfaces.
 */
 //go:nosplit
 func (self class) ClearSurfaces() { //gd:ImmediateMesh.clear_surfaces
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, &struct{}{})
 }
 func (self class) AsImmediateMesh() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImmediateMesh](self[0])}

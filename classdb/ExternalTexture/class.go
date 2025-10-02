@@ -16,6 +16,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -181,7 +184,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 
 /*
@@ -191,7 +194,7 @@ Depending on your use case, you may need to pass this to platform APIs, for exam
 */
 //go:nosplit
 func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_external_texture_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_external_texture_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_external_texture_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -203,7 +206,7 @@ Depending on your use case, you may need to call this with data received from a 
 */
 //go:nosplit
 func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), &struct{ external_buffer_id int64 }{external_buffer_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), &struct{ external_buffer_id int64 }{external_buffer_id})
 }
 func (self class) AsExternalTexture() Advanced {
 	return Advanced{pointers.AsA[gdclass.ExternalTexture](self[0])}

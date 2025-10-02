@@ -24,6 +24,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -48,6 +49,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -82,8 +84,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -307,7 +310,7 @@ You can optionally specify a 'channels_config' array of [MultiplayerPeer.Transfe
 */
 //go:nosplit
 func (self class) CreateServer(channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_server
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ channels_config gdextension.Array }{pointers.Get(gd.InternalArray(channels_config))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ channels_config gdextension.Array }{pointers.Get(gd.InternalArray(channels_config))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -323,7 +326,7 @@ You can optionally specify a 'channels_config' array of [MultiplayerPeer.Transfe
 */
 //go:nosplit
 func (self class) CreateClient(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_client
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
 		peer_id         int64
 		channels_config gdextension.Array
 	}{peer_id, pointers.Get(gd.InternalArray(channels_config))})
@@ -336,7 +339,7 @@ Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other)
 */
 //go:nosplit
 func (self class) CreateMesh(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_mesh
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
 		peer_id         int64
 		channels_config gdextension.Array
 	}{peer_id, pointers.Get(gd.InternalArray(channels_config))})
@@ -354,7 +357,7 @@ Three channels will be created for reliable, unreliable, and ordered transport. 
 */
 //go:nosplit
 func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, unreliable_lifetime int64) Error.Code { //gd:WebRTCMultiplayerPeer.add_peer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		peer                gdextension.Object
 		peer_id             int64
 		unreliable_lifetime int64
@@ -371,7 +374,7 @@ Remove the peer with given 'peer_id' from the mesh. If the peer was connected, a
 */
 //go:nosplit
 func (self class) RemovePeer(peer_id int64) { //gd:WebRTCMultiplayerPeer.remove_peer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_peer, 0|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_peer, 0|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 }
 
 /*
@@ -379,7 +382,7 @@ Returns true if the given 'peer_id' is in the peers map (it might not be connect
 */
 //go:nosplit
 func (self class) HasPeer(peer_id int64) bool { //gd:WebRTCMultiplayerPeer.has_peer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_peer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_peer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 	var ret = r_ret
 	return ret
 }
@@ -392,7 +395,7 @@ Returns a dictionary representation of the peer with given 'peer_id' with three 
 */
 //go:nosplit
 func (self class) GetPeer(peer_id int64) Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peer
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -404,7 +407,7 @@ Returns a dictionary which keys are the peer ids and values the peer representat
 */
 //go:nosplit
 func (self class) GetPeers() Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peers
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

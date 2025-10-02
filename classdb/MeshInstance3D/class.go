@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -44,6 +45,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -78,8 +80,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -446,36 +449,36 @@ func (self Instance) SetSkeleton(value string) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:MeshInstance3D.set_skeleton_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_path, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_path, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))})
 }
 
 //go:nosplit
 func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skeleton_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:MeshInstance3D.get_skin
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
@@ -491,7 +494,7 @@ Returns the internal [SkinReference] containing the skeleton's [Resource.ID] att
 */
 //go:nosplit
 func (self class) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin_reference, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin_reference, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret)}
 	return ret
 }
@@ -504,7 +507,7 @@ Returns the number of surface override materials. This is equivalent to [Mesh.Ge
 */
 //go:nosplit
 func (self class) GetSurfaceOverrideMaterialCount() int64 { //gd:MeshInstance3D.get_surface_override_material_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_override_material_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_override_material_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -521,7 +524,7 @@ Note: This assigns the [Material] associated to the [MeshInstance3D]'s Surface M
 */
 //go:nosplit
 func (self class) SetSurfaceOverrideMaterial(surface int64, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_override_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_override_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surface  int64
 		material gdextension.Object
 	}{surface, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
@@ -540,7 +543,7 @@ Note: This returns the [Material] associated to the [MeshInstance3D]'s Surface M
 */
 //go:nosplit
 func (self class) GetSurfaceOverrideMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_override_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface int64 }{surface})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_override_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface int64 }{surface})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -557,7 +560,7 @@ Returns null if no material is active, including when [Mesh] is null.
 */
 //go:nosplit
 func (self class) GetActiveMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_active_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface int64 }{surface})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_active_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface int64 }{surface})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -570,7 +573,7 @@ This helper creates a [StaticBody3D] child node with a [ConcavePolygonShape3D] c
 */
 //go:nosplit
 func (self class) CreateTrimeshCollision() { //gd:MeshInstance3D.create_trimesh_collision
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_trimesh_collision, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_trimesh_collision, 0, &struct{}{})
 }
 
 /*
@@ -585,7 +588,7 @@ If 'simplify' is true, the geometry can be further simplified to reduce the numb
 */
 //go:nosplit
 func (self class) CreateConvexCollision(clean bool, simplify bool) { //gd:MeshInstance3D.create_convex_collision
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_convex_collision, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_convex_collision, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
 		clean    bool
 		simplify bool
 	}{clean, simplify})
@@ -599,7 +602,7 @@ This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShap
 */
 //go:nosplit
 func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) { //gd:MeshInstance3D.create_multiple_convex_collisions
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(settings[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), &struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(settings[0].AsObject()))})
 }
 
 /*
@@ -609,7 +612,7 @@ Returns the number of blend shapes available. Produces an error if [Mesh] is nul
 */
 //go:nosplit
 func (self class) GetBlendShapeCount() int64 { //gd:MeshInstance3D.get_blend_shape_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -621,7 +624,7 @@ Returns the index of the blend shape with the given 'name'. Returns -1 if no ble
 */
 //go:nosplit
 func (self class) FindBlendShapeByName(name String.Name) int64 { //gd:MeshInstance3D.find_blend_shape_by_name
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_blend_shape_by_name, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_blend_shape_by_name, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -633,7 +636,7 @@ Returns the value of the blend shape at the given 'blend_shape_idx'. Returns 0.0
 */
 //go:nosplit
 func (self class) GetBlendShapeValue(blend_shape_idx int64) float64 { //gd:MeshInstance3D.get_blend_shape_value
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_value, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ blend_shape_idx int64 }{blend_shape_idx})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_value, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ blend_shape_idx int64 }{blend_shape_idx})
 	var ret = r_ret
 	return ret
 }
@@ -645,7 +648,7 @@ Sets the value of the blend shape at 'blend_shape_idx' to 'value'. Produces an e
 */
 //go:nosplit
 func (self class) SetBlendShapeValue(blend_shape_idx int64, value float64) { //gd:MeshInstance3D.set_blend_shape_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		blend_shape_idx int64
 		value           float64
 	}{blend_shape_idx, value})
@@ -658,7 +661,7 @@ This helper creates a [MeshInstance3D] child node with gizmos at every vertex ca
 */
 //go:nosplit
 func (self class) CreateDebugTangents() { //gd:MeshInstance3D.create_debug_tangents
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_debug_tangents, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_debug_tangents, 0, &struct{}{})
 }
 
 /*
@@ -672,7 +675,7 @@ Performance: [Mesh] data needs to be received from the GPU, stalling the [Render
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }
@@ -688,7 +691,7 @@ Performance: [Mesh] data needs to be retrieved from the GPU, stalling the [Rende
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

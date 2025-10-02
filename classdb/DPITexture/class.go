@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -39,6 +40,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -73,8 +75,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -315,7 +318,7 @@ Creates a new [DPITexture] and initializes it by allocating and setting the SVG 
 */
 //go:nosplit
 func (self class) CreateFromString(source String.Readable, scale float64, saturation float64, color_map Dictionary.Any) [1]gdclass.DPITexture { //gd:DPITexture.create_from_string
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_string, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeDictionary<<16), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Object](methods.create_from_string, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeDictionary<<16), &struct {
 		source     gdextension.String
 		scale      float64
 		saturation float64
@@ -330,7 +333,7 @@ Sets SVG source code.
 */
 //go:nosplit
 func (self class) SetSource(source String.Readable) { //gd:DPITexture.set_source
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
 }
 
 /*
@@ -338,43 +341,43 @@ Returns SVG source code.
 */
 //go:nosplit
 func (self class) GetSource() String.Readable { //gd:DPITexture.get_source
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBaseScale(base_scale float64) { //gd:DPITexture.set_base_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
 }
 
 //go:nosplit
 func (self class) GetBaseScale() float64 { //gd:DPITexture.get_base_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_base_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSaturation(saturation float64) { //gd:DPITexture.set_saturation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_saturation, 0|(gdextension.SizeFloat<<4), &struct{ saturation float64 }{saturation})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_saturation, 0|(gdextension.SizeFloat<<4), &struct{ saturation float64 }{saturation})
 }
 
 //go:nosplit
 func (self class) GetSaturation() float64 { //gd:DPITexture.get_saturation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_saturation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_saturation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorMap(color_map Dictionary.Any) { //gd:DPITexture.set_color_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_map, 0|(gdextension.SizeDictionary<<4), &struct{ color_map gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_map))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_map, 0|(gdextension.SizeDictionary<<4), &struct{ color_map gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_map))})
 }
 
 //go:nosplit
 func (self class) GetColorMap() Dictionary.Any { //gd:DPITexture.get_color_map
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -384,7 +387,7 @@ Resizes the texture to the specified dimensions.
 */
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:DPITexture.set_size_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 /*
@@ -394,7 +397,7 @@ Returns the [Resource.ID] of the texture rasterized to match the oversampling of
 */
 //go:nosplit
 func (self class) GetScaledRid() RID.Any { //gd:DPITexture.get_scaled_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_scaled_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_scaled_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

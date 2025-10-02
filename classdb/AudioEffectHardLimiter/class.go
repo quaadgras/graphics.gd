@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -32,6 +33,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -66,8 +68,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -188,36 +191,36 @@ func (self Instance) SetRelease(value Float.X) {
 
 //go:nosplit
 func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectHardLimiter.set_ceiling_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
 }
 
 //go:nosplit
 func (self class) GetCeilingDb() float64 { //gd:AudioEffectHardLimiter.get_ceiling_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreGainDb(p_pre_gain float64) { //gd:AudioEffectHardLimiter.set_pre_gain_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), &struct{ p_pre_gain float64 }{p_pre_gain})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), &struct{ p_pre_gain float64 }{p_pre_gain})
 }
 
 //go:nosplit
 func (self class) GetPreGainDb() float64 { //gd:AudioEffectHardLimiter.get_pre_gain_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelease(p_release float64) { //gd:AudioEffectHardLimiter.set_release
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), &struct{ p_release float64 }{p_release})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), &struct{ p_release float64 }{p_release})
 }
 
 //go:nosplit
 func (self class) GetRelease() float64 { //gd:AudioEffectHardLimiter.get_release
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -33,6 +33,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -59,6 +60,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -93,8 +95,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -355,130 +358,130 @@ func (self Instance) SetBumpStrength(value Float.X) {
 
 //go:nosplit
 func (self class) SetWidth(width int64) { //gd:NoiseTexture2D.set_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
 
 //go:nosplit
 func (self class) SetHeight(height int64) { //gd:NoiseTexture2D.set_height
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
 
 //go:nosplit
 func (self class) SetGenerateMipmaps(invert bool) { //gd:NoiseTexture2D.set_generate_mipmaps
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
 }
 
 //go:nosplit
 func (self class) IsGeneratingMipmaps() bool { //gd:NoiseTexture2D.is_generating_mipmaps
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_generating_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_generating_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture2D.set_noise
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture2D.set_color_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture2D.get_color_ramp
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture2D.set_seamless
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless, 0|(gdextension.SizeBool<<4), &struct{ seamless bool }{seamless})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless, 0|(gdextension.SizeBool<<4), &struct{ seamless bool }{seamless})
 }
 
 //go:nosplit
 func (self class) GetSeamless() bool { //gd:NoiseTexture2D.get_seamless
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInvert(invert bool) { //gd:NoiseTexture2D.set_invert
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
 }
 
 //go:nosplit
 func (self class) GetInvert() bool { //gd:NoiseTexture2D.get_invert
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIn3dSpace(enable bool) { //gd:NoiseTexture2D.set_in_3d_space
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_in_3d_space, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_in_3d_space, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsIn3dSpace() bool { //gd:NoiseTexture2D.is_in_3d_space
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_3d_space, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_3d_space, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsNormalMap(as_normal_map bool) { //gd:NoiseTexture2D.set_as_normal_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_normal_map, 0|(gdextension.SizeBool<<4), &struct{ as_normal_map bool }{as_normal_map})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_normal_map, 0|(gdextension.SizeBool<<4), &struct{ as_normal_map bool }{as_normal_map})
 }
 
 //go:nosplit
 func (self class) IsNormalMap() bool { //gd:NoiseTexture2D.is_normal_map
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normal_map, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normal_map, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalize(normalize bool) { //gd:NoiseTexture2D.set_normalize
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize, 0|(gdextension.SizeBool<<4), &struct{ normalize bool }{normalize})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize, 0|(gdextension.SizeBool<<4), &struct{ normalize bool }{normalize})
 }
 
 //go:nosplit
 func (self class) IsNormalized() bool { //gd:NoiseTexture2D.is_normalized
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normalized, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normalized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture2D.set_seamless_blend_skirt
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
 }
 
 //go:nosplit
 func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture2D.get_seamless_blend_skirt
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBumpStrength(bump_strength float64) { //gd:NoiseTexture2D.set_bump_strength
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bump_strength, 0|(gdextension.SizeFloat<<4), &struct{ bump_strength float64 }{bump_strength})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bump_strength, 0|(gdextension.SizeFloat<<4), &struct{ bump_strength float64 }{bump_strength})
 }
 
 //go:nosplit
 func (self class) GetBumpStrength() float64 { //gd:NoiseTexture2D.get_bump_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bump_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bump_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

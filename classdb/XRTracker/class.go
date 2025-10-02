@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -30,6 +31,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -64,8 +66,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -205,38 +208,38 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) GetTrackerType() Type { //gd:XRTracker.get_tracker_type
-	var r_ret = noescape.Call[Type](gd.ObjectChecked(self.AsObject()), methods.get_tracker_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Type](gd.ObjectChecked(self.AsObject()), methods.get_tracker_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
 }
 
 //go:nosplit
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerName(name String.Name) { //gd:XRTracker.set_tracker_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 //go:nosplit
 func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerDesc(description String.Readable) { //gd:XRTracker.set_tracker_desc
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_desc, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_desc, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 func (self class) AsXRTracker() Advanced { return Advanced{pointers.AsA[gdclass.XRTracker](self[0])} }
 func (self Instance) AsXRTracker() Instance {

@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -30,6 +31,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -64,8 +66,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -187,7 +190,7 @@ Returns the status of this result.
 */
 //go:nosplit
 func (self class) GetStatus() ResultStatus { //gd:OpenXRFutureResult.get_status
-	var r_ret = noescape.Call[ResultStatus](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[ResultStatus](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -197,7 +200,7 @@ Return the XrFutureEXT value this result relates to.
 */
 //go:nosplit
 func (self class) GetFuture() int64 { //gd:OpenXRFutureResult.get_future
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_future, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_future, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +210,7 @@ Cancel this future, this will interrupt and stop the asynchronous function.
 */
 //go:nosplit
 func (self class) CancelFuture() { //gd:OpenXRFutureResult.cancel_future
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0, &struct{}{})
 }
 
 /*
@@ -217,7 +220,7 @@ Note: This method should only be called by an OpenXR extension that implements a
 */
 //go:nosplit
 func (self class) SetResultValue(result_value variant.Any) { //gd:OpenXRFutureResult.set_result_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_result_value, 0|(gdextension.SizeVariant<<4), &struct{ result_value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(result_value)))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_result_value, 0|(gdextension.SizeVariant<<4), &struct{ result_value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(result_value)))})
 }
 
 /*
@@ -225,7 +228,7 @@ Returns the result value of our asynchronous function (if set by the extension).
 */
 //go:nosplit
 func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_result_value
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -39,6 +40,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -73,8 +75,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -332,7 +335,7 @@ Request a disconnection from a peer. An [Enetconnection.EventDisconnect] will be
 */
 //go:nosplit
 func (self class) PeerDisconnect(data int64) { //gd:ENetPacketPeer.peer_disconnect
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
 }
 
 /*
@@ -342,7 +345,7 @@ Request a disconnection from a peer, but only after all queued outgoing packets 
 */
 //go:nosplit
 func (self class) PeerDisconnectLater(data int64) { //gd:ENetPacketPeer.peer_disconnect_later
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect_later, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect_later, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
 }
 
 /*
@@ -350,7 +353,7 @@ Force an immediate disconnection from a peer. No [Enetconnection.EventDisconnect
 */
 //go:nosplit
 func (self class) PeerDisconnectNow(data int64) { //gd:ENetPacketPeer.peer_disconnect_now
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect_now, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.peer_disconnect_now, 0|(gdextension.SizeInt<<4), &struct{ data int64 }{data})
 }
 
 /*
@@ -358,7 +361,7 @@ Sends a ping request to a peer. ENet automatically pings all connected peers at 
 */
 //go:nosplit
 func (self class) Ping() { //gd:ENetPacketPeer.ping
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ping, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ping, 0, &struct{}{})
 }
 
 /*
@@ -366,7 +369,7 @@ Sets the 'ping_interval' in milliseconds at which pings will be sent to a peer. 
 */
 //go:nosplit
 func (self class) PingInterval(ping_interval int64) { //gd:ENetPacketPeer.ping_interval
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ping_interval, 0|(gdextension.SizeInt<<4), &struct{ ping_interval int64 }{ping_interval})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ping_interval, 0|(gdextension.SizeInt<<4), &struct{ ping_interval int64 }{ping_interval})
 }
 
 /*
@@ -374,7 +377,7 @@ Forcefully disconnects a peer. The foreign host represented by the peer is not n
 */
 //go:nosplit
 func (self class) Reset() { //gd:ENetPacketPeer.reset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 
 /*
@@ -382,7 +385,7 @@ Queues a 'packet' to be sent over the specified 'channel'. See FLAG_* constants 
 */
 //go:nosplit
 func (self class) Send(channel int64, packet Packed.Bytes, flags int64) Error.Code { //gd:ENetPacketPeer.send
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		channel int64
 		packet  gdextension.PackedArray[byte]
 		flags   int64
@@ -404,7 +407,7 @@ Intermediate values for the throttle represent intermediate probabilities betwee
 */
 //go:nosplit
 func (self class) ThrottleConfigure(interval int64, acceleration int64, deceleration int64) { //gd:ENetPacketPeer.throttle_configure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.throttle_configure, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.throttle_configure, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		interval     int64
 		acceleration int64
 		deceleration int64
@@ -418,7 +421,7 @@ The 'timeout' is a factor that, multiplied by a value based on the average round
 */
 //go:nosplit
 func (self class) SetTimeout(timeout int64, timeout_min int64, timeout_max int64) { //gd:ENetPacketPeer.set_timeout
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timeout, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timeout, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		timeout     int64
 		timeout_min int64
 		timeout_max int64
@@ -430,7 +433,7 @@ Returns the ENet flags of the next packet in the received queue. See FLAG_* cons
 */
 //go:nosplit
 func (self class) GetPacketFlags() int64 { //gd:ENetPacketPeer.get_packet_flags
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -440,7 +443,7 @@ Returns the IP address of this peer.
 */
 //go:nosplit
 func (self class) GetRemoteAddress() String.Readable { //gd:ENetPacketPeer.get_remote_address
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_remote_address, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_remote_address, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -450,7 +453,7 @@ Returns the remote port of this peer.
 */
 //go:nosplit
 func (self class) GetRemotePort() int64 { //gd:ENetPacketPeer.get_remote_port
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_remote_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_remote_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -460,7 +463,7 @@ Returns the requested 'statistic' for this peer.
 */
 //go:nosplit
 func (self class) GetStatistic(statistic PeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ statistic PeerStatistic }{statistic})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ statistic PeerStatistic }{statistic})
 	var ret = r_ret
 	return ret
 }
@@ -470,7 +473,7 @@ Returns the current peer state.
 */
 //go:nosplit
 func (self class) GetState() PeerState { //gd:ENetPacketPeer.get_state
-	var r_ret = noescape.Call[PeerState](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[PeerState](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -480,7 +483,7 @@ Returns the number of channels allocated for communication with peer.
 */
 //go:nosplit
 func (self class) GetChannels() int64 { //gd:ENetPacketPeer.get_channels
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_channels, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_channels, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -492,7 +495,7 @@ Returns true if the peer is currently active (i.e. the associated [ENetConnectio
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:ENetPacketPeer.is_active
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

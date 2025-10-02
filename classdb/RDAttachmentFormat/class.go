@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -187,36 +190,36 @@ func (self Instance) SetUsageFlags(value int) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDAttachmentFormat.set_format
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDAttachmentFormat.get_format
-	var r_ret = noescape.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDAttachmentFormat.set_samples
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSamples }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSamples }{p_member})
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDAttachmentFormat.get_samples
-	var r_ret = noescape.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageFlags(p_member int64) { //gd:RDAttachmentFormat.set_usage_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_flags, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_flags, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetUsageFlags() int64 { //gd:RDAttachmentFormat.get_usage_flags
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_usage_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_usage_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

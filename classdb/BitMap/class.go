@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -35,6 +36,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -69,8 +71,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -293,7 +296,7 @@ Creates a bitmap with the specified size, filled with false.
 */
 //go:nosplit
 func (self class) Create(size Vector2i.XY) { //gd:BitMap.create
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 /*
@@ -301,7 +304,7 @@ Creates a bitmap that matches the given image dimensions, every element of the b
 */
 //go:nosplit
 func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64) { //gd:BitMap.create_from_image_alpha
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		image     gdextension.Object
 		threshold float64
 	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), threshold})
@@ -312,7 +315,7 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), &struct {
 		position Vector2i.XY
 		bit      bool
 	}{position, bit})
@@ -323,7 +326,7 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		x   int64
 		y   int64
 		bit bool
@@ -335,7 +338,7 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bitv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bitv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +348,7 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bit, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bit, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		x int64
 		y int64
 	}{x, y})
@@ -358,7 +361,7 @@ Sets a rectangular portion of the bitmap to the specified value.
 */
 //go:nosplit
 func (self class) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), &struct {
 		rect Rect2i.PositionSize
 		bit  bool
 	}{rect, bit})
@@ -369,7 +372,7 @@ Returns the number of bitmap elements that are set to true.
 */
 //go:nosplit
 func (self class) GetTrueBitCount() int64 { //gd:BitMap.get_true_bit_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_true_bit_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_true_bit_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -379,7 +382,7 @@ Returns bitmap's dimensions.
 */
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:BitMap.get_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -389,7 +392,7 @@ Resizes the image to 'new_size'.
 */
 //go:nosplit
 func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeVector2i<<4), &struct{ new_size Vector2i.XY }{new_size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeVector2i<<4), &struct{ new_size Vector2i.XY }{new_size})
 }
 
 /*
@@ -399,7 +402,7 @@ Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive
 */
 //go:nosplit
 func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grow_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grow_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
 		pixels int64
 		rect   Rect2i.PositionSize
 	}{pixels, rect})
@@ -410,7 +413,7 @@ Returns an image of the same size as the bitmap and with an [Image.Format] of ty
 */
 //go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.convert_to_image, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.convert_to_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -430,7 +433,7 @@ To get polygons covering the whole bitmap, pass:
 */
 //go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.opaque_to_polygons, gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.opaque_to_polygons, gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), &struct {
 		rect    Rect2i.PositionSize
 		epsilon float64
 	}{rect, epsilon})

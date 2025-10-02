@@ -15,6 +15,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -44,6 +45,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -78,8 +80,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -522,7 +525,7 @@ Removes all filters except for "All Files (*.*)".
 */
 //go:nosplit
 func (self class) ClearFilters() { //gd:EditorFileDialog.clear_filters
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filters, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filters, 0, &struct{}{})
 }
 
 /*
@@ -536,7 +539,7 @@ For example, a 'filter' of "*.tscn, *.scn" and a 'description' of "Scenes" resul
 */
 //go:nosplit
 func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:EditorFileDialog.add_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		filter      gdextension.String
 		description gdextension.String
 	}{pointers.Get(gd.InternalString(filter)), pointers.Get(gd.InternalString(description))})
@@ -544,14 +547,14 @@ func (self class) AddFilter(filter String.Readable, description String.Readable)
 
 //go:nosplit
 func (self class) SetFilters(filters Packed.Strings) { //gd:EditorFileDialog.set_filters
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filters, 0|(gdextension.SizePackedArray<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filters, 0|(gdextension.SizePackedArray<<4), &struct {
 		filters gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(filters))})
 }
 
 //go:nosplit
 func (self class) GetFilters() Packed.Strings { //gd:EditorFileDialog.get_filters
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_filters, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_filters, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -564,7 +567,7 @@ Returns the name of the [OptionButton] or [CheckBox] with index 'option'.
 */
 //go:nosplit
 func (self class) GetOptionName(option int64) String.Readable { //gd:EditorFileDialog.get_option_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_option_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_option_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -576,7 +579,7 @@ Returns an array of values of the [OptionButton] with index 'option'.
 */
 //go:nosplit
 func (self class) GetOptionValues(option int64) Packed.Strings { //gd:EditorFileDialog.get_option_values
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_option_values, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_option_values, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -589,7 +592,7 @@ Returns the default value index of the [OptionButton] or [CheckBox] with index '
 */
 //go:nosplit
 func (self class) GetOptionDefault(option int64) int64 { //gd:EditorFileDialog.get_option_default
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_default, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_default, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	var ret = r_ret
 	return ret
 }
@@ -602,7 +605,7 @@ Sets the name of the [OptionButton] or [CheckBox] with index 'option'.
 */
 //go:nosplit
 func (self class) SetOptionName(option int64, name String.Readable) { //gd:EditorFileDialog.set_option_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		option int64
 		name   gdextension.String
 	}{option, pointers.Get(gd.InternalString(name))})
@@ -615,7 +618,7 @@ Sets the option values of the [OptionButton] with index 'option'.
 */
 //go:nosplit
 func (self class) SetOptionValues(option int64, values Packed.Strings) { //gd:EditorFileDialog.set_option_values
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_values, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_values, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		option int64
 		values gdextension.PackedArray[gdextension.String]
 	}{option, pointers.Get(gd.InternalPackedStrings(values))})
@@ -629,7 +632,7 @@ Sets the default value index of the [OptionButton] or [CheckBox] with index 'opt
 */
 //go:nosplit
 func (self class) SetOptionDefault(option int64, default_value_index int64) { //gd:EditorFileDialog.set_option_default
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_default, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_default, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		option              int64
 		default_value_index int64
 	}{option, default_value_index})
@@ -637,12 +640,12 @@ func (self class) SetOptionDefault(option int64, default_value_index int64) { //
 
 //go:nosplit
 func (self class) SetOptionCount(count int64) { //gd:EditorFileDialog.set_option_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_option_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetOptionCount() int64 { //gd:EditorFileDialog.get_option_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_option_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -657,7 +660,7 @@ Adds an additional [OptionButton] to the file dialog. If 'values' is empty, a [C
 */
 //go:nosplit
 func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index int64) { //gd:EditorFileDialog.add_option
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_option, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_option, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		name                gdextension.String
 		values              gdextension.PackedArray[gdextension.String]
 		default_value_index int64
@@ -672,7 +675,7 @@ Returns a data structure with the selected values of the additional [OptionButto
 */
 //go:nosplit
 func (self class) GetSelectedOptions() Dictionary.Any { //gd:EditorFileDialog.get_selected_options
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -682,7 +685,7 @@ Clear the filter for file names.
 */
 //go:nosplit
 func (self class) ClearFilenameFilter() { //gd:EditorFileDialog.clear_filename_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filename_filter, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_filename_filter, 0, &struct{}{})
 }
 
 /*
@@ -690,7 +693,7 @@ Sets the value of the filter for file names.
 */
 //go:nosplit
 func (self class) SetFilenameFilter(filter String.Readable) { //gd:EditorFileDialog.set_filename_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filename_filter, 0|(gdextension.SizeString<<4), &struct{ filter gdextension.String }{pointers.Get(gd.InternalString(filter))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filename_filter, 0|(gdextension.SizeString<<4), &struct{ filter gdextension.String }{pointers.Get(gd.InternalString(filter))})
 }
 
 /*
@@ -698,55 +701,55 @@ Returns the value of the filter for file names.
 */
 //go:nosplit
 func (self class) GetFilenameFilter() String.Readable { //gd:EditorFileDialog.get_filename_filter
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentDir() String.Readable { //gd:EditorFileDialog.get_current_dir
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentFile() String.Readable { //gd:EditorFileDialog.get_current_file
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_file, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:EditorFileDialog.get_current_path
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentDir(dir String.Readable) { //gd:EditorFileDialog.set_current_dir
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_dir, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_dir, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
 }
 
 //go:nosplit
 func (self class) SetCurrentFile(file String.Readable) { //gd:EditorFileDialog.set_current_file
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
 
 //go:nosplit
 func (self class) SetCurrentPath(path String.Readable) { //gd:EditorFileDialog.set_current_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 //go:nosplit
 func (self class) SetFileMode(mode FileMode) { //gd:EditorFileDialog.set_file_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FileMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FileMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetFileMode() FileMode { //gd:EditorFileDialog.get_file_mode
-	var r_ret = noescape.Call[FileMode](gd.ObjectChecked(self.AsObject()), methods.get_file_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FileMode](gd.ObjectChecked(self.AsObject()), methods.get_file_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -761,7 +764,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:EditorFileDialog.get_vbox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vbox, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
@@ -775,55 +778,55 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_line_edit
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccess(access Access) { //gd:EditorFileDialog.set_access
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access, 0|(gdextension.SizeInt<<4), &struct{ access Access }{access})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access, 0|(gdextension.SizeInt<<4), &struct{ access Access }{access})
 }
 
 //go:nosplit
 func (self class) GetAccess() Access { //gd:EditorFileDialog.get_access
-	var r_ret = noescape.Call[Access](gd.ObjectChecked(self.AsObject()), methods.get_access, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Access](gd.ObjectChecked(self.AsObject()), methods.get_access, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowHiddenFiles(show bool) { //gd:EditorFileDialog.set_show_hidden_files
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_hidden_files, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_hidden_files, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 
 //go:nosplit
 func (self class) IsShowingHiddenFiles() bool { //gd:EditorFileDialog.is_showing_hidden_files
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_hidden_files, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_hidden_files, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisplayMode(mode DisplayMode) { //gd:EditorFileDialog.set_display_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisplayMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisplayMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetDisplayMode() DisplayMode { //gd:EditorFileDialog.get_display_mode
-	var r_ret = noescape.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableOverwriteWarning(disable bool) { //gd:EditorFileDialog.set_disable_overwrite_warning
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_overwrite_warning, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_overwrite_warning, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 }
 
 //go:nosplit
 func (self class) IsOverwriteWarningDisabled() bool { //gd:EditorFileDialog.is_overwrite_warning_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overwrite_warning_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overwrite_warning_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -833,7 +836,7 @@ Adds the given 'menu' to the side of the file dialog with the given 'title' text
 */
 //go:nosplit
 func (self class) AddSideMenu(menu [1]gdclass.Control, title String.Readable) { //gd:EditorFileDialog.add_side_menu
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_side_menu, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_side_menu, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		menu  gdextension.Object
 		title gdextension.String
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(menu[0].AsObject()[0])), pointers.Get(gd.InternalString(title))})
@@ -846,7 +849,7 @@ Shows the [EditorFileDialog] at the default size and position for file dialogs i
 */
 //go:nosplit
 func (self class) PopupFileDialog() { //gd:EditorFileDialog.popup_file_dialog
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_file_dialog, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_file_dialog, 0, &struct{}{})
 }
 
 /*
@@ -856,7 +859,7 @@ Notify the [EditorFileDialog] that its view of the data is no longer accurate. U
 */
 //go:nosplit
 func (self class) Invalidate() { //gd:EditorFileDialog.invalidate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
 }
 
 /*

@@ -22,6 +22,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -50,6 +51,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -84,8 +86,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -568,60 +571,60 @@ func (self Instance) SetUseTexturePadding(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TileSetAtlasSource.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargins(margins Vector2i.XY) { //gd:TileSetAtlasSource.set_margins
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margins, 0|(gdextension.SizeVector2i<<4), &struct{ margins Vector2i.XY }{margins})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margins, 0|(gdextension.SizeVector2i<<4), &struct{ margins Vector2i.XY }{margins})
 }
 
 //go:nosplit
 func (self class) GetMargins() Vector2i.XY { //gd:TileSetAtlasSource.get_margins
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_margins, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_margins, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeparation(separation Vector2i.XY) { //gd:TileSetAtlasSource.set_separation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_separation, 0|(gdextension.SizeVector2i<<4), &struct{ separation Vector2i.XY }{separation})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_separation, 0|(gdextension.SizeVector2i<<4), &struct{ separation Vector2i.XY }{separation})
 }
 
 //go:nosplit
 func (self class) GetSeparation() Vector2i.XY { //gd:TileSetAtlasSource.get_separation
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_separation, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_separation, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureRegionSize(texture_region_size Vector2i.XY) { //gd:TileSetAtlasSource.set_texture_region_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_region_size, 0|(gdextension.SizeVector2i<<4), &struct{ texture_region_size Vector2i.XY }{texture_region_size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_region_size, 0|(gdextension.SizeVector2i<<4), &struct{ texture_region_size Vector2i.XY }{texture_region_size})
 }
 
 //go:nosplit
 func (self class) GetTextureRegionSize() Vector2i.XY { //gd:TileSetAtlasSource.get_texture_region_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_region_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_region_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseTexturePadding(use_texture_padding bool) { //gd:TileSetAtlasSource.set_use_texture_padding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_texture_padding, 0|(gdextension.SizeBool<<4), &struct{ use_texture_padding bool }{use_texture_padding})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_texture_padding, 0|(gdextension.SizeBool<<4), &struct{ use_texture_padding bool }{use_texture_padding})
 }
 
 //go:nosplit
 func (self class) GetUseTexturePadding() bool { //gd:TileSetAtlasSource.get_use_texture_padding
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_texture_padding, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_texture_padding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -631,7 +634,7 @@ Creates a new tile at coordinates 'atlas_coords' with the given 'size'.
 */
 //go:nosplit
 func (self class) CreateTile(atlas_coords Vector2i.XY, size Vector2i.XY) { //gd:TileSetAtlasSource.create_tile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_tile, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_tile, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), &struct {
 		atlas_coords Vector2i.XY
 		size         Vector2i.XY
 	}{atlas_coords, size})
@@ -642,7 +645,7 @@ Remove a tile and its alternative at coordinates 'atlas_coords'.
 */
 //go:nosplit
 func (self class) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.remove_tile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tile, 0|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tile, 0|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 }
 
 /*
@@ -656,7 +659,7 @@ To avoid an error, first check if a move is possible using [HasRoomForTile].
 */
 //go:nosplit
 func (self class) MoveTileInAtlas(atlas_coords Vector2i.XY, new_atlas_coords Vector2i.XY, new_size Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_tile_in_atlas, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeVector2i<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_tile_in_atlas, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeVector2i<<12), &struct {
 		atlas_coords     Vector2i.XY
 		new_atlas_coords Vector2i.XY
 		new_size         Vector2i.XY
@@ -668,7 +671,7 @@ Returns the size of the tile (in the grid coordinates system) at coordinates 'at
 */
 //go:nosplit
 func (self class) GetTileSizeInAtlas(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_size_in_atlas
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_size_in_atlas, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_size_in_atlas, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -678,7 +681,7 @@ Returns whether there is enough room in an atlas to create/modify a tile with th
 */
 //go:nosplit
 func (self class) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, animation_columns int64, animation_separation Vector2i.XY, frames_count int64, ignored_tile Vector2i.XY) bool { //gd:TileSetAtlasSource.has_room_for_tile
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_room_for_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeVector2i<<24), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_room_for_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeVector2i<<24), &struct {
 		atlas_coords         Vector2i.XY
 		size                 Vector2i.XY
 		animation_columns    int64
@@ -695,7 +698,7 @@ Returns an array of tiles coordinates ID that will be automatically removed when
 */
 //go:nosplit
 func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) Packed.Array[Vector2.XY] { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tiles_to_be_removed_on_change, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeVector2i<<16), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tiles_to_be_removed_on_change, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeVector2i<<16), &struct {
 		texture             gdextension.Object
 		margins             Vector2i.XY
 		separation          Vector2i.XY
@@ -710,7 +713,7 @@ If there is a tile covering the 'atlas_coords' coordinates, returns the top-left
 */
 //go:nosplit
 func (self class) GetTileAtCoords(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_at_coords
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_at_coords, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_at_coords, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -720,7 +723,7 @@ Checks if the source has any tiles that don't fit the texture area (either parti
 */
 //go:nosplit
 func (self class) HasTilesOutsideTexture() bool { //gd:TileSetAtlasSource.has_tiles_outside_texture
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tiles_outside_texture, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tiles_outside_texture, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -732,7 +735,7 @@ Removes all tiles that don't fit the available texture area. This method iterate
 */
 //go:nosplit
 func (self class) ClearTilesOutsideTexture() { //gd:TileSetAtlasSource.clear_tiles_outside_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tiles_outside_texture, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tiles_outside_texture, 0, &struct{}{})
 }
 
 /*
@@ -740,7 +743,7 @@ Sets the number of columns in the animation layout of the tile at coordinates 'a
 */
 //go:nosplit
 func (self class) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int64) { //gd:TileSetAtlasSource.set_tile_animation_columns
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_columns, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_columns, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords  Vector2i.XY
 		frame_columns int64
 	}{atlas_coords, frame_columns})
@@ -751,7 +754,7 @@ Returns how many columns the tile at 'atlas_coords' has in its animation layout.
 */
 //go:nosplit
 func (self class) GetTileAnimationColumns(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_tile_animation_columns
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_columns, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_columns, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -761,7 +764,7 @@ Sets the margin (in grid tiles) between each tile in the animation layout of the
 */
 //go:nosplit
 func (self class) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) { //gd:TileSetAtlasSource.set_tile_animation_separation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_separation, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_separation, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), &struct {
 		atlas_coords Vector2i.XY
 		separation   Vector2i.XY
 	}{atlas_coords, separation})
@@ -772,7 +775,7 @@ Returns the separation (as in the atlas grid) between each frame of an animated 
 */
 //go:nosplit
 func (self class) GetTileAnimationSeparation(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_animation_separation
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_separation, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_separation, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -782,7 +785,7 @@ Sets the animation speed of the tile at coordinates 'atlas_coords' has.
 */
 //go:nosplit
 func (self class) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed float64) { //gd:TileSetAtlasSource.set_tile_animation_speed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_speed, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_speed, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeFloat<<8), &struct {
 		atlas_coords Vector2i.XY
 		speed        float64
 	}{atlas_coords, speed})
@@ -793,7 +796,7 @@ Returns the animation speed of the tile at coordinates 'atlas_coords'.
 */
 //go:nosplit
 func (self class) GetTileAnimationSpeed(atlas_coords Vector2i.XY) float64 { //gd:TileSetAtlasSource.get_tile_animation_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_speed, gdextension.SizeFloat|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_speed, gdextension.SizeFloat|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -805,7 +808,7 @@ Sets the tile animation mode of the tile at 'atlas_coords' to 'mode'. See also [
 */
 //go:nosplit
 func (self class) SetTileAnimationMode(atlas_coords Vector2i.XY, mode TileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_mode, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_mode, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		mode         TileAnimationMode
 	}{atlas_coords, mode})
@@ -818,7 +821,7 @@ Returns the tile animation mode of the tile at 'atlas_coords'. See also [SetTile
 */
 //go:nosplit
 func (self class) GetTileAnimationMode(atlas_coords Vector2i.XY) TileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
-	var r_ret = noescape.Call[TileAnimationMode](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_mode, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[TileAnimationMode](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_mode, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -828,7 +831,7 @@ Sets how many animation frames the tile at coordinates 'atlas_coords' has.
 */
 //go:nosplit
 func (self class) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int64) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_frames_count, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_frames_count, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		frames_count int64
 	}{atlas_coords, frames_count})
@@ -839,7 +842,7 @@ Returns how many animation frames has the tile at coordinates 'atlas_coords'.
 */
 //go:nosplit
 func (self class) GetTileAnimationFramesCount(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_tile_animation_frames_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_frames_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_frames_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -849,7 +852,7 @@ Sets the animation frame 'duration' of frame 'frame_index' for the tile at coord
 */
 //go:nosplit
 func (self class) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int64, duration float64) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_frame_duration, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_animation_frame_duration, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		atlas_coords Vector2i.XY
 		frame_index  int64
 		duration     float64
@@ -861,7 +864,7 @@ Returns the animation frame duration of frame 'frame_index' for the tile at coor
 */
 //go:nosplit
 func (self class) GetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int64) float64 { //gd:TileSetAtlasSource.get_tile_animation_frame_duration
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_frame_duration, gdextension.SizeFloat|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_frame_duration, gdextension.SizeFloat|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		frame_index  int64
 	}{atlas_coords, frame_index})
@@ -874,7 +877,7 @@ Returns the sum of the sum of the frame durations of the tile at coordinates 'at
 */
 //go:nosplit
 func (self class) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) float64 { //gd:TileSetAtlasSource.get_tile_animation_total_duration
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_total_duration, gdextension.SizeFloat|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tile_animation_total_duration, gdextension.SizeFloat|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -886,7 +889,7 @@ Returns the new alternative identifier, or -1 if the alternative could not be cr
 */
 //go:nosplit
 func (self class) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative_id_override int64) int64 { //gd:TileSetAtlasSource.create_alternative_tile
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_alternative_tile, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_alternative_tile, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords            Vector2i.XY
 		alternative_id_override int64
 	}{atlas_coords, alternative_id_override})
@@ -901,7 +904,7 @@ Calling this function with 'alternative_tile' equals to 0 will fail, as the base
 */
 //go:nosplit
 func (self class) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileSetAtlasSource.remove_alternative_tile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_alternative_tile, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_alternative_tile, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 	}{atlas_coords, alternative_tile})
@@ -914,7 +917,7 @@ Calling this function with 'new_id' of 0 will fail, as the base tile alternative
 */
 //go:nosplit
 func (self class) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int64, new_id int64) { //gd:TileSetAtlasSource.set_alternative_tile_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alternative_tile_id, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alternative_tile_id, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 		new_id           int64
@@ -928,7 +931,7 @@ Returns the alternative ID a following call to [CreateAlternativeTile] would ret
 */
 //go:nosplit
 func (self class) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int64 { //gd:TileSetAtlasSource.get_next_alternative_tile_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -940,7 +943,7 @@ Returns the [TileData] object for the given atlas coordinates and alternative ID
 */
 //go:nosplit
 func (self class) GetTileData(atlas_coords Vector2i.XY, alternative_tile int64) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_data, gdextension.SizeObject|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_data, gdextension.SizeObject|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 	}{atlas_coords, alternative_tile})
@@ -957,7 +960,7 @@ Returns the atlas grid size, which depends on how many tiles can fit in the text
 */
 //go:nosplit
 func (self class) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.get_atlas_grid_size
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_atlas_grid_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_atlas_grid_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -967,7 +970,7 @@ Returns a tile's texture region in the atlas texture. For animated tiles, a 'fra
 */
 //go:nosplit
 func (self class) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_tile_texture_region
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_tile_texture_region, gdextension.SizeRect2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_tile_texture_region, gdextension.SizeRect2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		frame_       int64
 	}{atlas_coords, frame_})
@@ -984,7 +987,7 @@ If [UseTexturePadding] is false, returns [Texture]. Otherwise, returns and inter
 */
 //go:nosplit
 func (self class) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_runtime_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_runtime_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -1000,7 +1003,7 @@ Note: If [UseTexturePadding] is false, returns the same as [GetTileTextureRegion
 */
 //go:nosplit
 func (self class) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_runtime_tile_texture_region, gdextension.SizeRect2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_runtime_tile_texture_region, gdextension.SizeRect2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		frame_       int64
 	}{atlas_coords, frame_})

@@ -6,6 +6,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -32,6 +33,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -66,8 +68,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -253,124 +256,124 @@ func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.Visibil
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:ImporterMeshInstance3D.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:ImporterMeshInstance3D.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:ImporterMeshInstance3D.set_skin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:ImporterMeshInstance3D.get_skin
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:ImporterMeshInstance3D.set_skeleton_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_path, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_path, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))})
 }
 
 //go:nosplit
 func (self class) GetSkeletonPath() Path.ToNode { //gd:ImporterMeshInstance3D.get_skeleton_path
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayerMask(layer_mask int64) { //gd:ImporterMeshInstance3D.set_layer_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), &struct{ layer_mask int64 }{layer_mask})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), &struct{ layer_mask int64 }{layer_mask})
 }
 
 //go:nosplit
 func (self class) GetLayerMask() int64 { //gd:ImporterMeshInstance3D.get_layer_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCastShadowsSetting(shadow_casting_setting GeometryInstance3D.ShadowCastingSetting) { //gd:ImporterMeshInstance3D.set_cast_shadows_setting
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cast_shadows_setting, 0|(gdextension.SizeInt<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cast_shadows_setting, 0|(gdextension.SizeInt<<4), &struct {
 		shadow_casting_setting GeometryInstance3D.ShadowCastingSetting
 	}{shadow_casting_setting})
 }
 
 //go:nosplit
 func (self class) GetCastShadowsSetting() GeometryInstance3D.ShadowCastingSetting { //gd:ImporterMeshInstance3D.get_cast_shadows_setting
-	var r_ret = noescape.Call[GeometryInstance3D.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[GeometryInstance3D.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_cast_shadows_setting, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityRangeEndMargin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_end_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetVisibilityRangeEndMargin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_end_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityRangeEnd(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_end, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetVisibilityRangeEnd() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_end
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityRangeBeginMargin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_begin_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin_margin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetVisibilityRangeBeginMargin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_begin_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityRangeBegin(distance float64) { //gd:ImporterMeshInstance3D.set_visibility_range_begin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetVisibilityRangeBegin() float64 { //gd:ImporterMeshInstance3D.get_visibility_range_begin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityRangeFadeMode(mode GeometryInstance3D.VisibilityRangeFadeMode) { //gd:ImporterMeshInstance3D.set_visibility_range_fade_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_fade_mode, 0|(gdextension.SizeInt<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_range_fade_mode, 0|(gdextension.SizeInt<<4), &struct {
 		mode GeometryInstance3D.VisibilityRangeFadeMode
 	}{mode})
 }
 
 //go:nosplit
 func (self class) GetVisibilityRangeFadeMode() GeometryInstance3D.VisibilityRangeFadeMode { //gd:ImporterMeshInstance3D.get_visibility_range_fade_mode
-	var r_ret = noescape.Call[GeometryInstance3D.VisibilityRangeFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_fade_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[GeometryInstance3D.VisibilityRangeFadeMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_range_fade_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

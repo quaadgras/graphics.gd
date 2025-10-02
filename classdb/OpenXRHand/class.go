@@ -18,6 +18,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -226,60 +229,60 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetHand(hand Hands) { //gd:OpenXRHand.set_hand
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand, 0|(gdextension.SizeInt<<4), &struct{ hand Hands }{hand})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand, 0|(gdextension.SizeInt<<4), &struct{ hand Hands }{hand})
 }
 
 //go:nosplit
 func (self class) GetHand() Hands { //gd:OpenXRHand.get_hand
-	var r_ret = noescape.Call[Hands](gd.ObjectChecked(self.AsObject()), methods.get_hand, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Hands](gd.ObjectChecked(self.AsObject()), methods.get_hand, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.set_hand_skeleton
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))})
 }
 
 //go:nosplit
 func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionRange(motion_range MotionRange) { //gd:OpenXRHand.set_motion_range
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4), &struct{ motion_range MotionRange }{motion_range})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4), &struct{ motion_range MotionRange }{motion_range})
 }
 
 //go:nosplit
 func (self class) GetMotionRange() MotionRange { //gd:OpenXRHand.get_motion_range
-	var r_ret = noescape.Call[MotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[MotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonRig(skeleton_rig SkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_rig, 0|(gdextension.SizeInt<<4), &struct{ skeleton_rig SkeletonRig }{skeleton_rig})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_rig, 0|(gdextension.SizeInt<<4), &struct{ skeleton_rig SkeletonRig }{skeleton_rig})
 }
 
 //go:nosplit
 func (self class) GetSkeletonRig() SkeletonRig { //gd:OpenXRHand.get_skeleton_rig
-	var r_ret = noescape.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rig, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rig, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:OpenXRHand.set_bone_update
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:OpenXRHand.get_bone_update
-	var r_ret = noescape.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

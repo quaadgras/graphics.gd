@@ -4,18 +4,18 @@ package noescape
 
 // #include <stdint.h>
 //
-// typedef struct { uint64_t part[2]; } result_16;
-// typedef struct { uint64_t part[3]; } result_24;
-// typedef struct { uint64_t part[4]; } result_32;
-// typedef struct { uint64_t part[8]; } result_64;
+// typedef struct { uint64_t safe; uint64_t part[1]; } result_8;
+// typedef struct { uint64_t safe; uint64_t part[2]; } result_16;
+// typedef struct { uint64_t safe; uint64_t part[3]; } result_24;
+// typedef struct { uint64_t safe; uint64_t part[4]; } result_32;
+// typedef struct { uint64_t safe; uint64_t part[8]; } result_64;
 //
-// extern void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, void *result, uint64_t shape, void *args);
-//
-// extern uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
-// extern result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
-// extern result_24 gd_object_unsafe_call_24(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
-// extern result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
-// extern result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
+// extern uint64_t gd_object_unsafe_call_0(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
+// extern result_8 gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
+// extern result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
+// extern result_24 gd_object_unsafe_call_24(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
+// extern result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
+// extern result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, uint64_t shape, void *args, uintptr_t mainthread);
 //
 // extern result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, int64_t argc, void *args, void *err);
 //
@@ -35,7 +35,7 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 	}
 	switch {
 	case unsafe.Sizeof(result) == 0:
-		call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
+		call_noescape(object, method, shape, argptr)
 		return result
 	case unsafe.Sizeof(result) <= 8:
 		var r8 = call_8_noescape(object, method, shape, argptr)
@@ -56,48 +56,48 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 }
 
 //go:noescape
-func call_noescape(object gdextension.Object, method gdextension.MethodForClass, result unsafe.Pointer, shape gdextension.Shape, args unsafe.Pointer)
+func call_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer)
 
 //go:linkname call graphics.gd/internal/noescape.call_noescape
 //go:nosplit
-func call(object gdextension.Object, method gdextension.MethodForClass, result unsafe.Pointer, shape gdextension.Shape, args unsafe.Pointer) {
-	C.gd_object_unsafe_call(C.uintptr_t(object), C.uintptr_t(method), result, C.uint64_t(shape), args)
+func call(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) {
+	C.gd_object_unsafe_call_0(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args, 0)
 }
 
 //go:noescape
-func call_8_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) uint64
+func call_8_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) [1]C.uint64_t
 
 //go:linkname call_8 graphics.gd/internal/noescape.call_8_noescape
 //go:nosplit
-func call_8(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) uint64 {
-	return uint64(C.gd_object_unsafe_call_8(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args))
+func call_8(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) [1]C.uint64_t {
+	return C.gd_object_unsafe_call_8(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args, 0).part
 }
 
 //go:noescape
-func call_16_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result C.result_16)
+func call_16_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result [2]C.uint64_t)
 
 //go:linkname call_16 graphics.gd/internal/noescape.call_16_noescape
 //go:nosplit
-func call_16(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) C.result_16 {
-	return C.gd_object_unsafe_call_16(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args)
+func call_16(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) [2]C.uint64_t {
+	return C.gd_object_unsafe_call_16(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args, 0).part
 }
 
 //go:noescape
-func call_32_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result C.result_32)
+func call_32_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result [4]C.uint64_t)
 
 //go:linkname call_32 graphics.gd/internal/noescape.call_32_noescape
 //go:nosplit
-func call_32(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) C.result_32 {
-	return C.gd_object_unsafe_call_32(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args)
+func call_32(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) [4]C.uint64_t {
+	return C.gd_object_unsafe_call_32(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args, 0).part
 }
 
 //go:noescape
-func call_64_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result C.result_64)
+func call_64_noescape(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) (result [8]C.uint64_t)
 
 //go:linkname call_64 graphics.gd/internal/noescape.call_64_noescape
 //go:nosplit
-func call_64(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) C.result_64 {
-	return C.gd_object_unsafe_call_64(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args)
+func call_64(object gdextension.Object, method gdextension.MethodForClass, shape gdextension.Shape, args unsafe.Pointer) [8]C.uint64_t {
+	return C.gd_object_unsafe_call_64(C.uintptr_t(object), C.uintptr_t(method), C.uint64_t(shape), args, 0).part
 }
 
 func (method MethodForClass) Call(self gdextension.Object, args ...gdextension.Variant) (gdextension.Variant, error) {

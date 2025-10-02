@@ -36,6 +36,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -60,6 +61,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -94,8 +96,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -454,7 +458,7 @@ Note: [AddWriter] must be called early enough in the engine initialization to wo
 */
 //go:nosplit
 func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
-	noescape.CallStatic[struct{}](methods.add_writer, 0|(gdextension.SizeObject<<4), &struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))})
+	mainthread.CallStatic[struct{}](methods.add_writer, 0|(gdextension.SizeObject<<4), &struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))})
 }
 func (self class) AsMovieWriter() Advanced {
 	return Advanced{pointers.AsA[gdclass.MovieWriter](self[0])}

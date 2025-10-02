@@ -62,6 +62,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -85,6 +86,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -119,8 +121,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -256,36 +259,36 @@ func (self Instance) SetBufferLength(value Float.X) {
 
 //go:nosplit
 func (self class) SetMixRate(hz float64) { //gd:AudioStreamGenerator.set_mix_rate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 
 //go:nosplit
 func (self class) GetMixRate() float64 { //gd:AudioStreamGenerator.get_mix_rate
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMixRateMode(mode AudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AudioStreamGeneratorMixRate }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AudioStreamGeneratorMixRate }{mode})
 }
 
 //go:nosplit
 func (self class) GetMixRateMode() AudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
-	var r_ret = noescape.Call[AudioStreamGeneratorMixRate](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[AudioStreamGeneratorMixRate](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBufferLength(seconds float64) { //gd:AudioStreamGenerator.set_buffer_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioStreamGenerator.get_buffer_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

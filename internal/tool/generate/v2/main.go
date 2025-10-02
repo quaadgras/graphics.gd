@@ -81,6 +81,9 @@ func generate() error {
 		if gdtype.Name(class.Name).InCore() {
 			continue
 		}
+		if singletons[class.Name] {
+			class.IsSingleton = true
+		}
 		if err := classDB.generateObjectPackage(class, singletons[class.Name], global_enums); err != nil {
 			return xray.New(err)
 		}
@@ -149,6 +152,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "slices"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
+	fmt.Fprintln(file, `import "graphics.gd/internal/mainthread"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdextension"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/noescape"`)
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
@@ -168,6 +172,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	}
 	fmt.Fprintln(file)
 	fmt.Fprintln(file, "var _ Object.ID")
+	fmt.Fprintln(file, "var _ = mainthread.Yield")
 	fmt.Fprintln(file, "type _ gdclass.Node")
 	fmt.Fprintln(file, "var _ gd.Object")
 	fmt.Fprintln(file, "var _ RefCounted.Instance")

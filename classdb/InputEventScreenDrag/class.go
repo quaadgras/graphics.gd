@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -290,108 +293,108 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetIndex(index int64) { //gd:InputEventScreenDrag.set_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 
 //go:nosplit
 func (self class) GetIndex() int64 { //gd:InputEventScreenDrag.get_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventScreenDrag.set_tilt
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), &struct{ tilt Vector2.XY }{tilt})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), &struct{ tilt Vector2.XY }{tilt})
 }
 
 //go:nosplit
 func (self class) GetTilt() Vector2.XY { //gd:InputEventScreenDrag.get_tilt
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventScreenDrag.set_pressure
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventScreenDrag.get_pressure
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventScreenDrag.set_pen_inverted
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
 }
 
 //go:nosplit
 func (self class) GetPenInverted() bool { //gd:InputEventScreenDrag.get_pen_inverted
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenDrag.set_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenDrag.get_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventScreenDrag.set_relative
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 
 //go:nosplit
 func (self class) GetRelative() Vector2.XY { //gd:InputEventScreenDrag.get_relative
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenRelative(relative Vector2.XY) { //gd:InputEventScreenDrag.set_screen_relative
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 
 //go:nosplit
 func (self class) GetScreenRelative() Vector2.XY { //gd:InputEventScreenDrag.get_screen_relative
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_relative, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventScreenDrag.set_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventScreenDrag.set_screen_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 
 //go:nosplit
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_screen_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

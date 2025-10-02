@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -215,60 +218,60 @@ func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
 
 //go:nosplit
 func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetLocation() int64 { //gd:RDVertexAttribute.get_location
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(p_member int64) { //gd:RDVertexAttribute.set_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDVertexAttribute.set_format
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDVertexAttribute.get_format
-	var r_ret = noescape.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStride(p_member int64) { //gd:RDVertexAttribute.set_stride
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(p_member Rendering.VertexFrequency) { //gd:RDVertexAttribute.set_frequency
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.VertexFrequency }{p_member})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.VertexFrequency }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.get_frequency
-	var r_ret = noescape.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

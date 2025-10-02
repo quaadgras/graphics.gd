@@ -16,6 +16,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -257,7 +260,7 @@ Sets up the modification stack so it can execute. This function should be called
 */
 //go:nosplit
 func (self class) Setup() { //gd:SkeletonModificationStack2D.setup
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0, &struct{}{})
 }
 
 /*
@@ -270,7 +273,7 @@ Note: The order of the modifications can matter depending on the modifications. 
 */
 //go:nosplit
 func (self class) Execute(delta float64, execution_mode int64) { //gd:SkeletonModificationStack2D.execute
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.execute, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.execute, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
 		delta          float64
 		execution_mode int64
 	}{delta, execution_mode})
@@ -283,7 +286,7 @@ Enables all [SkeletonModification2D]s in the stack.
 */
 //go:nosplit
 func (self class) EnableAllModifications(enabled bool) { //gd:SkeletonModificationStack2D.enable_all_modifications
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.enable_all_modifications, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.enable_all_modifications, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 /*
@@ -293,7 +296,7 @@ Returns the [SkeletonModification2D] at the passed-in index, 'mod_idx'.
 */
 //go:nosplit
 func (self class) GetModification(mod_idx int64) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mod_idx int64 }{mod_idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mod_idx int64 }{mod_idx})
 	var ret = [1]gdclass.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModification2D](r_ret)}
 	return ret
 }
@@ -305,7 +308,7 @@ Adds the passed-in [SkeletonModification2D] to the stack.
 */
 //go:nosplit
 func (self class) AddModification(modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.add_modification
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), &struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), &struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))})
 }
 
 /*
@@ -315,7 +318,7 @@ Deletes the [SkeletonModification2D] at the index position 'mod_idx', if it exis
 */
 //go:nosplit
 func (self class) DeleteModification(mod_idx int64) { //gd:SkeletonModificationStack2D.delete_modification
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_modification, 0|(gdextension.SizeInt<<4), &struct{ mod_idx int64 }{mod_idx})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_modification, 0|(gdextension.SizeInt<<4), &struct{ mod_idx int64 }{mod_idx})
 }
 
 /*
@@ -323,7 +326,7 @@ Sets the modification at 'mod_idx' to the passed-in modification, 'modification'
 */
 //go:nosplit
 func (self class) SetModification(mod_idx int64, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		mod_idx      int64
 		modification gdextension.Object
 	}{mod_idx, gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))})
@@ -331,12 +334,12 @@ func (self class) SetModification(mod_idx int64, modification [1]gdclass.Skeleto
 
 //go:nosplit
 func (self class) SetModificationCount(count int64) { //gd:SkeletonModificationStack2D.set_modification_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetModificationCount() int64 { //gd:SkeletonModificationStack2D.get_modification_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_modification_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_modification_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -346,31 +349,31 @@ Returns a boolean that indicates whether the modification stack is setup and can
 */
 //go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModificationStack2D.get_is_setup
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModificationStack2D.set_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModificationStack2D.get_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStrength(strength float64) { //gd:SkeletonModificationStack2D.set_strength
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 //go:nosplit
 func (self class) GetStrength() float64 { //gd:SkeletonModificationStack2D.get_strength
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -382,7 +385,7 @@ Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D { //gd:SkeletonModificationStack2D.get_skeleton
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton2D{gd.PointerMustAssertInstanceID[gdclass.Skeleton2D](r_ret)}
 	return ret
 }

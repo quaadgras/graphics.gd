@@ -20,6 +20,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -51,6 +52,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -85,8 +87,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -1144,7 +1148,7 @@ Assigns 'map' as a [NavigationServer2D] navigation map for the specified TileMap
 */
 //go:nosplit
 func (self class) SetNavigationMap(layer int64, mapping RID.Any) { //gd:TileMap.set_navigation_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		layer   int64
 		mapping RID.Any
 	}{layer, mapping})
@@ -1158,7 +1162,7 @@ Returns the [Resource.ID] of the [NavigationServer2D] navigation map assigned to
 */
 //go:nosplit
 func (self class) GetNavigationMap(layer int64) RID.Any { //gd:TileMap.get_navigation_map
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1168,29 +1172,29 @@ Forces the TileMap and the layer 'layer' to update.
 */
 //go:nosplit
 func (self class) ForceUpdate(layer int64) { //gd:TileMap.force_update
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), &struct{ tileset gdextension.Object }{gdextension.Object(gd.ObjectChecked(tileset[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), &struct{ tileset gdextension.Object }{gdextension.Object(gd.ObjectChecked(tileset[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTileset() [1]gdclass.TileSet { //gd:TileMap.get_tileset
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tileset, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tileset, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderingQuadrantSize(size int64) { //gd:TileMap.set_rendering_quadrant_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
 
 //go:nosplit
 func (self class) GetRenderingQuadrantSize() int64 { //gd:TileMap.get_rendering_quadrant_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1200,7 +1204,7 @@ Returns the number of layers in the TileMap.
 */
 //go:nosplit
 func (self class) GetLayersCount() int64 { //gd:TileMap.get_layers_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1210,7 +1214,7 @@ Adds a layer at the given position 'to_position' in the array. If 'to_position' 
 */
 //go:nosplit
 func (self class) AddLayer(to_position int64) { //gd:TileMap.add_layer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
 
 /*
@@ -1218,7 +1222,7 @@ Moves the layer at index 'layer' to the given position 'to_position' in the arra
 */
 //go:nosplit
 func (self class) MoveLayer(layer int64, to_position int64) { //gd:TileMap.move_layer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer       int64
 		to_position int64
 	}{layer, to_position})
@@ -1229,7 +1233,7 @@ Removes the layer at index 'layer'.
 */
 //go:nosplit
 func (self class) RemoveLayer(layer int64) { //gd:TileMap.remove_layer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 /*
@@ -1239,7 +1243,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerName(layer int64, name String.Readable) { //gd:TileMap.set_layer_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		layer int64
 		name  gdextension.String
 	}{layer, pointers.Get(gd.InternalString(name))})
@@ -1252,7 +1256,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerName(layer int64) String.Readable { //gd:TileMap.get_layer_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layer_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layer_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1264,7 +1268,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerEnabled(layer int64, enabled bool) { //gd:TileMap.set_layer_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer   int64
 		enabled bool
 	}{layer, enabled})
@@ -1277,7 +1281,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) IsLayerEnabled(layer int64) bool { //gd:TileMap.is_layer_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1289,7 +1293,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerModulate(layer int64, modulate Color.RGBA) { //gd:TileMap.set_layer_modulate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_modulate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_modulate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		layer    int64
 		modulate Color.RGBA
 	}{layer, modulate})
@@ -1302,7 +1306,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerModulate(layer int64) Color.RGBA { //gd:TileMap.get_layer_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_layer_modulate, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_layer_modulate, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1316,7 +1320,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerYSortEnabled(layer int64, y_sort_enabled bool) { //gd:TileMap.set_layer_y_sort_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_y_sort_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_y_sort_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer          int64
 		y_sort_enabled bool
 	}{layer, y_sort_enabled})
@@ -1329,7 +1333,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) IsLayerYSortEnabled(layer int64) bool { //gd:TileMap.is_layer_y_sort_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_y_sort_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_y_sort_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1343,7 +1347,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerYSortOrigin(layer int64, y_sort_origin int64) { //gd:TileMap.set_layer_y_sort_origin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_y_sort_origin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_y_sort_origin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer         int64
 		y_sort_origin int64
 	}{layer, y_sort_origin})
@@ -1356,7 +1360,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerYSortOrigin(layer int64) int64 { //gd:TileMap.get_layer_y_sort_origin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_y_sort_origin, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_y_sort_origin, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1368,7 +1372,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerZIndex(layer int64, z_index int64) { //gd:TileMap.set_layer_z_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_z_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_z_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer   int64
 		z_index int64
 	}{layer, z_index})
@@ -1381,7 +1385,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerZIndex(layer int64) int64 { //gd:TileMap.get_layer_z_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_z_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_z_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1393,7 +1397,7 @@ Enables or disables a layer's built-in navigation regions generation. Disable th
 */
 //go:nosplit
 func (self class) SetLayerNavigationEnabled(layer int64, enabled bool) { //gd:TileMap.set_layer_navigation_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_navigation_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_navigation_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer   int64
 		enabled bool
 	}{layer, enabled})
@@ -1404,7 +1408,7 @@ Returns if a layer's built-in navigation regions generation is enabled.
 */
 //go:nosplit
 func (self class) IsLayerNavigationEnabled(layer int64) bool { //gd:TileMap.is_layer_navigation_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_navigation_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layer_navigation_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
@@ -1426,7 +1430,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerNavigationMap(layer int64, mapping RID.Any) { //gd:TileMap.set_layer_navigation_map
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		layer   int64
 		mapping RID.Any
 	}{layer, mapping})
@@ -1450,43 +1454,43 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerNavigationMap(layer int64) RID.Any { //gd:TileMap.get_layer_navigation_map
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_layer_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_layer_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionAnimatable(enabled bool) { //gd:TileMap.set_collision_animatable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_animatable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_animatable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCollisionAnimatable() bool { //gd:TileMap.is_collision_animatable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_animatable, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_animatable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionVisibilityMode(collision_visibility_mode VisibilityMode) { //gd:TileMap.set_collision_visibility_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ collision_visibility_mode VisibilityMode }{collision_visibility_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ collision_visibility_mode VisibilityMode }{collision_visibility_mode})
 }
 
 //go:nosplit
 func (self class) GetCollisionVisibilityMode() VisibilityMode { //gd:TileMap.get_collision_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationVisibilityMode(navigation_visibility_mode VisibilityMode) { //gd:TileMap.set_navigation_visibility_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ navigation_visibility_mode VisibilityMode }{navigation_visibility_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ navigation_visibility_mode VisibilityMode }{navigation_visibility_mode})
 }
 
 //go:nosplit
 func (self class) GetNavigationVisibilityMode() VisibilityMode { //gd:TileMap.get_navigation_visibility_mode
-	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1512,7 +1516,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetCell(layer int64, coords Vector2i.XY, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileMap.set_cell
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16)|(gdextension.SizeInt<<20), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16)|(gdextension.SizeInt<<20), &struct {
 		layer            int64
 		coords           Vector2i.XY
 		source_id        int64
@@ -1528,7 +1532,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) EraseCell(layer int64, coords Vector2i.XY) { //gd:TileMap.erase_cell
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {
 		layer  int64
 		coords Vector2i.XY
 	}{layer, coords})
@@ -1546,7 +1550,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellSourceId(layer int64, coords Vector2i.XY, use_proxies bool) int64 { //gd:TileMap.get_cell_source_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_source_id, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_source_id, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1567,7 +1571,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellAtlasCoords(layer int64, coords Vector2i.XY, use_proxies bool) Vector2i.XY { //gd:TileMap.get_cell_atlas_coords
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_atlas_coords, gdextension.SizeVector2i|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_atlas_coords, gdextension.SizeVector2i|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1588,7 +1592,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellAlternativeTile(layer int64, coords Vector2i.XY, use_proxies bool) int64 { //gd:TileMap.get_cell_alternative_tile
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_alternative_tile, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_alternative_tile, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1623,7 +1627,7 @@ If 'use_proxies' is false, ignores the [TileSet]'s tile proxies. See [TileSet.Ma
 */
 //go:nosplit
 func (self class) GetCellTileData(layer int64, coords Vector2i.XY, use_proxies bool) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cell_tile_data, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cell_tile_data, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1637,7 +1641,7 @@ Returns true if the cell on layer 'layer' at coordinates 'coords' is flipped hor
 */
 //go:nosplit
 func (self class) IsCellFlippedH(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_h, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_h, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1651,7 +1655,7 @@ Returns true if the cell on layer 'layer' at coordinates 'coords' is flipped ver
 */
 //go:nosplit
 func (self class) IsCellFlippedV(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_v, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_v, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1665,7 +1669,7 @@ Returns true if the cell on layer 'layer' at coordinates 'coords' is transposed.
 */
 //go:nosplit
 func (self class) IsCellTransposed(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_transposed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_transposed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_transposed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), &struct {
 		layer       int64
 		coords      Vector2i.XY
 		use_proxies bool
@@ -1681,7 +1685,7 @@ Returns the coordinates of the tile for given physics body RID. Such RID can be 
 */
 //go:nosplit
 func (self class) GetCoordsForBodyRid(body RID.Any) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_coords_for_body_rid, gdextension.SizeVector2i|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_coords_for_body_rid, gdextension.SizeVector2i|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -1693,7 +1697,7 @@ Returns the tilemap layer of the tile for given physics body RID. Such RID can b
 */
 //go:nosplit
 func (self class) GetLayerForBodyRid(body RID.Any) int64 { //gd:TileMap.get_layer_for_body_rid
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_for_body_rid, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_for_body_rid, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -1707,7 +1711,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetPattern(layer int64, coords_array Array.Contains[Vector2i.XY]) [1]gdclass.TileMapPattern { //gd:TileMap.get_pattern
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
 		layer        int64
 		coords_array gdextension.Array
 	}{layer, pointers.Get(gd.InternalArray(coords_array))})
@@ -1723,7 +1727,7 @@ Returns for the given coordinate 'coords_in_pattern' in a [TileMapPattern] the c
 */
 //go:nosplit
 func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMap.map_pattern
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.map_pattern, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), &struct {
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.map_pattern, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), &struct {
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
@@ -1741,7 +1745,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMap.set_pattern
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pattern, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pattern, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), &struct {
 		layer    int64
 		position Vector2i.XY
 		pattern  gdextension.Object
@@ -1759,7 +1763,7 @@ Note: To work correctly, this method requires the TileMap's TileSet to have terr
 */
 //go:nosplit
 func (self class) SetCellsTerrainConnect(layer int64, cells Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_connect
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_connect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_connect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
 		layer                 int64
 		cells                 gdextension.Array
 		terrain_set           int64
@@ -1779,7 +1783,7 @@ Note: To work correctly, this method requires the TileMap's TileSet to have terr
 */
 //go:nosplit
 func (self class) SetCellsTerrainPath(layer int64, path Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_path, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_path, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
 		layer                 int64
 		path                  gdextension.Array
 		terrain_set           int64
@@ -1793,7 +1797,7 @@ Clears cells that do not exist in the tileset.
 */
 //go:nosplit
 func (self class) FixInvalidTiles() { //gd:TileMap.fix_invalid_tiles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fix_invalid_tiles, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fix_invalid_tiles, 0, &struct{}{})
 }
 
 /*
@@ -1803,7 +1807,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) ClearLayer(layer int64) { //gd:TileMap.clear_layer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 /*
@@ -1811,7 +1815,7 @@ Clears all cells.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TileMap.clear
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -1823,7 +1827,7 @@ Warning: Updating the TileMap is computationally expensive and may impact perfor
 */
 //go:nosplit
 func (self class) UpdateInternals() { //gd:TileMap.update_internals
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_internals, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_internals, 0, &struct{}{})
 }
 
 /*
@@ -1841,7 +1845,7 @@ Note: This does not trigger a direct update of the TileMap, the update will be d
 */
 //go:nosplit
 func (self class) NotifyRuntimeTileDataUpdate(layer int64) { //gd:TileMap.notify_runtime_tile_data_update
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_runtime_tile_data_update, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_runtime_tile_data_update, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 /*
@@ -1849,7 +1853,7 @@ Returns the list of all neighbourings cells to the one at 'coords'.
 */
 //go:nosplit
 func (self class) GetSurroundingCells(coords Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:TileMap.get_surrounding_cells
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surrounding_cells, gdextension.SizeArray|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surrounding_cells, gdextension.SizeArray|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1863,7 +1867,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetUsedCells(layer int64) Array.Contains[Vector2i.XY] { //gd:TileMap.get_used_cells
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1882,7 +1886,7 @@ If 'layer' is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetUsedCellsById(layer int64, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) Array.Contains[Vector2i.XY] { //gd:TileMap.get_used_cells_by_id
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_by_id, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_by_id, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), &struct {
 		layer            int64
 		source_id        int64
 		atlas_coords     Vector2i.XY
@@ -1897,7 +1901,7 @@ Returns a rectangle enclosing the used (non-empty) tiles of the map, including a
 */
 //go:nosplit
 func (self class) GetUsedRect() Rect2i.PositionSize { //gd:TileMap.get_used_rect
-	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_used_rect, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = mainthread.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_used_rect, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1913,7 +1917,7 @@ Note: This may not correspond to the visual position of the tile, i.e. it ignore
 */
 //go:nosplit
 func (self class) MapToLocal(map_position Vector2i.XY) Vector2.XY { //gd:TileMap.map_to_local
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.map_to_local, gdextension.SizeVector2|(gdextension.SizeVector2i<<4), &struct{ map_position Vector2i.XY }{map_position})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.map_to_local, gdextension.SizeVector2|(gdextension.SizeVector2i<<4), &struct{ map_position Vector2i.XY }{map_position})
 	var ret = r_ret
 	return ret
 }
@@ -1926,7 +1930,7 @@ Returns the map coordinates of the cell containing the given 'local_position'. I
 */
 //go:nosplit
 func (self class) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileMap.local_to_map
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.local_to_map, gdextension.SizeVector2i|(gdextension.SizeVector2<<4), &struct{ local_position Vector2.XY }{local_position})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.local_to_map, gdextension.SizeVector2i|(gdextension.SizeVector2<<4), &struct{ local_position Vector2.XY }{local_position})
 	var ret = r_ret
 	return ret
 }
@@ -1936,7 +1940,7 @@ Returns the neighboring cell to the one at coordinates 'coords', identified by t
 */
 //go:nosplit
 func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_neighbor_cell, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_neighbor_cell, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		coords   Vector2i.XY
 		neighbor TileSet.CellNeighbor
 	}{coords, neighbor})

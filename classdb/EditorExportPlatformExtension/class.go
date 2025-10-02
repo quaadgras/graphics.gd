@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -1543,7 +1547,7 @@ Sets current configuration error message text. This method should be called only
 */
 //go:nosplit
 func (self class) SetConfigError(error_text String.Readable) { //gd:EditorExportPlatformExtension.set_config_error
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_error, 0|(gdextension.SizeString<<4), &struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_error, 0|(gdextension.SizeString<<4), &struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))})
 }
 
 /*
@@ -1555,7 +1559,7 @@ Returns current configuration error message text. This method should be called o
 */
 //go:nosplit
 func (self class) GetConfigError() String.Readable { //gd:EditorExportPlatformExtension.get_config_error
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_error, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_error, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1569,7 +1573,7 @@ Set to true is export templates are missing from the current configuration. This
 */
 //go:nosplit
 func (self class) SetConfigMissingTemplates(missing_templates bool) { //gd:EditorExportPlatformExtension.set_config_missing_templates
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_missing_templates, 0|(gdextension.SizeBool<<4), &struct{ missing_templates bool }{missing_templates})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_missing_templates, 0|(gdextension.SizeBool<<4), &struct{ missing_templates bool }{missing_templates})
 }
 
 /*
@@ -1581,7 +1585,7 @@ Returns true is export templates are missing from the current configuration. Thi
 */
 //go:nosplit
 func (self class) GetConfigMissingTemplates() bool { //gd:EditorExportPlatformExtension.get_config_missing_templates
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_config_missing_templates, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_config_missing_templates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

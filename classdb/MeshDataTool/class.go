@@ -56,6 +56,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -83,6 +84,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -117,8 +119,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -542,7 +545,7 @@ Clears all data currently in MeshDataTool.
 */
 //go:nosplit
 func (self class) Clear() { //gd:MeshDataTool.clear
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -554,7 +557,7 @@ Requires [Mesh] with primitive type [Mesh.PrimitiveTriangles].
 */
 //go:nosplit
 func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int64) Error.Code { //gd:MeshDataTool.create_from_surface
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh    gdextension.Object
 		surface int64
 	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), surface})
@@ -569,7 +572,7 @@ Adds a new surface to specified [Mesh] with edited data.
 */
 //go:nosplit
 func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags int64) Error.Code { //gd:MeshDataTool.commit_to_surface
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.commit_to_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.commit_to_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		mesh              gdextension.Object
 		compression_flags int64
 	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), compression_flags})
@@ -584,7 +587,7 @@ Returns the [Mesh]'s format as a combination of the [Mesh.ArrayFormat] flags. Fo
 */
 //go:nosplit
 func (self class) GetFormat() int64 { //gd:MeshDataTool.get_format
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -596,7 +599,7 @@ Returns the total number of vertices in [Mesh].
 */
 //go:nosplit
 func (self class) GetVertexCount() int64 { //gd:MeshDataTool.get_vertex_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vertex_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vertex_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -608,7 +611,7 @@ Returns the number of edges in this [Mesh].
 */
 //go:nosplit
 func (self class) GetEdgeCount() int64 { //gd:MeshDataTool.get_edge_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_edge_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_edge_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -620,7 +623,7 @@ Returns the number of faces in this [Mesh].
 */
 //go:nosplit
 func (self class) GetFaceCount() int64 { //gd:MeshDataTool.get_face_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -630,7 +633,7 @@ Sets the position of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertex(idx int64, vertex Vector3.XYZ) { //gd:MeshDataTool.set_vertex
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		idx    int64
 		vertex Vector3.XYZ
 	}{idx, vertex})
@@ -641,7 +644,7 @@ Returns the position of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertex(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_vertex
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_vertex, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_vertex, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -651,7 +654,7 @@ Sets the normal of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexNormal(idx int64, normal Vector3.XYZ) { //gd:MeshDataTool.set_vertex_normal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		idx    int64
 		normal Vector3.XYZ
 	}{idx, normal})
@@ -662,7 +665,7 @@ Returns the normal of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexNormal(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_vertex_normal
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_vertex_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_vertex_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -672,7 +675,7 @@ Sets the tangent of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexTangent(idx int64, tangent Plane.NormalD) { //gd:MeshDataTool.set_vertex_tangent
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_tangent, 0|(gdextension.SizeInt<<4)|(gdextension.SizePlane<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_tangent, 0|(gdextension.SizeInt<<4)|(gdextension.SizePlane<<8), &struct {
 		idx     int64
 		tangent Plane.NormalD
 	}{idx, tangent})
@@ -683,7 +686,7 @@ Returns the tangent of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexTangent(idx int64) Plane.NormalD { //gd:MeshDataTool.get_vertex_tangent
-	var r_ret = noescape.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_vertex_tangent, gdextension.SizePlane|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_vertex_tangent, gdextension.SizePlane|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -693,7 +696,7 @@ Sets the UV of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexUv(idx int64, uv Vector2.XY) { //gd:MeshDataTool.set_vertex_uv
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_uv, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_uv, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		idx int64
 		uv  Vector2.XY
 	}{idx, uv})
@@ -704,7 +707,7 @@ Returns the UV of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexUv(idx int64) Vector2.XY { //gd:MeshDataTool.get_vertex_uv
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vertex_uv, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vertex_uv, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -714,7 +717,7 @@ Sets the UV2 of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexUv2(idx int64, uv2 Vector2.XY) { //gd:MeshDataTool.set_vertex_uv2
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_uv2, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_uv2, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		idx int64
 		uv2 Vector2.XY
 	}{idx, uv2})
@@ -725,7 +728,7 @@ Returns the UV2 of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexUv2(idx int64) Vector2.XY { //gd:MeshDataTool.get_vertex_uv2
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vertex_uv2, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vertex_uv2, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -735,7 +738,7 @@ Sets the color of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexColor(idx int64, color Color.RGBA) { //gd:MeshDataTool.set_vertex_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		idx   int64
 		color Color.RGBA
 	}{idx, color})
@@ -746,7 +749,7 @@ Returns the color of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexColor(idx int64) Color.RGBA { //gd:MeshDataTool.get_vertex_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_vertex_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_vertex_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -756,7 +759,7 @@ Sets the bones of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexBones(idx int64, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_bones, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_bones, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		idx   int64
 		bones gdextension.PackedArray[int32]
 	}{idx, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones))})
@@ -767,7 +770,7 @@ Returns the bones of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexBones(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_bones
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_bones, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_bones, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -777,7 +780,7 @@ Sets the bone weights of the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexWeights(idx int64, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_weights, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_weights, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		idx     int64
 		weights gdextension.PackedArray[float32]
 	}{idx, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))})
@@ -788,7 +791,7 @@ Returns bone weights of the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexWeights(idx int64) Packed.Array[float32] { //gd:MeshDataTool.get_vertex_weights
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_weights, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_weights, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -798,7 +801,7 @@ Sets the metadata associated with the given vertex.
 */
 //go:nosplit
 func (self class) SetVertexMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_vertex_meta
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		idx  int64
 		meta gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
@@ -809,7 +812,7 @@ Returns the metadata associated with the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexMeta(idx int64) variant.Any { //gd:MeshDataTool.get_vertex_meta
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_vertex_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_vertex_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -819,7 +822,7 @@ Returns an array of edges that share the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexEdges(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_edges
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_edges, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_edges, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -829,7 +832,7 @@ Returns an array of faces that share the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexFaces(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_vertex_faces
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_faces, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertex_faces, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -841,7 +844,7 @@ Returns the index of the specified 'vertex' connected to the edge at index 'idx'
 */
 //go:nosplit
 func (self class) GetEdgeVertex(idx int64, vertex int64) int64 { //gd:MeshDataTool.get_edge_vertex
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_edge_vertex, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_edge_vertex, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx    int64
 		vertex int64
 	}{idx, vertex})
@@ -854,7 +857,7 @@ Returns array of faces that touch given edge.
 */
 //go:nosplit
 func (self class) GetEdgeFaces(idx int64) Packed.Array[int32] { //gd:MeshDataTool.get_edge_faces
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_edge_faces, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_edge_faces, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -864,7 +867,7 @@ Sets the metadata of the given edge.
 */
 //go:nosplit
 func (self class) SetEdgeMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_edge_meta
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edge_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edge_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		idx  int64
 		meta gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
@@ -875,7 +878,7 @@ Returns meta information assigned to given edge.
 */
 //go:nosplit
 func (self class) GetEdgeMeta(idx int64) variant.Any { //gd:MeshDataTool.get_edge_meta
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_edge_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_edge_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -889,7 +892,7 @@ Returns the specified vertex index of the given face.
 */
 //go:nosplit
 func (self class) GetFaceVertex(idx int64, vertex int64) int64 { //gd:MeshDataTool.get_face_vertex
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_vertex, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_vertex, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx    int64
 		vertex int64
 	}{idx, vertex})
@@ -904,7 +907,7 @@ Returns the edge associated with the face at index 'idx'.
 */
 //go:nosplit
 func (self class) GetFaceEdge(idx int64, edge int64) int64 { //gd:MeshDataTool.get_face_edge
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_edge, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_edge, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx  int64
 		edge int64
 	}{idx, edge})
@@ -917,7 +920,7 @@ Sets the metadata of the given face.
 */
 //go:nosplit
 func (self class) SetFaceMeta(idx int64, meta variant.Any) { //gd:MeshDataTool.set_face_meta
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_face_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_face_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		idx  int64
 		meta gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
@@ -928,7 +931,7 @@ Returns the metadata associated with the given face.
 */
 //go:nosplit
 func (self class) GetFaceMeta(idx int64) variant.Any { //gd:MeshDataTool.get_face_meta
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_face_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_face_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -938,7 +941,7 @@ Calculates and returns the face normal of the given face.
 */
 //go:nosplit
 func (self class) GetFaceNormal(idx int64) Vector3.XYZ { //gd:MeshDataTool.get_face_normal
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_face_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_face_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -950,7 +953,7 @@ Sets the material to be used by newly-constructed [Mesh].
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 /*
@@ -960,7 +963,7 @@ Returns the material assigned to the [Mesh].
 */
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }

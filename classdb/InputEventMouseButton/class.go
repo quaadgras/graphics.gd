@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -211,46 +214,46 @@ func (self Instance) SetDoubleClick(value bool) {
 
 //go:nosplit
 func (self class) SetFactor(factor float64) { //gd:InputEventMouseButton.set_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
 }
 
 //go:nosplit
 func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonIndex(button_index Input.MouseButton) { //gd:InputEventMouseButton.set_button_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.MouseButton }{button_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.MouseButton }{button_index})
 }
 
 //go:nosplit
 func (self class) GetButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.get_button_index
-	var r_ret = noescape.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventMouseButton.set_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) SetCanceled(canceled bool) { //gd:InputEventMouseButton.set_canceled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
 }
 
 //go:nosplit
 func (self class) SetDoubleClick(double_click bool) { //gd:InputEventMouseButton.set_double_click
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
 }
 
 //go:nosplit
 func (self class) IsDoubleClick() bool { //gd:InputEventMouseButton.is_double_click
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

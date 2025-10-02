@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -42,6 +43,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -76,8 +78,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -306,12 +310,12 @@ func (class) _create_mesh_array(impl func(ptr gdclass.Receiver) Array.Any) (cb g
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:PrimitiveMesh.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:PrimitiveMesh.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -331,55 +335,55 @@ Example: Pass the result to [ArrayMesh.AddSurfaceFromArrays] to create a new sur
 */
 //go:nosplit
 func (self class) GetMeshArrays() Array.Any { //gd:PrimitiveMesh.get_mesh_arrays
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_mesh_arrays, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_mesh_arrays, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:PrimitiveMesh.set_custom_aabb
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 
 //go:nosplit
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:PrimitiveMesh.get_custom_aabb
-	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = mainthread.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipFaces(flip_faces bool) { //gd:PrimitiveMesh.set_flip_faces
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_faces, 0|(gdextension.SizeBool<<4), &struct{ flip_faces bool }{flip_faces})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_faces, 0|(gdextension.SizeBool<<4), &struct{ flip_faces bool }{flip_faces})
 }
 
 //go:nosplit
 func (self class) GetFlipFaces() bool { //gd:PrimitiveMesh.get_flip_faces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_faces, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAddUv2(add_uv2 bool) { //gd:PrimitiveMesh.set_add_uv2
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_add_uv2, 0|(gdextension.SizeBool<<4), &struct{ add_uv2 bool }{add_uv2})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_add_uv2, 0|(gdextension.SizeBool<<4), &struct{ add_uv2 bool }{add_uv2})
 }
 
 //go:nosplit
 func (self class) GetAddUv2() bool { //gd:PrimitiveMesh.get_add_uv2
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_add_uv2, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_add_uv2, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv2Padding(uv2_padding float64) { //gd:PrimitiveMesh.set_uv2_padding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_padding, 0|(gdextension.SizeFloat<<4), &struct{ uv2_padding float64 }{uv2_padding})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv2_padding, 0|(gdextension.SizeFloat<<4), &struct{ uv2_padding float64 }{uv2_padding})
 }
 
 //go:nosplit
 func (self class) GetUv2Padding() float64 { //gd:PrimitiveMesh.get_uv2_padding
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_padding, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_uv2_padding, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -389,7 +393,7 @@ Request an update of this primitive mesh based on its properties.
 */
 //go:nosplit
 func (self class) RequestUpdate() { //gd:PrimitiveMesh.request_update
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_update, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_update, 0, &struct{}{})
 }
 func (self class) AsPrimitiveMesh() Advanced {
 	return Advanced{pointers.AsA[gdclass.PrimitiveMesh](self[0])}

@@ -15,6 +15,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -216,7 +219,7 @@ Returns true if the tree is successfully built, false otherwise.
 */
 //go:nosplit
 func (self class) CreateFromFaces(faces Packed.Array[Vector3.XYZ]) bool { //gd:TriangleMesh.create_from_faces
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.create_from_faces, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.create_from_faces, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		faces gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces))})
 	var ret = r_ret
@@ -228,7 +231,7 @@ Returns a copy of the geometry faces. Each 3 vertices of the array represent one
 */
 //go:nosplit
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:TriangleMesh.get_faces
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -252,7 +255,7 @@ See also [IntersectRay], which is similar but uses an infinite-length ray.
 */
 //go:nosplit
 func (self class) IntersectSegment(begin Vector3.XYZ, end Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_segment
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_segment, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_segment, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		begin Vector3.XYZ
 		end   Vector3.XYZ
 	}{begin, end})
@@ -279,7 +282,7 @@ See also [IntersectSegment], which is similar but uses a finite-length segment.
 */
 //go:nosplit
 func (self class) IntersectRay(begin Vector3.XYZ, dir Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_ray
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		begin Vector3.XYZ
 		dir   Vector3.XYZ
 	}{begin, dir})

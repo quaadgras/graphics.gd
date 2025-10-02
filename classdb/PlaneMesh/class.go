@@ -17,6 +17,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -43,6 +44,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -77,8 +79,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -227,60 +230,60 @@ func (self Instance) SetOrientation(value Orientation) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaneMesh.set_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:PlaneMesh.get_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideWidth(subdivide int64) { //gd:PlaneMesh.set_subdivide_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_width, 0|(gdextension.SizeInt<<4), &struct{ subdivide int64 }{subdivide})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_width, 0|(gdextension.SizeInt<<4), &struct{ subdivide int64 }{subdivide})
 }
 
 //go:nosplit
 func (self class) GetSubdivideWidth() int64 { //gd:PlaneMesh.get_subdivide_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideDepth(subdivide int64) { //gd:PlaneMesh.set_subdivide_depth
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_depth, 0|(gdextension.SizeInt<<4), &struct{ subdivide int64 }{subdivide})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_depth, 0|(gdextension.SizeInt<<4), &struct{ subdivide int64 }{subdivide})
 }
 
 //go:nosplit
 func (self class) GetSubdivideDepth() int64 { //gd:PlaneMesh.get_subdivide_depth
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_depth, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOffset(offset Vector3.XYZ) { //gd:PlaneMesh.set_center_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
 
 //go:nosplit
 func (self class) GetCenterOffset() Vector3.XYZ { //gd:PlaneMesh.get_center_offset
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_offset, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOrientation(orientation Orientation) { //gd:PlaneMesh.set_orientation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orientation, 0|(gdextension.SizeInt<<4), &struct{ orientation int64 }{int64(orientation)})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orientation, 0|(gdextension.SizeInt<<4), &struct{ orientation int64 }{int64(orientation)})
 }
 
 //go:nosplit
 func (self class) GetOrientation() Orientation { //gd:PlaneMesh.get_orientation
-	var r_ret = noescape.Call[Orientation](gd.ObjectChecked(self.AsObject()), methods.get_orientation, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Orientation](gd.ObjectChecked(self.AsObject()), methods.get_orientation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -402,12 +406,12 @@ func (class) _toggled(impl func(ptr gdclass.Receiver, toggled_on bool)) (cb gd.E
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:BaseButton.set_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) IsPressed() bool { //gd:BaseButton.is_pressed
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +428,7 @@ Note: This method doesn't unpress other buttons in [ButtonGroup].
 */
 //go:nosplit
 func (self class) SetPressedNoSignal(pressed bool) { //gd:BaseButton.set_pressed_no_signal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed_no_signal, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed_no_signal, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 /*
@@ -432,67 +436,67 @@ Returns true if the mouse has entered the button and has not left it yet.
 */
 //go:nosplit
 func (self class) IsHovered() bool { //gd:BaseButton.is_hovered
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hovered, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hovered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToggleMode(enabled bool) { //gd:BaseButton.set_toggle_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsToggleMode() bool { //gd:BaseButton.is_toggle_mode
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutInTooltip(enabled bool) { //gd:BaseButton.set_shortcut_in_tooltip
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_in_tooltip, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_in_tooltip, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsShortcutInTooltipEnabled() bool { //gd:BaseButton.is_shortcut_in_tooltip_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_in_tooltip_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_in_tooltip_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisabled(disabled bool) { //gd:BaseButton.set_disabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 
 //go:nosplit
 func (self class) IsDisabled() bool { //gd:BaseButton.is_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActionMode(mode ActionMode) { //gd:BaseButton.set_action_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ActionMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ActionMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetActionMode() ActionMode { //gd:BaseButton.get_action_mode
-	var r_ret = noescape.Call[ActionMode](gd.ObjectChecked(self.AsObject()), methods.get_action_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[ActionMode](gd.ObjectChecked(self.AsObject()), methods.get_action_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonMask(mask Input.MouseButtonMask) { //gd:BaseButton.set_button_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_mask, 0|(gdextension.SizeInt<<4), &struct{ mask Input.MouseButtonMask }{mask})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_mask, 0|(gdextension.SizeInt<<4), &struct{ mask Input.MouseButtonMask }{mask})
 }
 
 //go:nosplit
 func (self class) GetButtonMask() Input.MouseButtonMask { //gd:BaseButton.get_button_mask
-	var r_ret = noescape.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_button_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -502,55 +506,55 @@ Returns the visual state used to draw the button. This is useful mainly when imp
 */
 //go:nosplit
 func (self class) GetDrawMode() DrawMode { //gd:BaseButton.get_draw_mode
-	var r_ret = noescape.Call[DrawMode](gd.ObjectChecked(self.AsObject()), methods.get_draw_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DrawMode](gd.ObjectChecked(self.AsObject()), methods.get_draw_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepPressedOutside(enabled bool) { //gd:BaseButton.set_keep_pressed_outside
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_pressed_outside, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_pressed_outside, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsKeepPressedOutside() bool { //gd:BaseButton.is_keep_pressed_outside
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_pressed_outside, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_pressed_outside, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutFeedback(enabled bool) { //gd:BaseButton.set_shortcut_feedback
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_feedback, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_feedback, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsShortcutFeedback() bool { //gd:BaseButton.is_shortcut_feedback
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_feedback, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_feedback, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.set_shortcut
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortcut
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(button_group[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(button_group[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_button_group
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_group, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_group, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[gdclass.ButtonGroup](r_ret)}
 	return ret
 }

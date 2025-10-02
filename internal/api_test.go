@@ -25,10 +25,13 @@ func TestMain(m *testing.M) {
 	classdb.Register[CustomSignal]()
 
 	startup.LoadingScene()
-	m.Run()
-	if tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop()); ok {
-		tree.Quit()
-	}
+	go func() {
+		m.Run()
+		if tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop()); ok {
+			tree.Quit()
+		}
+	}()
+	startup.Scene()
 }
 
 func TestGetGodotVersion(t *testing.T) {

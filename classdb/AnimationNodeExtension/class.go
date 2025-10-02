@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -239,7 +243,7 @@ Returns true if the animation for the given 'node_info' is looping.
 */
 //go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
-	var r_ret = noescape.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = mainthread.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		node_info gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))})
 	var ret = r_ret
@@ -251,7 +255,7 @@ Returns the animation's remaining time for the given node info. For looping anim
 */
 //go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
-	var r_ret = noescape.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
 		node_info  gdextension.PackedArray[float32]
 		break_loop bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)), break_loop})

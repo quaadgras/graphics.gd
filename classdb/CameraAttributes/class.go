@@ -24,6 +24,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -46,6 +47,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -80,8 +82,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -235,60 +238,60 @@ func (self Instance) SetAutoExposureSpeed(value Float.X) {
 
 //go:nosplit
 func (self class) SetExposureMultiplier(multiplier float64) { //gd:CameraAttributes.set_exposure_multiplier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 
 //go:nosplit
 func (self class) GetExposureMultiplier() float64 { //gd:CameraAttributes.get_exposure_multiplier
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExposureSensitivity(sensitivity float64) { //gd:CameraAttributes.set_exposure_sensitivity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ sensitivity float64 }{sensitivity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_sensitivity, 0|(gdextension.SizeFloat<<4), &struct{ sensitivity float64 }{sensitivity})
 }
 
 //go:nosplit
 func (self class) GetExposureSensitivity() float64 { //gd:CameraAttributes.get_exposure_sensitivity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_sensitivity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_sensitivity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureEnabled(enabled bool) { //gd:CameraAttributes.set_auto_exposure_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsAutoExposureEnabled() bool { //gd:CameraAttributes.is_auto_exposure_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_exposure_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_exposure_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureSpeed(exposure_speed float64) { //gd:CameraAttributes.set_auto_exposure_speed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_speed, 0|(gdextension.SizeFloat<<4), &struct{ exposure_speed float64 }{exposure_speed})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_speed, 0|(gdextension.SizeFloat<<4), &struct{ exposure_speed float64 }{exposure_speed})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureSpeed() float64 { //gd:CameraAttributes.get_auto_exposure_speed
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureScale(exposure_grey float64) { //gd:CameraAttributes.set_auto_exposure_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_scale, 0|(gdextension.SizeFloat<<4), &struct{ exposure_grey float64 }{exposure_grey})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_scale, 0|(gdextension.SizeFloat<<4), &struct{ exposure_grey float64 }{exposure_grey})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureScale() float64 { //gd:CameraAttributes.get_auto_exposure_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

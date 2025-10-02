@@ -16,6 +16,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -169,7 +172,7 @@ Returns true if this extension's library has been opened.
 */
 //go:nosplit
 func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -179,7 +182,7 @@ Returns the lowest level required for this extension to be properly initialized 
 */
 //go:nosplit
 func (self class) GetMinimumLibraryInitializationLevel() InitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	var r_ret = noescape.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

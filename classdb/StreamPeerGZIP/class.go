@@ -18,6 +18,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -40,6 +41,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -74,8 +76,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -210,7 +213,7 @@ Start the stream in compression mode with the given 'buffer_size', if 'use_defla
 */
 //go:nosplit
 func (self class) StartCompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_compression
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
 		buffer_size int64
 	}{use_deflate, buffer_size})
@@ -223,7 +226,7 @@ Start the stream in decompression mode with the given 'buffer_size', if 'use_def
 */
 //go:nosplit
 func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_decompression
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
 		buffer_size int64
 	}{use_deflate, buffer_size})
@@ -238,7 +241,7 @@ You must call it only when you are compressing.
 */
 //go:nosplit
 func (self class) Finish() Error.Code { //gd:StreamPeerGZIP.finish
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -248,7 +251,7 @@ Clears this stream, resetting the internal state.
 */
 //go:nosplit
 func (self class) Clear() { //gd:StreamPeerGZIP.clear
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 func (self class) AsStreamPeerGZIP() Advanced {
 	return Advanced{pointers.AsA[gdclass.StreamPeerGZIP](self[0])}

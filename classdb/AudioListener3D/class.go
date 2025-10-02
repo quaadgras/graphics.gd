@@ -12,6 +12,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -208,7 +211,7 @@ Enables the listener. This will override the current camera's listener.
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
 
 /*
@@ -216,7 +219,7 @@ Disables the listener to use the current camera's listener instead.
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
 }
 
 /*
@@ -228,7 +231,7 @@ Note: There may be more than one AudioListener3D marked as "current" in the scen
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -240,19 +243,19 @@ Returns the listener's global orthonormalized [Transform3D.BasisOrigin].
 */
 //go:nosplit
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:AudioListener3D.set_doppler_tracking
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
 }
 
 //go:nosplit
 func (self class) GetDopplerTracking() DopplerTracking { //gd:AudioListener3D.get_doppler_tracking
-	var r_ret = noescape.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

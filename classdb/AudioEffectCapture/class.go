@@ -18,6 +18,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -42,6 +43,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -76,8 +78,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -237,7 +240,7 @@ Returns true if at least 'frames' audio frames are available to read in the inte
 */
 //go:nosplit
 func (self class) CanGetBuffer(frames int64) bool { //gd:AudioEffectCapture.can_get_buffer
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_get_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_get_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 	var ret = r_ret
 	return ret
 }
@@ -253,7 +256,7 @@ The samples are signed floating-point PCM between -1 and 1. You will have to sca
 */
 //go:nosplit
 func (self class) GetBuffer(frames int64) Packed.Array[Vector2.XY] { //gd:AudioEffectCapture.get_buffer
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -265,17 +268,17 @@ Note: Calling this during a capture can cause the loss of samples which causes p
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioEffectCapture.clear_buffer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetBufferLength(buffer_length_seconds float64) { //gd:AudioEffectCapture.set_buffer_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ buffer_length_seconds float64 }{buffer_length_seconds})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), &struct{ buffer_length_seconds float64 }{buffer_length_seconds})
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioEffectCapture.get_buffer_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +290,7 @@ Returns the number of frames available to read using [GetBuffer].
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioEffectCapture.get_frames_available
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +300,7 @@ Returns the number of audio frames discarded from the audio bus due to full buff
 */
 //go:nosplit
 func (self class) GetDiscardedFrames() int64 { //gd:AudioEffectCapture.get_discarded_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_discarded_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_discarded_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -307,7 +310,7 @@ Returns the total size of the internal ring buffer in frames.
 */
 //go:nosplit
 func (self class) GetBufferLengthFrames() int64 { //gd:AudioEffectCapture.get_buffer_length_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -317,7 +320,7 @@ Returns the number of audio frames inserted from the audio bus.
 */
 //go:nosplit
 func (self class) GetPushedFrames() int64 { //gd:AudioEffectCapture.get_pushed_frames
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pushed_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pushed_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -42,6 +43,7 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -76,8 +78,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -576,24 +580,24 @@ func (class) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 
 //go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:CollisionObject3D.set_collision_layer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:CollisionObject3D.get_collision_layer
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:CollisionObject3D.set_collision_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:CollisionObject3D.get_collision_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -605,7 +609,7 @@ Based on 'value', enables or disables the specified layer in the [CollisionLayer
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CollisionObject3D.set_collision_layer_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -618,7 +622,7 @@ Returns whether or not the specified layer of the [CollisionLayer] is enabled, g
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CollisionObject3D.get_collision_layer_value
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
@@ -630,7 +634,7 @@ Based on 'value', enables or disables the specified layer in the [CollisionMask]
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CollisionObject3D.set_collision_mask_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -643,55 +647,55 @@ Returns whether or not the specified layer of the [CollisionMask] is enabled, gi
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CollisionObject3D.get_collision_mask_value
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionPriority(priority float64) { //gd:CollisionObject3D.set_collision_priority
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetCollisionPriority() float64 { //gd:CollisionObject3D.get_collision_priority
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject3D.set_disable_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetDisableMode() DisableMode { //gd:CollisionObject3D.get_disable_mode
-	var r_ret = noescape.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRayPickable(ray_pickable bool) { //gd:CollisionObject3D.set_ray_pickable
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), &struct{ ray_pickable bool }{ray_pickable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), &struct{ ray_pickable bool }{ray_pickable})
 }
 
 //go:nosplit
 func (self class) IsRayPickable() bool { //gd:CollisionObject3D.is_ray_pickable
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaptureInputOnDrag(enable bool) { //gd:CollisionObject3D.set_capture_input_on_drag
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_capture_input_on_drag, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_capture_input_on_drag, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetCaptureInputOnDrag() bool { //gd:CollisionObject3D.get_capture_input_on_drag
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_capture_input_on_drag, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_capture_input_on_drag, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -703,7 +707,7 @@ Returns the object's [Resource.ID].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:CollisionObject3D.get_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = mainthread.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -713,7 +717,7 @@ Creates a new shape owner for the given object. Returns owner_id of the new owne
 */
 //go:nosplit
 func (self class) CreateShapeOwner(owner [1]gd.Object) int64 { //gd:CollisionObject3D.create_shape_owner
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -723,7 +727,7 @@ Removes the given shape owner.
 */
 //go:nosplit
 func (self class) RemoveShapeOwner(owner_id int64) { //gd:CollisionObject3D.remove_shape_owner
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shape_owner, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shape_owner, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 }
 
 /*
@@ -731,7 +735,7 @@ Returns an slice of owner_id identifiers. You can use these ids in other methods
 */
 //go:nosplit
 func (self class) GetShapeOwners() Packed.Array[int32] { //gd:CollisionObject3D.get_shape_owners
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_shape_owners, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_shape_owners, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -743,7 +747,7 @@ Sets the [Transform3D.BasisOrigin] of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetTransform(owner_id int64, transform Transform3D.BasisOrigin) { //gd:CollisionObject3D.shape_owner_set_transform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		owner_id  int64
 		transform Transform3D.BasisOrigin
 	}{owner_id, gd.Transposed(transform)})
@@ -756,7 +760,7 @@ Returns the shape owner's [Transform3D.BasisOrigin].
 */
 //go:nosplit
 func (self class) ShapeOwnerGetTransform(owner_id int64) Transform3D.BasisOrigin { //gd:CollisionObject3D.shape_owner_get_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -766,7 +770,7 @@ Returns the parent object of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetOwner(owner_id int64) [1]gd.Object { //gd:CollisionObject3D.shape_owner_get_owner
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -776,7 +780,7 @@ If true, disables the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetDisabled(owner_id int64, disabled bool) { //gd:CollisionObject3D.shape_owner_set_disabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		owner_id int64
 		disabled bool
 	}{owner_id, disabled})
@@ -787,7 +791,7 @@ If true, the shape owner and its shapes are disabled.
 */
 //go:nosplit
 func (self class) IsShapeOwnerDisabled(owner_id int64) bool { //gd:CollisionObject3D.is_shape_owner_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -799,7 +803,7 @@ Adds a [Shape3D] to the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape3D) { //gd:CollisionObject3D.shape_owner_add_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		owner_id int64
 		shape    gdextension.Object
 	}{owner_id, gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))})
@@ -810,7 +814,7 @@ Returns the number of shapes the given shape owner contains.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeCount(owner_id int64) int64 { //gd:CollisionObject3D.shape_owner_get_shape_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -822,7 +826,7 @@ Returns the [Shape3D] with the given ID from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShape(owner_id int64, shape_id int64) [1]gdclass.Shape3D { //gd:CollisionObject3D.shape_owner_get_shape
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
 	}{owner_id, shape_id})
@@ -837,7 +841,7 @@ Returns the child index of the [Shape3D] with the given ID from the given shape 
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeIndex(owner_id int64, shape_id int64) int64 { //gd:CollisionObject3D.shape_owner_get_shape_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
 	}{owner_id, shape_id})
@@ -850,7 +854,7 @@ Removes a shape from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerRemoveShape(owner_id int64, shape_id int64) { //gd:CollisionObject3D.shape_owner_remove_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_remove_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_remove_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
 	}{owner_id, shape_id})
@@ -861,7 +865,7 @@ Removes all shapes from the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerClearShapes(owner_id int64) { //gd:CollisionObject3D.shape_owner_clear_shapes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_clear_shapes, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_clear_shapes, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 }
 
 /*
@@ -869,7 +873,7 @@ Returns the owner_id of the given shape.
 */
 //go:nosplit
 func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject3D.shape_find_owner
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_find_owner, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ shape_index int64 }{shape_index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_find_owner, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ shape_index int64 }{shape_index})
 	var ret = r_ret
 	return ret
 }

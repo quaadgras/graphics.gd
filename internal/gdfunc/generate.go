@@ -197,7 +197,12 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	} else {
 		callResult = "struct{}"
 	}
-	fmt.Fprintf(w, "noescape.Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
+	if class.IsSingleton {
+		fmt.Fprintf(w, "noescape")
+	} else {
+		fmt.Fprintf(w, "mainthread")
+	}
+	fmt.Fprintf(w, ".Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(w, "; ")

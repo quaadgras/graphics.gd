@@ -41,6 +41,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -65,6 +66,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -99,8 +101,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -294,7 +297,7 @@ Returns the number or scene tiles this TileSet source has.
 */
 //go:nosplit
 func (self class) GetSceneTilesCount() int64 { //gd:TileSetScenesCollectionSource.get_scene_tiles_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_scene_tiles_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_scene_tiles_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +307,7 @@ Returns the scene tile ID of the scene tile at 'index'.
 */
 //go:nosplit
 func (self class) GetSceneTileId(index int64) int64 { //gd:TileSetScenesCollectionSource.get_scene_tile_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -314,7 +317,7 @@ Returns whether this TileSet source has a scene tile with 'id'.
 */
 //go:nosplit
 func (self class) HasSceneTileId(id int64) bool { //gd:TileSetScenesCollectionSource.has_scene_tile_id
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_scene_tile_id, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_scene_tile_id, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -326,7 +329,7 @@ Returns a newly generated unique ID.
 */
 //go:nosplit
 func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_override int64) int64 { //gd:TileSetScenesCollectionSource.create_scene_tile
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_scene_tile, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_scene_tile, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		packed_scene gdextension.Object
 		id_override  int64
 	}{gdextension.Object(gd.ObjectChecked(packed_scene[0].AsObject())), id_override})
@@ -339,7 +342,7 @@ Changes a scene tile's ID from 'id' to 'new_id'. This will fail if there is alre
 */
 //go:nosplit
 func (self class) SetSceneTileId(id int64, new_id int64) { //gd:TileSetScenesCollectionSource.set_scene_tile_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		id     int64
 		new_id int64
 	}{id, new_id})
@@ -354,7 +357,7 @@ Assigns a [PackedScene] resource to the scene tile with 'id'. This will fail if 
 */
 //go:nosplit
 func (self class) SetSceneTileScene(id int64, packed_scene [1]gdclass.PackedScene) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_scene, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_scene, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id           int64
 		packed_scene gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(packed_scene[0].AsObject()))})
@@ -367,7 +370,7 @@ Returns the [PackedScene] resource of scene tile with 'id'.
 */
 //go:nosplit
 func (self class) GetSceneTileScene(id int64) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_scene, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_scene, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.PackedScene{gd.PointerWithOwnershipTransferredToGo[gdclass.PackedScene](r_ret)}
 	return ret
 }
@@ -377,7 +380,7 @@ Sets whether or not the scene tile with 'id' should display a placeholder in the
 */
 //go:nosplit
 func (self class) SetSceneTileDisplayPlaceholder(id int64, display_placeholder bool) { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_display_placeholder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_tile_display_placeholder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id                  int64
 		display_placeholder bool
 	}{id, display_placeholder})
@@ -388,7 +391,7 @@ Returns whether the scene tile with 'id' displays a placeholder in the editor.
 */
 //go:nosplit
 func (self class) GetSceneTileDisplayPlaceholder(id int64) bool { //gd:TileSetScenesCollectionSource.get_scene_tile_display_placeholder
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_display_placeholder, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_tile_display_placeholder, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -398,7 +401,7 @@ Remove the scene tile with 'id'.
 */
 //go:nosplit
 func (self class) RemoveSceneTile(id int64) { //gd:TileSetScenesCollectionSource.remove_scene_tile
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_tile, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_tile, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -408,7 +411,7 @@ Returns the scene ID a following call to [CreateSceneTile] would return.
 */
 //go:nosplit
 func (self class) GetNextSceneTileId() int64 { //gd:TileSetScenesCollectionSource.get_next_scene_tile_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_scene_tile_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_scene_tile_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

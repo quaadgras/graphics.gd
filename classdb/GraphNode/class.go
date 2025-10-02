@@ -23,6 +23,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -54,6 +55,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -88,8 +90,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -582,12 +586,12 @@ func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, positi
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphNode.set_title
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphNode.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -600,7 +604,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 */
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
@@ -627,7 +631,7 @@ Note: This method only sets properties of the slot. To create the slot itself, a
 */
 //go:nosplit
 func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int64, color_left Color.RGBA, enable_right_port bool, type_right int64, color_right Color.RGBA, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) { //gd:GraphNode.set_slot
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeObject<<36)|(gdextension.SizeBool<<40), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeObject<<36)|(gdextension.SizeBool<<40), &struct {
 		slot_index        int64
 		enable_left_port  bool
 		type_left         int64
@@ -646,7 +650,7 @@ Disables the slot with the given 'slot_index'. This will remove the correspondin
 */
 //go:nosplit
 func (self class) ClearSlot(slot_index int64) { //gd:GraphNode.clear_slot
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_slot, 0|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_slot, 0|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 }
 
 /*
@@ -654,7 +658,7 @@ Disables all slots of the GraphNode. This will remove all input/output ports fro
 */
 //go:nosplit
 func (self class) ClearAllSlots() { //gd:GraphNode.clear_all_slots
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_all_slots, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_all_slots, 0, &struct{}{})
 }
 
 /*
@@ -662,7 +666,7 @@ Returns true if left (input) side of the slot with the given 'slot_index' is ena
 */
 //go:nosplit
 func (self class) IsSlotEnabledLeft(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_left
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_left, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_left, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -672,7 +676,7 @@ Toggles the left (input) side of the slot with the given 'slot_index'. If 'enabl
 */
 //go:nosplit
 func (self class) SetSlotEnabledLeft(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_left
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
@@ -683,7 +687,7 @@ Sets the left (input) type of the slot with the given 'slot_index' to 'type'. If
 */
 //go:nosplit
 func (self class) SetSlotTypeLeft(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_left
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		slot_index int64
 		atype      int64
 	}{slot_index, atype})
@@ -694,7 +698,7 @@ Returns the left (input) type of the slot with the given 'slot_index'.
 */
 //go:nosplit
 func (self class) GetSlotTypeLeft(slot_index int64) int64 { //gd:GraphNode.get_slot_type_left
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_left, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_left, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -706,7 +710,7 @@ Sets the [Color.RGBA] of the left (input) side of the slot with the given 'slot_
 */
 //go:nosplit
 func (self class) SetSlotColorLeft(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_left
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		slot_index int64
 		color      Color.RGBA
 	}{slot_index, color})
@@ -719,7 +723,7 @@ Returns the left (input) [Color.RGBA] of the slot with the given 'slot_index'.
 */
 //go:nosplit
 func (self class) GetSlotColorLeft(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_left
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_left, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_left, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -731,7 +735,7 @@ Sets the custom [Texture2D] of the left (input) side of the slot with the given 
 */
 //go:nosplit
 func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
 	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))})
@@ -744,7 +748,7 @@ Returns the left (input) custom [Texture2D] of the slot with the given 'slot_ind
 */
 //go:nosplit
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -754,7 +758,7 @@ Returns true if right (output) side of the slot with the given 'slot_index' is e
 */
 //go:nosplit
 func (self class) IsSlotEnabledRight(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_right
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_right, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_enabled_right, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -764,7 +768,7 @@ Toggles the right (output) side of the slot with the given 'slot_index'. If 'ena
 */
 //go:nosplit
 func (self class) SetSlotEnabledRight(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_right
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_enabled_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
@@ -775,7 +779,7 @@ Sets the right (output) type of the slot with the given 'slot_index' to 'type'. 
 */
 //go:nosplit
 func (self class) SetSlotTypeRight(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_right
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_type_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		slot_index int64
 		atype      int64
 	}{slot_index, atype})
@@ -786,7 +790,7 @@ Returns the right (output) type of the slot with the given 'slot_index'.
 */
 //go:nosplit
 func (self class) GetSlotTypeRight(slot_index int64) int64 { //gd:GraphNode.get_slot_type_right
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_right, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slot_type_right, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -798,7 +802,7 @@ Sets the [Color.RGBA] of the right (output) side of the slot with the given 'slo
 */
 //go:nosplit
 func (self class) SetSlotColorRight(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_right
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_color_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		slot_index int64
 		color      Color.RGBA
 	}{slot_index, color})
@@ -811,7 +815,7 @@ Returns the right (output) [Color.RGBA] of the slot with the given 'slot_index'.
 */
 //go:nosplit
 func (self class) GetSlotColorRight(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_right
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_right, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_slot_color_right, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -823,7 +827,7 @@ Sets the custom [Texture2D] of the right (output) side of the slot with the give
 */
 //go:nosplit
 func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
 	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))})
@@ -836,7 +840,7 @@ Returns the right (output) custom [Texture2D] of the slot with the given 'slot_i
 */
 //go:nosplit
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -848,7 +852,7 @@ Returns true if the background [StyleBox] of the slot with the given 'slot_index
 */
 //go:nosplit
 func (self class) IsSlotDrawStylebox(slot_index int64) bool { //gd:GraphNode.is_slot_draw_stylebox
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_draw_stylebox, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slot_draw_stylebox, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
 	var ret = r_ret
 	return ret
 }
@@ -860,7 +864,7 @@ Toggles the background [StyleBox] of the slot with the given 'slot_index'.
 */
 //go:nosplit
 func (self class) SetSlotDrawStylebox(slot_index int64, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_draw_stylebox, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_draw_stylebox, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		slot_index int64
 		enable     bool
 	}{slot_index, enable})
@@ -868,24 +872,24 @@ func (self class) SetSlotDrawStylebox(slot_index int64, enable bool) { //gd:Grap
 
 //go:nosplit
 func (self class) SetIgnoreInvalidConnectionType(ignore bool) { //gd:GraphNode.set_ignore_invalid_connection_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 
 //go:nosplit
 func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignoring_valid_connection_type
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_valid_connection_type, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_valid_connection_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlotsFocusMode(focus_mode Control.FocusMode) { //gd:GraphNode.set_slots_focus_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slots_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ focus_mode Control.FocusMode }{focus_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slots_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ focus_mode Control.FocusMode }{focus_mode})
 }
 
 //go:nosplit
 func (self class) GetSlotsFocusMode() Control.FocusMode { //gd:GraphNode.get_slots_focus_mode
-	var r_ret = noescape.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -895,7 +899,7 @@ Returns the number of slots with an enabled input port.
 */
 //go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:GraphNode.get_input_port_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -905,7 +909,7 @@ Returns the position of the input port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetInputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_input_port_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_input_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_input_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -915,7 +919,7 @@ Returns the type of the input port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetInputPortType(port_idx int64) int64 { //gd:GraphNode.get_input_port_type
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -927,7 +931,7 @@ Returns the [Color.RGBA] of the input port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetInputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_input_port_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_input_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_input_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -937,7 +941,7 @@ Returns the corresponding slot index of the input port with the given 'port_idx'
 */
 //go:nosplit
 func (self class) GetInputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_input_port_slot
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -947,7 +951,7 @@ Returns the number of slots with an enabled output port.
 */
 //go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:GraphNode.get_output_port_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -957,7 +961,7 @@ Returns the position of the output port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetOutputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_output_port_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_output_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_output_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -967,7 +971,7 @@ Returns the type of the output port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetOutputPortType(port_idx int64) int64 { //gd:GraphNode.get_output_port_type
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -979,7 +983,7 @@ Returns the [Color.RGBA] of the output port with the given 'port_idx'.
 */
 //go:nosplit
 func (self class) GetOutputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_output_port_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_output_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_output_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }
@@ -989,7 +993,7 @@ Returns the corresponding slot index of the output port with the given 'port_idx
 */
 //go:nosplit
 func (self class) GetOutputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_output_port_slot
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ port_idx int64 }{port_idx})
 	var ret = r_ret
 	return ret
 }

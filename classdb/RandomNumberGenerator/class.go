@@ -25,6 +25,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -46,6 +47,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -80,8 +82,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -284,24 +287,24 @@ func (self Instance) SetState(value int) {
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:RandomNumberGenerator.set_seed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:RandomNumberGenerator.get_seed
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetState(state int64) { //gd:RandomNumberGenerator.set_state
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state, 0|(gdextension.SizeInt<<4), &struct{ state int64 }{state})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state, 0|(gdextension.SizeInt<<4), &struct{ state int64 }{state})
 }
 
 //go:nosplit
 func (self class) GetState() int64 { //gd:RandomNumberGenerator.get_state
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -311,7 +314,7 @@ Returns a pseudo-random 32-bit unsigned integer between 0 and 4294967295 (inclus
 */
 //go:nosplit
 func (self class) Randi() int64 { //gd:RandomNumberGenerator.randi
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +324,7 @@ Returns a pseudo-random float between 0.0 and 1.0 (inclusive).
 */
 //go:nosplit
 func (self class) Randf() float64 { //gd:RandomNumberGenerator.randf
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +339,7 @@ Note: This method uses the [Box-Muller transform] algorithm.
 */
 //go:nosplit
 func (self class) Randfn(mean float64, deviation float64) float64 { //gd:RandomNumberGenerator.randfn
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randfn, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randfn, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
 		mean      float64
 		deviation float64
 	}{mean, deviation})
@@ -349,7 +352,7 @@ Returns a pseudo-random float between 'from' and 'to' (inclusive).
 */
 //go:nosplit
 func (self class) RandfRange(from float64, to float64) float64 { //gd:RandomNumberGenerator.randf_range
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf_range, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf_range, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
 		from float64
 		to   float64
 	}{from, to})
@@ -362,7 +365,7 @@ Returns a pseudo-random 32-bit signed integer between 'from' and 'to' (inclusive
 */
 //go:nosplit
 func (self class) RandiRange(from int64, to int64) int64 { //gd:RandomNumberGenerator.randi_range
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi_range, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi_range, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from int64
 		to   int64
 	}{from, to})
@@ -377,7 +380,7 @@ Returns a random index with non-uniform weights. Prints an error and returns -1 
 */
 //go:nosplit
 func (self class) RandWeighted(weights Packed.Array[float32]) int64 { //gd:RandomNumberGenerator.rand_weighted
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rand_weighted, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rand_weighted, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct {
 		weights gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))})
 	var ret = r_ret
@@ -391,7 +394,7 @@ Sets up a time-based seed for this [RandomNumberGenerator] instance. Unlike the 
 */
 //go:nosplit
 func (self class) Randomize() { //gd:RandomNumberGenerator.randomize
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.randomize, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.randomize, 0, &struct{}{})
 }
 func (self class) AsRandomNumberGenerator() Advanced {
 	return Advanced{pointers.AsA[gdclass.RandomNumberGenerator](self[0])}

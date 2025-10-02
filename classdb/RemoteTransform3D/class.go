@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -229,12 +232,12 @@ func (self Instance) SetUpdateScale(value bool) {
 
 //go:nosplit
 func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform3D.set_remote_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_remote_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_remote_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 
 //go:nosplit
 func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remote_node
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_remote_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -247,53 +250,53 @@ func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform3D.get_remot
 */
 //go:nosplit
 func (self class) ForceUpdateCache() { //gd:RemoteTransform3D.force_update_cache
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_cache, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_cache, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) { //gd:RemoteTransform3D.set_use_global_coordinates
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_coordinates, 0|(gdextension.SizeBool<<4), &struct{ use_global_coordinates bool }{use_global_coordinates})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_coordinates, 0|(gdextension.SizeBool<<4), &struct{ use_global_coordinates bool }{use_global_coordinates})
 }
 
 //go:nosplit
 func (self class) GetUseGlobalCoordinates() bool { //gd:RemoteTransform3D.get_use_global_coordinates
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_global_coordinates, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_global_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdatePosition(update_remote_position bool) { //gd:RemoteTransform3D.set_update_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_position, 0|(gdextension.SizeBool<<4), &struct{ update_remote_position bool }{update_remote_position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_position, 0|(gdextension.SizeBool<<4), &struct{ update_remote_position bool }{update_remote_position})
 }
 
 //go:nosplit
 func (self class) GetUpdatePosition() bool { //gd:RemoteTransform3D.get_update_position
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_position, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_position, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateRotation(update_remote_rotation bool) { //gd:RemoteTransform3D.set_update_rotation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_rotation, 0|(gdextension.SizeBool<<4), &struct{ update_remote_rotation bool }{update_remote_rotation})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_rotation, 0|(gdextension.SizeBool<<4), &struct{ update_remote_rotation bool }{update_remote_rotation})
 }
 
 //go:nosplit
 func (self class) GetUpdateRotation() bool { //gd:RemoteTransform3D.get_update_rotation
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_rotation, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_rotation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateScale(update_remote_scale bool) { //gd:RemoteTransform3D.set_update_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_scale, 0|(gdextension.SizeBool<<4), &struct{ update_remote_scale bool }{update_remote_scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_scale, 0|(gdextension.SizeBool<<4), &struct{ update_remote_scale bool }{update_remote_scale})
 }
 
 //go:nosplit
 func (self class) GetUpdateScale() bool { //gd:RemoteTransform3D.get_update_scale
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

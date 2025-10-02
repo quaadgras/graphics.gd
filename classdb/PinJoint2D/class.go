@@ -12,6 +12,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -37,6 +38,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -71,8 +73,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -239,72 +242,72 @@ func (self Instance) SetMotorTargetVelocity(value Float.X) {
 
 //go:nosplit
 func (self class) SetSoftness(softness float64) { //gd:PinJoint2D.set_softness
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_softness, 0|(gdextension.SizeFloat<<4), &struct{ softness float64 }{softness})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_softness, 0|(gdextension.SizeFloat<<4), &struct{ softness float64 }{softness})
 }
 
 //go:nosplit
 func (self class) GetSoftness() float64 { //gd:PinJoint2D.get_softness
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_softness, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_softness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitLower(angular_limit_lower float64) { //gd:PinJoint2D.set_angular_limit_lower
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_lower, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_lower float64 }{angular_limit_lower})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_lower, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_lower float64 }{angular_limit_lower})
 }
 
 //go:nosplit
 func (self class) GetAngularLimitLower() float64 { //gd:PinJoint2D.get_angular_limit_lower
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_lower, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_lower, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitUpper(angular_limit_upper float64) { //gd:PinJoint2D.set_angular_limit_upper
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_upper, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_upper float64 }{angular_limit_upper})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_upper, 0|(gdextension.SizeFloat<<4), &struct{ angular_limit_upper float64 }{angular_limit_upper})
 }
 
 //go:nosplit
 func (self class) GetAngularLimitUpper() float64 { //gd:PinJoint2D.get_angular_limit_upper
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_upper, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_upper, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotorTargetVelocity(motor_target_velocity float64) { //gd:PinJoint2D.set_motor_target_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_target_velocity, 0|(gdextension.SizeFloat<<4), &struct{ motor_target_velocity float64 }{motor_target_velocity})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_target_velocity, 0|(gdextension.SizeFloat<<4), &struct{ motor_target_velocity float64 }{motor_target_velocity})
 }
 
 //go:nosplit
 func (self class) GetMotorTargetVelocity() float64 { //gd:PinJoint2D.get_motor_target_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motor_target_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motor_target_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotorEnabled(enabled bool) { //gd:PinJoint2D.set_motor_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsMotorEnabled() bool { //gd:PinJoint2D.is_motor_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_motor_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_motor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitEnabled(enabled bool) { //gd:PinJoint2D.set_angular_limit_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsAngularLimitEnabled() bool { //gd:PinJoint2D.is_angular_limit_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_angular_limit_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_angular_limit_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

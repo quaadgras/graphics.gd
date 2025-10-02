@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -42,6 +43,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -76,8 +78,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -256,12 +259,12 @@ func (self Instance) SetTintColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphFrame.set_title
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphFrame.get_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -276,67 +279,67 @@ This can be used to add custom controls to the title bar such as option or close
 */
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoshrinkEnabled(shrink bool) { //gd:GraphFrame.set_autoshrink_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), &struct{ shrink bool }{shrink})
 }
 
 //go:nosplit
 func (self class) IsAutoshrinkEnabled() bool { //gd:GraphFrame.is_autoshrink_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoshrinkMargin(autoshrink_margin int64) { //gd:GraphFrame.set_autoshrink_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_margin, 0|(gdextension.SizeInt<<4), &struct{ autoshrink_margin int64 }{autoshrink_margin})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_margin, 0|(gdextension.SizeInt<<4), &struct{ autoshrink_margin int64 }{autoshrink_margin})
 }
 
 //go:nosplit
 func (self class) GetAutoshrinkMargin() int64 { //gd:GraphFrame.get_autoshrink_margin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_autoshrink_margin, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_autoshrink_margin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragMargin(drag_margin int64) { //gd:GraphFrame.set_drag_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_margin, 0|(gdextension.SizeInt<<4), &struct{ drag_margin int64 }{drag_margin})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_margin, 0|(gdextension.SizeInt<<4), &struct{ drag_margin int64 }{drag_margin})
 }
 
 //go:nosplit
 func (self class) GetDragMargin() int64 { //gd:GraphFrame.get_drag_margin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_margin, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_margin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColorEnabled(enable bool) { //gd:GraphFrame.set_tint_color_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsTintColorEnabled() bool { //gd:GraphFrame.is_tint_color_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColor(color Color.RGBA) { //gd:GraphFrame.set_tint_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetTintColor() Color.RGBA { //gd:GraphFrame.get_tint_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

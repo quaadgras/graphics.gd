@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -41,6 +42,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -75,8 +77,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -615,96 +618,96 @@ func (self Instance) SetProbability(value Float.X) {
 
 //go:nosplit
 func (self class) SetFlipH(flip_h bool) { //gd:TileData.set_flip_h
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
 }
 
 //go:nosplit
 func (self class) GetFlipH() bool { //gd:TileData.get_flip_h
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipV(flip_v bool) { //gd:TileData.set_flip_v
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
 }
 
 //go:nosplit
 func (self class) GetFlipV() bool { //gd:TileData.get_flip_v
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTranspose(transpose bool) { //gd:TileData.set_transpose
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transpose, 0|(gdextension.SizeBool<<4), &struct{ transpose bool }{transpose})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transpose, 0|(gdextension.SizeBool<<4), &struct{ transpose bool }{transpose})
 }
 
 //go:nosplit
 func (self class) GetTranspose() bool { //gd:TileData.get_transpose
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_transpose, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_transpose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:TileData.get_material
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureOrigin(texture_origin Vector2i.XY) { //gd:TileData.set_texture_origin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_origin, 0|(gdextension.SizeVector2i<<4), &struct{ texture_origin Vector2i.XY }{texture_origin})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_origin, 0|(gdextension.SizeVector2i<<4), &struct{ texture_origin Vector2i.XY }{texture_origin})
 }
 
 //go:nosplit
 func (self class) GetTextureOrigin() Vector2i.XY { //gd:TileData.get_texture_origin
-	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_origin, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = mainthread.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_origin, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(modulate Color.RGBA) { //gd:TileData.set_modulate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ modulate Color.RGBA }{modulate})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ modulate Color.RGBA }{modulate})
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:TileData.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZIndex(z_index int64) { //gd:TileData.set_z_index
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_index, 0|(gdextension.SizeInt<<4), &struct{ z_index int64 }{z_index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_index, 0|(gdextension.SizeInt<<4), &struct{ z_index int64 }{z_index})
 }
 
 //go:nosplit
 func (self class) GetZIndex() int64 { //gd:TileData.get_z_index
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetYSortOrigin(y_sort_origin int64) { //gd:TileData.set_y_sort_origin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_origin, 0|(gdextension.SizeInt<<4), &struct{ y_sort_origin int64 }{y_sort_origin})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_origin, 0|(gdextension.SizeInt<<4), &struct{ y_sort_origin int64 }{y_sort_origin})
 }
 
 //go:nosplit
 func (self class) GetYSortOrigin() int64 { //gd:TileData.get_y_sort_origin
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -714,7 +717,7 @@ Sets the occluder polygon count in the TileSet occlusion layer with index 'layer
 */
 //go:nosplit
 func (self class) SetOccluderPolygonsCount(layer_id int64, polygons_count int64) { //gd:TileData.set_occluder_polygons_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygons_count, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygons_count, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id       int64
 		polygons_count int64
 	}{layer_id, polygons_count})
@@ -725,7 +728,7 @@ Returns the number of occluder polygons of the tile in the TileSet occlusion lay
 */
 //go:nosplit
 func (self class) GetOccluderPolygonsCount(layer_id int64) int64 { //gd:TileData.get_occluder_polygons_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygons_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygons_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 	var ret = r_ret
 	return ret
 }
@@ -735,7 +738,7 @@ Adds an occlusion polygon to the tile on the TileSet occlusion layer with index 
 */
 //go:nosplit
 func (self class) AddOccluderPolygon(layer_id int64) { //gd:TileData.add_occluder_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_occluder_polygon, 0|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_occluder_polygon, 0|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 }
 
 /*
@@ -743,7 +746,7 @@ Removes the polygon at index 'polygon_index' for TileSet occlusion layer with in
 */
 //go:nosplit
 func (self class) RemoveOccluderPolygon(layer_id int64, polygon_index int64) { //gd:TileData.remove_occluder_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_occluder_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_occluder_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id      int64
 		polygon_index int64
 	}{layer_id, polygon_index})
@@ -754,7 +757,7 @@ Sets the occluder for polygon with index 'polygon_index' in the TileSet occlusio
 */
 //go:nosplit
 func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.Object
@@ -768,7 +771,7 @@ The 'flip_h', 'flip_v', and 'transpose' parameters can be true to transform the 
 */
 //go:nosplit
 func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		layer_id      int64
 		polygon_index int64
 		flip_h        bool
@@ -784,7 +787,7 @@ Sets the occluder for the TileSet occlusion layer with index 'layer_id'.
 */
 //go:nosplit
 func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id         int64
 		occluder_polygon gdextension.Object
 	}{layer_id, gdextension.Object(gd.ObjectChecked(occluder_polygon[0].AsObject()))})
@@ -797,7 +800,7 @@ Returns the occluder polygon of the tile for the TileSet occlusion layer with in
 */
 //go:nosplit
 func (self class) GetOccluder(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		layer_id  int64
 		flip_h    bool
 		flip_v    bool
@@ -812,7 +815,7 @@ Sets the constant linear velocity. This does not move the tile. This linear velo
 */
 //go:nosplit
 func (self class) SetConstantLinearVelocity(layer_id int64, velocity Vector2.XY) { //gd:TileData.set_constant_linear_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		layer_id int64
 		velocity Vector2.XY
 	}{layer_id, velocity})
@@ -823,7 +826,7 @@ Returns the constant linear velocity applied to objects colliding with this tile
 */
 //go:nosplit
 func (self class) GetConstantLinearVelocity(layer_id int64) Vector2.XY { //gd:TileData.get_constant_linear_velocity
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 	var ret = r_ret
 	return ret
 }
@@ -833,7 +836,7 @@ Sets the constant angular velocity. This does not rotate the tile. This angular 
 */
 //go:nosplit
 func (self class) SetConstantAngularVelocity(layer_id int64, velocity float64) { //gd:TileData.set_constant_angular_velocity
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		layer_id int64
 		velocity float64
 	}{layer_id, velocity})
@@ -844,7 +847,7 @@ Returns the constant angular velocity applied to objects colliding with this til
 */
 //go:nosplit
 func (self class) GetConstantAngularVelocity(layer_id int64) float64 { //gd:TileData.get_constant_angular_velocity
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 	var ret = r_ret
 	return ret
 }
@@ -854,7 +857,7 @@ Sets the polygons count for TileSet physics layer with index 'layer_id'.
 */
 //go:nosplit
 func (self class) SetCollisionPolygonsCount(layer_id int64, polygons_count int64) { //gd:TileData.set_collision_polygons_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygons_count, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygons_count, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id       int64
 		polygons_count int64
 	}{layer_id, polygons_count})
@@ -865,7 +868,7 @@ Returns how many polygons the tile has for TileSet physics layer with index 'lay
 */
 //go:nosplit
 func (self class) GetCollisionPolygonsCount(layer_id int64) int64 { //gd:TileData.get_collision_polygons_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygons_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygons_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 	var ret = r_ret
 	return ret
 }
@@ -875,7 +878,7 @@ Adds a collision polygon to the tile on the given TileSet physics layer.
 */
 //go:nosplit
 func (self class) AddCollisionPolygon(layer_id int64) { //gd:TileData.add_collision_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_polygon, 0|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_polygon, 0|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 }
 
 /*
@@ -883,7 +886,7 @@ Removes the polygon at index 'polygon_index' for TileSet physics layer with inde
 */
 //go:nosplit
 func (self class) RemoveCollisionPolygon(layer_id int64, polygon_index int64) { //gd:TileData.remove_collision_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id      int64
 		polygon_index int64
 	}{layer_id, polygon_index})
@@ -894,7 +897,7 @@ Sets the points of the polygon at index 'polygon_index' for TileSet physics laye
 */
 //go:nosplit
 func (self class) SetCollisionPolygonPoints(layer_id int64, polygon_index int64, polygon Packed.Array[Vector2.XY]) { //gd:TileData.set_collision_polygon_points
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.PackedArray[Vector2.XY]
@@ -906,7 +909,7 @@ Returns the points of the polygon at index 'polygon_index' for TileSet physics l
 */
 //go:nosplit
 func (self class) GetCollisionPolygonPoints(layer_id int64, polygon_index int64) Packed.Array[Vector2.XY] { //gd:TileData.get_collision_polygon_points
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygon_points, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygon_points, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id      int64
 		polygon_index int64
 	}{layer_id, polygon_index})
@@ -919,7 +922,7 @@ Enables/disables one-way collisions on the polygon at index 'polygon_index' for 
 */
 //go:nosplit
 func (self class) SetCollisionPolygonOneWay(layer_id int64, polygon_index int64, one_way bool) { //gd:TileData.set_collision_polygon_one_way
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_one_way, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_one_way, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		layer_id      int64
 		polygon_index int64
 		one_way       bool
@@ -931,7 +934,7 @@ Returns whether one-way collisions are enabled for the polygon at index 'polygon
 */
 //go:nosplit
 func (self class) IsCollisionPolygonOneWay(layer_id int64, polygon_index int64) bool { //gd:TileData.is_collision_polygon_one_way
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_polygon_one_way, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_polygon_one_way, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id      int64
 		polygon_index int64
 	}{layer_id, polygon_index})
@@ -944,7 +947,7 @@ Sets the one-way margin (for one-way platforms) of the polygon at index 'polygon
 */
 //go:nosplit
 func (self class) SetCollisionPolygonOneWayMargin(layer_id int64, polygon_index int64, one_way_margin float64) { //gd:TileData.set_collision_polygon_one_way_margin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_one_way_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_polygon_one_way_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		layer_id       int64
 		polygon_index  int64
 		one_way_margin float64
@@ -956,7 +959,7 @@ Returns the one-way margin (for one-way platforms) of the polygon at index 'poly
 */
 //go:nosplit
 func (self class) GetCollisionPolygonOneWayMargin(layer_id int64, polygon_index int64) float64 { //gd:TileData.get_collision_polygon_one_way_margin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygon_one_way_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_polygon_one_way_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_id      int64
 		polygon_index int64
 	}{layer_id, polygon_index})
@@ -966,24 +969,24 @@ func (self class) GetCollisionPolygonOneWayMargin(layer_id int64, polygon_index 
 
 //go:nosplit
 func (self class) SetTerrainSet(terrain_set int64) { //gd:TileData.set_terrain_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_set, 0|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_set, 0|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
 }
 
 //go:nosplit
 func (self class) GetTerrainSet() int64 { //gd:TileData.get_terrain_set
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_set, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_set, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTerrain(terrain int64) { //gd:TileData.set_terrain
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain, 0|(gdextension.SizeInt<<4), &struct{ terrain int64 }{terrain})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain, 0|(gdextension.SizeInt<<4), &struct{ terrain int64 }{terrain})
 }
 
 //go:nosplit
 func (self class) GetTerrain() int64 { //gd:TileData.get_terrain
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -995,7 +998,7 @@ Sets the tile's terrain bit for the given 'peering_bit' direction. To check that
 */
 //go:nosplit
 func (self class) SetTerrainPeeringBit(peering_bit TileSet.CellNeighbor, terrain int64) { //gd:TileData.set_terrain_peering_bit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_peering_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_peering_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		peering_bit TileSet.CellNeighbor
 		terrain     int64
 	}{peering_bit, terrain})
@@ -1008,7 +1011,7 @@ Returns the tile's terrain bit for the given 'peering_bit' direction. To check t
 */
 //go:nosplit
 func (self class) GetTerrainPeeringBit(peering_bit TileSet.CellNeighbor) int64 { //gd:TileData.get_terrain_peering_bit
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_peering_bit, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ peering_bit TileSet.CellNeighbor }{peering_bit})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_peering_bit, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ peering_bit TileSet.CellNeighbor }{peering_bit})
 	var ret = r_ret
 	return ret
 }
@@ -1018,7 +1021,7 @@ Returns whether the given 'peering_bit' direction is valid for this tile.
 */
 //go:nosplit
 func (self class) IsValidTerrainPeeringBit(peering_bit TileSet.CellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_terrain_peering_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peering_bit TileSet.CellNeighbor }{peering_bit})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_terrain_peering_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peering_bit TileSet.CellNeighbor }{peering_bit})
 	var ret = r_ret
 	return ret
 }
@@ -1028,7 +1031,7 @@ Sets the navigation polygon for the TileSet navigation layer with index 'layer_i
 */
 //go:nosplit
 func (self class) SetNavigationPolygon(layer_id int64, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:TileData.set_navigation_polygon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id           int64
 		navigation_polygon gdextension.Object
 	}{layer_id, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))})
@@ -1041,7 +1044,7 @@ Returns the navigation polygon of the tile for the TileSet navigation layer with
 */
 //go:nosplit
 func (self class) GetNavigationPolygon(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_polygon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		layer_id  int64
 		flip_h    bool
 		flip_v    bool
@@ -1053,12 +1056,12 @@ func (self class) GetNavigationPolygon(layer_id int64, flip_h bool, flip_v bool,
 
 //go:nosplit
 func (self class) SetProbability(probability float64) { //gd:TileData.set_probability
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probability, 0|(gdextension.SizeFloat<<4), &struct{ probability float64 }{probability})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probability, 0|(gdextension.SizeFloat<<4), &struct{ probability float64 }{probability})
 }
 
 //go:nosplit
 func (self class) GetProbability() float64 { //gd:TileData.get_probability
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_probability, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_probability, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1068,7 +1071,7 @@ Sets the tile's custom data value for the TileSet custom data layer with name 'l
 */
 //go:nosplit
 func (self class) SetCustomData(layer_name String.Readable, value variant.Any) { //gd:TileData.set_custom_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		layer_name gdextension.String
 		value      gdextension.Variant
 	}{pointers.Get(gd.InternalString(layer_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
@@ -1081,7 +1084,7 @@ Returns the custom data value for custom data layer named 'layer_name'. To check
 */
 //go:nosplit
 func (self class) GetCustomData(layer_name String.Readable) variant.Any { //gd:TileData.get_custom_data
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_custom_data, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_custom_data, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1091,7 +1094,7 @@ Returns whether there exists a custom data layer named 'layer_name'.
 */
 //go:nosplit
 func (self class) HasCustomData(layer_name String.Readable) bool { //gd:TileData.has_custom_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_custom_data, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_custom_data, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
 	var ret = r_ret
 	return ret
 }
@@ -1101,7 +1104,7 @@ Sets the tile's custom data value for the TileSet custom data layer with index '
 */
 //go:nosplit
 func (self class) SetCustomDataByLayerId(layer_id int64, value variant.Any) { //gd:TileData.set_custom_data_by_layer_id
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data_by_layer_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data_by_layer_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		layer_id int64
 		value    gdextension.Variant
 	}{layer_id, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
@@ -1112,7 +1115,7 @@ Returns the custom data value for custom data layer with index 'layer_id'.
 */
 //go:nosplit
 func (self class) GetCustomDataByLayerId(layer_id int64) variant.Any { //gd:TileData.get_custom_data_by_layer_id
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_by_layer_id, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_by_layer_id, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ layer_id int64 }{layer_id})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

@@ -37,6 +37,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -60,6 +61,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -94,8 +96,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -723,7 +727,7 @@ Adds an input to the animation node. This is only useful for animation nodes cre
 */
 //go:nosplit
 func (self class) AddInput(name String.Readable) bool { //gd:AnimationNode.add_input
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_input, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_input, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -733,7 +737,7 @@ Removes an input, call this only when inactive.
 */
 //go:nosplit
 func (self class) RemoveInput(index int64) { //gd:AnimationNode.remove_input
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 
 /*
@@ -741,7 +745,7 @@ Sets the name of the input at the given 'input' index. If the setting fails, ret
 */
 //go:nosplit
 func (self class) SetInputName(input int64, name String.Readable) bool { //gd:AnimationNode.set_input_name
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_input_name, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_input_name, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		input int64
 		name  gdextension.String
 	}{input, pointers.Get(gd.InternalString(name))})
@@ -754,7 +758,7 @@ Gets the name of an input by index.
 */
 //go:nosplit
 func (self class) GetInputName(input int64) String.Readable { //gd:AnimationNode.get_input_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -766,7 +770,7 @@ Amount of inputs in this animation node, only useful for animation nodes that go
 */
 //go:nosplit
 func (self class) GetInputCount() int64 { //gd:AnimationNode.get_input_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -776,7 +780,7 @@ Returns the input index which corresponds to 'name'. If not found, returns -1.
 */
 //go:nosplit
 func (self class) FindInput(name String.Readable) int64 { //gd:AnimationNode.find_input
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_input, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_input, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -786,7 +790,7 @@ Adds or removes a path for the filter.
 */
 //go:nosplit
 func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationNode.set_filter_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_path, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_path, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
 		path   gdextension.NodePath
 		enable bool
 	}{pointers.Get(gd.InternalNodePath(path)), enable})
@@ -797,19 +801,19 @@ Returns true if the given path is filtered.
 */
 //go:nosplit
 func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_filtered, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_filtered, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterEnabled(enable bool) { //gd:AnimationNode.set_filter_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsFilterEnabled() bool { //gd:AnimationNode.is_filter_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filter_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filter_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -824,7 +828,7 @@ Note: This method should only be called from within the [AnimationNodeExtension.
 */
 //go:nosplit
 func (self class) GetProcessingAnimationTreeInstanceId() int64 { //gd:AnimationNode.get_processing_animation_tree_instance_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_processing_animation_tree_instance_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_processing_animation_tree_instance_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -834,7 +838,7 @@ Returns true if this animation node is being processed in test-only mode.
 */
 //go:nosplit
 func (self class) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_process_testing, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_process_testing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -848,7 +852,7 @@ A 'looped_flag' is used by internal processing immediately after the loop.
 */
 //go:nosplit
 func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28), &struct {
 		animation           gdextension.StringName
 		time                float64
 		delta               float64
@@ -866,7 +870,7 @@ Blend another animation node (in case this animation node contains child animati
 */
 //go:nosplit
 func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_node
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_node, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeBool<<36), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_node, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeBool<<36), &struct {
 		name                gdextension.StringName
 		node                gdextension.Object
 		time                float64
@@ -888,7 +892,7 @@ Blends an input. This is only useful for animation nodes created for an [Animati
 */
 //go:nosplit
 func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_input, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeBool<<32), &struct {
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_input, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeBool<<32), &struct {
 		input_index         int64
 		time                float64
 		seek                bool
@@ -907,7 +911,7 @@ Sets a custom parameter. These are used as local memory, because resources can b
 */
 //go:nosplit
 func (self class) SetParameter(name String.Name, value variant.Any) { //gd:AnimationNode.set_parameter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
@@ -918,7 +922,7 @@ Gets the value of a parameter. Parameters are custom local memory used for your 
 */
 //go:nosplit
 func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNode.get_parameter
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

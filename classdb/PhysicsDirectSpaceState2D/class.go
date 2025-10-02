@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -39,6 +40,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -73,8 +75,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -361,7 +364,7 @@ Note: [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in Segments build mode 
 */
 //go:nosplit
 func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState2D.intersect_point
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_point, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_point, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
@@ -392,7 +395,7 @@ If the ray did not intersect anything, then an empty dictionary is returned inst
 */
 //go:nosplit
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.intersect_ray
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -415,7 +418,7 @@ The number of intersections can be limited with the 'max_results' parameter, to 
 */
 //go:nosplit
 func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState2D.intersect_shape
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
@@ -436,7 +439,7 @@ Note: Any [Shape2D]s that the shape is already colliding with e.g. inside of, wi
 */
 //go:nosplit
 func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Packed.Array[float32] { //gd:PhysicsDirectSpaceState2D.cast_motion
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -451,7 +454,7 @@ Returned points are a list of pairs of contact points. For each pair the first o
 */
 //go:nosplit
 func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int64) Array.Contains[Vector2.XY] { //gd:PhysicsDirectSpaceState2D.collide_shape
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.collide_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.collide_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
@@ -483,7 +486,7 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 */
 //go:nosplit
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

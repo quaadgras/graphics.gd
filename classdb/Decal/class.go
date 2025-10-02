@@ -26,6 +26,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -53,6 +54,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -87,8 +89,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -441,12 +444,12 @@ func (self Instance) SetCullMask(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:Decal.set_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:Decal.get_size
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = mainthread.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -468,7 +471,7 @@ One case where this is better than accessing the texture directly is when you wa
 */
 //go:nosplit
 func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) { //gd:Decal.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		atype   DecalTexture
 		texture gdextension.Object
 	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
@@ -491,127 +494,127 @@ One case where this is better than accessing the texture directly is when you wa
 */
 //go:nosplit
 func (self class) GetTexture(atype DecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ atype DecalTexture }{atype})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ atype DecalTexture }{atype})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionEnergy(energy float64) { //gd:Decal.set_emission_energy
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 
 //go:nosplit
 func (self class) GetEmissionEnergy() float64 { //gd:Decal.get_emission_energy
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlbedoMix(energy float64) { //gd:Decal.set_albedo_mix
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo_mix, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo_mix, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 
 //go:nosplit
 func (self class) GetAlbedoMix() float64 { //gd:Decal.get_albedo_mix
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_albedo_mix, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_albedo_mix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(color Color.RGBA) { //gd:Decal.set_modulate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:Decal.get_modulate
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpperFade(fade float64) { //gd:Decal.set_upper_fade
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 
 //go:nosplit
 func (self class) GetUpperFade() float64 { //gd:Decal.get_upper_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLowerFade(fade float64) { //gd:Decal.set_lower_fade
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 
 //go:nosplit
 func (self class) GetLowerFade() float64 { //gd:Decal.get_lower_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalFade(fade float64) { //gd:Decal.set_normal_fade
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_fade, 0|(gdextension.SizeFloat<<4), &struct{ fade float64 }{fade})
 }
 
 //go:nosplit
 func (self class) GetNormalFade() float64 { //gd:Decal.get_normal_fade
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_fade, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_fade, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableDistanceFade(enable bool) { //gd:Decal.set_enable_distance_fade
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_distance_fade, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_distance_fade, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDistanceFadeEnabled() bool { //gd:Decal.is_distance_fade_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeBegin(distance float64) { //gd:Decal.set_distance_fade_begin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_begin, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeBegin() float64 { //gd:Decal.get_distance_fade_begin
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeLength(distance float64) { //gd:Decal.set_distance_fade_length
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_length, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_length, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeLength() float64 { //gd:Decal.get_distance_fade_length
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:Decal.set_cull_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:Decal.get_cull_mask
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

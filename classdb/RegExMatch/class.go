@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -34,6 +35,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -68,8 +70,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -242,7 +245,7 @@ func (self Instance) Strings() []string {
 
 //go:nosplit
 func (self class) GetSubject() String.Readable { //gd:RegExMatch.get_subject
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_subject, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_subject, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -252,21 +255,21 @@ Returns the number of capturing groups.
 */
 //go:nosplit
 func (self class) GetGroupCount() int64 { //gd:RegExMatch.get_group_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_group_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_group_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetNames() Dictionary.Any { //gd:RegExMatch.get_names
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_names, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_names, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStrings() Packed.Strings { //gd:RegExMatch.get_strings
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_strings, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_strings, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -278,7 +281,7 @@ Returns an empty string if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetString(name variant.Any) String.Readable { //gd:RegExMatch.get_string
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_string, gdextension.SizeString|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_string, gdextension.SizeString|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -290,7 +293,7 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetStart(name variant.Any) int64 { //gd:RegExMatch.get_start
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_start, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_start, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
 	var ret = r_ret
 	return ret
 }
@@ -302,7 +305,7 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetEnd(name variant.Any) int64 { //gd:RegExMatch.get_end
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))})
 	var ret = r_ret
 	return ret
 }

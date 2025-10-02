@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -31,6 +32,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -65,8 +67,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -239,19 +242,19 @@ Returns the input port which should be connected by default when this node is cr
 */
 //go:nosplit
 func (self class) GetDefaultInputPort(atype PortType) int64 { //gd:VisualShaderNode.get_default_input_port
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype PortType }{atype})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutputPortForPreview(port int64) { //gd:VisualShaderNode.set_output_port_for_preview
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_for_preview, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_for_preview, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
 }
 
 //go:nosplit
 func (self class) GetOutputPortForPreview() int64 { //gd:VisualShaderNode.get_output_port_for_preview
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_for_preview, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_for_preview, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -261,7 +264,7 @@ Sets the default 'value' for the selected input 'port'.
 */
 //go:nosplit
 func (self class) SetInputPortDefaultValue(port int64, value variant.Any, prev_value variant.Any) { //gd:VisualShaderNode.set_input_port_default_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_default_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_default_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), &struct {
 		port       int64
 		value      gdextension.Variant
 		prev_value gdextension.Variant
@@ -273,7 +276,7 @@ Returns the default value of the input 'port'.
 */
 //go:nosplit
 func (self class) GetInputPortDefaultValue(port int64) variant.Any { //gd:VisualShaderNode.get_input_port_default_value
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_input_port_default_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_input_port_default_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -283,7 +286,7 @@ Removes the default value of the input 'port'.
 */
 //go:nosplit
 func (self class) RemoveInputPortDefaultValue(port int64) { //gd:VisualShaderNode.remove_input_port_default_value
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input_port_default_value, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input_port_default_value, 0|(gdextension.SizeInt<<4), &struct{ port int64 }{port})
 }
 
 /*
@@ -291,7 +294,7 @@ Clears the default input ports value.
 */
 //go:nosplit
 func (self class) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_default_input_values
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_default_input_values, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_default_input_values, 0, &struct{}{})
 }
 
 /*
@@ -299,7 +302,7 @@ Sets the default input ports values using an slice of the form [index0, value0, 
 */
 //go:nosplit
 func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNode.set_default_input_values
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_input_values, 0|(gdextension.SizeArray<<4), &struct{ values gdextension.Array }{pointers.Get(gd.InternalArray(values))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_input_values, 0|(gdextension.SizeArray<<4), &struct{ values gdextension.Array }{pointers.Get(gd.InternalArray(values))})
 }
 
 /*
@@ -307,19 +310,19 @@ Returns an slice containing default values for all of the input ports of the nod
 */
 //go:nosplit
 func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_default_input_values
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_default_input_values, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_default_input_values, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:VisualShaderNode.set_frame
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:VisualShaderNode.get_frame
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

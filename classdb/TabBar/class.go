@@ -11,6 +11,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -38,6 +39,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -72,8 +74,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -620,24 +623,24 @@ func (self Instance) SetTabCount(value int) {
 
 //go:nosplit
 func (self class) SetTabCount(count int64) { //gd:TabBar.set_tab_count
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetTabCount() int64 { //gd:TabBar.get_tab_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentTab(tab_idx int64) { //gd:TabBar.set_current_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_tab, 0|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_tab, 0|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 }
 
 //go:nosplit
 func (self class) GetCurrentTab() int64 { //gd:TabBar.get_current_tab
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_tab, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_tab, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -647,7 +650,7 @@ Returns the previously active tab index.
 */
 //go:nosplit
 func (self class) GetPreviousTab() int64 { //gd:TabBar.get_previous_tab
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_tab, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_tab, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -657,7 +660,7 @@ Selects the first available tab with lower index than the currently selected. Re
 */
 //go:nosplit
 func (self class) SelectPreviousAvailable() bool { //gd:TabBar.select_previous_available
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.select_previous_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.select_previous_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -667,7 +670,7 @@ Selects the first available tab with greater index than the currently selected. 
 */
 //go:nosplit
 func (self class) SelectNextAvailable() bool { //gd:TabBar.select_next_available
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.select_next_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.select_next_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -677,7 +680,7 @@ Sets a 'title' for the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) SetTabTitle(tab_idx int64, title String.Readable) { //gd:TabBar.set_tab_title
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		tab_idx int64
 		title   gdextension.String
 	}{tab_idx, pointers.Get(gd.InternalString(title))})
@@ -688,7 +691,7 @@ Returns the title of the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) GetTabTitle(tab_idx int64) String.Readable { //gd:TabBar.get_tab_title
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_title, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_title, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -700,7 +703,7 @@ Note: By default, if the 'tooltip' is empty and the tab text is truncated (not a
 */
 //go:nosplit
 func (self class) SetTabTooltip(tab_idx int64, tooltip String.Readable) { //gd:TabBar.set_tab_tooltip
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		tab_idx int64
 		tooltip gdextension.String
 	}{tab_idx, pointers.Get(gd.InternalString(tooltip))})
@@ -711,7 +714,7 @@ Returns the tooltip text of the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) GetTabTooltip(tab_idx int64) String.Readable { //gd:TabBar.get_tab_tooltip
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -721,7 +724,7 @@ Sets tab title base writing direction.
 */
 //go:nosplit
 func (self class) SetTabTextDirection(tab_idx int64, direction Control.TextDirection) { //gd:TabBar.set_tab_text_direction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_text_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_text_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		tab_idx   int64
 		direction Control.TextDirection
 	}{tab_idx, direction})
@@ -732,7 +735,7 @@ Returns tab title text base writing direction.
 */
 //go:nosplit
 func (self class) GetTabTextDirection(tab_idx int64) Control.TextDirection { //gd:TabBar.get_tab_text_direction
-	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_tab_text_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_tab_text_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = r_ret
 	return ret
 }
@@ -742,7 +745,7 @@ Sets language code of tab title used for line-breaking and text shaping algorith
 */
 //go:nosplit
 func (self class) SetTabLanguage(tab_idx int64, language String.Readable) { //gd:TabBar.set_tab_language
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		tab_idx  int64
 		language gdextension.String
 	}{tab_idx, pointers.Get(gd.InternalString(language))})
@@ -753,7 +756,7 @@ Returns tab title language code.
 */
 //go:nosplit
 func (self class) GetTabLanguage(tab_idx int64) String.Readable { //gd:TabBar.get_tab_language
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tab_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -763,7 +766,7 @@ Sets an 'icon' for the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
 	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
@@ -774,7 +777,7 @@ Returns the icon for the tab at index 'tab_idx' or null if the tab has no icon.
 */
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -784,7 +787,7 @@ Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This 
 */
 //go:nosplit
 func (self class) SetTabIconMaxWidth(tab_idx int64, width int64) { //gd:TabBar.set_tab_icon_max_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon_max_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon_max_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		tab_idx int64
 		width   int64
 	}{tab_idx, width})
@@ -795,7 +798,7 @@ Returns the maximum allowed width of the icon for the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) GetTabIconMaxWidth(tab_idx int64) int64 { //gd:TabBar.get_tab_icon_max_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon_max_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon_max_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = r_ret
 	return ret
 }
@@ -807,7 +810,7 @@ Sets an 'icon' for the button of the tab at index 'tab_idx' (located to the righ
 */
 //go:nosplit
 func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
 	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
@@ -818,7 +821,7 @@ Returns the icon for the right button of the tab at index 'tab_idx' or null if t
 */
 //go:nosplit
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -828,7 +831,7 @@ If 'disabled' is true, disables the tab at index 'tab_idx', making it non-intera
 */
 //go:nosplit
 func (self class) SetTabDisabled(tab_idx int64, disabled bool) { //gd:TabBar.set_tab_disabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		tab_idx  int64
 		disabled bool
 	}{tab_idx, disabled})
@@ -839,7 +842,7 @@ Returns true if the tab at index 'tab_idx' is disabled.
 */
 //go:nosplit
 func (self class) IsTabDisabled(tab_idx int64) bool { //gd:TabBar.is_tab_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tab_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tab_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = r_ret
 	return ret
 }
@@ -849,7 +852,7 @@ If 'hidden' is true, hides the tab at index 'tab_idx', making it disappear from 
 */
 //go:nosplit
 func (self class) SetTabHidden(tab_idx int64, hidden bool) { //gd:TabBar.set_tab_hidden
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_hidden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_hidden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		tab_idx int64
 		hidden  bool
 	}{tab_idx, hidden})
@@ -860,7 +863,7 @@ Returns true if the tab at index 'tab_idx' is hidden.
 */
 //go:nosplit
 func (self class) IsTabHidden(tab_idx int64) bool { //gd:TabBar.is_tab_hidden
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tab_hidden, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tab_hidden, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = r_ret
 	return ret
 }
@@ -872,7 +875,7 @@ Sets the metadata value for the tab at index 'tab_idx', which can be retrieved l
 */
 //go:nosplit
 func (self class) SetTabMetadata(tab_idx int64, metadata variant.Any) { //gd:TabBar.set_tab_metadata
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		tab_idx  int64
 		metadata gdextension.Variant
 	}{tab_idx, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))})
@@ -885,7 +888,7 @@ Returns the metadata value set to the tab at index 'tab_idx' using [SetTabMetada
 */
 //go:nosplit
 func (self class) GetTabMetadata(tab_idx int64) variant.Any { //gd:TabBar.get_tab_metadata
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_tab_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_tab_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -895,7 +898,7 @@ Removes the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) RemoveTab(tab_idx int64) { //gd:TabBar.remove_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tab, 0|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tab, 0|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 }
 
 /*
@@ -903,7 +906,7 @@ Adds a new tab.
 */
 //go:nosplit
 func (self class) AddTab(title String.Readable, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tab, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tab, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		title gdextension.String
 		icon  gdextension.Object
 	}{pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
@@ -914,31 +917,31 @@ Returns the index of the tab at local coordinates 'point'. Returns -1 if the poi
 */
 //go:nosplit
 func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabBar.get_tab_idx_at_point
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_at_point, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_at_point, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabAlignment(alignment AlignmentMode) { //gd:TabBar.set_tab_alignment
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
 }
 
 //go:nosplit
 func (self class) GetTabAlignment() AlignmentMode { //gd:TabBar.get_tab_alignment
-	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_tab_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_tab_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipTabs(clip_tabs bool) { //gd:TabBar.set_clip_tabs
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_tabs, 0|(gdextension.SizeBool<<4), &struct{ clip_tabs bool }{clip_tabs})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_tabs, 0|(gdextension.SizeBool<<4), &struct{ clip_tabs bool }{clip_tabs})
 }
 
 //go:nosplit
 func (self class) GetClipTabs() bool { //gd:TabBar.get_clip_tabs
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_clip_tabs, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_clip_tabs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -948,7 +951,7 @@ Returns the number of hidden tabs offsetted to the left.
 */
 //go:nosplit
 func (self class) GetTabOffset() int64 { //gd:TabBar.get_tab_offset
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -958,7 +961,7 @@ Returns true if the offset buttons (the ones that appear when there's not enough
 */
 //go:nosplit
 func (self class) GetOffsetButtonsVisible() bool { //gd:TabBar.get_offset_buttons_visible
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_offset_buttons_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_offset_buttons_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -968,7 +971,7 @@ Moves the scroll view to make the tab visible.
 */
 //go:nosplit
 func (self class) EnsureTabVisible(idx int64) { //gd:TabBar.ensure_tab_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_tab_visible, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_tab_visible, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 
 /*
@@ -978,7 +981,7 @@ Returns tab [Rect2.PositionSize] with local position and size.
 */
 //go:nosplit
 func (self class) GetTabRect(tab_idx int64) Rect2.PositionSize { //gd:TabBar.get_tab_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_tab_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
+	var r_ret = mainthread.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_tab_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
 	var ret = r_ret
 	return ret
 }
@@ -988,7 +991,7 @@ Moves a tab from 'from' to 'to'.
 */
 //go:nosplit
 func (self class) MoveTab(from int64, to int64) { //gd:TabBar.move_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_tab, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_tab, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from int64
 		to   int64
 	}{from, to})
@@ -996,108 +999,108 @@ func (self class) MoveTab(from int64, to int64) { //gd:TabBar.move_tab
 
 //go:nosplit
 func (self class) SetCloseWithMiddleMouse(enabled bool) { //gd:TabBar.set_close_with_middle_mouse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_with_middle_mouse, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_with_middle_mouse, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetCloseWithMiddleMouse() bool { //gd:TabBar.get_close_with_middle_mouse
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_with_middle_mouse, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_with_middle_mouse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabCloseDisplayPolicy(policy CloseButtonDisplayPolicy) { //gd:TabBar.set_tab_close_display_policy
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_close_display_policy, 0|(gdextension.SizeInt<<4), &struct{ policy CloseButtonDisplayPolicy }{policy})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_close_display_policy, 0|(gdextension.SizeInt<<4), &struct{ policy CloseButtonDisplayPolicy }{policy})
 }
 
 //go:nosplit
 func (self class) GetTabCloseDisplayPolicy() CloseButtonDisplayPolicy { //gd:TabBar.get_tab_close_display_policy
-	var r_ret = noescape.Call[CloseButtonDisplayPolicy](gd.ObjectChecked(self.AsObject()), methods.get_tab_close_display_policy, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[CloseButtonDisplayPolicy](gd.ObjectChecked(self.AsObject()), methods.get_tab_close_display_policy, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxTabWidth(width int64) { //gd:TabBar.set_max_tab_width
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_tab_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_tab_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
 
 //go:nosplit
 func (self class) GetMaxTabWidth() int64 { //gd:TabBar.get_max_tab_width
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_tab_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_tab_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollingEnabled(enabled bool) { //gd:TabBar.set_scrolling_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scrolling_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scrolling_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetScrollingEnabled() bool { //gd:TabBar.get_scrolling_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scrolling_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scrolling_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragToRearrangeEnabled(enabled bool) { //gd:TabBar.set_drag_to_rearrange_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_to_rearrange_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_to_rearrange_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetDragToRearrangeEnabled() bool { //gd:TabBar.get_drag_to_rearrange_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_drag_to_rearrange_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_drag_to_rearrange_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabsRearrangeGroup(group_id int64) { //gd:TabBar.set_tabs_rearrange_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tabs_rearrange_group, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tabs_rearrange_group, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
 }
 
 //go:nosplit
 func (self class) GetTabsRearrangeGroup() int64 { //gd:TabBar.get_tabs_rearrange_group
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tabs_rearrange_group, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tabs_rearrange_group, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollToSelected(enabled bool) { //gd:TabBar.set_scroll_to_selected
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_to_selected, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_to_selected, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetScrollToSelected() bool { //gd:TabBar.get_scroll_to_selected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scroll_to_selected, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scroll_to_selected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectWithRmb(enabled bool) { //gd:TabBar.set_select_with_rmb
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_with_rmb, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_with_rmb, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetSelectWithRmb() bool { //gd:TabBar.get_select_with_rmb
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_select_with_rmb, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_select_with_rmb, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectEnabled(enabled bool) { //gd:TabBar.set_deselect_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetDeselectEnabled() bool { //gd:TabBar.get_deselect_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_deselect_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_deselect_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1107,7 +1110,7 @@ Clears all tabs.
 */
 //go:nosplit
 func (self class) ClearTabs() { //gd:TabBar.clear_tabs
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tabs, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tabs, 0, &struct{}{})
 }
 
 /*

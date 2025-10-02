@@ -14,6 +14,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -660,7 +664,7 @@ Returns the next available point ID with no point associated to it.
 */
 //go:nosplit
 func (self class) GetAvailablePointId() int64 { //gd:AStar2D.get_available_point_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_point_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_point_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -681,7 +685,7 @@ If there already exists a point for the given 'id', its position and weight scal
 */
 //go:nosplit
 func (self class) AddPoint(id int64, position Vector2.XY, weight_scale float64) { //gd:AStar2D.add_point
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12), &struct {
 		id           int64
 		position     Vector2.XY
 		weight_scale float64
@@ -693,7 +697,7 @@ Returns the position of the point associated with the given 'id'.
 */
 //go:nosplit
 func (self class) GetPointPosition(id int64) Vector2.XY { //gd:AStar2D.get_point_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -703,7 +707,7 @@ Sets the 'position' for the point with the given 'id'.
 */
 //go:nosplit
 func (self class) SetPointPosition(id int64, position Vector2.XY) { //gd:AStar2D.set_point_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		id       int64
 		position Vector2.XY
 	}{id, position})
@@ -714,7 +718,7 @@ Returns the weight scale of the point associated with the given 'id'.
 */
 //go:nosplit
 func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar2D.get_point_weight_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -726,7 +730,7 @@ Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is
 */
 //go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar2D.set_point_weight_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		id           int64
 		weight_scale float64
 	}{id, weight_scale})
@@ -737,7 +741,7 @@ Removes the point associated with the given 'id' from the points pool.
 */
 //go:nosplit
 func (self class) RemovePoint(id int64) { //gd:AStar2D.remove_point
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -745,7 +749,7 @@ Returns whether a point associated with the given 'id' exists.
 */
 //go:nosplit
 func (self class) HasPoint(id int64) bool { //gd:AStar2D.has_point
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_point, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_point, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -768,7 +772,7 @@ Returns an array with the IDs of the points that form the connection with the gi
 */
 //go:nosplit
 func (self class) GetPointConnections(id int64) Packed.Array[int64] { //gd:AStar2D.get_point_connections
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_connections, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_connections, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -778,19 +782,19 @@ Returns an array of all point IDs.
 */
 //go:nosplit
 func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar2D.get_point_ids
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_ids, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeighborFilterEnabled(enabled bool) { //gd:AStar2D.set_neighbor_filter_enabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_neighbor_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_neighbor_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsNeighborFilterEnabled() bool { //gd:AStar2D.is_neighbor_filter_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_neighbor_filter_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_neighbor_filter_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -800,7 +804,7 @@ Disables or enables the specified point for pathfinding. Useful for making a tem
 */
 //go:nosplit
 func (self class) SetPointDisabled(id int64, disabled bool) { //gd:AStar2D.set_point_disabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id       int64
 		disabled bool
 	}{id, disabled})
@@ -811,7 +815,7 @@ Returns whether a point is disabled or not for pathfinding. By default, all poin
 */
 //go:nosplit
 func (self class) IsPointDisabled(id int64) bool { //gd:AStar2D.is_point_disabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -828,7 +832,7 @@ Creates a segment between the given points. If 'bidirectional' is false, only mo
 */
 //go:nosplit
 func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar2D.connect_points
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
@@ -840,7 +844,7 @@ Deletes the segment between the given points. If 'bidirectional' is false, only 
 */
 //go:nosplit
 func (self class) DisconnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar2D.disconnect_points
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
@@ -852,7 +856,7 @@ Returns whether there is a connection/segment between the given points. If 'bidi
 */
 //go:nosplit
 func (self class) ArePointsConnected(id int64, to_id int64, bidirectional bool) bool { //gd:AStar2D.are_points_connected
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_points_connected, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_points_connected, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
@@ -866,7 +870,7 @@ Returns the number of points currently in the points pool.
 */
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:AStar2D.get_point_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -878,7 +882,7 @@ Returns the capacity of the structure backing the points, useful in conjunction 
 */
 //go:nosplit
 func (self class) GetPointCapacity() int64 { //gd:AStar2D.get_point_capacity
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_capacity, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_capacity, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -888,7 +892,7 @@ Reserves space internally for 'num_nodes' points. Useful if you're adding a know
 */
 //go:nosplit
 func (self class) ReserveSpace(num_nodes int64) { //gd:AStar2D.reserve_space
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reserve_space, 0|(gdextension.SizeInt<<4), &struct{ num_nodes int64 }{num_nodes})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reserve_space, 0|(gdextension.SizeInt<<4), &struct{ num_nodes int64 }{num_nodes})
 }
 
 /*
@@ -896,7 +900,7 @@ Clears all the points and segments.
 */
 //go:nosplit
 func (self class) Clear() { //gd:AStar2D.clear
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -906,7 +910,7 @@ Note: If several points are the closest to 'to_position', the one with the small
 */
 //go:nosplit
 func (self class) GetClosestPoint(to_position Vector2.XY, include_disabled bool) int64 { //gd:AStar2D.get_closest_point
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		to_position      Vector2.XY
 		include_disabled bool
 	}{to_position, include_disabled})
@@ -929,7 +933,7 @@ The result is in the segment that goes from y = 0 to y = 5. It's the closest pos
 */
 //go:nosplit
 func (self class) GetClosestPositionInSegment(to_position Vector2.XY) Vector2.XY { //gd:AStar2D.get_closest_position_in_segment
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_position_in_segment, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ to_position Vector2.XY }{to_position})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_position_in_segment, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ to_position Vector2.XY }{to_position})
 	var ret = r_ret
 	return ret
 }
@@ -948,7 +952,7 @@ Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the sear
 */
 //go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStar2D.get_point_path
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64
 		to_id              int64
 		allow_partial_path bool
@@ -983,7 +987,7 @@ If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] ins
 */
 //go:nosplit
 func (self class) GetIdPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[int64] { //gd:AStar2D.get_id_path
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64
 		to_id              int64
 		allow_partial_path bool

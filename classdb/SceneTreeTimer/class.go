@@ -39,6 +39,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -60,6 +61,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -94,8 +96,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -186,12 +189,12 @@ func (self Instance) SetTimeLeft(value Float.X) {
 
 //go:nosplit
 func (self class) SetTimeLeft(time float64) { //gd:SceneTreeTimer.set_time_left
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_left, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_left, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 }
 
 //go:nosplit
 func (self class) GetTimeLeft() float64 { //gd:SceneTreeTimer.get_time_left
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

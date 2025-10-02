@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -33,6 +34,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -67,8 +69,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -215,62 +218,62 @@ func (self Instance) SetSpecGlossImg(value Image.Instance) {
 
 //go:nosplit
 func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diffuse_img
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_diffuse_img
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(diffuse_img[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), &struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(diffuse_img[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiffuseFactor(diffuse_factor Color.RGBA) { //gd:GLTFSpecGloss.set_diffuse_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_factor, 0|(gdextension.SizeColor<<4), &struct{ diffuse_factor Color.RGBA }{diffuse_factor})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_factor, 0|(gdextension.SizeColor<<4), &struct{ diffuse_factor Color.RGBA }{diffuse_factor})
 }
 
 //go:nosplit
 func (self class) GetGlossFactor() float64 { //gd:GLTFSpecGloss.get_gloss_factor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlossFactor(gloss_factor float64) { //gd:GLTFSpecGloss.set_gloss_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), &struct{ gloss_factor float64 }{gloss_factor})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), &struct{ gloss_factor float64 }{gloss_factor})
 }
 
 //go:nosplit
 func (self class) GetSpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.get_specular_factor
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, &struct{}{})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecGloss.set_specular_factor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), &struct{ specular_factor Color.RGBA }{specular_factor})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), &struct{ specular_factor Color.RGBA }{specular_factor})
 }
 
 //go:nosplit
 func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_spec_gloss_img
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), &struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(spec_gloss_img[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), &struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(spec_gloss_img[0].AsObject()))})
 }
 func (self class) AsGLTFSpecGloss() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFSpecGloss](self[0])}

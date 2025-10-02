@@ -52,6 +52,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -85,6 +86,7 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -119,8 +121,10 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -3188,7 +3192,7 @@ Note: This does not affect the methods in [Input], only the way events are propa
 */
 //go:nosplit
 func (self class) AcceptEvent() { //gd:Control.accept_event
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accept_event, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accept_event, 0, &struct{}{})
 }
 
 /*
@@ -3198,7 +3202,7 @@ Returns the minimum size for this control. See [CustomMinimumSize].
 */
 //go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3211,7 +3215,7 @@ Returns combined minimum size from [CustomMinimumSize] and [GetMinimumSize].
 */
 //go:nosplit
 func (self class) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_minimum_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3223,7 +3227,7 @@ If 'keep_offsets' is true, control's position will also be updated.
 */
 //go:nosplit
 func (self class) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		preset       LayoutPreset
 		keep_offsets bool
 	}{preset, keep_offsets})
@@ -3240,7 +3244,7 @@ Use parameter 'margin' to determine the gap between the [Control] and the edges.
 */
 //go:nosplit
 func (self class) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		preset      LayoutPreset
 		resize_mode LayoutPresetMode
 		margin      int64
@@ -3255,7 +3259,7 @@ Sets both anchor preset and offset preset. See [SetAnchorsPreset] and [SetOffset
 */
 //go:nosplit
 func (self class) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_and_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_and_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		preset      LayoutPreset
 		resize_mode LayoutPresetMode
 		margin      int64
@@ -3276,7 +3280,7 @@ If 'push_opposite_anchor' is true and the opposite anchor overlaps this anchor, 
 */
 //go:nosplit
 func (self class) SetAnchor(side Rect2.Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		side                 Rect2.Side
 		anchor               float64
 		keep_offset          bool
@@ -3294,7 +3298,7 @@ Returns the anchor for the specified [Side]. A getter method for [AnchorBottom],
 */
 //go:nosplit
 func (self class) GetAnchor(side Rect2.Side) float64 { //gd:Control.get_anchor
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anchor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anchor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = r_ret
 	return ret
 }
@@ -3309,7 +3313,7 @@ Sets the offset for the specified [Side] to 'offset'. A setter method for [Offse
 */
 //go:nosplit
 func (self class) SetOffset(side Rect2.Side, offset float64) { //gd:Control.set_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		side   Rect2.Side
 		offset float64
 	}{side, offset})
@@ -3325,7 +3329,7 @@ Returns the offset for the specified [Side]. A getter method for [OffsetBottom],
 */
 //go:nosplit
 func (self class) GetOffset(offset Rect2.Side) float64 { //gd:Control.get_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ offset Rect2.Side }{offset})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ offset Rect2.Side }{offset})
 	var ret = r_ret
 	return ret
 }
@@ -3338,7 +3342,7 @@ Works the same as [SetAnchor], but instead of keep_offset argument and automatic
 */
 //go:nosplit
 func (self class) SetAnchorAndOffset(side Rect2.Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_and_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_and_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		side                 Rect2.Side
 		anchor               float64
 		offset               float64
@@ -3355,7 +3359,7 @@ Sets [OffsetLeft] and [OffsetTop] at the same time. Equivalent of changing [Posi
 */
 //go:nosplit
 func (self class) SetBegin(position Vector2.XY) { //gd:Control.set_begin
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_begin, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_begin, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 /*
@@ -3366,7 +3370,7 @@ Sets [OffsetRight] and [OffsetBottom] at the same time.
 */
 //go:nosplit
 func (self class) SetEnd(position Vector2.XY) { //gd:Control.set_end
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 /*
@@ -3378,7 +3382,7 @@ If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 */
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets})
@@ -3393,7 +3397,7 @@ If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 */
 //go:nosplit
 func (self class) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		size         Vector2.XY
 		keep_offsets bool
 	}{size, keep_offsets})
@@ -3406,12 +3410,12 @@ Resets the size to [GetCombinedMinimumSize]. This is equivalent to calling set_s
 */
 //go:nosplit
 func (self class) ResetSize() { //gd:Control.reset_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_size, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_size, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetCustomMinimumSize(size Vector2.XY) { //gd:Control.set_custom_minimum_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 
 /*
@@ -3423,7 +3427,7 @@ If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 */
 //go:nosplit
 func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), &struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets})
@@ -3431,22 +3435,22 @@ func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //
 
 //go:nosplit
 func (self class) SetRotation(radians float64) { //gd:Control.set_rotation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
 
 //go:nosplit
 func (self class) SetRotationDegrees(degrees float64) { //gd:Control.set_rotation_degrees
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:Control.set_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
 
 //go:nosplit
 func (self class) SetPivotOffset(pivot_offset Vector2.XY) { //gd:Control.set_pivot_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset, 0|(gdextension.SizeVector2<<4), &struct{ pivot_offset Vector2.XY }{pivot_offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset, 0|(gdextension.SizeVector2<<4), &struct{ pivot_offset Vector2.XY }{pivot_offset})
 }
 
 /*
@@ -3458,7 +3462,7 @@ Returns [OffsetLeft] and [OffsetTop]. See also [Position].
 */
 //go:nosplit
 func (self class) GetBegin() Vector2.XY { //gd:Control.get_begin
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_begin, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3471,56 +3475,56 @@ Returns [OffsetRight] and [OffsetBottom].
 */
 //go:nosplit
 func (self class) GetEnd() Vector2.XY { //gd:Control.get_end
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:Control.get_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Control.get_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotation() float64 { //gd:Control.get_rotation
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotationDegrees() float64 { //gd:Control.get_rotation_degrees
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_degrees, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:Control.get_scale
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPivotOffset() Vector2.XY { //gd:Control.get_pivot_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCustomMinimumSize() Vector2.XY { //gd:Control.get_custom_minimum_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3530,14 +3534,14 @@ Returns the width/height occupied in the parent control.
 */
 //go:nosplit
 func (self class) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_parent_area_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_parent_area_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:Control.get_global_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3561,7 +3565,7 @@ Example: Show a popup at the mouse position:
 */
 //go:nosplit
 func (self class) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3582,7 +3586,7 @@ Note: Setting [Viewport.GuiSnapControlsToPixels] to true can lead to rounding in
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Control.get_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = mainthread.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3602,19 +3606,19 @@ Note: Setting [Viewport.GuiSnapControlsToPixels] to true can lead to rounding in
 */
 //go:nosplit
 func (self class) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
-	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_global_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = mainthread.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_global_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusMode(mode FocusMode) { //gd:Control.set_focus_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FocusMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ mode FocusMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetFocusMode() FocusMode { //gd:Control.get_focus_mode
-	var r_ret = noescape.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3627,19 +3631,19 @@ Returns the [FocusMode], but takes the [FocusBehaviorRecursive] into account. If
 */
 //go:nosplit
 func (self class) GetFocusModeWithOverride() FocusMode { //gd:Control.get_focus_mode_with_override
-	var r_ret = noescape.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode_with_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode_with_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusBehaviorRecursive(focus_behavior_recursive FocusBehaviorRecursive) { //gd:Control.set_focus_behavior_recursive
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ focus_behavior_recursive FocusBehaviorRecursive }{focus_behavior_recursive})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ focus_behavior_recursive FocusBehaviorRecursive }{focus_behavior_recursive})
 }
 
 //go:nosplit
 func (self class) GetFocusBehaviorRecursive() FocusBehaviorRecursive { //gd:Control.get_focus_behavior_recursive
-	var r_ret = noescape.Call[FocusBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_focus_behavior_recursive, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[FocusBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_focus_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3651,7 +3655,7 @@ Returns true if this is the current focused control. See [FocusMode].
 */
 //go:nosplit
 func (self class) HasFocus() bool { //gd:Control.has_focus
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3667,7 +3671,7 @@ Note: Using this method together with [Callable.CallDeferred] makes it more reli
 */
 //go:nosplit
 func (self class) GrabFocus() { //gd:Control.grab_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0, &struct{}{})
 }
 
 /*
@@ -3675,7 +3679,7 @@ Give up the focus. No other control will be able to receive input.
 */
 //go:nosplit
 func (self class) ReleaseFocus() { //gd:Control.release_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.release_focus, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.release_focus, 0, &struct{}{})
 }
 
 /*
@@ -3685,7 +3689,7 @@ Finds the previous (above in the tree) [Control] that can receive the focus.
 */
 //go:nosplit
 func (self class) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_prev_valid_focus, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_prev_valid_focus, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -3697,7 +3701,7 @@ Finds the next (below in the tree) [Control] that can receive the focus.
 */
 //go:nosplit
 func (self class) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_next_valid_focus, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_next_valid_focus, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -3712,67 +3716,67 @@ Note: This is different from [GetFocusNeighbor], which returns the path of a spe
 */
 //go:nosplit
 func (self class) FindValidFocusNeighbor(side Rect2.Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_valid_focus_neighbor, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_valid_focus_neighbor, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHSizeFlags(flags SizeFlags) { //gd:Control.set_h_size_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
 }
 
 //go:nosplit
 func (self class) GetHSizeFlags() SizeFlags { //gd:Control.get_h_size_flags
-	var r_ret = noescape.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_h_size_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_h_size_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchRatio(ratio float64) { //gd:Control.set_stretch_ratio
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetStretchRatio() float64 { //gd:Control.get_stretch_ratio
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVSizeFlags(flags SizeFlags) { //gd:Control.set_v_size_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_size_flags, 0|(gdextension.SizeInt<<4), &struct{ flags SizeFlags }{flags})
 }
 
 //go:nosplit
 func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
-	var r_ret = noescape.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_v_size_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_v_size_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Control.get_theme
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Control.set_theme_type_variation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme_type_variation, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme_type_variation, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
 }
 
 //go:nosplit
 func (self class) GetThemeTypeVariation() String.Name { //gd:Control.get_theme_type_variation
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_theme_type_variation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_theme_type_variation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -3784,7 +3788,7 @@ Prevents *_theme_*_override methods from emitting [NotificationThemeChanged] unt
 */
 //go:nosplit
 func (self class) BeginBulkThemeOverride() { //gd:Control.begin_bulk_theme_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_bulk_theme_override, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_bulk_theme_override, 0, &struct{}{})
 }
 
 /*
@@ -3794,7 +3798,7 @@ Ends a bulk theme override update. See [BeginBulkThemeOverride].
 */
 //go:nosplit
 func (self class) EndBulkThemeOverride() { //gd:Control.end_bulk_theme_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_bulk_theme_override, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_bulk_theme_override, 0, &struct{}{})
 }
 
 /*
@@ -3807,7 +3811,7 @@ See also [GetThemeIcon].
 */
 //go:nosplit
 func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Texture2D) { //gd:Control.add_theme_icon_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
@@ -3838,7 +3842,7 @@ Example: Modify a property in a [StyleBox] by duplicating it:
 */
 //go:nosplit
 func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))})
@@ -3855,7 +3859,7 @@ See also [GetThemeFont].
 */
 //go:nosplit
 func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		font gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
@@ -3871,7 +3875,7 @@ See also [GetThemeFontSize].
 */
 //go:nosplit
 func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Control.add_theme_font_size_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		name      gdextension.StringName
 		font_size int64
 	}{pointers.Get(gd.InternalStringName(name)), font_size})
@@ -3900,7 +3904,7 @@ Example: Override a [Label]'s color and reset it later:
 */
 //go:nosplit
 func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //gd:Control.add_theme_color_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_color_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_color_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), &struct {
 		name  gdextension.StringName
 		color Color.RGBA
 	}{pointers.Get(gd.InternalStringName(name)), color})
@@ -3916,7 +3920,7 @@ See also [GetThemeConstant].
 */
 //go:nosplit
 func (self class) AddThemeConstantOverride(name String.Name, constant int64) { //gd:Control.add_theme_constant_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_constant_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_constant_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.StringName
 		constant int64
 	}{pointers.Get(gd.InternalStringName(name)), constant})
@@ -3929,7 +3933,7 @@ Removes a local override for a theme icon with the specified 'name' previously a
 */
 //go:nosplit
 func (self class) RemoveThemeIconOverride(name String.Name) { //gd:Control.remove_theme_icon_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_icon_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_icon_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3940,7 +3944,7 @@ Removes a local override for a theme [StyleBox] with the specified 'name' previo
 */
 //go:nosplit
 func (self class) RemoveThemeStyleboxOverride(name String.Name) { //gd:Control.remove_theme_stylebox_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_stylebox_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_stylebox_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3951,7 +3955,7 @@ Removes a local override for a theme [Font] with the specified 'name' previously
 */
 //go:nosplit
 func (self class) RemoveThemeFontOverride(name String.Name) { //gd:Control.remove_theme_font_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3961,7 +3965,7 @@ Removes a local override for a theme font size with the specified 'name' previou
 */
 //go:nosplit
 func (self class) RemoveThemeFontSizeOverride(name String.Name) { //gd:Control.remove_theme_font_size_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_size_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_size_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3972,7 +3976,7 @@ Removes a local override for a theme [Color.RGBA] with the specified 'name' prev
 */
 //go:nosplit
 func (self class) RemoveThemeColorOverride(name String.Name) { //gd:Control.remove_theme_color_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_color_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_color_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3982,7 +3986,7 @@ Removes a local override for a theme constant with the specified 'name' previous
 */
 //go:nosplit
 func (self class) RemoveThemeConstantOverride(name String.Name) { //gd:Control.remove_theme_constant_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_constant_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_constant_override, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -3995,7 +3999,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4014,7 +4018,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4033,7 +4037,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Control.get_theme_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4051,7 +4055,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_font_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_font_size, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_font_size, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4080,7 +4084,7 @@ For the current control its local overrides are considered first (see [AddThemeC
 */
 //go:nosplit
 func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Control.get_theme_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_theme_color, gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_theme_color, gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4098,7 +4102,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_constant
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_constant, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_constant, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4116,7 +4120,7 @@ See [AddThemeIconOverride].
 */
 //go:nosplit
 func (self class) HasThemeIconOverride(name String.Name) bool { //gd:Control.has_theme_icon_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4132,7 +4136,7 @@ See [AddThemeStyleboxOverride].
 */
 //go:nosplit
 func (self class) HasThemeStyleboxOverride(name String.Name) bool { //gd:Control.has_theme_stylebox_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4148,7 +4152,7 @@ See [AddThemeFontOverride].
 */
 //go:nosplit
 func (self class) HasThemeFontOverride(name String.Name) bool { //gd:Control.has_theme_font_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4163,7 +4167,7 @@ See [AddThemeFontSizeOverride].
 */
 //go:nosplit
 func (self class) HasThemeFontSizeOverride(name String.Name) bool { //gd:Control.has_theme_font_size_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4179,7 +4183,7 @@ See [AddThemeColorOverride].
 */
 //go:nosplit
 func (self class) HasThemeColorOverride(name String.Name) bool { //gd:Control.has_theme_color_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4194,7 +4198,7 @@ See [AddThemeConstantOverride].
 */
 //go:nosplit
 func (self class) HasThemeConstantOverride(name String.Name) bool { //gd:Control.has_theme_constant_override
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -4209,7 +4213,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_icon
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4227,7 +4231,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_stylebox
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4245,7 +4249,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4263,7 +4267,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font_size
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4281,7 +4285,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_color
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4299,7 +4303,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) HasThemeConstant(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_constant
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
@@ -4318,7 +4322,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultBaseScale() float64 { //gd:Control.get_theme_default_base_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_base_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4334,7 +4338,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
@@ -4350,7 +4354,7 @@ See [GetThemeColor] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_default_font_size
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4360,55 +4364,55 @@ Returns the parent control node.
 */
 //go:nosplit
 func (self class) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_control, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHGrowDirection(direction GrowDirection) { //gd:Control.set_h_grow_direction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
 }
 
 //go:nosplit
 func (self class) GetHGrowDirection() GrowDirection { //gd:Control.get_h_grow_direction
-	var r_ret = noescape.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_h_grow_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_h_grow_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVGrowDirection(direction GrowDirection) { //gd:Control.set_v_grow_direction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_grow_direction, 0|(gdextension.SizeInt<<4), &struct{ direction GrowDirection }{direction})
 }
 
 //go:nosplit
 func (self class) GetVGrowDirection() GrowDirection { //gd:Control.get_v_grow_direction
-	var r_ret = noescape.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_v_grow_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_v_grow_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTooltipAutoTranslateMode(mode Node.AutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_auto_translate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Node.AutoTranslateMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_auto_translate_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Node.AutoTranslateMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetTooltipAutoTranslateMode() Node.AutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
-	var r_ret = noescape.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_auto_translate_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_auto_translate_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTooltipText(hint String.Readable) { //gd:Control.set_tooltip_text
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_text, 0|(gdextension.SizeString<<4), &struct{ hint gdextension.String }{pointers.Get(gd.InternalString(hint))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_text, 0|(gdextension.SizeString<<4), &struct{ hint gdextension.String }{pointers.Get(gd.InternalString(hint))})
 }
 
 //go:nosplit
 func (self class) GetTooltipText() String.Readable { //gd:Control.get_tooltip_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_text, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4426,19 +4430,19 @@ Note: If this method returns an empty string and [MakeCustomTooltip] is not over
 */
 //go:nosplit
 func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Control.get_tooltip
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString|(gdextension.SizeVector2<<4), &struct{ at_position Vector2.XY }{at_position})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString|(gdextension.SizeVector2<<4), &struct{ at_position Vector2.XY }{at_position})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Control.set_default_cursor_shape
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
 
 //go:nosplit
 func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default_cursor_shape
-	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_default_cursor_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_default_cursor_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4450,7 +4454,7 @@ Returns the mouse cursor shape for this control when hovered over 'position' in 
 */
 //go:nosplit
 func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
-	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	var r_ret = mainthread.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = r_ret
 	return ret
 }
@@ -4466,7 +4470,7 @@ Sets the focus neighbor for the specified [Side] to the [Control] at 'neighbor' 
 */
 //go:nosplit
 func (self class) SetFocusNeighbor(side Rect2.Side, neighbor Path.ToNode) { //gd:Control.set_focus_neighbor
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_neighbor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_neighbor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
 		side     Rect2.Side
 		neighbor gdextension.NodePath
 	}{side, pointers.Get(gd.InternalNodePath(neighbor))})
@@ -4486,31 +4490,31 @@ Note: To find the next [Control] on the specific [Side], even if a neighbor is n
 */
 //go:nosplit
 func (self class) GetFocusNeighbor(side Rect2.Side) Path.ToNode { //gd:Control.get_focus_neighbor
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_neighbor, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_neighbor, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ side Rect2.Side }{side})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusNext(next Path.ToNode) { //gd:Control.set_focus_next
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_next, 0|(gdextension.SizeNodePath<<4), &struct{ next gdextension.NodePath }{pointers.Get(gd.InternalNodePath(next))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_next, 0|(gdextension.SizeNodePath<<4), &struct{ next gdextension.NodePath }{pointers.Get(gd.InternalNodePath(next))})
 }
 
 //go:nosplit
 func (self class) GetFocusNext() Path.ToNode { //gd:Control.get_focus_next
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_next, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_next, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusPrevious(previous Path.ToNode) { //gd:Control.set_focus_previous
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_previous, 0|(gdextension.SizeNodePath<<4), &struct{ previous gdextension.NodePath }{pointers.Get(gd.InternalNodePath(previous))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_previous, 0|(gdextension.SizeNodePath<<4), &struct{ previous gdextension.NodePath }{pointers.Get(gd.InternalNodePath(previous))})
 }
 
 //go:nosplit
 func (self class) GetFocusPrevious() Path.ToNode { //gd:Control.get_focus_previous
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_previous, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_previous, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -4527,7 +4531,7 @@ The methods [CanDropData] and [DropData] must be implemented on controls that wa
 */
 //go:nosplit
 func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd:Control.force_drag
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_drag, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeObject<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_drag, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeObject<<8), &struct {
 		data    gdextension.Variant
 		preview gdextension.Object
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()[0]))})
@@ -4538,7 +4542,7 @@ Starts drag-and-drop operation without using a mouse.
 */
 //go:nosplit
 func (self class) AccessibilityDrag() { //gd:Control.accessibility_drag
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drag, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drag, 0, &struct{}{})
 }
 
 /*
@@ -4546,103 +4550,103 @@ Ends drag-and-drop operation without using a mouse.
 */
 //go:nosplit
 func (self class) AccessibilityDrop() { //gd:Control.accessibility_drop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drop, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetAccessibilityName(name String.Readable) { //gd:Control.set_accessibility_name
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityName() String.Readable { //gd:Control.get_accessibility_name
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_name, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityDescription(description String.Readable) { //gd:Control.set_accessibility_description
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityDescription() String.Readable { //gd:Control.get_accessibility_description
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_description, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityLive(mode DisplayServer.AccessibilityLiveMode) { //gd:Control.set_accessibility_live
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_live, 0|(gdextension.SizeInt<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_live, 0|(gdextension.SizeInt<<4), &struct {
 		mode DisplayServer.AccessibilityLiveMode
 	}{mode})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
-	var r_ret = noescape.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityControlsNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_controls_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_controls_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_controls_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityControlsNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_controls_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityDescribedByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_described_by_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_described_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_described_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityDescribedByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_described_by_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityLabeledByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_labeled_by_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_labeled_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_labeled_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityLabeledByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_labeled_by_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessibilityFlowToNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_flow_to_nodes
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_flow_to_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_flow_to_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
 }
 
 //go:nosplit
 func (self class) GetAccessibilityFlowToNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_flow_to_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_filter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_filter, 0|(gdextension.SizeInt<<4), &struct{ filter MouseFilter }{filter})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_filter, 0|(gdextension.SizeInt<<4), &struct{ filter MouseFilter }{filter})
 }
 
 //go:nosplit
 func (self class) GetMouseFilter() MouseFilter { //gd:Control.get_mouse_filter
-	var r_ret = noescape.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4655,43 +4659,43 @@ Returns the [MouseFilter], but takes the [MouseBehaviorRecursive] into account. 
 */
 //go:nosplit
 func (self class) GetMouseFilterWithOverride() MouseFilter { //gd:Control.get_mouse_filter_with_override
-	var r_ret = noescape.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter_with_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter_with_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseBehaviorRecursive(mouse_behavior_recursive MouseBehaviorRecursive) { //gd:Control.set_mouse_behavior_recursive
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ mouse_behavior_recursive MouseBehaviorRecursive }{mouse_behavior_recursive})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ mouse_behavior_recursive MouseBehaviorRecursive }{mouse_behavior_recursive})
 }
 
 //go:nosplit
 func (self class) GetMouseBehaviorRecursive() MouseBehaviorRecursive { //gd:Control.get_mouse_behavior_recursive
-	var r_ret = noescape.Call[MouseBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_mouse_behavior_recursive, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[MouseBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_mouse_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetForcePassScrollEvents(force_pass_scroll_events bool) { //gd:Control.set_force_pass_scroll_events
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_pass_scroll_events, 0|(gdextension.SizeBool<<4), &struct{ force_pass_scroll_events bool }{force_pass_scroll_events})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_pass_scroll_events, 0|(gdextension.SizeBool<<4), &struct{ force_pass_scroll_events bool }{force_pass_scroll_events})
 }
 
 //go:nosplit
 func (self class) IsForcePassScrollEvents() bool { //gd:Control.is_force_pass_scroll_events
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_pass_scroll_events, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_pass_scroll_events, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipContents(enable bool) { //gd:Control.set_clip_contents
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_contents, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_contents, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsClippingContents() bool { //gd:Control.is_clipping_contents
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_contents, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_contents, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4707,7 +4711,7 @@ Creates an [InputEventMouseButton] that attempts to click the control. If the ev
 */
 //go:nosplit
 func (self class) GrabClickFocus() { //gd:Control.grab_click_focus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_click_focus, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_click_focus, 0, &struct{}{})
 }
 
 /*
@@ -4728,7 +4732,7 @@ The arguments for each callable should be exactly the same as their respective v
 */
 //go:nosplit
 func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func Callable.Function, drop_func Callable.Function) { //gd:Control.set_drag_forwarding
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_forwarding, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_forwarding, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
 		drag_func     gdextension.Callable
 		can_drop_func gdextension.Callable
 		drop_func     gdextension.Callable
@@ -4753,7 +4757,7 @@ Shows the given control at the mouse pointer. A good time to call this method is
 */
 //go:nosplit
 func (self class) SetDragPreview(control [1]gdclass.Control) { //gd:Control.set_drag_preview
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_preview, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_preview, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
 }
 
 /*
@@ -4765,7 +4769,7 @@ Best used with [Node.NotificationDragEnd].
 */
 //go:nosplit
 func (self class) IsDragSuccessful() bool { //gd:Control.is_drag_successful
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_successful, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_successful, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4781,17 +4785,17 @@ Note: [WarpMouse] is only supported on Windows, macOS and Linux. It has no effec
 */
 //go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 //go:nosplit
 func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_shortcut_context
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortcut_context
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -4804,17 +4808,17 @@ Invalidates the size cache in this node and in parent nodes up to top level. Int
 */
 //go:nosplit
 func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_minimum_size, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_minimum_size, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Control.set_layout_direction
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_direction, 0|(gdextension.SizeInt<<4), &struct{ direction LayoutDirection }{direction})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_direction, 0|(gdextension.SizeInt<<4), &struct{ direction LayoutDirection }{direction})
 }
 
 //go:nosplit
 func (self class) GetLayoutDirection() LayoutDirection { //gd:Control.get_layout_direction
-	var r_ret = noescape.Call[LayoutDirection](gd.ObjectChecked(self.AsObject()), methods.get_layout_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[LayoutDirection](gd.ObjectChecked(self.AsObject()), methods.get_layout_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4826,31 +4830,31 @@ Returns true if the layout is right-to-left. See also [LayoutDirection].
 */
 //go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layout_rtl, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layout_rtl, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoTranslate(enable bool) { //gd:Control.set_auto_translate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsAutoTranslating() bool { //gd:Control.is_auto_translating
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_translating, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_translating, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLocalizeNumeralSystem(enable bool) { //gd:Control.set_localize_numeral_system
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localize_numeral_system, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localize_numeral_system, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_numeral_system
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_localizing_numeral_system, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_localizing_numeral_system, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

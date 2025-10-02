@@ -142,6 +142,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -166,6 +167,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -200,8 +202,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -657,7 +660,7 @@ Example: Moving an object twice from the same position, with different transitio
 */
 //go:nosplit
 func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_val variant.Any, duration float64) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
 		obj       gdextension.Object
 		property  gdextension.NodePath
 		final_val gdextension.Variant
@@ -684,7 +687,7 @@ Example: Creating an object that moves back and forth and jumps every few second
 */
 //go:nosplit
 func (self class) TweenInterval(time float64) [1]gdclass.IntervalTweener { //gd:Tween.tween_interval
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_interval, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_interval, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 	var ret = [1]gdclass.IntervalTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.IntervalTweener](r_ret)}
 	return ret
 }
@@ -705,7 +708,7 @@ Example: Turning a sprite red and then blue, with 2 second delay:
 */
 //go:nosplit
 func (self class) TweenCallback(callback Callable.Function) [1]gdclass.CallbackTweener { //gd:Tween.tween_callback
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret)}
 	return ret
 }
@@ -732,7 +735,7 @@ Example: Setting the text of a [Label], using an intermediate method and after a
 */
 //go:nosplit
 func (self class) TweenMethod(method Callable.Function, from variant.Any, to variant.Any, duration float64) [1]gdclass.MethodTweener { //gd:Tween.tween_method
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_method, gdextension.SizeObject|(gdextension.SizeCallable<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_method, gdextension.SizeObject|(gdextension.SizeCallable<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
 		method   gdextension.Callable
 		from     gdextension.Variant
 		to       gdextension.Variant
@@ -761,7 +764,7 @@ Note: The pause and process modes set by [SetPauseMode] and [SetProcessMode] on 
 */
 //go:nosplit
 func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(subtween[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(subtween[0].AsObject()))})
 	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret)}
 	return ret
 }
@@ -776,7 +779,7 @@ Returns true if the [Tween] still has [Tweener]s that haven't finished.
 */
 //go:nosplit
 func (self class) CustomStep(delta float64) bool { //gd:Tween.custom_step
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.custom_step, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.custom_step, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 	var ret = r_ret
 	return ret
 }
@@ -797,7 +800,7 @@ Note: If a Tween is stopped and not bound to any node, it will exist indefinitel
 */
 //go:nosplit
 func (self class) Stop() { //gd:Tween.stop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 /*
@@ -810,7 +813,7 @@ Note: If a Tween is paused and not bound to any node, it will exist indefinitely
 */
 //go:nosplit
 func (self class) Pause() { //gd:Tween.pause
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
 }
 
 /*
@@ -820,7 +823,7 @@ Resumes a paused or stopped [Tween].
 */
 //go:nosplit
 func (self class) Play() { //gd:Tween.play
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0, &struct{}{})
 }
 
 /*
@@ -830,7 +833,7 @@ Aborts all tweening operations and invalidates the [Tween].
 */
 //go:nosplit
 func (self class) Kill() { //gd:Tween.kill
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.kill, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.kill, 0, &struct{}{})
 }
 
 /*
@@ -844,7 +847,7 @@ Note: As it results from accumulating frame deltas, the time returned after the 
 */
 //go:nosplit
 func (self class) GetTotalElapsedTime() float64 { //gd:Tween.get_total_elapsed_time
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_elapsed_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_elapsed_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -856,7 +859,7 @@ Returns whether the [Tween] is currently running, i.e. it wasn't paused and it's
 */
 //go:nosplit
 func (self class) IsRunning() bool { //gd:Tween.is_running
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -870,7 +873,7 @@ Returns whether the [Tween] is valid. A valid [Tween] is a [Tween] contained by 
 */
 //go:nosplit
 func (self class) IsValid() bool { //gd:Tween.is_valid
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -887,7 +890,7 @@ For a shorter way to create and bind a [Tween], you can use [Node.CreateTween].
 */
 //go:nosplit
 func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -903,7 +906,7 @@ Default value is [TweenProcessIdle].
 */
 //go:nosplit
 func (self class) SetProcessMode(mode TweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenProcessMode }{mode})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenProcessMode }{mode})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -918,7 +921,7 @@ Default value is [TweenPauseBound].
 */
 //go:nosplit
 func (self class) SetPauseMode(mode TweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_pause_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenPauseMode }{mode})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_pause_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenPauseMode }{mode})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -931,7 +934,7 @@ If 'ignore' is true, the tween will ignore [Engine.TimeScale] and update with th
 */
 //go:nosplit
 func (self class) SetIgnoreTimeScale(ignore bool) [1]gdclass.Tween { //gd:Tween.set_ignore_time_scale
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -948,7 +951,7 @@ Note: Just like with [Parallel], the tweener added right before this method will
 */
 //go:nosplit
 func (self class) SetParallel(parallel bool) [1]gdclass.Tween { //gd:Tween.set_parallel
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_parallel, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ parallel bool }{parallel})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_parallel, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ parallel bool }{parallel})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -967,7 +970,7 @@ Warning: Make sure to always add some duration/delay when using infinite loops. 
 */
 //go:nosplit
 func (self class) SetLoops(loops int64) [1]gdclass.Tween { //gd:Tween.set_loops
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_loops, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ loops int64 }{loops})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_loops, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ loops int64 }{loops})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -980,7 +983,7 @@ Returns the number of remaining loops for this [Tween] (see [SetLoops]). A retur
 */
 //go:nosplit
 func (self class) GetLoopsLeft() int64 { //gd:Tween.get_loops_left
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loops_left, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loops_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -992,7 +995,7 @@ Scales the speed of tweening. This affects all [Tweener]s and their delays.
 */
 //go:nosplit
 func (self class) SetSpeedScale(speed float64) [1]gdclass.Tween { //gd:Tween.set_speed_scale
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -1009,7 +1012,7 @@ Before this method is called, the default transition type is [TransLinear].
 */
 //go:nosplit
 func (self class) SetTrans(trans TransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans TransitionType }{trans})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans TransitionType }{trans})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -1026,7 +1029,7 @@ Before this method is called, the default ease type is [EaseInOut].
 */
 //go:nosplit
 func (self class) SetEase(ease EaseType) [1]gdclass.Tween { //gd:Tween.set_ease
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease EaseType }{ease})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease EaseType }{ease})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -1046,7 +1049,7 @@ You can make the [Tween] parallel by default by using [SetParallel].
 */
 //go:nosplit
 func (self class) Parallel() [1]gdclass.Tween { //gd:Tween.parallel
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.parallel, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.parallel, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -1061,7 +1064,7 @@ Used to chain two [Tweener]s after [SetParallel] is called with true.
 */
 //go:nosplit
 func (self class) Chain() [1]gdclass.Tween { //gd:Tween.chain
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.chain, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -1084,7 +1087,7 @@ Note: If 'duration' is equal to 0, the method will always return the final value
 */
 //go:nosplit
 func (self class) InterpolateValue(initial_value variant.Any, delta_value variant.Any, elapsed_time float64, duration float64, trans_type TransitionType, ease_type EaseType) variant.Any { //gd:Tween.interpolate_value
-	var r_ret = noescape.CallStatic[gdextension.Variant](methods.interpolate_value, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	var r_ret = mainthread.CallStatic[gdextension.Variant](methods.interpolate_value, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		initial_value gdextension.Variant
 		delta_value   gdextension.Variant
 		elapsed_time  float64

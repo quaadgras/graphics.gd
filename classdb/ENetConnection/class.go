@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -32,6 +33,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -66,8 +68,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -411,7 +414,7 @@ Note: It is necessary to create a host in both client and server in order to est
 */
 //go:nosplit
 func (self class) CreateHostBound(bind_address String.Readable, bind_port int64, max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host_bound
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host_bound, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host_bound, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		bind_address  gdextension.String
 		bind_port     int64
 		max_peers     int64
@@ -434,7 +437,7 @@ Note: It is necessary to create a host in both client and server in order to est
 */
 //go:nosplit
 func (self class) CreateHost(max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		max_peers     int64
 		max_channels  int64
 		in_bandwidth  int64
@@ -449,7 +452,7 @@ Destroys the host and all resources associated with it.
 */
 //go:nosplit
 func (self class) Destroy() { //gd:ENetConnection.destroy
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.destroy, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.destroy, 0, &struct{}{})
 }
 
 /*
@@ -462,7 +465,7 @@ Note: You must call either [CreateHost] or [CreateHostBound] on both ends before
 */
 //go:nosplit
 func (self class) ConnectToHost(address String.Readable, port int64, channels int64, data int64) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		address  gdextension.String
 		port     int64
 		channels int64
@@ -483,7 +486,7 @@ Note: This method must be called on both ends involved in the event (sending and
 */
 //go:nosplit
 func (self class) Service(timeout int64) Array.Any { //gd:ENetConnection.service
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.service, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ timeout int64 }{timeout})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.service, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ timeout int64 }{timeout})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -493,7 +496,7 @@ Sends any queued packets on the host specified to its designated peers.
 */
 //go:nosplit
 func (self class) Flush() { //gd:ENetConnection.flush
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
 }
 
 /*
@@ -501,7 +504,7 @@ Adjusts the bandwidth limits of a host.
 */
 //go:nosplit
 func (self class) BandwidthLimit(in_bandwidth int64, out_bandwidth int64) { //gd:ENetConnection.bandwidth_limit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bandwidth_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bandwidth_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		in_bandwidth  int64
 		out_bandwidth int64
 	}{in_bandwidth, out_bandwidth})
@@ -512,7 +515,7 @@ Limits the maximum allowed channels of future incoming connections.
 */
 //go:nosplit
 func (self class) ChannelLimit(limit int64) { //gd:ENetConnection.channel_limit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.channel_limit, 0|(gdextension.SizeInt<<4), &struct{ limit int64 }{limit})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.channel_limit, 0|(gdextension.SizeInt<<4), &struct{ limit int64 }{limit})
 }
 
 /*
@@ -522,7 +525,7 @@ Queues a 'packet' to be sent to all peers associated with the host over the spec
 */
 //go:nosplit
 func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { //gd:ENetConnection.broadcast
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.broadcast, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.broadcast, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		channel int64
 		packet  gdextension.PackedArray[byte]
 		flags   int64
@@ -538,7 +541,7 @@ Note: The compression mode must be set to the same value on both the server and 
 */
 //go:nosplit
 func (self class) Compress(mode CompressionMode) { //gd:ENetConnection.compress
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compress, 0|(gdextension.SizeInt<<4), &struct{ mode CompressionMode }{mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compress, 0|(gdextension.SizeInt<<4), &struct{ mode CompressionMode }{mode})
 }
 
 /*
@@ -549,7 +552,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -563,7 +566,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_client_setup
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		hostname       gdextension.String
 		client_options gdextension.Object
 	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))})
@@ -580,7 +583,7 @@ Note: This method is only relevant after calling [DtlsServerSetup].
 */
 //go:nosplit
 func (self class) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse_new_connections
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ refuse bool }{refuse})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ refuse bool }{refuse})
 }
 
 /*
@@ -588,7 +591,7 @@ Returns and resets host statistics.
 */
 //go:nosplit
 func (self class) PopStatistic(statistic HostStatistic) float64 { //gd:ENetConnection.pop_statistic
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pop_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ statistic HostStatistic }{statistic})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pop_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ statistic HostStatistic }{statistic})
 	var ret = r_ret
 	return ret
 }
@@ -598,7 +601,7 @@ Returns the maximum number of channels allowed for connected peers.
 */
 //go:nosplit
 func (self class) GetMaxChannels() int64 { //gd:ENetConnection.get_max_channels
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_channels, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_channels, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -608,7 +611,7 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:ENetConnection.get_local_port
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -620,7 +623,7 @@ Note: This list might include some peers that are not fully connected or are sti
 */
 //go:nosplit
 func (self class) GetPeers() Array.Contains[[1]gdclass.ENetPacketPeer] { //gd:ENetConnection.get_peers
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -636,7 +639,7 @@ This requires forward knowledge of a prospective client's address and communicat
 */
 //go:nosplit
 func (self class) SocketSend(destination_address String.Readable, destination_port int64, packet Packed.Bytes) { //gd:ENetConnection.socket_send
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.socket_send, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.socket_send, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		destination_address gdextension.String
 		destination_port    int64
 		packet              gdextension.PackedArray[byte]

@@ -20,6 +20,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -45,6 +46,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -79,8 +81,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -423,48 +426,48 @@ func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 
 //go:nosplit
 func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer.set_stream
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer.get_stream
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer.set_volume_db
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume_db float64 }{volume_db})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume_db float64 }{volume_db})
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer.get_volume_db
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume_linear float64) { //gd:AudioStreamPlayer.set_volume_linear
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), &struct{ volume_linear float64 }{volume_linear})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), &struct{ volume_linear float64 }{volume_linear})
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioStreamPlayer.get_volume_linear
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer.set_pitch_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ pitch_scale float64 }{pitch_scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ pitch_scale float64 }{pitch_scale})
 }
 
 //go:nosplit
 func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer.get_pitch_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -474,7 +477,7 @@ Plays a sound from the beginning, or the given 'from_position' in seconds.
 */
 //go:nosplit
 func (self class) Play(from_position float64) { //gd:AudioStreamPlayer.play
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeFloat<<4), &struct{ from_position float64 }{from_position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeFloat<<4), &struct{ from_position float64 }{from_position})
 }
 
 /*
@@ -482,7 +485,7 @@ Restarts all sounds to be played from the given 'to_position', in seconds. Does 
 */
 //go:nosplit
 func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer.seek
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4), &struct{ to_position float64 }{to_position})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4), &struct{ to_position float64 }{to_position})
 }
 
 /*
@@ -490,12 +493,12 @@ Stops all sounds from this node.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AudioStreamPlayer.stop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AudioStreamPlayer.is_playing
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -515,72 +518,72 @@ Note: This method always returns 0.0 if the [Stream] is an [AudioStreamInteracti
 */
 //go:nosplit
 func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer.get_playback_position
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playback_position, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playback_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBus(bus String.Name) { //gd:AudioStreamPlayer.set_bus
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus, 0|(gdextension.SizeStringName<<4), &struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus, 0|(gdextension.SizeStringName<<4), &struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))})
 }
 
 //go:nosplit
 func (self class) GetBus() String.Name { //gd:AudioStreamPlayer.get_bus
-	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bus, gdextension.SizeStringName, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bus, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer.set_autoplay
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer.is_autoplay_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMixTarget(mix_target MixTarget) { //gd:AudioStreamPlayer.set_mix_target
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_target, 0|(gdextension.SizeInt<<4), &struct{ mix_target MixTarget }{mix_target})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_target, 0|(gdextension.SizeInt<<4), &struct{ mix_target MixTarget }{mix_target})
 }
 
 //go:nosplit
 func (self class) GetMixTarget() MixTarget { //gd:AudioStreamPlayer.get_mix_target
-	var r_ret = noescape.Call[MixTarget](gd.ObjectChecked(self.AsObject()), methods.get_mix_target, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[MixTarget](gd.ObjectChecked(self.AsObject()), methods.get_mix_target, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaying(enable bool) { //gd:AudioStreamPlayer.set_playing
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playing, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playing, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetStreamPaused(pause bool) { //gd:AudioStreamPlayer.set_stream_paused
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_paused, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_paused, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
 }
 
 //go:nosplit
 func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer.get_stream_paused
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_stream_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_stream_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer.set_max_polyphony
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
 }
 
 //go:nosplit
 func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer.get_max_polyphony
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -594,7 +597,7 @@ Returns true if any sound is active, even if [StreamPaused] is set to true. See 
 */
 //go:nosplit
 func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer.has_stream_playback
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_stream_playback, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_stream_playback, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -607,19 +610,19 @@ Returns the latest [AudioStreamPlayback] of this node, usually the most recently
 */
 //go:nosplit
 func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer.get_stream_playback
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_playback, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaybackType(playback_type AudioServer.PlaybackType) { //gd:AudioStreamPlayer.set_playback_type
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playback_type, 0|(gdextension.SizeInt<<4), &struct{ playback_type AudioServer.PlaybackType }{playback_type})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playback_type, 0|(gdextension.SizeInt<<4), &struct{ playback_type AudioServer.PlaybackType }{playback_type})
 }
 
 //go:nosplit
 func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer.get_playback_type
-	var r_ret = noescape.Call[AudioServer.PlaybackType](gd.ObjectChecked(self.AsObject()), methods.get_playback_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[AudioServer.PlaybackType](gd.ObjectChecked(self.AsObject()), methods.get_playback_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

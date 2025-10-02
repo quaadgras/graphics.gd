@@ -15,6 +15,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -39,6 +40,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -73,8 +75,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -211,24 +214,24 @@ func (self Instance) SetBodyFlags(value BodyFlags) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRBodyTracker.set_has_tracking_data
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_data bool }{has_data})
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRBodyTracker.get_has_tracking_data
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyFlags(flags BodyFlags) { //gd:XRBodyTracker.set_body_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_flags, 0|(gdextension.SizeInt<<4), &struct{ flags BodyFlags }{flags})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_flags, 0|(gdextension.SizeInt<<4), &struct{ flags BodyFlags }{flags})
 }
 
 //go:nosplit
 func (self class) GetBodyFlags() BodyFlags { //gd:XRBodyTracker.get_body_flags
-	var r_ret = noescape.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), methods.get_body_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), methods.get_body_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -238,7 +241,7 @@ Sets flags about the validity of the tracking data for the given body joint.
 */
 //go:nosplit
 func (self class) SetJointFlags(joint Joint, flags JointFlags) { //gd:XRBodyTracker.set_joint_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		joint Joint
 		flags JointFlags
 	}{joint, flags})
@@ -249,7 +252,7 @@ Returns flags about the validity of the tracking data for the given body joint.
 */
 //go:nosplit
 func (self class) GetJointFlags(joint Joint) JointFlags { //gd:XRBodyTracker.get_joint_flags
-	var r_ret = noescape.Call[JointFlags](gd.ObjectChecked(self.AsObject()), methods.get_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ joint Joint }{joint})
+	var r_ret = mainthread.Call[JointFlags](gd.ObjectChecked(self.AsObject()), methods.get_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ joint Joint }{joint})
 	var ret = r_ret
 	return ret
 }
@@ -259,7 +262,7 @@ Sets the transform for the given body joint.
 */
 //go:nosplit
 func (self class) SetJointTransform(joint Joint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		joint     Joint
 		transform Transform3D.BasisOrigin
 	}{joint, gd.Transposed(transform)})
@@ -270,7 +273,7 @@ Returns the transform for the given body joint.
 */
 //go:nosplit
 func (self class) GetJointTransform(joint Joint) Transform3D.BasisOrigin { //gd:XRBodyTracker.get_joint_transform
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ joint Joint }{joint})
+	var r_ret = mainthread.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ joint Joint }{joint})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

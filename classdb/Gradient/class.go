@@ -13,6 +13,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -298,7 +301,7 @@ Adds the specified color to the gradient, with the specified offset.
 */
 //go:nosplit
 func (self class) AddPoint(offset float64, color Color.RGBA) { //gd:Gradient.add_point
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeColor<<8), &struct {
 		offset float64
 		color  Color.RGBA
 	}{offset, color})
@@ -309,7 +312,7 @@ Removes the color at index 'point'.
 */
 //go:nosplit
 func (self class) RemovePoint(point int64) { //gd:Gradient.remove_point
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 }
 
 /*
@@ -317,7 +320,7 @@ Sets the offset for the gradient color at index 'point'.
 */
 //go:nosplit
 func (self class) SetOffset(point int64, offset float64) { //gd:Gradient.set_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		point  int64
 		offset float64
 	}{point, offset})
@@ -328,7 +331,7 @@ Returns the offset of the gradient color at index 'point'.
 */
 //go:nosplit
 func (self class) GetOffset(point int64) float64 { //gd:Gradient.get_offset
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 	var ret = r_ret
 	return ret
 }
@@ -342,7 +345,7 @@ Note: This method mirrors all points around the middle of the gradient, which ma
 */
 //go:nosplit
 func (self class) Reverse() { //gd:Gradient.reverse
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reverse, 0, &struct{}{})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reverse, 0, &struct{}{})
 }
 
 /*
@@ -350,7 +353,7 @@ Sets the color of the gradient color at index 'point'.
 */
 //go:nosplit
 func (self class) SetColor(point int64, color Color.RGBA) { //gd:Gradient.set_color
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		point int64
 		color Color.RGBA
 	}{point, color})
@@ -361,7 +364,7 @@ Returns the color of the gradient color at index 'point'.
 */
 //go:nosplit
 func (self class) GetColor(point int64) Color.RGBA { //gd:Gradient.get_color
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 	var ret = r_ret
 	return ret
 }
@@ -373,7 +376,7 @@ Returns the interpolated color specified by 'offset'. 'offset' should be between
 */
 //go:nosplit
 func (self class) Sample(offset float64) Color.RGBA { //gd:Gradient.sample
-	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.sample, gdextension.SizeColor|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
+	var r_ret = mainthread.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.sample, gdextension.SizeColor|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 	var ret = r_ret
 	return ret
 }
@@ -383,59 +386,59 @@ Returns the number of colors in the gradient.
 */
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Gradient.get_point_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffsets(offsets Packed.Array[float32]) { //gd:Gradient.set_offsets
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets, 0|(gdextension.SizePackedArray<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets, 0|(gdextension.SizePackedArray<<4), &struct {
 		offsets gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets))})
 }
 
 //go:nosplit
 func (self class) GetOffsets() Packed.Array[float32] { //gd:Gradient.get_offsets
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_offsets, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_offsets, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:Gradient.set_colors
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_colors, 0|(gdextension.SizePackedArray<<4), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_colors, 0|(gdextension.SizePackedArray<<4), &struct {
 		colors gdextension.PackedArray[Color.RGBA]
 	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))})
 }
 
 //go:nosplit
 func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:Gradient.get_colors
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_colors, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = mainthread.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_colors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterpolationMode(interpolation_mode InterpolationMode) { //gd:Gradient.set_interpolation_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_mode, 0|(gdextension.SizeInt<<4), &struct{ interpolation_mode InterpolationMode }{interpolation_mode})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_mode, 0|(gdextension.SizeInt<<4), &struct{ interpolation_mode InterpolationMode }{interpolation_mode})
 }
 
 //go:nosplit
 func (self class) GetInterpolationMode() InterpolationMode { //gd:Gradient.get_interpolation_mode
-	var r_ret = noescape.Call[InterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[InterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterpolationColorSpace(interpolation_color_space ColorSpace) { //gd:Gradient.set_interpolation_color_space
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_color_space, 0|(gdextension.SizeInt<<4), &struct{ interpolation_color_space ColorSpace }{interpolation_color_space})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolation_color_space, 0|(gdextension.SizeInt<<4), &struct{ interpolation_color_space ColorSpace }{interpolation_color_space})
 }
 
 //go:nosplit
 func (self class) GetInterpolationColorSpace() ColorSpace { //gd:Gradient.get_interpolation_color_space
-	var r_ret = noescape.Call[ColorSpace](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_color_space, gdextension.SizeInt, &struct{}{})
+	var r_ret = mainthread.Call[ColorSpace](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_color_space, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

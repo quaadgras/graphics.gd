@@ -52,6 +52,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -75,6 +76,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -109,8 +111,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -240,12 +243,12 @@ func (self Instance) SetEvents(value []InputEvent.Instance) {
 
 //go:nosplit
 func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), &struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), &struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))})
 }
 
 //go:nosplit
 func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -258,7 +261,7 @@ Returns whether [Events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
 func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_event, gdextension.SizeBool, &struct{}{})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_event, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +275,7 @@ Returns whether any [InputEvent] in [Events] equals 'event'. This uses [InputEve
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	var r_ret = mainthread.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +287,7 @@ Returns the shortcut's first valid [InputEvent] as a string.
 */
 //go:nosplit
 func (self class) GetAsText() String.Readable { //gd:Shortcut.get_as_text
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

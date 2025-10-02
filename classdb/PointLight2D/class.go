@@ -9,6 +9,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -36,6 +37,7 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -70,8 +72,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -195,36 +198,36 @@ func (self Instance) SetTextureScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:PointLight2D.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:PointLight2D.get_texture
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = mainthread.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:PointLight2D.set_texture_offset
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_offset, 0|(gdextension.SizeVector2<<4), &struct{ texture_offset Vector2.XY }{texture_offset})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_offset, 0|(gdextension.SizeVector2<<4), &struct{ texture_offset Vector2.XY }{texture_offset})
 }
 
 //go:nosplit
 func (self class) GetTextureOffset() Vector2.XY { //gd:PointLight2D.get_texture_offset
-	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = mainthread.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureScale(texture_scale float64) { //gd:PointLight2D.set_texture_scale
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_scale, 0|(gdextension.SizeFloat<<4), &struct{ texture_scale float64 }{texture_scale})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_scale, 0|(gdextension.SizeFloat<<4), &struct{ texture_scale float64 }{texture_scale})
 }
 
 //go:nosplit
 func (self class) GetTextureScale() float64 { //gd:PointLight2D.get_texture_scale
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = mainthread.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

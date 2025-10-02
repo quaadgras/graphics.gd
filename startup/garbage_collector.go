@@ -6,6 +6,7 @@ import (
 	NodeClass "graphics.gd/classdb/Node"
 	SceneTreeClass "graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/mainthread"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
@@ -37,6 +38,7 @@ func (gr goRuntime) ExitTree() {
 func (goRuntime) Process(delta Float.X) {
 	gd.NewCallable(func() {
 		Callable.Cycle()
+		mainthread.Yield()
 		keep_reachable_instances_alive()
 		pointers.Cycle()
 	}).CallDeferred()

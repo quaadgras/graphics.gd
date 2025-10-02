@@ -27,6 +27,7 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/mainthread"
 import "graphics.gd/internal/gdextension"
 import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
@@ -53,6 +54,7 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+var _ = mainthread.Yield
 
 type _ gdclass.Node
 
@@ -87,8 +89,9 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -223,7 +226,7 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), &struct {
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), &struct {
 		command_name    gdextension.String
 		key_name        gdextension.String
 		binded_callable gdextension.Callable
@@ -238,7 +241,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), &struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))})
+	mainthread.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), &struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))})
 }
 func (self class) AsEditorCommandPalette() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorCommandPalette](self[0])}
