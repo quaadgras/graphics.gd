@@ -99,7 +99,7 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 			panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", name, ftype.In(i)))
 		}
 	}
-	var returns = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn())
+	var returns = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumOut())
 	if ftype.NumOut() > 0 {
 		if !propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)}, returns) {
 			panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", name, ftype.Out(0)))
