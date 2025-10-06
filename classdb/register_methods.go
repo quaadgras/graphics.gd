@@ -106,9 +106,20 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 		}
 	}
 	var method = gdextension.Host.ClassDB.MethodList.Make(1)
+	var call = variantCallStatic(fn)
 	gdextension.Host.ClassDB.MethodList.Push(method,
 		pointers.Get(gd.NewStringName(name)),
-		gdextension.FunctionID(cgoNewHandle(variantCallStatic(fn))),
+		gdextension.FunctionID(cgoNewHandle(&methodImplementation{
+			arg_count: ftype.NumIn(),
+			dynamic:   call,
+			checked: func(instance any, args, ret gdextension.Pointer) {
+				slowCall(false, fn, args, ret)
+			},
+			variant: func(instance any, v ...gd.Variant) gd.Variant {
+				result, _ := call(instance, v...)
+				return result
+			},
+		})),
 		gdextension.MethodFlagStatic,
 		returns,
 		arguments,
