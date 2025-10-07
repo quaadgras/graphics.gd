@@ -60,6 +60,9 @@ func (self Is[T]) Pack(path T) error { //gd:PackedScene.pack
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 func (self Is[T]) Instantiate() T { //gd:PackedScene.instantiate
+	if self == (Is[T]{}) {
+		return [1]T{}[0]
+	}
 	return Object.To[T](Node.Instance(class(self).Instantiate(0)))
 }
 
