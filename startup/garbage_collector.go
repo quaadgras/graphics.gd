@@ -22,4 +22,7 @@ func init() {
 		keep_reachable_instances_alive()
 		pointers.Cycle()
 	}
+	gdextension.On.MainLoop.FinalFrame = func() {
+
+	}
 }
