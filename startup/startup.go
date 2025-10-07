@@ -3,20 +3,15 @@ package startup
 
 import (
 	"iter"
-	"os"
-	"path/filepath"
 
 	"graphics.gd/classdb"
-	"graphics.gd/classdb/EditorInterface"
 	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/SceneTree"
-	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/String"
 )
 
 var mainloop MainLoopClass.Interface
@@ -65,10 +60,11 @@ func Scene() {
 	}
 }
 
+var loaded = make(chan struct{})
 var loadingSceneWasCalled bool
 
 // LoadingScene starts up loading the main scene after this function is called, all
-// graphics functions will be available to use.
+// graphics.gd functionality will be available to use.
 //
 // A subsequent call to [Scene] is required to startup the scene.
 //
@@ -79,22 +75,12 @@ func LoadingScene() {
 	loadingSceneWasCalled = true
 	classdb.Register[goSceneTree]()
 	if pause_main != nil {
-		gd.NewCallable(func() {
-			resume_main()
-		}).CallDeferred()
 		pause_main(false)
 		if EngineClass.IsEditorHint() {
 			stop_main()
 		}
 	} else {
 		<-intialized
-		var loaded = make(chan struct{})
-		gd.NewCallable(func() {
-			if !hasLoaded {
-				close(loaded)
-				hasLoaded = true
-			}
-		}).CallDeferred()
 		<-loaded
 	}
 }
@@ -115,12 +101,12 @@ var main_loop_initialized = make(chan struct{})
 
 // Called once during initialization.
 func (loop goMainLoop) Initialize() {
+	Callable.Cycle()
 	if mainloop != nil {
 		mainloop.Initialize()
 	} else if pause_main != nil {
 		resume_main()
 	}
-	Callable.Cycle()
 }
 
 // Called each physics frame with the time since the last physics frame as argument ([param delta], in seconds). Equivalent to [method Node._physics_process].
@@ -140,6 +126,7 @@ var frame_ready = make(chan bool)
 // If implemented, the method must return a boolean value. [code]true[/code] ends the main loop, while [code]false[/code] lets it proceed to the next frame.
 func (loop goMainLoop) Process(delta Float.X) bool {
 	defer Callable.Cycle()
+	defer keep_reachable_instances_alive()
 	defer pointers.Cycle()
 	if mainloop != nil {
 		return mainloop.Process(delta)
@@ -239,21 +226,4 @@ func OnSuspend(func(Dictionary.Any)) {
 // version) Individual classes can also implement their own Restore(Dictionary.Any) method.
 func OnRestore(func(Dictionary.Any)) {
 
-}
-
-func init() {
-	gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
-		if EngineClass.IsEditorHint() {
-			gd.NewCallable(func() {
-				settings := EditorInterface.GetEditorSettings()
-				if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
-					GDPATH := os.Getenv("GDPATH")
-					if GDPATH == "" {
-						GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
-					}
-					settings.SetSetting("export/android/java_sdk_path", GDPATH)
-				}
-			}).CallDeferred()
-		}
-	})
 }
