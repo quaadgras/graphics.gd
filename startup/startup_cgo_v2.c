@@ -481,11 +481,12 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
     r_initialization->deinitialize = cgo_deinitialize;
 
     gdextension_get_godot_version2(&cgo_cached_godot_version);
-    gdextension_register_main_loop_callbacks(p_library, &(GDExtensionMainLoopCallbacks){
+    GDExtensionMainLoopCallbacks callbacks = {
     	.startup_func = go_on_first_frame,
     	.shutdown_func = go_on_final_frame,
     	.frame_func = go_on_every_frame,
-    });
+    };
+    gdextension_register_main_loop_callbacks(p_library, &callbacks);
 
     for (int i = 1; i < GDEXTENSION_VARIANT_TYPE_VARIANT_MAX; i++) {
     	GDExtensionVariantType v = (GDExtensionVariantType)i;
