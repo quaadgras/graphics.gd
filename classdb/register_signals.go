@@ -62,6 +62,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				}
 			}
 			gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
+			gdextension.Host.ClassDB.PropertyList.Free(args)
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
 			var signalName = gd.NewStringName(name)
