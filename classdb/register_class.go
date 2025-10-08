@@ -272,7 +272,7 @@ func Register[T Class](exports ...any) {
 		if embedded_name == "Singleton" {
 			construct := impl.Constructor()
 			singleton, _ := reflect.TypeAssert[Object.Any](construct)
-			singletons.Insert(superType, construct)
+			singletons.Insert(classType, construct)
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 			if node, ok := singleton.(Node.Any); ok {
 				SceneTree.Add(node)
@@ -529,7 +529,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	}
 	for _, field := range class.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
-			value.FieldByIndex(field.Index).Set(singleton)
+			value.Elem().FieldByIndex(field.Index).Set(singleton)
 		}
 	}
 
@@ -772,6 +772,11 @@ func (instance *instanceImplementation) ready() {
 	for _, field := range reflect.VisibleFields(rvalue.Type()) {
 		if !field.IsExported() || field.Name == "Extension" {
 			continue
+		}
+		if field.Type.Kind() == reflect.Pointer {
+			if _, ok := singletons.Lookup(field.Type.Elem()); ok {
+				continue
+			}
 		}
 		instance.assertChild(rvalue.FieldByIndex(field.Index).Addr().Interface(), field, parent, parent)
 	}
