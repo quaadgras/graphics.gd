@@ -119,16 +119,24 @@ func init() {
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
 				defer gd.Recover()
-				cgoHandle(fn).Value().(*methodImplementation).checked(cgoHandle(instance).Value(), gdextension.Pointer(args), gdextension.Pointer(result))
+				var receiver any
+				if instance != 0 {
+					receiver = cgoHandle(instance).Value()
+				}
+				cgoHandle(fn).Value().(*methodImplementation).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
 				defer gd.Recover()
+				var receiver any
+				if instance != 0 {
+					receiver = cgoHandle(instance).Value()
+				}
 				method := cgoHandle(fn).Value().(*methodImplementation)
 				var variants = make([]gd.Variant, method.arg_count)
 				for i := range method.arg_count {
 					variants[i] = pointers.Let[gd.Variant](gdmemory.IndexVariants(args, method.arg_count, i))
 				}
-				v := method.variant(cgoHandle(instance).Value(), variants...)
+				v := method.variant(receiver, variants...)
 				raw, ok := pointers.End(v)
 				if ok {
 					gdmemory.Set(gdextension.Pointer(result), raw)
@@ -138,11 +146,15 @@ func init() {
 			},
 			DynamicCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_err gdextension.Returns[gdextension.CallError]) {
 				defer gd.Recover()
+				var receiver any
+				if instance != 0 {
+					receiver = cgoHandle(instance).Value()
+				}
 				var variants = make([]gd.Variant, arg_count)
 				for i := range arg_count {
 					variants[i] = pointers.Let[gd.Variant](gdmemory.IndexVariants(args, arg_count, i))
 				}
-				v, err := cgoHandle(fn).Value().(*methodImplementation).dynamic(cgoHandle(instance).Value(), variants...)
+				v, err := cgoHandle(fn).Value().(*methodImplementation).dynamic(receiver, variants...)
 				if err != nil {
 					gdmemory.Set(gdextension.Pointer(call_err), gdextension.CallError{
 						Type: gdextension.CallInvalidMethod,
