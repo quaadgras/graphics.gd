@@ -69,10 +69,23 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+Extension can be embedded in a new struct to create a Go extension of this class.
+
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
+Singleton can be embedded in a new struct to create a Go singleton extension of the class.
+
+It will become available as a global inside scripts and any any other Go Extension types will
+have any *T fields filled in to point at this singleton once they have been instantiated.
+
+T must be a type that is embedding this [Singleton] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+*/
+type Singleton[T gdclass.Interface] = Extension[T]
 
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.VisualShaderNodeBooleanConstant
