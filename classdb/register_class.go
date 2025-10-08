@@ -64,7 +64,12 @@ var singletons threadsafe.Map[reflect.Type, reflect.Value]
 func init() {
 	gd.RegisterCleanup(func() {
 		for _, value := range singletons.Iter() {
-			value.Interface().(Object.Any).AsObject()[0].Free()
+			switch singleton := value.Interface().(type) {
+			case Node.Any:
+				continue
+			case Object.Any:
+				singleton.AsObject()[0].Free()
+			}
 		}
 	})
 }
