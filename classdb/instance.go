@@ -8,7 +8,7 @@ import (
 )
 
 func nameOf(rtype reflect.Type) string {
-	if rtype.Kind() == reflect.Ptr || rtype.Kind() == reflect.Array {
+	if rtype.Kind() == reflect.Pointer || rtype.Kind() == reflect.Array {
 		return nameOf(rtype.Elem())
 	}
 	isClass := reflect.PointerTo(rtype).Implements(reflect.TypeFor[gd.IsClass]()) || rtype.Implements(reflect.TypeFor[gd.IsClass]())
@@ -19,6 +19,9 @@ func nameOf(rtype reflect.Type) string {
 			}
 			if rtype.Name() == "" {
 				return nameOf(rtype.Field(0).Type)
+			}
+			if rtype.Field(0).Name == "Singleton" {
+				return "GoSingleton" + rtype.Name()
 			}
 		}
 		return strings.TrimPrefix(rtype.Name(), "class")

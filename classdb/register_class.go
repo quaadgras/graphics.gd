@@ -37,6 +37,7 @@ import (
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadsafe"
 )
 
 // Tool can be embedded inside a struct to make it run in the editor.
@@ -55,6 +56,16 @@ func NameFor[T Class]() string {
 }
 
 type Class = gdclass.Interface
+
+var singletons threadsafe.Map[reflect.Type, reflect.Value]
+
+func init() {
+	gd.RegisterCleanup(func() {
+		for _, value := range singletons.Iter() {
+			value.Interface().(Object.Any).AsObject()[0].Free()
+		}
+	})
+}
 
 /*
 Register registers a struct available for use inside The Engine as
@@ -104,18 +115,21 @@ func Register[T Class](exports ...any) {
 		var classType = reflect.TypeFor[T]()
 		compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
+		var embedded_name string
 		for base.Field(0).Anonymous {
 			if base.Field(0).Name == "Class" {
 				break
 			}
 			base = base.Field(0).Type
+			if embedded_name == "" {
+				embedded_name = classType.Field(0).Name
+			}
 		}
 		if !base.Implements(reflect.TypeFor[Class]()) {
-			panic("gdextension.RegisterClass: Class type must embed a gd.Extension field as the first field")
+			panic("classdb.Register: Class type must embed an Extension[T] as the first field")
 		}
-
 		if classType.Kind() != reflect.Struct || classType.Name() == "" {
-			panic("gdextension.RegisterClass: Class type must be a named struct")
+			panic("classdb.Register: Class type must be a named struct")
 		}
 		var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
 		var tool = false
@@ -138,6 +152,7 @@ func Register[T Class](exports ...any) {
 		case Tool:
 			tool = true
 		}
+
 		var reference T
 		var className = pointers.Pin(gd.NewStringName(rename))
 		var superName = pointers.Pin(gd.NewStringName(nameOf(superType)))
@@ -159,6 +174,14 @@ func Register[T Class](exports ...any) {
 			Constructor: func() reflect.Value {
 				return reflect.New(classType)
 			},
+		}
+		for _, field := range reflect.VisibleFields(classType) {
+			if field.Type.Kind() == reflect.Pointer && field.Type.Elem().Kind() == reflect.Struct {
+				check := field.Type.Elem().Field(0)
+				if check.Name == "Singleton" && check.Anonymous && check.Type.Implements(reflect.TypeFor[Class]()) {
+					impl.Singletons = append(impl.Singletons, field)
+				}
+			}
 		}
 		gdclass.Registered.Store(classType, impl)
 
@@ -244,6 +267,12 @@ func Register[T Class](exports ...any) {
 			case EditorPlugin.Any:
 				gdextension.Host.Editor.AddPlugin(pointers.Get(className))
 			}
+		}
+		if embedded_name == "Singleton" {
+			construct := impl.Constructor()
+			singleton, _ := reflect.TypeAssert[Object.Any](construct)
+			singletons.Insert(superType, construct)
+			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 		}
 	}
 	switch super.(type) {
@@ -460,6 +489,8 @@ type classImplementation struct {
 
 	VirtualMethods func(string) reflect.Value
 	Constructor    func() reflect.Value
+
+	Singletons []reflect.StructField
 }
 
 func (class classImplementation) IsVirtual() bool {
@@ -475,10 +506,10 @@ func (class classImplementation) IsExposed() bool {
 }
 
 func (class classImplementation) CreateInstance(notify_postinitialize bool) [1]gd.Object {
-	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize)
+	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize, true)
 }
 
-func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
+func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize, add_root bool) [1]gd.Object {
 	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
 	if class.RefCounted {
 		gd.RefCounted(super[0]).InitRef()
@@ -487,8 +518,15 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, super)
 	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
 
-	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
-		roots.Insert(value, keepalive)
+	if add_root {
+		if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
+			roots.Insert(value, keepalive)
+		}
+	}
+	for _, field := range class.Singletons {
+		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
+			value.FieldByIndex(field.Index).Set(singleton)
+		}
 	}
 
 	if notify_postinitialize {
@@ -499,17 +537,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 }
 
 func (class classImplementation) CreateGoInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
-	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
-	if class.RefCounted {
-		gd.RefCounted(super[0]).InitRef()
-	}
-	instance := class.reloadInstance(value, super)
-	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
-	if notify_postinitialize {
-		super[0].Notification(0, false)
-	}
-	instance.OnCreate(value)
-	return super
+	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize, false)
 }
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) *instanceImplementation {

@@ -50,37 +50,33 @@ Note: The script property is part of the [Object] class, not [Node]. It isn't ex
 */
 package Node
 
-import (
-	"reflect"
-	"slices"
-
-	"graphics.gd/internal/callframe"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/noescape"
-	"graphics.gd/internal/pointers"
-
-	"graphics.gd/classdb/InputEvent"
-	"graphics.gd/classdb/MultiplayerAPI"
-	"graphics.gd/classdb/Resource"
-	"graphics.gd/classdb/Tween"
-	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
-	"graphics.gd/variant"
-	"graphics.gd/variant/Angle"
-	"graphics.gd/variant/Array"
-	"graphics.gd/variant/Callable"
-	"graphics.gd/variant/Dictionary"
-	"graphics.gd/variant/Error"
-	"graphics.gd/variant/Euler"
-	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
-	"graphics.gd/variant/Packed"
-	"graphics.gd/variant/Path"
-	"graphics.gd/variant/RID"
-	"graphics.gd/variant/RefCounted"
-	"graphics.gd/variant/Signal"
-	"graphics.gd/variant/String"
-)
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/MultiplayerAPI"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Tween"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 
@@ -117,10 +113,25 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
-Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
+Extension can be embedded in a new struct to create a Go extension of this class.
+
+T must be a type that is embedding this [Extension] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
+Singleton can be embedded in a new struct to create a Go singleton extension of the class.
+
+It will become available as a global inside scripts and any any other Go Extension types will
+have any *T fields filled in to point at this singleton once they have been instantiated.
+
+T must be a type that is embedding this [Singleton] as the first field.
+It is unsafe and invalid to use this type directly, or embedded in any other way.
+See [Interface] for methods that can be overridden by T.
+*/
+type Singleton[T gdclass.Interface] = Extension[T]
 
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.Node
