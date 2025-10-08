@@ -175,3 +175,54 @@ func main() {
 	startup.Scene()
 }
 ````
+
+### Singletons
+You can register a class as a singleton by embedding the `Singleton[T]` type instead of
+`Extension[T]`. This will intialize a singlet instance of the object on startup and make
+it available to scripts as a global variable with the same name as the struct (or the `gd`tag).
+
+Singleton pointers will also be automatically filled in when other `Extension[T]` types refer
+to them as a field. If the singleton is also a `Node.Any`, then it will be added to the scene
+tree on startup as well.
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Node3D"
+	"graphics.gd/classdb/SceneTree"
+	"graphics.gd/startup"
+)
+
+type Singleton struct {
+	Node.Singleton[Singleton]
+}
+
+func (g *Singleton) Print() {
+	Engine.Println("Hello, graphics.gd!")
+}
+
+type Game struct {
+	Node3D.Extension[Game]
+
+	Singleton *Singleton
+}
+
+func (g *Game) Ready() {
+	g.Singleton.Print()
+	fmt.Println("singleton in scene tree? ", g.Singleton.AsNode().IsInsideTree()) // true
+}
+
+func main() {
+	classdb.Register[Singleton]()
+	classdb.Register[Game]()
+	startup.LoadingScene()
+	SceneTree.Add(new(Game))
+	startup.Scene()
+}
+```
