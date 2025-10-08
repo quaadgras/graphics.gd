@@ -177,7 +177,7 @@ func Register[T Class](exports ...any) {
 			},
 		}
 		for _, field := range reflect.VisibleFields(classType) {
-			if field.Type.Kind() == reflect.Pointer && field.Type.Elem().Kind() == reflect.Struct {
+			if field.Type.Kind() == reflect.Pointer && field.Type.Elem().Kind() == reflect.Struct && field.Type.Elem().NumField() > 0 {
 				check := field.Type.Elem().Field(0)
 				if check.Name == "Singleton" && check.Anonymous && check.Type.Implements(reflect.TypeFor[Class]()) {
 					impl.Singletons = append(impl.Singletons, field)
