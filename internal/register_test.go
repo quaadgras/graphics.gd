@@ -10,9 +10,12 @@ import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node2D"
+	"graphics.gd/classdb/Node3D"
+	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Float"
 )
 
 func TestRegister(t *testing.T) {
@@ -62,4 +65,39 @@ func (TestingSingleton) Ready() {
 func TestSingleton(t *testing.T) {
 	classdb.Register[TestingSingleton]()
 	Engine.RegisterSingleton("HelloWorld", new(TestingSingleton).AsObject())
+}
+
+type HealthResource struct {
+	Resource.Extension[HealthResource]
+	MaxHealth Float.X
+}
+type Health struct {
+	Node.Extension[Health]
+	Template      *HealthResource
+	CurrentHealth Float.X
+}
+
+func (h *Health) Ready() {
+	h.CurrentHealth = h.Template.MaxHealth
+}
+
+type NestedGame struct {
+	Node3D.Extension[NestedGame]
+	Health *Health
+}
+
+func (g *NestedGame) Ready() {
+
+}
+
+func TestNested(t *testing.T) {
+	classdb.Register[HealthResource]()
+	classdb.Register[Health]()
+	classdb.Register[NestedGame]()
+
+	game := &NestedGame{
+		Health: &Health{Template: new(HealthResource)},
+	}
+	game.AsObject()[0].Notification(gd.Int(Node.NotificationReady), false)
+	game.Health.Ready()
 }
