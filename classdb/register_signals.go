@@ -91,7 +91,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
 				gdextension.Host.ClassDB.PropertyList.Free(args)
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
-				var args = gdextension.Host.ClassDB.PropertyList.Make(etype.NumOut())
+				var args = gdextension.Host.ClassDB.PropertyList.Make(1)
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
 					name := "event"
