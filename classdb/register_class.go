@@ -22,6 +22,7 @@ import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Script"
 	"graphics.gd/classdb/ScriptLanguage"
 	"graphics.gd/classdb/ShaderMaterial"
@@ -273,6 +274,9 @@ func Register[T Class](exports ...any) {
 			singleton, _ := reflect.TypeAssert[Object.Any](construct)
 			singletons.Insert(superType, construct)
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
+			if node, ok := singleton.(Node.Any); ok {
+				SceneTree.Add(node)
+			}
 		}
 	}
 	switch super.(type) {
