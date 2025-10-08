@@ -510,10 +510,10 @@ func (class classImplementation) IsExposed() bool {
 }
 
 func (class classImplementation) CreateInstance(notify_postinitialize bool) [1]gd.Object {
-	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize, true)
+	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize)
 }
 
-func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize, add_root bool) [1]gd.Object {
+func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
 	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
 	if class.RefCounted {
 		gd.RefCounted(super[0]).InitRef()
@@ -522,10 +522,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, super)
 	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
 
-	if add_root {
-		if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
-			roots.Insert(value, keepalive)
-		}
+	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
+		roots.Insert(value, keepalive)
 	}
 	for _, field := range class.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
@@ -541,7 +539,17 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 }
 
 func (class classImplementation) CreateGoInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
-	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize, false)
+	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
+	if class.RefCounted {
+		gd.RefCounted(super[0]).InitRef()
+	}
+	instance := class.reloadInstance(value, super)
+	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
+	if notify_postinitialize {
+		super[0].Notification(0, false)
+	}
+	instance.OnCreate(value)
+	return super
 }
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) *instanceImplementation {
