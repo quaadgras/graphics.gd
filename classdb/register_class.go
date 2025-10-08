@@ -27,6 +27,7 @@ import (
 	"graphics.gd/classdb/ScriptLanguage"
 	"graphics.gd/classdb/ShaderMaterial"
 
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/RefCounted"
@@ -275,7 +276,10 @@ func Register[T Class](exports ...any) {
 			singletons.Insert(classType, construct)
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 			if node, ok := singleton.(Node.Any); ok {
-				SceneTree.Add(node)
+				Callable.Defer(Callable.New(func() {
+					ptrs := pointers.Get(node.AsNode().AsObject()[0])
+					SceneTree.Add(Node.Instance{pointers.New[gdclass.Node]([3]uint64{ptrs[0]})})
+				}))
 			}
 		}
 	}
