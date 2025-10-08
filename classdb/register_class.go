@@ -560,7 +560,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		var (
 			rvalue = value.FieldByIndex(field.Index).Addr()
 		)
-		name := field.Name
+		name := String.ToSnakeCase(field.Name)
 		if tag := field.Tag.Get("gd"); tag != "" {
 			name = tag
 		}
