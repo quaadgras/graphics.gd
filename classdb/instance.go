@@ -20,9 +20,6 @@ func nameOf(rtype reflect.Type) string {
 			if rtype.Name() == "" {
 				return nameOf(rtype.Field(0).Type)
 			}
-			if rtype.Field(0).Name == "Singleton" {
-				return "GoSingleton" + rtype.Name()
-			}
 		}
 		return strings.TrimPrefix(rtype.Name(), "class")
 	}
