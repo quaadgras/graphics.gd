@@ -208,53 +208,58 @@ func (exe *toolchain) Lookup() (string, error) {
 	}
 	var dest = install_path
 	dest += "." + exe.Version + ".download"
-	out, err := os.OpenFile(dest, os.O_CREATE|os.O_WRONLY, 0755)
-	if err != nil {
-		return "", xray.New(err)
-	}
-	defer out.Close()
-	stat, err := out.Stat()
-	if err != nil {
-		return "", xray.New(err)
-	}
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return "", xray.New(err)
-	}
-	if stat.Size() > 0 {
-		req.Header.Set("Range", fmt.Sprintf("bytes=%d-", stat.Size()))
-	}
-	req.Header.Set("User-Agent", "graphics.gd/cmd/gd")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", xray.New(err)
-	}
-	defer resp.Body.Close()
-	switch resp.StatusCode {
-	case 200:
-	case 206:
-		if _, err := out.Seek(stat.Size(), io.SeekStart); err != nil {
-			return "", xray.New(err)
+	if err := func() error {
+		out, err := os.OpenFile(dest, os.O_CREATE|os.O_WRONLY, 0755)
+		if err != nil {
+			return xray.New(err)
 		}
-	case 416:
-		contentRange := resp.Header.Get("Content-Range")
-		if contentRange != fmt.Sprintf("bytes */%d", stat.Size()) {
-			return "", fmt.Errorf("unable to resume download of '%v' (required for %v), please delete %v and try again\nGET %s HTTP status: %v", exe.Name, exe.RequiredFor, dest, url, resp.StatusCode)
+		defer out.Close()
+		stat, err := out.Stat()
+		if err != nil {
+			return xray.New(err)
 		}
-	default:
-		return "", fmt.Errorf(
-			"unable to download '%v' (required for %v) and not found in $PATH, please install it, ie. %v\nGET %s HTTP status: %v",
-			exe.Name, exe.RequiredFor, exe.DownloadHint, url, resp.StatusCode,
-		)
-	}
-	if resp.StatusCode != 416 {
-		bar := progressbar.DefaultBytes(
-			resp.ContentLength,
-			fmt.Sprintf("gd: downloading %s v%s", exe.Name, exe.Version),
-		)
-		if _, err := io.Copy(io.MultiWriter(out, bar), resp.Body); err != nil {
-			return "", xray.New(err)
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			return xray.New(err)
 		}
+		if stat.Size() > 0 {
+			req.Header.Set("Range", fmt.Sprintf("bytes=%d-", stat.Size()))
+		}
+		req.Header.Set("User-Agent", "graphics.gd/cmd/gd")
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return xray.New(err)
+		}
+		defer resp.Body.Close()
+		switch resp.StatusCode {
+		case 200:
+		case 206:
+			if _, err := out.Seek(stat.Size(), io.SeekStart); err != nil {
+				return xray.New(err)
+			}
+		case 416:
+			contentRange := resp.Header.Get("Content-Range")
+			if contentRange != fmt.Sprintf("bytes */%d", stat.Size()) {
+				return fmt.Errorf("unable to resume download of '%v' (required for %v), please delete %v and try again\nGET %s HTTP status: %v", exe.Name, exe.RequiredFor, dest, url, resp.StatusCode)
+			}
+		default:
+			return fmt.Errorf(
+				"unable to download '%v' (required for %v) and not found in $PATH, please install it, ie. %v\nGET %s HTTP status: %v",
+				exe.Name, exe.RequiredFor, exe.DownloadHint, url, resp.StatusCode,
+			)
+		}
+		if resp.StatusCode != 416 {
+			bar := progressbar.DefaultBytes(
+				resp.ContentLength,
+				fmt.Sprintf("gd: downloading %s v%s", exe.Name, exe.Version),
+			)
+			if _, err := io.Copy(io.MultiWriter(out, bar), resp.Body); err != nil {
+				return xray.New(err)
+			}
+		}
+		return nil
+	}(); err != nil {
+		return "", xray.New(err)
 	}
 	var unzip = variables.Replace(exe.Unzip)
 	if exe.IsApp && runtime.GOOS == "darwin" {
