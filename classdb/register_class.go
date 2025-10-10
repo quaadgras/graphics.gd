@@ -120,7 +120,7 @@ func Register[T Class](exports ...any) {
 	var super = reflect.New(superType).Elem().Interface()
 	register := func() {
 		var classType = reflect.TypeFor[T]()
-		keepalive := compile_keepalive(reflect.PointerTo(classType))
+		compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
 		var embedded_name string
 		for base.Field(0).Anonymous {
