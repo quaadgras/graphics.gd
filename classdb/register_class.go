@@ -120,7 +120,7 @@ func Register[T Class](exports ...any) {
 	var super = reflect.New(superType).Elem().Interface()
 	register := func() {
 		var classType = reflect.TypeFor[T]()
-		compile_keepalive(reflect.PointerTo(classType))
+		keepalive := compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
 		var embedded_name string
 		for base.Field(0).Anonymous {
@@ -279,6 +279,7 @@ func Register[T Class](exports ...any) {
 			construct := impl.Constructor()
 			singleton, _ := reflect.TypeAssert[Object.Any](construct)
 			singletons.Insert(classType, construct)
+			pointers.Pin(singleton.AsObject()[0])
 			Engine.RegisterSingleton(strings.TrimPrefix(rename, "GoSingleton"), singleton.AsObject())
 			if node, ok := singleton.(Node.Any); ok {
 				Callable.Defer(Callable.New(func() {
