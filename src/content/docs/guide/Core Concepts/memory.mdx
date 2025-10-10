@@ -7,33 +7,36 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 
-Thanks to the garbage collector in Go, you shouldn't need to worry too much about memory management.
+Thanks to garbage collection, you shouldn't need to worry too much about memory management!
 
 `graphics.gd` will track any Godot references that you access each frame and will invalidate them once
-they've remained unused for two or more frames. As such, if you need to keep any Objects or high-performance
-reference types (`Array.Any`, `Packed.Array[T]`, `Dictionary.Any`, `Signal.Any`, `Callable.Function`,
-`String.Readable`, `String.Name`, `Path.ToNode`) around in Go for longer than a frame, do something
-with the reference each frame or explicitly call [Object.Use](https://pkg.go.dev/graphics.gd/variant/Object#Use) to keep it alive.
+they're no longer stored inside an  `Extension[T]` struct and remain unused for two or more frames. As
+such, if you need to keep any Objects or high-performance reference types (`Array.Any`, `Packed.Array[T]`,
+`Dictionary.Any`, `Signal.Any`, `Callable.Function`, `String.Readable`, `String.Name`, `Path.ToNode`)
+around in Go for longer than a frame, either keep them reachable from a `Extension[T]` struct, do something
+with them each frame or explicitly call [Object.Use](https://pkg.go.dev/graphics.gd/variant/Object#Use) to
+keep them alive.
 
-In some cases, iterating over each object to keep it alive may be too constraining. In these scenarios
-you can [Object.Leak](https://pkg.go.dev/graphics.gd/variant/Object#Leak) an object and call [Object.Free](https://pkg.go.dev/graphics.gd/variant/Object#Free) when you're done with it. Leaked objects
-will not be collected by `graphics.gd` and will remain valid until you explicitly free them (ie. this is
-how non-RefCounted objects work in `.gd` scripts).
+In the worst case, `graphics.gd` will produce a panic if you try to use an Engine reference that has been
+invalidated (this could terminate your application). Bear in mind that `graphics.gd` has been designed to
+provide the best possible memory safety protections when working with the engine, so if you run into
+a memory safety issue, this means either `graphics.gd` or the engine is at fault, please [report it](https://github.com/quaadgras/graphics.gd/issues/new/choose).
 
-```go
-	node := Object.Leak(Node.New())
-	/// many frames later...
-	Object.Free(node)
-```
+### Object IDs
 
-In the worst case, `graphics.gd` will produce a panic if you try to use an Engine reference
-that has been invalidated (this could terminate your application). Bear in mind `graphics.gd` has been designed
-to provide the best possible memory safety protections when working with the engine, if you run into
-a memory safety issue, this means either `graphics.gd` or the engine is at fault, please [open an issue](https://github.com/quaadgras/graphics.gd/issues/new/choose).
+Each `Object` has a unique ID that is valid for the lifetime of the object. If you receive objects from callbacks
+made by the engine, and you intend to use them infrequently, an [Object.ID](https://pkg.go.dev/graphics.gd/variant/Object#ID)
+may be a good way to store them whilst avoiding any overhead of keeping their reference alive.
+
+Each classdb object has it's own `ID` type.
+
+<Aside type="caution">
+    Object ID look ups are relatively expensive to use when compared to using an instance directly.
+</Aside>
 
 ### Globals
-When you initialise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
-are only valid after:
+When you initialise an object as a global, the underlying reference will not be invalidated until
+shutdown. These objects are only valid after:
 
   * [startup.LoadingScene](https://pkg.go.dev/graphics.gd/startup#LoadingScene) is called, or
   * [startup.Rendering](https://pkg.go.dev/graphics.gd/startup#Rendering) is called, or
@@ -50,26 +53,14 @@ import "graphics.gd/classdb/Sprite2D"
 var global = Sprite2D.New()
 ```
 
-If you assign newly created objects to these globals, they still need to be used every frame and unless you made a copy first,
-the original reference will be lost. Therefore, unless you really know what you are doing, do not assign new objects to any
-global variables after the engine has started up.
-
-### Object IDs
-
-Each `Object` has a unique ID that is valid for the lifetime of the object. If you receive objects from callbacks made by the
-engine, and you intend to use them infrequently, an [Object.ID](https://pkg.go.dev/graphics.gd/variant/Object#ID) can be a good way to store them without needing to keep their
-reference alive.
-
-Each classdb object has it's own `ID` type.
-
-<Aside type="caution">
-    Object ID look ups are relatively expensive to use when compared to using an instance directly.
-</Aside>
+If you assign newly created objects to these globals, they still need to be used every frame and
+unless you made a copy of it first, the original reference will be lost. Therefore, unless you really
+know what you are doing, do not assign objects to any global variables after the engine has started up.
 
 ### Goroutines
 
-Memory safety protections only apply within a single thread, please be careful when using goroutines and make sure only to use
-[Thread Safe APIs](https://docs.godotengine.org/en/latest/tutorials/performance/thread_safe_apis.html).
+Memory safety protections only apply within a single thread, please be careful when using goroutines and make sure
+only to use [Thread Safe APIs](https://docs.godotengine.org/en/latest/tutorials/performance/thread_safe_apis.html).
 Prefer channels or signals wherever possible and [Share Memory by Communicating](https://go.dev/blog/codelab-share)
 to prevent data races.
 
@@ -86,5 +77,23 @@ func (t *MyTimer) Ready() {
 		t.Timer.Emit() // safe to call from a goroutine
 	}()
 }
-
 ```
+
+### Manual Memory Management
+In rare cases, relying on `graphics.gd` to iterate over each object to keep it alive may become an unacceptable
+performance hit. In these scenarios you can use an Advanced instance and [Object.Leak](https://pkg.go.dev/graphics.gd/variant/Object#Leak)
+the object when it is created. Use [Object.Free](https://pkg.go.dev/graphics.gd/variant/Object#Free) when you're
+done with it. Leaked objects will not be collected by `graphics.gd` and will remain valid until you explicitly
+free them (ie. this is how non-RefCounted objects work in `.gd` scripts). Please be aware that both RefCounted
+and non-RefCounted objects are treated the same way here, except that calling [Object.Free](https://pkg.go.dev/graphics.gd/variant/Object#Free)
+on a leaked RefCounted will only drop Go's reference to it, not necessarily 'freeing' it.
+
+```go
+	node := Object.Leak(Node.Advanced(Node.New()))
+	/// many frames later...
+	Object.Free(node)
+```
+
+[Object.Free](https://pkg.go.dev/graphics.gd/variant/Object#Free) is safe to call multiple times on the same object,
+and as such, the worse case scenario of using [Object.Leak](https://pkg.go.dev/graphics.gd/variant/Object#Leak) is
+forgetting to free the objects and therefore leaking memory, not any memory-safety issues or undefined behaviour.
