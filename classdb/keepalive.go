@@ -124,12 +124,12 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 		return nil
 	case reflect.Map:
 		if keyKeepalive, valKeepalive := compile_keepalive(rtype.Key()), compile_keepalive(rtype.Elem()); keyKeepalive != nil || valKeepalive != nil {
-			var map_iter reflect.MapIter
 			return func(val reflect.Value) {
 				if _, ok := skips[val]; ok {
 					return
 				}
 				skips[val] = struct{}{}
+				var map_iter reflect.MapIter
 				map_iter.Reset(val)
 				for map_iter.Next() {
 					if keyKeepalive != nil {
