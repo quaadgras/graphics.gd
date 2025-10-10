@@ -67,7 +67,14 @@ func (exe toolchain) Exec(args ...string) error {
 	return cmd.Run()
 }
 
-func (exe toolchain) Action(name string, suffix []string, args ...string) error {
+func (exe toolchain) Action(name string, suffix_args []string, args ...string) error {
+	var suffix = make([]string, len(suffix_args))
+	for _, arg := range suffix {
+		if !strings.HasPrefix(arg, "-") {
+			continue
+		}
+		suffix = append(suffix, arg)
+	}
 	for i, arg := range args {
 		if newarg, ok := exe.ConvertArguments[arg]; ok {
 			args[i] = newarg
