@@ -28,6 +28,7 @@ func init() {
 		if goOnly {
 			roots.Remove(key)
 		} else {
+			pointers.Pin(impl.Value.AsObject()[0])
 			if keepalive := compile_keepalive(reflect.TypeOf(impl.Value)); keepalive != nil {
 				roots.Insert(key, keepalive)
 			}
