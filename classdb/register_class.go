@@ -690,6 +690,10 @@ func (instance *instanceImplementation) Notification(what Object.Notification, r
 			notify.Notification(gd.NotificationType(what))
 		case interface{ Notification(Object.Notification) }:
 			notify.Notification(what)
+		case interface {
+			Notification(Object.Notification, bool)
+		}:
+			notify.Notification(what, reversed)
 		case interface{ Notification(int, bool) }:
 			notify.Notification(int(what), reversed)
 		default:
