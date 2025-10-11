@@ -264,7 +264,7 @@ GDExtensionInterfaceObjectSetScriptInstance gdextension_object_set_script_instan
 GDExtensionInterfaceClassdbConstructObject2 gdextension_classdb_construct_object2 = NULL;
 GDExtensionInterfaceClassdbGetMethodBind gdextension_classdb_get_method_bind = NULL;
 GDExtensionInterfaceClassdbGetClassTag gdextension_classdb_get_class_tag = NULL;
-GDExtensionInterfaceClassdbRegisterExtensionClass4 gdextension_classdb_register_extension_class4 = NULL;
+GDExtensionInterfaceClassdbRegisterExtensionClass5 gdextension_classdb_register_extension_class5 = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassMethod gdextension_classdb_register_extension_class_method = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod gdextension_classdb_register_extension_class_virtual_method = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassIntegerConstant gdextension_classdb_register_extension_class_integer_constant = NULL;
@@ -455,7 +455,7 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
 	LOAD_PROC_ADDRESS(classdb_construct_object2, GDExtensionInterfaceClassdbConstructObject2);
 	LOAD_PROC_ADDRESS(classdb_get_method_bind, GDExtensionInterfaceClassdbGetMethodBind);
 	LOAD_PROC_ADDRESS(classdb_get_class_tag, GDExtensionInterfaceClassdbGetClassTag);
-	LOAD_PROC_ADDRESS(classdb_register_extension_class4, GDExtensionInterfaceClassdbRegisterExtensionClass4);
+	LOAD_PROC_ADDRESS(classdb_register_extension_class5, GDExtensionInterfaceClassdbRegisterExtensionClass5);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_method, GDExtensionInterfaceClassdbRegisterExtensionClassMethod);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_virtual_method, GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_integer_constant, GDExtensionInterfaceClassdbRegisterExtensionClassIntegerConstant);
@@ -829,7 +829,7 @@ void cgo_class_free_instance_func(void *p_class_userdata, GDExtensionClassInstan
 }
 
 void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, bool is_virtual, bool abstract, bool exposed, bool runtime, uintptr_t icon_path) {
-    GDExtensionClassCreationInfo4 info = {
+    GDExtensionClassCreationInfo5 info = {
         .is_virtual = is_virtual,
         .is_abstract = abstract,
         .is_exposed = exposed,
@@ -852,7 +852,7 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .call_virtual_with_data_func = cgo_class_call_virtual_with_data_func,
         .class_userdata = (void *)id,
     };
-    gdextension_classdb_register_extension_class4(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
+    gdextension_classdb_register_extension_class5(cgo_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
 };
 
 void gd_classdb_register_methods(uintptr_t class_name, uintptr_t methods) {

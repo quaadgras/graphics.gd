@@ -69,6 +69,10 @@ type Extension[T gdclass.Interface] struct {
 	gdclass.Extension[T, Instance]
 }
 
+// Singleton can be embedded in a struct to create a new singleton. T should be the type of the struct
+// that embeds this Extension.
+type Singleton[T gdclass.Interface] = Extension[T]
+
 var otype gdextension.ObjectType
 
 func init() {
