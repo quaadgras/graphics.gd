@@ -6,7 +6,6 @@ import (
 	"graphics.gd/classdb/Texture2D"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -37,7 +36,6 @@ func UpdateScene(dt, speed Float.X, angle Angle.Radians) {
 		if scenery.Image == Texture2D.Nil {
 			continue
 		}
-		Object.Use(scenery.Image)
 		if i < len(Scene) {
 			Scene[i].Pos.Y += speed
 			if Scene[i].Pos.Y-scenery.Image.GetSize().Y > Float.X(game_size.Y) {

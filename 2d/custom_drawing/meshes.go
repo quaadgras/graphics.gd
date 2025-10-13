@@ -10,8 +10,6 @@ import (
 	"graphics.gd/classdb/SphereMesh"
 	"graphics.gd/classdb/TextMesh"
 	"graphics.gd/variant/Color"
-	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Transform2D"
 	"graphics.gd/variant/Vector2"
 )
@@ -61,16 +59,6 @@ func (m *Meshes) Ready() {
 	m.MultiMesh.SetInstanceTransform2d(4, Transform2D.Translates(Vector2.New(50, 50)))
 	m.MultiMesh.SetInstanceColor(4, Color.RGBA{0.7, 1, 1, 1})
 	m.MultiMesh.SetMesh(m.SphereMesh.AsMesh())
-}
-
-func (m *Meshes) Process(delta Float.X) {
-	// You must keep the references to the Resources alive.
-	// Otherwise, they get freed automatically and the renderer won't be able to draw them.
-	Object.Use(m.TextMesh)
-	Object.Use(m.NoiseTexture)
-	Object.Use(m.GradientTexture)
-	Object.Use(m.SphereMesh)
-	Object.Use(m.MultiMesh)
 }
 
 func (m *Meshes) Draw() {

@@ -10,7 +10,6 @@ import (
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -30,8 +29,6 @@ func (p *Player) Ready() {
 }
 
 func (p *Player) Process(delta Float.X) {
-	Object.Use(p.texture)
-
 	dt := complex(delta, 0)
 
 	p.AsCanvasItem().QueueRedraw()
