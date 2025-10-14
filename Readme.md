@@ -6,7 +6,7 @@ gdextensions, multimedia applications, games and more.
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Full compatibility with the [Godot Engine](https://godotengine.org/) ecosystem.
+* Full compatibility with the [Godot Engine](https://godotengine.org/) editor and ecosystem.
 * Unlike C++/C#/GDScript/Rust/Swift, RIDs, Callables and Dictionary arguments are strongly typed.
 * Fully documented API reference on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
 * Pure-Go ported `variant` packages, for vector math and more, reuse them in any Go project.
