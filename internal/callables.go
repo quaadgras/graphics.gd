@@ -103,6 +103,9 @@ func NewCallable(fn any) Callable {
 }
 
 func InternalCallable(fn CallableType.Function) Callable {
+	if fn == (CallableType.Function{}) {
+		return Callable{}
+	}
 	return NewCallable(fn.Call)
 }
 
