@@ -49,8 +49,15 @@ func Cycle() {
 // then it will be wrapped as if it were a function without any arguments that
 // returns the specified value.
 func New(value any) Function {
+	if value == nil {
+		return Function{}
+	}
 	if already, ok := value.(Function); ok {
 		return already
+	}
+	rvalue := reflect.ValueOf(value)
+	if rvalue.Kind() == reflect.Func && rvalue.IsNil() {
+		return Function{}
 	}
 	return Function{
 		proxy: &local{
