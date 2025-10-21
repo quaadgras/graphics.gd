@@ -85,7 +85,7 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 Singleton can be embedded in a new struct to create a Go singleton extension of the class.
 
 It will become available as a global inside scripts and any any other Go Extension types will
-have any *T fields filled in to point at this singleton once they have been instantiated.
+have any *T typed fields filled in to point at this singleton once they have been instantiated.
 
 T must be a type that is embedding this [Singleton] as the first field.
 It is unsafe and invalid to use this type directly, or embedded in any other way.
