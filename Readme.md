@@ -134,9 +134,9 @@ Secure the development of `graphics.gd` and prioritise issues by
 [sponsoring me](https://github.com/sponsors/Splizard).
 
 ## Performance
-It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible
-and avoid allocating memory on the heap in frequently called functions. `Advanced` instances are
-available for each class which allow more fine-grained control over memory allocations.
+It's feasible to write high performance code with `graphics.gd`, keep to allocation-efficient types
+where possible and avoid allocating memory on the heap in frequently called functions. `Advanced`
+instances are available for each class which allow more fine-grained control over memory allocations.
 
 Benchmarks show that `Advanced` method calls from Go -> Godot don't typically allocate any
 memory.
