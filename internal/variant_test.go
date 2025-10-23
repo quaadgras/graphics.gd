@@ -11,6 +11,8 @@ import (
 )
 
 func TestZero(t *testing.T) {
+	t.Parallel()
+
 	var raw [3]uint64
 	gdextension.Host.Variants.Zero(gdextension.CallReturns[gdextension.Variant](&raw))
 	if raw[0] != 0 || raw[1] != 0 || raw[2] != 0 {
@@ -19,6 +21,8 @@ func TestZero(t *testing.T) {
 }
 
 func TestVariants(t *testing.T) {
+	t.Parallel()
+
 	var f = variant.New(Float.X(3.14))
 	if f.Float32() != 3.14 {
 		t.Fatal()

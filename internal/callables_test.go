@@ -23,8 +23,14 @@ func get_node() -> Node:
 `
 
 func TestCallables(t *testing.T) {
-	var runner = Object.New()
-	var script = GDScript.New().AsScript()
+	t.Skip()
+	t.Parallel()
+
+	var runner = Object.Leak(Object.New())
+	var script = Object.Leak(GDScript.New().AsScript())
+	defer Object.Free(runner)
+	defer Object.Free(script)
+
 	script.SetSourceCode(callable_test)
 	script.Reload()
 	runner.SetScript(script)

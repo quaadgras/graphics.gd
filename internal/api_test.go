@@ -35,6 +35,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestGetGodotVersion(t *testing.T) {
+	t.Parallel()
+
 	if gdextension.Host.Version.Major() != 4 {
 		t.Fail()
 	}
@@ -47,6 +49,8 @@ func TestGetGodotVersion(t *testing.T) {
 }
 
 func TestUtilities(t *testing.T) {
+	t.Parallel()
+
 	id := Resource.AllocateID()
 	if id != Resource.AllocateID()-1 {
 		t.Fatal("Resource.AllocateID did not return the expected value")
@@ -54,6 +58,8 @@ func TestUtilities(t *testing.T) {
 }
 
 func TestNativeStructSize(t *testing.T) {
+	t.Parallel()
+
 	for name, expectation := range map[string]uintptr{
 		"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),
 		"AudioFrame":                              unsafe.Sizeof(AudioEffectInstance.AudioFrame{}),
@@ -77,6 +83,8 @@ func TestNativeStructSize(t *testing.T) {
 }
 
 func TestLog(t *testing.T) {
+	t.Parallel()
+
 	gdextension.Host.Log.Error("This is a test error message", "go", "gd_test.TestLog", "gd_test.go", 42, true)
 	gdextension.Host.Log.Warning("This is a test warning message", "go", "gd_test.TestLog", "gd_test.go", 43, true)
 }

@@ -14,6 +14,8 @@ import (
 )
 
 func TestArrays(t *testing.T) {
+	t.Parallel()
+
 	var numbers = Array.New[int]()
 	numbers.Append(1)
 	if numbers.Index(0) != 1 {
@@ -37,6 +39,7 @@ func TestArrays(t *testing.T) {
 }
 
 func TestArrayConversions(t *testing.T) {
+
 	info := Engine.GetCopyrightInfo()
 	if len(info) == 0 {
 		t.Error("expected non-empty string")

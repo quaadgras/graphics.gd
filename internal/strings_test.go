@@ -12,6 +12,8 @@ import (
 )
 
 func TestStrings(t *testing.T) {
+	t.Parallel()
+
 	var str = gd.NewString("Hello, World!")
 	if str.String() != "Hello, World!" {
 		t.Fail()
@@ -23,6 +25,8 @@ func TestStrings(t *testing.T) {
 }
 
 func TestVariantStrings(t *testing.T) {
+	t.Parallel()
+
 	var str = gd.NewVariant(gd.NewString("Hello, Variant!"))
 	if gd.VariantAs[string](str) != "Hello, Variant!" {
 		t.Fail()
@@ -34,6 +38,8 @@ func TestVariantStrings(t *testing.T) {
 }
 
 func TestStringNames(t *testing.T) {
+	t.Parallel()
+
 	var str = gd.NewStringName("Hello, World!")
 	if str.String() != "Hello, World!" {
 		t.Fail()
@@ -43,6 +49,8 @@ func TestStringNames(t *testing.T) {
 var HelloWorld = String.New("Hello, World!")
 
 func TestStaticStrings(t *testing.T) {
+	t.Parallel()
+
 	if HelloWorld.String() != "Hello, World!" {
 		t.Fail()
 	}

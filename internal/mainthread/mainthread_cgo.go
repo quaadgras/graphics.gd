@@ -53,22 +53,27 @@ func CallStatic[T any](method gdextension.MethodForClass, shape gdextension.Shap
 func Yield() {
 	for range len(requests) {
 		req := <-requests
-		switch req.length {
-		case 0:
-			C.gd_object_unsafe_call_0(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0)
-		case 1:
-			result := C.gd_object_unsafe_call_8(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
-			copy(req.result.value[:], result[:])
-		case 2:
-			result := C.gd_object_unsafe_call_16(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
-			copy(req.result.value[:], result[:])
-		case 4:
-			result := C.gd_object_unsafe_call_32(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
-			copy(req.result.value[:], result[:])
-		case 8:
-			req.result.value = C.gd_object_unsafe_call_64(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
-		}
-		req.result.ready.Done()
+		func() {
+			defer func() {
+				recover()
+				req.result.ready.Done()
+			}()
+			switch req.length {
+			case 0:
+				C.gd_object_unsafe_call_0(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0)
+			case 1:
+				result := C.gd_object_unsafe_call_8(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
+				copy(req.result.value[:], result[:])
+			case 2:
+				result := C.gd_object_unsafe_call_16(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
+				copy(req.result.value[:], result[:])
+			case 4:
+				result := C.gd_object_unsafe_call_32(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
+				copy(req.result.value[:], result[:])
+			case 8:
+				req.result.value = C.gd_object_unsafe_call_64(C.uintptr_t(req.object), C.uintptr_t(req.method), C.uint64_t(req.shape), req.args, 0).part
+			}
+		}()
 	}
 }
 

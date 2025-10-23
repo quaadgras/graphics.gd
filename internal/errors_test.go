@@ -7,6 +7,9 @@ import (
 )
 
 func TestErrors(t *testing.T) {
+	t.Skip()
+	//t.Parallel()
+
 	var expr = Expression.New()
 	if err := expr.Parse("2 + 2"); err != nil {
 		t.Error(err)

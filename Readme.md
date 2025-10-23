@@ -1,12 +1,12 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-A cross platform 2D/3D graphics runtime for [Go](https://go.dev/) suitable for building native mobile apps, 
+A cross platform 2D/3D graphics runtime for [Go](https://go.dev/) suitable for building native mobile apps,
 gdextensions, multimedia applications, games and more.
 
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Full compatibility with the [Godot Engine](https://godotengine.org/) ecosystem.
+* Full compatibility with the [Godot Engine](https://godotengine.org/) editor and ecosystem.
 * Unlike C++/C#/GDScript/Rust/Swift, RIDs, Callables and Dictionary arguments are strongly typed.
 * Fully documented API reference on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
 * Pure-Go ported `variant` packages, for vector math and more, reuse them in any Go project.
@@ -16,9 +16,9 @@ _Why use graphics.gd?_
 * Neither Xcode nor macOS is needed to build macOS/iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
 
-Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to 
-provide a cohesive and curated experience for using [Go](https://go.dev/) on top of 
-[Godot](https://godotengine.org/) + 
+Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to
+provide a cohesive and curated experience for using [Go](https://go.dev/) on top of
+[Godot](https://godotengine.org/) +
 [GDExtension](https://docs.godotengine.org/en/4.4/tutorials/scripting/gdextension/what_is_gdextension.html).
 
 ## Hello World
@@ -51,9 +51,9 @@ func main() {
 
 ## Quickstart
 The module includes a drop-in replacement for the go command called `gd` that
-makes it easy to work with projects that run within the runtime (including `.gd` 
+makes it easy to work with projects that run within the runtime (including `.gd`
 script projects). It also enables you to start developing a new project starting from
-a single  `main.go` file, to install it, make sure that your `$GOPATH/bin` is in your 
+a single  `main.go` file, to install it, make sure that your `$GOPATH/bin` is in your
 `$PATH` and run:
 
 $ `go install graphics.gd/cmd/gd@release`
@@ -66,14 +66,14 @@ subdirectory where you can manage your assets via the
 Running the command without any additional arguments will startup the editor.
 
 If you don't want to use the `gd` command, you can also build a shared library with
-the standard `go` command (this can be included in an existing 
+the standard `go` command (this can be included in an existing
 [Godot Engine](https://godotengine.org/) project):
 
 $ `go build -o example.so -buildmode=c-shared`
 
 ## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, 
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much,
 much more!
 
 There are also a number of example projects in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
@@ -93,7 +93,7 @@ referring to Godot documentation.
 
 https://docs.godotengine.org/en/latest/index.html
 
-The complete API reference for Godot has been ported to Go, including code snippets, so you 
+The complete API reference for Godot has been ported to Go, including code snippets, so you
 can use `pkg.go.dev` as a drop-in replacement for Godot's API documentation.
 
 https://pkg.go.dev/graphics.gd
@@ -114,7 +114,7 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 * Utility Functions      -> `//gd:utility_function_name`
 * Enum                   -> `//gd:ClassName.EnumName`
 ```
-_NOTE_ in order to avoid circular dependencies, a small selection of functions have moved 
+_NOTE_ in order to avoid circular dependencies, a small selection of functions have moved
 packages, for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
 ## Community & Support
@@ -122,21 +122,21 @@ packages, for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()
 Join the [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-The API surface of the [Godot Engine](https://godotengine.org/) is huge, not everything has 
-been translated to Go optimally, the best thing you can do is to 
-[report](https://github.com/quaadgras/graphics.gd/issues/new/choose) 
-anything that seems 'off', this way you can reduce the likelihood of being affected by any 
+The API surface of the [Godot Engine](https://godotengine.org/) is huge, not everything has
+been translated to Go optimally, the best thing you can do is to
+[report](https://github.com/quaadgras/graphics.gd/issues/new/choose)
+anything that seems 'off', this way you can reduce the likelihood of being affected by any
 breaking changes in the future.
 
-*Public sponsors receive priority support!* 
+*Public sponsors receive priority support!*
 
-Secure the development of `graphics.gd` and prioritise issues by 
-[sponsoring me](https://github.com/sponsors/Splizard). 
+Secure the development of `graphics.gd` and prioritise issues by
+[sponsoring me](https://github.com/sponsors/Splizard).
 
 ## Performance
-It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible 
-and avoid allocating memory on the heap in frequently called functions. `Advanced` instances are 
-available for each class which allow more fine-grained control over memory allocations.
+It's feasible to write high performance code with `graphics.gd`, keep to allocation-efficient types
+where possible and avoid allocating memory on the heap in frequently called functions. `Advanced`
+instances are available for each class which allow more fine-grained control over memory allocations.
 
 Benchmarks show that `Advanced` method calls from Go -> Godot don't typically allocate any
 memory.
@@ -153,7 +153,7 @@ memory.
 ## Platform Restrictions
 
 * 64bit only (`arm64`, `amd64` and `wasm`).
-* No support for Playstation/Xbox/Switch yet (achievable in the future with WASI, wasm2c or hitsumabushi).
+* No support for Playstation/Xbox/Switch yet (achievable in the future with gd-compiler, TamaGo, WASI, wasm2c or hitsumabushi).
 
 ## Contributing
 
@@ -167,7 +167,7 @@ optimize functionality and/or improve test coverage of these packages is more th
 
 If you enjoy hunting down memory-safety issues, we would appreciate this.
 
-`graphics.gd` is looking for someone to create benchmarks to compare this project with `.gd` script 
+`graphics.gd` is looking for someone to create benchmarks to compare this project with `.gd` script
 and/or other gdextension-based alternatives.
 
 The project also needs more tests to ensure that everything is working, the best way you can
@@ -176,7 +176,7 @@ that you need!
 
 To run the go tests for `graphics.gd`, cd into the repo and run `cd internal && gd test`.
 
-Another great way to contribute, is to write a blog, share a post or let others know about your 
+Another great way to contribute, is to write a blog, share a post or let others know about your
 experience with `graphics.gd`!
 
 ## See Also
@@ -186,7 +186,7 @@ If you're interested in `graphics.gd`, you may also like to explore:
 * [godot-go](https://github.com/godot-go/godot-go) (a different Go + Godot project)
 * [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
 * [g3n](https://github.com/g3n/engine) (a 3D game engine for Go, includes `math32` vector types that are compatible with `graphics.gd`)
-* [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4) 
+* [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4)
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner

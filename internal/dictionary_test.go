@@ -25,6 +25,8 @@ func init() {
 
 // TestDictionaryStringFields tests that string fields within a dictionary are not inappropriately freed.
 func TestDictionaryStringFields(t *testing.T) {
+	t.Parallel()
+
 	const source string = `extends BuggyNode
 
 func test_dictionary_string_fields() -> String:

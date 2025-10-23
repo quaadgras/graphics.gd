@@ -7,6 +7,8 @@ import (
 )
 
 func TestPacked(t *testing.T) {
+	t.Parallel()
+
 	var array = gd.NewPackedInt32Array()
 	array.Resize(2)
 	if array.Size() != 2 {

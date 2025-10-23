@@ -10,6 +10,8 @@ import (
 )
 
 func TestStatic(t *testing.T) {
+	t.Parallel()
+
 	var image Image.Instance = Image.Create(1, 1, false, Image.FormatRgb8)
 	if image.GetWidth() != 1 {
 		t.Fail()
@@ -23,6 +25,8 @@ type ClassWithStaticMethods struct {
 func CallStatic() {}
 
 func TestRegisterStaticMethod(t *testing.T) {
+	t.Parallel()
+
 	classdb.Register[ClassWithStaticMethods](
 		map[string]any{
 			"call_static": CallStatic,

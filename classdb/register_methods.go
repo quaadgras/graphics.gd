@@ -152,7 +152,7 @@ func variantCallStatic(fn reflect.Value) func(instance any, v ...gd.Variant) (gd
 		}
 		rets := fn.Call(args)
 		if len(rets) > 0 {
-			return gd.NewVariant(rets[0].Interface()), nil
+			return gd.CutVariant(rets[0].Interface(), true), nil
 		}
 		return gd.Variant{}, nil
 	}
@@ -171,7 +171,7 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 		extensionInstance := instance.(*instanceImplementation).Value
 		rets := reflect.ValueOf(extensionInstance).Method(method.Index).Call(args)
 		if len(rets) > 0 {
-			return gd.NewVariant(rets[0].Interface()), nil
+			return gd.CutVariant(rets[0].Interface(), true), nil
 		}
 		return gd.Variant{}, nil
 	}

@@ -88,10 +88,15 @@ func CutVariant(v any, cut bool) Variant {
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
 				return Variant{}
 			}
-			var arg = gdextension.Object(pointers.Get(obj[0])[0])
+			var arg gdextension.Object
+			if cut {
+				arg = gdextension.Object(PointerWithOwnershipTransferredToGodot(obj[0]))
+			} else {
+				arg = gdextension.Object(pointers.Get(obj[0])[0])
+			}
 			((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
-			return NewVariant(value.Elem().Interface())
+			return CutVariant(value.Elem().Interface(), cut)
 		}
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {

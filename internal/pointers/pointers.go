@@ -308,9 +308,13 @@ func end(rev revision, s int, p uint64) bool {
 // Cut either gets the pointer, or ends it, depending on the parameter passed.
 func Cut[T Generic[T, P], P Size](ptr T, end bool) P {
 	if end {
-		raw, ok := End(ptr)
-		if !ok {
-			panic(panicMessage)
+		raw, kind := Ask(ptr)
+		if raw == [1]P{}[0] {
+			return raw
+		}
+		switch kind {
+		case Normal:
+			End(ptr)
 		}
 		return raw
 	}

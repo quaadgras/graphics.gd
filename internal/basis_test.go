@@ -19,8 +19,13 @@ func test_basis(angles):
 `
 
 func TestBasis(t *testing.T) {
-	var runner = Object.New()
-	var script = GDScript.New().AsScript()
+	t.Parallel()
+
+	var runner = Object.Leak(Object.New())
+	var script = Object.Leak(GDScript.New().AsScript())
+	defer Object.Free(runner)
+	defer Object.Free(script)
+
 	script.SetSourceCode(basis_test)
 	script.Reload()
 	runner.SetScript(script)

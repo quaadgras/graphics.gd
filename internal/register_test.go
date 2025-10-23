@@ -19,6 +19,8 @@ import (
 )
 
 func TestRegister(t *testing.T) {
+	t.Parallel()
+
 	type TestingSimpleClass struct {
 		Node2D.Extension[TestingSimpleClass]
 	}
@@ -40,6 +42,8 @@ func TestRegister(t *testing.T) {
 }
 
 func TestEmbedding(t *testing.T) {
+	t.Parallel()
+
 	type TestingEmbeddedClass struct {
 		Node2D.Extension[TestingEmbeddedClass]
 	}
@@ -63,6 +67,8 @@ func (TestingSingleton) Ready() {
 }
 
 func TestSingleton(t *testing.T) {
+	t.Parallel()
+
 	classdb.Register[TestingSingleton]()
 	Engine.RegisterSingleton("HelloWorld", new(TestingSingleton).AsObject())
 }
@@ -91,6 +97,8 @@ func (g *NestedGame) Ready() {
 }
 
 func TestNested(t *testing.T) {
+	t.Parallel()
+
 	classdb.Register[HealthResource]()
 	classdb.Register[Health]()
 	classdb.Register[NestedGame]()

@@ -36,6 +36,8 @@ func (c *CustomSignal) TakeDamage(amount int) {
 }
 
 func TestSignals(t *testing.T) {
+	t.Parallel()
+
 	custom := new(CustomSignal)
 	custom.HealthChanged = make(chan func() (int, int), 1)
 	custom.TakeDamage(10)
@@ -48,6 +50,8 @@ type CustomStringSignals struct {
 }
 
 func TestSignalString(t *testing.T) {
+	t.Parallel()
+
 	custom := new(CustomStringSignals)
 	signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))
 	var triggered int

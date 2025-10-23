@@ -258,8 +258,12 @@ func (c Converter) ValidCustomObject(a *CustomConverterObject) bool {
 }
 
 func TestConversions(t *testing.T) {
-	converter := &Converter{}
-	var script = GDScript.New().AsScript()
+	t.Parallel()
+
+	converter := Object.Leak(&Converter{})
+	defer Object.Free(converter)
+	var script = Object.Leak(GDScript.New().AsScript())
+	defer Object.Free(script)
 	script.SetSourceCode(convert_types_test)
 	script.Reload()
 	Object.Instance(converter.AsObject()).SetScript(script)

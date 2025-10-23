@@ -1,8 +1,10 @@
 package startup
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"graphics.gd/classdb/EditorInterface"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -40,11 +42,18 @@ func init() {
 			}
 		}
 	}
+	var last_gc = time.Now()
 	gdextension.On.MainLoop.EveryFrame = func() {
 		Callable.Cycle()
-		mainthread.Yield()
-		keep_reachable_instances_alive()
-		pointers.Cycle()
+		for range 10 {
+			mainthread.Yield()
+		}
+		if time.Since(last_gc) > time.Second/60 {
+			fmt.Println("startup.GC()")
+			keep_reachable_instances_alive()
+			pointers.Cycle()
+			last_gc = time.Now()
+		}
 	}
 	gdextension.On.MainLoop.FinalFrame = func() {
 
