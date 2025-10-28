@@ -187,6 +187,7 @@ If you're interested in `graphics.gd`, you may also like to explore:
 * [ebiten](https://github.com/hajimehoshi/ebiten/) (a 2D game engine for Go)
 * [g3n](https://github.com/g3n/engine) (a 3D game engine for Go, includes `math32` vector types that are compatible with `graphics.gd`)
 * [gdext](https://github.com/godot-rust/gdext) (Rust bindings for Godot 4)
+* [Mesh2Motion](https://github.com/scottpetrovic/mesh2motion-app) (Open Source tool for adding skeletons and animation to 3D models)
 
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
