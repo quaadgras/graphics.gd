@@ -197,6 +197,9 @@ func (obj Instance) SetScript(script [1]gdclass.Script) {
 // String returns a String representing the object. Defaults to "<ClassName#RID>". Override _to_string to
 // customize the string representation of the object.
 func (obj Instance) String() string {
+	if obj == Nil {
+		return "<Nil>"
+	}
 	return obj[0].ToString().String()
 }
 

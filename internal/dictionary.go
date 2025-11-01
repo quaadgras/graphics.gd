@@ -54,6 +54,9 @@ func NewDictionaryProxy[K comparable, V any]() (DictionaryProxy[K, V], complex12
 func DictionaryAs[T any](dictionary DictionaryType.Any) T {
 	_, state := DictionaryType.As(dictionary, NewDictionaryProxy[VariantPkg.Any, VariantPkg.Any])
 	dict := pointers.Load[Dictionary](state)
+	if pointers.Get(dict) == (gdextension.Dictionary{}) {
+		return [1]T{}[0]
+	}
 	result, err := ConvertToDesiredGoType(dict, reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("could not convert dictionary to desired go type: %v", err))
