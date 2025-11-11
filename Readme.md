@@ -179,6 +179,15 @@ To run the go tests for `graphics.gd`, cd into the repo and run `cd internal && 
 Another great way to contribute, is to write a blog, share a post or let others know about your
 experience with `graphics.gd`!
 
+## Known Projects
+
+#### [Aviary](https://the.quetzal.community/aviary) 
+A cooperative space and scene editor (using creative commons assets) inspired by the creative capabilities of
+popular RTS, Tycoon and Simulation Games.  
+
+<img width="512" height="256" alt="image" src="https://github.com/user-attachments/assets/336e56f6-445b-42c9-bc9a-808f1931700c" />
+
+
 ## See Also
 
 If you're interested in `graphics.gd`, you may also like to explore:
