@@ -40,7 +40,7 @@ func (Windows) Build(args ...string) error {
 			return fmt.Errorf("gd build: cannot cross-compile windows %v on %v", GOARCH, runtime.GOOS)
 		}
 	}
-	return tooling.Go.Action("build", args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.dll", GOARCH)))
+	return tooling.Go.Action("build", args, "-ldflags=-w -s", "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.dll", GOARCH)))
 }
 
 func (windows Windows) BuildMain(args ...string) error {
