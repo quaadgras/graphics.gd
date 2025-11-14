@@ -107,6 +107,11 @@ func gd(args ...string) error {
 			return xray.New(err)
 		}
 	}
+	if GOOS == "windows" && os.Getenv("CC") == "" {
+		if _, err := tooling.Zig.Lookup(); err != nil {
+			return xray.New(err)
+		}
+	}
 	if zig, _ := exec.LookPath("zig"); zig != "" && os.Getenv("CC") == "" {
 		if runtime.GOOS == "darwin" {
 			if err := os.Setenv("CC", "clang"); err != nil {
