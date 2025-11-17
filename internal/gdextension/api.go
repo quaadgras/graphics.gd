@@ -64,6 +64,9 @@ type API struct {
 		}
 		Free func(addr Pointer) `gd:"memory_free"`
 	}
+	Threads struct {
+		Main func() bool `gd:"thread_is_main"`
+	}
 	Log struct {
 		Error   func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_error"`
 		Warning func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_warning"`

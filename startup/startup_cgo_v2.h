@@ -140,6 +140,7 @@ int64_t gd_string_encode_utf32(uintptr_t, char*, int64_t);
 int64_t gd_string_encode_wide(uintptr_t, char*, int64_t);
 uintptr_t gd_string_intern_latin1(const char*, int64_t);
 uintptr_t gd_string_intern_utf8(const char*, int64_t);
+bool gd_thread_is_main();
 void gd_variant_zero(void*);
 void gd_variant_copy(uint64_t, uint64_t, uint64_t, void*);
 void gd_variant_call(uint64_t, uint64_t, uint64_t, uintptr_t, void*, int64_t, void*, void*);
