@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"runtime"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
@@ -110,50 +111,86 @@ func InternalString(s StringType.Readable) String {
 func StringCacheCheck(_ StringProxy, raw complex128) bool { return true }
 
 func NewStringProxy() (StringProxy, complex128) {
+	if !gdextension.Host.Threads.Main() {
+		ptr := pointers.Pin(NewString(""))
+		runtime.AddCleanup(&ptr, func(raw String) {
+			raw.Free()
+		}, ptr)
+		return StringProxy{indirect: &ptr}, 0
+	}
 	return StringProxy{}, pointers.Pack(NewString(""))
 }
 
-type StringProxy struct{}
+type StringProxy struct {
+	indirect *String
+}
 
-func (StringProxy) Len(raw complex128) int {
+func (proxy StringProxy) Len(raw complex128) int {
+	if proxy.indirect != nil {
+		return StringProxy{}.Len(pointers.Pack(*proxy.indirect))
+	}
 	return pointers.Load[String](raw).Len()
 }
-func (StringProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+func (proxy StringProxy) Slice(raw complex128, index int, close int) StringType.Readable {
+	if proxy.indirect != nil {
+		return StringProxy{}.Slice(pointers.Pack(*proxy.indirect), index, close)
+	}
 	s := pointers.Load[String](raw)
 	s = s.Substr(Int(index), Int(close))
 	return StringType.Via(StringProxy{}, pointers.Pack(s))
 }
-func (StringProxy) String(raw complex128) string {
+func (proxy StringProxy) String(raw complex128) string {
+	if proxy.indirect != nil {
+		return StringProxy{}.String(pointers.Pack(*proxy.indirect))
+	}
 	return pointers.Load[String](raw).String()
 }
-func (StringProxy) Index(raw complex128, n int) byte {
+func (proxy StringProxy) Index(raw complex128, n int) byte {
+	if proxy.indirect != nil {
+		return StringProxy{}.Index(pointers.Pack(*proxy.indirect), n)
+	}
 	return byte(gdextension.Host.Strings.Access(pointers.Get(pointers.Load[String](raw)), n))
 }
-func (StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Readable) {
+	if proxy.indirect != nil {
+		return StringProxy{}.DecodeRune(pointers.Pack(*proxy.indirect))
+	}
 	s := pointers.Load[String](raw)
 	next := s.Substr(0, s.Length())
 	return StringType.Rune(gdextension.Host.Strings.Access(pointers.Get(pointers.Load[String](raw)), 0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
-func (StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
+	if proxy.indirect != nil {
+		return StringProxy{}.AppendRune(pointers.Pack(*proxy.indirect), r)
+	}
 	s := pointers.Load[String](raw)
 	str := s.Substr(0, s.Length())
 	pointers.Set(str, gdextension.Host.Strings.Append.Rune(pointers.Get(str), rune(r)))
 	return StringType.Via(StringProxy{}, pointers.Pack(str))
 }
-func (StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
+	if proxy.indirect != nil {
+		return StringProxy{}.AppendOther(pointers.Pack(*proxy.indirect), api, raw2)
+	}
 	s := pointers.Load[String](raw)
 	s2 := pointers.Load[String](raw2)
 	sub := s.Substr(0, s.Length())
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(s2)))
 	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
-func (StringProxy) AppendString(raw complex128, str string) StringType.Readable {
+func (proxy StringProxy) AppendString(raw complex128, str string) StringType.Readable {
+	if proxy.indirect != nil {
+		return StringProxy{}.AppendString(pointers.Pack(*proxy.indirect), str)
+	}
 	s := pointers.Load[String](raw)
 	sub := s.Substr(0, s.Length())
 	pointers.Set(sub, gdextension.Host.Strings.Append.String(pointers.Get(sub), pointers.Get(NewString(str))))
 	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
-func (StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
+func (proxy StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
+	if proxy.indirect != nil {
+		return StringProxy{}.CompareOther(pointers.Pack(*proxy.indirect), other_api, raw2)
+	}
 	return int(pointers.Load[String](raw).CasecmpTo(pointers.Load[String](raw2)))
 }
 
