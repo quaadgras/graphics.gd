@@ -80,6 +80,14 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	if rtype == reflect.TypeFor[VariantPkg.Any]() {
 		return reflect.ValueOf(VariantPkg.New(value)), nil
 	}
+	if rtype == reflect.TypeFor[reflect.Type]() {
+		switch value := value.(type) {
+		case int64:
+			return reflect.ValueOf(ConvieniantGoTypeOf(gdextension.VariantType(value))), nil
+		default:
+			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+		}
+	}
 	variant, ok := value.(Variant)
 	if ok {
 		val, err := convertVariantToDesiredGoType(variant, rtype)
