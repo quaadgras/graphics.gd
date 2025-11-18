@@ -210,9 +210,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	field.Set(converted)
 	if impl, ok := instance.Value.(interface {
-		OnSet(gd.StringName, gd.Variant)
+		OnSet(string, any)
 	}); ok {
-		impl.OnSet(name, value)
+		impl.OnSet(name.String(), value)
 	}
 	return true
 }
