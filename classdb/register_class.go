@@ -752,11 +752,13 @@ func (instance *instanceImplementation) Free() {
 		// we need to unreference any pinned resources (pinned here means that the engine `set` them).
 		if field.Type.Implements(reflect.TypeFor[RefCounted.Any]()) {
 			ref := rvalue.FieldByIndex(field.Index).Interface().(RefCounted.Any).AsRefCounted()[0]
-			raw, kind := pointers.Ask(gd.Object(ref))
-			if kind == pointers.Pinned {
-				if ref.Unreference() {
-					pointers.End(gd.Object(ref))
-					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+			if !pointers.Bad(gd.Object(ref)) {
+				raw, kind := pointers.Ask(gd.Object(ref))
+				if kind == pointers.Pinned {
+					if ref.Unreference() {
+						pointers.End(gd.Object(ref))
+						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					}
 				}
 			}
 		}
