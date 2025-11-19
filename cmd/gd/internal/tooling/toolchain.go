@@ -189,6 +189,9 @@ func (exe *toolchain) Lookup() (string, error) {
 		version, _ := exec.Command(path, exe.VersionFlag).CombinedOutput()
 		if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
 			exe.path = path
+			if exe.IsApp {
+				exe.IsApp = false
+			}
 			return exe.PathToCommand(), nil
 		}
 	}
