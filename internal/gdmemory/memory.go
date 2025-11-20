@@ -21,6 +21,7 @@ var setup = sync.OnceFunc(func() {
 	receiver = gdextension.Host.Memory.Malloc(64 * 64 / 16)
 	for i := range results {
 		results[i] = gdextension.Host.Memory.Malloc(64 * 64)
+		gdextension.Host.Memory.Clear(results[i], 64*64)
 	}
 })
 
@@ -80,7 +81,6 @@ func MakeResult(shape gdextension.Shape) gdextension.Pointer {
 	} else {
 		current = 0
 	}
-	gdextension.Host.Memory.Clear(results[current], shape.SizeResult())
 	return results[current]
 }
 
@@ -95,6 +95,7 @@ func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdext
 	if size == 0 {
 		return
 	}
+	defer gdextension.Host.Memory.Clear(from, shape.SizeResult())
 	for size > 0 {
 		switch {
 		case size >= 4:
