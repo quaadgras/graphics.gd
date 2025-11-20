@@ -1932,5 +1932,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_version_hash", &gd_version_hash, allow_raw_pointers());
 	function("gd_version_timestamp", &gd_version_timestamp, allow_raw_pointers());
 	function("gd_version_string", &gd_version_string, allow_raw_pointers());
+	function("gd_thread_is_main", &gd_thread_is_main, allow_raw_pointers());
 }
 #endif // __EMSCRIPTEN__
