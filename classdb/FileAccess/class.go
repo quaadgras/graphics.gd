@@ -800,18 +800,6 @@ func (self Instance) GetPascalString() string { //gd:FileAccess.get_pascal_strin
 }
 
 /*
-Closes the currently opened file and prevents subsequent read/write operations. Use [Flush] to persist the data to disk without closing the file.
-
-Note: [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
-*/
-func (self Instance) Close() { //gd:FileAccess.close
-	Advanced(self).Close()
-}
-
-/*
 Returns true if the file exists in the given path.
 
 Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.

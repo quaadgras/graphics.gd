@@ -45,6 +45,9 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		"RID", "Projection", "Color":
 		return
 	}
+	if class.Name == "FileAccess" && method.Name == "close" {
+		return // we will implement fs.File in extra.go
+	}
 	if method.Description != "" {
 		fmt.Fprintln(w, "\n/*")
 		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, classDB, class.Name, class.Name+"_"+convertName(method.Name)))
