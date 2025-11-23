@@ -159,7 +159,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			obj.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(variant)})
 			return obj.Elem(), nil
 		}
-		val, err := convertToGoArrayOf(rtype.Elem(), value)
+		val, err := convertToGoArrayOf(rtype.Elem(), rtype.Len(), value)
 		if err != nil {
 			return reflect.Value{}, xray.New(err)
 		}
@@ -406,10 +406,10 @@ func convertToGoFunc(rtype reflect.Type, value any) (reflect.Value, error) {
 	}
 }
 
-func convertToGoArrayOf(rtype reflect.Type, value any) (reflect.Value, error) {
+func convertToGoArrayOf(rtype reflect.Type, length int, value any) (reflect.Value, error) {
 	if value, ok := value.(ArrayType.Any); ok {
 		var internalArray = InternalArray(value)
-		var array = reflect.New(rtype).Elem()
+		var array = reflect.New(reflect.ArrayOf(length, rtype)).Elem()
 		for i := 0; i < rtype.Len(); i++ {
 			elem, err := convertVariantToDesiredGoType(internalArray.Index(Int(i)), rtype.Elem())
 			if err != nil {
