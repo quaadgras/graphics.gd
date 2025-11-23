@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdclass"
 )
 
 func nameOf(rtype reflect.Type) string {
@@ -17,7 +18,7 @@ func nameOf(rtype reflect.Type) string {
 			if rename, ok := rtype.Field(0).Tag.Lookup("gd"); ok {
 				return rename
 			}
-			if rtype.Name() == "" {
+			if rtype.Name() == "" || !rtype.Implements(reflect.TypeFor[gdclass.Interface]()) {
 				return nameOf(rtype.Field(0).Type)
 			}
 		}
