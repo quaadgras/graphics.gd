@@ -410,8 +410,8 @@ func convertToGoArrayOf(rtype reflect.Type, length int, value any) (reflect.Valu
 	if value, ok := value.(ArrayType.Any); ok {
 		var internalArray = InternalArray(value)
 		var array = reflect.New(reflect.ArrayOf(length, rtype)).Elem()
-		for i := 0; i < rtype.Len(); i++ {
-			elem, err := convertVariantToDesiredGoType(internalArray.Index(Int(i)), rtype.Elem())
+		for i := range length {
+			elem, err := convertVariantToDesiredGoType(internalArray.Index(Int(i)), rtype)
 			if err != nil {
 				return reflect.Value{}, err
 			}
