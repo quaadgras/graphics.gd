@@ -1710,7 +1710,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) VisibilityChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`visibility_changed`))))
 }
 
 func (self class) AsNode3D() Advanced            { return Advanced{pointers.AsA[gdclass.Node3D](self[0])} }

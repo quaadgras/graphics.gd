@@ -148,7 +148,6 @@ Sets the locale of the project. The 'locale' string will be standardized to matc
 If translations have been loaded beforehand for the new locale, they will be applied.
 */
 func SetLocale(locale string) { //gd:TranslationServer.set_locale
-	once.Do(singleton)
 	Advanced().SetLocale(String.New(locale))
 }
 
@@ -161,7 +160,6 @@ See also [OS.GetLocale] and [OS.GetLocaleLanguage] to query the locale of the us
 [OS.GetLocaleLanguage]: https://pkg.go.dev/graphics.gd/classdb/OS#GetLocaleLanguage
 */
 func GetLocale() string { //gd:TranslationServer.get_locale
-	once.Do(singleton)
 	return string(Advanced().GetLocale().String())
 }
 
@@ -171,7 +169,6 @@ Returns the current locale of the editor.
 Note: When called from an exported project returns the same value as [GetLocale].
 */
 func GetToolLocale() string { //gd:TranslationServer.get_tool_locale
-	once.Do(singleton)
 	return string(Advanced().GetToolLocale().String())
 }
 
@@ -179,7 +176,6 @@ func GetToolLocale() string { //gd:TranslationServer.get_tool_locale
 Compares two locales and returns a similarity score between 0 (no match) and 10 (full match).
 */
 func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServer.compare_locales
-	once.Do(singleton)
 	return int(int(Advanced().CompareLocales(String.New(locale_a), String.New(locale_b))))
 }
 
@@ -187,7 +183,6 @@ func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServ
 Returns a 'locale' string standardized to match known locales (e.g. en-US would be matched to en_US). If 'add_defaults' is true, the locale may have a default script or country added.
 */
 func StandardizeLocale(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
-	once.Do(singleton)
 	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
 }
 
@@ -195,7 +190,6 @@ func StandardizeLocale(locale string, add_defaults bool) string { //gd:Translati
 Returns array of known language codes.
 */
 func GetAllLanguages() []string { //gd:TranslationServer.get_all_languages
-	once.Do(singleton)
 	return []string(Advanced().GetAllLanguages().Strings())
 }
 
@@ -203,7 +197,6 @@ func GetAllLanguages() []string { //gd:TranslationServer.get_all_languages
 Returns a readable language name for the 'language' code.
 */
 func GetLanguageName(language string) string { //gd:TranslationServer.get_language_name
-	once.Do(singleton)
 	return string(Advanced().GetLanguageName(String.New(language)).String())
 }
 
@@ -211,7 +204,6 @@ func GetLanguageName(language string) string { //gd:TranslationServer.get_langua
 Returns an array of known script codes.
 */
 func GetAllScripts() []string { //gd:TranslationServer.get_all_scripts
-	once.Do(singleton)
 	return []string(Advanced().GetAllScripts().Strings())
 }
 
@@ -219,7 +211,6 @@ func GetAllScripts() []string { //gd:TranslationServer.get_all_scripts
 Returns a readable script name for the 'script' code.
 */
 func GetScriptName(script string) string { //gd:TranslationServer.get_script_name
-	once.Do(singleton)
 	return string(Advanced().GetScriptName(String.New(script)).String())
 }
 
@@ -227,7 +218,6 @@ func GetScriptName(script string) string { //gd:TranslationServer.get_script_nam
 Returns an array of known country codes.
 */
 func GetAllCountries() []string { //gd:TranslationServer.get_all_countries
-	once.Do(singleton)
 	return []string(Advanced().GetAllCountries().Strings())
 }
 
@@ -235,7 +225,6 @@ func GetAllCountries() []string { //gd:TranslationServer.get_all_countries
 Returns a readable country name for the 'country' code.
 */
 func GetCountryName(country string) string { //gd:TranslationServer.get_country_name
-	once.Do(singleton)
 	return string(Advanced().GetCountryName(String.New(country)).String())
 }
 
@@ -243,7 +232,6 @@ func GetCountryName(country string) string { //gd:TranslationServer.get_country_
 Returns a locale's language and its variant (e.g. "en_US" would return "English (United States)").
 */
 func GetLocaleName(locale string) string { //gd:TranslationServer.get_locale_name
-	once.Do(singleton)
 	return string(Advanced().GetLocaleName(String.New(locale)).String())
 }
 
@@ -253,7 +241,6 @@ Returns the current locale's translation for the given message and context.
 Note: This method always uses the main translation domain.
 */
 func Translate(message string, context string) string { //gd:TranslationServer.translate
-	once.Do(singleton)
 	return string(Advanced().Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
 }
 
@@ -265,7 +252,6 @@ The number 'n' is the number or quantity of the plural object. It will be used t
 Note: This method always uses the main translation domain.
 */
 func TranslatePlural(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
-	once.Do(singleton)
 	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
@@ -273,7 +259,6 @@ func TranslatePlural(message string, plural_message string, n int, context strin
 Adds a translation to the main translation domain.
 */
 func AddTranslation(translation Translation.Instance) { //gd:TranslationServer.add_translation
-	once.Do(singleton)
 	Advanced().AddTranslation(translation)
 }
 
@@ -281,7 +266,6 @@ func AddTranslation(translation Translation.Instance) { //gd:TranslationServer.a
 Removes the given translation from the main translation domain.
 */
 func RemoveTranslation(translation Translation.Instance) { //gd:TranslationServer.remove_translation
-	once.Do(singleton)
 	Advanced().RemoveTranslation(translation)
 }
 
@@ -291,7 +275,6 @@ Returns the [Translation] instance that best matches 'locale' in the main transl
 [Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
 */
 func GetTranslationObject(locale string) Translation.Instance { //gd:TranslationServer.get_translation_object
-	once.Do(singleton)
 	return Translation.Instance(Advanced().GetTranslationObject(String.New(locale)))
 }
 
@@ -299,7 +282,6 @@ func GetTranslationObject(locale string) Translation.Instance { //gd:Translation
 Returns true if a translation domain with the specified name exists.
 */
 func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
-	once.Do(singleton)
 	return bool(Advanced().HasDomain(String.Name(String.New(domain))))
 }
 
@@ -307,7 +289,6 @@ func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
 Returns the translation domain with the specified name. An empty translation domain will be created and added if it does not exist.
 */
 func GetOrAddDomain(domain string) TranslationDomain.Instance { //gd:TranslationServer.get_or_add_domain
-	once.Do(singleton)
 	return TranslationDomain.Instance(Advanced().GetOrAddDomain(String.Name(String.New(domain))))
 }
 
@@ -317,7 +298,6 @@ Removes the translation domain with the specified name.
 Note: Trying to remove the main translation domain is an error.
 */
 func RemoveDomain(domain string) { //gd:TranslationServer.remove_domain
-	once.Do(singleton)
 	Advanced().RemoveDomain(String.Name(String.New(domain)))
 }
 
@@ -325,7 +305,6 @@ func RemoveDomain(domain string) { //gd:TranslationServer.remove_domain
 Removes all translations from the main translation domain.
 */
 func Clear() { //gd:TranslationServer.clear
-	once.Do(singleton)
 	Advanced().Clear()
 }
 
@@ -333,7 +312,6 @@ func Clear() { //gd:TranslationServer.clear
 Returns an array of all loaded locales of the project.
 */
 func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
-	once.Do(singleton)
 	return []string(Advanced().GetLoadedLocales().Strings())
 }
 
@@ -341,7 +319,6 @@ func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
 Reparses the pseudolocalization options and reloads the translation for the main translation domain.
 */
 func ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
-	once.Do(singleton)
 	Advanced().ReloadPseudolocalization()
 }
 
@@ -351,7 +328,6 @@ Returns the pseudolocalized string based on the 'message' passed in.
 Note: This method always uses the main translation domain.
 */
 func Pseudolocalize(message string) string { //gd:TranslationServer.pseudolocalize
-	once.Do(singleton)
 	return string(Advanced().Pseudolocalize(String.Name(String.New(message))).String())
 }
 
@@ -401,6 +377,7 @@ If translations have been loaded beforehand for the new locale, they will be app
 */
 //go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:TranslationServer.set_locale
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
 
@@ -414,6 +391,7 @@ See also [OS.GetLocale] and [OS.GetLocaleLanguage] to query the locale of the us
 */
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:TranslationServer.get_locale
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -426,6 +404,7 @@ Note: When called from an exported project returns the same value as [GetLocale]
 */
 //go:nosplit
 func (self class) GetToolLocale() String.Readable { //gd:TranslationServer.get_tool_locale
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tool_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -436,6 +415,7 @@ Compares two locales and returns a similarity score between 0 (no match) and 10 
 */
 //go:nosplit
 func (self class) CompareLocales(locale_a String.Readable, locale_b String.Readable) int64 { //gd:TranslationServer.compare_locales
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compare_locales, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		locale_a gdextension.String
 		locale_b gdextension.String
@@ -449,6 +429,7 @@ Returns a 'locale' string standardized to match known locales (e.g. en-US would 
 */
 //go:nosplit
 func (self class) StandardizeLocale(locale String.Readable, add_defaults bool) String.Readable { //gd:TranslationServer.standardize_locale
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.standardize_locale, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		locale       gdextension.String
 		add_defaults bool
@@ -462,6 +443,7 @@ Returns array of known language codes.
 */
 //go:nosplit
 func (self class) GetAllLanguages() Packed.Strings { //gd:TranslationServer.get_all_languages
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_all_languages, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -472,6 +454,7 @@ Returns a readable language name for the 'language' code.
 */
 //go:nosplit
 func (self class) GetLanguageName(language String.Readable) String.Readable { //gd:TranslationServer.get_language_name
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language_name, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -482,6 +465,7 @@ Returns an array of known script codes.
 */
 //go:nosplit
 func (self class) GetAllScripts() Packed.Strings { //gd:TranslationServer.get_all_scripts
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_all_scripts, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -492,6 +476,7 @@ Returns a readable script name for the 'script' code.
 */
 //go:nosplit
 func (self class) GetScriptName(script String.Readable) String.Readable { //gd:TranslationServer.get_script_name
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_script_name, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ script gdextension.String }{pointers.Get(gd.InternalString(script))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -502,6 +487,7 @@ Returns an array of known country codes.
 */
 //go:nosplit
 func (self class) GetAllCountries() Packed.Strings { //gd:TranslationServer.get_all_countries
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_all_countries, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -512,6 +498,7 @@ Returns a readable country name for the 'country' code.
 */
 //go:nosplit
 func (self class) GetCountryName(country String.Readable) String.Readable { //gd:TranslationServer.get_country_name
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_country_name, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ country gdextension.String }{pointers.Get(gd.InternalString(country))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -522,6 +509,7 @@ Returns a locale's language and its variant (e.g. "en_US" would return "English 
 */
 //go:nosplit
 func (self class) GetLocaleName(locale String.Readable) String.Readable { //gd:TranslationServer.get_locale_name
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_name, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -534,6 +522,7 @@ Note: This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationServer.translate
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		message gdextension.StringName
 		context gdextension.StringName
@@ -551,6 +540,7 @@ Note: This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) TranslatePlural(message String.Name, plural_message String.Name, n int64, context String.Name) String.Name { //gd:TranslationServer.translate_plural
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate_plural, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		message        gdextension.StringName
 		plural_message gdextension.StringName
@@ -566,6 +556,7 @@ Adds a translation to the main translation domain.
 */
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))})
 }
 
@@ -574,6 +565,7 @@ Removes the given translation from the main translation domain.
 */
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))})
 }
 
@@ -584,6 +576,7 @@ Returns the [Translation] instance that best matches 'locale' in the main transl
 */
 //go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret)}
 	return ret
@@ -594,6 +587,7 @@ Returns true if a translation domain with the specified name exists.
 */
 //go:nosplit
 func (self class) HasDomain(domain String.Name) bool { //gd:TranslationServer.has_domain
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_domain, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ domain gdextension.StringName }{pointers.Get(gd.InternalStringName(domain))})
 	var ret = r_ret
 	return ret
@@ -604,6 +598,7 @@ Returns the translation domain with the specified name. An empty translation dom
 */
 //go:nosplit
 func (self class) GetOrAddDomain(domain String.Name) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_or_add_domain, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ domain gdextension.StringName }{pointers.Get(gd.InternalStringName(domain))})
 	var ret = [1]gdclass.TranslationDomain{gd.PointerWithOwnershipTransferredToGo[gdclass.TranslationDomain](r_ret)}
 	return ret
@@ -616,6 +611,7 @@ Note: Trying to remove the main translation domain is an error.
 */
 //go:nosplit
 func (self class) RemoveDomain(domain String.Name) { //gd:TranslationServer.remove_domain
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_domain, 0|(gdextension.SizeStringName<<4), &struct{ domain gdextension.StringName }{pointers.Get(gd.InternalStringName(domain))})
 }
 
@@ -624,6 +620,7 @@ Removes all translations from the main translation domain.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TranslationServer.clear
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
@@ -632,6 +629,7 @@ Returns an array of all loaded locales of the project.
 */
 //go:nosplit
 func (self class) GetLoadedLocales() Packed.Strings { //gd:TranslationServer.get_loaded_locales
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_loaded_locales, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -639,6 +637,7 @@ func (self class) GetLoadedLocales() Packed.Strings { //gd:TranslationServer.get
 
 //go:nosplit
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationServer.is_pseudolocalization_enabled
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -646,6 +645,7 @@ func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationServer.is
 
 //go:nosplit
 func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationServer.set_pseudolocalization_enabled
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
@@ -654,6 +654,7 @@ Reparses the pseudolocalization options and reloads the translation for the main
 */
 //go:nosplit
 func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_pseudolocalization, 0, &struct{}{})
 }
 
@@ -664,6 +665,7 @@ Note: This method always uses the main translation domain.
 */
 //go:nosplit
 func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationServer.pseudolocalize
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.pseudolocalize, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ message gdextension.StringName }{pointers.Get(gd.InternalStringName(message))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret

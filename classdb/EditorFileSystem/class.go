@@ -354,7 +354,7 @@ func (self Instance) OnFilesystemChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) FilesystemChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesystemChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`filesystem_changed`))))
 }
 
 /*
@@ -369,7 +369,7 @@ func (self Instance) OnScriptClassesUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ScriptClassesUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScriptClassesUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`script_classes_updated`))))
 }
 
 /*
@@ -384,7 +384,7 @@ func (self Instance) OnSourcesChanged(cb func(exist bool), flags ...Signal.Flags
 }
 
 func (self class) SourcesChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SourcesChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`sources_changed`))))
 }
 
 /*
@@ -399,7 +399,7 @@ func (self Instance) OnResourcesReimporting(cb func(resources []string), flags .
 }
 
 func (self class) ResourcesReimporting() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourcesReimporting`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resources_reimporting`))))
 }
 
 /*
@@ -414,7 +414,7 @@ func (self Instance) OnResourcesReimported(cb func(resources []string), flags ..
 }
 
 func (self class) ResourcesReimported() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourcesReimported`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resources_reimported`))))
 }
 
 /*
@@ -429,7 +429,7 @@ func (self Instance) OnResourcesReload(cb func(resources []string), flags ...Sig
 }
 
 func (self class) ResourcesReload() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourcesReload`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resources_reload`))))
 }
 
 func (self class) AsEditorFileSystem() Advanced {

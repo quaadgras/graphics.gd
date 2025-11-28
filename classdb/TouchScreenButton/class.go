@@ -438,7 +438,7 @@ func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Pressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pressed`))))
 }
 
 /*
@@ -453,7 +453,7 @@ func (self Instance) OnReleased(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Released() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Released`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`released`))))
 }
 
 func (self class) AsTouchScreenButton() Advanced {

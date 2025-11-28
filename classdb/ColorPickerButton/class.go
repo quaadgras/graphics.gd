@@ -318,7 +318,7 @@ func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.F
 }
 
 func (self class) ColorChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColorChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`color_changed`))))
 }
 
 /*
@@ -335,7 +335,7 @@ func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PopupClosed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupClosed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`popup_closed`))))
 }
 
 /*
@@ -352,7 +352,7 @@ func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PickerCreated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PickerCreated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`picker_created`))))
 }
 
 func (self class) AsColorPickerButton() Advanced {

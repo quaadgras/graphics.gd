@@ -2632,7 +2632,7 @@ func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SizeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`size_changed`))))
 }
 
 /*
@@ -2649,7 +2649,7 @@ func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...
 }
 
 func (self class) GuiFocusChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GuiFocusChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gui_focus_changed`))))
 }
 
 func (self class) AsViewport() Advanced          { return Advanced{pointers.AsA[gdclass.Viewport](self[0])} }

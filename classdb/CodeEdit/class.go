@@ -2367,7 +2367,7 @@ func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flag
 }
 
 func (self class) BreakpointToggled() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BreakpointToggled`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`breakpoint_toggled`))))
 }
 
 /*
@@ -2385,7 +2385,7 @@ func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags)
 }
 
 func (self class) CodeCompletionRequested() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CodeCompletionRequested`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`code_completion_requested`))))
 }
 
 /*
@@ -2400,7 +2400,7 @@ func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int)
 }
 
 func (self class) SymbolLookup() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolLookup`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`symbol_lookup`))))
 }
 
 /*
@@ -2420,7 +2420,7 @@ func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Fl
 }
 
 func (self class) SymbolValidate() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolValidate`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`symbol_validate`))))
 }
 
 /*
@@ -2441,7 +2441,7 @@ func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int
 }
 
 func (self class) SymbolHovered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolHovered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`symbol_hovered`))))
 }
 
 func (self class) AsCodeEdit() Advanced         { return Advanced{pointers.AsA[gdclass.CodeEdit](self[0])} }

@@ -232,7 +232,6 @@ Note: This method is implemented on macOS and Windows.
 [NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
 */
 func HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
-	once.Do(singleton)
 	return bool(Advanced().HasFeature(feature))
 }
 
@@ -242,7 +241,6 @@ Returns true if a special system menu is supported.
 Note: This method is implemented only on macOS.
 */
 func HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
-	once.Do(singleton)
 	return bool(Advanced().HasSystemMenu(menu_id))
 }
 
@@ -252,7 +250,6 @@ Returns RID of a special system menu.
 Note: This method is implemented only on macOS.
 */
 func GetSystemMenu(menu_id SystemMenus) RID.NativeMenu { //gd:NativeMenu.get_system_menu
-	once.Do(singleton)
 	return RID.NativeMenu(RID.NativeMenu(Advanced().GetSystemMenu(menu_id)))
 }
 
@@ -262,7 +259,6 @@ Returns readable name of a special system menu.
 Note: This method is implemented only on macOS.
 */
 func GetSystemMenuName(menu_id SystemMenus) string { //gd:NativeMenu.get_system_menu_name
-	once.Do(singleton)
 	return string(Advanced().GetSystemMenuName(menu_id).String())
 }
 
@@ -272,7 +268,6 @@ Creates a new global menu object.
 Note: This method is implemented on macOS and Windows.
 */
 func CreateMenu() RID.NativeMenu { //gd:NativeMenu.create_menu
-	once.Do(singleton)
 	return RID.NativeMenu(RID.NativeMenu(Advanced().CreateMenu()))
 }
 
@@ -282,7 +277,6 @@ Returns true if 'rid' is valid global menu.
 Note: This method is implemented on macOS and Windows.
 */
 func HasMenu(rid RID.NativeMenu) bool { //gd:NativeMenu.has_menu
-	once.Do(singleton)
 	return bool(Advanced().HasMenu(RID.Any(rid)))
 }
 
@@ -294,7 +288,6 @@ Note: This method is implemented on macOS and Windows.
 [NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
 */
 func FreeMenu(rid RID.NativeMenu) { //gd:NativeMenu.free_menu
-	once.Do(singleton)
 	Advanced().FreeMenu(RID.Any(rid))
 }
 
@@ -304,7 +297,6 @@ Returns global menu size.
 Note: This method is implemented on macOS and Windows.
 */
 func GetSize(rid RID.NativeMenu) Vector2.XY { //gd:NativeMenu.get_size
-	once.Do(singleton)
 	return Vector2.XY(Advanced().GetSize(RID.Any(rid)))
 }
 
@@ -314,7 +306,6 @@ Shows the global menu at 'position' in the screen coordinates.
 Note: This method is implemented on macOS and Windows.
 */
 func Popup(rid RID.NativeMenu, position Vector2i.XY) { //gd:NativeMenu.popup
-	once.Do(singleton)
 	Advanced().Popup(RID.Any(rid), Vector2i.XY(position))
 }
 
@@ -324,7 +315,6 @@ Sets the menu text layout direction from right-to-left if 'is_rtl' is true.
 Note: This method is implemented on macOS and Windows.
 */
 func SetInterfaceDirection(rid RID.NativeMenu, is_rtl bool) { //gd:NativeMenu.set_interface_direction
-	once.Do(singleton)
 	Advanced().SetInterfaceDirection(RID.Any(rid), is_rtl)
 }
 
@@ -334,7 +324,6 @@ Registers callable to emit after the menu is closed.
 Note: This method is implemented only on macOS.
 */
 func SetPopupOpenCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu.set_popup_open_callback
-	once.Do(singleton)
 	Advanced().SetPopupOpenCallback(RID.Any(rid), Callable.New(callback))
 }
 
@@ -344,7 +333,6 @@ Returns global menu open callback.
 Note: This method is implemented only on macOS.
 */
 func GetPopupOpenCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_open_callback
-	once.Do(singleton)
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetPopupOpenCallback(RID.Any(rid)))))
 }
 
@@ -356,7 +344,6 @@ Note: The OS can simulate menu opening to track menu item changes and global sho
 Note: This method is implemented on macOS and Windows.
 */
 func SetPopupCloseCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu.set_popup_close_callback
-	once.Do(singleton)
 	Advanced().SetPopupCloseCallback(RID.Any(rid), Callable.New(callback))
 }
 
@@ -366,7 +353,6 @@ Returns global menu close callback.
 Note: This method is implemented on macOS and Windows.
 */
 func GetPopupCloseCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_close_callback
-	once.Do(singleton)
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetPopupCloseCallback(RID.Any(rid)))))
 }
 
@@ -376,7 +362,6 @@ Sets the minimum width of the global menu.
 Note: This method is implemented only on macOS.
 */
 func SetMinimumWidth(rid RID.NativeMenu, width Float.X) { //gd:NativeMenu.set_minimum_width
-	once.Do(singleton)
 	Advanced().SetMinimumWidth(RID.Any(rid), float64(width))
 }
 
@@ -386,7 +371,6 @@ Returns global menu minimum width.
 Note: This method is implemented only on macOS.
 */
 func GetMinimumWidth(rid RID.NativeMenu) Float.X { //gd:NativeMenu.get_minimum_width
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetMinimumWidth(RID.Any(rid))))
 }
 
@@ -396,7 +380,6 @@ Returns true if the menu is currently opened.
 Note: This method is implemented only on macOS.
 */
 func IsOpened(rid RID.NativeMenu) bool { //gd:NativeMenu.is_opened
-	once.Do(singleton)
 	return bool(Advanced().IsOpened(RID.Any(rid)))
 }
 
@@ -408,7 +391,6 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSubmenuItem(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any) int { //gd:NativeMenu.add_submenu_item
-	once.Do(singleton)
 	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(-1))))
 }
 
@@ -420,7 +402,6 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSubmenuItemOptions(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any, index int) int { //gd:NativeMenu.add_submenu_item
-	once.Do(singleton)
 	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(index))))
 }
 
@@ -438,7 +419,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_item
-	once.Do(singleton)
 	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -456,7 +436,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_item
-	once.Do(singleton)
 	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -474,7 +453,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -492,7 +470,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -510,7 +487,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -528,7 +504,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -546,7 +521,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -564,7 +538,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -584,7 +557,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddRadioCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_radio_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -604,7 +576,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddRadioCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_radio_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -624,7 +595,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconRadioCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_icon_radio_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -644,7 +614,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddIconRadioCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
-	once.Do(singleton)
 	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -666,7 +635,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddMultistateItem(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:NativeMenu.add_multistate_item
-	once.Do(singleton)
 	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
 
@@ -688,7 +656,6 @@ Note: This method is implemented on macOS and Windows.
 Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 func AddMultistateItemOptions(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:NativeMenu.add_multistate_item
-	once.Do(singleton)
 	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
@@ -700,7 +667,6 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSeparator(rid RID.NativeMenu) int { //gd:NativeMenu.add_separator
-	once.Do(singleton)
 	return int(int(Advanced().AddSeparator(RID.Any(rid), int64(-1))))
 }
 
@@ -712,7 +678,6 @@ Returns index of the inserted item, it's not guaranteed to be the same as 'index
 Note: This method is implemented on macOS and Windows.
 */
 func AddSeparatorOptions(rid RID.NativeMenu, index int) int { //gd:NativeMenu.add_separator
-	once.Do(singleton)
 	return int(int(Advanced().AddSeparator(RID.Any(rid), int64(index))))
 }
 
@@ -722,7 +687,6 @@ Returns the index of the item with the specified 'text'. Indices are automatical
 Note: This method is implemented on macOS and Windows.
 */
 func FindItemIndexWithText(rid RID.NativeMenu, text string) int { //gd:NativeMenu.find_item_index_with_text
-	once.Do(singleton)
 	return int(int(Advanced().FindItemIndexWithText(RID.Any(rid), String.New(text))))
 }
 
@@ -732,7 +696,6 @@ Returns the index of the item with the specified 'tag'. Indices are automaticall
 Note: This method is implemented on macOS and Windows.
 */
 func FindItemIndexWithTag(rid RID.NativeMenu, tag any) int { //gd:NativeMenu.find_item_index_with_tag
-	once.Do(singleton)
 	return int(int(Advanced().FindItemIndexWithTag(RID.Any(rid), variant.New(tag))))
 }
 
@@ -742,7 +705,6 @@ Returns the index of the item with the submenu specified by 'submenu_rid'. Indic
 Note: This method is implemented on macOS and Windows.
 */
 func FindItemIndexWithSubmenu(rid RID.NativeMenu, submenu_rid RID.NativeMenu) int { //gd:NativeMenu.find_item_index_with_submenu
-	once.Do(singleton)
 	return int(int(Advanced().FindItemIndexWithSubmenu(RID.Any(rid), RID.Any(submenu_rid))))
 }
 
@@ -752,7 +714,6 @@ Returns true if the item at index 'idx' is checked.
 Note: This method is implemented on macOS and Windows.
 */
 func IsItemChecked(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_checked
-	once.Do(singleton)
 	return bool(Advanced().IsItemChecked(RID.Any(rid), int64(idx)))
 }
 
@@ -762,7 +723,6 @@ Returns true if the item at index 'idx' is checkable in some way, i.e. if it has
 Note: This method is implemented on macOS and Windows.
 */
 func IsItemCheckable(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_checkable
-	once.Do(singleton)
 	return bool(Advanced().IsItemCheckable(RID.Any(rid), int64(idx)))
 }
 
@@ -774,7 +734,6 @@ Note: This is purely cosmetic; you must add the logic for checking/unchecking it
 Note: This method is implemented on macOS and Windows.
 */
 func IsItemRadioCheckable(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_radio_checkable
-	once.Do(singleton)
 	return bool(Advanced().IsItemRadioCheckable(RID.Any(rid), int64(idx)))
 }
 
@@ -784,7 +743,6 @@ Returns the callback of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_callback
-	once.Do(singleton)
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetItemCallback(RID.Any(rid), int64(idx)))))
 }
 
@@ -794,7 +752,6 @@ Returns the callback of the item accelerator at index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GetItemKeyCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_key_callback
-	once.Do(singleton)
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetItemKeyCallback(RID.Any(rid), int64(idx)))))
 }
 
@@ -804,7 +761,6 @@ Returns the metadata of the specified item, which might be of any type. You can 
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemTag(rid RID.NativeMenu, idx int) any { //gd:NativeMenu.get_item_tag
-	once.Do(singleton)
 	return any(Advanced().GetItemTag(RID.Any(rid), int64(idx)).Interface())
 }
 
@@ -814,7 +770,6 @@ Returns the text of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemText(rid RID.NativeMenu, idx int) string { //gd:NativeMenu.get_item_text
-	once.Do(singleton)
 	return string(Advanced().GetItemText(RID.Any(rid), int64(idx)).String())
 }
 
@@ -824,7 +779,6 @@ Returns the submenu ID of the item at index 'idx'. See [AddSubmenuItem] for more
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemSubmenu(rid RID.NativeMenu, idx int) RID.NativeMenu { //gd:NativeMenu.get_item_submenu
-	once.Do(singleton)
 	return RID.NativeMenu(RID.NativeMenu(Advanced().GetItemSubmenu(RID.Any(rid), int64(idx))))
 }
 
@@ -834,7 +788,6 @@ Returns the accelerator of the item at index 'idx'. Accelerators are special com
 Note: This method is implemented only on macOS.
 */
 func GetItemAccelerator(rid RID.NativeMenu, idx int) Input.Key { //gd:NativeMenu.get_item_accelerator
-	once.Do(singleton)
 	return Input.Key(Advanced().GetItemAccelerator(RID.Any(rid), int64(idx)))
 }
 
@@ -846,7 +799,6 @@ See [SetItemDisabled] for more info on how to disable an item.
 Note: This method is implemented on macOS and Windows.
 */
 func IsItemDisabled(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_disabled
-	once.Do(singleton)
 	return bool(Advanced().IsItemDisabled(RID.Any(rid), int64(idx)))
 }
 
@@ -858,7 +810,6 @@ See [SetItemHidden] for more info on how to hide an item.
 Note: This method is implemented only on macOS.
 */
 func IsItemHidden(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_hidden
-	once.Do(singleton)
 	return bool(Advanced().IsItemHidden(RID.Any(rid), int64(idx)))
 }
 
@@ -868,7 +819,6 @@ Returns the tooltip associated with the specified index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GetItemTooltip(rid RID.NativeMenu, idx int) string { //gd:NativeMenu.get_item_tooltip
-	once.Do(singleton)
 	return string(Advanced().GetItemTooltip(RID.Any(rid), int64(idx)).String())
 }
 
@@ -878,7 +828,6 @@ Returns the state of a multistate item. See [AddMultistateItem] for details.
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemState(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_state
-	once.Do(singleton)
 	return int(int(Advanced().GetItemState(RID.Any(rid), int64(idx))))
 }
 
@@ -888,7 +837,6 @@ Returns number of states of a multistate item. See [AddMultistateItem] for detai
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemMaxStates(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_max_states
-	once.Do(singleton)
 	return int(int(Advanced().GetItemMaxStates(RID.Any(rid), int64(idx))))
 }
 
@@ -898,7 +846,6 @@ Returns the icon of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemIcon(rid RID.NativeMenu, idx int) Texture2D.Instance { //gd:NativeMenu.get_item_icon
-	once.Do(singleton)
 	return Texture2D.Instance(Advanced().GetItemIcon(RID.Any(rid), int64(idx)))
 }
 
@@ -908,7 +855,6 @@ Returns the horizontal offset of the item at the given 'idx'.
 Note: This method is implemented only on macOS.
 */
 func GetItemIndentationLevel(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_indentation_level
-	once.Do(singleton)
 	return int(int(Advanced().GetItemIndentationLevel(RID.Any(rid), int64(idx))))
 }
 
@@ -918,7 +864,6 @@ Sets the checkstate status of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemChecked(rid RID.NativeMenu, idx int, checked bool) { //gd:NativeMenu.set_item_checked
-	once.Do(singleton)
 	Advanced().SetItemChecked(RID.Any(rid), int64(idx), checked)
 }
 
@@ -928,7 +873,6 @@ Sets whether the item at index 'idx' has a checkbox. If false, sets the type of 
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemCheckable(rid RID.NativeMenu, idx int, checkable bool) { //gd:NativeMenu.set_item_checkable
-	once.Do(singleton)
 	Advanced().SetItemCheckable(RID.Any(rid), int64(idx), checkable)
 }
 
@@ -940,7 +884,6 @@ Note: This is purely cosmetic; you must add the logic for checking/unchecking it
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemRadioCheckable(rid RID.NativeMenu, idx int, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
-	once.Do(singleton)
 	Advanced().SetItemRadioCheckable(RID.Any(rid), int64(idx), checkable)
 }
 
@@ -952,7 +895,6 @@ Note: The 'callback' Callable needs to accept exactly one Variant parameter, the
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemCallback(rid RID.NativeMenu, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_callback
-	once.Do(singleton)
 	Advanced().SetItemCallback(RID.Any(rid), int64(idx), Callable.New(callback))
 }
 
@@ -964,7 +906,6 @@ Note: The 'callback' Callable needs to accept exactly one Variant parameter, the
 Note: This method is implemented only on macOS.
 */
 func SetItemHoverCallbacks(rid RID.NativeMenu, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_hover_callbacks
-	once.Do(singleton)
 	Advanced().SetItemHoverCallbacks(RID.Any(rid), int64(idx), Callable.New(callback))
 }
 
@@ -976,7 +917,6 @@ Note: The 'key_callback' Callable needs to accept exactly one Variant parameter,
 Note: This method is implemented only on macOS.
 */
 func SetItemKeyCallback(rid RID.NativeMenu, idx int, key_callback func(tag any)) { //gd:NativeMenu.set_item_key_callback
-	once.Do(singleton)
 	Advanced().SetItemKeyCallback(RID.Any(rid), int64(idx), Callable.New(key_callback))
 }
 
@@ -986,7 +926,6 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemTag(rid RID.NativeMenu, idx int, tag any) { //gd:NativeMenu.set_item_tag
-	once.Do(singleton)
 	Advanced().SetItemTag(RID.Any(rid), int64(idx), variant.New(tag))
 }
 
@@ -996,7 +935,6 @@ Sets the text of the item at index 'idx'.
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemText(rid RID.NativeMenu, idx int, text string) { //gd:NativeMenu.set_item_text
-	once.Do(singleton)
 	Advanced().SetItemText(RID.Any(rid), int64(idx), String.New(text))
 }
 
@@ -1006,7 +944,6 @@ Sets the submenu RID of the item at index 'idx'. The submenu is a global menu th
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemSubmenu(rid RID.NativeMenu, idx int, submenu_rid RID.NativeMenu) { //gd:NativeMenu.set_item_submenu
-	once.Do(singleton)
 	Advanced().SetItemSubmenu(RID.Any(rid), int64(idx), RID.Any(submenu_rid))
 }
 
@@ -1016,7 +953,6 @@ Sets the accelerator of the item at index 'idx'. 'keycode' can be a single [Key]
 Note: This method is implemented only on macOS.
 */
 func SetItemAccelerator(rid RID.NativeMenu, idx int, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
-	once.Do(singleton)
 	Advanced().SetItemAccelerator(RID.Any(rid), int64(idx), keycode)
 }
 
@@ -1026,7 +962,6 @@ Enables/disables the item at index 'idx'. When it is disabled, it can't be selec
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemDisabled(rid RID.NativeMenu, idx int, disabled bool) { //gd:NativeMenu.set_item_disabled
-	once.Do(singleton)
 	Advanced().SetItemDisabled(RID.Any(rid), int64(idx), disabled)
 }
 
@@ -1036,7 +971,6 @@ Hides/shows the item at index 'idx'. When it is hidden, an item does not appear 
 Note: This method is implemented only on macOS.
 */
 func SetItemHidden(rid RID.NativeMenu, idx int, hidden bool) { //gd:NativeMenu.set_item_hidden
-	once.Do(singleton)
 	Advanced().SetItemHidden(RID.Any(rid), int64(idx), hidden)
 }
 
@@ -1046,7 +980,6 @@ Sets the string tooltip of the item at the specified index 'idx'.
 Note: This method is implemented only on macOS.
 */
 func SetItemTooltip(rid RID.NativeMenu, idx int, tooltip string) { //gd:NativeMenu.set_item_tooltip
-	once.Do(singleton)
 	Advanced().SetItemTooltip(RID.Any(rid), int64(idx), String.New(tooltip))
 }
 
@@ -1056,7 +989,6 @@ Sets the state of a multistate item. See [AddMultistateItem] for details.
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemState(rid RID.NativeMenu, idx int, state int) { //gd:NativeMenu.set_item_state
-	once.Do(singleton)
 	Advanced().SetItemState(RID.Any(rid), int64(idx), int64(state))
 }
 
@@ -1066,7 +998,6 @@ Sets number of state of a multistate item. See [AddMultistateItem] for details.
 Note: This method is implemented on macOS and Windows.
 */
 func SetItemMaxStates(rid RID.NativeMenu, idx int, max_states int) { //gd:NativeMenu.set_item_max_states
-	once.Do(singleton)
 	Advanced().SetItemMaxStates(RID.Any(rid), int64(idx), int64(max_states))
 }
 
@@ -1080,7 +1011,6 @@ Note: This method is not supported by macOS Dock menu items.
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func SetItemIcon(rid RID.NativeMenu, idx int, icon Texture2D.Instance) { //gd:NativeMenu.set_item_icon
-	once.Do(singleton)
 	Advanced().SetItemIcon(RID.Any(rid), int64(idx), icon)
 }
 
@@ -1090,7 +1020,6 @@ Sets the horizontal offset of the item at the given 'idx'.
 Note: This method is implemented only on macOS.
 */
 func SetItemIndentationLevel(rid RID.NativeMenu, idx int, level int) { //gd:NativeMenu.set_item_indentation_level
-	once.Do(singleton)
 	Advanced().SetItemIndentationLevel(RID.Any(rid), int64(idx), int64(level))
 }
 
@@ -1100,7 +1029,6 @@ Returns number of items in the global menu 'rid'.
 Note: This method is implemented on macOS and Windows.
 */
 func GetItemCount(rid RID.NativeMenu) int { //gd:NativeMenu.get_item_count
-	once.Do(singleton)
 	return int(int(Advanced().GetItemCount(RID.Any(rid))))
 }
 
@@ -1110,7 +1038,6 @@ Return true is global menu is a special system menu.
 Note: This method is implemented only on macOS.
 */
 func IsSystemMenu(rid RID.NativeMenu) bool { //gd:NativeMenu.is_system_menu
-	once.Do(singleton)
 	return bool(Advanced().IsSystemMenu(RID.Any(rid)))
 }
 
@@ -1122,7 +1049,6 @@ Note: The indices of items after the removed item will be shifted by one.
 Note: This method is implemented on macOS and Windows.
 */
 func RemoveItem(rid RID.NativeMenu, idx int) { //gd:NativeMenu.remove_item
-	once.Do(singleton)
 	Advanced().RemoveItem(RID.Any(rid), int64(idx))
 }
 
@@ -1132,7 +1058,6 @@ Removes all items from the global menu 'rid'.
 Note: This method is implemented on macOS and Windows.
 */
 func Clear(rid RID.NativeMenu) { //gd:NativeMenu.clear
-	once.Do(singleton)
 	Advanced().Clear(RID.Any(rid))
 }
 
@@ -1168,6 +1093,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
@@ -1180,6 +1106,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
@@ -1192,6 +1119,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetSystemMenu(menu_id SystemMenus) RID.Any { //gd:NativeMenu.get_system_menu
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
@@ -1204,6 +1132,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -1216,6 +1145,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1228,6 +1158,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) HasMenu(rid RID.Any) bool { //gd:NativeMenu.has_menu
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -1242,6 +1173,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FreeMenu(rid RID.Any) { //gd:NativeMenu.free_menu
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
@@ -1252,6 +1184,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetSize(rid RID.Any) Vector2.XY { //gd:NativeMenu.get_size
+	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -1264,6 +1197,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.popup
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
 		rid      RID.Any
 		position Vector2i.XY
@@ -1277,6 +1211,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeMenu.set_interface_direction
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		rid    RID.Any
 		is_rtl bool
@@ -1290,6 +1225,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
@@ -1303,6 +1239,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
@@ -1317,6 +1254,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
@@ -1330,6 +1268,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
@@ -1342,6 +1281,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.set_minimum_width
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		rid   RID.Any
 		width float64
@@ -1355,6 +1295,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetMinimumWidth(rid RID.Any) float64 { //gd:NativeMenu.get_minimum_width
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -1367,6 +1308,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsOpened(rid RID.Any) bool { //gd:NativeMenu.is_opened
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -1381,6 +1323,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid RID.Any, tag variant.Any, index int64) int64 { //gd:NativeMenu.add_submenu_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
 		rid         RID.Any
 		label       gdextension.String
@@ -1407,6 +1350,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
@@ -1435,6 +1379,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_check_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
@@ -1463,6 +1408,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
@@ -1492,6 +1438,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_check_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
@@ -1523,6 +1470,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_radio_check_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
@@ -1553,6 +1501,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_radio_check_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
@@ -1586,6 +1535,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_multistate_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		rid           RID.Any
 		label         gdextension.String
@@ -1610,6 +1560,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu.add_separator
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid   RID.Any
 		index int64
@@ -1625,6 +1576,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64 { //gd:NativeMenu.find_item_index_with_text
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		rid  RID.Any
 		text gdextension.String
@@ -1640,6 +1592,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //gd:NativeMenu.find_item_index_with_tag
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		rid RID.Any
 		tag gdextension.Variant
@@ -1655,6 +1608,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int64 { //gd:NativeMenu.find_item_index_with_submenu
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		rid         RID.Any
 		submenu_rid RID.Any
@@ -1670,6 +1624,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checked
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1685,6 +1640,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checkable
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1702,6 +1658,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_radio_checkable
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1717,6 +1674,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1732,6 +1690,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1747,6 +1706,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1762,6 +1722,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1777,6 +1738,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMenu.get_item_submenu
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1792,6 +1754,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:NativeMenu.get_item_accelerator
+	once.Do(singleton)
 	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1809,6 +1772,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_disabled
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1826,6 +1790,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_hidden
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1841,6 +1806,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1856,6 +1822,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_state
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1871,6 +1838,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_max_states
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1886,6 +1854,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1901,6 +1870,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_indentation_level
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -1916,6 +1886,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:NativeMenu.set_item_checked
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid     RID.Any
 		idx     int64
@@ -1930,6 +1901,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_checkable
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
@@ -1946,6 +1918,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
@@ -1962,6 +1935,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
@@ -1978,6 +1952,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
@@ -1994,6 +1969,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid          RID.Any
 		idx          int64
@@ -2008,6 +1984,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:NativeMenu.set_item_tag
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		rid RID.Any
 		idx int64
@@ -2022,6 +1999,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //gd:NativeMenu.set_item_text
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid  RID.Any
 		idx  int64
@@ -2036,6 +2014,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { //gd:NativeMenu.set_item_submenu
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		rid         RID.Any
 		idx         int64
@@ -2050,6 +2029,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid     RID.Any
 		idx     int64
@@ -2064,6 +2044,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:NativeMenu.set_item_disabled
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid      RID.Any
 		idx      int64
@@ -2078,6 +2059,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:NativeMenu.set_item_hidden
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid    RID.Any
 		idx    int64
@@ -2092,6 +2074,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable) { //gd:NativeMenu.set_item_tooltip
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid     RID.Any
 		idx     int64
@@ -2106,6 +2089,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:NativeMenu.set_item_state
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
@@ -2120,6 +2104,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { //gd:NativeMenu.set_item_max_states
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid        RID.Any
 		idx        int64
@@ -2138,6 +2123,7 @@ Note: This method is not supported by macOS Dock menu items.
 */
 //go:nosplit
 func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		rid  RID.Any
 		idx  int64
@@ -2152,6 +2138,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
@@ -2166,6 +2153,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -2178,6 +2166,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsSystemMenu(rid RID.Any) bool { //gd:NativeMenu.is_system_menu
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
@@ -2192,6 +2181,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_item
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
@@ -2205,6 +2195,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) Virtual(name string) reflect.Value {

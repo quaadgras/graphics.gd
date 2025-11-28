@@ -3065,7 +3065,7 @@ func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) {
 }
 
 func (self class) MetaClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`meta_clicked`))))
 }
 
 /*
@@ -3080,7 +3080,7 @@ func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags
 }
 
 func (self class) MetaHoverStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`meta_hover_started`))))
 }
 
 /*
@@ -3095,7 +3095,7 @@ func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) 
 }
 
 func (self class) MetaHoverEnded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverEnded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`meta_hover_ended`))))
 }
 
 /*
@@ -3112,7 +3112,7 @@ func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Finished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`finished`))))
 }
 
 func (self class) AsRichTextLabel() Advanced {

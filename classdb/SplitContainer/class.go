@@ -512,7 +512,7 @@ func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) {
 }
 
 func (self class) Dragged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`dragged`))))
 }
 
 /*
@@ -527,7 +527,7 @@ func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DragStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`drag_started`))))
 }
 
 /*
@@ -542,7 +542,7 @@ func (self Instance) OnDragEnded(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DragEnded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragEnded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`drag_ended`))))
 }
 
 func (self class) AsSplitContainer() Advanced {

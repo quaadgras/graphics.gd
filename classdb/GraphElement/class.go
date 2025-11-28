@@ -310,7 +310,7 @@ func (self Instance) OnNodeSelected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) NodeSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_selected`))))
 }
 
 /*
@@ -325,7 +325,7 @@ func (self Instance) OnNodeDeselected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) NodeDeselected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_deselected`))))
 }
 
 /*
@@ -340,7 +340,7 @@ func (self Instance) OnRaiseRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) RaiseRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RaiseRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`raise_request`))))
 }
 
 /*
@@ -355,7 +355,7 @@ func (self Instance) OnDeleteRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DeleteRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`delete_request`))))
 }
 
 /*
@@ -372,7 +372,7 @@ func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY), flags ...Sign
 }
 
 func (self class) ResizeRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resize_request`))))
 }
 
 /*
@@ -389,7 +389,7 @@ func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY), flags ...Signal.F
 }
 
 func (self class) ResizeEnd() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeEnd`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resize_end`))))
 }
 
 /*
@@ -404,7 +404,7 @@ func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY), flags ..
 }
 
 func (self class) Dragged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`dragged`))))
 }
 
 /*
@@ -419,7 +419,7 @@ func (self Instance) OnPositionOffsetChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PositionOffsetChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PositionOffsetChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`position_offset_changed`))))
 }
 
 func (self class) AsGraphElement() Advanced {

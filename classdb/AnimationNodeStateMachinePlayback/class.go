@@ -411,7 +411,7 @@ func (self Instance) OnStateStarted(cb func(state string), flags ...Signal.Flags
 }
 
 func (self class) StateStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StateStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`state_started`))))
 }
 
 /*
@@ -430,7 +430,7 @@ func (self Instance) OnStateFinished(cb func(state string), flags ...Signal.Flag
 }
 
 func (self class) StateFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StateFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`state_finished`))))
 }
 
 func (self class) AsAnimationNodeStateMachinePlayback() Advanced {

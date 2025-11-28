@@ -151,7 +151,6 @@ Note: This method only works on Android. On every other platform, this method do
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func Wrap(name string) JavaClass.Instance { //gd:JavaClassWrapper.wrap
-	once.Do(singleton)
 	return JavaClass.Instance(Advanced().Wrap(String.New(name)))
 }
 
@@ -161,7 +160,6 @@ Returns the Java exception from the last call into a Java class. If there was no
 Note: This method only works on Android. On every other platform, this method will always return null.
 */
 func GetException() JavaObject.Instance { //gd:JavaClassWrapper.get_exception
-	once.Do(singleton)
 	return JavaObject.Instance(Advanced().GetException())
 }
 
@@ -204,6 +202,7 @@ Note: This method only works on Android. On every other platform, this method do
 */
 //go:nosplit
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
 	return ret
@@ -216,6 +215,7 @@ Note: This method only works on Android. On every other platform, this method wi
 */
 //go:nosplit
 func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_exception, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret)}
 	return ret

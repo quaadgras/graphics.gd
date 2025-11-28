@@ -2502,7 +2502,7 @@ func (self Instance) OnEmissionShapeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) EmissionShapeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmissionShapeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`emission_shape_changed`))))
 }
 
 func (self class) AsParticleProcessMaterial() Advanced {

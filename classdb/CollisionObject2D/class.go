@@ -1034,7 +1034,7 @@ func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEve
 }
 
 func (self class) InputEvent() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputEvent`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_event`))))
 }
 
 /*
@@ -1055,7 +1055,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MouseEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_entered`))))
 }
 
 /*
@@ -1076,7 +1076,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MouseExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_exited`))))
 }
 
 /*
@@ -1095,7 +1095,7 @@ func (self Instance) OnMouseShapeEntered(cb func(shape_idx int), flags ...Signal
 }
 
 func (self class) MouseShapeEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseShapeEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_shape_entered`))))
 }
 
 /*
@@ -1114,7 +1114,7 @@ func (self Instance) OnMouseShapeExited(cb func(shape_idx int), flags ...Signal.
 }
 
 func (self class) MouseShapeExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseShapeExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_shape_exited`))))
 }
 
 func (self class) AsCollisionObject2D() Advanced {

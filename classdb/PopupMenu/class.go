@@ -2400,7 +2400,7 @@ func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) {
 }
 
 func (self class) IdPressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdPressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`id_pressed`))))
 }
 
 /*
@@ -2417,7 +2417,7 @@ func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) {
 }
 
 func (self class) IdFocused() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdFocused`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`id_focused`))))
 }
 
 /*
@@ -2432,7 +2432,7 @@ func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) {
 }
 
 func (self class) IndexPressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IndexPressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`index_pressed`))))
 }
 
 /*
@@ -2447,7 +2447,7 @@ func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MenuChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MenuChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`menu_changed`))))
 }
 
 func (self class) AsPopupMenu() Advanced { return Advanced{pointers.AsA[gdclass.PopupMenu](self[0])} }

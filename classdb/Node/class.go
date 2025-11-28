@@ -4599,7 +4599,7 @@ func (self Instance) OnReady(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Ready() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Ready`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ready`))))
 }
 
 /*
@@ -4616,7 +4616,7 @@ func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Renamed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Renamed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`renamed`))))
 }
 
 /*
@@ -4633,7 +4633,7 @@ func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TreeEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_entered`))))
 }
 
 /*
@@ -4652,7 +4652,7 @@ func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TreeExiting() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExiting`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_exiting`))))
 }
 
 /*
@@ -4669,7 +4669,7 @@ func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TreeExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_exited`))))
 }
 
 /*
@@ -4690,7 +4690,7 @@ func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.
 }
 
 func (self class) ChildEnteredTree() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildEnteredTree`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`child_entered_tree`))))
 }
 
 /*
@@ -4710,7 +4710,7 @@ func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.
 }
 
 func (self class) ChildExitingTree() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildExitingTree`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`child_exiting_tree`))))
 }
 
 /*
@@ -4725,7 +4725,7 @@ func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ChildOrderChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildOrderChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`child_order_changed`))))
 }
 
 /*
@@ -4744,7 +4744,7 @@ func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags
 }
 
 func (self class) ReplacingBy() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReplacingBy`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`replacing_by`))))
 }
 
 /*
@@ -4759,7 +4759,7 @@ func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ..
 }
 
 func (self class) EditorDescriptionChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorDescriptionChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`editor_description_changed`))))
 }
 
 /*
@@ -4774,7 +4774,7 @@ func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) EditorStateChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorStateChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`editor_state_changed`))))
 }
 
 func (self class) AsNode() Advanced         { return Advanced{pointers.AsA[gdclass.Node](self[0])} }

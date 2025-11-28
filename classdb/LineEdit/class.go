@@ -1746,7 +1746,7 @@ func (self Instance) OnTextChanged(cb func(new_text string), flags ...Signal.Fla
 }
 
 func (self class) TextChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`text_changed`))))
 }
 
 /*
@@ -1763,7 +1763,7 @@ func (self Instance) OnTextChangeRejected(cb func(rejected_substring string), fl
 }
 
 func (self class) TextChangeRejected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChangeRejected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`text_change_rejected`))))
 }
 
 /*
@@ -1780,7 +1780,7 @@ func (self Instance) OnTextSubmitted(cb func(new_text string), flags ...Signal.F
 }
 
 func (self class) TextSubmitted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSubmitted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`text_submitted`))))
 }
 
 /*
@@ -1797,7 +1797,7 @@ func (self Instance) OnEditingToggled(cb func(toggled_on bool), flags ...Signal.
 }
 
 func (self class) EditingToggled() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditingToggled`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`editing_toggled`))))
 }
 
 func (self class) AsLineEdit() Advanced         { return Advanced{pointers.AsA[gdclass.LineEdit](self[0])} }

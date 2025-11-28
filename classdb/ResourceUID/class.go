@@ -131,7 +131,6 @@ func singleton() {
 Converts the given UID to a uid:// string value.
 */
 func IdToText(id Resource.UID) string { //gd:ResourceUID.id_to_text
-	once.Do(singleton)
 	return string(Advanced().IdToText(int64(id)).String())
 }
 
@@ -139,7 +138,6 @@ func IdToText(id Resource.UID) string { //gd:ResourceUID.id_to_text
 Extracts the UID value from the given uid:// string.
 */
 func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
-	once.Do(singleton)
 	return int(int(Advanced().TextToId(String.New(text_id))))
 }
 
@@ -149,7 +147,6 @@ Generates a random resource UID which is guaranteed to be unique within the list
 In order for this UID to be registered, you must call [AddId] or [SetId].
 */
 func CreateId() int { //gd:ResourceUID.create_id
-	once.Do(singleton)
 	return int(int(Advanced().CreateId()))
 }
 
@@ -157,7 +154,6 @@ func CreateId() int { //gd:ResourceUID.create_id
 Like [CreateId], but the UID is seeded with the provided 'path' and project name. UIDs generated for that path will be always the same within the current project.
 */
 func CreateIdForPath(path string) int { //gd:ResourceUID.create_id_for_path
-	once.Do(singleton)
 	return int(int(Advanced().CreateIdForPath(String.New(path))))
 }
 
@@ -165,7 +161,6 @@ func CreateIdForPath(path string) int { //gd:ResourceUID.create_id_for_path
 Returns whether the given UID value is known to the cache.
 */
 func HasId(id Resource.UID) bool { //gd:ResourceUID.has_id
-	once.Do(singleton)
 	return bool(Advanced().HasId(int64(id)))
 }
 
@@ -175,7 +170,6 @@ Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [HasId] beforehand, or use [SetId] instead.
 */
 func AddId(id Resource.UID, path string) { //gd:ResourceUID.add_id
-	once.Do(singleton)
 	Advanced().AddId(int64(id), String.New(path))
 }
 
@@ -185,7 +179,6 @@ Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand, or use [AddId] instead.
 */
 func SetId(id Resource.UID, path string) { //gd:ResourceUID.set_id
-	once.Do(singleton)
 	Advanced().SetId(int64(id), String.New(path))
 }
 
@@ -195,7 +188,6 @@ Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 func GetIdPath(id Resource.UID) string { //gd:ResourceUID.get_id_path
-	once.Do(singleton)
 	return string(Advanced().GetIdPath(int64(id)).String())
 }
 
@@ -205,7 +197,6 @@ Removes a loaded UID value from the cache.
 Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
-	once.Do(singleton)
 	Advanced().RemoveId(int64(id))
 }
 
@@ -213,7 +204,6 @@ func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
 Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
 */
 func UidToPath(uid string) string { //gd:ResourceUID.uid_to_path
-	once.Do(singleton)
 	return string(Advanced().UidToPath(String.New(uid)).String())
 }
 
@@ -221,7 +211,6 @@ func UidToPath(uid string) string { //gd:ResourceUID.uid_to_path
 Converts the provided resource 'path' to a UID. Returns the unchanged path if it has no associated UID.
 */
 func PathToUid(path string) string { //gd:ResourceUID.path_to_uid
-	once.Do(singleton)
 	return string(Advanced().PathToUid(String.New(path)).String())
 }
 
@@ -229,7 +218,6 @@ func PathToUid(path string) string { //gd:ResourceUID.path_to_uid
 Returns a path, converting 'path_or_uid' if necessary. Prints an error if provided an invalid UID.
 */
 func EnsurePath(path_or_uid string) string { //gd:ResourceUID.ensure_path
-	once.Do(singleton)
 	return string(Advanced().EnsurePath(String.New(path_or_uid)).String())
 }
 
@@ -261,6 +249,7 @@ Converts the given UID to a uid:// string value.
 */
 //go:nosplit
 func (self class) IdToText(id int64) String.Readable { //gd:ResourceUID.id_to_text
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.id_to_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -271,6 +260,7 @@ Extracts the UID value from the given uid:// string.
 */
 //go:nosplit
 func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.text_to_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.text_to_id, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ text_id gdextension.String }{pointers.Get(gd.InternalString(text_id))})
 	var ret = r_ret
 	return ret
@@ -283,6 +273,7 @@ In order for this UID to be registered, you must call [AddId] or [SetId].
 */
 //go:nosplit
 func (self class) CreateId() int64 { //gd:ResourceUID.create_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -293,6 +284,7 @@ Like [CreateId], but the UID is seeded with the provided 'path' and project name
 */
 //go:nosplit
 func (self class) CreateIdForPath(path String.Readable) int64 { //gd:ResourceUID.create_id_for_path
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -303,6 +295,7 @@ Returns whether the given UID value is known to the cache.
 */
 //go:nosplit
 func (self class) HasId(id int64) bool { //gd:ResourceUID.has_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_id, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
@@ -315,6 +308,7 @@ Fails with an error if the UID already exists, so be sure to check [HasId] befor
 */
 //go:nosplit
 func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		path gdextension.String
@@ -328,6 +322,7 @@ Fails with an error if the UID does not exist, so be sure to check [HasId] befor
 */
 //go:nosplit
 func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		path gdextension.String
@@ -341,6 +336,7 @@ Fails with an error if the UID does not exist, so be sure to check [HasId] befor
 */
 //go:nosplit
 func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -353,6 +349,7 @@ Fails with an error if the UID does not exist, so be sure to check [HasId] befor
 */
 //go:nosplit
 func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
@@ -361,6 +358,7 @@ Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
 */
 //go:nosplit
 func (self class) UidToPath(uid String.Readable) String.Readable { //gd:ResourceUID.uid_to_path
+	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.uid_to_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ uid gdextension.String }{pointers.Get(gd.InternalString(uid))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -371,6 +369,7 @@ Converts the provided resource 'path' to a UID. Returns the unchanged path if it
 */
 //go:nosplit
 func (self class) PathToUid(path String.Readable) String.Readable { //gd:ResourceUID.path_to_uid
+	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.path_to_uid, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -381,6 +380,7 @@ Returns a path, converting 'path_or_uid' if necessary. Prints an error if provid
 */
 //go:nosplit
 func (self class) EnsurePath(path_or_uid String.Readable) String.Readable { //gd:ResourceUID.ensure_path
+	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.ensure_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path_or_uid gdextension.String }{pointers.Get(gd.InternalString(path_or_uid))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret

@@ -373,7 +373,7 @@ func (self Instance) OnTrackingChanged(cb func(tracking bool), flags ...Signal.F
 }
 
 func (self class) TrackingChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackingChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tracking_changed`))))
 }
 
 func (self class) AsXRNode3D() Advanced         { return Advanced{pointers.AsA[gdclass.XRNode3D](self[0])} }

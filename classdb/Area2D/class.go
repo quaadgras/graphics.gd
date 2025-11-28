@@ -785,7 +785,7 @@ func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node2D.In
 }
 
 func (self class) BodyShapeEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_shape_entered`))))
 }
 
 /*
@@ -809,7 +809,7 @@ func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node2D.Ins
 }
 
 func (self class) BodyShapeExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_shape_exited`))))
 }
 
 /*
@@ -829,7 +829,7 @@ func (self Instance) OnBodyEntered(cb func(body Node2D.Instance), flags ...Signa
 }
 
 func (self class) BodyEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_entered`))))
 }
 
 /*
@@ -849,7 +849,7 @@ func (self Instance) OnBodyExited(cb func(body Node2D.Instance), flags ...Signal
 }
 
 func (self class) BodyExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_exited`))))
 }
 
 /*
@@ -874,7 +874,7 @@ func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance,
 }
 
 func (self class) AreaShapeEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`area_shape_entered`))))
 }
 
 /*
@@ -895,7 +895,7 @@ func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, 
 }
 
 func (self class) AreaShapeExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`area_shape_exited`))))
 }
 
 /*
@@ -912,7 +912,7 @@ func (self Instance) OnAreaEntered(cb func(area Instance), flags ...Signal.Flags
 }
 
 func (self class) AreaEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`area_entered`))))
 }
 
 /*
@@ -929,7 +929,7 @@ func (self Instance) OnAreaExited(cb func(area Instance), flags ...Signal.Flags)
 }
 
 func (self class) AreaExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`area_exited`))))
 }
 
 func (self class) AsArea2D() Advanced         { return Advanced{pointers.AsA[gdclass.Area2D](self[0])} }

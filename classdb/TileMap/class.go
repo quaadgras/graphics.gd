@@ -1973,7 +1973,7 @@ func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Changed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Changed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`changed`))))
 }
 
 func (self class) AsTileMap() Advanced         { return Advanced{pointers.AsA[gdclass.TileMap](self[0])} }

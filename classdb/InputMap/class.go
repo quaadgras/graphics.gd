@@ -134,7 +134,6 @@ Returns true if the [InputMap] has a registered action with the given name.
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func HasAction(action string) bool { //gd:InputMap.has_action
-	once.Do(singleton)
 	return bool(Advanced().HasAction(String.Name(String.New(action))))
 }
 
@@ -144,7 +143,6 @@ Returns an array of all actions in the [InputMap].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func GetActions() []string { //gd:InputMap.get_actions
-	once.Do(singleton)
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetActions())))
 }
 
@@ -157,7 +155,6 @@ An [InputEvent] can then be added to this action with [ActionAddEvent].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func AddAction(action string) { //gd:InputMap.add_action
-	once.Do(singleton)
 	Advanced().AddAction(String.Name(String.New(action)), float64(0.2))
 }
 
@@ -170,7 +167,6 @@ An [InputEvent] can then be added to this action with [ActionAddEvent].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func AddActionOptions(action string, deadzone Float.X) { //gd:InputMap.add_action
-	once.Do(singleton)
 	Advanced().AddAction(String.Name(String.New(action)), float64(deadzone))
 }
 
@@ -180,7 +176,6 @@ Removes an action from the [InputMap].
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
 func EraseAction(action string) { //gd:InputMap.erase_action
-	once.Do(singleton)
 	Advanced().EraseAction(String.Name(String.New(action)))
 }
 
@@ -188,7 +183,6 @@ func EraseAction(action string) { //gd:InputMap.erase_action
 Returns the human-readable description of the given action.
 */
 func GetActionDescription(action string) string { //gd:InputMap.get_action_description
-	once.Do(singleton)
 	return string(Advanced().GetActionDescription(String.Name(String.New(action))).String())
 }
 
@@ -196,7 +190,6 @@ func GetActionDescription(action string) string { //gd:InputMap.get_action_descr
 Sets a deadzone value for the action.
 */
 func ActionSetDeadzone(action string, deadzone Float.X) { //gd:InputMap.action_set_deadzone
-	once.Do(singleton)
 	Advanced().ActionSetDeadzone(String.Name(String.New(action)), float64(deadzone))
 }
 
@@ -204,7 +197,6 @@ func ActionSetDeadzone(action string, deadzone Float.X) { //gd:InputMap.action_s
 Returns a deadzone value for the action.
 */
 func ActionGetDeadzone(action string) Float.X { //gd:InputMap.action_get_deadzone
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().ActionGetDeadzone(String.Name(String.New(action)))))
 }
 
@@ -214,7 +206,6 @@ Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionAddEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_add_event
-	once.Do(singleton)
 	Advanced().ActionAddEvent(String.Name(String.New(action)), event)
 }
 
@@ -224,7 +215,6 @@ Returns true if the action has the given [InputEvent] associated with it.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionHasEvent(action string, event InputEvent.Instance) bool { //gd:InputMap.action_has_event
-	once.Do(singleton)
 	return bool(Advanced().ActionHasEvent(String.Name(String.New(action)), event))
 }
 
@@ -234,7 +224,6 @@ Removes an [InputEvent] from an action.
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
 func ActionEraseEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_erase_event
-	once.Do(singleton)
 	Advanced().ActionEraseEvent(String.Name(String.New(action)), event)
 }
 
@@ -242,7 +231,6 @@ func ActionEraseEvent(action string, event InputEvent.Instance) { //gd:InputMap.
 Removes all events from an action.
 */
 func ActionEraseEvents(action string) { //gd:InputMap.action_erase_events
-	once.Do(singleton)
 	Advanced().ActionEraseEvents(String.Name(String.New(action)))
 }
 
@@ -256,7 +244,6 @@ Note: When used in the editor (e.g. a tool script or [EditorPlugin]), this metho
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ActionGetEvents(action string) []InputEvent.Instance { //gd:InputMap.action_get_events
-	once.Do(singleton)
 	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.New(action))))))
 }
 
@@ -271,7 +258,6 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func EventIsAction(event InputEvent.Instance, action string, exact_match bool) bool { //gd:InputMap.event_is_action
-	once.Do(singleton)
 	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
 }
 
@@ -283,7 +269,6 @@ Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSe
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
-	once.Do(singleton)
 	Advanced().LoadFromProjectSettings()
 }
 
@@ -317,6 +302,7 @@ Returns true if the [InputMap] has a registered action with the given name.
 */
 //go:nosplit
 func (self class) HasAction(action String.Name) bool { //gd:InputMap.has_action
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_action, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
@@ -329,6 +315,7 @@ Returns an array of all actions in the [InputMap].
 */
 //go:nosplit
 func (self class) GetActions() Array.Contains[String.Name] { //gd:InputMap.get_actions
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
@@ -344,6 +331,7 @@ An [InputEvent] can then be added to this action with [ActionAddEvent].
 */
 //go:nosplit
 func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMap.add_action
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		deadzone float64
@@ -357,6 +345,7 @@ Removes an action from the [InputMap].
 */
 //go:nosplit
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 
@@ -365,6 +354,7 @@ Returns the human-readable description of the given action.
 */
 //go:nosplit
 func (self class) GetActionDescription(action String.Name) String.Readable { //gd:InputMap.get_action_description
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action_description, gdextension.SizeString|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -375,6 +365,7 @@ Sets a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd:InputMap.action_set_deadzone
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_set_deadzone, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		deadzone float64
@@ -386,6 +377,7 @@ Returns a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.action_get_deadzone, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = r_ret
 	return ret
@@ -398,6 +390,7 @@ Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 */
 //go:nosplit
 func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
@@ -411,6 +404,7 @@ Returns true if the action has the given [InputEvent] associated with it.
 */
 //go:nosplit
 func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
@@ -426,6 +420,7 @@ Removes an [InputEvent] from an action.
 */
 //go:nosplit
 func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		action gdextension.StringName
 		event  gdextension.Object
@@ -437,6 +432,7 @@ Removes all events from an action.
 */
 //go:nosplit
 func (self class) ActionEraseEvents(action String.Name) { //gd:InputMap.action_erase_events
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_events, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 
@@ -451,6 +447,7 @@ Note: When used in the editor (e.g. a tool script or [EditorPlugin]), this metho
 */
 //go:nosplit
 func (self class) ActionGetEvents(action String.Name) Array.Contains[[1]gdclass.InputEvent] { //gd:InputMap.action_get_events
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.action_get_events, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
@@ -468,6 +465,7 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 */
 //go:nosplit
 func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name, exact_match bool) bool { //gd:InputMap.event_is_action
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.event_is_action, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
 		event       gdextension.Object
 		action      gdextension.StringName
@@ -486,6 +484,7 @@ Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSe
 */
 //go:nosplit
 func (self class) LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.load_from_project_settings, 0, &struct{}{})
 }
 func (self class) Virtual(name string) reflect.Value {

@@ -399,7 +399,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		classDB.properties(file, class, singleton)
 		for _, method := range class.Methods {
-			gdfunc.Generate(file, classDB, class.Package, class, method, gdfunc.TypeDefault, getter_setters[method.Name])
+			gdfunc.Generate(file, classDB, class.Package, class, method, gdfunc.TypeDefault, getter_setters[method.Name], singleton)
 		}
 		for _, signal := range class.Signals {
 			classDB.signalCall(file, class, signal, singleton)

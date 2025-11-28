@@ -298,7 +298,7 @@ func (self Instance) OnPreSortChildren(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PreSortChildren() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PreSortChildren`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pre_sort_children`))))
 }
 
 /*
@@ -313,7 +313,7 @@ func (self Instance) OnSortChildren(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SortChildren() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SortChildren`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`sort_children`))))
 }
 
 func (self class) AsContainer() Advanced { return Advanced{pointers.AsA[gdclass.Container](self[0])} }

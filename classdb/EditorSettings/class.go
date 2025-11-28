@@ -538,7 +538,7 @@ func (self Instance) OnSettingsChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SettingsChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SettingsChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`settings_changed`))))
 }
 
 func (self class) AsEditorSettings() Advanced {

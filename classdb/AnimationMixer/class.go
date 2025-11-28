@@ -1256,7 +1256,7 @@ func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AnimationListChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationListChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_list_changed`))))
 }
 
 /*
@@ -1271,7 +1271,7 @@ func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flag
 }
 
 func (self class) AnimationLibrariesUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationLibrariesUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_libraries_updated`))))
 }
 
 /*
@@ -1288,7 +1288,7 @@ func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Sig
 }
 
 func (self class) AnimationFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_finished`))))
 }
 
 /*
@@ -1305,7 +1305,7 @@ func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Sign
 }
 
 func (self class) AnimationStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_started`))))
 }
 
 /*
@@ -1322,7 +1322,7 @@ func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CachesCleared() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CachesCleared`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`caches_cleared`))))
 }
 
 /*
@@ -1337,7 +1337,7 @@ func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MixerApplied() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MixerApplied`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mixer_applied`))))
 }
 
 /*
@@ -1352,7 +1352,7 @@ func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MixerUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MixerUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mixer_updated`))))
 }
 
 func (self class) AsAnimationMixer() Advanced {

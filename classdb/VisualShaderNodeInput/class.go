@@ -217,7 +217,7 @@ func (self Instance) OnInputTypeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) InputTypeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputTypeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_type_changed`))))
 }
 
 func (self class) AsVisualShaderNodeInput() Advanced {

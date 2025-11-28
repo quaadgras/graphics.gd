@@ -5387,7 +5387,7 @@ func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TextSet() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSet`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`text_set`))))
 }
 
 /*
@@ -5402,7 +5402,7 @@ func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TextChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`text_changed`))))
 }
 
 /*
@@ -5419,7 +5419,7 @@ func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flag
 }
 
 func (self class) LinesEditedFrom() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinesEditedFrom`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`lines_edited_from`))))
 }
 
 /*
@@ -5434,7 +5434,7 @@ func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CaretChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CaretChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`caret_changed`))))
 }
 
 /*
@@ -5449,7 +5449,7 @@ func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Sig
 }
 
 func (self class) GutterClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gutter_clicked`))))
 }
 
 /*
@@ -5464,7 +5464,7 @@ func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) GutterAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gutter_added`))))
 }
 
 /*
@@ -5479,7 +5479,7 @@ func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) GutterRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gutter_removed`))))
 }
 
 func (self class) AsTextEdit() Advanced         { return Advanced{pointers.AsA[gdclass.TextEdit](self[0])} }

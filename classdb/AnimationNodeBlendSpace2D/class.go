@@ -632,7 +632,7 @@ func (self Instance) OnTrianglesUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TrianglesUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrianglesUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`triangles_updated`))))
 }
 
 func (self class) AsAnimationNodeBlendSpace2D() Advanced {

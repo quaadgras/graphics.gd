@@ -231,7 +231,7 @@ func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CurveChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurveChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`curve_changed`))))
 }
 
 /*
@@ -248,7 +248,7 @@ func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DebugColorChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DebugColorChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`debug_color_changed`))))
 }
 
 func (self class) AsPath3D() Advanced         { return Advanced{pointers.AsA[gdclass.Path3D](self[0])} }

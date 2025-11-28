@@ -1124,7 +1124,7 @@ func (self Instance) OnStepFinished(cb func(idx int), flags ...Signal.Flags) {
 }
 
 func (self class) StepFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StepFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`step_finished`))))
 }
 
 /*
@@ -1142,7 +1142,7 @@ func (self Instance) OnLoopFinished(cb func(loop_count int), flags ...Signal.Fla
 }
 
 func (self class) LoopFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LoopFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`loop_finished`))))
 }
 
 /*
@@ -1160,7 +1160,7 @@ func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Finished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`finished`))))
 }
 
 func (self class) AsTween() Advanced         { return Advanced{pointers.AsA[gdclass.Tween](self[0])} }

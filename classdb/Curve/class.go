@@ -723,7 +723,7 @@ func (self Instance) OnRangeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) RangeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RangeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`range_changed`))))
 }
 
 /*
@@ -741,7 +741,7 @@ func (self Instance) OnDomainChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DomainChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DomainChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`domain_changed`))))
 }
 
 func (self class) AsCurve() Advanced         { return Advanced{pointers.AsA[gdclass.Curve](self[0])} }

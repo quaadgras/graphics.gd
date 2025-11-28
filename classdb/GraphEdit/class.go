@@ -1855,7 +1855,7 @@ func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int
 }
 
 func (self class) ConnectionRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_request`))))
 }
 
 /*
@@ -1872,7 +1872,7 @@ func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port 
 }
 
 func (self class) DisconnectionRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisconnectionRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`disconnection_request`))))
 }
 
 /*
@@ -1887,7 +1887,7 @@ func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int
 }
 
 func (self class) ConnectionToEmpty() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionToEmpty`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_to_empty`))))
 }
 
 /*
@@ -1902,7 +1902,7 @@ func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, 
 }
 
 func (self class) ConnectionFromEmpty() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFromEmpty`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_from_empty`))))
 }
 
 /*
@@ -1917,7 +1917,7 @@ func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port
 }
 
 func (self class) ConnectionDragStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_drag_started`))))
 }
 
 /*
@@ -1932,7 +1932,7 @@ func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ConnectionDragEnded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragEnded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_drag_ended`))))
 }
 
 /*
@@ -1950,7 +1950,7 @@ func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CopyNodesRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CopyNodesRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`copy_nodes_request`))))
 }
 
 /*
@@ -1968,7 +1968,7 @@ func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CutNodesRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CutNodesRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`cut_nodes_request`))))
 }
 
 /*
@@ -1986,7 +1986,7 @@ func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PasteNodesRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PasteNodesRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`paste_nodes_request`))))
 }
 
 /*
@@ -2004,7 +2004,7 @@ func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DuplicateNodesRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DuplicateNodesRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`duplicate_nodes_request`))))
 }
 
 /*
@@ -2023,7 +2023,7 @@ func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Sign
 }
 
 func (self class) DeleteNodesRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteNodesRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`delete_nodes_request`))))
 }
 
 /*
@@ -2040,7 +2040,7 @@ func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal
 }
 
 func (self class) NodeSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_selected`))))
 }
 
 /*
@@ -2057,7 +2057,7 @@ func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Sign
 }
 
 func (self class) NodeDeselected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_deselected`))))
 }
 
 /*
@@ -2074,7 +2074,7 @@ func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_
 }
 
 func (self class) FrameRectChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameRectChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`frame_rect_changed`))))
 }
 
 /*
@@ -2089,7 +2089,7 @@ func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Si
 }
 
 func (self class) PopupRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`popup_request`))))
 }
 
 /*
@@ -2106,7 +2106,7 @@ func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) BeginNodeMove() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BeginNodeMove`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`begin_node_move`))))
 }
 
 /*
@@ -2123,7 +2123,7 @@ func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) EndNodeMove() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EndNodeMove`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`end_node_move`))))
 }
 
 /*
@@ -2143,7 +2143,7 @@ func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any,
 }
 
 func (self class) GraphElementsLinkedToFrameRequest() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GraphElementsLinkedToFrameRequest`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`graph_elements_linked_to_frame_request`))))
 }
 
 /*
@@ -2158,7 +2158,7 @@ func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...
 }
 
 func (self class) ScrollOffsetChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScrollOffsetChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scroll_offset_changed`))))
 }
 
 func (self class) AsGraphEdit() Advanced { return Advanced{pointers.AsA[gdclass.GraphEdit](self[0])} }

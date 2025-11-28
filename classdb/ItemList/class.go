@@ -1654,7 +1654,7 @@ func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
 }
 
 func (self class) ItemSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_selected`))))
 }
 
 /*
@@ -1671,7 +1671,7 @@ func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button
 }
 
 func (self class) EmptyClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`empty_clicked`))))
 }
 
 /*
@@ -1688,7 +1688,7 @@ func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mo
 }
 
 func (self class) ItemClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_clicked`))))
 }
 
 /*
@@ -1703,7 +1703,7 @@ func (self Instance) OnMultiSelected(cb func(index int, selected bool), flags ..
 }
 
 func (self class) MultiSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`multi_selected`))))
 }
 
 /*
@@ -1718,7 +1718,7 @@ func (self Instance) OnItemActivated(cb func(index int), flags ...Signal.Flags) 
 }
 
 func (self class) ItemActivated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemActivated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_activated`))))
 }
 
 func (self class) AsItemList() Advanced         { return Advanced{pointers.AsA[gdclass.ItemList](self[0])} }

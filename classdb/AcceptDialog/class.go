@@ -503,7 +503,7 @@ func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Confirmed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Confirmed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`confirmed`))))
 }
 
 /*
@@ -520,7 +520,7 @@ func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Canceled() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Canceled`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`canceled`))))
 }
 
 /*
@@ -537,7 +537,7 @@ func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flag
 }
 
 func (self class) CustomAction() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomAction`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`custom_action`))))
 }
 
 func (self class) AsAcceptDialog() Advanced {

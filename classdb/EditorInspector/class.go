@@ -273,7 +273,7 @@ func (self Instance) OnPropertySelected(cb func(property string), flags ...Signa
 }
 
 func (self class) PropertySelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertySelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_selected`))))
 }
 
 /*
@@ -288,7 +288,7 @@ func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance
 }
 
 func (self class) PropertyKeyed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_keyed`))))
 }
 
 /*
@@ -303,7 +303,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal
 }
 
 func (self class) PropertyDeleted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyDeleted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_deleted`))))
 }
 
 /*
@@ -318,7 +318,7 @@ func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path
 }
 
 func (self class) ResourceSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resource_selected`))))
 }
 
 /*
@@ -335,7 +335,7 @@ func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) 
 }
 
 func (self class) ObjectIdSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ObjectIdSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`object_id_selected`))))
 }
 
 /*
@@ -350,7 +350,7 @@ func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.
 }
 
 func (self class) PropertyEdited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyEdited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_edited`))))
 }
 
 /*
@@ -367,7 +367,7 @@ func (self Instance) OnPropertyToggled(cb func(property string, checked bool), f
 }
 
 func (self class) PropertyToggled() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyToggled`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_toggled`))))
 }
 
 /*
@@ -382,7 +382,7 @@ func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) EditedObjectChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditedObjectChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`edited_object_changed`))))
 }
 
 /*
@@ -397,7 +397,7 @@ func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) RestartRequested() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RestartRequested`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`restart_requested`))))
 }
 
 func (self class) AsEditorInspector() Advanced {

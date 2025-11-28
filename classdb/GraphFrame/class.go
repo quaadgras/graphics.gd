@@ -369,7 +369,7 @@ func (self Instance) OnAutoshrinkChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AutoshrinkChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AutoshrinkChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`autoshrink_changed`))))
 }
 
 func (self class) AsGraphFrame() Advanced { return Advanced{pointers.AsA[gdclass.GraphFrame](self[0])} }

@@ -1286,7 +1286,7 @@ func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Inst
 }
 
 func (self class) BodyShapeEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_shape_entered`))))
 }
 
 /*
@@ -1321,7 +1321,7 @@ func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Insta
 }
 
 func (self class) BodyShapeExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_shape_exited`))))
 }
 
 /*
@@ -1346,7 +1346,7 @@ func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.
 }
 
 func (self class) BodyEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_entered`))))
 }
 
 /*
@@ -1371,7 +1371,7 @@ func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.F
 }
 
 func (self class) BodyExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`body_exited`))))
 }
 
 /*
@@ -1390,7 +1390,7 @@ func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SleepingStateChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SleepingStateChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`sleeping_state_changed`))))
 }
 
 func (self class) AsRigidBody3D() Advanced {

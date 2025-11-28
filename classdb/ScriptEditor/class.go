@@ -477,7 +477,7 @@ func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flag
 }
 
 func (self class) EditorScriptChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorScriptChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`editor_script_changed`))))
 }
 
 /*
@@ -494,7 +494,7 @@ func (self Instance) OnScriptClose(cb func(script Script.Instance), flags ...Sig
 }
 
 func (self class) ScriptClose() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScriptClose`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`script_close`))))
 }
 
 func (self class) AsScriptEditor() Advanced {

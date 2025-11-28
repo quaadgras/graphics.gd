@@ -607,7 +607,7 @@ func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Finished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`finished`))))
 }
 
 func (self class) AsVideoStreamPlayer() Advanced {

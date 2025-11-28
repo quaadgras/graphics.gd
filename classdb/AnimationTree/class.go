@@ -296,7 +296,7 @@ func (self Instance) OnAnimationPlayerChanged(cb func(), flags ...Signal.Flags) 
 }
 
 func (self class) AnimationPlayerChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationPlayerChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_player_changed`))))
 }
 
 func (self class) AsAnimationTree() Advanced {

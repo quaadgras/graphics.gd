@@ -130,7 +130,6 @@ Registers a [TextServer] interface.
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func AddInterface(intf TextServer.Instance) { //gd:TextServerManager.add_interface
-	once.Do(singleton)
 	Advanced().AddInterface(intf)
 }
 
@@ -138,7 +137,6 @@ func AddInterface(intf TextServer.Instance) { //gd:TextServerManager.add_interfa
 Returns the number of interfaces currently registered.
 */
 func GetInterfaceCount() int { //gd:TextServerManager.get_interface_count
-	once.Do(singleton)
 	return int(int(Advanced().GetInterfaceCount()))
 }
 
@@ -146,7 +144,6 @@ func GetInterfaceCount() int { //gd:TextServerManager.get_interface_count
 Removes an interface. All fonts and shaped text caches should be freed before removing an interface.
 */
 func RemoveInterface(intf TextServer.Instance) { //gd:TextServerManager.remove_interface
-	once.Do(singleton)
 	Advanced().RemoveInterface(intf)
 }
 
@@ -154,7 +151,6 @@ func RemoveInterface(intf TextServer.Instance) { //gd:TextServerManager.remove_i
 Returns the interface registered at a given index.
 */
 func GetInterface(idx int) TextServer.Instance { //gd:TextServerManager.get_interface
-	once.Do(singleton)
 	return TextServer.Instance(Advanced().GetInterface(int64(idx)))
 }
 
@@ -162,7 +158,6 @@ func GetInterface(idx int) TextServer.Instance { //gd:TextServerManager.get_inte
 Returns a list of available interfaces, with the index and name of each interface.
 */
 func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
-	once.Do(singleton)
 	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(Advanced().GetInterfaces())))
 }
 
@@ -170,7 +165,6 @@ func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
 Finds an interface by its 'name'.
 */
 func FindInterface(name string) TextServer.Instance { //gd:TextServerManager.find_interface
-	once.Do(singleton)
 	return TextServer.Instance(Advanced().FindInterface(String.New(name)))
 }
 
@@ -180,7 +174,6 @@ Sets the primary [TextServer] interface.
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func SetPrimaryInterface(index TextServer.Instance) { //gd:TextServerManager.set_primary_interface
-	once.Do(singleton)
 	Advanced().SetPrimaryInterface(index)
 }
 
@@ -190,7 +183,6 @@ Returns the primary [TextServer] interface currently in use.
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func GetPrimaryInterface() TextServer.Instance { //gd:TextServerManager.get_primary_interface
-	once.Do(singleton)
 	return TextServer.Instance(Advanced().GetPrimaryInterface())
 }
 
@@ -224,6 +216,7 @@ Registers a [TextServer] interface.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
 
@@ -232,6 +225,7 @@ Returns the number of interfaces currently registered.
 */
 //go:nosplit
 func (self class) GetInterfaceCount() int64 { //gd:TextServerManager.get_interface_count
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_interface_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -242,6 +236,7 @@ Removes an interface. All fonts and shaped text caches should be freed before re
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
 
@@ -250,6 +245,7 @@ Returns the interface registered at a given index.
 */
 //go:nosplit
 func (self class) GetInterface(idx int64) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
@@ -260,6 +256,7 @@ Returns a list of available interfaces, with the index and name of each interfac
 */
 //go:nosplit
 func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:TextServerManager.get_interfaces
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
@@ -270,6 +267,7 @@ Finds an interface by its 'name'.
 */
 //go:nosplit
 func (self class) FindInterface(name String.Readable) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
@@ -282,6 +280,7 @@ Sets the primary [TextServer] interface.
 */
 //go:nosplit
 func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ index gdextension.Object }{gdextension.Object(gd.ObjectChecked(index[0].AsObject()))})
 }
 
@@ -292,6 +291,7 @@ Returns the primary [TextServer] interface currently in use.
 */
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
@@ -305,11 +305,13 @@ func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceAdded`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`interface_added`))))
 }
 
 /*
@@ -320,11 +322,13 @@ func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) InterfaceRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceRemoved`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`interface_removed`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

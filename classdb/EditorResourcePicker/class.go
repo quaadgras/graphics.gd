@@ -414,7 +414,7 @@ func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, insp
 }
 
 func (self class) ResourceSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resource_selected`))))
 }
 
 /*
@@ -429,7 +429,7 @@ func (self Instance) OnResourceChanged(cb func(resource Resource.Instance), flag
 }
 
 func (self class) ResourceChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resource_changed`))))
 }
 
 func (self class) AsEditorResourcePicker() Advanced {

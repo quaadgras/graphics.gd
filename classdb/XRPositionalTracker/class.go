@@ -358,7 +358,7 @@ func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance), flags ...Signa
 }
 
 func (self class) PoseChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pose_changed`))))
 }
 
 /*
@@ -373,7 +373,7 @@ func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance), flags ...
 }
 
 func (self class) PoseLostTracking() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseLostTracking`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pose_lost_tracking`))))
 }
 
 /*
@@ -388,7 +388,7 @@ func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags
 }
 
 func (self class) ButtonPressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonPressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_pressed`))))
 }
 
 /*
@@ -403,7 +403,7 @@ func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flag
 }
 
 func (self class) ButtonReleased() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonReleased`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_released`))))
 }
 
 /*
@@ -418,7 +418,7 @@ func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), fl
 }
 
 func (self class) InputFloatChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputFloatChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_float_changed`))))
 }
 
 /*
@@ -433,7 +433,7 @@ func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.X
 }
 
 func (self class) InputVector2Changed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputVector2Changed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_vector2_changed`))))
 }
 
 /*
@@ -448,7 +448,7 @@ func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flag
 }
 
 func (self class) ProfileChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProfileChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`profile_changed`))))
 }
 
 func (self class) AsXRPositionalTracker() Advanced {

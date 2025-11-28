@@ -224,7 +224,7 @@ func (self Instance) OnRenderModelAdded(cb func(render_model OpenXRRenderModel.I
 }
 
 func (self class) RenderModelAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_added`))))
 }
 
 /*
@@ -239,7 +239,7 @@ func (self Instance) OnRenderModelRemoved(cb func(render_model OpenXRRenderModel
 }
 
 func (self class) RenderModelRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_removed`))))
 }
 
 func (self class) AsOpenXRRenderModelManager() Advanced {

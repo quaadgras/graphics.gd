@@ -686,7 +686,7 @@ func (self Instance) OnSessionSupported(cb func(session_mode string, supported b
 }
 
 func (self class) SessionSupported() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSupported`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_supported`))))
 }
 
 /*
@@ -705,7 +705,7 @@ func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_started`))))
 }
 
 /*
@@ -722,7 +722,7 @@ func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionEnded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionEnded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_ended`))))
 }
 
 /*
@@ -741,7 +741,7 @@ func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Fl
 }
 
 func (self class) SessionFailed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFailed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_failed`))))
 }
 
 /*
@@ -761,7 +761,7 @@ func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal
 }
 
 func (self class) Selectstart() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectstart`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`selectstart`))))
 }
 
 /*
@@ -781,7 +781,7 @@ func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flag
 }
 
 func (self class) Select() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Select`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`select`))))
 }
 
 /*
@@ -801,7 +801,7 @@ func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.F
 }
 
 func (self class) Selectend() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectend`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`selectend`))))
 }
 
 /*
@@ -821,7 +821,7 @@ func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signa
 }
 
 func (self class) Squeezestart() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezestart`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`squeezestart`))))
 }
 
 /*
@@ -841,7 +841,7 @@ func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Fla
 }
 
 func (self class) Squeeze() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeeze`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`squeeze`))))
 }
 
 /*
@@ -861,7 +861,7 @@ func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.
 }
 
 func (self class) Squeezeend() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezeend`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`squeezeend`))))
 }
 
 /*
@@ -878,7 +878,7 @@ func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) 
 }
 
 func (self class) VisibilityStateChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityStateChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`visibility_state_changed`))))
 }
 
 /*
@@ -900,7 +900,7 @@ func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ReferenceSpaceReset() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReferenceSpaceReset`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`reference_space_reset`))))
 }
 
 /*
@@ -915,7 +915,7 @@ func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flag
 }
 
 func (self class) DisplayRefreshRateChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisplayRefreshRateChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`display_refresh_rate_changed`))))
 }
 
 func (self class) AsWebXRInterface() Advanced {
