@@ -302,7 +302,7 @@ func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DragStarted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragStarted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`drag_started`))))
 }
 
 /*
@@ -319,7 +319,7 @@ func (self Instance) OnDragEnded(cb func(value_changed bool), flags ...Signal.Fl
 }
 
 func (self class) DragEnded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragEnded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`drag_ended`))))
 }
 
 func (self class) AsSlider() Advanced         { return Advanced{pointers.AsA[gdclass.Slider](self[0])} }

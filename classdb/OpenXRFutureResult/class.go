@@ -255,7 +255,7 @@ func (self Instance) OnCompleted(cb func(result Instance), flags ...Signal.Flags
 }
 
 func (self class) Completed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Completed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`completed`))))
 }
 
 func (self class) AsOpenXRFutureResult() Advanced {

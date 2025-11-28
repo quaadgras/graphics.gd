@@ -128,7 +128,6 @@ func singleton() {
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [Type] constant given as 'ip_type'.
 */
 func ResolveHostname(host string) string { //gd:IP.resolve_hostname
-	once.Do(singleton)
 	return string(Advanced().ResolveHostname(String.New(host), 3).String())
 }
 
@@ -136,7 +135,6 @@ func ResolveHostname(host string) string { //gd:IP.resolve_hostname
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [Type] constant given as 'ip_type'.
 */
 func ResolveHostnameOptions(host string, ip_type Type) string { //gd:IP.resolve_hostname
-	once.Do(singleton)
 	return string(Advanced().ResolveHostname(String.New(host), ip_type).String())
 }
 
@@ -144,7 +142,6 @@ func ResolveHostnameOptions(host string, ip_type Type) string { //gd:IP.resolve_
 Resolves a given hostname in a blocking way. Addresses are returned as an slice of IPv4 or IPv6 addresses depending on 'ip_type'.
 */
 func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_addresses
-	once.Do(singleton)
 	return []string(Advanced().ResolveHostnameAddresses(String.New(host), 3).Strings())
 }
 
@@ -152,7 +149,6 @@ func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_a
 Resolves a given hostname in a blocking way. Addresses are returned as an slice of IPv4 or IPv6 addresses depending on 'ip_type'.
 */
 func ResolveHostnameAddressesOptions(host string, ip_type Type) []string { //gd:IP.resolve_hostname_addresses
-	once.Do(singleton)
 	return []string(Advanced().ResolveHostnameAddresses(String.New(host), ip_type).Strings())
 }
 
@@ -160,7 +156,6 @@ func ResolveHostnameAddressesOptions(host string, ip_type Type) []string { //gd:
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [Type] constant given as 'ip_type'. Returns the queue ID if successful, or [ResolverInvalidId] on error.
 */
 func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_item
-	once.Do(singleton)
 	return int(int(Advanced().ResolveHostnameQueueItem(String.New(host), 3)))
 }
 
@@ -168,7 +163,6 @@ func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [Type] constant given as 'ip_type'. Returns the queue ID if successful, or [ResolverInvalidId] on error.
 */
 func ResolveHostnameQueueItemOptions(host string, ip_type Type) int { //gd:IP.resolve_hostname_queue_item
-	once.Do(singleton)
 	return int(int(Advanced().ResolveHostnameQueueItem(String.New(host), ip_type)))
 }
 
@@ -176,7 +170,6 @@ func ResolveHostnameQueueItemOptions(host string, ip_type Type) int { //gd:IP.re
 Returns a queued hostname's status as a [ResolverStatus] constant, given its queue 'id'.
 */
 func GetResolveItemStatus(id int) ResolverStatus { //gd:IP.get_resolve_item_status
-	once.Do(singleton)
 	return ResolverStatus(Advanced().GetResolveItemStatus(int64(id)))
 }
 
@@ -184,7 +177,6 @@ func GetResolveItemStatus(id int) ResolverStatus { //gd:IP.get_resolve_item_stat
 Returns a queued hostname's IP address, given its queue 'id'. Returns an empty string on error or if resolution hasn't happened yet (see [GetResolveItemStatus]).
 */
 func GetResolveItemAddress(id int) string { //gd:IP.get_resolve_item_address
-	once.Do(singleton)
 	return string(Advanced().GetResolveItemAddress(int64(id)).String())
 }
 
@@ -192,7 +184,6 @@ func GetResolveItemAddress(id int) string { //gd:IP.get_resolve_item_address
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [GetResolveItemStatus]).
 */
 func GetResolveItemAddresses(id int) []string { //gd:IP.get_resolve_item_addresses
-	once.Do(singleton)
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetResolveItemAddresses(int64(id)))))
 }
 
@@ -200,7 +191,6 @@ func GetResolveItemAddresses(id int) []string { //gd:IP.get_resolve_item_address
 Removes a given item 'id' from the queue. This should be used to free a queue after it has completed to enable more queries to happen.
 */
 func EraseResolveItem(id int) { //gd:IP.erase_resolve_item
-	once.Do(singleton)
 	Advanced().EraseResolveItem(int64(id))
 }
 
@@ -208,7 +198,6 @@ func EraseResolveItem(id int) { //gd:IP.erase_resolve_item
 Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
 func GetLocalAddresses() []string { //gd:IP.get_local_addresses
-	once.Do(singleton)
 	return []string(Advanced().GetLocalAddresses().Strings())
 }
 
@@ -225,7 +214,6 @@ Each adapter is a dictionary of the form:
 	}
 */
 func GetLocalInterfaces() []LocalInterface { //gd:IP.get_local_interfaces
-	once.Do(singleton)
 	return []LocalInterface(gd.ArrayAs[[]LocalInterface](gd.InternalArray(Advanced().GetLocalInterfaces())))
 }
 
@@ -233,7 +221,6 @@ func GetLocalInterfaces() []LocalInterface { //gd:IP.get_local_interfaces
 Removes all of a 'hostname”s cached references. If no 'hostname' is given, all cached IP addresses are removed.
 */
 func ClearCache(hostname string) { //gd:IP.clear_cache
-	once.Do(singleton)
 	Advanced().ClearCache(String.New(hostname))
 }
 
@@ -265,6 +252,7 @@ Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type met
 */
 //go:nosplit
 func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Readable { //gd:IP.resolve_hostname
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
@@ -278,6 +266,7 @@ Resolves a given hostname in a blocking way. Addresses are returned as an slice 
 */
 //go:nosplit
 func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) Packed.Strings { //gd:IP.resolve_hostname_addresses
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_addresses, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
@@ -291,6 +280,7 @@ Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending 
 */
 //go:nosplit
 func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) int64 { //gd:IP.resolve_hostname_queue_item
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.resolve_hostname_queue_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host    gdextension.String
 		ip_type Type
@@ -304,6 +294,7 @@ Returns a queued hostname's status as a [ResolverStatus] constant, given its que
 */
 //go:nosplit
 func (self class) GetResolveItemStatus(id int64) ResolverStatus { //gd:IP.get_resolve_item_status
+	once.Do(singleton)
 	var r_ret = noescape.Call[ResolverStatus](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_status, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
@@ -314,6 +305,7 @@ Returns a queued hostname's IP address, given its queue 'id'. Returns an empty s
 */
 //go:nosplit
 func (self class) GetResolveItemAddress(id int64) String.Readable { //gd:IP.get_resolve_item_address
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_address, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
@@ -324,6 +316,7 @@ Returns resolved addresses, or an empty array if an error happened or resolution
 */
 //go:nosplit
 func (self class) GetResolveItemAddresses(id int64) Array.Any { //gd:IP.get_resolve_item_addresses
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_resolve_item_addresses, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
@@ -334,6 +327,7 @@ Removes a given item 'id' from the queue. This should be used to free a queue af
 */
 //go:nosplit
 func (self class) EraseResolveItem(id int64) { //gd:IP.erase_resolve_item
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_resolve_item, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
@@ -342,6 +336,7 @@ Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
 //go:nosplit
 func (self class) GetLocalAddresses() Packed.Strings { //gd:IP.get_local_addresses
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_local_addresses, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -363,6 +358,7 @@ Each adapter is a dictionary of the form:
 */
 //go:nosplit
 func (self class) GetLocalInterfaces() Array.Contains[Dictionary.Any] { //gd:IP.get_local_interfaces
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_local_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
@@ -373,6 +369,7 @@ Removes all of a 'hostname''s cached references. If no 'hostname' is given, all 
 */
 //go:nosplit
 func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_cache, 0|(gdextension.SizeString<<4), &struct{ hostname gdextension.String }{pointers.Get(gd.InternalString(hostname))})
 }
 func (self class) Virtual(name string) reflect.Value {

@@ -302,7 +302,7 @@ func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags
 }
 
 func (self class) ButtonPressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonPressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_pressed`))))
 }
 
 /*
@@ -317,7 +317,7 @@ func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flag
 }
 
 func (self class) ButtonReleased() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonReleased`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_released`))))
 }
 
 /*
@@ -332,7 +332,7 @@ func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), fl
 }
 
 func (self class) InputFloatChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputFloatChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_float_changed`))))
 }
 
 /*
@@ -347,7 +347,7 @@ func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY
 }
 
 func (self class) InputVector2Changed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputVector2Changed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`input_vector2_changed`))))
 }
 
 /*
@@ -362,7 +362,7 @@ func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flag
 }
 
 func (self class) ProfileChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProfileChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`profile_changed`))))
 }
 
 func (self class) AsXRController3D() Advanced {

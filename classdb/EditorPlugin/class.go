@@ -3055,7 +3055,7 @@ func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...
 }
 
 func (self class) SceneChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scene_changed`))))
 }
 
 /*
@@ -3070,7 +3070,7 @@ func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Fla
 }
 
 func (self class) SceneClosed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneClosed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scene_closed`))))
 }
 
 /*
@@ -3085,7 +3085,7 @@ func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...S
 }
 
 func (self class) MainScreenChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MainScreenChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`main_screen_changed`))))
 }
 
 /*
@@ -3102,7 +3102,7 @@ func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags 
 }
 
 func (self class) ResourceSaved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSaved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resource_saved`))))
 }
 
 /*
@@ -3119,7 +3119,7 @@ func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flag
 }
 
 func (self class) SceneSaved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneSaved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scene_saved`))))
 }
 
 /*
@@ -3134,7 +3134,7 @@ func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) 
 }
 
 func (self class) ProjectSettingsChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProjectSettingsChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`project_settings_changed`))))
 }
 
 func (self class) AsEditorPlugin() Advanced {

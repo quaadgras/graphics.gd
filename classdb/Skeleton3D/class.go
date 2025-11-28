@@ -1304,7 +1304,7 @@ func (self Instance) OnRestUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) RestUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RestUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`rest_updated`))))
 }
 
 /*
@@ -1323,7 +1323,7 @@ func (self Instance) OnPoseUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PoseUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pose_updated`))))
 }
 
 /*
@@ -1343,7 +1343,7 @@ func (self Instance) OnSkeletonUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SkeletonUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SkeletonUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`skeleton_updated`))))
 }
 
 /*
@@ -1361,7 +1361,7 @@ func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int), flags ...Signal
 }
 
 func (self class) BoneEnabledChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneEnabledChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`bone_enabled_changed`))))
 }
 
 /*
@@ -1381,7 +1381,7 @@ func (self Instance) OnBoneListChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) BoneListChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneListChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`bone_list_changed`))))
 }
 
 /*
@@ -1398,7 +1398,7 @@ func (self Instance) OnShowRestOnlyChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ShowRestOnlyChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ShowRestOnlyChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`show_rest_only_changed`))))
 }
 
 func (self class) AsSkeleton3D() Advanced { return Advanced{pointers.AsA[gdclass.Skeleton3D](self[0])} }

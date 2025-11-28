@@ -749,7 +749,7 @@ func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionBegun() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionBegun`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_begun`))))
 }
 
 /*
@@ -764,7 +764,7 @@ func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionStopping() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStopping`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_stopping`))))
 }
 
 /*
@@ -779,7 +779,7 @@ func (self Instance) OnSessionSynchronized(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionSynchronized() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSynchronized`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_synchronized`))))
 }
 
 /*
@@ -794,7 +794,7 @@ func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionFocussed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFocussed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_focussed`))))
 }
 
 /*
@@ -809,7 +809,7 @@ func (self Instance) OnSessionVisible(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionVisible() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionVisible`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_visible`))))
 }
 
 /*
@@ -824,7 +824,7 @@ func (self Instance) OnSessionLossPending(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SessionLossPending() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionLossPending`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_loss_pending`))))
 }
 
 /*
@@ -839,7 +839,7 @@ func (self Instance) OnInstanceExiting(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) InstanceExiting() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InstanceExiting`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`instance_exiting`))))
 }
 
 /*
@@ -854,7 +854,7 @@ func (self Instance) OnPoseRecentered(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PoseRecentered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseRecentered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pose_recentered`))))
 }
 
 /*
@@ -871,7 +871,7 @@ func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X), flags .
 }
 
 func (self class) RefreshRateChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RefreshRateChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`refresh_rate_changed`))))
 }
 
 /*
@@ -886,7 +886,7 @@ func (self Instance) OnCpuLevelChanged(cb func(sub_domain int, from_level int, t
 }
 
 func (self class) CpuLevelChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CpuLevelChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`cpu_level_changed`))))
 }
 
 /*
@@ -901,7 +901,7 @@ func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, t
 }
 
 func (self class) GpuLevelChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GpuLevelChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gpu_level_changed`))))
 }
 
 func (self class) AsOpenXRInterface() Advanced {

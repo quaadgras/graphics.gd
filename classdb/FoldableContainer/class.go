@@ -466,7 +466,7 @@ func (self Instance) OnFoldingChanged(cb func(is_folded bool), flags ...Signal.F
 }
 
 func (self class) FoldingChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FoldingChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`folding_changed`))))
 }
 
 func (self class) AsFoldableContainer() Advanced {

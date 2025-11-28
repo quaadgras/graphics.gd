@@ -1541,7 +1541,7 @@ func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PathChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PathChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`path_changed`))))
 }
 
 /*
@@ -1565,7 +1565,7 @@ func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TargetReached() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TargetReached`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`target_reached`))))
 }
 
 /*
@@ -1594,7 +1594,7 @@ func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Si
 }
 
 func (self class) WaypointReached() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`WaypointReached`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`waypoint_reached`))))
 }
 
 /*
@@ -1628,7 +1628,7 @@ func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal
 }
 
 func (self class) LinkReached() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinkReached`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`link_reached`))))
 }
 
 /*
@@ -1647,7 +1647,7 @@ func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) NavigationFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`navigation_finished`))))
 }
 
 /*
@@ -1664,7 +1664,7 @@ func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector3.XYZ), flag
 }
 
 func (self class) VelocityComputed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VelocityComputed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`velocity_computed`))))
 }
 
 func (self class) AsNavigationAgent3D() Advanced {

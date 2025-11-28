@@ -674,7 +674,7 @@ func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SpriteFramesChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SpriteFramesChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`sprite_frames_changed`))))
 }
 
 /*
@@ -691,7 +691,7 @@ func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AnimationChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_changed`))))
 }
 
 /*
@@ -708,7 +708,7 @@ func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) FrameChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`frame_changed`))))
 }
 
 /*
@@ -723,7 +723,7 @@ func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AnimationLooped() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationLooped`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_looped`))))
 }
 
 /*
@@ -740,7 +740,7 @@ func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AnimationFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_finished`))))
 }
 
 func (self class) AsAnimatedSprite2D() Advanced {

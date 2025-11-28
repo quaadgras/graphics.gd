@@ -579,7 +579,7 @@ func (self Instance) OnPeerAuthenticating(cb func(id int), flags ...Signal.Flags
 }
 
 func (self class) PeerAuthenticating() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerAuthenticating`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_authenticating`))))
 }
 
 /*
@@ -597,7 +597,7 @@ func (self Instance) OnPeerAuthenticationFailed(cb func(id int), flags ...Signal
 }
 
 func (self class) PeerAuthenticationFailed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerAuthenticationFailed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_authentication_failed`))))
 }
 
 /*
@@ -615,7 +615,7 @@ func (self Instance) OnPeerPacket(cb func(id int, packet []byte), flags ...Signa
 }
 
 func (self class) PeerPacket() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerPacket`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_packet`))))
 }
 
 func (self class) AsSceneMultiplayer() Advanced {

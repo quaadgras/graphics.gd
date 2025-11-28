@@ -1059,7 +1059,7 @@ func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ), flags ...
 }
 
 func (self class) CellSizeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CellSizeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`cell_size_changed`))))
 }
 
 /*
@@ -1076,7 +1076,7 @@ func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Changed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Changed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`changed`))))
 }
 
 func (self class) AsGridMap() Advanced         { return Advanced{pointers.AsA[gdclass.GridMap](self[0])} }

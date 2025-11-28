@@ -287,7 +287,7 @@ func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SelectionChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SelectionChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`selection_changed`))))
 }
 
 func (self class) AsEditorSelection() Advanced {

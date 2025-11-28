@@ -2733,7 +2733,7 @@ func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Draw() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Draw`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`draw`))))
 }
 
 /*
@@ -2754,7 +2754,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) VisibilityChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`visibility_changed`))))
 }
 
 /*
@@ -2771,7 +2771,7 @@ func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Hidden() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Hidden`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`hidden`))))
 }
 
 /*
@@ -2789,7 +2789,7 @@ func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ItemRectChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemRectChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_rect_changed`))))
 }
 
 func (self class) AsCanvasItem() Advanced { return Advanced{pointers.AsA[gdclass.CanvasItem](self[0])} }

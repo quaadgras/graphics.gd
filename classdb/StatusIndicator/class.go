@@ -296,7 +296,7 @@ func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i
 }
 
 func (self class) Pressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pressed`))))
 }
 
 func (self class) AsStatusIndicator() Advanced {

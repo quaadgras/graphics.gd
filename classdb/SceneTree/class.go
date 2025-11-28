@@ -1323,7 +1323,7 @@ func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TreeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_changed`))))
 }
 
 /*
@@ -1340,7 +1340,7 @@ func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SceneChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`scene_changed`))))
 }
 
 /*
@@ -1357,7 +1357,7 @@ func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) 
 }
 
 func (self class) TreeProcessModeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeProcessModeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_process_mode_changed`))))
 }
 
 /*
@@ -1372,7 +1372,7 @@ func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Fl
 }
 
 func (self class) NodeAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_added`))))
 }
 
 /*
@@ -1387,7 +1387,7 @@ func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.
 }
 
 func (self class) NodeRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_removed`))))
 }
 
 /*
@@ -1404,7 +1404,7 @@ func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.
 }
 
 func (self class) NodeRenamed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRenamed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_renamed`))))
 }
 
 /*
@@ -1421,7 +1421,7 @@ func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instanc
 }
 
 func (self class) NodeConfigurationWarningChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeConfigurationWarningChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_configuration_warning_changed`))))
 }
 
 /*
@@ -1438,7 +1438,7 @@ func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ProcessFrame() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProcessFrame`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`process_frame`))))
 }
 
 /*
@@ -1455,7 +1455,7 @@ func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PhysicsFrame() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PhysicsFrame`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`physics_frame`))))
 }
 
 func (self class) AsSceneTree() Advanced { return Advanced{pointers.AsA[gdclass.SceneTree](self[0])} }

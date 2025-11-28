@@ -475,7 +475,7 @@ func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Timeout() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Timeout`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`timeout`))))
 }
 
 func (self class) AsTimer() Advanced             { return Advanced{pointers.AsA[gdclass.Timer](self[0])} }

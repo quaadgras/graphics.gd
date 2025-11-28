@@ -4882,7 +4882,7 @@ func (self Instance) OnResized(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Resized() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Resized`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resized`))))
 }
 
 /*
@@ -4899,7 +4899,7 @@ func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Sig
 }
 
 func (self class) GuiInput() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GuiInput`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gui_input`))))
 }
 
 /*
@@ -4919,7 +4919,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MouseEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_entered`))))
 }
 
 /*
@@ -4941,7 +4941,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MouseExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`mouse_exited`))))
 }
 
 /*
@@ -4956,7 +4956,7 @@ func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) FocusEntered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusEntered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`focus_entered`))))
 }
 
 /*
@@ -4971,7 +4971,7 @@ func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) FocusExited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusExited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`focus_exited`))))
 }
 
 /*
@@ -4989,7 +4989,7 @@ func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SizeFlagsChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeFlagsChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`size_flags_changed`))))
 }
 
 /*
@@ -5004,7 +5004,7 @@ func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) MinimumSizeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MinimumSizeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`minimum_size_changed`))))
 }
 
 /*
@@ -5019,7 +5019,7 @@ func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ThemeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ThemeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`theme_changed`))))
 }
 
 func (self class) AsControl() Advanced         { return Advanced{pointers.AsA[gdclass.Control](self[0])} }

@@ -745,7 +745,7 @@ func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ProfileUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProfileUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`profile_updated`))))
 }
 
 func (self class) AsSkeletonProfile() Advanced {

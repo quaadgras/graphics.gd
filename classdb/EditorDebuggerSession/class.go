@@ -352,7 +352,7 @@ func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Started() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Started`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`started`))))
 }
 
 /*
@@ -367,7 +367,7 @@ func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Stopped() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Stopped`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`stopped`))))
 }
 
 /*
@@ -382,7 +382,7 @@ func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) {
 }
 
 func (self class) Breaked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Breaked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`breaked`))))
 }
 
 /*
@@ -397,7 +397,7 @@ func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Continued() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Continued`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`continued`))))
 }
 
 func (self class) AsEditorDebuggerSession() Advanced {

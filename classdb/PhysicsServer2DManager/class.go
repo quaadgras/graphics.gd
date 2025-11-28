@@ -124,7 +124,6 @@ Register a [PhysicsServer2D] implementation by passing a 'name' and a func that 
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
 func RegisterServer(name string, create_callback func() PhysicsServer2D.Instance) { //gd:PhysicsServer2DManager.register_server
-	once.Do(singleton)
 	Advanced().RegisterServer(String.New(name), Callable.New(create_callback))
 }
 
@@ -134,7 +133,6 @@ Set the default [PhysicsServer2D] implementation to the one identified by 'name'
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
 func SetDefaultServer(name string, priority int) { //gd:PhysicsServer2DManager.set_default_server
-	once.Do(singleton)
 	Advanced().SetDefaultServer(String.New(name), int64(priority))
 }
 
@@ -168,6 +166,7 @@ Register a [PhysicsServer2D] implementation by passing a 'name' and a func that 
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
@@ -181,6 +180,7 @@ Set the default [PhysicsServer2D] implementation to the one identified by 'name'
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.String
 		priority int64

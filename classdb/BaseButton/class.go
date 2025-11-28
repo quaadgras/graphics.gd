@@ -590,7 +590,7 @@ func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Pressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pressed`))))
 }
 
 /*
@@ -605,7 +605,7 @@ func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ButtonUp() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonUp`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_up`))))
 }
 
 /*
@@ -620,7 +620,7 @@ func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ButtonDown() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonDown`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_down`))))
 }
 
 /*
@@ -637,7 +637,7 @@ func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) 
 }
 
 func (self class) Toggled() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Toggled`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`toggled`))))
 }
 
 func (self class) AsBaseButton() Advanced { return Advanced{pointers.AsA[gdclass.BaseButton](self[0])} }

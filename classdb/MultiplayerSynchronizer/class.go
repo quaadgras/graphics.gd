@@ -459,7 +459,7 @@ func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) Synchronized() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Synchronized`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`synchronized`))))
 }
 
 /*
@@ -474,7 +474,7 @@ func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) DeltaSynchronized() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeltaSynchronized`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`delta_synchronized`))))
 }
 
 /*
@@ -491,7 +491,7 @@ func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.
 }
 
 func (self class) VisibilityChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`visibility_changed`))))
 }
 
 func (self class) AsMultiplayerSynchronizer() Advanced {

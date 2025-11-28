@@ -376,7 +376,7 @@ func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) FrameChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`frame_changed`))))
 }
 
 /*
@@ -393,7 +393,7 @@ func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TextureChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextureChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`texture_changed`))))
 }
 
 func (self class) AsSprite3D() Advanced         { return Advanced{pointers.AsA[gdclass.Sprite3D](self[0])} }

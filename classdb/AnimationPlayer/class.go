@@ -1390,7 +1390,7 @@ func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Si
 }
 
 func (self class) CurrentAnimationChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurrentAnimationChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`current_animation_changed`))))
 }
 
 /*
@@ -1411,7 +1411,7 @@ func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string
 }
 
 func (self class) AnimationChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_changed`))))
 }
 
 func (self class) AsAnimationPlayer() Advanced {

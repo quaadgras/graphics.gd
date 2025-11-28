@@ -1021,7 +1021,7 @@ func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flag
 }
 
 func (self class) SlotUpdated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SlotUpdated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`slot_updated`))))
 }
 
 /*
@@ -1036,7 +1036,7 @@ func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) SlotSizesChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SlotSizesChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`slot_sizes_changed`))))
 }
 
 func (self class) AsGraphNode() Advanced { return Advanced{pointers.AsA[gdclass.GraphNode](self[0])} }

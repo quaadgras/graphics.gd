@@ -245,7 +245,7 @@ func (self Instance) OnExpanded(cb func(container FoldableContainer.Instance), f
 }
 
 func (self class) Expanded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Expanded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`expanded`))))
 }
 
 func (self class) AsFoldableGroup() Advanced {

@@ -372,7 +372,7 @@ func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TextureChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextureChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`texture_changed`))))
 }
 
 func (self class) AsNinePatchRect() Advanced {

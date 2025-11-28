@@ -884,7 +884,7 @@ func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags)
 }
 
 func (self class) FileSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`file_selected`))))
 }
 
 /*
@@ -899,7 +899,7 @@ func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Fl
 }
 
 func (self class) FilesSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`files_selected`))))
 }
 
 /*
@@ -914,7 +914,7 @@ func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
 }
 
 func (self class) DirSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DirSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`dir_selected`))))
 }
 
 /*
@@ -929,7 +929,7 @@ func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Si
 }
 
 func (self class) FilenameFilterChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilenameFilterChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`filename_filter_changed`))))
 }
 
 func (self class) AsEditorFileDialog() Advanced {

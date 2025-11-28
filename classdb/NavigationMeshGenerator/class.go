@@ -140,7 +140,6 @@ func singleton() {
 Bakes the 'navigation_mesh' with source geometry collected starting from the 'root_node'.
 */
 func Bake(navigation_mesh NavigationMesh.Instance, root_node Node.Instance) { //gd:NavigationMeshGenerator.bake
-	once.Do(singleton)
 	Advanced().Bake(navigation_mesh, root_node)
 }
 
@@ -148,7 +147,6 @@ func Bake(navigation_mesh NavigationMesh.Instance, root_node Node.Instance) { //
 Removes all polygons and vertices from the provided 'navigation_mesh' resource.
 */
 func Clear(navigation_mesh NavigationMesh.Instance) { //gd:NavigationMeshGenerator.clear
-	once.Do(singleton)
 	Advanced().Clear(navigation_mesh)
 }
 
@@ -164,7 +162,6 @@ Performance: While convenient, reading data arrays from [Mesh] resources can aff
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
-	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
 
@@ -172,7 +169,6 @@ func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geo
 Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
-	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
 
@@ -204,6 +200,7 @@ Bakes the 'navigation_mesh' with source geometry collected starting from the 'ro
 */
 //go:nosplit
 func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
@@ -215,6 +212,7 @@ Removes all polygons and vertices from the provided 'navigation_mesh' resource.
 */
 //go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))})
 }
 
@@ -231,6 +229,7 @@ Performance: While convenient, reading data arrays from [Mesh] resources can aff
 */
 //go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationMeshGenerator.parse_source_geometry_data
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), &struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
@@ -244,6 +243,7 @@ Bakes the provided 'navigation_mesh' with the data from the provided 'source_geo
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object

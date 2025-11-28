@@ -596,7 +596,7 @@ func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.F
 }
 
 func (self class) ColorChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColorChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`color_changed`))))
 }
 
 /*
@@ -611,7 +611,7 @@ func (self Instance) OnPresetAdded(cb func(color Color.RGBA), flags ...Signal.Fl
 }
 
 func (self class) PresetAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PresetAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`preset_added`))))
 }
 
 /*
@@ -626,7 +626,7 @@ func (self Instance) OnPresetRemoved(cb func(color Color.RGBA), flags ...Signal.
 }
 
 func (self class) PresetRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PresetRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`preset_removed`))))
 }
 
 func (self class) AsColorPicker() Advanced {

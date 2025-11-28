@@ -535,7 +535,7 @@ func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
 }
 
 func (self class) PeerConnected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerConnected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_connected`))))
 }
 
 /*
@@ -552,7 +552,7 @@ func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) 
 }
 
 func (self class) PeerDisconnected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerDisconnected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`peer_disconnected`))))
 }
 
 /*
@@ -569,7 +569,7 @@ func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ConnectedToServer() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectedToServer`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connected_to_server`))))
 }
 
 /*
@@ -586,7 +586,7 @@ func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ConnectionFailed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFailed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`connection_failed`))))
 }
 
 /*
@@ -603,7 +603,7 @@ func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ServerDisconnected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ServerDisconnected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`server_disconnected`))))
 }
 
 func (self class) AsMultiplayerAPI() Advanced {

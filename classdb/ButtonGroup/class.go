@@ -252,7 +252,7 @@ func (self Instance) OnPressed(cb func(button BaseButton.Instance), flags ...Sig
 }
 
 func (self class) Pressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`pressed`))))
 }
 
 func (self class) AsButtonGroup() Advanced {

@@ -430,7 +430,7 @@ func (self Instance) OnAdvanceConditionChanged(cb func(), flags ...Signal.Flags)
 }
 
 func (self class) AdvanceConditionChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AdvanceConditionChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`advance_condition_changed`))))
 }
 
 func (self class) AsAnimationNodeStateMachineTransition() Advanced {

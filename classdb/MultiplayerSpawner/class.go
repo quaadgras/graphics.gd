@@ -384,7 +384,7 @@ func (self Instance) OnDespawned(cb func(node Node.Instance), flags ...Signal.Fl
 }
 
 func (self class) Despawned() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Despawned`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`despawned`))))
 }
 
 /*
@@ -399,7 +399,7 @@ func (self Instance) OnSpawned(cb func(node Node.Instance), flags ...Signal.Flag
 }
 
 func (self class) Spawned() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Spawned`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`spawned`))))
 }
 
 func (self class) AsMultiplayerSpawner() Advanced {

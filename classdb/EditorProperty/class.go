@@ -777,7 +777,7 @@ func (self Instance) OnPropertyChanged(cb func(property string, value any, field
 }
 
 func (self class) PropertyChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_changed`))))
 }
 
 /*
@@ -794,7 +794,7 @@ func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, va
 }
 
 func (self class) MultiplePropertiesChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiplePropertiesChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`multiple_properties_changed`))))
 }
 
 /*
@@ -809,7 +809,7 @@ func (self Instance) OnPropertyKeyed(cb func(property string), flags ...Signal.F
 }
 
 func (self class) PropertyKeyed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_keyed`))))
 }
 
 /*
@@ -824,7 +824,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal
 }
 
 func (self class) PropertyDeleted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyDeleted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_deleted`))))
 }
 
 /*
@@ -839,7 +839,7 @@ func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any
 }
 
 func (self class) PropertyKeyedWithValue() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyedWithValue`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_keyed_with_value`))))
 }
 
 /*
@@ -854,7 +854,7 @@ func (self Instance) OnPropertyChecked(cb func(property string, checked bool), f
 }
 
 func (self class) PropertyChecked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChecked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_checked`))))
 }
 
 /*
@@ -869,7 +869,7 @@ func (self Instance) OnPropertyOverridden(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) PropertyOverridden() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyOverridden`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_overridden`))))
 }
 
 /*
@@ -884,7 +884,7 @@ func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool
 }
 
 func (self class) PropertyFavorited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyFavorited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_favorited`))))
 }
 
 /*
@@ -901,7 +901,7 @@ func (self Instance) OnPropertyPinned(cb func(property string, pinned bool), fla
 }
 
 func (self class) PropertyPinned() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyPinned`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_pinned`))))
 }
 
 /*
@@ -916,7 +916,7 @@ func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_rev
 }
 
 func (self class) PropertyCanRevertChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyCanRevertChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`property_can_revert_changed`))))
 }
 
 /*
@@ -931,7 +931,7 @@ func (self Instance) OnResourceSelected(cb func(path string, resource Resource.I
 }
 
 func (self class) ResourceSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`resource_selected`))))
 }
 
 /*
@@ -946,7 +946,7 @@ func (self Instance) OnObjectIdSelected(cb func(property string, id int), flags 
 }
 
 func (self class) ObjectIdSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ObjectIdSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`object_id_selected`))))
 }
 
 /*
@@ -961,7 +961,7 @@ func (self Instance) OnSelected(cb func(path string, focusable_idx int), flags .
 }
 
 func (self class) Selected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`selected`))))
 }
 
 func (self class) AsEditorProperty() Advanced {

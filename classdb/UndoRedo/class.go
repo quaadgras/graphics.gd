@@ -725,7 +725,7 @@ func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) VersionChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VersionChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`version_changed`))))
 }
 
 func (self class) AsUndoRedo() Advanced         { return Advanced{pointers.AsA[gdclass.UndoRedo](self[0])} }

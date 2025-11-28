@@ -277,7 +277,7 @@ func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.
 }
 
 func (self class) PreviewInvalidated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PreviewInvalidated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`preview_invalidated`))))
 }
 
 func (self class) AsEditorResourcePreview() Advanced {

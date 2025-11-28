@@ -437,7 +437,7 @@ func (self Instance) OnRenderModelAdded(cb func(render_model RID.Any), flags ...
 }
 
 func (self class) RenderModelAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_added`))))
 }
 
 /*
@@ -452,7 +452,7 @@ func (self Instance) OnRenderModelRemoved(cb func(render_model RID.Any), flags .
 }
 
 func (self class) RenderModelRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_removed`))))
 }
 
 /*
@@ -467,7 +467,7 @@ func (self Instance) OnRenderModelTopLevelPathChanged(cb func(render_model RID.A
 }
 
 func (self class) RenderModelTopLevelPathChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelTopLevelPathChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_top_level_path_changed`))))
 }
 
 func (self class) AsOpenXRRenderModelExtension() Advanced {

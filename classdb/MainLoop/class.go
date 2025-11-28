@@ -394,7 +394,7 @@ func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, gra
 }
 
 func (self class) OnRequestPermissionsResult() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`OnRequestPermissionsResult`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`on_request_permissions_result`))))
 }
 
 func (self class) AsMainLoop() Advanced         { return Advanced{pointers.AsA[gdclass.MainLoop](self[0])} }

@@ -55,7 +55,7 @@ func fixReserved(name string) string {
 	}
 }
 
-func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gdjson.Class, method gdjson.Method, ctype Type, setter_getter bool) {
+func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gdjson.Class, method gdjson.Method, ctype Type, setter_getter, singleton bool) {
 	if ctype == TypeDefault && method.IsVararg {
 		ctype = TypeVarargs
 	}
@@ -155,6 +155,9 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		fmt.Fprintf(w, "args ...%sVariant", prefix)
 	}
 	fmt.Fprintf(w, ") %v { //gd:%s.%s\n", result, class.Name, method.Name)
+	if singleton {
+		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
 	var static = ""
 	if method.IsStatic {
 		static = "Static"

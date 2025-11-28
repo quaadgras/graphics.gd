@@ -894,7 +894,7 @@ func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
 }
 
 func (self class) ItemSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_selected`))))
 }
 
 /*
@@ -911,7 +911,7 @@ func (self Instance) OnItemFocused(cb func(index int), flags ...Signal.Flags) {
 }
 
 func (self class) ItemFocused() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemFocused`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_focused`))))
 }
 
 func (self class) AsOptionButton() Advanced {

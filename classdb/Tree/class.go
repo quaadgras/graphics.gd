@@ -1414,7 +1414,7 @@ func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ItemSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_selected`))))
 }
 
 /*
@@ -1429,7 +1429,7 @@ func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) CellSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CellSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`cell_selected`))))
 }
 
 /*
@@ -1447,7 +1447,7 @@ func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int,
 }
 
 func (self class) MultiSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`multi_selected`))))
 }
 
 /*
@@ -1462,7 +1462,7 @@ func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mous
 }
 
 func (self class) ItemMouseSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemMouseSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_mouse_selected`))))
 }
 
 /*
@@ -1477,7 +1477,7 @@ func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_but
 }
 
 func (self class) EmptyClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`empty_clicked`))))
 }
 
 /*
@@ -1492,7 +1492,7 @@ func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ItemEdited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemEdited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_edited`))))
 }
 
 /*
@@ -1507,7 +1507,7 @@ func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags 
 }
 
 func (self class) CustomItemClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomItemClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`custom_item_clicked`))))
 }
 
 /*
@@ -1524,7 +1524,7 @@ func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ItemIconDoubleClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemIconDoubleClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_icon_double_clicked`))))
 }
 
 /*
@@ -1541,7 +1541,7 @@ func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...S
 }
 
 func (self class) ItemCollapsed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemCollapsed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_collapsed`))))
 }
 
 /*
@@ -1558,7 +1558,7 @@ func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, col
 }
 
 func (self class) CheckPropagatedToItem() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CheckPropagatedToItem`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`check_propagated_to_item`))))
 }
 
 /*
@@ -1575,7 +1575,7 @@ func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int,
 }
 
 func (self class) ButtonClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`button_clicked`))))
 }
 
 /*
@@ -1590,7 +1590,7 @@ func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...S
 }
 
 func (self class) CustomPopupEdited() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomPopupEdited`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`custom_popup_edited`))))
 }
 
 /*
@@ -1605,7 +1605,7 @@ func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) ItemActivated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemActivated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`item_activated`))))
 }
 
 /*
@@ -1620,7 +1620,7 @@ func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index
 }
 
 func (self class) ColumnTitleClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColumnTitleClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`column_title_clicked`))))
 }
 
 /*
@@ -1635,7 +1635,7 @@ func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) NothingSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NothingSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`nothing_selected`))))
 }
 
 func (self class) AsTree() Advanced         { return Advanced{pointers.AsA[gdclass.Tree](self[0])} }

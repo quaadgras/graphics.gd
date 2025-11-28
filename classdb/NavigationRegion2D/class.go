@@ -572,7 +572,7 @@ func (self Instance) OnNavigationPolygonChanged(cb func(), flags ...Signal.Flags
 }
 
 func (self class) NavigationPolygonChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationPolygonChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`navigation_polygon_changed`))))
 }
 
 /*
@@ -587,7 +587,7 @@ func (self Instance) OnBakeFinished(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) BakeFinished() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BakeFinished`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`bake_finished`))))
 }
 
 func (self class) AsNavigationRegion2D() Advanced {

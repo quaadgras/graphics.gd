@@ -298,7 +298,7 @@ func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) AboutToPopup() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AboutToPopup`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`about_to_popup`))))
 }
 
 func (self class) AsMenuButton() Advanced { return Advanced{pointers.AsA[gdclass.MenuButton](self[0])} }

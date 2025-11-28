@@ -412,7 +412,7 @@ func (self Instance) OnNodeChanged(cb func(node_name string), flags ...Signal.Fl
 }
 
 func (self class) NodeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_changed`))))
 }
 
 func (self class) AsAnimationNodeBlendTree() Advanced {

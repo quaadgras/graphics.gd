@@ -215,7 +215,7 @@ func (self Instance) OnRenderModelTopLevelPathChanged(cb func(), flags ...Signal
 }
 
 func (self class) RenderModelTopLevelPathChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RenderModelTopLevelPathChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`render_model_top_level_path_changed`))))
 }
 
 func (self class) AsOpenXRRenderModel() Advanced {

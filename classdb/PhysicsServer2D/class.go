@@ -257,7 +257,6 @@ Creates a 2D world boundary shape in the physics server, and returns the [Resour
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func WorldBoundaryShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.world_boundary_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().WorldBoundaryShapeCreate()))
 }
 
@@ -267,7 +266,6 @@ Creates a 2D separation ray shape in the physics server, and returns the [Resour
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SeparationRayShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.separation_ray_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().SeparationRayShapeCreate()))
 }
 
@@ -277,7 +275,6 @@ Creates a 2D segment shape in the physics server, and returns the [Resource.ID] 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SegmentShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.segment_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().SegmentShapeCreate()))
 }
 
@@ -287,7 +284,6 @@ Creates a 2D circle shape in the physics server, and returns the [Resource.ID] t
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CircleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.circle_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().CircleShapeCreate()))
 }
 
@@ -297,7 +293,6 @@ Creates a 2D rectangle shape in the physics server, and returns the [Resource.ID
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func RectangleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.rectangle_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().RectangleShapeCreate()))
 }
 
@@ -307,7 +302,6 @@ Creates a 2D capsule shape in the physics server, and returns the [Resource.ID] 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CapsuleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.capsule_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().CapsuleShapeCreate()))
 }
 
@@ -317,7 +311,6 @@ Creates a 2D convex polygon shape in the physics server, and returns the [Resour
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func ConvexPolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.convex_polygon_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().ConvexPolygonShapeCreate()))
 }
 
@@ -327,7 +320,6 @@ Creates a 2D concave polygon shape in the physics server, and returns the [Resou
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func ConcavePolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.concave_polygon_shape_create
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().ConcavePolygonShapeCreate()))
 }
 
@@ -358,7 +350,6 @@ Warning: In the case of [ShapeConvexPolygon], this method does not check if the 
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_data
-	once.Do(singleton)
 	Advanced().ShapeSetData(RID.Any(shape), variant.New(data))
 }
 
@@ -366,7 +357,6 @@ func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_
 Returns the shape's type.
 */
 func ShapeGetType(shape RID.Shape2D) ShapeType { //gd:PhysicsServer2D.shape_get_type
-	once.Do(singleton)
 	return ShapeType(Advanced().ShapeGetType(RID.Any(shape)))
 }
 
@@ -374,7 +364,6 @@ func ShapeGetType(shape RID.Shape2D) ShapeType { //gd:PhysicsServer2D.shape_get_
 Returns the shape data that defines the configuration of the shape, such as the half-extents of a rectangle or the segments of a concave shape. See [ShapeSetData] for the precise format of this data in each case.
 */
 func ShapeGetData(shape RID.Shape2D) any { //gd:PhysicsServer2D.shape_get_data
-	once.Do(singleton)
 	return any(Advanced().ShapeGetData(RID.Any(shape)).Interface())
 }
 
@@ -384,7 +373,6 @@ Creates a 2D space in the physics server, and returns the [Resource.ID] that ide
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SpaceCreate() RID.Space2D { //gd:PhysicsServer2D.space_create
-	once.Do(singleton)
 	return RID.Space2D(RID.Space2D(Advanced().SpaceCreate()))
 }
 
@@ -392,7 +380,6 @@ func SpaceCreate() RID.Space2D { //gd:PhysicsServer2D.space_create
 Activates or deactivates the space. If 'active' is false, then the physics server will not do anything with this space in its physics step.
 */
 func SpaceSetActive(space RID.Space2D, active bool) { //gd:PhysicsServer2D.space_set_active
-	once.Do(singleton)
 	Advanced().SpaceSetActive(RID.Any(space), active)
 }
 
@@ -400,7 +387,6 @@ func SpaceSetActive(space RID.Space2D, active bool) { //gd:PhysicsServer2D.space
 Returns true if the space is active.
 */
 func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_active
-	once.Do(singleton)
 	return bool(Advanced().SpaceIsActive(RID.Any(space)))
 }
 
@@ -408,7 +394,6 @@ func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_activ
 Sets the value of the given space parameter.
 */
 func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
-	once.Do(singleton)
 	Advanced().SpaceSetParam(RID.Any(space), param, float64(value))
 }
 
@@ -416,7 +401,6 @@ func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //g
 Returns the value of the given space parameter.
 */
 func SpaceGetParam(space RID.Space2D, param SpaceParameter) Float.X { //gd:PhysicsServer2D.space_get_param
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().SpaceGetParam(RID.Any(space), param)))
 }
 
@@ -426,7 +410,6 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 [PhysicsDirectSpaceState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D
 */
 func SpaceGetDirectState(space RID.Space2D) PhysicsDirectSpaceState2D.Instance { //gd:PhysicsServer2D.space_get_direct_state
-	once.Do(singleton)
 	return PhysicsDirectSpaceState2D.Instance(Advanced().SpaceGetDirectState(RID.Any(space)))
 }
 
@@ -438,7 +421,6 @@ Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transf
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaCreate() RID.Area2D { //gd:PhysicsServer2D.area_create
-	once.Do(singleton)
 	return RID.Area2D(RID.Area2D(Advanced().AreaCreate()))
 }
 
@@ -448,7 +430,6 @@ Adds the area to the given space, after removing the area from the previously as
 Note: To remove an area from a space without immediately adding it back elsewhere, use PhysicsServer2D.area_set_space(area, RID()).
 */
 func AreaSetSpace(area RID.Area2D, space RID.Space2D) { //gd:PhysicsServer2D.area_set_space
-	once.Do(singleton)
 	Advanced().AreaSetSpace(RID.Any(area), RID.Any(space))
 }
 
@@ -458,7 +439,6 @@ Returns the [Resource.ID] of the space assigned to the area. Returns an empty [R
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaGetSpace(area RID.Area2D) RID.Space2D { //gd:PhysicsServer2D.area_get_space
-	once.Do(singleton)
 	return RID.Space2D(RID.Space2D(Advanced().AreaGetSpace(RID.Any(area))))
 }
 
@@ -466,7 +446,6 @@ func AreaGetSpace(area RID.Area2D) RID.Space2D { //gd:PhysicsServer2D.area_get_s
 Adds a shape to the area, with the given local transform. The shape (together with its 'transform' and 'disabled' properties) is added to an array of shapes, and the shapes of an area are usually referenced by their index in this array.
 */
 func AreaAddShape(area RID.Area2D, shape RID.Shape2D, disabled bool) { //gd:PhysicsServer2D.area_add_shape
-	once.Do(singleton)
 	Advanced().AreaAddShape(RID.Any(area), RID.Any(shape), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), disabled)
 }
 
@@ -474,7 +453,6 @@ func AreaAddShape(area RID.Area2D, shape RID.Shape2D, disabled bool) { //gd:Phys
 Adds a shape to the area, with the given local transform. The shape (together with its 'transform' and 'disabled' properties) is added to an array of shapes, and the shapes of an area are usually referenced by their index in this array.
 */
 func AreaAddShapeOptions(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
-	once.Do(singleton)
 	Advanced().AreaAddShape(RID.Any(area), RID.Any(shape), Transform2D.OriginXY(transform), disabled)
 }
 
@@ -482,7 +460,6 @@ func AreaAddShapeOptions(area RID.Area2D, shape RID.Shape2D, transform Transform
 Replaces the area's shape at the given index by another shape, while not affecting the transform and disabled properties at the same index.
 */
 func AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) { //gd:PhysicsServer2D.area_set_shape
-	once.Do(singleton)
 	Advanced().AreaSetShape(RID.Any(area), int64(shape_idx), RID.Any(shape))
 }
 
@@ -490,7 +467,6 @@ func AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) { //gd:Phys
 Sets the local transform matrix of the area's shape with the given index.
 */
 func AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_shape_transform
-	once.Do(singleton)
 	Advanced().AreaSetShapeTransform(RID.Any(area), int64(shape_idx), Transform2D.OriginXY(transform))
 }
 
@@ -498,7 +474,6 @@ func AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D
 Sets the disabled property of the area's shape with the given index. If 'disabled' is true, then the shape will not detect any other shapes entering or exiting it.
 */
 func AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
-	once.Do(singleton)
 	Advanced().AreaSetShapeDisabled(RID.Any(area), int64(shape_idx), disabled)
 }
 
@@ -506,7 +481,6 @@ func AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool) { //gd:
 Returns the number of shapes added to the area.
 */
 func AreaGetShapeCount(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_shape_count
-	once.Do(singleton)
 	return int(int(Advanced().AreaGetShapeCount(RID.Any(area))))
 }
 
@@ -516,7 +490,6 @@ Returns the [Resource.ID] of the shape with the given index in the area's array 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaGetShape(area RID.Area2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.area_get_shape
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().AreaGetShape(RID.Any(area), int64(shape_idx))))
 }
 
@@ -524,7 +497,6 @@ func AreaGetShape(area RID.Area2D, shape_idx int) RID.Shape2D { //gd:PhysicsServ
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
 func AreaGetShapeTransform(area RID.Area2D, shape_idx int) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_shape_transform
-	once.Do(singleton)
 	return Transform2D.OriginXY(Advanced().AreaGetShapeTransform(RID.Any(area), int64(shape_idx)))
 }
 
@@ -532,7 +504,6 @@ func AreaGetShapeTransform(area RID.Area2D, shape_idx int) Transform2D.OriginXY 
 Removes the shape with the given index from the area's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the area's shapes which used to have indices higher than 'shape_idx' will have their index decreased by one.
 */
 func AreaRemoveShape(area RID.Area2D, shape_idx int) { //gd:PhysicsServer2D.area_remove_shape
-	once.Do(singleton)
 	Advanced().AreaRemoveShape(RID.Any(area), int64(shape_idx))
 }
 
@@ -540,7 +511,6 @@ func AreaRemoveShape(area RID.Area2D, shape_idx int) { //gd:PhysicsServer2D.area
 Removes all shapes from the area. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
 func AreaClearShapes(area RID.Area2D) { //gd:PhysicsServer2D.area_clear_shapes
-	once.Do(singleton)
 	Advanced().AreaClearShapes(RID.Any(area))
 }
 
@@ -548,7 +518,6 @@ func AreaClearShapes(area RID.Area2D) { //gd:PhysicsServer2D.area_clear_shapes
 Assigns the area to one or many physics layers, via a bitmask.
 */
 func AreaSetCollisionLayer(area RID.Area2D, layer int) { //gd:PhysicsServer2D.area_set_collision_layer
-	once.Do(singleton)
 	Advanced().AreaSetCollisionLayer(RID.Any(area), int64(layer))
 }
 
@@ -556,7 +525,6 @@ func AreaSetCollisionLayer(area RID.Area2D, layer int) { //gd:PhysicsServer2D.ar
 Returns the physics layer or layers the area belongs to, as a bitmask.
 */
 func AreaGetCollisionLayer(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_collision_layer
-	once.Do(singleton)
 	return int(int(Advanced().AreaGetCollisionLayer(RID.Any(area))))
 }
 
@@ -564,7 +532,6 @@ func AreaGetCollisionLayer(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_
 Sets which physics layers the area will monitor, via a bitmask.
 */
 func AreaSetCollisionMask(area RID.Area2D, mask int) { //gd:PhysicsServer2D.area_set_collision_mask
-	once.Do(singleton)
 	Advanced().AreaSetCollisionMask(RID.Any(area), int64(mask))
 }
 
@@ -572,7 +539,6 @@ func AreaSetCollisionMask(area RID.Area2D, mask int) { //gd:PhysicsServer2D.area
 Returns the physics layer or layers the area can contact with, as a bitmask.
 */
 func AreaGetCollisionMask(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_collision_mask
-	once.Do(singleton)
 	return int(int(Advanced().AreaGetCollisionMask(RID.Any(area))))
 }
 
@@ -580,7 +546,6 @@ func AreaGetCollisionMask(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_c
 Sets the value of the given area parameter.
 */
 func AreaSetParam(area RID.Area2D, param AreaParameter, value any) { //gd:PhysicsServer2D.area_set_param
-	once.Do(singleton)
 	Advanced().AreaSetParam(RID.Any(area), param, variant.New(value))
 }
 
@@ -588,7 +553,6 @@ func AreaSetParam(area RID.Area2D, param AreaParameter, value any) { //gd:Physic
 Sets the transform matrix of the area.
 */
 func AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_transform
-	once.Do(singleton)
 	Advanced().AreaSetTransform(RID.Any(area), Transform2D.OriginXY(transform))
 }
 
@@ -596,7 +560,6 @@ func AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { //gd:Ph
 Returns the value of the given area parameter.
 */
 func AreaGetParam(area RID.Area2D, param AreaParameter) any { //gd:PhysicsServer2D.area_get_param
-	once.Do(singleton)
 	return any(Advanced().AreaGetParam(RID.Any(area), param).Interface())
 }
 
@@ -604,7 +567,6 @@ func AreaGetParam(area RID.Area2D, param AreaParameter) any { //gd:PhysicsServer
 Returns the transform matrix of the area.
 */
 func AreaGetTransform(area RID.Area2D) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_transform
-	once.Do(singleton)
 	return Transform2D.OriginXY(Advanced().AreaGetTransform(RID.Any(area)))
 }
 
@@ -616,7 +578,6 @@ Attaches the ObjectID of an [Object] to the area. Use [Object.GetInstanceId] to 
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func AreaAttachObjectInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_object_instance_id
-	once.Do(singleton)
 	Advanced().AreaAttachObjectInstanceId(RID.Any(area), int64(id))
 }
 
@@ -627,7 +588,6 @@ Returns the ObjectID attached to the area. Use [@GlobalScope.InstanceFromId] to 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func AreaGetObjectInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_object_instance_id
-	once.Do(singleton)
 	return int(int(Advanced().AreaGetObjectInstanceId(RID.Any(area))))
 }
 
@@ -638,7 +598,6 @@ Attaches the ObjectID of a canvas to the area. Use [Object.GetInstanceId] to get
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func AreaAttachCanvasInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
-	once.Do(singleton)
 	Advanced().AreaAttachCanvasInstanceId(RID.Any(area), int64(id))
 }
 
@@ -649,7 +608,6 @@ Returns the ObjectID of the canvas attached to the area. Use [@GlobalScope.Insta
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 func AreaGetCanvasInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_canvas_instance_id
-	once.Do(singleton)
 	return int(int(Advanced().AreaGetCanvasInstanceId(RID.Any(area))))
 }
 
@@ -671,7 +629,6 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_monitor_callback
-	once.Do(singleton)
 	Advanced().AreaSetMonitorCallback(RID.Any(area), Callable.New(callback))
 }
 
@@ -693,7 +650,6 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_area_monitor_callback
-	once.Do(singleton)
 	Advanced().AreaSetAreaMonitorCallback(RID.Any(area), Callable.New(callback))
 }
 
@@ -701,7 +657,6 @@ func AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_
 Sets whether the area is monitorable or not. If 'monitorable' is true, the area monitoring callback of other areas will be called when this area enters or exits them.
 */
 func AreaSetMonitorable(area RID.Area2D, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
-	once.Do(singleton)
 	Advanced().AreaSetMonitorable(RID.Any(area), monitorable)
 }
 
@@ -713,7 +668,6 @@ Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform,
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyCreate() RID.Body2D { //gd:PhysicsServer2D.body_create
-	once.Do(singleton)
 	return RID.Body2D(RID.Body2D(Advanced().BodyCreate()))
 }
 
@@ -727,7 +681,6 @@ Adds the body to the given space, after removing the body from the previously as
 Note: To remove a body from a space without immediately adding it back elsewhere, use PhysicsServer2D.body_set_space(body, RID()).
 */
 func BodySetSpace(body RID.Body2D, space RID.Space2D) { //gd:PhysicsServer2D.body_set_space
-	once.Do(singleton)
 	Advanced().BodySetSpace(RID.Any(body), RID.Any(space))
 }
 
@@ -737,7 +690,6 @@ Returns the [Resource.ID] of the space assigned to the body. Returns an empty [R
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_space
-	once.Do(singleton)
 	return RID.Space2D(RID.Space2D(Advanced().BodyGetSpace(RID.Any(body))))
 }
 
@@ -745,7 +697,6 @@ func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_s
 Sets the body's mode.
 */
 func BodySetMode(body RID.Body2D, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
-	once.Do(singleton)
 	Advanced().BodySetMode(RID.Any(body), mode)
 }
 
@@ -753,7 +704,6 @@ func BodySetMode(body RID.Body2D, mode BodyMode) { //gd:PhysicsServer2D.body_set
 Returns the body's mode.
 */
 func BodyGetMode(body RID.Body2D) BodyMode { //gd:PhysicsServer2D.body_get_mode
-	once.Do(singleton)
 	return BodyMode(Advanced().BodyGetMode(RID.Any(body)))
 }
 
@@ -761,7 +711,6 @@ func BodyGetMode(body RID.Body2D) BodyMode { //gd:PhysicsServer2D.body_get_mode
 Adds a shape to the area, with the given local transform. The shape (together with its 'transform' and 'disabled' properties) is added to an array of shapes, and the shapes of a body are usually referenced by their index in this array.
 */
 func BodyAddShape(body RID.Body2D, shape RID.Shape2D, disabled bool) { //gd:PhysicsServer2D.body_add_shape
-	once.Do(singleton)
 	Advanced().BodyAddShape(RID.Any(body), RID.Any(shape), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), disabled)
 }
 
@@ -769,7 +718,6 @@ func BodyAddShape(body RID.Body2D, shape RID.Shape2D, disabled bool) { //gd:Phys
 Adds a shape to the area, with the given local transform. The shape (together with its 'transform' and 'disabled' properties) is added to an array of shapes, and the shapes of a body are usually referenced by their index in this array.
 */
 func BodyAddShapeOptions(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
-	once.Do(singleton)
 	Advanced().BodyAddShape(RID.Any(body), RID.Any(shape), Transform2D.OriginXY(transform), disabled)
 }
 
@@ -777,7 +725,6 @@ func BodyAddShapeOptions(body RID.Body2D, shape RID.Shape2D, transform Transform
 Replaces the body's shape at the given index by another shape, while not affecting the transform, disabled, and one-way collision properties at the same index.
 */
 func BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) { //gd:PhysicsServer2D.body_set_shape
-	once.Do(singleton)
 	Advanced().BodySetShape(RID.Any(body), int64(shape_idx), RID.Any(shape))
 }
 
@@ -785,7 +732,6 @@ func BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) { //gd:Phys
 Sets the local transform matrix of the body's shape with the given index.
 */
 func BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.body_set_shape_transform
-	once.Do(singleton)
 	Advanced().BodySetShapeTransform(RID.Any(body), int64(shape_idx), Transform2D.OriginXY(transform))
 }
 
@@ -793,7 +739,6 @@ func BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D
 Returns the number of shapes added to the body.
 */
 func BodyGetShapeCount(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_shape_count
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetShapeCount(RID.Any(body))))
 }
 
@@ -803,7 +748,6 @@ Returns the [Resource.ID] of the shape with the given index in the body's array 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetShape(body RID.Body2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.body_get_shape
-	once.Do(singleton)
 	return RID.Shape2D(RID.Shape2D(Advanced().BodyGetShape(RID.Any(body), int64(shape_idx))))
 }
 
@@ -811,7 +755,6 @@ func BodyGetShape(body RID.Body2D, shape_idx int) RID.Shape2D { //gd:PhysicsServ
 Returns the local transform matrix of the shape with the given index in the area's array of shapes.
 */
 func BodyGetShapeTransform(body RID.Body2D, shape_idx int) Transform2D.OriginXY { //gd:PhysicsServer2D.body_get_shape_transform
-	once.Do(singleton)
 	return Transform2D.OriginXY(Advanced().BodyGetShapeTransform(RID.Any(body), int64(shape_idx)))
 }
 
@@ -819,7 +762,6 @@ func BodyGetShapeTransform(body RID.Body2D, shape_idx int) Transform2D.OriginXY 
 Removes the shape with the given index from the body's array of shapes. The shape itself is not deleted, so it can continue to be used elsewhere or added back later. As a result of this operation, the body's shapes which used to have indices higher than 'shape_idx' will have their index decreased by one.
 */
 func BodyRemoveShape(body RID.Body2D, shape_idx int) { //gd:PhysicsServer2D.body_remove_shape
-	once.Do(singleton)
 	Advanced().BodyRemoveShape(RID.Any(body), int64(shape_idx))
 }
 
@@ -827,7 +769,6 @@ func BodyRemoveShape(body RID.Body2D, shape_idx int) { //gd:PhysicsServer2D.body
 Removes all shapes from the body. This does not delete the shapes themselves, so they can continue to be used elsewhere or added back later.
 */
 func BodyClearShapes(body RID.Body2D) { //gd:PhysicsServer2D.body_clear_shapes
-	once.Do(singleton)
 	Advanced().BodyClearShapes(RID.Any(body))
 }
 
@@ -835,7 +776,6 @@ func BodyClearShapes(body RID.Body2D) { //gd:PhysicsServer2D.body_clear_shapes
 Sets the disabled property of the body's shape with the given index. If 'disabled' is true, then the shape will be ignored in all collision detection.
 */
 func BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
-	once.Do(singleton)
 	Advanced().BodySetShapeDisabled(RID.Any(body), int64(shape_idx), disabled)
 }
 
@@ -843,7 +783,6 @@ func BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) { //gd:
 Sets the one-way collision properties of the body's shape with the given index. If 'enable' is true, the one-way collision direction given by the shape's local upward axis body_get_shape_transform(body, shape_idx).y will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
 */
 func BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
-	once.Do(singleton)
 	Advanced().BodySetShapeAsOneWayCollision(RID.Any(body), int64(shape_idx), enable, float64(margin))
 }
 
@@ -855,7 +794,6 @@ Attaches the ObjectID of an [Object] to the body. Use [Object.GetInstanceId] to 
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func BodyAttachObjectInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_object_instance_id
-	once.Do(singleton)
 	Advanced().BodyAttachObjectInstanceId(RID.Any(body), int64(id))
 }
 
@@ -866,7 +804,6 @@ Returns the ObjectID attached to the body. Use [@GlobalScope.InstanceFromId] to 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func BodyGetObjectInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_object_instance_id
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetObjectInstanceId(RID.Any(body))))
 }
 
@@ -877,7 +814,6 @@ Attaches the ObjectID of a canvas to the body. Use [Object.GetInstanceId] to get
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func BodyAttachCanvasInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
-	once.Do(singleton)
 	Advanced().BodyAttachCanvasInstanceId(RID.Any(body), int64(id))
 }
 
@@ -888,7 +824,6 @@ Returns the ObjectID of the canvas attached to the body. Use [@GlobalScope.Insta
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 func BodyGetCanvasInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_canvas_instance_id
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetCanvasInstanceId(RID.Any(body))))
 }
 
@@ -898,7 +833,6 @@ Sets the continuous collision detection mode.
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
 func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode CCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
-	once.Do(singleton)
 	Advanced().BodySetContinuousCollisionDetectionMode(RID.Any(body), mode)
 }
 
@@ -906,7 +840,6 @@ func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode CCDMode) { //
 Returns the body's continuous collision detection mode.
 */
 func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
-	once.Do(singleton)
 	return CCDMode(Advanced().BodyGetContinuousCollisionDetectionMode(RID.Any(body)))
 }
 
@@ -914,7 +847,6 @@ func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) CCDMode { //gd:Phy
 Sets the physics layer or layers the body belongs to, via a bitmask.
 */
 func BodySetCollisionLayer(body RID.Body2D, layer int) { //gd:PhysicsServer2D.body_set_collision_layer
-	once.Do(singleton)
 	Advanced().BodySetCollisionLayer(RID.Any(body), int64(layer))
 }
 
@@ -922,7 +854,6 @@ func BodySetCollisionLayer(body RID.Body2D, layer int) { //gd:PhysicsServer2D.bo
 Returns the physics layer or layers the body belongs to, as a bitmask.
 */
 func BodyGetCollisionLayer(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_collision_layer
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetCollisionLayer(RID.Any(body))))
 }
 
@@ -930,7 +861,6 @@ func BodyGetCollisionLayer(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_
 Sets the physics layer or layers the body can collide with, via a bitmask.
 */
 func BodySetCollisionMask(body RID.Body2D, mask int) { //gd:PhysicsServer2D.body_set_collision_mask
-	once.Do(singleton)
 	Advanced().BodySetCollisionMask(RID.Any(body), int64(mask))
 }
 
@@ -938,7 +868,6 @@ func BodySetCollisionMask(body RID.Body2D, mask int) { //gd:PhysicsServer2D.body
 Returns the physics layer or layers the body can collide with, as a bitmask.
 */
 func BodyGetCollisionMask(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_collision_mask
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetCollisionMask(RID.Any(body))))
 }
 
@@ -946,7 +875,6 @@ func BodyGetCollisionMask(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_c
 Sets the body's collision priority. This is used in the depenetration phase of [BodyTestMotion]. The higher the priority is, the lower the penetration into the body will be.
 */
 func BodySetCollisionPriority(body RID.Body2D, priority Float.X) { //gd:PhysicsServer2D.body_set_collision_priority
-	once.Do(singleton)
 	Advanced().BodySetCollisionPriority(RID.Any(body), float64(priority))
 }
 
@@ -954,7 +882,6 @@ func BodySetCollisionPriority(body RID.Body2D, priority Float.X) { //gd:PhysicsS
 Returns the body's collision priority. This is used in the depenetration phase of [BodyTestMotion]. The higher the priority is, the lower the penetration into the body will be.
 */
 func BodyGetCollisionPriority(body RID.Body2D) Float.X { //gd:PhysicsServer2D.body_get_collision_priority
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().BodyGetCollisionPriority(RID.Any(body))))
 }
 
@@ -962,7 +889,6 @@ func BodyGetCollisionPriority(body RID.Body2D) Float.X { //gd:PhysicsServer2D.bo
 Sets the value of the given body parameter.
 */
 func BodySetParam(body RID.Body2D, param BodyParameter, value any) { //gd:PhysicsServer2D.body_set_param
-	once.Do(singleton)
 	Advanced().BodySetParam(RID.Any(body), param, variant.New(value))
 }
 
@@ -970,7 +896,6 @@ func BodySetParam(body RID.Body2D, param BodyParameter, value any) { //gd:Physic
 Returns the value of the given body parameter.
 */
 func BodyGetParam(body RID.Body2D, param BodyParameter) any { //gd:PhysicsServer2D.body_get_param
-	once.Do(singleton)
 	return any(Advanced().BodyGetParam(RID.Any(body), param).Interface())
 }
 
@@ -978,7 +903,6 @@ func BodyGetParam(body RID.Body2D, param BodyParameter) any { //gd:PhysicsServer
 Restores the default inertia and center of mass of the body based on its shapes. This undoes any custom values previously set using [BodySetParam].
 */
 func BodyResetMassProperties(body RID.Body2D) { //gd:PhysicsServer2D.body_reset_mass_properties
-	once.Do(singleton)
 	Advanced().BodyResetMassProperties(RID.Any(body))
 }
 
@@ -988,7 +912,6 @@ Sets the value of a body's state.
 Note: The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
 func BodySetState(body RID.Body2D, state BodyState, value any) { //gd:PhysicsServer2D.body_set_state
-	once.Do(singleton)
 	Advanced().BodySetState(RID.Any(body), state, variant.New(value))
 }
 
@@ -996,7 +919,6 @@ func BodySetState(body RID.Body2D, state BodyState, value any) { //gd:PhysicsSer
 Returns the value of the given state of the body.
 */
 func BodyGetState(body RID.Body2D, state BodyState) any { //gd:PhysicsServer2D.body_get_state
-	once.Do(singleton)
 	return any(Advanced().BodyGetState(RID.Any(body), state).Interface())
 }
 
@@ -1008,7 +930,6 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [BodyApplyImpulse] at the body's center of mass.
 */
 func BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_impulse
-	once.Do(singleton)
 	Advanced().BodyApplyCentralImpulse(RID.Any(body), Vector2.XY(impulse))
 }
 
@@ -1018,7 +939,6 @@ Applies a rotational impulse to the body. The impulse does not affect position.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 func BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X) { //gd:PhysicsServer2D.body_apply_torque_impulse
-	once.Do(singleton)
 	Advanced().BodyApplyTorqueImpulse(RID.Any(body), float64(impulse))
 }
 
@@ -1030,7 +950,6 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
-	once.Do(singleton)
 	Advanced().BodyApplyImpulse(RID.Any(body), Vector2.XY(impulse), Vector2.XY(position))
 }
 
@@ -1040,7 +959,6 @@ Applies a directional force to the body, at the body's center of mass. The force
 This is equivalent to using [BodyApplyForce] at the body's center of mass.
 */
 func BodyApplyCentralForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_force
-	once.Do(singleton)
 	Advanced().BodyApplyCentralForce(RID.Any(body), Vector2.XY(force))
 }
 
@@ -1050,7 +968,6 @@ Applies a positioned force to the body. The force can affect rotation if 'positi
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
-	once.Do(singleton)
 	Advanced().BodyApplyForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
 
@@ -1058,7 +975,6 @@ func BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //
 Applies a rotational force to the body. The force does not affect position. A force is time dependent and meant to be applied every physics update.
 */
 func BodyApplyTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_apply_torque
-	once.Do(singleton)
 	Advanced().BodyApplyTorque(RID.Any(body), float64(torque))
 }
 
@@ -1068,7 +984,6 @@ Adds a constant directional force to the body. The force does not affect rotatio
 This is equivalent to using [BodyAddConstantForce] at the body's center of mass.
 */
 func BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_central_force
-	once.Do(singleton)
 	Advanced().BodyAddConstantCentralForce(RID.Any(body), Vector2.XY(force))
 }
 
@@ -1078,7 +993,6 @@ Adds a constant positioned force to the body. The force can affect rotation if '
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
-	once.Do(singleton)
 	Advanced().BodyAddConstantForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
 
@@ -1086,7 +1000,6 @@ func BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY
 Adds a constant rotational force to the body. The force does not affect position. The force remains applied over time until cleared with PhysicsServer2D.body_set_constant_torque(body, 0).
 */
 func BodyAddConstantTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_add_constant_torque
-	once.Do(singleton)
 	Advanced().BodyAddConstantTorque(RID.Any(body), float64(torque))
 }
 
@@ -1096,7 +1009,6 @@ Sets the body's total constant positional force applied during each physics upda
 See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 func BodySetConstantForce(body RID.Body2D, force Vector2.XY) { //gd:PhysicsServer2D.body_set_constant_force
-	once.Do(singleton)
 	Advanced().BodySetConstantForce(RID.Any(body), Vector2.XY(force))
 }
 
@@ -1106,7 +1018,6 @@ Returns the body's total constant positional force applied during each physics u
 See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 func BodyGetConstantForce(body RID.Body2D) Vector2.XY { //gd:PhysicsServer2D.body_get_constant_force
-	once.Do(singleton)
 	return Vector2.XY(Advanced().BodyGetConstantForce(RID.Any(body)))
 }
 
@@ -1116,7 +1027,6 @@ Sets the body's total constant rotational force applied during each physics upda
 See [BodyAddConstantTorque].
 */
 func BodySetConstantTorque(body RID.Body2D, torque Float.X) { //gd:PhysicsServer2D.body_set_constant_torque
-	once.Do(singleton)
 	Advanced().BodySetConstantTorque(RID.Any(body), float64(torque))
 }
 
@@ -1126,7 +1036,6 @@ Returns the body's total constant rotational force applied during each physics u
 See [BodyAddConstantTorque].
 */
 func BodyGetConstantTorque(body RID.Body2D) Float.X { //gd:PhysicsServer2D.body_get_constant_torque
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().BodyGetConstantTorque(RID.Any(body))))
 }
 
@@ -1134,7 +1043,6 @@ func BodyGetConstantTorque(body RID.Body2D) Float.X { //gd:PhysicsServer2D.body_
 Modifies the body's linear velocity so that its projection to the axis axis_velocity.normalized() is exactly axis_velocity.length(). This is useful for jumping behavior.
 */
 func BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) { //gd:PhysicsServer2D.body_set_axis_velocity
-	once.Do(singleton)
 	Advanced().BodySetAxisVelocity(RID.Any(body), Vector2.XY(axis_velocity))
 }
 
@@ -1142,7 +1050,6 @@ func BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) { //gd:Physi
 Adds 'excepted_body' to the body's list of collision exceptions, so that collisions with it are ignored.
 */
 func BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) { //gd:PhysicsServer2D.body_add_collision_exception
-	once.Do(singleton)
 	Advanced().BodyAddCollisionException(RID.Any(body), RID.Any(excepted_body))
 }
 
@@ -1150,7 +1057,6 @@ func BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) { //gd
 Removes 'excepted_body' from the body's list of collision exceptions, so that collisions with it are no longer ignored.
 */
 func BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D) { //gd:PhysicsServer2D.body_remove_collision_exception
-	once.Do(singleton)
 	Advanced().BodyRemoveCollisionException(RID.Any(body), RID.Any(excepted_body))
 }
 
@@ -1158,7 +1064,6 @@ func BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D) { /
 Sets the maximum number of contacts that the body can report. If 'amount' is greater than zero, then the body will keep track of at most this many contacts with other bodies.
 */
 func BodySetMaxContactsReported(body RID.Body2D, amount int) { //gd:PhysicsServer2D.body_set_max_contacts_reported
-	once.Do(singleton)
 	Advanced().BodySetMaxContactsReported(RID.Any(body), int64(amount))
 }
 
@@ -1166,7 +1071,6 @@ func BodySetMaxContactsReported(body RID.Body2D, amount int) { //gd:PhysicsServe
 Returns the maximum number of contacts that the body can report. See [BodySetMaxContactsReported].
 */
 func BodyGetMaxContactsReported(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_max_contacts_reported
-	once.Do(singleton)
 	return int(int(Advanced().BodyGetMaxContactsReported(RID.Any(body))))
 }
 
@@ -1178,7 +1082,6 @@ This method is called when the property [RigidBody2D.CustomIntegrator] is set.
 [RigidBody2D.CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CustomIntegrator
 */
 func BodySetOmitForceIntegration(body RID.Body2D, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
-	once.Do(singleton)
 	Advanced().BodySetOmitForceIntegration(RID.Any(body), enable)
 }
 
@@ -1186,7 +1089,6 @@ func BodySetOmitForceIntegration(body RID.Body2D, enable bool) { //gd:PhysicsSer
 Returns true if the body is omitting the standard force integration. See [BodySetOmitForceIntegration].
 */
 func BodyIsOmittingForceIntegration(body RID.Body2D) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
-	once.Do(singleton)
 	return bool(Advanced().BodyIsOmittingForceIntegration(RID.Any(body)))
 }
 
@@ -1202,7 +1104,6 @@ The function 'callable' must take the following parameters:
 [PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) { //gd:PhysicsServer2D.body_set_state_sync_callback
-	once.Do(singleton)
 	Advanced().BodySetStateSyncCallback(RID.Any(body), Callable.New(callable))
 }
 
@@ -1222,7 +1123,6 @@ If 'userdata' is null, then 'callable' must take only the state parameter.
 [PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
-	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
 
@@ -1233,7 +1133,6 @@ Returns true if a collision would result from moving the body along a motion vec
 [PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
 */
 func BodyTestMotion(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
-	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
 
@@ -1243,7 +1142,6 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns null if the body is 
 [PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodyGetDirectState(body RID.Body2D) PhysicsDirectBodyState2D.Instance { //gd:PhysicsServer2D.body_get_direct_state
-	once.Do(singleton)
 	return PhysicsDirectBodyState2D.Instance(Advanced().BodyGetDirectState(RID.Any(body)))
 }
 
@@ -1253,7 +1151,6 @@ Creates a 2D joint in the physics server, and returns the [Resource.ID] that ide
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointCreate() RID.Joint2D { //gd:PhysicsServer2D.joint_create
-	once.Do(singleton)
 	return RID.Joint2D(RID.Joint2D(Advanced().JointCreate()))
 }
 
@@ -1263,7 +1160,6 @@ Destroys the joint with the given [Resource.ID], creates a new uninitialized joi
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
-	once.Do(singleton)
 	Advanced().JointClear(RID.Any(joint))
 }
 
@@ -1271,7 +1167,6 @@ func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 Sets the value of the given joint parameter.
 */
 func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
-	once.Do(singleton)
 	Advanced().JointSetParam(RID.Any(joint), param, float64(value))
 }
 
@@ -1279,7 +1174,6 @@ func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:Ph
 Returns the value of the given joint parameter.
 */
 func JointGetParam(joint RID.Joint2D, param JointParam) Float.X { //gd:PhysicsServer2D.joint_get_param
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().JointGetParam(RID.Any(joint), param)))
 }
 
@@ -1289,7 +1183,6 @@ Sets whether the bodies attached to the [Joint2D] will collide with each other.
 [Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 func JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
-	once.Do(singleton)
 	Advanced().JointDisableCollisionsBetweenBodies(RID.Any(joint), disable)
 }
 
@@ -1299,7 +1192,6 @@ Returns whether the bodies attached to the [Joint2D] will collide with each othe
 [Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
-	once.Do(singleton)
 	return bool(Advanced().JointIsDisabledCollisionsBetweenBodies(RID.Any(joint)))
 }
 
@@ -1309,7 +1201,6 @@ Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
-	once.Do(singleton)
 	Advanced().JointMakePin(RID.Any(joint), Vector2.XY(anchor), RID.Any(body_a), RID.Any(body_b))
 }
 
@@ -1317,7 +1208,6 @@ func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_
 Makes the joint a groove joint.
 */
 func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_groove
-	once.Do(singleton)
 	Advanced().JointMakeGroove(RID.Any(joint), Vector2.XY(groove1_a), Vector2.XY(groove2_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
 }
 
@@ -1325,7 +1215,6 @@ func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.
 Makes the joint a damped spring joint, attached at the point 'anchor_a' (given in global coordinates) on the body 'body_a' and at the point 'anchor_b' (given in global coordinates) on the body 'body_b'. To set the parameters which are specific to the damped spring, see [DampedSpringJointSetParam].
 */
 func JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
-	once.Do(singleton)
 	Advanced().JointMakeDampedSpring(RID.Any(joint), Vector2.XY(anchor_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
 }
 
@@ -1333,7 +1222,6 @@ func JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vect
 Sets a pin joint flag.
 */
 func PinJointSetFlag(joint RID.Joint2D, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
-	once.Do(singleton)
 	Advanced().PinJointSetFlag(RID.Any(joint), flag, enabled)
 }
 
@@ -1341,7 +1229,6 @@ func PinJointSetFlag(joint RID.Joint2D, flag PinJointFlag, enabled bool) { //gd:
 Gets a pin joint flag.
 */
 func PinJointGetFlag(joint RID.Joint2D, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
-	once.Do(singleton)
 	return bool(Advanced().PinJointGetFlag(RID.Any(joint), flag))
 }
 
@@ -1349,7 +1236,6 @@ func PinJointGetFlag(joint RID.Joint2D, flag PinJointFlag) bool { //gd:PhysicsSe
 Sets a pin joint parameter.
 */
 func PinJointSetParam(joint RID.Joint2D, param PinJointParam, value Float.X) { //gd:PhysicsServer2D.pin_joint_set_param
-	once.Do(singleton)
 	Advanced().PinJointSetParam(RID.Any(joint), param, float64(value))
 }
 
@@ -1357,7 +1243,6 @@ func PinJointSetParam(joint RID.Joint2D, param PinJointParam, value Float.X) { /
 Returns the value of a pin joint parameter.
 */
 func PinJointGetParam(joint RID.Joint2D, param PinJointParam) Float.X { //gd:PhysicsServer2D.pin_joint_get_param
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().PinJointGetParam(RID.Any(joint), param)))
 }
 
@@ -1365,7 +1250,6 @@ func PinJointGetParam(joint RID.Joint2D, param PinJointParam) Float.X { //gd:Phy
 Sets the value of the given damped spring joint parameter.
 */
 func DampedSpringJointSetParam(joint RID.Joint2D, param DampedSpringParam, value Float.X) { //gd:PhysicsServer2D.damped_spring_joint_set_param
-	once.Do(singleton)
 	Advanced().DampedSpringJointSetParam(RID.Any(joint), param, float64(value))
 }
 
@@ -1373,7 +1257,6 @@ func DampedSpringJointSetParam(joint RID.Joint2D, param DampedSpringParam, value
 Returns the value of the given damped spring joint parameter.
 */
 func DampedSpringJointGetParam(joint RID.Joint2D, param DampedSpringParam) Float.X { //gd:PhysicsServer2D.damped_spring_joint_get_param
-	once.Do(singleton)
 	return Float.X(Float.X(Advanced().DampedSpringJointGetParam(RID.Any(joint), param)))
 }
 
@@ -1381,7 +1264,6 @@ func DampedSpringJointGetParam(joint RID.Joint2D, param DampedSpringParam) Float
 Returns the joint's type.
 */
 func JointGetType(joint RID.Joint2D) JointType { //gd:PhysicsServer2D.joint_get_type
-	once.Do(singleton)
 	return JointType(Advanced().JointGetType(RID.Any(joint)))
 }
 
@@ -1391,7 +1273,6 @@ Destroys any of the objects created by PhysicsServer2D. If the [Resource.ID] pas
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
-	once.Do(singleton)
 	Advanced().FreeRid(RID.Any(rid))
 }
 
@@ -1399,7 +1280,6 @@ func FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
 Activates or deactivates the 2D physics server. If 'active' is false, then the physics server will not do anything in its physics step.
 */
 func SetActive(active bool) { //gd:PhysicsServer2D.set_active
-	once.Do(singleton)
 	Advanced().SetActive(active)
 }
 
@@ -1407,7 +1287,6 @@ func SetActive(active bool) { //gd:PhysicsServer2D.set_active
 Returns the value of a physics engine state specified by 'process_info'.
 */
 func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer2D.get_process_info
-	once.Do(singleton)
 	return int(int(Advanced().GetProcessInfo(process_info)))
 }
 
@@ -1441,6 +1320,7 @@ Creates a 2D world boundary shape in the physics server, and returns the [Resour
 */
 //go:nosplit
 func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer2D.world_boundary_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.world_boundary_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1453,6 +1333,7 @@ Creates a 2D separation ray shape in the physics server, and returns the [Resour
 */
 //go:nosplit
 func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer2D.separation_ray_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.separation_ray_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1465,6 +1346,7 @@ Creates a 2D segment shape in the physics server, and returns the [Resource.ID] 
 */
 //go:nosplit
 func (self class) SegmentShapeCreate() RID.Any { //gd:PhysicsServer2D.segment_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.segment_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1477,6 +1359,7 @@ Creates a 2D circle shape in the physics server, and returns the [Resource.ID] t
 */
 //go:nosplit
 func (self class) CircleShapeCreate() RID.Any { //gd:PhysicsServer2D.circle_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.circle_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1489,6 +1372,7 @@ Creates a 2D rectangle shape in the physics server, and returns the [Resource.ID
 */
 //go:nosplit
 func (self class) RectangleShapeCreate() RID.Any { //gd:PhysicsServer2D.rectangle_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.rectangle_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1501,6 +1385,7 @@ Creates a 2D capsule shape in the physics server, and returns the [Resource.ID] 
 */
 //go:nosplit
 func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer2D.capsule_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.capsule_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1513,6 +1398,7 @@ Creates a 2D convex polygon shape in the physics server, and returns the [Resour
 */
 //go:nosplit
 func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.convex_polygon_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.convex_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1525,6 +1411,7 @@ Creates a 2D concave polygon shape in the physics server, and returns the [Resou
 */
 //go:nosplit
 func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.concave_polygon_shape_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.concave_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1558,6 +1445,7 @@ Warning: In the case of [ShapeConvexPolygon], this method does not check if the 
 */
 //go:nosplit
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer2D.shape_set_data
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		shape RID.Any
 		data  gdextension.Variant
@@ -1569,6 +1457,7 @@ Returns the shape's type.
 */
 //go:nosplit
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer2D.shape_get_type
+	once.Do(singleton)
 	var r_ret = noescape.Call[ShapeType](gd.ObjectChecked(self.AsObject()), methods.shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = r_ret
 	return ret
@@ -1579,6 +1468,7 @@ Returns the shape data that defines the configuration of the shape, such as the 
 */
 //go:nosplit
 func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer2D.shape_get_data
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
@@ -1591,6 +1481,7 @@ Creates a 2D space in the physics server, and returns the [Resource.ID] that ide
 */
 //go:nosplit
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer2D.space_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.space_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1601,6 +1492,7 @@ Activates or deactivates the space. If 'active' is false, then the physics serve
 */
 //go:nosplit
 func (self class) SpaceSetActive(space RID.Any, active bool) { //gd:PhysicsServer2D.space_set_active
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		space  RID.Any
 		active bool
@@ -1612,6 +1504,7 @@ Returns true if the space is active.
 */
 //go:nosplit
 func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space_is_active
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = r_ret
 	return ret
@@ -1622,6 +1515,7 @@ Sets the value of the given space parameter.
 */
 //go:nosplit
 func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		space RID.Any
 		param SpaceParameter
@@ -1634,6 +1528,7 @@ Returns the value of the given space parameter.
 */
 //go:nosplit
 func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		space RID.Any
 		param SpaceParameter
@@ -1649,6 +1544,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret)}
 	return ret
@@ -1663,6 +1559,7 @@ Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transf
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer2D.area_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -1675,6 +1572,7 @@ Note: To remove an area from a space without immediately adding it back elsewher
 */
 //go:nosplit
 func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer2D.area_set_space
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		area  RID.Any
 		space RID.Any
@@ -1688,6 +1586,7 @@ Returns the [Resource.ID] of the space assigned to the area. Returns an empty [R
 */
 //go:nosplit
 func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer2D.area_get_space
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1698,6 +1597,7 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 //go:nosplit
 func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeBool<<16), &struct {
 		area      RID.Any
 		shape     RID.Any
@@ -1711,6 +1611,7 @@ Replaces the area's shape at the given index by another shape, while not affecti
 */
 //go:nosplit
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.area_set_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1723,6 +1624,7 @@ Sets the local transform matrix of the area's shape with the given index.
 */
 //go:nosplit
 func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_shape_transform
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1735,6 +1637,7 @@ Sets the disabled property of the area's shape with the given index. If 'disable
 */
 //go:nosplit
 func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1747,6 +1650,7 @@ Returns the number of shapes added to the area.
 */
 //go:nosplit
 func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_shape_count
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1759,6 +1663,7 @@ Returns the [Resource.ID] of the shape with the given index in the area's array 
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.area_get_shape
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1772,6 +1677,7 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 //go:nosplit
 func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_shape_transform
+	once.Do(singleton)
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1785,6 +1691,7 @@ Removes the shape with the given index from the area's array of shapes. The shap
 */
 //go:nosplit
 func (self class) AreaRemoveShape(area RID.Any, shape_idx int64) { //gd:PhysicsServer2D.area_remove_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
@@ -1796,6 +1703,7 @@ Removes all shapes from the area. This does not delete the shapes themselves, so
 */
 //go:nosplit
 func (self class) AreaClearShapes(area RID.Any) { //gd:PhysicsServer2D.area_clear_shapes
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 }
 
@@ -1804,6 +1712,7 @@ Assigns the area to one or many physics layers, via a bitmask.
 */
 //go:nosplit
 func (self class) AreaSetCollisionLayer(area RID.Any, layer int64) { //gd:PhysicsServer2D.area_set_collision_layer
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		layer int64
@@ -1815,6 +1724,7 @@ Returns the physics layer or layers the area belongs to, as a bitmask.
 */
 //go:nosplit
 func (self class) AreaGetCollisionLayer(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_layer
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1825,6 +1735,7 @@ Sets which physics layers the area will monitor, via a bitmask.
 */
 //go:nosplit
 func (self class) AreaSetCollisionMask(area RID.Any, mask int64) { //gd:PhysicsServer2D.area_set_collision_mask
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		mask int64
@@ -1836,6 +1747,7 @@ Returns the physics layer or layers the area can contact with, as a bitmask.
 */
 //go:nosplit
 func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_mask
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1846,6 +1758,7 @@ Sets the value of the given area parameter.
 */
 //go:nosplit
 func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		area  RID.Any
 		param AreaParameter
@@ -1858,6 +1771,7 @@ Sets the transform matrix of the area.
 */
 //go:nosplit
 func (self class) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_transform
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		area      RID.Any
 		transform Transform2D.OriginXY
@@ -1869,6 +1783,7 @@ Returns the value of the given area parameter.
 */
 //go:nosplit
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		param AreaParameter
@@ -1882,6 +1797,7 @@ Returns the transform matrix of the area.
 */
 //go:nosplit
 func (self class) AreaGetTransform(area RID.Any) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_transform
+	once.Do(singleton)
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.area_get_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1896,6 +1812,7 @@ Attaches the ObjectID of an [Object] to the area. Use [Object.GetInstanceId] to 
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_object_instance_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		id   int64
@@ -1910,6 +1827,7 @@ Returns the ObjectID attached to the area. Use [@GlobalScope.InstanceFromId] to 
 */
 //go:nosplit
 func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_object_instance_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1923,6 +1841,7 @@ Attaches the ObjectID of a canvas to the area. Use [Object.GetInstanceId] to get
 */
 //go:nosplit
 func (self class) AreaAttachCanvasInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_attach_canvas_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		id   int64
@@ -1937,6 +1856,7 @@ Returns the ObjectID of the canvas attached to the area. Use [@GlobalScope.Insta
 */
 //go:nosplit
 func (self class) AreaGetCanvasInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_canvas_instance_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_canvas_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
@@ -1961,6 +1881,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_monitor_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
@@ -1986,6 +1907,7 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_area_monitor_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
@@ -1997,6 +1919,7 @@ Sets whether the area is monitorable or not. If 'monitorable' is true, the area 
 */
 //go:nosplit
 func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		area        RID.Any
 		monitorable bool
@@ -2012,6 +1935,7 @@ Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform,
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer2D.body_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -2028,6 +1952,7 @@ Note: To remove a body from a space without immediately adding it back elsewhere
 */
 //go:nosplit
 func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer2D.body_set_space
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body  RID.Any
 		space RID.Any
@@ -2041,6 +1966,7 @@ Returns the [Resource.ID] of the space assigned to the body. Returns an empty [R
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body_get_space
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2051,6 +1977,7 @@ Sets the body's mode.
 */
 //go:nosplit
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mode BodyMode
@@ -2062,6 +1989,7 @@ Returns the body's mode.
 */
 //go:nosplit
 func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer2D.body_get_mode
+	once.Do(singleton)
 	var r_ret = noescape.Call[BodyMode](gd.ObjectChecked(self.AsObject()), methods.body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2072,6 +2000,7 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 //go:nosplit
 func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeBool<<16), &struct {
 		body      RID.Any
 		shape     RID.Any
@@ -2085,6 +2014,7 @@ Replaces the body's shape at the given index by another shape, while not affecti
 */
 //go:nosplit
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.body_set_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2097,6 +2027,7 @@ Sets the local transform matrix of the body's shape with the given index.
 */
 //go:nosplit
 func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.body_set_shape_transform
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2109,6 +2040,7 @@ Returns the number of shapes added to the body.
 */
 //go:nosplit
 func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_shape_count
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2121,6 +2053,7 @@ Returns the [Resource.ID] of the shape with the given index in the body's array 
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.body_get_shape
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2134,6 +2067,7 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 //go:nosplit
 func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.body_get_shape_transform
+	once.Do(singleton)
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2147,6 +2081,7 @@ Removes the shape with the given index from the body's array of shapes. The shap
 */
 //go:nosplit
 func (self class) BodyRemoveShape(body RID.Any, shape_idx int64) { //gd:PhysicsServer2D.body_remove_shape
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2158,6 +2093,7 @@ Removes all shapes from the body. This does not delete the shapes themselves, so
 */
 //go:nosplit
 func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer2D.body_clear_shapes
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 
@@ -2166,6 +2102,7 @@ Sets the disabled property of the body's shape with the given index. If 'disable
 */
 //go:nosplit
 func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2178,6 +2115,7 @@ Sets the one-way collision properties of the body's shape with the given index. 
 */
 //go:nosplit
 func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, enable bool, margin float64) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_as_one_way_collision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), &struct {
 		body      RID.Any
 		shape_idx int64
@@ -2195,6 +2133,7 @@ Attaches the ObjectID of an [Object] to the body. Use [Object.GetInstanceId] to 
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_object_instance_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		id   int64
@@ -2209,6 +2148,7 @@ Returns the ObjectID attached to the body. Use [@GlobalScope.InstanceFromId] to 
 */
 //go:nosplit
 func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_object_instance_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2222,6 +2162,7 @@ Attaches the ObjectID of a canvas to the body. Use [Object.GetInstanceId] to get
 */
 //go:nosplit
 func (self class) BodyAttachCanvasInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_attach_canvas_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		id   int64
@@ -2236,6 +2177,7 @@ Returns the ObjectID of the canvas attached to the body. Use [@GlobalScope.Insta
 */
 //go:nosplit
 func (self class) BodyGetCanvasInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_canvas_instance_id
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_canvas_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2248,6 +2190,7 @@ Continuous collision detection tries to predict where a moving body would collid
 */
 //go:nosplit
 func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode CCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_continuous_collision_detection_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mode CCDMode
@@ -2259,6 +2202,7 @@ Returns the body's continuous collision detection mode.
 */
 //go:nosplit
 func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
+	once.Do(singleton)
 	var r_ret = noescape.Call[CCDMode](gd.ObjectChecked(self.AsObject()), methods.body_get_continuous_collision_detection_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2269,6 +2213,7 @@ Sets the physics layer or layers the body belongs to, via a bitmask.
 */
 //go:nosplit
 func (self class) BodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer2D.body_set_collision_layer
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		layer int64
@@ -2280,6 +2225,7 @@ Returns the physics layer or layers the body belongs to, as a bitmask.
 */
 //go:nosplit
 func (self class) BodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_layer
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2290,6 +2236,7 @@ Sets the physics layer or layers the body can collide with, via a bitmask.
 */
 //go:nosplit
 func (self class) BodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer2D.body_set_collision_mask
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mask int64
@@ -2301,6 +2248,7 @@ Returns the physics layer or layers the body can collide with, as a bitmask.
 */
 //go:nosplit
 func (self class) BodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_mask
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2311,6 +2259,7 @@ Sets the body's collision priority. This is used in the depenetration phase of [
 */
 //go:nosplit
 func (self class) BodySetCollisionPriority(body RID.Any, priority float64) { //gd:PhysicsServer2D.body_set_collision_priority
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body     RID.Any
 		priority float64
@@ -2322,6 +2271,7 @@ Returns the body's collision priority. This is used in the depenetration phase o
 */
 //go:nosplit
 func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_collision_priority
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2332,6 +2282,7 @@ Sets the value of the given body parameter.
 */
 //go:nosplit
 func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		param BodyParameter
@@ -2344,6 +2295,7 @@ Returns the value of the given body parameter.
 */
 //go:nosplit
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		param BodyParameter
@@ -2357,6 +2309,7 @@ Restores the default inertia and center of mass of the body based on its shapes.
 */
 //go:nosplit
 func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer2D.body_reset_mass_properties
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_reset_mass_properties, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 
@@ -2367,6 +2320,7 @@ Note: The state change doesn't take effect immediately. The state will change on
 */
 //go:nosplit
 func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer2D.body_set_state
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		state BodyState
@@ -2379,6 +2333,7 @@ Returns the value of the given state of the body.
 */
 //go:nosplit
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		state BodyState
@@ -2396,6 +2351,7 @@ This is equivalent to using [BodyApplyImpulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_impulse
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		body    RID.Any
 		impulse Vector2.XY
@@ -2409,6 +2365,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse float64) { //gd:PhysicsServer2D.body_apply_torque_impulse
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body    RID.Any
 		impulse float64
@@ -2424,6 +2381,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyImpulse(body RID.Any, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), &struct {
 		body     RID.Any
 		impulse  Vector2.XY
@@ -2438,6 +2396,7 @@ This is equivalent to using [BodyApplyForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyApplyCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_force
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		body  RID.Any
 		force Vector2.XY
@@ -2451,6 +2410,7 @@ Applies a positioned force to the body. The force can affect rotation if 'positi
 */
 //go:nosplit
 func (self class) BodyApplyForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), &struct {
 		body     RID.Any
 		force    Vector2.XY
@@ -2463,6 +2423,7 @@ Applies a rotational force to the body. The force does not affect position. A fo
 */
 //go:nosplit
 func (self class) BodyApplyTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_apply_torque
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body   RID.Any
 		torque float64
@@ -2476,6 +2437,7 @@ This is equivalent to using [BodyAddConstantForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_central_force
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		body  RID.Any
 		force Vector2.XY
@@ -2489,6 +2451,7 @@ Adds a constant positioned force to the body. The force can affect rotation if '
 */
 //go:nosplit
 func (self class) BodyAddConstantForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), &struct {
 		body     RID.Any
 		force    Vector2.XY
@@ -2501,6 +2464,7 @@ Adds a constant rotational force to the body. The force does not affect position
 */
 //go:nosplit
 func (self class) BodyAddConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_add_constant_torque
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body   RID.Any
 		torque float64
@@ -2514,6 +2478,7 @@ See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 //go:nosplit
 func (self class) BodySetConstantForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_set_constant_force
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		body  RID.Any
 		force Vector2.XY
@@ -2527,6 +2492,7 @@ See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 //go:nosplit
 func (self class) BodyGetConstantForce(body RID.Any) Vector2.XY { //gd:PhysicsServer2D.body_get_constant_force
+	once.Do(singleton)
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_force, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2539,6 +2505,7 @@ See [BodyAddConstantTorque].
 */
 //go:nosplit
 func (self class) BodySetConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_set_constant_torque
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body   RID.Any
 		torque float64
@@ -2552,6 +2519,7 @@ See [BodyAddConstantTorque].
 */
 //go:nosplit
 func (self class) BodyGetConstantTorque(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_constant_torque
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_torque, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2562,6 +2530,7 @@ Modifies the body's linear velocity so that its projection to the axis axis_velo
 */
 //go:nosplit
 func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector2.XY) { //gd:PhysicsServer2D.body_set_axis_velocity
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
 		body          RID.Any
 		axis_velocity Vector2.XY
@@ -2573,6 +2542,7 @@ Adds 'excepted_body' to the body's list of collision exceptions, so that collisi
 */
 //go:nosplit
 func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_add_collision_exception
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
@@ -2584,6 +2554,7 @@ Removes 'excepted_body' from the body's list of collision exceptions, so that co
 */
 //go:nosplit
 func (self class) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_remove_collision_exception
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
@@ -2595,6 +2566,7 @@ Sets the maximum number of contacts that the body can report. If 'amount' is gre
 */
 //go:nosplit
 func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:PhysicsServer2D.body_set_max_contacts_reported
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body   RID.Any
 		amount int64
@@ -2606,6 +2578,7 @@ Returns the maximum number of contacts that the body can report. See [BodySetMax
 */
 //go:nosplit
 func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_max_contacts_reported
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2620,6 +2593,7 @@ This method is called when the property [RigidBody2D.CustomIntegrator] is set.
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
@@ -2631,6 +2605,7 @@ Returns true if the body is omitting the standard force integration. See [BodySe
 */
 //go:nosplit
 func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
@@ -2649,6 +2624,7 @@ The function 'callable' must take the following parameters:
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer2D.body_set_state_sync_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		body     RID.Any
 		callable gdextension.Callable
@@ -2672,6 +2648,7 @@ If 'userdata' is null, then 'callable' must take only the state parameter.
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer2D.body_set_force_integration_callback
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), &struct {
 		body     RID.Any
 		callable gdextension.Callable
@@ -2687,6 +2664,7 @@ Returns true if a collision would result from moving the body along a motion vec
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		body       RID.Any
 		parameters gdextension.Object
@@ -2703,6 +2681,7 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns null if the body is 
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = [1]gdclass.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState2D](r_ret)}
 	return ret
@@ -2715,6 +2694,7 @@ Creates a 2D joint in the physics server, and returns the [Resource.ID] that ide
 */
 //go:nosplit
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer2D.joint_create
+	once.Do(singleton)
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.joint_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -2727,6 +2707,7 @@ Destroys the joint with the given [Resource.ID], creates a new uninitialized joi
 */
 //go:nosplit
 func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_clear, 0|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 }
 
@@ -2735,6 +2716,7 @@ Sets the value of the given joint parameter.
 */
 //go:nosplit
 func (self class) JointSetParam(joint RID.Any, param JointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param JointParam
@@ -2747,6 +2729,7 @@ Returns the value of the given joint parameter.
 */
 //go:nosplit
 func (self class) JointGetParam(joint RID.Any, param JointParam) float64 { //gd:PhysicsServer2D.joint_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param JointParam
@@ -2762,6 +2745,7 @@ Sets whether the bodies attached to the [Joint2D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		joint   RID.Any
 		disable bool
@@ -2775,6 +2759,7 @@ Returns whether the bodies attached to the [Joint2D] will collide with each othe
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
@@ -2787,6 +2772,7 @@ Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a
 */
 //go:nosplit
 func (self class) JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_pin
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRID<<16), &struct {
 		joint  RID.Any
 		anchor Vector2.XY
@@ -2800,6 +2786,7 @@ Makes the joint a groove joint.
 */
 //go:nosplit
 func (self class) JointMakeGroove(joint RID.Any, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_groove
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_groove, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16)|(gdextension.SizeRID<<20)|(gdextension.SizeRID<<24), &struct {
 		joint     RID.Any
 		groove1_a Vector2.XY
@@ -2815,6 +2802,7 @@ Makes the joint a damped spring joint, attached at the point 'anchor_a' (given i
 */
 //go:nosplit
 func (self class) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_damped_spring
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_damped_spring, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeRID<<20), &struct {
 		joint    RID.Any
 		anchor_a Vector2.XY
@@ -2829,6 +2817,7 @@ Sets a pin joint flag.
 */
 //go:nosplit
 func (self class) PinJointSetFlag(joint RID.Any, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		joint   RID.Any
 		flag    PinJointFlag
@@ -2841,6 +2830,7 @@ Gets a pin joint flag.
 */
 //go:nosplit
 func (self class) PinJointGetFlag(joint RID.Any, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		flag  PinJointFlag
@@ -2854,6 +2844,7 @@ Sets a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param PinJointParam
@@ -2866,6 +2857,7 @@ Returns the value of a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param PinJointParam
@@ -2879,6 +2871,7 @@ Sets the value of the given damped spring joint parameter.
 */
 //go:nosplit
 func (self class) DampedSpringJointSetParam(joint RID.Any, param DampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.damped_spring_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param DampedSpringParam
@@ -2891,6 +2884,7 @@ Returns the value of the given damped spring joint parameter.
 */
 //go:nosplit
 func (self class) DampedSpringJointGetParam(joint RID.Any, param DampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.damped_spring_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param DampedSpringParam
@@ -2904,6 +2898,7 @@ Returns the joint's type.
 */
 //go:nosplit
 func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer2D.joint_get_type
+	once.Do(singleton)
 	var r_ret = noescape.Call[JointType](gd.ObjectChecked(self.AsObject()), methods.joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
@@ -2916,6 +2911,7 @@ Destroys any of the objects created by PhysicsServer2D. If the [Resource.ID] pas
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
@@ -2924,6 +2920,7 @@ Activates or deactivates the 2D physics server. If 'active' is false, then the p
 */
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:PhysicsServer2D.set_active
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
@@ -2932,6 +2929,7 @@ Returns the value of a physics engine state specified by 'process_info'.
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
 	var ret = r_ret
 	return ret

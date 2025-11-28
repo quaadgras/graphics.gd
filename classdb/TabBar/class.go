@@ -1135,7 +1135,7 @@ func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
 }
 
 func (self class) TabSelected() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabSelected`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_selected`))))
 }
 
 /*
@@ -1150,7 +1150,7 @@ func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
 }
 
 func (self class) TabChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_changed`))))
 }
 
 /*
@@ -1165,7 +1165,7 @@ func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
 }
 
 func (self class) TabClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_clicked`))))
 }
 
 /*
@@ -1182,7 +1182,7 @@ func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) {
 }
 
 func (self class) TabRmbClicked() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabRmbClicked`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_rmb_clicked`))))
 }
 
 /*
@@ -1201,7 +1201,7 @@ func (self Instance) OnTabClosePressed(cb func(tab int), flags ...Signal.Flags) 
 }
 
 func (self class) TabClosePressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClosePressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_close_pressed`))))
 }
 
 /*
@@ -1218,7 +1218,7 @@ func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags)
 }
 
 func (self class) TabButtonPressed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabButtonPressed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_button_pressed`))))
 }
 
 /*
@@ -1233,7 +1233,7 @@ func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
 }
 
 func (self class) TabHovered() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabHovered`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tab_hovered`))))
 }
 
 /*
@@ -1250,7 +1250,7 @@ func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.
 }
 
 func (self class) ActiveTabRearranged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ActiveTabRearranged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`active_tab_rearranged`))))
 }
 
 func (self class) AsTabBar() Advanced         { return Advanced{pointers.AsA[gdclass.TabBar](self[0])} }

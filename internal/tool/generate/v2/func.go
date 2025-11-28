@@ -32,10 +32,18 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 	fmt.Fprint(w, "\tfor _, flag := range flags {\n")
 	fmt.Fprint(w, "\t\tflags_together |= flag\n")
 	fmt.Fprint(w, "\t}\n\t")
+	if singleton {
+		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
 	fmt.Fprintf(w, `self[0].AsObject()[0].Connect(gd.NewStringName("%s"), gd.NewCallable(cb), int64(flags_together))`, signal.Name)
 	fmt.Fprint(w, "\n}\n\n")
 	fmt.Fprintln(w)
-	fmt.Fprintf(w, "\nfunc (self class) %s() Signal.Any { return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`%[1]s`)))) }\n", convertName(signal.Name))
+	fmt.Fprintf(w, "\nfunc (self class) %s() Signal.Any {\n", convertName(signal.Name))
+	if singleton {
+		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
+	fmt.Fprintf(w, "return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`%s`))))", signal.Name)
+	fmt.Fprintf(w, "}\n")
 }
 
 func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton, defaults bool) {
@@ -132,9 +140,6 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		}
 	}
 	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", class.Name, method.Name)
-	if singleton {
-		fmt.Fprintf(w, "once.Do(singleton)\n\t")
-	}
 	for name := range skips {
 		fmt.Fprintf(w, "var returns_%s = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))\n\t", name)
 	}

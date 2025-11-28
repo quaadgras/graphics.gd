@@ -956,7 +956,7 @@ func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
 }
 
 func (self class) TreeChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tree_changed`))))
 }
 
 /*
@@ -976,7 +976,7 @@ func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name stri
 }
 
 func (self class) AnimationNodeRenamed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationNodeRenamed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_node_renamed`))))
 }
 
 /*
@@ -996,7 +996,7 @@ func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string),
 }
 
 func (self class) AnimationNodeRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationNodeRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_node_removed`))))
 }
 
 func (self class) AsAnimationNode() Advanced {

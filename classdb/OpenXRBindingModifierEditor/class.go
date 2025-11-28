@@ -212,7 +212,7 @@ func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Ob
 }
 
 func (self class) BindingModifierRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BindingModifierRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`binding_modifier_removed`))))
 }
 
 func (self class) AsOpenXRBindingModifierEditor() Advanced {

@@ -594,7 +594,7 @@ func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp strin
 }
 
 func (self class) SessionDescriptionCreated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionDescriptionCreated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`session_description_created`))))
 }
 
 /*
@@ -609,7 +609,7 @@ func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name
 }
 
 func (self class) IceCandidateCreated() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IceCandidateCreated`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ice_candidate_created`))))
 }
 
 /*
@@ -629,7 +629,7 @@ func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Ins
 }
 
 func (self class) DataChannelReceived() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DataChannelReceived`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`data_channel_received`))))
 }
 
 func (self class) AsWebRTCPeerConnection() Advanced {

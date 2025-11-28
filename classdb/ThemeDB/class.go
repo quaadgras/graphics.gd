@@ -138,7 +138,6 @@ Returns a reference to the default engine [Theme]. This theme resource is respon
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func GetDefaultTheme() Theme.Instance { //gd:ThemeDB.get_default_theme
-	once.Do(singleton)
 	return Theme.Instance(Advanced().GetDefaultTheme())
 }
 
@@ -151,7 +150,6 @@ To set the project theme, see [ProjectSettings] "gui/theme/custom".
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
 func GetProjectTheme() Theme.Instance { //gd:ThemeDB.get_project_theme
-	once.Do(singleton)
 	return Theme.Instance(Advanced().GetProjectTheme())
 }
 
@@ -280,6 +278,7 @@ Returns a reference to the default engine [Theme]. This theme resource is respon
 */
 //go:nosplit
 func (self class) GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
@@ -295,6 +294,7 @@ To set the project theme, see [ProjectSettings] "gui/theme/custom".
 */
 //go:nosplit
 func (self class) GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_project_theme, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
@@ -302,11 +302,13 @@ func (self class) GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_
 
 //go:nosplit
 func (self class) SetFallbackBaseScale(base_scale float64) { //gd:ThemeDB.set_fallback_base_scale
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_base_scale, 0|(gdextension.SizeFloat<<4), &struct{ base_scale float64 }{base_scale})
 }
 
 //go:nosplit
 func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_base_scale
+	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_base_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -314,11 +316,13 @@ func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_bas
 
 //go:nosplit
 func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_font
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
@@ -326,11 +330,13 @@ func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_
 
 //go:nosplit
 func (self class) SetFallbackFontSize(font_size int64) { //gd:ThemeDB.set_fallback_font_size
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 }
 
 //go:nosplit
 func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_size
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_font_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
@@ -338,11 +344,13 @@ func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_s
 
 //go:nosplit
 func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fallback_icon
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
@@ -350,11 +358,13 @@ func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fall
 
 //go:nosplit
 func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), &struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetFallbackStylebox() [1]gdclass.StyleBox { //gd:ThemeDB.get_fallback_stylebox
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_stylebox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret)}
 	return ret
@@ -368,11 +378,13 @@ func OnFallbackChanged(cb func(), flags ...Signal.Flags) {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("fallback_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) FallbackChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FallbackChanged`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`fallback_changed`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

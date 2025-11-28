@@ -323,7 +323,7 @@ func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flag
 }
 
 func (self class) AnimationAdded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationAdded`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_added`))))
 }
 
 /*
@@ -340,7 +340,7 @@ func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Fl
 }
 
 func (self class) AnimationRemoved() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRemoved`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_removed`))))
 }
 
 /*
@@ -357,7 +357,7 @@ func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), fl
 }
 
 func (self class) AnimationRenamed() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRenamed`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_renamed`))))
 }
 
 /*
@@ -376,7 +376,7 @@ func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Fl
 }
 
 func (self class) AnimationChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`animation_changed`))))
 }
 
 func (self class) AsAnimationLibrary() Advanced {

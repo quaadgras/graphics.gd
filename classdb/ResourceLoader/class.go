@@ -145,7 +145,6 @@ Loads the resource using threads. If 'use_sub_threads' is true, multiple threads
 The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) error { //gd:ResourceLoader.load_threaded_request
-	once.Do(singleton)
 	return error(gd.ToError(Advanced().LoadThreadedRequest(String.New(path), String.New(type_hint), use_sub_threads, 1)))
 }
 
@@ -155,7 +154,6 @@ Loads the resource using threads. If 'use_sub_threads' is true, multiple threads
 The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads bool, cache_mode CacheMode) error { //gd:ResourceLoader.load_threaded_request
-	once.Do(singleton)
 	return error(gd.ToError(Advanced().LoadThreadedRequest(String.New(path), String.New(type_hint), use_sub_threads, cache_mode)))
 }
 
@@ -169,7 +167,6 @@ Note: The recommended way of using this method is to call it during different fr
 [Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
 func LoadThreadedGetStatus(path string) (float32, ThreadLoadStatus) { //gd:ResourceLoader.load_threaded_get_status
-	once.Do(singleton)
 	var returns_progress = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
 	results := Advanced().LoadThreadedGetStatus(String.New(path), returns_progress)
 	return gd.VariantAs[float32](gd.InternalArray(returns_progress).Index(0)), results
@@ -181,7 +178,6 @@ Returns the resource loaded by [LoadThreadedRequest].
 If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [LoadThreadedGetStatus] to known when the load has actually completed.
 */
 func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_threaded_get
-	once.Do(singleton)
 	return Resource.Instance(Advanced().LoadThreadedGet(String.New(path)))
 }
 
@@ -210,7 +206,6 @@ Note: Relative paths will be prefixed with "res://" before loading, to avoid une
 [ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader.load
-	once.Do(singleton)
 	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), 1))
 }
 
@@ -239,7 +234,6 @@ Note: Relative paths will be prefixed with "res://" before loading, to avoid une
 [ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func LoadOptions(path string, type_hint string, cache_mode CacheMode) Resource.Instance { //gd:ResourceLoader.load
-	once.Do(singleton)
 	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), cache_mode))
 }
 
@@ -247,7 +241,6 @@ func LoadOptions(path string, type_hint string, cache_mode CacheMode) Resource.I
 Returns the list of recognized extensions for a resource type.
 */
 func GetRecognizedExtensionsForType(atype string) []string { //gd:ResourceLoader.get_recognized_extensions_for_type
-	once.Do(singleton)
 	return []string(Advanced().GetRecognizedExtensionsForType(String.New(atype)).Strings())
 }
 
@@ -259,7 +252,6 @@ This method is performed implicitly for ResourceFormatLoaders written in GDScrip
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
-	once.Do(singleton)
 	Advanced().AddResourceFormatLoader(format_loader, at_front)
 }
 
@@ -269,7 +261,6 @@ Unregisters the given [ResourceFormatLoader].
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func RemoveResourceFormatLoader(format_loader ResourceFormatLoader.Instance) { //gd:ResourceLoader.remove_resource_format_loader
-	once.Do(singleton)
 	Advanced().RemoveResourceFormatLoader(format_loader)
 }
 
@@ -277,7 +268,6 @@ func RemoveResourceFormatLoader(format_loader ResourceFormatLoader.Instance) { /
 Changes the behavior on missing sub-resources. The default behavior is to abort loading.
 */
 func SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_missing_resources
-	once.Do(singleton)
 	Advanced().SetAbortOnMissingResources(abort)
 }
 
@@ -296,7 +286,6 @@ Each dependency is a string that can be divided into sections by ::. There can b
 	}
 */
 func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencies
-	once.Do(singleton)
 	return []string(Advanced().GetDependencies(String.New(path)).Strings())
 }
 
@@ -308,7 +297,6 @@ Once a resource has been loaded by the engine, it is cached in memory for faster
 [Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
 */
 func HasCached(path string) bool { //gd:ResourceLoader.has_cached
-	once.Do(singleton)
 	return bool(Advanced().HasCached(String.New(path)))
 }
 
@@ -320,7 +308,6 @@ Note: If the resource is not cached, the returned [Resource] will be invalid.
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cached_ref
-	once.Do(singleton)
 	return Resource.Instance(Advanced().GetCachedRef(String.New(path)))
 }
 
@@ -337,7 +324,6 @@ Note: If you use [Resource.TakeOverPath], this method will return true for the t
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
-	once.Do(singleton)
 	return bool(Advanced().Exists(String.New(path), String.New(type_hint)))
 }
 
@@ -345,7 +331,6 @@ func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
 Returns the ID associated with a given resource path, or -1 when no such ID exists.
 */
 func GetResourceUid(path string) int { //gd:ResourceLoader.get_resource_uid
-	once.Do(singleton)
 	return int(int(Advanced().GetResourceUid(String.New(path))))
 }
 
@@ -362,7 +347,6 @@ Note: To normally traverse the filesystem, see [DirAccess].
 [DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 func ListDirectory(directory_path string) []string { //gd:ResourceLoader.list_directory
-	once.Do(singleton)
 	return []string(Advanced().ListDirectory(String.New(directory_path)).Strings())
 }
 
@@ -396,6 +380,7 @@ The 'cache_mode' parameter defines whether and how the cache should be used or u
 */
 //go:nosplit
 func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Readable, use_sub_threads bool, cache_mode CacheMode) Error.Code { //gd:ResourceLoader.load_threaded_request
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_threaded_request, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), &struct {
 		path            gdextension.String
 		type_hint       gdextension.String
@@ -417,6 +402,7 @@ Note: The recommended way of using this method is to call it during different fr
 */
 //go:nosplit
 func (self class) LoadThreadedGetStatus(path String.Readable, progress Array.Any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+	once.Do(singleton)
 	var r_ret = noescape.Call[ThreadLoadStatus](gd.ObjectChecked(self.AsObject()), methods.load_threaded_get_status, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
 		path     gdextension.String
 		progress gdextension.Array
@@ -432,6 +418,7 @@ If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus
 */
 //go:nosplit
 func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.load_threaded_get
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.load_threaded_get, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
@@ -463,6 +450,7 @@ Note: Relative paths will be prefixed with "res://" before loading, to avoid une
 */
 //go:nosplit
 func (self class) Load(path String.Readable, type_hint String.Readable, cache_mode CacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		path       gdextension.String
 		type_hint  gdextension.String
@@ -477,6 +465,7 @@ Returns the list of recognized extensions for a resource type.
 */
 //go:nosplit
 func (self class) GetRecognizedExtensionsForType(atype String.Readable) Packed.Strings { //gd:ResourceLoader.get_recognized_extensions_for_type
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recognized_extensions_for_type, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -491,6 +480,7 @@ This method is performed implicitly for ResourceFormatLoaders written in GDScrip
 */
 //go:nosplit
 func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		format_loader gdextension.Object
 		at_front      bool
@@ -504,6 +494,7 @@ Unregisters the given [ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), &struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject()))})
 }
 
@@ -512,6 +503,7 @@ Changes the behavior on missing sub-resources. The default behavior is to abort 
 */
 //go:nosplit
 func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_missing_resources
+	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_abort_on_missing_resources, 0|(gdextension.SizeBool<<4), &struct{ abort bool }{abort})
 }
 
@@ -533,6 +525,7 @@ Each dependency is a string that can be divided into sections by ::. There can b
 */
 //go:nosplit
 func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_dependencies, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -547,6 +540,7 @@ Once a resource has been loaded by the engine, it is cached in memory for faster
 */
 //go:nosplit
 func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has_cached
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_cached, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -561,6 +555,7 @@ Note: If the resource is not cached, the returned [Resource] will be invalid.
 */
 //go:nosplit
 func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cached_ref, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
@@ -580,6 +575,7 @@ Note: If you use [Resource.TakeOverPath], this method will return true for the t
 */
 //go:nosplit
 func (self class) Exists(path String.Readable, type_hint String.Readable) bool { //gd:ResourceLoader.exists
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path      gdextension.String
 		type_hint gdextension.String
@@ -593,6 +589,7 @@ Returns the ID associated with a given resource path, or -1 when no such ID exis
 */
 //go:nosplit
 func (self class) GetResourceUid(path String.Readable) int64 { //gd:ResourceLoader.get_resource_uid
+	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resource_uid, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -614,6 +611,7 @@ Note: To normally traverse the filesystem, see [DirAccess].
 */
 //go:nosplit
 func (self class) ListDirectory(directory_path String.Readable) Packed.Strings { //gd:ResourceLoader.list_directory
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.list_directory, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ directory_path gdextension.String }{pointers.Get(gd.InternalString(directory_path))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret

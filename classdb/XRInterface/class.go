@@ -752,7 +752,7 @@ func (self Instance) OnPlayAreaChanged(cb func(mode int), flags ...Signal.Flags)
 }
 
 func (self class) PlayAreaChanged() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PlayAreaChanged`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`play_area_changed`))))
 }
 
 func (self class) AsXRInterface() Advanced {

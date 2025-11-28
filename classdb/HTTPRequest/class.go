@@ -733,7 +733,7 @@ func (self Instance) OnRequestCompleted(cb func(result Result, response_code int
 }
 
 func (self class) RequestCompleted() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestCompleted`))))
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`request_completed`))))
 }
 
 func (self class) AsHTTPRequest() Advanced {

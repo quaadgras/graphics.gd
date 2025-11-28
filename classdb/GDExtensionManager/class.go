@@ -127,7 +127,6 @@ Loads an extension by absolute file path. The 'path' needs to point to a valid [
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func LoadExtension(path string) LoadStatus { //gd:GDExtensionManager.load_extension
-	once.Do(singleton)
 	return LoadStatus(Advanced().LoadExtension(String.New(path)))
 }
 
@@ -139,7 +138,6 @@ Note: You can only reload extensions in the editor. In release builds, this meth
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func ReloadExtension(path string) LoadStatus { //gd:GDExtensionManager.reload_extension
-	once.Do(singleton)
 	return LoadStatus(Advanced().ReloadExtension(String.New(path)))
 }
 
@@ -149,7 +147,6 @@ Unloads an extension by file path. The 'path' needs to point to an already loade
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func UnloadExtension(path string) LoadStatus { //gd:GDExtensionManager.unload_extension
-	once.Do(singleton)
 	return LoadStatus(Advanced().UnloadExtension(String.New(path)))
 }
 
@@ -157,7 +154,6 @@ func UnloadExtension(path string) LoadStatus { //gd:GDExtensionManager.unload_ex
 Returns true if the extension at the given file 'path' has already been loaded successfully. See also [GetLoadedExtensions].
 */
 func IsExtensionLoaded(path string) bool { //gd:GDExtensionManager.is_extension_loaded
-	once.Do(singleton)
 	return bool(Advanced().IsExtensionLoaded(String.New(path)))
 }
 
@@ -165,7 +161,6 @@ func IsExtensionLoaded(path string) bool { //gd:GDExtensionManager.is_extension_
 Returns the file paths of all currently loaded extensions.
 */
 func GetLoadedExtensions() []string { //gd:GDExtensionManager.get_loaded_extensions
-	once.Do(singleton)
 	return []string(Advanced().GetLoadedExtensions().Strings())
 }
 
@@ -175,7 +170,6 @@ Returns the [GDExtension] at the given file 'path', or null if it has not been l
 [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 func GetExtension(path string) GDExtension.Instance { //gd:GDExtensionManager.get_extension
-	once.Do(singleton)
 	return GDExtension.Instance(Advanced().GetExtension(String.New(path)))
 }
 
@@ -209,6 +203,7 @@ Loads an extension by absolute file path. The 'path' needs to point to a valid [
 */
 //go:nosplit
 func (self class) LoadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.load_extension
+	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.load_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -223,6 +218,7 @@ Note: You can only reload extensions in the editor. In release builds, this meth
 */
 //go:nosplit
 func (self class) ReloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.reload_extension
+	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.reload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -235,6 +231,7 @@ Unloads an extension by file path. The 'path' needs to point to an already loade
 */
 //go:nosplit
 func (self class) UnloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.unload_extension
+	once.Do(singleton)
 	var r_ret = noescape.Call[LoadStatus](gd.ObjectChecked(self.AsObject()), methods.unload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -245,6 +242,7 @@ Returns true if the extension at the given file 'path' has already been loaded s
 */
 //go:nosplit
 func (self class) IsExtensionLoaded(path String.Readable) bool { //gd:GDExtensionManager.is_extension_loaded
+	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_extension_loaded, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
@@ -255,6 +253,7 @@ Returns the file paths of all currently loaded extensions.
 */
 //go:nosplit
 func (self class) GetLoadedExtensions() Packed.Strings { //gd:GDExtensionManager.get_loaded_extensions
+	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_loaded_extensions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
@@ -267,6 +266,7 @@ Returns the [GDExtension] at the given file 'path', or null if it has not been l
 */
 //go:nosplit
 func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
+	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_extension, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.GDExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.GDExtension](r_ret)}
 	return ret
@@ -280,11 +280,13 @@ func OnExtensionsReloaded(cb func(), flags ...Signal.Flags) {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionsReloaded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionsReloaded`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`extensions_reloaded`))))
 }
 
 /*
@@ -297,11 +299,13 @@ func OnExtensionLoaded(cb func(extension GDExtension.Instance), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionLoaded() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionLoaded`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`extension_loaded`))))
 }
 
 /*
@@ -314,11 +318,13 @@ func OnExtensionUnloading(cb func(extension GDExtension.Instance), flags ...Sign
 	for _, flag := range flags {
 		flags_together |= flag
 	}
+	once.Do(singleton)
 	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionUnloading() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionUnloading`))))
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`extension_unloading`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {
