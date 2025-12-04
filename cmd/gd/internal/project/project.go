@@ -77,9 +77,13 @@ func Setup() error {
 			isRun = true
 		}
 	}
+	wd, hasGoMod, err := findGoMod(wd)
+	if err != nil {
+		return xray.New(err)
+	}
 	var runningSpecificGoFile = specificGoFile && isRun
-	if !runningSpecificGoFile && !hasGoMod(wd) {
-		if _, err := os.Stat("project.godot"); err == nil {
+	if !runningSpecificGoFile && !hasGoMod {
+		if _, err := os.Stat(filepath.Join(wd, "project.godot")); err == nil {
 			Name = filepath.Base(wd)
 			Directory = wd
 			GraphicsDirectory = wd
@@ -182,21 +186,24 @@ func SetupFiles(embedded embed.FS, embedRoot, targetDir string) error {
 	})
 }
 
-func hasGoMod(wd string) bool {
-	for wd := wd; true; wd = filepath.Dir(wd) { // look for a go.mod file
+func findGoMod(wd string) (string, bool, error) {
+	for ; true; wd = filepath.Dir(wd) { // look for a go.mod file
 		if wd == "/" {
-			return false
+			return wd, false, nil
 		}
-		_, err := os.Stat(wd + "/go.mod")
+		_, err := os.Stat(filepath.Join(wd, "go.mod"))
 		if err == nil {
 			break
 		} else if os.IsNotExist(err) {
 			continue
 		} else {
-			return false
+			return wd, false, nil
 		}
 	}
-	return true
+	if err := os.Chdir(wd); err != nil {
+		return wd, false, err
+	}
+	return wd, true, nil
 }
 
 // CopyDir recursively copies a directory tree from src to dst.
