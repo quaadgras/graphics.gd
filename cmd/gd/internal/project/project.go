@@ -195,6 +195,9 @@ func findGoMod(wd string) (string, bool, error) {
 		if err == nil {
 			break
 		} else if os.IsNotExist(err) {
+			if _, err := os.Stat(filepath.Join(wd, "graphics")); err == nil {
+				break
+			}
 			continue
 		} else {
 			return wd, false, nil
