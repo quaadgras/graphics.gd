@@ -133,8 +133,8 @@ func (exe *toolchain) Lookup() (string, error) {
 	if OS == "" {
 		OS = "$(MISSING)"
 	}
-	EXT := exe.DownloadEXT[GOOS]
-	if EXT == "" {
+	EXT, ok := exe.DownloadEXT[GOOS]
+	if !ok {
 		EXT = "$(MISSING)"
 	}
 	var MaybeUniversal = GOARCH
