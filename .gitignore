@@ -1,0 +1,9 @@
+dist
+internal
+node_modules
+startup
+testing
+extension_api.json
+go.work
+go.work.sum
+package-lock.json
