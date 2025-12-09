@@ -188,7 +188,9 @@ func SetupFiles(embedded embed.FS, embedRoot, targetDir string) error {
 
 func findGoMod(wd string) (string, bool, error) {
 	for ; true; wd = filepath.Dir(wd) { // look for a go.mod file
-		if wd == "/" {
+		parent := filepath.Dir(wd)
+		// Check if we've reached the root directory (parent == current means we're at the root)
+		if parent == wd {
 			return wd, false, nil
 		}
 		_, err := os.Stat(filepath.Join(wd, "go.mod"))
