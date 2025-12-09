@@ -94,7 +94,7 @@ func Setup() error {
 			}
 			return nil
 		}
-		return fmt.Errorf("gd requires your project to have a go.mod file")
+		return fmt.Errorf("gd requires your project to have either a go.mod file or a project.godot")
 	}
 	IncludesGo = true
 	Name = filepath.Base(wd)
@@ -187,26 +187,37 @@ func SetupFiles(embedded embed.FS, embedRoot, targetDir string) error {
 }
 
 func findGoMod(wd string) (string, bool, error) {
-	for ; true; wd = filepath.Dir(wd) { // look for a go.mod file
-		if wd == "/" {
-			return wd, false, nil
-		}
+	og := wd
+	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) { // look for a go.mod file
 		_, err := os.Stat(filepath.Join(wd, "go.mod"))
 		if err == nil {
-			break
+			if err := os.Chdir(wd); err != nil {
+				return wd, false, err
+			}
+			return wd, true, nil
 		} else if os.IsNotExist(err) {
 			if _, err := os.Stat(filepath.Join(wd, "graphics")); err == nil {
-				break
+				if err := os.Chdir(wd); err != nil {
+					return wd, false, err
+				}
+				return wd, false, nil
 			}
 			continue
 		} else {
 			return wd, false, err
 		}
 	}
-	if err := os.Chdir(wd); err != nil {
-		return wd, false, err
+	wd = og
+	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) {
+		_, err := os.Stat(filepath.Join(wd, "project.godot"))
+		if err == nil {
+			if err := os.Chdir(wd); err != nil {
+				return wd, false, err
+			}
+			return wd, false, nil
+		}
 	}
-	return wd, true, nil
+	return og, false, nil
 }
 
 // CopyDir recursively copies a directory tree from src to dst.
