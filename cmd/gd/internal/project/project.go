@@ -1,6 +1,7 @@
 package project
 
 import (
+	"bytes"
 	"embed"
 	"fmt"
 	"io"
@@ -50,6 +51,7 @@ var (
 	Directory         string // Directory of the current project (where go.mod is located).
 	GraphicsDirectory string // Graphics directory.
 	ReleasesDirectory string // Releases directory (Directory + "/releases"
+	Version           string // extracted from project.godot config/version
 
 	IncludesGo bool
 )
@@ -62,7 +64,22 @@ func AppleSafePackageName(name string) string {
 	return strings.ReplaceAll(name, "_", "")
 }
 
+func SetupVersion() {
+	project, err := os.ReadFile(filepath.Join(GraphicsDirectory, "project.godot"))
+	if err != nil {
+		Version = "0.0.0"
+		return
+	}
+	for line := range bytes.SplitSeq(project, []byte("\n")) {
+		if bytes.HasPrefix(line, []byte("config/version=\"")) {
+			Version = strings.TrimSuffix(strings.TrimPrefix(string(line), "config/version=\""), "\"")
+			return
+		}
+	}
+}
+
 func Setup() error {
+	defer SetupVersion()
 	wd, err := os.Getwd()
 	if err != nil {
 		return xray.New(err)

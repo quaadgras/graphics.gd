@@ -298,3 +298,61 @@ func ExtractArchive(src, dest, archiveType, targetFile string, stripTopDir bool)
 		return fmt.Errorf("unsupported archive type: %s", archiveType)
 	}
 }
+
+// CreateZip creates a zip archive from the specified source directory
+func CreateZip(srcDir, destArchive string) error {
+	zipFile, err := os.Create(destArchive)
+	if err != nil {
+		return fmt.Errorf("failed to create zip file: %w", err)
+	}
+	defer zipFile.Close()
+
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
+
+	err = filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		relPath, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		file, err := os.Open(path)
+		if err != nil {
+			return fmt.Errorf("failed to open file for zipping: %w", err)
+		}
+		defer file.Close()
+
+		fh, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return fmt.Errorf("failed to get file info header: %w", err)
+		}
+		fh.Name = relPath
+		fh.Method = zip.Deflate
+
+		writer, err := zipWriter.CreateHeader(fh)
+		if err != nil {
+			return fmt.Errorf("failed to create zip entry: %w", err)
+		}
+
+		_, err = io.Copy(writer, file)
+		if err != nil {
+			return fmt.Errorf("failed to write file to zip: %w", err)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("error while creating zip archive: %w", err)
+	}
+
+	return nil
+}
