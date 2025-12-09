@@ -85,3 +85,35 @@ var UltimatePackerForExecutables = toolchain{
 	DownloadARCH: map[string]string{"amd64": "amd64", "arm64": "arm64"},
 	RequiredFor:  "minifying builds",
 }
+
+var AndroidPackageKitTool = toolchain{
+	Name:        "apktool",
+	Version:     "2.12.1",
+	VersionFlag: "v",
+	DownloadURL: "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)",
+	RequiredFor: "converting the exported .apk into an .aab",
+}
+
+var AndroidAssetPackagingTool = toolchain{
+	Name:          "aapt2",
+	Version:       "2.20-eng.202512",
+	VersionPrefix: "Android Asset Packaging Tool (aapt) 2.20-eng.202512",
+	VersionFlag:   "version",
+	DownloadURL:   "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
+	RequiredFor:   "converting the exported .apk into an .aab",
+}
+
+var BundleTool = toolchain{
+	Name:        "bundletool",
+	Version:     "1.18.2",
+	VersionFlag: "version",
+	DownloadURL: "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)",
+	RequiredFor: "converting the exported .apk into an .aab",
+}
+
+var Android = toolchain{
+	Name:        "android.jar",
+	DownloadURL: "https://release.graphics.gd/android.jar",
+	RequiredFor: "converting the exported .apk into an .aab",
+	IsResource:  true,
+}

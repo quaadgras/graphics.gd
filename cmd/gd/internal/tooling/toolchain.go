@@ -37,6 +37,8 @@ type toolchain struct {
 
 	ConvertArguments map[string]string
 
+	IsResource bool
+
 	path string // cached by [toolchain.Lookup]
 }
 
@@ -101,7 +103,7 @@ func (exe toolchain) Output(args ...string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	out, err := exec.Command(path, args...).CombinedOutput()
+	out, err := exec.Command(path, args...).Output()
 	if err != nil {
 		return "", err
 	}
@@ -157,6 +159,9 @@ func (exe *toolchain) Lookup() (string, error) {
 	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
 	if _, err := os.Stat(install_path); err == nil {
+		if exe.IsResource {
+			return install_path, nil
+		}
 		var exe_path = install_path
 		if exe.IsApp && runtime.GOOS == "darwin" {
 			exe_path = filepath.Join(install_path, "Contents", "MacOS", exe.Name)
