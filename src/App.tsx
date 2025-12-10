@@ -404,7 +404,8 @@ func main() {
                   </p>
                   <div className="bg-gray-900 rounded-lg p-4">
                     <code className="text-green-400 font-mono">
-                      go install graphics.gd/cmd/gd@master
+                      go install graphics.gd/cmd/gd@release # install/update the
+                      gd command
                     </code>
                   </div>
                 </div>
@@ -419,10 +420,13 @@ func main() {
                     Create Your Project
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    Start with a simple main.go file. The tool will
-                    automatically set up the graphics environment for you.
+                    Start with a simple main.go file. Make sure to go get
+                    graphics.gd
                   </p>
                   <div className="bg-gray-900 rounded-lg p-4 space-y-2">
+                    <code className="text-green-400 font-mono block">
+                      go get -u graphics.gd@release # install/update graphics.gd
+                    </code>
                     <code className="text-green-400 font-mono block">
                       gd run # Run your project
                     </code>
