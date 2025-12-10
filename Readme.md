@@ -199,6 +199,8 @@ If you're interested in `graphics.gd`, you may also like to explore:
 * [Mesh2Motion](https://github.com/scottpetrovic/mesh2motion-app) (Open Source tool for adding skeletons and animation to 3D models)
 
 ## Licensing
-This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
+The project is licensed under an MIT license (the same license as Godot), you can use it in any manner
 you can use the Godot engine. If you do use this project for any commercially successful products, please
 consider [sponsoring the maintainer](https://github.com/sponsors/Splizard) to show your appreciation!
+
+**NOTE** the `gd` command line tool, reuses some code licensed under the Apache 2.0 license.
