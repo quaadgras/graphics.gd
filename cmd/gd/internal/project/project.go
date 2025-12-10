@@ -217,7 +217,7 @@ func findGoMod(wd string) (string, bool, error) {
 				if err := os.Chdir(wd); err != nil {
 					return wd, false, err
 				}
-				return wd, false, nil
+				return wd, true, nil
 			}
 			continue
 		} else {
