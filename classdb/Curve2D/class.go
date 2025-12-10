@@ -171,9 +171,12 @@ func (self MoreArgs) AddPoint(position Vector2.XY, in Vector2.XY, out Vector2.XY
 
 /*
 Sets the position for the vertex 'idx'. If the index is out of bounds, the function sends an error to the console.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointPosition(idx int, position Vector2.XY) { //gd:Curve2D.set_point_position
+func (self Instance) SetPointPosition(idx int, position Vector2.XY) Instance { //gd:Curve2D.set_point_position
 	Advanced(self).SetPointPosition(int64(idx), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -185,9 +188,12 @@ func (self Instance) GetPointPosition(idx int) Vector2.XY { //gd:Curve2D.get_poi
 
 /*
 Sets the position of the control point leading to the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointIn(idx int, position Vector2.XY) { //gd:Curve2D.set_point_in
+func (self Instance) SetPointIn(idx int, position Vector2.XY) Instance { //gd:Curve2D.set_point_in
 	Advanced(self).SetPointIn(int64(idx), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -199,9 +205,12 @@ func (self Instance) GetPointIn(idx int) Vector2.XY { //gd:Curve2D.get_point_in
 
 /*
 Sets the position of the control point leading out of the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointOut(idx int, position Vector2.XY) { //gd:Curve2D.set_point_out
+func (self Instance) SetPointOut(idx int, position Vector2.XY) Instance { //gd:Curve2D.set_point_out
 	Advanced(self).SetPointOut(int64(idx), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -436,9 +445,10 @@ func (self Instance) BakeInterval() Float.X {
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
 
-// SetBakeInterval sets the property returned by [GetBakeInterval].
-func (self Instance) SetBakeInterval(value Float.X) {
+// SetBakeInterval sets the property returned by [GetBakeInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeInterval(value Float.X) Instance {
 	class(self).SetBakeInterval(float64(value))
+	return self
 }
 
 /*
@@ -448,9 +458,10 @@ func (self Instance) PointCount() int {
 	return int(int(class(self).GetPointCount()))
 }
 
-// SetPointCount sets the property returned by [GetPointCount].
-func (self Instance) SetPointCount(value int) {
+// SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPointCount(value int) Instance {
 	class(self).SetPointCount(int64(value))
+	return self
 }
 
 //go:nosplit

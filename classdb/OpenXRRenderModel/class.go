@@ -176,9 +176,10 @@ func (self Instance) RenderModel() RID.RenderModel {
 	return RID.RenderModel(RID.RenderModel(class(self).GetRenderModel()))
 }
 
-// SetRenderModel sets the property returned by [GetRenderModel].
-func (self Instance) SetRenderModel(value RID.RenderModel) {
+// SetRenderModel sets the property returned by [GetRenderModel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderModel(value RID.RenderModel) Instance {
 	class(self).SetRenderModel(RID.Any(value))
+	return self
 }
 
 /*
@@ -206,12 +207,13 @@ func (self class) SetRenderModel(render_model RID.Any) { //gd:OpenXRRenderModel.
 /*
 Emitted when the top level path of this render model has changed.
 */
-func (self Instance) OnRenderModelTopLevelPathChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelTopLevelPathChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_top_level_path_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelTopLevelPathChanged() Signal.Any {

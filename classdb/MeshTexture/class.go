@@ -171,9 +171,10 @@ func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value Mesh.Instance) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value Mesh.Instance) Instance {
 	class(self).SetMesh(value)
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) BaseTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetBaseTexture())
 }
 
-// SetBaseTexture sets the property returned by [GetBaseTexture].
-func (self Instance) SetBaseTexture(value Texture2D.Instance) {
+// SetBaseTexture sets the property returned by [GetBaseTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaseTexture(value Texture2D.Instance) Instance {
 	class(self).SetBaseTexture(value)
+	return self
 }
 
 /*
@@ -195,9 +197,10 @@ func (self Instance) ImageSize() Vector2.XY {
 	return Vector2.XY(class(self).GetImageSize())
 }
 
-// SetImageSize sets the property returned by [GetImageSize].
-func (self Instance) SetImageSize(value Vector2.XY) {
+// SetImageSize sets the property returned by [GetImageSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetImageSize(value Vector2.XY) Instance {
 	class(self).SetImageSize(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

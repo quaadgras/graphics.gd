@@ -133,12 +133,15 @@ Note: 'param' is case-sensitive and must match the name of the uniform in the co
 
 Note: Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [GeometryInstance3D.SetInstanceShaderParameter] or duplicate the [ShaderMaterial] resource using [Resource.Duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 
+Returns 'self' to enable method chaining.
+
 [GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
 [Resource.Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) SetShaderParameter(param string, value any) { //gd:ShaderMaterial.set_shader_parameter
+func (self Instance) SetShaderParameter(param string, value any) Instance { //gd:ShaderMaterial.set_shader_parameter
 	Advanced(self).SetShaderParameter(String.Name(String.New(param)), variant.New(value))
+	return self
 }
 
 /*
@@ -200,9 +203,10 @@ func (self Instance) Shader() Shader.Instance {
 	return Shader.Instance(class(self).GetShader())
 }
 
-// SetShader sets the property returned by [GetShader].
-func (self Instance) SetShader(value Shader.Instance) {
+// SetShader sets the property returned by [GetShader]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShader(value Shader.Instance) Instance {
 	class(self).SetShader(value)
+	return self
 }
 
 //go:nosplit

@@ -193,9 +193,10 @@ func (self Instance) MagFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMagFilter())
 }
 
-// SetMagFilter sets the property returned by [GetMagFilter].
-func (self Instance) SetMagFilter(value Rendering.SamplerFilter) {
+// SetMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMagFilter(value Rendering.SamplerFilter) Instance {
 	class(self).SetMagFilter(value)
+	return self
 }
 
 /*
@@ -205,9 +206,10 @@ func (self Instance) MinFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMinFilter())
 }
 
-// SetMinFilter sets the property returned by [GetMinFilter].
-func (self Instance) SetMinFilter(value Rendering.SamplerFilter) {
+// SetMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinFilter(value Rendering.SamplerFilter) Instance {
 	class(self).SetMinFilter(value)
+	return self
 }
 
 /*
@@ -217,9 +219,10 @@ func (self Instance) MipFilter() Rendering.SamplerFilter {
 	return Rendering.SamplerFilter(class(self).GetMipFilter())
 }
 
-// SetMipFilter sets the property returned by [GetMipFilter].
-func (self Instance) SetMipFilter(value Rendering.SamplerFilter) {
+// SetMipFilter sets the property returned by [GetMipFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMipFilter(value Rendering.SamplerFilter) Instance {
 	class(self).SetMipFilter(value)
+	return self
 }
 
 /*
@@ -229,9 +232,10 @@ func (self Instance) RepeatU() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatU())
 }
 
-// SetRepeatU sets the property returned by [GetRepeatU].
-func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) {
+// SetRepeatU sets the property returned by [GetRepeatU]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) Instance {
 	class(self).SetRepeatU(value)
+	return self
 }
 
 /*
@@ -241,9 +245,10 @@ func (self Instance) RepeatV() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatV())
 }
 
-// SetRepeatV sets the property returned by [GetRepeatV].
-func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) {
+// SetRepeatV sets the property returned by [GetRepeatV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) Instance {
 	class(self).SetRepeatV(value)
+	return self
 }
 
 /*
@@ -253,9 +258,10 @@ func (self Instance) RepeatW() Rendering.SamplerRepeatMode {
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatW())
 }
 
-// SetRepeatW sets the property returned by [GetRepeatW].
-func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) {
+// SetRepeatW sets the property returned by [GetRepeatW]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) Instance {
 	class(self).SetRepeatW(value)
+	return self
 }
 
 /*
@@ -265,9 +271,10 @@ func (self Instance) LodBias() Float.X {
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
-// SetLodBias sets the property returned by [GetLodBias].
-func (self Instance) SetLodBias(value Float.X) {
+// SetLodBias sets the property returned by [GetLodBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLodBias(value Float.X) Instance {
 	class(self).SetLodBias(float64(value))
+	return self
 }
 
 /*
@@ -279,9 +286,10 @@ func (self Instance) UseAnisotropy() bool {
 	return bool(class(self).GetUseAnisotropy())
 }
 
-// SetUseAnisotropy sets the property returned by [GetUseAnisotropy].
-func (self Instance) SetUseAnisotropy(value bool) {
+// SetUseAnisotropy sets the property returned by [GetUseAnisotropy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAnisotropy(value bool) Instance {
 	class(self).SetUseAnisotropy(value)
+	return self
 }
 
 /*
@@ -296,9 +304,10 @@ func (self Instance) AnisotropyMax() Float.X {
 	return Float.X(Float.X(class(self).GetAnisotropyMax()))
 }
 
-// SetAnisotropyMax sets the property returned by [GetAnisotropyMax].
-func (self Instance) SetAnisotropyMax(value Float.X) {
+// SetAnisotropyMax sets the property returned by [GetAnisotropyMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnisotropyMax(value Float.X) Instance {
 	class(self).SetAnisotropyMax(float64(value))
+	return self
 }
 
 /*
@@ -310,9 +319,10 @@ func (self Instance) EnableCompare() bool {
 	return bool(class(self).GetEnableCompare())
 }
 
-// SetEnableCompare sets the property returned by [GetEnableCompare].
-func (self Instance) SetEnableCompare(value bool) {
+// SetEnableCompare sets the property returned by [GetEnableCompare]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableCompare(value bool) Instance {
 	class(self).SetEnableCompare(value)
+	return self
 }
 
 /*
@@ -324,9 +334,10 @@ func (self Instance) CompareOp() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetCompareOp())
 }
 
-// SetCompareOp sets the property returned by [GetCompareOp].
-func (self Instance) SetCompareOp(value Rendering.CompareOperator) {
+// SetCompareOp sets the property returned by [GetCompareOp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompareOp(value Rendering.CompareOperator) Instance {
 	class(self).SetCompareOp(value)
+	return self
 }
 
 /*
@@ -336,9 +347,10 @@ func (self Instance) MinLod() Float.X {
 	return Float.X(Float.X(class(self).GetMinLod()))
 }
 
-// SetMinLod sets the property returned by [GetMinLod].
-func (self Instance) SetMinLod(value Float.X) {
+// SetMinLod sets the property returned by [GetMinLod]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinLod(value Float.X) Instance {
 	class(self).SetMinLod(float64(value))
+	return self
 }
 
 /*
@@ -348,9 +360,10 @@ func (self Instance) MaxLod() Float.X {
 	return Float.X(Float.X(class(self).GetMaxLod()))
 }
 
-// SetMaxLod sets the property returned by [GetMaxLod].
-func (self Instance) SetMaxLod(value Float.X) {
+// SetMaxLod sets the property returned by [GetMaxLod]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxLod(value Float.X) Instance {
 	class(self).SetMaxLod(float64(value))
+	return self
 }
 
 /*
@@ -364,9 +377,10 @@ func (self Instance) BorderColor() Rendering.SamplerBorderColor {
 	return Rendering.SamplerBorderColor(class(self).GetBorderColor())
 }
 
-// SetBorderColor sets the property returned by [GetBorderColor].
-func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) {
+// SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) Instance {
 	class(self).SetBorderColor(value)
+	return self
 }
 
 /*
@@ -376,9 +390,10 @@ func (self Instance) UnnormalizedUvw() bool {
 	return bool(class(self).GetUnnormalizedUvw())
 }
 
-// SetUnnormalizedUvw sets the property returned by [GetUnnormalizedUvw].
-func (self Instance) SetUnnormalizedUvw(value bool) {
+// SetUnnormalizedUvw sets the property returned by [GetUnnormalizedUvw]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUnnormalizedUvw(value bool) Instance {
 	class(self).SetUnnormalizedUvw(value)
+	return self
 }
 
 //go:nosplit

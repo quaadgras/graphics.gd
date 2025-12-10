@@ -319,11 +319,14 @@ func (self Instance) CancelRequest() { //gd:HTTPRequest.cancel_request
 /*
 Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [TLSOptions.Client].
 
+Returns 'self' to enable method chaining.
+
 [TLSOptions]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions
 [TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
 */
-func (self Instance) SetTlsOptions(client_options TLSOptions.Instance) { //gd:HTTPRequest.set_tls_options
+func (self Instance) SetTlsOptions(client_options TLSOptions.Instance) Instance { //gd:HTTPRequest.set_tls_options
 	Advanced(self).SetTlsOptions(client_options)
+	return self
 }
 
 /*
@@ -355,18 +358,24 @@ func (self Instance) GetBodySize() int { //gd:HTTPRequest.get_body_size
 Sets the proxy server for HTTP requests.
 
 The proxy server is unset if 'host' is empty or 'port' is -1.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPRequest.set_http_proxy
+func (self Instance) SetHttpProxy(host string, port int) Instance { //gd:HTTPRequest.set_http_proxy
 	Advanced(self).SetHttpProxy(String.New(host), int64(port))
+	return self
 }
 
 /*
 Sets the proxy server for HTTPS requests.
 
 The proxy server is unset if 'host' is empty or 'port' is -1.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPRequest.set_https_proxy
+func (self Instance) SetHttpsProxy(host string, port int) Instance { //gd:HTTPRequest.set_https_proxy
 	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -418,9 +427,10 @@ func (self Instance) DownloadFile() string {
 	return string(class(self).GetDownloadFile().String())
 }
 
-// SetDownloadFile sets the property returned by [GetDownloadFile].
-func (self Instance) SetDownloadFile(value string) {
+// SetDownloadFile sets the property returned by [GetDownloadFile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDownloadFile(value string) Instance {
 	class(self).SetDownloadFile(String.New(value))
+	return self
 }
 
 /*
@@ -434,9 +444,10 @@ func (self Instance) DownloadChunkSize() int {
 	return int(int(class(self).GetDownloadChunkSize()))
 }
 
-// SetDownloadChunkSize sets the property returned by [GetDownloadChunkSize].
-func (self Instance) SetDownloadChunkSize(value int) {
+// SetDownloadChunkSize sets the property returned by [GetDownloadChunkSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDownloadChunkSize(value int) Instance {
 	class(self).SetDownloadChunkSize(int64(value))
+	return self
 }
 
 /*
@@ -446,9 +457,10 @@ func (self Instance) UseThreads() bool {
 	return bool(class(self).IsUsingThreads())
 }
 
-// SetUseThreads sets the property returned by [IsUsingThreads].
-func (self Instance) SetUseThreads(value bool) {
+// SetUseThreads sets the property returned by [IsUsingThreads]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseThreads(value bool) Instance {
 	class(self).SetUseThreads(value)
+	return self
 }
 
 /*
@@ -467,9 +479,10 @@ func (self Instance) AcceptGzip() bool {
 	return bool(class(self).IsAcceptingGzip())
 }
 
-// SetAcceptGzip sets the property returned by [IsAcceptingGzip].
-func (self Instance) SetAcceptGzip(value bool) {
+// SetAcceptGzip sets the property returned by [IsAcceptingGzip]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAcceptGzip(value bool) Instance {
 	class(self).SetAcceptGzip(value)
+	return self
 }
 
 /*
@@ -479,9 +492,10 @@ func (self Instance) BodySizeLimit() int {
 	return int(int(class(self).GetBodySizeLimit()))
 }
 
-// SetBodySizeLimit sets the property returned by [GetBodySizeLimit].
-func (self Instance) SetBodySizeLimit(value int) {
+// SetBodySizeLimit sets the property returned by [GetBodySizeLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodySizeLimit(value int) Instance {
 	class(self).SetBodySizeLimit(int64(value))
+	return self
 }
 
 /*
@@ -491,9 +505,10 @@ func (self Instance) MaxRedirects() int {
 	return int(int(class(self).GetMaxRedirects()))
 }
 
-// SetMaxRedirects sets the property returned by [GetMaxRedirects].
-func (self Instance) SetMaxRedirects(value int) {
+// SetMaxRedirects sets the property returned by [GetMaxRedirects]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxRedirects(value int) Instance {
 	class(self).SetMaxRedirects(int64(value))
+	return self
 }
 
 /*
@@ -505,9 +520,10 @@ func (self Instance) Timeout() Float.X {
 	return Float.X(Float.X(class(self).GetTimeout()))
 }
 
-// SetTimeout sets the property returned by [GetTimeout].
-func (self Instance) SetTimeout(value Float.X) {
+// SetTimeout sets the property returned by [GetTimeout]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimeout(value Float.X) Instance {
 	class(self).SetTimeout(float64(value))
+	return self
 }
 
 /*
@@ -724,12 +740,13 @@ func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPReq
 /*
 Emitted when a request is completed.
 */
-func (self Instance) OnRequestCompleted(cb func(result Result, response_code int, headers []string, body []byte), flags ...Signal.Flags) {
+func (self Instance) OnRequestCompleted(cb func(result Result, response_code int, headers []string, body []byte), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_completed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RequestCompleted() Signal.Any {

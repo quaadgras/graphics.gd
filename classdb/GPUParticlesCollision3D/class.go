@@ -187,9 +187,10 @@ func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
-// SetCullMask sets the property returned by [GetCullMask].
-func (self Instance) SetCullMask(value int) {
+// SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMask(value int) Instance {
 	class(self).SetCullMask(int64(value))
+	return self
 }
 
 //go:nosplit

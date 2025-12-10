@@ -183,9 +183,10 @@ func (self Instance) Shape() Shape {
 	return Shape(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Shape) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Shape) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -197,9 +198,10 @@ func (self Instance) Size() Float.X {
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Float.X) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Float.X) Instance {
 	class(self).SetSize(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) Sections() int {
 	return int(int(class(self).GetSections()))
 }
 
-// SetSections sets the property returned by [GetSections].
-func (self Instance) SetSections(value int) {
+// SetSections sets the property returned by [GetSections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSections(value int) Instance {
 	class(self).SetSections(int64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) SectionLength() Float.X {
 	return Float.X(Float.X(class(self).GetSectionLength()))
 }
 
-// SetSectionLength sets the property returned by [GetSectionLength].
-func (self Instance) SetSectionLength(value Float.X) {
+// SetSectionLength sets the property returned by [GetSectionLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSectionLength(value Float.X) Instance {
 	class(self).SetSectionLength(float64(value))
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) SectionSegments() int {
 	return int(int(class(self).GetSectionSegments()))
 }
 
-// SetSectionSegments sets the property returned by [GetSectionSegments].
-func (self Instance) SetSectionSegments(value int) {
+// SetSectionSegments sets the property returned by [GetSectionSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSectionSegments(value int) Instance {
 	class(self).SetSectionSegments(int64(value))
+	return self
 }
 
 /*
@@ -250,9 +255,10 @@ func (self Instance) Curve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
-// SetCurve sets the property returned by [GetCurve].
-func (self Instance) SetCurve(value Curve.Instance) {
+// SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurve(value Curve.Instance) Instance {
 	class(self).SetCurve(value)
+	return self
 }
 
 //go:nosplit

@@ -212,9 +212,10 @@ func (self Instance) LightmapTextures() []TextureLayered.Instance {
 	return []TextureLayered.Instance(gd.ArrayAs[[]TextureLayered.Instance](gd.InternalArray(class(self).GetLightmapTextures())))
 }
 
-// SetLightmapTextures sets the property returned by [GetLightmapTextures].
-func (self Instance) SetLightmapTextures(value []TextureLayered.Instance) {
+// SetLightmapTextures sets the property returned by [GetLightmapTextures]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightmapTextures(value []TextureLayered.Instance) Instance {
 	class(self).SetLightmapTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
+	return self
 }
 
 /*
@@ -224,18 +225,20 @@ func (self Instance) ShadowmaskTextures() []TextureLayered.Instance {
 	return []TextureLayered.Instance(gd.ArrayAs[[]TextureLayered.Instance](gd.InternalArray(class(self).GetShadowmaskTextures())))
 }
 
-// SetShadowmaskTextures sets the property returned by [GetShadowmaskTextures].
-func (self Instance) SetShadowmaskTextures(value []TextureLayered.Instance) {
+// SetShadowmaskTextures sets the property returned by [GetShadowmaskTextures]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowmaskTextures(value []TextureLayered.Instance) Instance {
 	class(self).SetShadowmaskTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
+	return self
 }
 
 func (self Instance) UsesSphericalHarmonics() bool {
 	return bool(class(self).IsUsingSphericalHarmonics())
 }
 
-// SetUsesSphericalHarmonics sets the property returned by [IsUsingSphericalHarmonics].
-func (self Instance) SetUsesSphericalHarmonics(value bool) {
+// SetUsesSphericalHarmonics sets the property returned by [IsUsingSphericalHarmonics]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUsesSphericalHarmonics(value bool) Instance {
 	class(self).SetUsesSphericalHarmonics(value)
+	return self
 }
 
 /*
@@ -245,9 +248,10 @@ func (self Instance) LightTexture() TextureLayered.Instance {
 	return TextureLayered.Instance(class(self).GetLightTexture())
 }
 
-// SetLightTexture sets the property returned by [GetLightTexture].
-func (self Instance) SetLightTexture(value TextureLayered.Instance) {
+// SetLightTexture sets the property returned by [GetLightTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightTexture(value TextureLayered.Instance) Instance {
 	class(self).SetLightTexture(value)
+	return self
 }
 
 //go:nosplit

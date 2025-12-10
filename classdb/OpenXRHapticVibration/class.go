@@ -168,9 +168,10 @@ func (self Instance) Duration() int {
 	return int(int(class(self).GetDuration()))
 }
 
-// SetDuration sets the property returned by [GetDuration].
-func (self Instance) SetDuration(value int) {
+// SetDuration sets the property returned by [GetDuration]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDuration(value int) Instance {
 	class(self).SetDuration(int64(value))
+	return self
 }
 
 /*
@@ -180,9 +181,10 @@ func (self Instance) Frequency() Float.X {
 	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
-// SetFrequency sets the property returned by [GetFrequency].
-func (self Instance) SetFrequency(value Float.X) {
+// SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrequency(value Float.X) Instance {
 	class(self).SetFrequency(float64(value))
+	return self
 }
 
 /*
@@ -192,9 +194,10 @@ func (self Instance) Amplitude() Float.X {
 	return Float.X(Float.X(class(self).GetAmplitude()))
 }
 
-// SetAmplitude sets the property returned by [GetAmplitude].
-func (self Instance) SetAmplitude(value Float.X) {
+// SetAmplitude sets the property returned by [GetAmplitude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAmplitude(value Float.X) Instance {
 	class(self).SetAmplitude(float64(value))
+	return self
 }
 
 //go:nosplit

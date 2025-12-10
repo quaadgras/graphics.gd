@@ -176,9 +176,10 @@ func (self Instance) ColorAttachments() []int32 {
 	return []int32(slices.Collect(class(self).GetColorAttachments().Values()))
 }
 
-// SetColorAttachments sets the property returned by [GetColorAttachments].
-func (self Instance) SetColorAttachments(value []int32) {
+// SetColorAttachments sets the property returned by [GetColorAttachments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorAttachments(value []int32) Instance {
 	class(self).SetColorAttachments(Packed.New(value...))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) InputAttachments() []int32 {
 	return []int32(slices.Collect(class(self).GetInputAttachments().Values()))
 }
 
-// SetInputAttachments sets the property returned by [GetInputAttachments].
-func (self Instance) SetInputAttachments(value []int32) {
+// SetInputAttachments sets the property returned by [GetInputAttachments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInputAttachments(value []int32) Instance {
 	class(self).SetInputAttachments(Packed.New(value...))
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) ResolveAttachments() []int32 {
 	return []int32(slices.Collect(class(self).GetResolveAttachments().Values()))
 }
 
-// SetResolveAttachments sets the property returned by [GetResolveAttachments].
-func (self Instance) SetResolveAttachments(value []int32) {
+// SetResolveAttachments sets the property returned by [GetResolveAttachments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResolveAttachments(value []int32) Instance {
 	class(self).SetResolveAttachments(Packed.New(value...))
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) PreserveAttachments() []int32 {
 	return []int32(slices.Collect(class(self).GetPreserveAttachments().Values()))
 }
 
-// SetPreserveAttachments sets the property returned by [GetPreserveAttachments].
-func (self Instance) SetPreserveAttachments(value []int32) {
+// SetPreserveAttachments sets the property returned by [GetPreserveAttachments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreserveAttachments(value []int32) Instance {
 	class(self).SetPreserveAttachments(Packed.New(value...))
+	return self
 }
 
 /*
@@ -226,9 +230,10 @@ func (self Instance) DepthAttachment() int {
 	return int(int(class(self).GetDepthAttachment()))
 }
 
-// SetDepthAttachment sets the property returned by [GetDepthAttachment].
-func (self Instance) SetDepthAttachment(value int) {
+// SetDepthAttachment sets the property returned by [GetDepthAttachment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthAttachment(value int) Instance {
 	class(self).SetDepthAttachment(int64(value))
+	return self
 }
 
 //go:nosplit

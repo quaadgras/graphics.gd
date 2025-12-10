@@ -281,9 +281,12 @@ func (self Instance) GetPointPosition(id Point) Vector2.XY { //gd:AStar2D.get_po
 
 /*
 Sets the 'position' for the point with the given 'id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointPosition(id Point, position Vector2.XY) { //gd:AStar2D.set_point_position
+func (self Instance) SetPointPosition(id Point, position Vector2.XY) Instance { //gd:AStar2D.set_point_position
 	Advanced(self).SetPointPosition(int64(id), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -296,10 +299,13 @@ func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStar2D.get_po
 /*
 Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 
+Returns 'self' to enable method chaining.
+
 [ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
-func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStar2D.set_point_weight_scale
+func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) Instance { //gd:AStar2D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(int64(id), float64(weight_scale))
+	return self
 }
 
 /*
@@ -343,16 +349,22 @@ func (self Instance) GetPointIds() []Point { //gd:AStar2D.get_point_ids
 
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointDisabled(id Point) { //gd:AStar2D.set_point_disabled
+func (self Instance) SetPointDisabled(id Point) Instance { //gd:AStar2D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), true)
+	return self
 }
 
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetPointDisabled(id Point, disabled bool) { //gd:AStar2D.set_point_disabled
+func (self MoreArgs) SetPointDisabled(id Point, disabled bool) MoreArgs { //gd:AStar2D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), disabled)
+	return self
 }
 
 /*
@@ -613,9 +625,10 @@ func (self Instance) NeighborFilterEnabled() bool {
 	return bool(class(self).IsNeighborFilterEnabled())
 }
 
-// SetNeighborFilterEnabled sets the property returned by [IsNeighborFilterEnabled].
-func (self Instance) SetNeighborFilterEnabled(value bool) {
+// SetNeighborFilterEnabled sets the property returned by [IsNeighborFilterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNeighborFilterEnabled(value bool) Instance {
 	class(self).SetNeighborFilterEnabled(value)
+	return self
 }
 
 /*

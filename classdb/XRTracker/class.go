@@ -166,9 +166,10 @@ func (self Instance) Type() Type {
 	return Type(class(self).GetTrackerType())
 }
 
-// SetType sets the property returned by [GetTrackerType].
-func (self Instance) SetType(value Type) {
+// SetType sets the property returned by [GetTrackerType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetType(value Type) Instance {
 	class(self).SetTrackerType(value)
+	return self
 }
 
 /*
@@ -199,9 +200,10 @@ func (self Instance) Name() string {
 	return string(class(self).GetTrackerName().String())
 }
 
-// SetName sets the property returned by [GetTrackerName].
-func (self Instance) SetName(value string) {
+// SetName sets the property returned by [GetTrackerName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetName(value string) Instance {
 	class(self).SetTrackerName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -211,9 +213,10 @@ func (self Instance) Description() string {
 	return string(class(self).GetTrackerDesc().String())
 }
 
-// SetDescription sets the property returned by [GetTrackerDesc].
-func (self Instance) SetDescription(value string) {
+// SetDescription sets the property returned by [GetTrackerDesc]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDescription(value string) Instance {
 	class(self).SetTrackerDesc(String.New(value))
+	return self
 }
 
 //go:nosplit

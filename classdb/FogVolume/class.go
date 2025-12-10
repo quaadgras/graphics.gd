@@ -192,9 +192,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -206,9 +207,10 @@ func (self Instance) Shape() RenderingServer.FogVolumeShape {
 	return RenderingServer.FogVolumeShape(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value RenderingServer.FogVolumeShape) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value RenderingServer.FogVolumeShape) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -223,9 +225,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 //go:nosplit

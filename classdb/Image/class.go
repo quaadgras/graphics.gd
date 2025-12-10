@@ -398,10 +398,13 @@ func CreateFromData(width int, height int, use_mipmaps bool, format Format, data
 /*
 Overwrites data of an existing [Image]. Non-static equivalent of [CreateFromData].
 
+Returns 'self' to enable method chaining.
+
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
-func (self Instance) SetData(width int, height int, use_mipmaps bool, format Format, data []byte) { //gd:Image.set_data
+func (self Instance) SetData(width int, height int, use_mipmaps bool, format Format, data []byte) Instance { //gd:Image.set_data
 	Advanced(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.BytesFrom(data...))
+	return self
 }
 
 /*
@@ -873,12 +876,15 @@ Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
 
 This is the same as [SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [SetPixel]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixel
 [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
-func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.set_pixelv
+func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) Instance { //gd:Image.set_pixelv
 	Advanced(self).SetPixelv(Vector2i.XY(point), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -891,12 +897,15 @@ Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
 
 This is the same as [SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [SetPixelv]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.SetPixelv
 [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
-func (self Instance) SetPixel(x int, y int, color Color.RGBA) { //gd:Image.set_pixel
+func (self Instance) SetPixel(x int, y int, color Color.RGBA) Instance { //gd:Image.set_pixel
 	Advanced(self).SetPixel(int64(x), int64(y), Color.RGBA(color))
+	return self
 }
 
 /*

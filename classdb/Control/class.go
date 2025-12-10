@@ -1003,18 +1003,24 @@ func (self Instance) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_comb
 Sets the anchors to a 'preset' from [Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
 
 If 'keep_offsets' is true, control's position will also be updated.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAnchorsPreset(preset LayoutPreset) { //gd:Control.set_anchors_preset
+func (self Instance) SetAnchorsPreset(preset LayoutPreset) Instance { //gd:Control.set_anchors_preset
 	Advanced(self).SetAnchorsPreset(preset, false)
+	return self
 }
 
 /*
 Sets the anchors to a 'preset' from [Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
 
 If 'keep_offsets' is true, control's position will also be updated.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
+func (self MoreArgs) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) MoreArgs { //gd:Control.set_anchors_preset
 	Advanced(self).SetAnchorsPreset(preset, keep_offsets)
+	return self
 }
 
 /*
@@ -1024,10 +1030,13 @@ Use parameter 'resize_mode' with constants from [Control.LayoutPresetMode] to be
 
 Use parameter 'margin' to determine the gap between the [Control] and the edges.
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self Instance) SetOffsetsPreset(preset LayoutPreset) { //gd:Control.set_offsets_preset
+func (self Instance) SetOffsetsPreset(preset LayoutPreset) Instance { //gd:Control.set_offsets_preset
 	Advanced(self).SetOffsetsPreset(preset, 0, int64(0))
+	return self
 }
 
 /*
@@ -1037,30 +1046,39 @@ Use parameter 'resize_mode' with constants from [Control.LayoutPresetMode] to be
 
 Use parameter 'margin' to determine the gap between the [Control] and the edges.
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self MoreArgs) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) { //gd:Control.set_offsets_preset
+func (self MoreArgs) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) MoreArgs { //gd:Control.set_offsets_preset
 	Advanced(self).SetOffsetsPreset(preset, resize_mode, int64(margin))
+	return self
 }
 
 /*
 Sets both anchor preset and offset preset. See [SetAnchorsPreset] and [SetOffsetsPreset].
 
+Returns 'self' to enable method chaining.
+
 [SetAnchorsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchorsPreset
 [SetOffsetsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffsetsPreset
 */
-func (self Instance) SetAnchorsAndOffsetsPreset(preset LayoutPreset) { //gd:Control.set_anchors_and_offsets_preset
+func (self Instance) SetAnchorsAndOffsetsPreset(preset LayoutPreset) Instance { //gd:Control.set_anchors_and_offsets_preset
 	Advanced(self).SetAnchorsAndOffsetsPreset(preset, 0, int64(0))
+	return self
 }
 
 /*
 Sets both anchor preset and offset preset. See [SetAnchorsPreset] and [SetOffsetsPreset].
 
+Returns 'self' to enable method chaining.
+
 [SetAnchorsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchorsPreset
 [SetOffsetsPreset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffsetsPreset
 */
-func (self MoreArgs) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) { //gd:Control.set_anchors_and_offsets_preset
+func (self MoreArgs) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) MoreArgs { //gd:Control.set_anchors_and_offsets_preset
 	Advanced(self).SetAnchorsAndOffsetsPreset(preset, resize_mode, int64(margin))
+	return self
 }
 
 /*
@@ -1070,13 +1088,16 @@ If 'keep_offset' is true, offsets aren't updated after this operation.
 
 If 'push_opposite_anchor' is true and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If 'push_opposite_anchor' was false, the left anchor would get value 0.5.
 
+Returns 'self' to enable method chaining.
+
 [AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
 [AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
 [AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
 [AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
 */
-func (self Instance) SetAnchor(side Rect2.Side, anchor Float.X) { //gd:Control.set_anchor
+func (self Instance) SetAnchor(side Rect2.Side, anchor Float.X) Instance { //gd:Control.set_anchor
 	Advanced(self).SetAnchor(side, float64(anchor), false, true)
+	return self
 }
 
 /*
@@ -1086,54 +1107,69 @@ If 'keep_offset' is true, offsets aren't updated after this operation.
 
 If 'push_opposite_anchor' is true and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If 'push_opposite_anchor' was false, the left anchor would get value 0.5.
 
+Returns 'self' to enable method chaining.
+
 [AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
 [AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
 [AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
 [AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
 */
-func (self MoreArgs) SetAnchor(side Rect2.Side, anchor Float.X, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
+func (self MoreArgs) SetAnchor(side Rect2.Side, anchor Float.X, keep_offset bool, push_opposite_anchor bool) MoreArgs { //gd:Control.set_anchor
 	Advanced(self).SetAnchor(side, float64(anchor), keep_offset, push_opposite_anchor)
+	return self
 }
 
 /*
 Works the same as [SetAnchor], but instead of keep_offset argument and automatic update of offset, it allows to set the offset yourself (see [SetOffset]).
 
+Returns 'self' to enable method chaining.
+
 [SetAnchor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchor
 [SetOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffset
 */
-func (self Instance) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X) { //gd:Control.set_anchor_and_offset
+func (self Instance) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X) Instance { //gd:Control.set_anchor_and_offset
 	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), false)
+	return self
 }
 
 /*
 Works the same as [SetAnchor], but instead of keep_offset argument and automatic update of offset, it allows to set the offset yourself (see [SetOffset]).
 
+Returns 'self' to enable method chaining.
+
 [SetAnchor]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetAnchor
 [SetOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SetOffset
 */
-func (self MoreArgs) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
+func (self MoreArgs) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X, push_opposite_anchor bool) MoreArgs { //gd:Control.set_anchor_and_offset
 	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), push_opposite_anchor)
+	return self
 }
 
 /*
 Sets [OffsetLeft] and [OffsetTop] at the same time. Equivalent of changing [Position].
 
+Returns 'self' to enable method chaining.
+
 [OffsetLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetLeft
 [OffsetTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTop
 [Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
 */
-func (self Instance) SetBegin(position Vector2.XY) { //gd:Control.set_begin
+func (self Instance) SetBegin(position Vector2.XY) Instance { //gd:Control.set_begin
 	Advanced(self).SetBegin(Vector2.XY(position))
+	return self
 }
 
 /*
 Sets [OffsetRight] and [OffsetBottom] at the same time.
 
+Returns 'self' to enable method chaining.
+
 [OffsetBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetBottom
 [OffsetRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetRight
 */
-func (self Instance) SetEnd(position Vector2.XY) { //gd:Control.set_end
+func (self Instance) SetEnd(position Vector2.XY) Instance { //gd:Control.set_end
 	Advanced(self).SetEnd(Vector2.XY(position))
+	return self
 }
 
 /*
@@ -1141,10 +1177,13 @@ Sets the [Position] to given 'position'.
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
 */
-func (self Instance) SetPosition(position Vector2.XY) { //gd:Control.set_position
+func (self Instance) SetPosition(position Vector2.XY) Instance { //gd:Control.set_position
 	Advanced(self).SetPosition(Vector2.XY(position), false)
+	return self
 }
 
 /*
@@ -1152,10 +1191,13 @@ Sets the [Position] to given 'position'.
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [Position]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Position
 */
-func (self MoreArgs) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
+func (self MoreArgs) SetPosition(position Vector2.XY, keep_offsets bool) MoreArgs { //gd:Control.set_position
 	Advanced(self).SetPosition(Vector2.XY(position), keep_offsets)
+	return self
 }
 
 /*
@@ -1163,10 +1205,13 @@ Sets the size (see [Size]).
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
 */
-func (self Instance) SetSize(size Vector2.XY) { //gd:Control.set_size
+func (self Instance) SetSize(size Vector2.XY) Instance { //gd:Control.set_size
 	Advanced(self).SetSize(Vector2.XY(size), false)
+	return self
 }
 
 /*
@@ -1174,10 +1219,13 @@ Sets the size (see [Size]).
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
 */
-func (self MoreArgs) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
+func (self MoreArgs) SetSize(size Vector2.XY, keep_offsets bool) MoreArgs { //gd:Control.set_size
 	Advanced(self).SetSize(Vector2.XY(size), keep_offsets)
+	return self
 }
 
 /*
@@ -1194,10 +1242,13 @@ Sets the [GlobalPosition] to given 'position'.
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
 */
-func (self Instance) SetGlobalPosition(position Vector2.XY) { //gd:Control.set_global_position
+func (self Instance) SetGlobalPosition(position Vector2.XY) Instance { //gd:Control.set_global_position
 	Advanced(self).SetGlobalPosition(Vector2.XY(position), false)
+	return self
 }
 
 /*
@@ -1205,10 +1256,13 @@ Sets the [GlobalPosition] to given 'position'.
 
 If 'keep_offsets' is true, control's anchors will be updated instead of offsets.
 
+Returns 'self' to enable method chaining.
+
 [GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GlobalPosition
 */
-func (self MoreArgs) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
+func (self MoreArgs) SetGlobalPosition(position Vector2.XY, keep_offsets bool) MoreArgs { //gd:Control.set_global_position
 	Advanced(self).SetGlobalPosition(Vector2.XY(position), keep_offsets)
+	return self
 }
 
 /*
@@ -2073,13 +2127,16 @@ The arguments for each callable should be exactly the same as their respective v
 
 - 'drop_func' corresponds to [DropData] and requires both a [Vector2.XY] and a any.
 
+Returns 'self' to enable method chaining.
+
 [CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 [DropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 [GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
-func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) { //gd:Control.set_drag_forwarding
+func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) Instance { //gd:Control.set_drag_forwarding
 	Advanced(self).SetDragForwarding(Callable.New(drag_func), Callable.New(can_drop_func), Callable.New(drop_func))
+	return self
 }
 
 /*
@@ -2094,10 +2151,13 @@ Shows the given control at the mouse pointer. A good time to call this method is
 		return cpb.Color()
 	}
 
+Returns 'self' to enable method chaining.
+
 [GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 */
-func (self Instance) SetDragPreview(control Instance) { //gd:Control.set_drag_preview
+func (self Instance) SetDragPreview(control Instance) Instance { //gd:Control.set_drag_preview
 	Advanced(self).SetDragPreview(control)
+	return self
 }
 
 /*
@@ -2194,9 +2254,10 @@ func (self Instance) ClipContents() bool {
 	return bool(class(self).IsClippingContents())
 }
 
-// SetClipContents sets the property returned by [IsClippingContents].
-func (self Instance) SetClipContents(value bool) {
+// SetClipContents sets the property returned by [IsClippingContents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipContents(value bool) Instance {
 	class(self).SetClipContents(value)
+	return self
 }
 
 /*
@@ -2210,9 +2271,10 @@ func (self Instance) CustomMinimumSize() Vector2.XY {
 	return Vector2.XY(class(self).GetCustomMinimumSize())
 }
 
-// SetCustomMinimumSize sets the property returned by [GetCustomMinimumSize].
-func (self Instance) SetCustomMinimumSize(value Vector2.XY) {
+// SetCustomMinimumSize sets the property returned by [GetCustomMinimumSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomMinimumSize(value Vector2.XY) Instance {
 	class(self).SetCustomMinimumSize(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -2224,9 +2286,10 @@ func (self Instance) LayoutDirection() LayoutDirection {
 	return LayoutDirection(class(self).GetLayoutDirection())
 }
 
-// SetLayoutDirection sets the property returned by [GetLayoutDirection].
-func (self Instance) SetLayoutDirection(value LayoutDirection) {
+// SetLayoutDirection sets the property returned by [GetLayoutDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayoutDirection(value LayoutDirection) Instance {
 	class(self).SetLayoutDirection(value)
+	return self
 }
 
 /*
@@ -2269,9 +2332,10 @@ func (self Instance) OffsetLeft() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(0)))
 }
 
-// SetOffsetLeft sets the property returned by [GetOffset].
-func (self Instance) SetOffsetLeft(value Float.X) {
+// SetOffsetLeft sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetLeft(value Float.X) Instance {
 	class(self).SetOffset(0, float64(value))
+	return self
 }
 
 /*
@@ -2286,9 +2350,10 @@ func (self Instance) OffsetTop() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(1)))
 }
 
-// SetOffsetTop sets the property returned by [GetOffset].
-func (self Instance) SetOffsetTop(value Float.X) {
+// SetOffsetTop sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTop(value Float.X) Instance {
 	class(self).SetOffset(1, float64(value))
+	return self
 }
 
 /*
@@ -2303,9 +2368,10 @@ func (self Instance) OffsetRight() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(2)))
 }
 
-// SetOffsetRight sets the property returned by [GetOffset].
-func (self Instance) SetOffsetRight(value Float.X) {
+// SetOffsetRight sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetRight(value Float.X) Instance {
 	class(self).SetOffset(2, float64(value))
+	return self
 }
 
 /*
@@ -2320,9 +2386,10 @@ func (self Instance) OffsetBottom() Float.X {
 	return Float.X(Float.X(class(self).GetOffset(3)))
 }
 
-// SetOffsetBottom sets the property returned by [GetOffset].
-func (self Instance) SetOffsetBottom(value Float.X) {
+// SetOffsetBottom sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetBottom(value Float.X) Instance {
 	class(self).SetOffset(3, float64(value))
+	return self
 }
 
 /*
@@ -2332,9 +2399,10 @@ func (self Instance) GrowHorizontal() GrowDirection {
 	return GrowDirection(class(self).GetHGrowDirection())
 }
 
-// SetGrowHorizontal sets the property returned by [GetHGrowDirection].
-func (self Instance) SetGrowHorizontal(value GrowDirection) {
+// SetGrowHorizontal sets the property returned by [GetHGrowDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGrowHorizontal(value GrowDirection) Instance {
 	class(self).SetHGrowDirection(value)
+	return self
 }
 
 /*
@@ -2344,9 +2412,10 @@ func (self Instance) GrowVertical() GrowDirection {
 	return GrowDirection(class(self).GetVGrowDirection())
 }
 
-// SetGrowVertical sets the property returned by [GetVGrowDirection].
-func (self Instance) SetGrowVertical(value GrowDirection) {
+// SetGrowVertical sets the property returned by [GetVGrowDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGrowVertical(value GrowDirection) Instance {
 	class(self).SetVGrowDirection(value)
+	return self
 }
 
 /*
@@ -2388,9 +2457,10 @@ func (self Instance) Rotation() Float.X {
 	return Float.X(Float.X(class(self).GetRotation()))
 }
 
-// SetRotation sets the property returned by [GetRotation].
-func (self Instance) SetRotation(value Float.X) {
+// SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation(value Float.X) Instance {
 	class(self).SetRotation(float64(value))
+	return self
 }
 
 /*
@@ -2402,9 +2472,10 @@ func (self Instance) RotationDegrees() Float.X {
 	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
-// SetRotationDegrees sets the property returned by [GetRotationDegrees].
-func (self Instance) SetRotationDegrees(value Float.X) {
+// SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationDegrees(value Float.X) Instance {
 	class(self).SetRotationDegrees(float64(value))
+	return self
 }
 
 /*
@@ -2430,9 +2501,10 @@ func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
-// SetScale sets the property returned by [GetScale].
-func (self Instance) SetScale(value Vector2.XY) {
+// SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale(value Vector2.XY) Instance {
 	class(self).SetScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -2446,9 +2518,10 @@ func (self Instance) PivotOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetPivotOffset())
 }
 
-// SetPivotOffset sets the property returned by [GetPivotOffset].
-func (self Instance) SetPivotOffset(value Vector2.XY) {
+// SetPivotOffset sets the property returned by [GetPivotOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPivotOffset(value Vector2.XY) Instance {
 	class(self).SetPivotOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -2460,9 +2533,10 @@ func (self Instance) SizeFlagsHorizontal() SizeFlags {
 	return SizeFlags(class(self).GetHSizeFlags())
 }
 
-// SetSizeFlagsHorizontal sets the property returned by [GetHSizeFlags].
-func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) {
+// SetSizeFlagsHorizontal sets the property returned by [GetHSizeFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) Instance {
 	class(self).SetHSizeFlags(value)
+	return self
 }
 
 /*
@@ -2474,9 +2548,10 @@ func (self Instance) SizeFlagsVertical() SizeFlags {
 	return SizeFlags(class(self).GetVSizeFlags())
 }
 
-// SetSizeFlagsVertical sets the property returned by [GetVSizeFlags].
-func (self Instance) SetSizeFlagsVertical(value SizeFlags) {
+// SetSizeFlagsVertical sets the property returned by [GetVSizeFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSizeFlagsVertical(value SizeFlags) Instance {
 	class(self).SetVSizeFlags(value)
+	return self
 }
 
 /*
@@ -2488,9 +2563,10 @@ func (self Instance) SizeFlagsStretchRatio() Float.X {
 	return Float.X(Float.X(class(self).GetStretchRatio()))
 }
 
-// SetSizeFlagsStretchRatio sets the property returned by [GetStretchRatio].
-func (self Instance) SetSizeFlagsStretchRatio(value Float.X) {
+// SetSizeFlagsStretchRatio sets the property returned by [GetStretchRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSizeFlagsStretchRatio(value Float.X) Instance {
 	class(self).SetStretchRatio(float64(value))
+	return self
 }
 
 /*
@@ -2506,9 +2582,10 @@ func (self Instance) LocalizeNumeralSystem() bool {
 	return bool(class(self).IsLocalizingNumeralSystem())
 }
 
-// SetLocalizeNumeralSystem sets the property returned by [IsLocalizingNumeralSystem].
-func (self Instance) SetLocalizeNumeralSystem(value bool) {
+// SetLocalizeNumeralSystem sets the property returned by [IsLocalizingNumeralSystem]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocalizeNumeralSystem(value bool) Instance {
 	class(self).SetLocalizeNumeralSystem(value)
+	return self
 }
 
 /*
@@ -2518,9 +2595,10 @@ func (self Instance) AutoTranslate() bool {
 	return bool(class(self).IsAutoTranslating())
 }
 
-// SetAutoTranslate sets the property returned by [IsAutoTranslating].
-func (self Instance) SetAutoTranslate(value bool) {
+// SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTranslate(value bool) Instance {
 	class(self).SetAutoTranslate(value)
+	return self
 }
 
 /*
@@ -2542,9 +2620,10 @@ func (self Instance) TooltipText() string {
 	return string(class(self).GetTooltipText().String())
 }
 
-// SetTooltipText sets the property returned by [GetTooltipText].
-func (self Instance) SetTooltipText(value string) {
+// SetTooltipText sets the property returned by [GetTooltipText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTooltipText(value string) Instance {
 	class(self).SetTooltipText(String.New(value))
+	return self
 }
 
 /*
@@ -2558,9 +2637,10 @@ func (self Instance) TooltipAutoTranslateMode() Node.AutoTranslateMode {
 	return Node.AutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
 }
 
-// SetTooltipAutoTranslateMode sets the property returned by [GetTooltipAutoTranslateMode].
-func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) {
+// SetTooltipAutoTranslateMode sets the property returned by [GetTooltipAutoTranslateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) Instance {
 	class(self).SetTooltipAutoTranslateMode(value)
+	return self
 }
 
 /*
@@ -2573,9 +2653,10 @@ func (self Instance) FocusNeighborLeft() string {
 	return string(class(self).GetFocusNeighbor(0).String())
 }
 
-// SetFocusNeighborLeft sets the property returned by [GetFocusNeighbor].
-func (self Instance) SetFocusNeighborLeft(value string) {
+// SetFocusNeighborLeft sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusNeighborLeft(value string) Instance {
 	class(self).SetFocusNeighbor(0, Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2588,9 +2669,10 @@ func (self Instance) FocusNeighborTop() string {
 	return string(class(self).GetFocusNeighbor(1).String())
 }
 
-// SetFocusNeighborTop sets the property returned by [GetFocusNeighbor].
-func (self Instance) SetFocusNeighborTop(value string) {
+// SetFocusNeighborTop sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusNeighborTop(value string) Instance {
 	class(self).SetFocusNeighbor(1, Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2603,9 +2685,10 @@ func (self Instance) FocusNeighborRight() string {
 	return string(class(self).GetFocusNeighbor(2).String())
 }
 
-// SetFocusNeighborRight sets the property returned by [GetFocusNeighbor].
-func (self Instance) SetFocusNeighborRight(value string) {
+// SetFocusNeighborRight sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusNeighborRight(value string) Instance {
 	class(self).SetFocusNeighbor(2, Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2618,9 +2701,10 @@ func (self Instance) FocusNeighborBottom() string {
 	return string(class(self).GetFocusNeighbor(3).String())
 }
 
-// SetFocusNeighborBottom sets the property returned by [GetFocusNeighbor].
-func (self Instance) SetFocusNeighborBottom(value string) {
+// SetFocusNeighborBottom sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusNeighborBottom(value string) Instance {
 	class(self).SetFocusNeighbor(3, Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2634,9 +2718,10 @@ func (self Instance) FocusNext() string {
 	return string(class(self).GetFocusNext().String())
 }
 
-// SetFocusNext sets the property returned by [GetFocusNext].
-func (self Instance) SetFocusNext(value string) {
+// SetFocusNext sets the property returned by [GetFocusNext]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusNext(value string) Instance {
 	class(self).SetFocusNext(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2650,9 +2735,10 @@ func (self Instance) FocusPrevious() string {
 	return string(class(self).GetFocusPrevious().String())
 }
 
-// SetFocusPrevious sets the property returned by [GetFocusPrevious].
-func (self Instance) SetFocusPrevious(value string) {
+// SetFocusPrevious sets the property returned by [GetFocusPrevious]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusPrevious(value string) Instance {
 	class(self).SetFocusPrevious(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -2667,9 +2753,10 @@ func (self Instance) FocusMode() FocusMode {
 	return FocusMode(class(self).GetFocusMode())
 }
 
-// SetFocusMode sets the property returned by [GetFocusMode].
-func (self Instance) SetFocusMode(value FocusMode) {
+// SetFocusMode sets the property returned by [GetFocusMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusMode(value FocusMode) Instance {
 	class(self).SetFocusMode(value)
+	return self
 }
 
 /*
@@ -2682,9 +2769,10 @@ func (self Instance) FocusBehaviorRecursive() FocusBehaviorRecursive {
 	return FocusBehaviorRecursive(class(self).GetFocusBehaviorRecursive())
 }
 
-// SetFocusBehaviorRecursive sets the property returned by [GetFocusBehaviorRecursive].
-func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) {
+// SetFocusBehaviorRecursive sets the property returned by [GetFocusBehaviorRecursive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) Instance {
 	class(self).SetFocusBehaviorRecursive(value)
+	return self
 }
 
 /*
@@ -2700,9 +2788,10 @@ func (self Instance) MouseFilter() MouseFilter {
 	return MouseFilter(class(self).GetMouseFilter())
 }
 
-// SetMouseFilter sets the property returned by [GetMouseFilter].
-func (self Instance) SetMouseFilter(value MouseFilter) {
+// SetMouseFilter sets the property returned by [GetMouseFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMouseFilter(value MouseFilter) Instance {
 	class(self).SetMouseFilter(value)
+	return self
 }
 
 /*
@@ -2715,9 +2804,10 @@ func (self Instance) MouseBehaviorRecursive() MouseBehaviorRecursive {
 	return MouseBehaviorRecursive(class(self).GetMouseBehaviorRecursive())
 }
 
-// SetMouseBehaviorRecursive sets the property returned by [GetMouseBehaviorRecursive].
-func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) {
+// SetMouseBehaviorRecursive sets the property returned by [GetMouseBehaviorRecursive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) Instance {
 	class(self).SetMouseBehaviorRecursive(value)
+	return self
 }
 
 /*
@@ -2735,9 +2825,10 @@ func (self Instance) MouseForcePassScrollEvents() bool {
 	return bool(class(self).IsForcePassScrollEvents())
 }
 
-// SetMouseForcePassScrollEvents sets the property returned by [IsForcePassScrollEvents].
-func (self Instance) SetMouseForcePassScrollEvents(value bool) {
+// SetMouseForcePassScrollEvents sets the property returned by [IsForcePassScrollEvents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMouseForcePassScrollEvents(value bool) Instance {
 	class(self).SetForcePassScrollEvents(value)
+	return self
 }
 
 /*
@@ -2749,9 +2840,10 @@ func (self Instance) MouseDefaultCursorShape() CursorShape {
 	return CursorShape(class(self).GetDefaultCursorShape())
 }
 
-// SetMouseDefaultCursorShape sets the property returned by [GetDefaultCursorShape].
-func (self Instance) SetMouseDefaultCursorShape(value CursorShape) {
+// SetMouseDefaultCursorShape sets the property returned by [GetDefaultCursorShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMouseDefaultCursorShape(value CursorShape) Instance {
 	class(self).SetDefaultCursorShape(value)
+	return self
 }
 
 /*
@@ -2764,9 +2856,10 @@ func (self Instance) ShortcutContext() Node.Instance {
 	return Node.Instance(class(self).GetShortcutContext())
 }
 
-// SetShortcutContext sets the property returned by [GetShortcutContext].
-func (self Instance) SetShortcutContext(value Node.Instance) {
+// SetShortcutContext sets the property returned by [GetShortcutContext]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutContext(value Node.Instance) Instance {
 	class(self).SetShortcutContext(value)
+	return self
 }
 
 /*
@@ -2776,9 +2869,10 @@ func (self Instance) AccessibilityName() string {
 	return string(class(self).GetAccessibilityName().String())
 }
 
-// SetAccessibilityName sets the property returned by [GetAccessibilityName].
-func (self Instance) SetAccessibilityName(value string) {
+// SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityName(value string) Instance {
 	class(self).SetAccessibilityName(String.New(value))
+	return self
 }
 
 /*
@@ -2788,9 +2882,10 @@ func (self Instance) AccessibilityDescription() string {
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
-// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription].
-func (self Instance) SetAccessibilityDescription(value string) {
+// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityDescription(value string) Instance {
 	class(self).SetAccessibilityDescription(String.New(value))
+	return self
 }
 
 /*
@@ -2802,9 +2897,10 @@ func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode {
 	return DisplayServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
 }
 
-// SetAccessibilityLive sets the property returned by [GetAccessibilityLive].
-func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) {
+// SetAccessibilityLive sets the property returned by [GetAccessibilityLive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) Instance {
 	class(self).SetAccessibilityLive(value)
+	return self
 }
 
 /*
@@ -2814,9 +2910,10 @@ func (self Instance) AccessibilityControlsNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityControlsNodes())))
 }
 
-// SetAccessibilityControlsNodes sets the property returned by [GetAccessibilityControlsNodes].
-func (self Instance) SetAccessibilityControlsNodes(value []string) {
+// SetAccessibilityControlsNodes sets the property returned by [GetAccessibilityControlsNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityControlsNodes(value []string) Instance {
 	class(self).SetAccessibilityControlsNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+	return self
 }
 
 /*
@@ -2826,9 +2923,10 @@ func (self Instance) AccessibilityDescribedByNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityDescribedByNodes())))
 }
 
-// SetAccessibilityDescribedByNodes sets the property returned by [GetAccessibilityDescribedByNodes].
-func (self Instance) SetAccessibilityDescribedByNodes(value []string) {
+// SetAccessibilityDescribedByNodes sets the property returned by [GetAccessibilityDescribedByNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityDescribedByNodes(value []string) Instance {
 	class(self).SetAccessibilityDescribedByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+	return self
 }
 
 /*
@@ -2838,9 +2936,10 @@ func (self Instance) AccessibilityLabeledByNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityLabeledByNodes())))
 }
 
-// SetAccessibilityLabeledByNodes sets the property returned by [GetAccessibilityLabeledByNodes].
-func (self Instance) SetAccessibilityLabeledByNodes(value []string) {
+// SetAccessibilityLabeledByNodes sets the property returned by [GetAccessibilityLabeledByNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityLabeledByNodes(value []string) Instance {
 	class(self).SetAccessibilityLabeledByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+	return self
 }
 
 /*
@@ -2850,9 +2949,10 @@ func (self Instance) AccessibilityFlowToNodes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityFlowToNodes())))
 }
 
-// SetAccessibilityFlowToNodes sets the property returned by [GetAccessibilityFlowToNodes].
-func (self Instance) SetAccessibilityFlowToNodes(value []string) {
+// SetAccessibilityFlowToNodes sets the property returned by [GetAccessibilityFlowToNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityFlowToNodes(value []string) Instance {
 	class(self).SetAccessibilityFlowToNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+	return self
 }
 
 /*
@@ -2868,9 +2968,10 @@ func (self Instance) Theme() Theme.Instance {
 	return Theme.Instance(class(self).GetTheme())
 }
 
-// SetTheme sets the property returned by [GetTheme].
-func (self Instance) SetTheme(value Theme.Instance) {
+// SetTheme sets the property returned by [GetTheme]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTheme(value Theme.Instance) Instance {
 	class(self).SetTheme(value)
+	return self
 }
 
 /*
@@ -2891,9 +2992,10 @@ func (self Instance) ThemeTypeVariation() string {
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
-// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation].
-func (self Instance) SetThemeTypeVariation(value string) {
+// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThemeTypeVariation(value string) Instance {
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -4873,12 +4975,13 @@ func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_
 /*
 Emitted when the control changes size.
 */
-func (self Instance) OnResized(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnResized(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Resized() Signal.Any {
@@ -4890,12 +4993,13 @@ Emitted when the node receives an [InputEvent].
 
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 */
-func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
+func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GuiInput() Signal.Any {
@@ -4910,12 +5014,13 @@ Note: [CanvasItem.ZIndex] doesn't affect, which Control receives the signal.
 [CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
 [MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
 */
-func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseEntered() Signal.Any {
@@ -4932,12 +5037,13 @@ Note: If you want to check whether the mouse truly left the area, ignoring any t
 [CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
 [MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
 */
-func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseExited() Signal.Any {
@@ -4947,12 +5053,13 @@ func (self class) MouseExited() Signal.Any {
 /*
 Emitted when the node gains focus.
 */
-func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FocusEntered() Signal.Any {
@@ -4962,12 +5069,13 @@ func (self class) FocusEntered() Signal.Any {
 /*
 Emitted when the node loses focus.
 */
-func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FocusExited() Signal.Any {
@@ -4980,12 +5088,13 @@ Emitted when one of the size flags changes. See [SizeFlagsHorizontal] and [SizeF
 [SizeFlagsHorizontal]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsHorizontal
 [SizeFlagsVertical]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsVertical
 */
-func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SizeFlagsChanged() Signal.Any {
@@ -4995,12 +5104,13 @@ func (self class) SizeFlagsChanged() Signal.Any {
 /*
 Emitted when the node's minimum size changes.
 */
-func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MinimumSizeChanged() Signal.Any {
@@ -5010,12 +5120,13 @@ func (self class) MinimumSizeChanged() Signal.Any {
 /*
 Emitted when the [NotificationThemeChanged] notification is sent.
 */
-func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ThemeChanged() Signal.Any {

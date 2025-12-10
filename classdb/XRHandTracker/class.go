@@ -136,9 +136,12 @@ type Any interface {
 
 /*
 Sets flags about the validity of the tracking data for the given hand joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHandJointFlags(joint HandJoint, flags HandJointFlags) { //gd:XRHandTracker.set_hand_joint_flags
+func (self Instance) SetHandJointFlags(joint HandJoint, flags HandJointFlags) Instance { //gd:XRHandTracker.set_hand_joint_flags
 	Advanced(self).SetHandJointFlags(joint, flags)
+	return self
 }
 
 /*
@@ -150,9 +153,12 @@ func (self Instance) GetHandJointFlags(joint HandJoint) HandJointFlags { //gd:XR
 
 /*
 Sets the transform for the given hand joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHandJointTransform(joint HandJoint, transform Transform3D.BasisOrigin) { //gd:XRHandTracker.set_hand_joint_transform
+func (self Instance) SetHandJointTransform(joint HandJoint, transform Transform3D.BasisOrigin) Instance { //gd:XRHandTracker.set_hand_joint_transform
 	Advanced(self).SetHandJointTransform(joint, Transform3D.BasisOrigin(transform))
+	return self
 }
 
 /*
@@ -164,9 +170,12 @@ func (self Instance) GetHandJointTransform(joint HandJoint) Transform3D.BasisOri
 
 /*
 Sets the radius of the given hand joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHandJointRadius(joint HandJoint, radius Float.X) { //gd:XRHandTracker.set_hand_joint_radius
+func (self Instance) SetHandJointRadius(joint HandJoint, radius Float.X) Instance { //gd:XRHandTracker.set_hand_joint_radius
 	Advanced(self).SetHandJointRadius(joint, float64(radius))
+	return self
 }
 
 /*
@@ -178,9 +187,12 @@ func (self Instance) GetHandJointRadius(joint HandJoint) Float.X { //gd:XRHandTr
 
 /*
 Sets the linear velocity for the given hand joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHandJointLinearVelocity(joint HandJoint, linear_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_linear_velocity
+func (self Instance) SetHandJointLinearVelocity(joint HandJoint, linear_velocity Vector3.XYZ) Instance { //gd:XRHandTracker.set_hand_joint_linear_velocity
 	Advanced(self).SetHandJointLinearVelocity(joint, Vector3.XYZ(linear_velocity))
+	return self
 }
 
 /*
@@ -192,9 +204,12 @@ func (self Instance) GetHandJointLinearVelocity(joint HandJoint) Vector3.XYZ { /
 
 /*
 Sets the angular velocity for the given hand joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHandJointAngularVelocity(joint HandJoint, angular_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_angular_velocity
+func (self Instance) SetHandJointAngularVelocity(joint HandJoint, angular_velocity Vector3.XYZ) Instance { //gd:XRHandTracker.set_hand_joint_angular_velocity
 	Advanced(self).SetHandJointAngularVelocity(joint, Vector3.XYZ(angular_velocity))
+	return self
 }
 
 /*
@@ -254,9 +269,10 @@ func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
-// SetHasTrackingData sets the property returned by [GetHasTrackingData].
-func (self Instance) SetHasTrackingData(value bool) {
+// SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHasTrackingData(value bool) Instance {
 	class(self).SetHasTrackingData(value)
+	return self
 }
 
 /*
@@ -266,9 +282,10 @@ func (self Instance) HandTrackingSource() HandTrackingSource {
 	return HandTrackingSource(class(self).GetHandTrackingSource())
 }
 
-// SetHandTrackingSource sets the property returned by [GetHandTrackingSource].
-func (self Instance) SetHandTrackingSource(value HandTrackingSource) {
+// SetHandTrackingSource sets the property returned by [GetHandTrackingSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandTrackingSource(value HandTrackingSource) Instance {
 	class(self).SetHandTrackingSource(value)
+	return self
 }
 
 //go:nosplit

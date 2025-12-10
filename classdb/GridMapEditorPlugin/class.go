@@ -136,9 +136,12 @@ func (self Instance) GetCurrentGridMap() GridMap.Instance { //gd:GridMapEditorPl
 
 /*
 Selects the cells inside the given bounds from 'begin' to 'end'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
+func (self Instance) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) Instance { //gd:GridMapEditorPlugin.set_selection
 	Advanced(self).SetSelection(Vector3i.XYZ(begin), Vector3i.XYZ(end))
+	return self
 }
 
 /*
@@ -190,10 +193,13 @@ Selects the [MeshLibrary] item with the given index in the grid map editor's pal
 
 Note: The indices might not be in the same order as they appear in the editor's interface.
 
+Returns 'self' to enable method chaining.
+
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 */
-func (self Instance) SetSelectedPaletteItem(item int) { //gd:GridMapEditorPlugin.set_selected_palette_item
+func (self Instance) SetSelectedPaletteItem(item int) Instance { //gd:GridMapEditorPlugin.set_selected_palette_item
 	Advanced(self).SetSelectedPaletteItem(int64(item))
+	return self
 }
 
 /*

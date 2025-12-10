@@ -172,9 +172,10 @@ func (self Instance) RangeMinHz() Float.X {
 	return Float.X(Float.X(class(self).GetRangeMinHz()))
 }
 
-// SetRangeMinHz sets the property returned by [GetRangeMinHz].
-func (self Instance) SetRangeMinHz(value Float.X) {
+// SetRangeMinHz sets the property returned by [GetRangeMinHz]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeMinHz(value Float.X) Instance {
 	class(self).SetRangeMinHz(float64(value))
+	return self
 }
 
 /*
@@ -184,9 +185,10 @@ func (self Instance) RangeMaxHz() Float.X {
 	return Float.X(Float.X(class(self).GetRangeMaxHz()))
 }
 
-// SetRangeMaxHz sets the property returned by [GetRangeMaxHz].
-func (self Instance) SetRangeMaxHz(value Float.X) {
+// SetRangeMaxHz sets the property returned by [GetRangeMaxHz]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeMaxHz(value Float.X) Instance {
 	class(self).SetRangeMaxHz(float64(value))
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) RateHz() Float.X {
 	return Float.X(Float.X(class(self).GetRateHz()))
 }
 
-// SetRateHz sets the property returned by [GetRateHz].
-func (self Instance) SetRateHz(value Float.X) {
+// SetRateHz sets the property returned by [GetRateHz]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRateHz(value Float.X) Instance {
 	class(self).SetRateHz(float64(value))
+	return self
 }
 
 /*
@@ -208,9 +211,10 @@ func (self Instance) Feedback() Float.X {
 	return Float.X(Float.X(class(self).GetFeedback()))
 }
 
-// SetFeedback sets the property returned by [GetFeedback].
-func (self Instance) SetFeedback(value Float.X) {
+// SetFeedback sets the property returned by [GetFeedback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedback(value Float.X) Instance {
 	class(self).SetFeedback(float64(value))
+	return self
 }
 
 /*
@@ -220,9 +224,10 @@ func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-// SetDepth sets the property returned by [GetDepth].
-func (self Instance) SetDepth(value Float.X) {
+// SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepth(value Float.X) Instance {
 	class(self).SetDepth(float64(value))
+	return self
 }
 
 //go:nosplit

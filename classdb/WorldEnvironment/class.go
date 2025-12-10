@@ -180,9 +180,10 @@ func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
-// SetEnvironment sets the property returned by [GetEnvironment].
-func (self Instance) SetEnvironment(value Environment.Instance) {
+// SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironment(value Environment.Instance) Instance {
 	class(self).SetEnvironment(value)
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-// SetCameraAttributes sets the property returned by [GetCameraAttributes].
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
+// SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
 	class(self).SetCameraAttributes(value)
+	return self
 }
 
 /*
@@ -210,9 +212,10 @@ func (self Instance) Compositor() Compositor.Instance {
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
-// SetCompositor sets the property returned by [GetCompositor].
-func (self Instance) SetCompositor(value Compositor.Instance) {
+// SetCompositor sets the property returned by [GetCompositor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompositor(value Compositor.Instance) Instance {
 	class(self).SetCompositor(value)
+	return self
 }
 
 //go:nosplit

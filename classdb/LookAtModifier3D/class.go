@@ -262,9 +262,10 @@ func (self Instance) TargetNode() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNode sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNode(value string) {
+// SetTargetNode sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNode(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -276,9 +277,10 @@ func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
-// SetBoneName sets the property returned by [GetBoneName].
-func (self Instance) SetBoneName(value string) {
+// SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneName(value string) Instance {
 	class(self).SetBoneName(String.New(value))
+	return self
 }
 
 /*
@@ -291,9 +293,10 @@ func (self Instance) Bone() int {
 	return int(int(class(self).GetBone()))
 }
 
-// SetBone sets the property returned by [GetBone].
-func (self Instance) SetBone(value int) {
+// SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone(value int) Instance {
 	class(self).SetBone(int64(value))
+	return self
 }
 
 /*
@@ -306,9 +309,10 @@ func (self Instance) ForwardAxis() SkeletonModifier3D.BoneAxis {
 	return SkeletonModifier3D.BoneAxis(class(self).GetForwardAxis())
 }
 
-// SetForwardAxis sets the property returned by [GetForwardAxis].
-func (self Instance) SetForwardAxis(value SkeletonModifier3D.BoneAxis) {
+// SetForwardAxis sets the property returned by [GetForwardAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetForwardAxis(value SkeletonModifier3D.BoneAxis) Instance {
 	class(self).SetForwardAxis(value)
+	return self
 }
 
 /*
@@ -321,9 +325,10 @@ func (self Instance) PrimaryRotationAxis() Vector3.Axis {
 	return Vector3.Axis(class(self).GetPrimaryRotationAxis())
 }
 
-// SetPrimaryRotationAxis sets the property returned by [GetPrimaryRotationAxis].
-func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) {
+// SetPrimaryRotationAxis sets the property returned by [GetPrimaryRotationAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) Instance {
 	class(self).SetPrimaryRotationAxis(value)
+	return self
 }
 
 /*
@@ -333,9 +338,10 @@ func (self Instance) UseSecondaryRotation() bool {
 	return bool(class(self).IsUsingSecondaryRotation())
 }
 
-// SetUseSecondaryRotation sets the property returned by [IsUsingSecondaryRotation].
-func (self Instance) SetUseSecondaryRotation(value bool) {
+// SetUseSecondaryRotation sets the property returned by [IsUsingSecondaryRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseSecondaryRotation(value bool) Instance {
 	class(self).SetUseSecondaryRotation(value)
+	return self
 }
 
 /*
@@ -345,9 +351,10 @@ func (self Instance) OriginFrom() OriginFrom {
 	return OriginFrom(class(self).GetOriginFrom())
 }
 
-// SetOriginFrom sets the property returned by [GetOriginFrom].
-func (self Instance) SetOriginFrom(value OriginFrom) {
+// SetOriginFrom sets the property returned by [GetOriginFrom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginFrom(value OriginFrom) Instance {
 	class(self).SetOriginFrom(value)
+	return self
 }
 
 /*
@@ -359,9 +366,10 @@ func (self Instance) OriginBoneName() string {
 	return string(class(self).GetOriginBoneName().String())
 }
 
-// SetOriginBoneName sets the property returned by [GetOriginBoneName].
-func (self Instance) SetOriginBoneName(value string) {
+// SetOriginBoneName sets the property returned by [GetOriginBoneName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginBoneName(value string) Instance {
 	class(self).SetOriginBoneName(String.New(value))
+	return self
 }
 
 /*
@@ -374,9 +382,10 @@ func (self Instance) OriginBone() int {
 	return int(int(class(self).GetOriginBone()))
 }
 
-// SetOriginBone sets the property returned by [GetOriginBone].
-func (self Instance) SetOriginBone(value int) {
+// SetOriginBone sets the property returned by [GetOriginBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginBone(value int) Instance {
 	class(self).SetOriginBone(int64(value))
+	return self
 }
 
 /*
@@ -389,9 +398,10 @@ func (self Instance) OriginExternalNode() string {
 	return string(class(self).GetOriginExternalNode().String())
 }
 
-// SetOriginExternalNode sets the property returned by [GetOriginExternalNode].
-func (self Instance) SetOriginExternalNode(value string) {
+// SetOriginExternalNode sets the property returned by [GetOriginExternalNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginExternalNode(value string) Instance {
 	class(self).SetOriginExternalNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -405,9 +415,10 @@ func (self Instance) OriginOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetOriginOffset())
 }
 
-// SetOriginOffset sets the property returned by [GetOriginOffset].
-func (self Instance) SetOriginOffset(value Vector3.XYZ) {
+// SetOriginOffset sets the property returned by [GetOriginOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance {
 	class(self).SetOriginOffset(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -417,9 +428,10 @@ func (self Instance) OriginSafeMargin() Float.X {
 	return Float.X(Float.X(class(self).GetOriginSafeMargin()))
 }
 
-// SetOriginSafeMargin sets the property returned by [GetOriginSafeMargin].
-func (self Instance) SetOriginSafeMargin(value Float.X) {
+// SetOriginSafeMargin sets the property returned by [GetOriginSafeMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginSafeMargin(value Float.X) Instance {
 	class(self).SetOriginSafeMargin(float64(value))
+	return self
 }
 
 /*
@@ -438,9 +450,10 @@ func (self Instance) Duration() Float.X {
 	return Float.X(Float.X(class(self).GetDuration()))
 }
 
-// SetDuration sets the property returned by [GetDuration].
-func (self Instance) SetDuration(value Float.X) {
+// SetDuration sets the property returned by [GetDuration]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDuration(value Float.X) Instance {
 	class(self).SetDuration(float64(value))
+	return self
 }
 
 /*
@@ -450,9 +463,10 @@ func (self Instance) TransitionType() Tween.TransitionType {
 	return Tween.TransitionType(class(self).GetTransitionType())
 }
 
-// SetTransitionType sets the property returned by [GetTransitionType].
-func (self Instance) SetTransitionType(value Tween.TransitionType) {
+// SetTransitionType sets the property returned by [GetTransitionType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransitionType(value Tween.TransitionType) Instance {
 	class(self).SetTransitionType(value)
+	return self
 }
 
 /*
@@ -462,9 +476,10 @@ func (self Instance) EaseType() Tween.EaseType {
 	return Tween.EaseType(class(self).GetEaseType())
 }
 
-// SetEaseType sets the property returned by [GetEaseType].
-func (self Instance) SetEaseType(value Tween.EaseType) {
+// SetEaseType sets the property returned by [GetEaseType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEaseType(value Tween.EaseType) Instance {
 	class(self).SetEaseType(value)
+	return self
 }
 
 /*
@@ -482,9 +497,10 @@ func (self Instance) UseAngleLimitation() bool {
 	return bool(class(self).IsUsingAngleLimitation())
 }
 
-// SetUseAngleLimitation sets the property returned by [IsUsingAngleLimitation].
-func (self Instance) SetUseAngleLimitation(value bool) {
+// SetUseAngleLimitation sets the property returned by [IsUsingAngleLimitation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAngleLimitation(value bool) Instance {
 	class(self).SetUseAngleLimitation(value)
+	return self
 }
 
 /*
@@ -496,9 +512,10 @@ func (self Instance) SymmetryLimitation() bool {
 	return bool(class(self).IsLimitationSymmetry())
 }
 
-// SetSymmetryLimitation sets the property returned by [IsLimitationSymmetry].
-func (self Instance) SetSymmetryLimitation(value bool) {
+// SetSymmetryLimitation sets the property returned by [IsLimitationSymmetry]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSymmetryLimitation(value bool) Instance {
 	class(self).SetSymmetryLimitation(value)
+	return self
 }
 
 /*
@@ -510,9 +527,10 @@ func (self Instance) PrimaryLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetPrimaryLimitAngle()))
 }
 
-// SetPrimaryLimitAngle sets the property returned by [GetPrimaryLimitAngle].
-func (self Instance) SetPrimaryLimitAngle(value Angle.Radians) {
+// SetPrimaryLimitAngle sets the property returned by [GetPrimaryLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryLimitAngle(value Angle.Radians) Instance {
 	class(self).SetPrimaryLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -526,9 +544,10 @@ func (self Instance) PrimaryDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetPrimaryDampThreshold()))
 }
 
-// SetPrimaryDampThreshold sets the property returned by [GetPrimaryDampThreshold].
-func (self Instance) SetPrimaryDampThreshold(value Float.X) {
+// SetPrimaryDampThreshold sets the property returned by [GetPrimaryDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryDampThreshold(value Float.X) Instance {
 	class(self).SetPrimaryDampThreshold(float64(value))
+	return self
 }
 
 /*
@@ -540,9 +559,10 @@ func (self Instance) PrimaryPositiveLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetPrimaryPositiveLimitAngle()))
 }
 
-// SetPrimaryPositiveLimitAngle sets the property returned by [GetPrimaryPositiveLimitAngle].
-func (self Instance) SetPrimaryPositiveLimitAngle(value Angle.Radians) {
+// SetPrimaryPositiveLimitAngle sets the property returned by [GetPrimaryPositiveLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryPositiveLimitAngle(value Angle.Radians) Instance {
 	class(self).SetPrimaryPositiveLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -554,9 +574,10 @@ func (self Instance) PrimaryPositiveDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetPrimaryPositiveDampThreshold()))
 }
 
-// SetPrimaryPositiveDampThreshold sets the property returned by [GetPrimaryPositiveDampThreshold].
-func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) {
+// SetPrimaryPositiveDampThreshold sets the property returned by [GetPrimaryPositiveDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) Instance {
 	class(self).SetPrimaryPositiveDampThreshold(float64(value))
+	return self
 }
 
 /*
@@ -568,9 +589,10 @@ func (self Instance) PrimaryNegativeLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetPrimaryNegativeLimitAngle()))
 }
 
-// SetPrimaryNegativeLimitAngle sets the property returned by [GetPrimaryNegativeLimitAngle].
-func (self Instance) SetPrimaryNegativeLimitAngle(value Angle.Radians) {
+// SetPrimaryNegativeLimitAngle sets the property returned by [GetPrimaryNegativeLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryNegativeLimitAngle(value Angle.Radians) Instance {
 	class(self).SetPrimaryNegativeLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -582,9 +604,10 @@ func (self Instance) PrimaryNegativeDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetPrimaryNegativeDampThreshold()))
 }
 
-// SetPrimaryNegativeDampThreshold sets the property returned by [GetPrimaryNegativeDampThreshold].
-func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) {
+// SetPrimaryNegativeDampThreshold sets the property returned by [GetPrimaryNegativeDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) Instance {
 	class(self).SetPrimaryNegativeDampThreshold(float64(value))
+	return self
 }
 
 /*
@@ -596,9 +619,10 @@ func (self Instance) SecondaryLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetSecondaryLimitAngle()))
 }
 
-// SetSecondaryLimitAngle sets the property returned by [GetSecondaryLimitAngle].
-func (self Instance) SetSecondaryLimitAngle(value Angle.Radians) {
+// SetSecondaryLimitAngle sets the property returned by [GetSecondaryLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryLimitAngle(value Angle.Radians) Instance {
 	class(self).SetSecondaryLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -610,9 +634,10 @@ func (self Instance) SecondaryDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetSecondaryDampThreshold()))
 }
 
-// SetSecondaryDampThreshold sets the property returned by [GetSecondaryDampThreshold].
-func (self Instance) SetSecondaryDampThreshold(value Float.X) {
+// SetSecondaryDampThreshold sets the property returned by [GetSecondaryDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryDampThreshold(value Float.X) Instance {
 	class(self).SetSecondaryDampThreshold(float64(value))
+	return self
 }
 
 /*
@@ -624,9 +649,10 @@ func (self Instance) SecondaryPositiveLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetSecondaryPositiveLimitAngle()))
 }
 
-// SetSecondaryPositiveLimitAngle sets the property returned by [GetSecondaryPositiveLimitAngle].
-func (self Instance) SetSecondaryPositiveLimitAngle(value Angle.Radians) {
+// SetSecondaryPositiveLimitAngle sets the property returned by [GetSecondaryPositiveLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryPositiveLimitAngle(value Angle.Radians) Instance {
 	class(self).SetSecondaryPositiveLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -638,9 +664,10 @@ func (self Instance) SecondaryPositiveDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetSecondaryPositiveDampThreshold()))
 }
 
-// SetSecondaryPositiveDampThreshold sets the property returned by [GetSecondaryPositiveDampThreshold].
-func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) {
+// SetSecondaryPositiveDampThreshold sets the property returned by [GetSecondaryPositiveDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) Instance {
 	class(self).SetSecondaryPositiveDampThreshold(float64(value))
+	return self
 }
 
 /*
@@ -652,9 +679,10 @@ func (self Instance) SecondaryNegativeLimitAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetSecondaryNegativeLimitAngle()))
 }
 
-// SetSecondaryNegativeLimitAngle sets the property returned by [GetSecondaryNegativeLimitAngle].
-func (self Instance) SetSecondaryNegativeLimitAngle(value Angle.Radians) {
+// SetSecondaryNegativeLimitAngle sets the property returned by [GetSecondaryNegativeLimitAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryNegativeLimitAngle(value Angle.Radians) Instance {
 	class(self).SetSecondaryNegativeLimitAngle(float64(value))
+	return self
 }
 
 /*
@@ -666,9 +694,10 @@ func (self Instance) SecondaryNegativeDampThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetSecondaryNegativeDampThreshold()))
 }
 
-// SetSecondaryNegativeDampThreshold sets the property returned by [GetSecondaryNegativeDampThreshold].
-func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) {
+// SetSecondaryNegativeDampThreshold sets the property returned by [GetSecondaryNegativeDampThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) Instance {
 	class(self).SetSecondaryNegativeDampThreshold(float64(value))
+	return self
 }
 
 //go:nosplit

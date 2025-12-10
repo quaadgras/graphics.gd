@@ -186,9 +186,10 @@ func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-// SetScrollOffset sets the property returned by [GetScrollOffset].
-func (self Instance) SetScrollOffset(value Vector2.XY) {
+// SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
 	class(self).SetScrollOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) ScrollBaseOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollBaseOffset())
 }
 
-// SetScrollBaseOffset sets the property returned by [GetScrollBaseOffset].
-func (self Instance) SetScrollBaseOffset(value Vector2.XY) {
+// SetScrollBaseOffset sets the property returned by [GetScrollBaseOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollBaseOffset(value Vector2.XY) Instance {
 	class(self).SetScrollBaseOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -214,9 +216,10 @@ func (self Instance) ScrollBaseScale() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollBaseScale())
 }
 
-// SetScrollBaseScale sets the property returned by [GetScrollBaseScale].
-func (self Instance) SetScrollBaseScale(value Vector2.XY) {
+// SetScrollBaseScale sets the property returned by [GetScrollBaseScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollBaseScale(value Vector2.XY) Instance {
 	class(self).SetScrollBaseScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -228,9 +231,10 @@ func (self Instance) ScrollLimitBegin() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
-// SetScrollLimitBegin sets the property returned by [GetLimitBegin].
-func (self Instance) SetScrollLimitBegin(value Vector2.XY) {
+// SetScrollLimitBegin sets the property returned by [GetLimitBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollLimitBegin(value Vector2.XY) Instance {
 	class(self).SetLimitBegin(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -242,9 +246,10 @@ func (self Instance) ScrollLimitEnd() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
-// SetScrollLimitEnd sets the property returned by [GetLimitEnd].
-func (self Instance) SetScrollLimitEnd(value Vector2.XY) {
+// SetScrollLimitEnd sets the property returned by [GetLimitEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollLimitEnd(value Vector2.XY) Instance {
 	class(self).SetLimitEnd(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -256,9 +261,10 @@ func (self Instance) ScrollIgnoreCameraZoom() bool {
 	return bool(class(self).IsIgnoreCameraZoom())
 }
 
-// SetScrollIgnoreCameraZoom sets the property returned by [IsIgnoreCameraZoom].
-func (self Instance) SetScrollIgnoreCameraZoom(value bool) {
+// SetScrollIgnoreCameraZoom sets the property returned by [IsIgnoreCameraZoom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollIgnoreCameraZoom(value bool) Instance {
 	class(self).SetIgnoreCameraZoom(value)
+	return self
 }
 
 //go:nosplit

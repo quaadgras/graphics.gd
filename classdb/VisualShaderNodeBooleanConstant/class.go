@@ -167,9 +167,10 @@ func (self Instance) Constant() bool {
 	return bool(class(self).GetConstant())
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value bool) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value bool) Instance {
 	class(self).SetConstant(value)
+	return self
 }
 
 //go:nosplit

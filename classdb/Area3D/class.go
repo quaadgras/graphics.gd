@@ -309,9 +309,10 @@ func (self Instance) Monitoring() bool {
 	return bool(class(self).IsMonitoring())
 }
 
-// SetMonitoring sets the property returned by [IsMonitoring].
-func (self Instance) SetMonitoring(value bool) {
+// SetMonitoring sets the property returned by [IsMonitoring]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMonitoring(value bool) Instance {
 	class(self).SetMonitoring(value)
+	return self
 }
 
 /*
@@ -321,9 +322,10 @@ func (self Instance) Monitorable() bool {
 	return bool(class(self).IsMonitorable())
 }
 
-// SetMonitorable sets the property returned by [IsMonitorable].
-func (self Instance) SetMonitorable(value bool) {
+// SetMonitorable sets the property returned by [IsMonitorable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMonitorable(value bool) Instance {
 	class(self).SetMonitorable(value)
+	return self
 }
 
 /*
@@ -335,9 +337,10 @@ func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
-// SetPriority sets the property returned by [GetPriority].
-func (self Instance) SetPriority(value int) {
+// SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPriority(value int) Instance {
 	class(self).SetPriority(int64(value))
+	return self
 }
 
 /*
@@ -347,9 +350,10 @@ func (self Instance) GravitySpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetGravitySpaceOverrideMode())
 }
 
-// SetGravitySpaceOverride sets the property returned by [GetGravitySpaceOverrideMode].
-func (self Instance) SetGravitySpaceOverride(value SpaceOverride) {
+// SetGravitySpaceOverride sets the property returned by [GetGravitySpaceOverrideMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravitySpaceOverride(value SpaceOverride) Instance {
 	class(self).SetGravitySpaceOverrideMode(value)
+	return self
 }
 
 /*
@@ -362,9 +366,10 @@ func (self Instance) GravityPoint() bool {
 	return bool(class(self).IsGravityAPoint())
 }
 
-// SetGravityPoint sets the property returned by [IsGravityAPoint].
-func (self Instance) SetGravityPoint(value bool) {
+// SetGravityPoint sets the property returned by [IsGravityAPoint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityPoint(value bool) Instance {
 	class(self).SetGravityIsPoint(value)
+	return self
 }
 
 /*
@@ -378,9 +383,10 @@ func (self Instance) GravityPointUnitDistance() Float.X {
 	return Float.X(Float.X(class(self).GetGravityPointUnitDistance()))
 }
 
-// SetGravityPointUnitDistance sets the property returned by [GetGravityPointUnitDistance].
-func (self Instance) SetGravityPointUnitDistance(value Float.X) {
+// SetGravityPointUnitDistance sets the property returned by [GetGravityPointUnitDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityPointUnitDistance(value Float.X) Instance {
 	class(self).SetGravityPointUnitDistance(float64(value))
+	return self
 }
 
 /*
@@ -392,9 +398,10 @@ func (self Instance) GravityPointCenter() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetGravityPointCenter())
 }
 
-// SetGravityPointCenter sets the property returned by [GetGravityPointCenter].
-func (self Instance) SetGravityPointCenter(value Vector3.XYZ) {
+// SetGravityPointCenter sets the property returned by [GetGravityPointCenter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityPointCenter(value Vector3.XYZ) Instance {
 	class(self).SetGravityPointCenter(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -404,9 +411,10 @@ func (self Instance) GravityDirection() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetGravityDirection())
 }
 
-// SetGravityDirection sets the property returned by [GetGravityDirection].
-func (self Instance) SetGravityDirection(value Vector3.XYZ) {
+// SetGravityDirection sets the property returned by [GetGravityDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityDirection(value Vector3.XYZ) Instance {
 	class(self).SetGravityDirection(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -416,9 +424,10 @@ func (self Instance) Gravity() Float.X {
 	return Float.X(Float.X(class(self).GetGravity()))
 }
 
-// SetGravity sets the property returned by [GetGravity].
-func (self Instance) SetGravity(value Float.X) {
+// SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravity(value Float.X) Instance {
 	class(self).SetGravity(float64(value))
+	return self
 }
 
 /*
@@ -428,9 +437,10 @@ func (self Instance) LinearDampSpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetLinearDampSpaceOverrideMode())
 }
 
-// SetLinearDampSpaceOverride sets the property returned by [GetLinearDampSpaceOverrideMode].
-func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) {
+// SetLinearDampSpaceOverride sets the property returned by [GetLinearDampSpaceOverrideMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) Instance {
 	class(self).SetLinearDampSpaceOverrideMode(value)
+	return self
 }
 
 /*
@@ -444,9 +454,10 @@ func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-// SetLinearDamp sets the property returned by [GetLinearDamp].
-func (self Instance) SetLinearDamp(value Float.X) {
+// SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDamp(value Float.X) Instance {
 	class(self).SetLinearDamp(float64(value))
+	return self
 }
 
 /*
@@ -456,9 +467,10 @@ func (self Instance) AngularDampSpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetAngularDampSpaceOverrideMode())
 }
 
-// SetAngularDampSpaceOverride sets the property returned by [GetAngularDampSpaceOverrideMode].
-func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) {
+// SetAngularDampSpaceOverride sets the property returned by [GetAngularDampSpaceOverrideMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) Instance {
 	class(self).SetAngularDampSpaceOverrideMode(value)
+	return self
 }
 
 /*
@@ -472,9 +484,10 @@ func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-// SetAngularDamp sets the property returned by [GetAngularDamp].
-func (self Instance) SetAngularDamp(value Float.X) {
+// SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDamp(value Float.X) Instance {
 	class(self).SetAngularDamp(float64(value))
+	return self
 }
 
 /*
@@ -488,9 +501,10 @@ func (self Instance) WindForceMagnitude() Float.X {
 	return Float.X(Float.X(class(self).GetWindForceMagnitude()))
 }
 
-// SetWindForceMagnitude sets the property returned by [GetWindForceMagnitude].
-func (self Instance) SetWindForceMagnitude(value Float.X) {
+// SetWindForceMagnitude sets the property returned by [GetWindForceMagnitude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWindForceMagnitude(value Float.X) Instance {
 	class(self).SetWindForceMagnitude(float64(value))
+	return self
 }
 
 /*
@@ -504,9 +518,10 @@ func (self Instance) WindAttenuationFactor() Float.X {
 	return Float.X(Float.X(class(self).GetWindAttenuationFactor()))
 }
 
-// SetWindAttenuationFactor sets the property returned by [GetWindAttenuationFactor].
-func (self Instance) SetWindAttenuationFactor(value Float.X) {
+// SetWindAttenuationFactor sets the property returned by [GetWindAttenuationFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWindAttenuationFactor(value Float.X) Instance {
 	class(self).SetWindAttenuationFactor(float64(value))
+	return self
 }
 
 /*
@@ -521,9 +536,10 @@ func (self Instance) WindSourcePath() string {
 	return string(class(self).GetWindSourcePath().String())
 }
 
-// SetWindSourcePath sets the property returned by [GetWindSourcePath].
-func (self Instance) SetWindSourcePath(value string) {
+// SetWindSourcePath sets the property returned by [GetWindSourcePath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWindSourcePath(value string) Instance {
 	class(self).SetWindSourcePath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -533,9 +549,10 @@ func (self Instance) AudioBusOverride() bool {
 	return bool(class(self).IsOverridingAudioBus())
 }
 
-// SetAudioBusOverride sets the property returned by [IsOverridingAudioBus].
-func (self Instance) SetAudioBusOverride(value bool) {
+// SetAudioBusOverride sets the property returned by [IsOverridingAudioBus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioBusOverride(value bool) Instance {
 	class(self).SetAudioBusOverride(value)
+	return self
 }
 
 /*
@@ -545,9 +562,10 @@ func (self Instance) AudioBusName() string {
 	return string(class(self).GetAudioBusName().String())
 }
 
-// SetAudioBusName sets the property returned by [GetAudioBusName].
-func (self Instance) SetAudioBusName(value string) {
+// SetAudioBusName sets the property returned by [GetAudioBusName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioBusName(value string) Instance {
 	class(self).SetAudioBusName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -557,9 +575,10 @@ func (self Instance) ReverbBusEnabled() bool {
 	return bool(class(self).IsUsingReverbBus())
 }
 
-// SetReverbBusEnabled sets the property returned by [IsUsingReverbBus].
-func (self Instance) SetReverbBusEnabled(value bool) {
+// SetReverbBusEnabled sets the property returned by [IsUsingReverbBus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReverbBusEnabled(value bool) Instance {
 	class(self).SetUseReverbBus(value)
+	return self
 }
 
 /*
@@ -569,9 +588,10 @@ func (self Instance) ReverbBusName() string {
 	return string(class(self).GetReverbBusName().String())
 }
 
-// SetReverbBusName sets the property returned by [GetReverbBusName].
-func (self Instance) SetReverbBusName(value string) {
+// SetReverbBusName sets the property returned by [GetReverbBusName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReverbBusName(value string) Instance {
 	class(self).SetReverbBusName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -581,9 +601,10 @@ func (self Instance) ReverbBusAmount() Float.X {
 	return Float.X(Float.X(class(self).GetReverbAmount()))
 }
 
-// SetReverbBusAmount sets the property returned by [GetReverbAmount].
-func (self Instance) SetReverbBusAmount(value Float.X) {
+// SetReverbBusAmount sets the property returned by [GetReverbAmount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReverbBusAmount(value Float.X) Instance {
 	class(self).SetReverbAmount(float64(value))
+	return self
 }
 
 /*
@@ -593,9 +614,10 @@ func (self Instance) ReverbBusUniformity() Float.X {
 	return Float.X(Float.X(class(self).GetReverbUniformity()))
 }
 
-// SetReverbBusUniformity sets the property returned by [GetReverbUniformity].
-func (self Instance) SetReverbBusUniformity(value Float.X) {
+// SetReverbBusUniformity sets the property returned by [GetReverbUniformity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReverbBusUniformity(value Float.X) Instance {
 	class(self).SetReverbUniformity(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -976,12 +998,13 @@ Example: Get the [CollisionShape3D] node from the shape index:
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyShapeEntered() Signal.Any {
@@ -1000,12 +1023,13 @@ See also [OnBodyShapeEntered].
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyShapeExited() Signal.Any {
@@ -1020,12 +1044,13 @@ Emitted when the received 'body' enters this area. 'body' can be a [PhysicsBody3
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 */
-func (self Instance) OnBodyEntered(cb func(body Node3D.Instance), flags ...Signal.Flags) {
+func (self Instance) OnBodyEntered(cb func(body Node3D.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyEntered() Signal.Any {
@@ -1040,12 +1065,13 @@ Emitted when the received 'body' exits this area. 'body' can be a [PhysicsBody3D
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 */
-func (self Instance) OnBodyExited(cb func(body Node3D.Instance), flags ...Signal.Flags) {
+func (self Instance) OnBodyExited(cb func(body Node3D.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyExited() Signal.Any {
@@ -1065,12 +1091,13 @@ Example: Get the [CollisionShape3D] node from the shape index:
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AreaShapeEntered() Signal.Any {
@@ -1086,12 +1113,13 @@ See also [OnAreaShapeEntered].
 [OnAreaShapeEntered]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.OnAreaShapeEntered
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AreaShapeExited() Signal.Any {
@@ -1103,12 +1131,13 @@ Emitted when the received 'area' enters this area. Requires [Monitoring] to be s
 
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 */
-func (self Instance) OnAreaEntered(cb func(area Instance), flags ...Signal.Flags) {
+func (self Instance) OnAreaEntered(cb func(area Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AreaEntered() Signal.Any {
@@ -1120,12 +1149,13 @@ Emitted when the received 'area' exits this area. Requires [Monitoring] to be se
 
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 */
-func (self Instance) OnAreaExited(cb func(area Instance), flags ...Signal.Flags) {
+func (self Instance) OnAreaExited(cb func(area Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AreaExited() Signal.Any {

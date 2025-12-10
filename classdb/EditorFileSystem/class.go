@@ -345,12 +345,13 @@ func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.re
 /*
 Emitted if the filesystem changed.
 */
-func (self Instance) OnFilesystemChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFilesystemChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilesystemChanged() Signal.Any {
@@ -360,12 +361,13 @@ func (self class) FilesystemChanged() Signal.Any {
 /*
 Emitted when the list of global script classes gets updated.
 */
-func (self Instance) OnScriptClassesUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScriptClassesUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_classes_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScriptClassesUpdated() Signal.Any {
@@ -375,12 +377,13 @@ func (self class) ScriptClassesUpdated() Signal.Any {
 /*
 Emitted if the source of any imported file changed.
 */
-func (self Instance) OnSourcesChanged(cb func(exist bool), flags ...Signal.Flags) {
+func (self Instance) OnSourcesChanged(cb func(exist bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("sources_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SourcesChanged() Signal.Any {
@@ -390,12 +393,13 @@ func (self class) SourcesChanged() Signal.Any {
 /*
 Emitted before a resource is reimported.
 */
-func (self Instance) OnResourcesReimporting(cb func(resources []string), flags ...Signal.Flags) {
+func (self Instance) OnResourcesReimporting(cb func(resources []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimporting"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourcesReimporting() Signal.Any {
@@ -405,12 +409,13 @@ func (self class) ResourcesReimporting() Signal.Any {
 /*
 Emitted if a resource is reimported.
 */
-func (self Instance) OnResourcesReimported(cb func(resources []string), flags ...Signal.Flags) {
+func (self Instance) OnResourcesReimported(cb func(resources []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimported"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourcesReimported() Signal.Any {
@@ -420,12 +425,13 @@ func (self class) ResourcesReimported() Signal.Any {
 /*
 Emitted if at least one resource is reloaded when the filesystem is scanned.
 */
-func (self Instance) OnResourcesReload(cb func(resources []string), flags ...Signal.Flags) {
+func (self Instance) OnResourcesReload(cb func(resources []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reload"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourcesReload() Signal.Any {

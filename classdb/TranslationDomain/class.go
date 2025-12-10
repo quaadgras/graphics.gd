@@ -228,9 +228,12 @@ Sets the locale override of the domain.
 If 'locale' is an empty string, locale override is disabled. Otherwise, 'locale' will be standardized to match known locales (e.g. en-US would be matched to en_US).
 
 Note: Calling this method does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] signal manually.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLocaleOverride(locale string) { //gd:TranslationDomain.set_locale_override
+func (self Instance) SetLocaleOverride(locale string) Instance { //gd:TranslationDomain.set_locale_override
 	Advanced(self).SetLocaleOverride(String.New(locale))
+	return self
 }
 
 /*
@@ -293,9 +296,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -307,9 +311,10 @@ func (self Instance) PseudolocalizationEnabled() bool {
 	return bool(class(self).IsPseudolocalizationEnabled())
 }
 
-// SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled].
-func (self Instance) SetPseudolocalizationEnabled(value bool) {
+// SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationEnabled(value)
+	return self
 }
 
 /*
@@ -321,9 +326,10 @@ func (self Instance) PseudolocalizationAccentsEnabled() bool {
 	return bool(class(self).IsPseudolocalizationAccentsEnabled())
 }
 
-// SetPseudolocalizationAccentsEnabled sets the property returned by [IsPseudolocalizationAccentsEnabled].
-func (self Instance) SetPseudolocalizationAccentsEnabled(value bool) {
+// SetPseudolocalizationAccentsEnabled sets the property returned by [IsPseudolocalizationAccentsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationAccentsEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationAccentsEnabled(value)
+	return self
 }
 
 /*
@@ -335,9 +341,10 @@ func (self Instance) PseudolocalizationDoubleVowelsEnabled() bool {
 	return bool(class(self).IsPseudolocalizationDoubleVowelsEnabled())
 }
 
-// SetPseudolocalizationDoubleVowelsEnabled sets the property returned by [IsPseudolocalizationDoubleVowelsEnabled].
-func (self Instance) SetPseudolocalizationDoubleVowelsEnabled(value bool) {
+// SetPseudolocalizationDoubleVowelsEnabled sets the property returned by [IsPseudolocalizationDoubleVowelsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationDoubleVowelsEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationDoubleVowelsEnabled(value)
+	return self
 }
 
 /*
@@ -349,9 +356,10 @@ func (self Instance) PseudolocalizationFakeBidiEnabled() bool {
 	return bool(class(self).IsPseudolocalizationFakeBidiEnabled())
 }
 
-// SetPseudolocalizationFakeBidiEnabled sets the property returned by [IsPseudolocalizationFakeBidiEnabled].
-func (self Instance) SetPseudolocalizationFakeBidiEnabled(value bool) {
+// SetPseudolocalizationFakeBidiEnabled sets the property returned by [IsPseudolocalizationFakeBidiEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationFakeBidiEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationFakeBidiEnabled(value)
+	return self
 }
 
 /*
@@ -363,9 +371,10 @@ func (self Instance) PseudolocalizationOverrideEnabled() bool {
 	return bool(class(self).IsPseudolocalizationOverrideEnabled())
 }
 
-// SetPseudolocalizationOverrideEnabled sets the property returned by [IsPseudolocalizationOverrideEnabled].
-func (self Instance) SetPseudolocalizationOverrideEnabled(value bool) {
+// SetPseudolocalizationOverrideEnabled sets the property returned by [IsPseudolocalizationOverrideEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationOverrideEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationOverrideEnabled(value)
+	return self
 }
 
 /*
@@ -377,9 +386,10 @@ func (self Instance) PseudolocalizationSkipPlaceholdersEnabled() bool {
 	return bool(class(self).IsPseudolocalizationSkipPlaceholdersEnabled())
 }
 
-// SetPseudolocalizationSkipPlaceholdersEnabled sets the property returned by [IsPseudolocalizationSkipPlaceholdersEnabled].
-func (self Instance) SetPseudolocalizationSkipPlaceholdersEnabled(value bool) {
+// SetPseudolocalizationSkipPlaceholdersEnabled sets the property returned by [IsPseudolocalizationSkipPlaceholdersEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationSkipPlaceholdersEnabled(value bool) Instance {
 	class(self).SetPseudolocalizationSkipPlaceholdersEnabled(value)
+	return self
 }
 
 /*
@@ -391,9 +401,10 @@ func (self Instance) PseudolocalizationExpansionRatio() Float.X {
 	return Float.X(Float.X(class(self).GetPseudolocalizationExpansionRatio()))
 }
 
-// SetPseudolocalizationExpansionRatio sets the property returned by [GetPseudolocalizationExpansionRatio].
-func (self Instance) SetPseudolocalizationExpansionRatio(value Float.X) {
+// SetPseudolocalizationExpansionRatio sets the property returned by [GetPseudolocalizationExpansionRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationExpansionRatio(value Float.X) Instance {
 	class(self).SetPseudolocalizationExpansionRatio(float64(value))
+	return self
 }
 
 /*
@@ -405,9 +416,10 @@ func (self Instance) PseudolocalizationPrefix() string {
 	return string(class(self).GetPseudolocalizationPrefix().String())
 }
 
-// SetPseudolocalizationPrefix sets the property returned by [GetPseudolocalizationPrefix].
-func (self Instance) SetPseudolocalizationPrefix(value string) {
+// SetPseudolocalizationPrefix sets the property returned by [GetPseudolocalizationPrefix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationPrefix(value string) Instance {
 	class(self).SetPseudolocalizationPrefix(String.New(value))
+	return self
 }
 
 /*
@@ -419,9 +431,10 @@ func (self Instance) PseudolocalizationSuffix() string {
 	return string(class(self).GetPseudolocalizationSuffix().String())
 }
 
-// SetPseudolocalizationSuffix sets the property returned by [GetPseudolocalizationSuffix].
-func (self Instance) SetPseudolocalizationSuffix(value string) {
+// SetPseudolocalizationSuffix sets the property returned by [GetPseudolocalizationSuffix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPseudolocalizationSuffix(value string) Instance {
 	class(self).SetPseudolocalizationSuffix(String.New(value))
+	return self
 }
 
 /*

@@ -164,9 +164,12 @@ func (self Instance) RemoveStream(index int) { //gd:AudioStreamRandomizer.remove
 
 /*
 Set the AudioStream at the specified index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStream(index int, stream AudioStream.Instance) { //gd:AudioStreamRandomizer.set_stream
+func (self Instance) SetStream(index int, stream AudioStream.Instance) Instance { //gd:AudioStreamRandomizer.set_stream
 	Advanced(self).SetStream(int64(index), stream)
+	return self
 }
 
 /*
@@ -178,9 +181,12 @@ func (self Instance) GetStream(index int) AudioStream.Instance { //gd:AudioStrea
 
 /*
 Set the probability weight of the stream at the specified index. The higher this value, the more likely that the randomizer will choose this stream during random playback modes.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) { //gd:AudioStreamRandomizer.set_stream_probability_weight
+func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) Instance { //gd:AudioStreamRandomizer.set_stream_probability_weight
 	Advanced(self).SetStreamProbabilityWeight(int64(index), float64(weight))
+	return self
 }
 
 /*
@@ -240,9 +246,10 @@ func (self Instance) PlaybackMode() PlaybackMode {
 	return PlaybackMode(class(self).GetPlaybackMode())
 }
 
-// SetPlaybackMode sets the property returned by [GetPlaybackMode].
-func (self Instance) SetPlaybackMode(value PlaybackMode) {
+// SetPlaybackMode sets the property returned by [GetPlaybackMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackMode(value PlaybackMode) Instance {
 	class(self).SetPlaybackMode(value)
+	return self
 }
 
 /*
@@ -252,9 +259,10 @@ func (self Instance) RandomPitch() Float.X {
 	return Float.X(Float.X(class(self).GetRandomPitch()))
 }
 
-// SetRandomPitch sets the property returned by [GetRandomPitch].
-func (self Instance) SetRandomPitch(value Float.X) {
+// SetRandomPitch sets the property returned by [GetRandomPitch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRandomPitch(value Float.X) Instance {
 	class(self).SetRandomPitch(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +272,10 @@ func (self Instance) RandomVolumeOffsetDb() Float.X {
 	return Float.X(Float.X(class(self).GetRandomVolumeOffsetDb()))
 }
 
-// SetRandomVolumeOffsetDb sets the property returned by [GetRandomVolumeOffsetDb].
-func (self Instance) SetRandomVolumeOffsetDb(value Float.X) {
+// SetRandomVolumeOffsetDb sets the property returned by [GetRandomVolumeOffsetDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRandomVolumeOffsetDb(value Float.X) Instance {
 	class(self).SetRandomVolumeOffsetDb(float64(value))
+	return self
 }
 
 /*
@@ -276,9 +285,10 @@ func (self Instance) StreamsCount() int {
 	return int(int(class(self).GetStreamsCount()))
 }
 
-// SetStreamsCount sets the property returned by [GetStreamsCount].
-func (self Instance) SetStreamsCount(value int) {
+// SetStreamsCount sets the property returned by [GetStreamsCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStreamsCount(value int) Instance {
 	class(self).SetStreamsCount(int64(value))
+	return self
 }
 
 /*

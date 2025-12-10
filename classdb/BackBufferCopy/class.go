@@ -174,9 +174,10 @@ func (self Instance) CopyMode() CopyMode {
 	return CopyMode(class(self).GetCopyMode())
 }
 
-// SetCopyMode sets the property returned by [GetCopyMode].
-func (self Instance) SetCopyMode(value CopyMode) {
+// SetCopyMode sets the property returned by [GetCopyMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCopyMode(value CopyMode) Instance {
 	class(self).SetCopyMode(value)
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) Rect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
-// SetRect sets the property returned by [GetRect].
-func (self Instance) SetRect(value Rect2.PositionSize) {
+// SetRect sets the property returned by [GetRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRect(value Rect2.PositionSize) Instance {
 	class(self).SetRect(Rect2.PositionSize(value))
+	return self
 }
 
 //go:nosplit

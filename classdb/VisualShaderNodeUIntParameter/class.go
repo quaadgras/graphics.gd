@@ -169,9 +169,10 @@ func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
-// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
-func (self Instance) SetDefaultValueEnabled(value bool) {
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 	class(self).SetDefaultValueEnabled(value)
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) DefaultValue() int {
 	return int(int(class(self).GetDefaultValue()))
 }
 
-// SetDefaultValue sets the property returned by [GetDefaultValue].
-func (self Instance) SetDefaultValue(value int) {
+// SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValue(value int) Instance {
 	class(self).SetDefaultValue(int64(value))
+	return self
 }
 
 //go:nosplit

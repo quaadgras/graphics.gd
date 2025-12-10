@@ -171,9 +171,10 @@ func (self Instance) Tracker() RenderModelTracker {
 	return RenderModelTracker(class(self).GetTracker())
 }
 
-// SetTracker sets the property returned by [GetTracker].
-func (self Instance) SetTracker(value RenderModelTracker) {
+// SetTracker sets the property returned by [GetTracker]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTracker(value RenderModelTracker) Instance {
 	class(self).SetTracker(value)
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) MakeLocalToPose() string {
 	return string(class(self).GetMakeLocalToPose().String())
 }
 
-// SetMakeLocalToPose sets the property returned by [GetMakeLocalToPose].
-func (self Instance) SetMakeLocalToPose(value string) {
+// SetMakeLocalToPose sets the property returned by [GetMakeLocalToPose]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMakeLocalToPose(value string) Instance {
 	class(self).SetMakeLocalToPose(String.New(value))
+	return self
 }
 
 //go:nosplit
@@ -215,12 +217,13 @@ func (self class) SetMakeLocalToPose(make_local_to_pose String.Readable) { //gd:
 /*
 Emitted when a render model node is added as a child to this node.
 */
-func (self Instance) OnRenderModelAdded(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelAdded(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelAdded() Signal.Any {
@@ -230,12 +233,13 @@ func (self class) RenderModelAdded() Signal.Any {
 /*
 Emitted when a render model child node is about to be removed from this node.
 */
-func (self Instance) OnRenderModelRemoved(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelRemoved(cb func(render_model OpenXRRenderModel.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelRemoved() Signal.Any {

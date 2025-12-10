@@ -128,21 +128,30 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 				if prop.Description != "" {
 					fmt.Fprintln(file, "\n/*")
 					fmt.Fprint(file, gdjson.DocsToGoDoc(prop.Description, classDB, class.Name, class.Name+"_"+convertName(prop.Name)))
+					if !singleton {
+						fmt.Fprintf(file, "\nReturns the instance, so that property settings can be chained.")
+					}
 					fmt.Fprint(file, "\n*/")
 				}
 			} else {
 				fmt.Fprintf(file, "\n// Set%s sets the property returned by [%s].", convertName(prop.Name), convertName(prop.Getter))
+				if !singleton {
+					fmt.Fprintf(file, " Returns the instance, so that property settings can be chained.")
+				}
 			}
 			if singleton {
 				fmt.Fprintf(file, "\nfunc Set%s(value %s) {\n", convertName(prop.Name), ptype)
 				fmt.Fprintf(file, "once.Do(singleton)\n\t")
 			} else {
-				fmt.Fprintf(file, "\nfunc (self Instance) Set%s(value %s) {\n", convertName(prop.Name), ptype)
+				fmt.Fprintf(file, "\nfunc (self Instance) Set%s(value %s) Instance {\n", convertName(prop.Name), ptype)
 			}
 			if prop.Index != nil {
 				fmt.Fprintf(file, "\tclass(self).%s(%d, %s)\n", convertName(prop.Setter), *prop.Index, gdtype.Name(expert).ConvertToSimple("value", ptype))
 			} else {
 				fmt.Fprintf(file, "\tclass(self).%s(%s)\n", convertName(prop.Setter), gdtype.Name(expert).ConvertToSimple("value", ptype))
+			}
+			if !singleton {
+				fmt.Fprintf(file, "\treturn self\n")
 			}
 			fmt.Fprintf(file, "}\n")
 		}

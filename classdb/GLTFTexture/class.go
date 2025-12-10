@@ -164,9 +164,10 @@ func (self Instance) SrcImage() int {
 	return int(int(class(self).GetSrcImage()))
 }
 
-// SetSrcImage sets the property returned by [GetSrcImage].
-func (self Instance) SetSrcImage(value int) {
+// SetSrcImage sets the property returned by [GetSrcImage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSrcImage(value int) Instance {
 	class(self).SetSrcImage(int64(value))
+	return self
 }
 
 /*
@@ -176,9 +177,10 @@ func (self Instance) Sampler() int {
 	return int(int(class(self).GetSampler()))
 }
 
-// SetSampler sets the property returned by [GetSampler].
-func (self Instance) SetSampler(value int) {
+// SetSampler sets the property returned by [GetSampler]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSampler(value int) Instance {
 	class(self).SetSampler(int64(value))
+	return self
 }
 
 //go:nosplit

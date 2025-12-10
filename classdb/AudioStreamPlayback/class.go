@@ -324,11 +324,14 @@ func (Instance) _get_parameter(impl func(ptr gdclass.Receiver, name string) any)
 /*
 Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back the audio sample of this stream.
 
+Returns 'self' to enable method chaining.
+
 [AudioSamplePlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioSamplePlayback
 [AudioStreamPlayback]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayback
 */
-func (self Instance) SetSamplePlayback(playback_sample AudioSamplePlayback.Instance) { //gd:AudioStreamPlayback.set_sample_playback
+func (self Instance) SetSamplePlayback(playback_sample AudioSamplePlayback.Instance) Instance { //gd:AudioStreamPlayback.set_sample_playback
 	Advanced(self).SetSamplePlayback(playback_sample)
+	return self
 }
 
 /*

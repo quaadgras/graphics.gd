@@ -282,9 +282,12 @@ func (self Instance) GetFaceCount() int { //gd:MeshDataTool.get_face_count
 
 /*
 Sets the position of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertex(idx int, vertex Vector3.XYZ) { //gd:MeshDataTool.set_vertex
+func (self Instance) SetVertex(idx int, vertex Vector3.XYZ) Instance { //gd:MeshDataTool.set_vertex
 	Advanced(self).SetVertex(int64(idx), Vector3.XYZ(vertex))
+	return self
 }
 
 /*
@@ -296,9 +299,12 @@ func (self Instance) GetVertex(idx int) Vector3.XYZ { //gd:MeshDataTool.get_vert
 
 /*
 Sets the normal of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexNormal(idx int, normal Vector3.XYZ) { //gd:MeshDataTool.set_vertex_normal
+func (self Instance) SetVertexNormal(idx int, normal Vector3.XYZ) Instance { //gd:MeshDataTool.set_vertex_normal
 	Advanced(self).SetVertexNormal(int64(idx), Vector3.XYZ(normal))
+	return self
 }
 
 /*
@@ -310,9 +316,12 @@ func (self Instance) GetVertexNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.ge
 
 /*
 Sets the tangent of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexTangent(idx int, tangent Plane.NormalD) { //gd:MeshDataTool.set_vertex_tangent
+func (self Instance) SetVertexTangent(idx int, tangent Plane.NormalD) Instance { //gd:MeshDataTool.set_vertex_tangent
 	Advanced(self).SetVertexTangent(int64(idx), Plane.NormalD(tangent))
+	return self
 }
 
 /*
@@ -324,9 +333,12 @@ func (self Instance) GetVertexTangent(idx int) Plane.NormalD { //gd:MeshDataTool
 
 /*
 Sets the UV of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexUv(idx int, uv Vector2.XY) { //gd:MeshDataTool.set_vertex_uv
+func (self Instance) SetVertexUv(idx int, uv Vector2.XY) Instance { //gd:MeshDataTool.set_vertex_uv
 	Advanced(self).SetVertexUv(int64(idx), Vector2.XY(uv))
+	return self
 }
 
 /*
@@ -338,9 +350,12 @@ func (self Instance) GetVertexUv(idx int) Vector2.XY { //gd:MeshDataTool.get_ver
 
 /*
 Sets the UV2 of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexUv2(idx int, uv2 Vector2.XY) { //gd:MeshDataTool.set_vertex_uv2
+func (self Instance) SetVertexUv2(idx int, uv2 Vector2.XY) Instance { //gd:MeshDataTool.set_vertex_uv2
 	Advanced(self).SetVertexUv2(int64(idx), Vector2.XY(uv2))
+	return self
 }
 
 /*
@@ -352,9 +367,12 @@ func (self Instance) GetVertexUv2(idx int) Vector2.XY { //gd:MeshDataTool.get_ve
 
 /*
 Sets the color of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexColor(idx int, color Color.RGBA) { //gd:MeshDataTool.set_vertex_color
+func (self Instance) SetVertexColor(idx int, color Color.RGBA) Instance { //gd:MeshDataTool.set_vertex_color
 	Advanced(self).SetVertexColor(int64(idx), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -366,9 +384,12 @@ func (self Instance) GetVertexColor(idx int) Color.RGBA { //gd:MeshDataTool.get_
 
 /*
 Sets the bones of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexBones(idx int, bones []int32) { //gd:MeshDataTool.set_vertex_bones
+func (self Instance) SetVertexBones(idx int, bones []int32) Instance { //gd:MeshDataTool.set_vertex_bones
 	Advanced(self).SetVertexBones(int64(idx), Packed.New(bones...))
+	return self
 }
 
 /*
@@ -380,9 +401,12 @@ func (self Instance) GetVertexBones(idx int) []int32 { //gd:MeshDataTool.get_ver
 
 /*
 Sets the bone weights of the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexWeights(idx int, weights []float32) { //gd:MeshDataTool.set_vertex_weights
+func (self Instance) SetVertexWeights(idx int, weights []float32) Instance { //gd:MeshDataTool.set_vertex_weights
 	Advanced(self).SetVertexWeights(int64(idx), Packed.New(weights...))
+	return self
 }
 
 /*
@@ -394,9 +418,12 @@ func (self Instance) GetVertexWeights(idx int) []float32 { //gd:MeshDataTool.get
 
 /*
 Sets the metadata associated with the given vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVertexMeta(idx int, meta any) { //gd:MeshDataTool.set_vertex_meta
+func (self Instance) SetVertexMeta(idx int, meta any) Instance { //gd:MeshDataTool.set_vertex_meta
 	Advanced(self).SetVertexMeta(int64(idx), variant.New(meta))
+	return self
 }
 
 /*
@@ -438,9 +465,12 @@ func (self Instance) GetEdgeFaces(idx int) []int32 { //gd:MeshDataTool.get_edge_
 
 /*
 Sets the metadata of the given edge.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEdgeMeta(idx int, meta any) { //gd:MeshDataTool.set_edge_meta
+func (self Instance) SetEdgeMeta(idx int, meta any) Instance { //gd:MeshDataTool.set_edge_meta
 	Advanced(self).SetEdgeMeta(int64(idx), variant.New(meta))
+	return self
 }
 
 /*
@@ -470,9 +500,12 @@ func (self Instance) GetFaceEdge(idx int, edge int) int { //gd:MeshDataTool.get_
 
 /*
 Sets the metadata of the given face.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFaceMeta(idx int, meta any) { //gd:MeshDataTool.set_face_meta
+func (self Instance) SetFaceMeta(idx int, meta any) Instance { //gd:MeshDataTool.set_face_meta
 	Advanced(self).SetFaceMeta(int64(idx), variant.New(meta))
+	return self
 }
 
 /*
@@ -492,10 +525,13 @@ func (self Instance) GetFaceNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.get_
 /*
 Sets the material to be used by newly-constructed [Mesh].
 
+Returns 'self' to enable method chaining.
+
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) SetMaterial(material Material.Instance) { //gd:MeshDataTool.set_material
+func (self Instance) SetMaterial(material Material.Instance) Instance { //gd:MeshDataTool.set_material
 	Advanced(self).SetMaterial(material)
+	return self
 }
 
 /*

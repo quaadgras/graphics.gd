@@ -206,11 +206,14 @@ Replaces the texture's data with a new [Image]. This will re-allocate new memory
 
 If you want to update the image, but don't need to change its parameters (format, size), use [Update] instead for better performance.
 
+Returns 'self' to enable method chaining.
+
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 [Update]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture#Instance.Update
 */
-func (self Instance) SetImage(image Image.Instance) { //gd:ImageTexture.set_image
+func (self Instance) SetImage(image Image.Instance) Instance { //gd:ImageTexture.set_image
 	Advanced(self).SetImage(image)
+	return self
 }
 
 /*
@@ -229,9 +232,12 @@ func (self Instance) Update(image Image.Instance) { //gd:ImageTexture.update
 
 /*
 Resizes the texture to the specified dimensions.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
+func (self Instance) SetSizeOverride(size Vector2i.XY) Instance { //gd:ImageTexture.set_size_override
 	Advanced(self).SetSizeOverride(Vector2i.XY(size))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

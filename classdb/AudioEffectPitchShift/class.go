@@ -170,9 +170,10 @@ func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
-// SetPitchScale sets the property returned by [GetPitchScale].
-func (self Instance) SetPitchScale(value Float.X) {
+// SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPitchScale(value Float.X) Instance {
 	class(self).SetPitchScale(float64(value))
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) Oversampling() int {
 	return int(int(class(self).GetOversampling()))
 }
 
-// SetOversampling sets the property returned by [GetOversampling].
-func (self Instance) SetOversampling(value int) {
+// SetOversampling sets the property returned by [GetOversampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversampling(value int) Instance {
 	class(self).SetOversampling(int64(value))
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) FftSize() FFTSize {
 	return FFTSize(class(self).GetFftSize())
 }
 
-// SetFftSize sets the property returned by [GetFftSize].
-func (self Instance) SetFftSize(value FFTSize) {
+// SetFftSize sets the property returned by [GetFftSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFftSize(value FFTSize) Instance {
 	class(self).SetFftSize(value)
+	return self
 }
 
 //go:nosplit

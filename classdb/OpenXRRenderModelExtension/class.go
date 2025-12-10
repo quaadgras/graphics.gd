@@ -428,12 +428,13 @@ func (self class) RenderModelGetAnimatableNodeTransform(render_model RID.Any, in
 /*
 Emitted when a new render model is added.
 */
-func (self Instance) OnRenderModelAdded(cb func(render_model RID.Any), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelAdded(cb func(render_model RID.Any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelAdded() Signal.Any {
@@ -443,12 +444,13 @@ func (self class) RenderModelAdded() Signal.Any {
 /*
 Emitted when a render model is removed.
 */
-func (self Instance) OnRenderModelRemoved(cb func(render_model RID.Any), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelRemoved(cb func(render_model RID.Any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelRemoved() Signal.Any {
@@ -458,12 +460,13 @@ func (self class) RenderModelRemoved() Signal.Any {
 /*
 Emitted when the top level path associated with a render model changed.
 */
-func (self Instance) OnRenderModelTopLevelPathChanged(cb func(render_model RID.Any), flags ...Signal.Flags) {
+func (self Instance) OnRenderModelTopLevelPathChanged(cb func(render_model RID.Any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("render_model_top_level_path_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RenderModelTopLevelPathChanged() Signal.Any {

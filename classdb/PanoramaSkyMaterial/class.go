@@ -181,9 +181,10 @@ func (self Instance) Panorama() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetPanorama())
 }
 
-// SetPanorama sets the property returned by [GetPanorama].
-func (self Instance) SetPanorama(value Texture2D.Instance) {
+// SetPanorama sets the property returned by [GetPanorama]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPanorama(value Texture2D.Instance) Instance {
 	class(self).SetPanorama(value)
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) Filter() bool {
 	return bool(class(self).IsFilteringEnabled())
 }
 
-// SetFilter sets the property returned by [IsFilteringEnabled].
-func (self Instance) SetFilter(value bool) {
+// SetFilter sets the property returned by [IsFilteringEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilter(value bool) Instance {
 	class(self).SetFilteringEnabled(value)
+	return self
 }
 
 /*
@@ -205,9 +207,10 @@ func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
-func (self Instance) SetEnergyMultiplier(value Float.X) {
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
 	class(self).SetEnergyMultiplier(float64(value))
+	return self
 }
 
 //go:nosplit

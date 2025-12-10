@@ -336,9 +336,12 @@ func (self Instance) GetOpentypeFeatures() map[string][2]string { //gd:Font.get_
 
 /*
 Sets LRU cache capacity for draw_* methods.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheCapacity(single_line int, multi_line int) { //gd:Font.set_cache_capacity
+func (self Instance) SetCacheCapacity(single_line int, multi_line int) Instance { //gd:Font.set_cache_capacity
 	Advanced(self).SetCacheCapacity(int64(single_line), int64(multi_line))
+	return self
 }
 
 /*
@@ -696,9 +699,10 @@ func (self Instance) Fallbacks() []Instance {
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(class(self).GetFallbacks())))
 }
 
-// SetFallbacks sets the property returned by [GetFallbacks].
-func (self Instance) SetFallbacks(value []Instance) {
+// SetFallbacks sets the property returned by [GetFallbacks]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbacks(value []Instance) Instance {
 	class(self).SetFallbacks(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Font]](value))
+	return self
 }
 
 //go:nosplit

@@ -176,9 +176,10 @@ func (self Instance) EnableMode() EnableMode {
 	return EnableMode(class(self).GetEnableMode())
 }
 
-// SetEnableMode sets the property returned by [GetEnableMode].
-func (self Instance) SetEnableMode(value EnableMode) {
+// SetEnableMode sets the property returned by [GetEnableMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableMode(value EnableMode) Instance {
 	class(self).SetEnableMode(value)
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) EnableNodePath() string {
 	return string(class(self).GetEnableNodePath().String())
 }
 
-// SetEnableNodePath sets the property returned by [GetEnableNodePath].
-func (self Instance) SetEnableNodePath(value string) {
+// SetEnableNodePath sets the property returned by [GetEnableNodePath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableNodePath(value string) Instance {
 	class(self).SetEnableNodePath(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit

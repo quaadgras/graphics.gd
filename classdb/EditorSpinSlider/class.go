@@ -183,9 +183,10 @@ func (self Instance) Label() string {
 	return string(class(self).GetLabel().String())
 }
 
-// SetLabel sets the property returned by [GetLabel].
-func (self Instance) SetLabel(value string) {
+// SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLabel(value string) Instance {
 	class(self).SetLabel(String.New(value))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) Suffix() string {
 	return string(class(self).GetSuffix().String())
 }
 
-// SetSuffix sets the property returned by [GetSuffix].
-func (self Instance) SetSuffix(value string) {
+// SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSuffix(value string) Instance {
 	class(self).SetSuffix(String.New(value))
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) ReadOnly() bool {
 	return bool(class(self).IsReadOnly())
 }
 
-// SetReadOnly sets the property returned by [IsReadOnly].
-func (self Instance) SetReadOnly(value bool) {
+// SetReadOnly sets the property returned by [IsReadOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReadOnly(value bool) Instance {
 	class(self).SetReadOnly(value)
+	return self
 }
 
 /*
@@ -219,9 +222,10 @@ func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
-// SetFlat sets the property returned by [IsFlat].
-func (self Instance) SetFlat(value bool) {
+// SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlat(value bool) Instance {
 	class(self).SetFlat(value)
+	return self
 }
 
 /*
@@ -231,9 +235,10 @@ func (self Instance) HideSlider() bool {
 	return bool(class(self).IsHidingSlider())
 }
 
-// SetHideSlider sets the property returned by [IsHidingSlider].
-func (self Instance) SetHideSlider(value bool) {
+// SetHideSlider sets the property returned by [IsHidingSlider]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideSlider(value bool) Instance {
 	class(self).SetHideSlider(value)
+	return self
 }
 
 /*
@@ -246,9 +251,10 @@ func (self Instance) EditingInteger() bool {
 	return bool(class(self).IsEditingInteger())
 }
 
-// SetEditingInteger sets the property returned by [IsEditingInteger].
-func (self Instance) SetEditingInteger(value bool) {
+// SetEditingInteger sets the property returned by [IsEditingInteger]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditingInteger(value bool) Instance {
 	class(self).SetEditingInteger(value)
+	return self
 }
 
 //go:nosplit
@@ -326,12 +332,13 @@ func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_int
 /*
 Emitted when the spinner/slider is grabbed.
 */
-func (self Instance) OnGrabbed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnGrabbed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("grabbed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Grabbed() Signal.Any {
@@ -341,12 +348,13 @@ func (self class) Grabbed() Signal.Any {
 /*
 Emitted when the spinner/slider is ungrabbed.
 */
-func (self Instance) OnUngrabbed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnUngrabbed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("ungrabbed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Ungrabbed() Signal.Any {
@@ -356,12 +364,13 @@ func (self class) Ungrabbed() Signal.Any {
 /*
 Emitted when the updown button is pressed.
 */
-func (self Instance) OnUpdownPressed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnUpdownPressed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("updown_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) UpdownPressed() Signal.Any {
@@ -371,12 +380,13 @@ func (self class) UpdownPressed() Signal.Any {
 /*
 Emitted when the value form gains focus.
 */
-func (self Instance) OnValueFocusEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnValueFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ValueFocusEntered() Signal.Any {
@@ -386,12 +396,13 @@ func (self class) ValueFocusEntered() Signal.Any {
 /*
 Emitted when the value form loses focus.
 */
-func (self Instance) OnValueFocusExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnValueFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ValueFocusExited() Signal.Any {

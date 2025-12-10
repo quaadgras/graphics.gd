@@ -130,9 +130,12 @@ type Any interface {
 
 /*
 Sets the forward axis of the bone.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetForwardAxis(index int, axis SkeletonModifier3D.BoneAxis) { //gd:AimModifier3D.set_forward_axis
+func (self Instance) SetForwardAxis(index int, axis SkeletonModifier3D.BoneAxis) Instance { //gd:AimModifier3D.set_forward_axis
 	Advanced(self).SetForwardAxis(int64(index), axis)
+	return self
 }
 
 /*
@@ -146,9 +149,12 @@ func (self Instance) GetForwardAxis(index int) SkeletonModifier3D.BoneAxis { //g
 If sets 'enabled' to true, it provides rotation with using euler.
 
 If sets 'enabled' to false, it provides rotation with using rotation by arc generated from the forward axis vector and the vector toward the reference.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetUseEuler(index int, enabled bool) { //gd:AimModifier3D.set_use_euler
+func (self Instance) SetUseEuler(index int, enabled bool) Instance { //gd:AimModifier3D.set_use_euler
 	Advanced(self).SetUseEuler(int64(index), enabled)
+	return self
 }
 
 /*
@@ -161,10 +167,13 @@ func (self Instance) IsUsingEuler(index int) bool { //gd:AimModifier3D.is_using_
 /*
 Sets the axis of the first rotation. It is enabled only if [IsUsingEuler] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsUsingEuler]: https://pkg.go.dev/graphics.gd/classdb/AimModifier3D#Instance.IsUsingEuler
 */
-func (self Instance) SetPrimaryRotationAxis(index int, axis Vector3.Axis) { //gd:AimModifier3D.set_primary_rotation_axis
+func (self Instance) SetPrimaryRotationAxis(index int, axis Vector3.Axis) Instance { //gd:AimModifier3D.set_primary_rotation_axis
 	Advanced(self).SetPrimaryRotationAxis(int64(index), axis)
+	return self
 }
 
 /*
@@ -179,10 +188,13 @@ func (self Instance) GetPrimaryRotationAxis(index int) Vector3.Axis { //gd:AimMo
 /*
 If sets 'enabled' to true, it provides rotation by two axes. It is enabled only if [IsUsingEuler] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsUsingEuler]: https://pkg.go.dev/graphics.gd/classdb/AimModifier3D#Instance.IsUsingEuler
 */
-func (self Instance) SetUseSecondaryRotation(index int, enabled bool) { //gd:AimModifier3D.set_use_secondary_rotation
+func (self Instance) SetUseSecondaryRotation(index int, enabled bool) Instance { //gd:AimModifier3D.set_use_secondary_rotation
 	Advanced(self).SetUseSecondaryRotation(int64(index), enabled)
+	return self
 }
 
 /*

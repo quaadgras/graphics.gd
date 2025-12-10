@@ -170,10 +170,13 @@ func (self Instance) GetIndexInSkeleton() int { //gd:Bone2D.get_index_in_skeleto
 /*
 When set to true, the [Bone2D] node will attempt to automatically calculate the bone angle and length using the first child [Bone2D] node, if one exists. If none exist, the [Bone2D] cannot automatically calculate these values and will print a warning.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bone2D.set_autocalculate_length_and_angle
+func (self Instance) SetAutocalculateLengthAndAngle(auto_calculate bool) Instance { //gd:Bone2D.set_autocalculate_length_and_angle
 	Advanced(self).SetAutocalculateLengthAndAngle(auto_calculate)
+	return self
 }
 
 /*
@@ -188,10 +191,13 @@ func (self Instance) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_aut
 /*
 Sets the length of the bone in the [Bone2D].
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetLength(length Float.X) { //gd:Bone2D.set_length
+func (self Instance) SetLength(length Float.X) Instance { //gd:Bone2D.set_length
 	Advanced(self).SetLength(float64(length))
+	return self
 }
 
 /*
@@ -208,11 +214,14 @@ Sets the bone angle for the [Bone2D]. This is typically set to the rotation from
 
 Note: This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [Node2D.Transform].
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 [Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
 */
-func (self Instance) SetBoneAngle(angle Angle.Radians) { //gd:Bone2D.set_bone_angle
+func (self Instance) SetBoneAngle(angle Angle.Radians) Instance { //gd:Bone2D.set_bone_angle
 	Advanced(self).SetBoneAngle(float64(angle))
+	return self
 }
 
 /*
@@ -278,9 +287,10 @@ func (self Instance) Rest() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetRest())
 }
 
-// SetRest sets the property returned by [GetRest].
-func (self Instance) SetRest(value Transform2D.OriginXY) {
+// SetRest sets the property returned by [GetRest]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRest(value Transform2D.OriginXY) Instance {
 	class(self).SetRest(Transform2D.OriginXY(value))
+	return self
 }
 
 //go:nosplit

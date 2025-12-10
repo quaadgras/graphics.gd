@@ -215,9 +215,10 @@ func (self Instance) SplitOffset() int {
 	return int(int(class(self).GetSplitOffset()))
 }
 
-// SetSplitOffset sets the property returned by [GetSplitOffset].
-func (self Instance) SetSplitOffset(value int) {
+// SetSplitOffset sets the property returned by [GetSplitOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSplitOffset(value int) Instance {
 	class(self).SetSplitOffset(int64(value))
+	return self
 }
 
 /*
@@ -229,9 +230,10 @@ func (self Instance) Collapsed() bool {
 	return bool(class(self).IsCollapsed())
 }
 
-// SetCollapsed sets the property returned by [IsCollapsed].
-func (self Instance) SetCollapsed(value bool) {
+// SetCollapsed sets the property returned by [IsCollapsed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollapsed(value bool) Instance {
 	class(self).SetCollapsed(value)
+	return self
 }
 
 /*
@@ -241,9 +243,10 @@ func (self Instance) DraggingEnabled() bool {
 	return bool(class(self).IsDraggingEnabled())
 }
 
-// SetDraggingEnabled sets the property returned by [IsDraggingEnabled].
-func (self Instance) SetDraggingEnabled(value bool) {
+// SetDraggingEnabled sets the property returned by [IsDraggingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDraggingEnabled(value bool) Instance {
 	class(self).SetDraggingEnabled(value)
+	return self
 }
 
 /*
@@ -255,9 +258,10 @@ func (self Instance) DraggerVisibility() DraggerVisibility {
 	return DraggerVisibility(class(self).GetDraggerVisibility())
 }
 
-// SetDraggerVisibility sets the property returned by [GetDraggerVisibility].
-func (self Instance) SetDraggerVisibility(value DraggerVisibility) {
+// SetDraggerVisibility sets the property returned by [GetDraggerVisibility]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDraggerVisibility(value DraggerVisibility) Instance {
 	class(self).SetDraggerVisibility(value)
+	return self
 }
 
 /*
@@ -273,9 +277,10 @@ func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
-// SetVertical sets the property returned by [IsVertical].
-func (self Instance) SetVertical(value bool) {
+// SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertical(value bool) Instance {
 	class(self).SetVertical(value)
+	return self
 }
 
 /*
@@ -287,9 +292,10 @@ func (self Instance) TouchDraggerEnabled() bool {
 	return bool(class(self).IsTouchDraggerEnabled())
 }
 
-// SetTouchDraggerEnabled sets the property returned by [IsTouchDraggerEnabled].
-func (self Instance) SetTouchDraggerEnabled(value bool) {
+// SetTouchDraggerEnabled sets the property returned by [IsTouchDraggerEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTouchDraggerEnabled(value bool) Instance {
 	class(self).SetTouchDraggerEnabled(value)
+	return self
 }
 
 /*
@@ -299,9 +305,10 @@ func (self Instance) DragAreaMarginBegin() int {
 	return int(int(class(self).GetDragAreaMarginBegin()))
 }
 
-// SetDragAreaMarginBegin sets the property returned by [GetDragAreaMarginBegin].
-func (self Instance) SetDragAreaMarginBegin(value int) {
+// SetDragAreaMarginBegin sets the property returned by [GetDragAreaMarginBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAreaMarginBegin(value int) Instance {
 	class(self).SetDragAreaMarginBegin(int64(value))
+	return self
 }
 
 /*
@@ -311,9 +318,10 @@ func (self Instance) DragAreaMarginEnd() int {
 	return int(int(class(self).GetDragAreaMarginEnd()))
 }
 
-// SetDragAreaMarginEnd sets the property returned by [GetDragAreaMarginEnd].
-func (self Instance) SetDragAreaMarginEnd(value int) {
+// SetDragAreaMarginEnd sets the property returned by [GetDragAreaMarginEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAreaMarginEnd(value int) Instance {
 	class(self).SetDragAreaMarginEnd(int64(value))
+	return self
 }
 
 /*
@@ -326,9 +334,10 @@ func (self Instance) DragAreaOffset() int {
 	return int(int(class(self).GetDragAreaOffset()))
 }
 
-// SetDragAreaOffset sets the property returned by [GetDragAreaOffset].
-func (self Instance) SetDragAreaOffset(value int) {
+// SetDragAreaOffset sets the property returned by [GetDragAreaOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAreaOffset(value int) Instance {
 	class(self).SetDragAreaOffset(int64(value))
+	return self
 }
 
 /*
@@ -341,9 +350,10 @@ func (self Instance) DragAreaHighlightInEditor() bool {
 	return bool(class(self).IsDragAreaHighlightInEditorEnabled())
 }
 
-// SetDragAreaHighlightInEditor sets the property returned by [IsDragAreaHighlightInEditorEnabled].
-func (self Instance) SetDragAreaHighlightInEditor(value bool) {
+// SetDragAreaHighlightInEditor sets the property returned by [IsDragAreaHighlightInEditorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAreaHighlightInEditor(value bool) Instance {
 	class(self).SetDragAreaHighlightInEditor(value)
+	return self
 }
 
 //go:nosplit
@@ -503,12 +513,13 @@ func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dr
 /*
 Emitted when the dragger is dragged by user.
 */
-func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) {
+func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Dragged() Signal.Any {
@@ -518,12 +529,13 @@ func (self class) Dragged() Signal.Any {
 /*
 Emitted when the user starts dragging.
 */
-func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("drag_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DragStarted() Signal.Any {
@@ -533,12 +545,13 @@ func (self class) DragStarted() Signal.Any {
 /*
 Emitted when the user ends dragging.
 */
-func (self Instance) OnDragEnded(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDragEnded(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("drag_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DragEnded() Signal.Any {

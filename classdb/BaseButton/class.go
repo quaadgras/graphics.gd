@@ -193,13 +193,16 @@ Changes the [ButtonPressed] state of the button, without emitting [OnToggled]. U
 
 Note: This method doesn't unpress other buttons in [ButtonGroup].
 
+Returns 'self' to enable method chaining.
+
 [ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ButtonGroup
 [ButtonPressed]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ButtonPressed
 [OnToggled]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnToggled
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
 */
-func (self Instance) SetPressedNoSignal(pressed bool) { //gd:BaseButton.set_pressed_no_signal
+func (self Instance) SetPressedNoSignal(pressed bool) Instance { //gd:BaseButton.set_pressed_no_signal
 	Advanced(self).SetPressedNoSignal(pressed)
+	return self
 }
 
 /*
@@ -269,9 +272,10 @@ func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
-// SetDisabled sets the property returned by [IsDisabled].
-func (self Instance) SetDisabled(value bool) {
+// SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisabled(value bool) Instance {
 	class(self).SetDisabled(value)
+	return self
 }
 
 /*
@@ -281,9 +285,10 @@ func (self Instance) ToggleMode() bool {
 	return bool(class(self).IsToggleMode())
 }
 
-// SetToggleMode sets the property returned by [IsToggleMode].
-func (self Instance) SetToggleMode(value bool) {
+// SetToggleMode sets the property returned by [IsToggleMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetToggleMode(value bool) Instance {
 	class(self).SetToggleMode(value)
+	return self
 }
 
 /*
@@ -300,9 +305,10 @@ func (self Instance) ButtonPressed() bool {
 	return bool(class(self).IsPressed())
 }
 
-// SetButtonPressed sets the property returned by [IsPressed].
-func (self Instance) SetButtonPressed(value bool) {
+// SetButtonPressed sets the property returned by [IsPressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetButtonPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 /*
@@ -312,9 +318,10 @@ func (self Instance) ActionMode() ActionMode {
 	return ActionMode(class(self).GetActionMode())
 }
 
-// SetActionMode sets the property returned by [GetActionMode].
-func (self Instance) SetActionMode(value ActionMode) {
+// SetActionMode sets the property returned by [GetActionMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActionMode(value ActionMode) Instance {
 	class(self).SetActionMode(value)
+	return self
 }
 
 /*
@@ -326,9 +333,10 @@ func (self Instance) ButtonMask() Input.MouseButtonMask {
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
-// SetButtonMask sets the property returned by [GetButtonMask].
-func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
+// SetButtonMask sets the property returned by [GetButtonMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance {
 	class(self).SetButtonMask(value)
+	return self
 }
 
 /*
@@ -340,9 +348,10 @@ func (self Instance) KeepPressedOutside() bool {
 	return bool(class(self).IsKeepPressedOutside())
 }
 
-// SetKeepPressedOutside sets the property returned by [IsKeepPressedOutside].
-func (self Instance) SetKeepPressedOutside(value bool) {
+// SetKeepPressedOutside sets the property returned by [IsKeepPressedOutside]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepPressedOutside(value bool) Instance {
 	class(self).SetKeepPressedOutside(value)
+	return self
 }
 
 /*
@@ -354,9 +363,10 @@ func (self Instance) Shortcut() Shortcut.Instance {
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
-// SetShortcut sets the property returned by [GetShortcut].
-func (self Instance) SetShortcut(value Shortcut.Instance) {
+// SetShortcut sets the property returned by [GetShortcut]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcut(value Shortcut.Instance) Instance {
 	class(self).SetShortcut(value)
+	return self
 }
 
 /*
@@ -368,9 +378,10 @@ func (self Instance) ShortcutFeedback() bool {
 	return bool(class(self).IsShortcutFeedback())
 }
 
-// SetShortcutFeedback sets the property returned by [IsShortcutFeedback].
-func (self Instance) SetShortcutFeedback(value bool) {
+// SetShortcutFeedback sets the property returned by [IsShortcutFeedback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutFeedback(value bool) Instance {
 	class(self).SetShortcutFeedback(value)
+	return self
 }
 
 /*
@@ -384,9 +395,10 @@ func (self Instance) ShortcutInTooltip() bool {
 	return bool(class(self).IsShortcutInTooltipEnabled())
 }
 
-// SetShortcutInTooltip sets the property returned by [IsShortcutInTooltipEnabled].
-func (self Instance) SetShortcutInTooltip(value bool) {
+// SetShortcutInTooltip sets the property returned by [IsShortcutInTooltipEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutInTooltip(value bool) Instance {
 	class(self).SetShortcutInTooltip(value)
+	return self
 }
 
 /*
@@ -581,12 +593,13 @@ If you need to know the button's pressed state (and [ToggleMode] is active), use
 [OnToggled]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnToggled
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
 */
-func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Pressed() Signal.Any {
@@ -596,12 +609,13 @@ func (self class) Pressed() Signal.Any {
 /*
 Emitted when the button stops being held down.
 */
-func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonUp() Signal.Any {
@@ -611,12 +625,13 @@ func (self class) ButtonUp() Signal.Any {
 /*
 Emitted when the button starts being held down.
 */
-func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonDown() Signal.Any {
@@ -628,12 +643,13 @@ Emitted when the button was just toggled between pressed and normal states (only
 
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
 */
-func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
+func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Toggled() Signal.Any {

@@ -207,9 +207,10 @@ func (self Instance) NoiseType() NoiseType {
 	return NoiseType(class(self).GetNoiseType())
 }
 
-// SetNoiseType sets the property returned by [GetNoiseType].
-func (self Instance) SetNoiseType(value NoiseType) {
+// SetNoiseType sets the property returned by [GetNoiseType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNoiseType(value NoiseType) Instance {
 	class(self).SetNoiseType(value)
+	return self
 }
 
 /*
@@ -219,9 +220,10 @@ func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
-// SetSeed sets the property returned by [GetSeed].
-func (self Instance) SetSeed(value int) {
+// SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeed(value int) Instance {
 	class(self).SetSeed(int64(value))
+	return self
 }
 
 /*
@@ -231,9 +233,10 @@ func (self Instance) Frequency() Float.X {
 	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
-// SetFrequency sets the property returned by [GetFrequency].
-func (self Instance) SetFrequency(value Float.X) {
+// SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrequency(value Float.X) Instance {
 	class(self).SetFrequency(float64(value))
+	return self
 }
 
 /*
@@ -245,9 +248,10 @@ func (self Instance) Offset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector3.XYZ) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector3.XYZ) Instance {
 	class(self).SetOffset(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -257,9 +261,10 @@ func (self Instance) FractalType() FractalType {
 	return FractalType(class(self).GetFractalType())
 }
 
-// SetFractalType sets the property returned by [GetFractalType].
-func (self Instance) SetFractalType(value FractalType) {
+// SetFractalType sets the property returned by [GetFractalType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalType(value FractalType) Instance {
 	class(self).SetFractalType(value)
+	return self
 }
 
 /*
@@ -269,9 +274,10 @@ func (self Instance) FractalOctaves() int {
 	return int(int(class(self).GetFractalOctaves()))
 }
 
-// SetFractalOctaves sets the property returned by [GetFractalOctaves].
-func (self Instance) SetFractalOctaves(value int) {
+// SetFractalOctaves sets the property returned by [GetFractalOctaves]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalOctaves(value int) Instance {
 	class(self).SetFractalOctaves(int64(value))
+	return self
 }
 
 /*
@@ -281,9 +287,10 @@ func (self Instance) FractalLacunarity() Float.X {
 	return Float.X(Float.X(class(self).GetFractalLacunarity()))
 }
 
-// SetFractalLacunarity sets the property returned by [GetFractalLacunarity].
-func (self Instance) SetFractalLacunarity(value Float.X) {
+// SetFractalLacunarity sets the property returned by [GetFractalLacunarity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalLacunarity(value Float.X) Instance {
 	class(self).SetFractalLacunarity(float64(value))
+	return self
 }
 
 /*
@@ -295,9 +302,10 @@ func (self Instance) FractalGain() Float.X {
 	return Float.X(Float.X(class(self).GetFractalGain()))
 }
 
-// SetFractalGain sets the property returned by [GetFractalGain].
-func (self Instance) SetFractalGain(value Float.X) {
+// SetFractalGain sets the property returned by [GetFractalGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalGain(value Float.X) Instance {
 	class(self).SetFractalGain(float64(value))
+	return self
 }
 
 /*
@@ -307,9 +315,10 @@ func (self Instance) FractalWeightedStrength() Float.X {
 	return Float.X(Float.X(class(self).GetFractalWeightedStrength()))
 }
 
-// SetFractalWeightedStrength sets the property returned by [GetFractalWeightedStrength].
-func (self Instance) SetFractalWeightedStrength(value Float.X) {
+// SetFractalWeightedStrength sets the property returned by [GetFractalWeightedStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalWeightedStrength(value Float.X) Instance {
 	class(self).SetFractalWeightedStrength(float64(value))
+	return self
 }
 
 /*
@@ -319,9 +328,10 @@ func (self Instance) FractalPingPongStrength() Float.X {
 	return Float.X(Float.X(class(self).GetFractalPingPongStrength()))
 }
 
-// SetFractalPingPongStrength sets the property returned by [GetFractalPingPongStrength].
-func (self Instance) SetFractalPingPongStrength(value Float.X) {
+// SetFractalPingPongStrength sets the property returned by [GetFractalPingPongStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractalPingPongStrength(value Float.X) Instance {
 	class(self).SetFractalPingPongStrength(float64(value))
+	return self
 }
 
 /*
@@ -331,9 +341,10 @@ func (self Instance) CellularDistanceFunction() CellularDistanceFunction {
 	return CellularDistanceFunction(class(self).GetCellularDistanceFunction())
 }
 
-// SetCellularDistanceFunction sets the property returned by [GetCellularDistanceFunction].
-func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction) {
+// SetCellularDistanceFunction sets the property returned by [GetCellularDistanceFunction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction) Instance {
 	class(self).SetCellularDistanceFunction(value)
+	return self
 }
 
 /*
@@ -343,9 +354,10 @@ func (self Instance) CellularJitter() Float.X {
 	return Float.X(Float.X(class(self).GetCellularJitter()))
 }
 
-// SetCellularJitter sets the property returned by [GetCellularJitter].
-func (self Instance) SetCellularJitter(value Float.X) {
+// SetCellularJitter sets the property returned by [GetCellularJitter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellularJitter(value Float.X) Instance {
 	class(self).SetCellularJitter(float64(value))
+	return self
 }
 
 /*
@@ -355,9 +367,10 @@ func (self Instance) CellularReturnType() CellularReturnType {
 	return CellularReturnType(class(self).GetCellularReturnType())
 }
 
-// SetCellularReturnType sets the property returned by [GetCellularReturnType].
-func (self Instance) SetCellularReturnType(value CellularReturnType) {
+// SetCellularReturnType sets the property returned by [GetCellularReturnType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellularReturnType(value CellularReturnType) Instance {
 	class(self).SetCellularReturnType(value)
+	return self
 }
 
 /*
@@ -367,9 +380,10 @@ func (self Instance) DomainWarpEnabled() bool {
 	return bool(class(self).IsDomainWarpEnabled())
 }
 
-// SetDomainWarpEnabled sets the property returned by [IsDomainWarpEnabled].
-func (self Instance) SetDomainWarpEnabled(value bool) {
+// SetDomainWarpEnabled sets the property returned by [IsDomainWarpEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpEnabled(value bool) Instance {
 	class(self).SetDomainWarpEnabled(value)
+	return self
 }
 
 /*
@@ -379,9 +393,10 @@ func (self Instance) DomainWarpType() DomainWarpType {
 	return DomainWarpType(class(self).GetDomainWarpType())
 }
 
-// SetDomainWarpType sets the property returned by [GetDomainWarpType].
-func (self Instance) SetDomainWarpType(value DomainWarpType) {
+// SetDomainWarpType sets the property returned by [GetDomainWarpType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpType(value DomainWarpType) Instance {
 	class(self).SetDomainWarpType(value)
+	return self
 }
 
 /*
@@ -391,9 +406,10 @@ func (self Instance) DomainWarpAmplitude() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpAmplitude()))
 }
 
-// SetDomainWarpAmplitude sets the property returned by [GetDomainWarpAmplitude].
-func (self Instance) SetDomainWarpAmplitude(value Float.X) {
+// SetDomainWarpAmplitude sets the property returned by [GetDomainWarpAmplitude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpAmplitude(value Float.X) Instance {
 	class(self).SetDomainWarpAmplitude(float64(value))
+	return self
 }
 
 /*
@@ -403,9 +419,10 @@ func (self Instance) DomainWarpFrequency() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFrequency()))
 }
 
-// SetDomainWarpFrequency sets the property returned by [GetDomainWarpFrequency].
-func (self Instance) SetDomainWarpFrequency(value Float.X) {
+// SetDomainWarpFrequency sets the property returned by [GetDomainWarpFrequency]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpFrequency(value Float.X) Instance {
 	class(self).SetDomainWarpFrequency(float64(value))
+	return self
 }
 
 /*
@@ -415,9 +432,10 @@ func (self Instance) DomainWarpFractalType() DomainWarpFractalType {
 	return DomainWarpFractalType(class(self).GetDomainWarpFractalType())
 }
 
-// SetDomainWarpFractalType sets the property returned by [GetDomainWarpFractalType].
-func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) {
+// SetDomainWarpFractalType sets the property returned by [GetDomainWarpFractalType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) Instance {
 	class(self).SetDomainWarpFractalType(value)
+	return self
 }
 
 /*
@@ -427,9 +445,10 @@ func (self Instance) DomainWarpFractalOctaves() int {
 	return int(int(class(self).GetDomainWarpFractalOctaves()))
 }
 
-// SetDomainWarpFractalOctaves sets the property returned by [GetDomainWarpFractalOctaves].
-func (self Instance) SetDomainWarpFractalOctaves(value int) {
+// SetDomainWarpFractalOctaves sets the property returned by [GetDomainWarpFractalOctaves]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpFractalOctaves(value int) Instance {
 	class(self).SetDomainWarpFractalOctaves(int64(value))
+	return self
 }
 
 /*
@@ -439,9 +458,10 @@ func (self Instance) DomainWarpFractalLacunarity() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFractalLacunarity()))
 }
 
-// SetDomainWarpFractalLacunarity sets the property returned by [GetDomainWarpFractalLacunarity].
-func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) {
+// SetDomainWarpFractalLacunarity sets the property returned by [GetDomainWarpFractalLacunarity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) Instance {
 	class(self).SetDomainWarpFractalLacunarity(float64(value))
+	return self
 }
 
 /*
@@ -453,9 +473,10 @@ func (self Instance) DomainWarpFractalGain() Float.X {
 	return Float.X(Float.X(class(self).GetDomainWarpFractalGain()))
 }
 
-// SetDomainWarpFractalGain sets the property returned by [GetDomainWarpFractalGain].
-func (self Instance) SetDomainWarpFractalGain(value Float.X) {
+// SetDomainWarpFractalGain sets the property returned by [GetDomainWarpFractalGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDomainWarpFractalGain(value Float.X) Instance {
 	class(self).SetDomainWarpFractalGain(float64(value))
+	return self
 }
 
 //go:nosplit

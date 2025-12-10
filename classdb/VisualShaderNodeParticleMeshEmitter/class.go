@@ -175,9 +175,10 @@ func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value Mesh.Instance) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value Mesh.Instance) Instance {
 	class(self).SetMesh(value)
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) UseAllSurfaces() bool {
 	return bool(class(self).IsUseAllSurfaces())
 }
 
-// SetUseAllSurfaces sets the property returned by [IsUseAllSurfaces].
-func (self Instance) SetUseAllSurfaces(value bool) {
+// SetUseAllSurfaces sets the property returned by [IsUseAllSurfaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAllSurfaces(value bool) Instance {
 	class(self).SetUseAllSurfaces(value)
+	return self
 }
 
 /*
@@ -201,9 +203,10 @@ func (self Instance) SurfaceIndex() int {
 	return int(int(class(self).GetSurfaceIndex()))
 }
 
-// SetSurfaceIndex sets the property returned by [GetSurfaceIndex].
-func (self Instance) SetSurfaceIndex(value int) {
+// SetSurfaceIndex sets the property returned by [GetSurfaceIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSurfaceIndex(value int) Instance {
 	class(self).SetSurfaceIndex(int64(value))
+	return self
 }
 
 //go:nosplit

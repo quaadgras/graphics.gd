@@ -184,9 +184,12 @@ type Any interface {
 
 /*
 Sets the occluder polygon count in the TileSet occlusion layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOccluderPolygonsCount(layer_id int, polygons_count int) { //gd:TileData.set_occluder_polygons_count
+func (self Instance) SetOccluderPolygonsCount(layer_id int, polygons_count int) Instance { //gd:TileData.set_occluder_polygons_count
 	Advanced(self).SetOccluderPolygonsCount(int64(layer_id), int64(polygons_count))
+	return self
 }
 
 /*
@@ -212,9 +215,12 @@ func (self Instance) RemoveOccluderPolygon(layer_id int, polygon_index int) { //
 
 /*
 Sets the occluder for polygon with index 'polygon_index' in the TileSet occlusion layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon OccluderPolygon2D.Instance) { //gd:TileData.set_occluder_polygon
+func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon OccluderPolygon2D.Instance) Instance { //gd:TileData.set_occluder_polygon
 	Advanced(self).SetOccluderPolygon(int64(layer_id), int64(polygon_index), polygon)
+	return self
 }
 
 /*
@@ -237,9 +243,12 @@ func (self MoreArgs) GetOccluderPolygon(layer_id int, polygon_index int, flip_h 
 
 /*
 Sets the occluder for the TileSet occlusion layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOccluder(layer_id int, occluder_polygon OccluderPolygon2D.Instance) { //gd:TileData.set_occluder
+func (self Instance) SetOccluder(layer_id int, occluder_polygon OccluderPolygon2D.Instance) Instance { //gd:TileData.set_occluder
 	Advanced(self).SetOccluder(int64(layer_id), occluder_polygon)
+	return self
 }
 
 /*
@@ -262,9 +271,12 @@ func (self MoreArgs) GetOccluder(layer_id int, flip_h bool, flip_v bool, transpo
 
 /*
 Sets the constant linear velocity. This does not move the tile. This linear velocity is applied to objects colliding with this tile. This is useful to create conveyor belts.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetConstantLinearVelocity(layer_id int, velocity Vector2.XY) { //gd:TileData.set_constant_linear_velocity
+func (self Instance) SetConstantLinearVelocity(layer_id int, velocity Vector2.XY) Instance { //gd:TileData.set_constant_linear_velocity
 	Advanced(self).SetConstantLinearVelocity(int64(layer_id), Vector2.XY(velocity))
+	return self
 }
 
 /*
@@ -276,9 +288,12 @@ func (self Instance) GetConstantLinearVelocity(layer_id int) Vector2.XY { //gd:T
 
 /*
 Sets the constant angular velocity. This does not rotate the tile. This angular velocity is applied to objects colliding with this tile.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetConstantAngularVelocity(layer_id int, velocity Float.X) { //gd:TileData.set_constant_angular_velocity
+func (self Instance) SetConstantAngularVelocity(layer_id int, velocity Float.X) Instance { //gd:TileData.set_constant_angular_velocity
 	Advanced(self).SetConstantAngularVelocity(int64(layer_id), float64(velocity))
+	return self
 }
 
 /*
@@ -290,9 +305,12 @@ func (self Instance) GetConstantAngularVelocity(layer_id int) Float.X { //gd:Til
 
 /*
 Sets the polygons count for TileSet physics layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCollisionPolygonsCount(layer_id int, polygons_count int) { //gd:TileData.set_collision_polygons_count
+func (self Instance) SetCollisionPolygonsCount(layer_id int, polygons_count int) Instance { //gd:TileData.set_collision_polygons_count
 	Advanced(self).SetCollisionPolygonsCount(int64(layer_id), int64(polygons_count))
+	return self
 }
 
 /*
@@ -318,9 +336,12 @@ func (self Instance) RemoveCollisionPolygon(layer_id int, polygon_index int) { /
 
 /*
 Sets the points of the polygon at index 'polygon_index' for TileSet physics layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []Vector2.XY) { //gd:TileData.set_collision_polygon_points
+func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []Vector2.XY) Instance { //gd:TileData.set_collision_polygon_points
 	Advanced(self).SetCollisionPolygonPoints(int64(layer_id), int64(polygon_index), Packed.New(polygon...))
+	return self
 }
 
 /*
@@ -332,9 +353,12 @@ func (self Instance) GetCollisionPolygonPoints(layer_id int, polygon_index int) 
 
 /*
 Enables/disables one-way collisions on the polygon at index 'polygon_index' for TileSet physics layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCollisionPolygonOneWay(layer_id int, polygon_index int, one_way bool) { //gd:TileData.set_collision_polygon_one_way
+func (self Instance) SetCollisionPolygonOneWay(layer_id int, polygon_index int, one_way bool) Instance { //gd:TileData.set_collision_polygon_one_way
 	Advanced(self).SetCollisionPolygonOneWay(int64(layer_id), int64(polygon_index), one_way)
+	return self
 }
 
 /*
@@ -346,9 +370,12 @@ func (self Instance) IsCollisionPolygonOneWay(layer_id int, polygon_index int) b
 
 /*
 Sets the one-way margin (for one-way platforms) of the polygon at index 'polygon_index' for TileSet physics layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) { //gd:TileData.set_collision_polygon_one_way_margin
+func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) Instance { //gd:TileData.set_collision_polygon_one_way_margin
 	Advanced(self).SetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index), float64(one_way_margin))
+	return self
 }
 
 /*
@@ -361,10 +388,13 @@ func (self Instance) GetCollisionPolygonOneWayMargin(layer_id int, polygon_index
 /*
 Sets the tile's terrain bit for the given 'peering_bit' direction. To check that a direction is valid, use [IsValidTerrainPeeringBit].
 
+Returns 'self' to enable method chaining.
+
 [IsValidTerrainPeeringBit]: https://pkg.go.dev/graphics.gd/classdb/TileData#Instance.IsValidTerrainPeeringBit
 */
-func (self Instance) SetTerrainPeeringBit(peering_bit TileSet.CellNeighbor, terrain int) { //gd:TileData.set_terrain_peering_bit
+func (self Instance) SetTerrainPeeringBit(peering_bit TileSet.CellNeighbor, terrain int) Instance { //gd:TileData.set_terrain_peering_bit
 	Advanced(self).SetTerrainPeeringBit(peering_bit, int64(terrain))
+	return self
 }
 
 /*
@@ -385,9 +415,12 @@ func (self Instance) IsValidTerrainPeeringBit(peering_bit TileSet.CellNeighbor) 
 
 /*
 Sets the navigation polygon for the TileSet navigation layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon NavigationPolygon.Instance) { //gd:TileData.set_navigation_polygon
+func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon NavigationPolygon.Instance) Instance { //gd:TileData.set_navigation_polygon
 	Advanced(self).SetNavigationPolygon(int64(layer_id), navigation_polygon)
+	return self
 }
 
 /*
@@ -410,9 +443,12 @@ func (self MoreArgs) GetNavigationPolygon(layer_id int, flip_h bool, flip_v bool
 
 /*
 Sets the tile's custom data value for the TileSet custom data layer with name 'layer_name'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomData(layer_name string, value any) { //gd:TileData.set_custom_data
+func (self Instance) SetCustomData(layer_name string, value any) Instance { //gd:TileData.set_custom_data
 	Advanced(self).SetCustomData(String.New(layer_name), variant.New(value))
+	return self
 }
 
 /*
@@ -433,9 +469,12 @@ func (self Instance) HasCustomData(layer_name string) bool { //gd:TileData.has_c
 
 /*
 Sets the tile's custom data value for the TileSet custom data layer with index 'layer_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomDataByLayerId(layer_id int, value any) { //gd:TileData.set_custom_data_by_layer_id
+func (self Instance) SetCustomDataByLayerId(layer_id int, value any) Instance { //gd:TileData.set_custom_data_by_layer_id
 	Advanced(self).SetCustomDataByLayerId(int64(layer_id), variant.New(value))
+	return self
 }
 
 /*
@@ -494,9 +533,10 @@ func (self Instance) FlipH() bool {
 	return bool(class(self).GetFlipH())
 }
 
-// SetFlipH sets the property returned by [GetFlipH].
-func (self Instance) SetFlipH(value bool) {
+// SetFlipH sets the property returned by [GetFlipH]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipH(value bool) Instance {
 	class(self).SetFlipH(value)
+	return self
 }
 
 /*
@@ -506,9 +546,10 @@ func (self Instance) FlipV() bool {
 	return bool(class(self).GetFlipV())
 }
 
-// SetFlipV sets the property returned by [GetFlipV].
-func (self Instance) SetFlipV(value bool) {
+// SetFlipV sets the property returned by [GetFlipV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipV(value bool) Instance {
 	class(self).SetFlipV(value)
+	return self
 }
 
 /*
@@ -518,9 +559,10 @@ func (self Instance) Transpose() bool {
 	return bool(class(self).GetTranspose())
 }
 
-// SetTranspose sets the property returned by [GetTranspose].
-func (self Instance) SetTranspose(value bool) {
+// SetTranspose sets the property returned by [GetTranspose]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTranspose(value bool) Instance {
 	class(self).SetTranspose(value)
+	return self
 }
 
 /*
@@ -530,9 +572,10 @@ func (self Instance) TextureOrigin() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTextureOrigin())
 }
 
-// SetTextureOrigin sets the property returned by [GetTextureOrigin].
-func (self Instance) SetTextureOrigin(value Vector2i.XY) {
+// SetTextureOrigin sets the property returned by [GetTextureOrigin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureOrigin(value Vector2i.XY) Instance {
 	class(self).SetTextureOrigin(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -542,9 +585,10 @@ func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
-// SetModulate sets the property returned by [GetModulate].
-func (self Instance) SetModulate(value Color.RGBA) {
+// SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulate(value Color.RGBA) Instance {
 	class(self).SetModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -559,9 +603,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 /*
@@ -573,9 +618,10 @@ func (self Instance) ZIndex() int {
 	return int(int(class(self).GetZIndex()))
 }
 
-// SetZIndex sets the property returned by [GetZIndex].
-func (self Instance) SetZIndex(value int) {
+// SetZIndex sets the property returned by [GetZIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZIndex(value int) Instance {
 	class(self).SetZIndex(int64(value))
+	return self
 }
 
 /*
@@ -585,9 +631,10 @@ func (self Instance) YSortOrigin() int {
 	return int(int(class(self).GetYSortOrigin()))
 }
 
-// SetYSortOrigin sets the property returned by [GetYSortOrigin].
-func (self Instance) SetYSortOrigin(value int) {
+// SetYSortOrigin sets the property returned by [GetYSortOrigin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetYSortOrigin(value int) Instance {
 	class(self).SetYSortOrigin(int64(value))
+	return self
 }
 
 /*
@@ -597,9 +644,10 @@ func (self Instance) TerrainSet() int {
 	return int(int(class(self).GetTerrainSet()))
 }
 
-// SetTerrainSet sets the property returned by [GetTerrainSet].
-func (self Instance) SetTerrainSet(value int) {
+// SetTerrainSet sets the property returned by [GetTerrainSet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTerrainSet(value int) Instance {
 	class(self).SetTerrainSet(int64(value))
+	return self
 }
 
 /*
@@ -609,9 +657,10 @@ func (self Instance) Terrain() int {
 	return int(int(class(self).GetTerrain()))
 }
 
-// SetTerrain sets the property returned by [GetTerrain].
-func (self Instance) SetTerrain(value int) {
+// SetTerrain sets the property returned by [GetTerrain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTerrain(value int) Instance {
 	class(self).SetTerrain(int64(value))
+	return self
 }
 
 /*
@@ -621,9 +670,10 @@ func (self Instance) Probability() Float.X {
 	return Float.X(Float.X(class(self).GetProbability()))
 }
 
-// SetProbability sets the property returned by [GetProbability].
-func (self Instance) SetProbability(value Float.X) {
+// SetProbability sets the property returned by [GetProbability]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProbability(value Float.X) Instance {
 	class(self).SetProbability(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -1133,12 +1183,13 @@ func (self class) GetCustomDataByLayerId(layer_id int64) variant.Any { //gd:Tile
 /*
 Emitted when any of the properties are changed.
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {

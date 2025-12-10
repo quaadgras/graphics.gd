@@ -193,9 +193,10 @@ func (self Instance) ExposureSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetExposureSensitivity()))
 }
 
-// SetExposureSensitivity sets the property returned by [GetExposureSensitivity].
-func (self Instance) SetExposureSensitivity(value Float.X) {
+// SetExposureSensitivity sets the property returned by [GetExposureSensitivity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExposureSensitivity(value Float.X) Instance {
 	class(self).SetExposureSensitivity(float64(value))
+	return self
 }
 
 /*
@@ -205,9 +206,10 @@ func (self Instance) ExposureMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetExposureMultiplier()))
 }
 
-// SetExposureMultiplier sets the property returned by [GetExposureMultiplier].
-func (self Instance) SetExposureMultiplier(value Float.X) {
+// SetExposureMultiplier sets the property returned by [GetExposureMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExposureMultiplier(value Float.X) Instance {
 	class(self).SetExposureMultiplier(float64(value))
+	return self
 }
 
 /*
@@ -217,9 +219,10 @@ func (self Instance) AutoExposureEnabled() bool {
 	return bool(class(self).IsAutoExposureEnabled())
 }
 
-// SetAutoExposureEnabled sets the property returned by [IsAutoExposureEnabled].
-func (self Instance) SetAutoExposureEnabled(value bool) {
+// SetAutoExposureEnabled sets the property returned by [IsAutoExposureEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureEnabled(value bool) Instance {
 	class(self).SetAutoExposureEnabled(value)
+	return self
 }
 
 /*
@@ -229,9 +232,10 @@ func (self Instance) AutoExposureScale() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureScale()))
 }
 
-// SetAutoExposureScale sets the property returned by [GetAutoExposureScale].
-func (self Instance) SetAutoExposureScale(value Float.X) {
+// SetAutoExposureScale sets the property returned by [GetAutoExposureScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureScale(value Float.X) Instance {
 	class(self).SetAutoExposureScale(float64(value))
+	return self
 }
 
 /*
@@ -241,9 +245,10 @@ func (self Instance) AutoExposureSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureSpeed()))
 }
 
-// SetAutoExposureSpeed sets the property returned by [GetAutoExposureSpeed].
-func (self Instance) SetAutoExposureSpeed(value Float.X) {
+// SetAutoExposureSpeed sets the property returned by [GetAutoExposureSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureSpeed(value Float.X) Instance {
 	class(self).SetAutoExposureSpeed(float64(value))
+	return self
 }
 
 //go:nosplit

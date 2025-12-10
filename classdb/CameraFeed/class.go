@@ -190,9 +190,12 @@ func (self Instance) GetName() string { //gd:CameraFeed.get_name
 
 /*
 Sets the camera's name.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetName(name string) { //gd:CameraFeed.set_name
+func (self Instance) SetName(name string) Instance { //gd:CameraFeed.set_name
 	Advanced(self).SetName(String.New(name))
+	return self
 }
 
 /*
@@ -204,30 +207,42 @@ func (self Instance) GetPosition() FeedPosition { //gd:CameraFeed.get_position
 
 /*
 Sets the position of this camera.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
+func (self Instance) SetPosition(position FeedPosition) Instance { //gd:CameraFeed.set_position
 	Advanced(self).SetPosition(position)
+	return self
 }
 
 /*
 Sets RGB image for this feed.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRgbImage(rgb_image Image.Instance) { //gd:CameraFeed.set_rgb_image
+func (self Instance) SetRgbImage(rgb_image Image.Instance) Instance { //gd:CameraFeed.set_rgb_image
 	Advanced(self).SetRgbImage(rgb_image)
+	return self
 }
 
 /*
 Sets YCbCr image for this feed.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetYcbcrImage(ycbcr_image Image.Instance) { //gd:CameraFeed.set_ycbcr_image
+func (self Instance) SetYcbcrImage(ycbcr_image Image.Instance) Instance { //gd:CameraFeed.set_ycbcr_image
 	Advanced(self).SetYcbcrImage(ycbcr_image)
+	return self
 }
 
 /*
 Sets the feed as external feed provided by another library.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExternal(width int, height int) { //gd:CameraFeed.set_external
+func (self Instance) SetExternal(width int, height int) Instance { //gd:CameraFeed.set_external
 	Advanced(self).SetExternal(int64(width), int64(height))
+	return self
 }
 
 /*
@@ -309,9 +324,10 @@ func (self Instance) FeedIsActive() bool {
 	return bool(class(self).IsActive())
 }
 
-// SetFeedIsActive sets the property returned by [IsActive].
-func (self Instance) SetFeedIsActive(value bool) {
+// SetFeedIsActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedIsActive(value bool) Instance {
 	class(self).SetActive(value)
+	return self
 }
 
 /*
@@ -321,9 +337,10 @@ func (self Instance) FeedTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-// SetFeedTransform sets the property returned by [GetTransform].
-func (self Instance) SetFeedTransform(value Transform2D.OriginXY) {
+// SetFeedTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -502,12 +519,13 @@ func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:
 /*
 Emitted when a new frame is available.
 */
-func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FrameChanged() Signal.Any {
@@ -517,12 +535,13 @@ func (self class) FrameChanged() Signal.Any {
 /*
 Emitted when the format has changed.
 */
-func (self Instance) OnFormatChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFormatChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("format_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FormatChanged() Signal.Any {

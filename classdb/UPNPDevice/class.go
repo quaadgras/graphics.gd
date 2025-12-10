@@ -239,9 +239,10 @@ func (self Instance) DescriptionUrl() string {
 	return string(class(self).GetDescriptionUrl().String())
 }
 
-// SetDescriptionUrl sets the property returned by [GetDescriptionUrl].
-func (self Instance) SetDescriptionUrl(value string) {
+// SetDescriptionUrl sets the property returned by [GetDescriptionUrl]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDescriptionUrl(value string) Instance {
 	class(self).SetDescriptionUrl(String.New(value))
+	return self
 }
 
 /*
@@ -251,9 +252,10 @@ func (self Instance) ServiceType() string {
 	return string(class(self).GetServiceType().String())
 }
 
-// SetServiceType sets the property returned by [GetServiceType].
-func (self Instance) SetServiceType(value string) {
+// SetServiceType sets the property returned by [GetServiceType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetServiceType(value string) Instance {
 	class(self).SetServiceType(String.New(value))
+	return self
 }
 
 /*
@@ -263,9 +265,10 @@ func (self Instance) IgdControlUrl() string {
 	return string(class(self).GetIgdControlUrl().String())
 }
 
-// SetIgdControlUrl sets the property returned by [GetIgdControlUrl].
-func (self Instance) SetIgdControlUrl(value string) {
+// SetIgdControlUrl sets the property returned by [GetIgdControlUrl]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgdControlUrl(value string) Instance {
 	class(self).SetIgdControlUrl(String.New(value))
+	return self
 }
 
 /*
@@ -275,9 +278,10 @@ func (self Instance) IgdServiceType() string {
 	return string(class(self).GetIgdServiceType().String())
 }
 
-// SetIgdServiceType sets the property returned by [GetIgdServiceType].
-func (self Instance) SetIgdServiceType(value string) {
+// SetIgdServiceType sets the property returned by [GetIgdServiceType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgdServiceType(value string) Instance {
 	class(self).SetIgdServiceType(String.New(value))
+	return self
 }
 
 /*
@@ -289,9 +293,10 @@ func (self Instance) IgdOurAddr() string {
 	return string(class(self).GetIgdOurAddr().String())
 }
 
-// SetIgdOurAddr sets the property returned by [GetIgdOurAddr].
-func (self Instance) SetIgdOurAddr(value string) {
+// SetIgdOurAddr sets the property returned by [GetIgdOurAddr]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgdOurAddr(value string) Instance {
 	class(self).SetIgdOurAddr(String.New(value))
+	return self
 }
 
 /*
@@ -301,9 +306,10 @@ func (self Instance) IgdStatus() IGDStatus {
 	return IGDStatus(class(self).GetIgdStatus())
 }
 
-// SetIgdStatus sets the property returned by [GetIgdStatus].
-func (self Instance) SetIgdStatus(value IGDStatus) {
+// SetIgdStatus sets the property returned by [GetIgdStatus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgdStatus(value IGDStatus) Instance {
 	class(self).SetIgdStatus(value)
+	return self
 }
 
 /*

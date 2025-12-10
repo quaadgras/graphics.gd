@@ -178,36 +178,40 @@ func (self Instance) Joints() []int32 {
 	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
-// SetJoints sets the property returned by [GetJoints].
-func (self Instance) SetJoints(value []int32) {
+// SetJoints sets the property returned by [GetJoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJoints(value []int32) Instance {
 	class(self).SetJoints(Packed.New(value...))
+	return self
 }
 
 func (self Instance) Roots() []int32 {
 	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
-// SetRoots sets the property returned by [GetRoots].
-func (self Instance) SetRoots(value []int32) {
+// SetRoots sets the property returned by [GetRoots]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRoots(value []int32) Instance {
 	class(self).SetRoots(Packed.New(value...))
+	return self
 }
 
 func (self Instance) UniqueNames() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
-// SetUniqueNames sets the property returned by [GetUniqueNames].
-func (self Instance) SetUniqueNames(value []string) {
+// SetUniqueNames sets the property returned by [GetUniqueNames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUniqueNames(value []string) Instance {
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
+	return self
 }
 
 func (self Instance) GodotBoneNode() map[int]int {
 	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetGodotBoneNode()))
 }
 
-// SetGodotBoneNode sets the property returned by [GetGodotBoneNode].
-func (self Instance) SetGodotBoneNode(value map[int]int) {
+// SetGodotBoneNode sets the property returned by [GetGodotBoneNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGodotBoneNode(value map[int]int) Instance {
 	class(self).SetGodotBoneNode(gd.DictionaryFromMap(value))
+	return self
 }
 
 //go:nosplit

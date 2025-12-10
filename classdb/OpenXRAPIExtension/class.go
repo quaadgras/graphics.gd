@@ -246,9 +246,12 @@ func (self Instance) GetSwapchainFormatName(swapchain_format int) string { //gd:
 
 /*
 Set the object name of an OpenXR object, used for debug output. 'object_type' must be a valid OpenXR XrObjectType enum and 'object_handle' must be a valid OpenXR object handle.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetObjectName(object_type int, object_handle int, object_name string) { //gd:OpenXRAPIExtension.set_object_name
+func (self Instance) SetObjectName(object_type int, object_handle int, object_name string) Instance { //gd:OpenXRAPIExtension.set_object_name
 	Advanced(self).SetObjectName(int64(object_type), int64(object_handle), String.New(object_name))
+	return self
 }
 
 /*
@@ -299,10 +302,13 @@ func (self Instance) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 /*
 Sets the reference space used by OpenXR to the given [XrSpace] (cast to a void *).
 
+Returns 'self' to enable method chaining.
+
 [XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
 */
-func (self Instance) SetCustomPlaySpace(space gdextension.Pointer) { //gd:OpenXRAPIExtension.set_custom_play_space
+func (self Instance) SetCustomPlaySpace(space gdextension.Pointer) Instance { //gd:OpenXRAPIExtension.set_custom_play_space
 	Advanced(self).SetCustomPlaySpace(space)
+	return self
 }
 
 /*
@@ -424,23 +430,32 @@ func (self Instance) GetRenderStateZFar() Float.X { //gd:OpenXRAPIExtension.get_
 
 /*
 Sets the render target of the velocity texture.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVelocityTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_texture
+func (self Instance) SetVelocityTexture(render_target RID.Framebuffer) Instance { //gd:OpenXRAPIExtension.set_velocity_texture
 	Advanced(self).SetVelocityTexture(RID.Any(render_target))
+	return self
 }
 
 /*
 Sets the render target of the velocity depth texture.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVelocityDepthTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
+func (self Instance) SetVelocityDepthTexture(render_target RID.Framebuffer) Instance { //gd:OpenXRAPIExtension.set_velocity_depth_texture
 	Advanced(self).SetVelocityDepthTexture(RID.Any(render_target))
+	return self
 }
 
 /*
 Sets the target size of the velocity and velocity depth textures.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
+func (self Instance) SetVelocityTargetSize(target_size Vector2i.XY) Instance { //gd:OpenXRAPIExtension.set_velocity_target_size
 	Advanced(self).SetVelocityTargetSize(Vector2i.XY(target_size))
+	return self
 }
 
 /*
@@ -503,16 +518,22 @@ func (self Instance) GetProjectionLayer() int { //gd:OpenXRAPIExtension.get_proj
 
 /*
 Sets the render region to 'render_region', overriding the normal render target's rect.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
+func (self Instance) SetRenderRegion(render_region Rect2i.PositionSize) Instance { //gd:OpenXRAPIExtension.set_render_region
 	Advanced(self).SetRenderRegion(Rect2i.PositionSize(render_region))
+	return self
 }
 
 /*
 If set to true, an OpenXR extension is loaded which is capable of emulating the [Xrinterface.XrEnvBlendModeAlphaBlend] blend mode.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
+func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) Instance { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
 	Advanced(self).SetEmulateEnvironmentBlendModeAlphaBlend(enabled)
+	return self
 }
 
 /*

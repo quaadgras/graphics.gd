@@ -468,12 +468,13 @@ Emitted when user changed active script. Argument is a freshly activated [Script
 
 [Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
-func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) {
+func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_script_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditorScriptChanged() Signal.Any {
@@ -485,12 +486,13 @@ Emitted when editor is about to close the active script. Argument is a [Script] 
 
 [Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
-func (self Instance) OnScriptClose(cb func(script Script.Instance), flags ...Signal.Flags) {
+func (self Instance) OnScriptClose(cb func(script Script.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_close"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScriptClose() Signal.Any {

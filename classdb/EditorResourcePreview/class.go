@@ -268,12 +268,13 @@ func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResour
 /*
 Emitted if a preview was invalidated (changed). 'path' corresponds to the path of the preview.
 */
-func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) {
+func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PreviewInvalidated() Signal.Any {

@@ -176,9 +176,10 @@ func (self Instance) MaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
-// SetMaxDistance sets the property returned by [GetMaxDistance].
-func (self Instance) SetMaxDistance(value Float.X) {
+// SetMaxDistance sets the property returned by [GetMaxDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxDistance(value Float.X) Instance {
 	class(self).SetMaxDistance(float64(value))
+	return self
 }
 
 //go:nosplit

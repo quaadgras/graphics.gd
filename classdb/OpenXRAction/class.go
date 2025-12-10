@@ -175,9 +175,10 @@ func (self Instance) LocalizedName() string {
 	return string(class(self).GetLocalizedName().String())
 }
 
-// SetLocalizedName sets the property returned by [GetLocalizedName].
-func (self Instance) SetLocalizedName(value string) {
+// SetLocalizedName sets the property returned by [GetLocalizedName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocalizedName(value string) Instance {
 	class(self).SetLocalizedName(String.New(value))
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) ActionType() ActionType {
 	return ActionType(class(self).GetActionType())
 }
 
-// SetActionType sets the property returned by [GetActionType].
-func (self Instance) SetActionType(value ActionType) {
+// SetActionType sets the property returned by [GetActionType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActionType(value ActionType) Instance {
 	class(self).SetActionType(value)
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) ToplevelPaths() []string {
 	return []string(class(self).GetToplevelPaths().Strings())
 }
 
-// SetToplevelPaths sets the property returned by [GetToplevelPaths].
-func (self Instance) SetToplevelPaths(value []string) {
+// SetToplevelPaths sets the property returned by [GetToplevelPaths]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetToplevelPaths(value []string) Instance {
 	class(self).SetToplevelPaths(Packed.MakeStrings(value...))
+	return self
 }
 
 //go:nosplit

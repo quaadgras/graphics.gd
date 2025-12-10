@@ -240,9 +240,10 @@ func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-// SetBufferLength sets the property returned by [GetBufferLength].
-func (self Instance) SetBufferLength(value Float.X) {
+// SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBufferLength(value Float.X) Instance {
 	class(self).SetBufferLength(float64(value))
+	return self
 }
 
 /*

@@ -192,9 +192,10 @@ func (self Instance) TimeLeft() Float.X {
 	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 
-// SetTimeLeft sets the property returned by [GetTimeLeft].
-func (self Instance) SetTimeLeft(value Float.X) {
+// SetTimeLeft sets the property returned by [GetTimeLeft]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimeLeft(value Float.X) Instance {
 	class(self).SetTimeLeft(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -212,12 +213,13 @@ func (self class) GetTimeLeft() float64 { //gd:SceneTreeTimer.get_time_left
 /*
 Emitted when the timer reaches 0.
 */
-func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("timeout"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Timeout() Signal.Any {

@@ -213,9 +213,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
-// SetEnabled sets the property returned by [GetEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -225,9 +226,10 @@ func (self Instance) EffectCallbackType() EffectCallbackType {
 	return EffectCallbackType(class(self).GetEffectCallbackType())
 }
 
-// SetEffectCallbackType sets the property returned by [GetEffectCallbackType].
-func (self Instance) SetEffectCallbackType(value EffectCallbackType) {
+// SetEffectCallbackType sets the property returned by [GetEffectCallbackType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEffectCallbackType(value EffectCallbackType) Instance {
 	class(self).SetEffectCallbackType(value)
+	return self
 }
 
 /*
@@ -241,9 +243,10 @@ func (self Instance) AccessResolvedColor() bool {
 	return bool(class(self).GetAccessResolvedColor())
 }
 
-// SetAccessResolvedColor sets the property returned by [GetAccessResolvedColor].
-func (self Instance) SetAccessResolvedColor(value bool) {
+// SetAccessResolvedColor sets the property returned by [GetAccessResolvedColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessResolvedColor(value bool) Instance {
 	class(self).SetAccessResolvedColor(value)
+	return self
 }
 
 /*
@@ -257,9 +260,10 @@ func (self Instance) AccessResolvedDepth() bool {
 	return bool(class(self).GetAccessResolvedDepth())
 }
 
-// SetAccessResolvedDepth sets the property returned by [GetAccessResolvedDepth].
-func (self Instance) SetAccessResolvedDepth(value bool) {
+// SetAccessResolvedDepth sets the property returned by [GetAccessResolvedDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessResolvedDepth(value bool) Instance {
 	class(self).SetAccessResolvedDepth(value)
+	return self
 }
 
 /*
@@ -273,9 +277,10 @@ func (self Instance) NeedsMotionVectors() bool {
 	return bool(class(self).GetNeedsMotionVectors())
 }
 
-// SetNeedsMotionVectors sets the property returned by [GetNeedsMotionVectors].
-func (self Instance) SetNeedsMotionVectors(value bool) {
+// SetNeedsMotionVectors sets the property returned by [GetNeedsMotionVectors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNeedsMotionVectors(value bool) Instance {
 	class(self).SetNeedsMotionVectors(value)
+	return self
 }
 
 /*
@@ -292,9 +297,10 @@ func (self Instance) NeedsNormalRoughness() bool {
 	return bool(class(self).GetNeedsNormalRoughness())
 }
 
-// SetNeedsNormalRoughness sets the property returned by [GetNeedsNormalRoughness].
-func (self Instance) SetNeedsNormalRoughness(value bool) {
+// SetNeedsNormalRoughness sets the property returned by [GetNeedsNormalRoughness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNeedsNormalRoughness(value bool) Instance {
 	class(self).SetNeedsNormalRoughness(value)
+	return self
 }
 
 /*
@@ -304,9 +310,10 @@ func (self Instance) NeedsSeparateSpecular() bool {
 	return bool(class(self).GetNeedsSeparateSpecular())
 }
 
-// SetNeedsSeparateSpecular sets the property returned by [GetNeedsSeparateSpecular].
-func (self Instance) SetNeedsSeparateSpecular(value bool) {
+// SetNeedsSeparateSpecular sets the property returned by [GetNeedsSeparateSpecular]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNeedsSeparateSpecular(value bool) Instance {
 	class(self).SetNeedsSeparateSpecular(value)
+	return self
 }
 
 /*

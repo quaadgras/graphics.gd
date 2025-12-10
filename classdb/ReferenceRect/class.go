@@ -174,9 +174,10 @@ func (self Instance) BorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
-// SetBorderColor sets the property returned by [GetBorderColor].
-func (self Instance) SetBorderColor(value Color.RGBA) {
+// SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderColor(value Color.RGBA) Instance {
 	class(self).SetBorderColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -188,9 +189,10 @@ func (self Instance) BorderWidth() Float.X {
 	return Float.X(Float.X(class(self).GetBorderWidth()))
 }
 
-// SetBorderWidth sets the property returned by [GetBorderWidth].
-func (self Instance) SetBorderWidth(value Float.X) {
+// SetBorderWidth sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderWidth(value Float.X) Instance {
 	class(self).SetBorderWidth(float64(value))
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) EditorOnly() bool {
 	return bool(class(self).GetEditorOnly())
 }
 
-// SetEditorOnly sets the property returned by [GetEditorOnly].
-func (self Instance) SetEditorOnly(value bool) {
+// SetEditorOnly sets the property returned by [GetEditorOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorOnly(value bool) Instance {
 	class(self).SetEditorOnly(value)
+	return self
 }
 
 //go:nosplit

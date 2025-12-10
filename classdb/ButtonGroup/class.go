@@ -199,9 +199,10 @@ func (self Instance) AllowUnpress() bool {
 	return bool(class(self).IsAllowUnpress())
 }
 
-// SetAllowUnpress sets the property returned by [IsAllowUnpress].
-func (self Instance) SetAllowUnpress(value bool) {
+// SetAllowUnpress sets the property returned by [IsAllowUnpress]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowUnpress(value bool) Instance {
 	class(self).SetAllowUnpress(value)
+	return self
 }
 
 /*
@@ -243,12 +244,13 @@ func (self class) IsAllowUnpress() bool { //gd:ButtonGroup.is_allow_unpress
 /*
 Emitted when one of the buttons of the group is pressed.
 */
-func (self Instance) OnPressed(cb func(button BaseButton.Instance), flags ...Signal.Flags) {
+func (self Instance) OnPressed(cb func(button BaseButton.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Pressed() Signal.Any {

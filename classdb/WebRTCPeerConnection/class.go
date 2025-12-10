@@ -585,12 +585,13 @@ Emitted after a successful call to [CreateOffer] or [SetRemoteDescription] (when
 [SetLocalDescription]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.SetLocalDescription
 [SetRemoteDescription]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.SetRemoteDescription
 */
-func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp string), flags ...Signal.Flags) {
+func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_description_created"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionDescriptionCreated() Signal.Any {
@@ -600,12 +601,13 @@ func (self class) SessionDescriptionCreated() Signal.Any {
 /*
 Emitted when a new ICE candidate has been created. The three parameters are meant to be passed to the remote peer over the signaling server.
 */
-func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name string), flags ...Signal.Flags) {
+func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) IceCandidateCreated() Signal.Any {
@@ -620,12 +622,13 @@ The object will be an instance of [WebRTCDataChannel]. You must keep a reference
 [CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
 [WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
-func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Instance), flags ...Signal.Flags) {
+func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("data_channel_received"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DataChannelReceived() Signal.Any {

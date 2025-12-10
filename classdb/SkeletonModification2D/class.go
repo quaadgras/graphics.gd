@@ -205,10 +205,13 @@ func (self Instance) GetModificationStack() SkeletonModificationStack2D.Instance
 /*
 Manually allows you to set the setup state of the modification. This function should only rarely be used, as the [SkeletonModificationStack2D] the modification is bound to should handle setting the modification up.
 
+Returns 'self' to enable method chaining.
+
 [SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
 */
-func (self Instance) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
+func (self Instance) SetIsSetup(is_setup bool) Instance { //gd:SkeletonModification2D.set_is_setup
 	Advanced(self).SetIsSetup(is_setup)
+	return self
 }
 
 /*
@@ -228,10 +231,13 @@ func (self Instance) ClampAngle(angle Angle.Radians, min Angle.Radians, max Angl
 /*
 Sets whether this modification will call [DrawEditorGizmo] in the Godot editor to draw modification-specific gizmos.
 
+Returns 'self' to enable method chaining.
+
 [DrawEditorGizmo]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D#Interface
 */
-func (self Instance) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
+func (self Instance) SetEditorDrawGizmo(draw_gizmo bool) Instance { //gd:SkeletonModification2D.set_editor_draw_gizmo
 	Advanced(self).SetEditorDrawGizmo(draw_gizmo)
+	return self
 }
 
 /*
@@ -317,9 +323,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
-// SetEnabled sets the property returned by [GetEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -329,9 +336,10 @@ func (self Instance) ExecutionMode() int {
 	return int(int(class(self).GetExecutionMode()))
 }
 
-// SetExecutionMode sets the property returned by [GetExecutionMode].
-func (self Instance) SetExecutionMode(value int) {
+// SetExecutionMode sets the property returned by [GetExecutionMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExecutionMode(value int) Instance {
 	class(self).SetExecutionMode(int64(value))
+	return self
 }
 
 /*

@@ -424,9 +424,12 @@ func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
 
 /*
 Adds or removes a path for the filter.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFilterPath(path string, enable bool) { //gd:AnimationNode.set_filter_path
+func (self Instance) SetFilterPath(path string, enable bool) Instance { //gd:AnimationNode.set_filter_path
 	Advanced(self).SetFilterPath(Path.ToNode(String.New(path)), enable)
+	return self
 }
 
 /*
@@ -515,9 +518,12 @@ func (self MoreArgs) BlendInput(input_index int, time Float.X, seek bool, is_ext
 
 /*
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetParameter(name string, value any) { //gd:AnimationNode.set_parameter
+func (self Instance) SetParameter(name string, value any) Instance { //gd:AnimationNode.set_parameter
 	Advanced(self).SetParameter(String.Name(String.New(name)), variant.New(value))
+	return self
 }
 
 /*
@@ -577,9 +583,10 @@ func (self Instance) FilterEnabled() bool {
 	return bool(class(self).IsFilterEnabled())
 }
 
-// SetFilterEnabled sets the property returned by [IsFilterEnabled].
-func (self Instance) SetFilterEnabled(value bool) {
+// SetFilterEnabled sets the property returned by [IsFilterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilterEnabled(value bool) Instance {
 	class(self).SetFilterEnabled(value)
+	return self
 }
 
 /*
@@ -947,12 +954,13 @@ Emitted by nodes that inherit from this class and that have an internal tree whe
 [AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
 [AnimationNodeTransition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition
 */
-func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeChanged() Signal.Any {
@@ -967,12 +975,13 @@ Emitted by nodes that inherit from this class and that have an internal tree whe
 [AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
 [AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
 */
-func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationNodeRenamed() Signal.Any {
@@ -987,12 +996,13 @@ Emitted by nodes that inherit from this class and that have an internal tree whe
 [AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
 [AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
 */
-func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationNodeRemoved() Signal.Any {

@@ -186,9 +186,10 @@ func (self Instance) NodeA() string {
 	return string(class(self).GetNodeA().String())
 }
 
-// SetNodeA sets the property returned by [GetNodeA].
-func (self Instance) SetNodeA(value string) {
+// SetNodeA sets the property returned by [GetNodeA]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNodeA(value string) Instance {
 	class(self).SetNodeA(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) NodeB() string {
 	return string(class(self).GetNodeB().String())
 }
 
-// SetNodeB sets the property returned by [GetNodeB].
-func (self Instance) SetNodeB(value string) {
+// SetNodeB sets the property returned by [GetNodeB]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNodeB(value string) Instance {
 	class(self).SetNodeB(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -219,9 +221,10 @@ func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
-// SetBias sets the property returned by [GetBias].
-func (self Instance) SetBias(value Float.X) {
+// SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBias(value Float.X) Instance {
 	class(self).SetBias(float64(value))
+	return self
 }
 
 /*
@@ -231,9 +234,10 @@ func (self Instance) DisableCollision() bool {
 	return bool(class(self).GetExcludeNodesFromCollision())
 }
 
-// SetDisableCollision sets the property returned by [GetExcludeNodesFromCollision].
-func (self Instance) SetDisableCollision(value bool) {
+// SetDisableCollision sets the property returned by [GetExcludeNodesFromCollision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableCollision(value bool) Instance {
 	class(self).SetExcludeNodesFromCollision(value)
+	return self
 }
 
 //go:nosplit

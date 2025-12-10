@@ -199,9 +199,10 @@ func (self Instance) Shape() Shape3D.Instance {
 	return Shape3D.Instance(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Shape3D.Instance) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Shape3D.Instance) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -213,9 +214,10 @@ func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
-// SetDisabled sets the property returned by [IsDisabled].
-func (self Instance) SetDisabled(value bool) {
+// SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisabled(value bool) Instance {
 	class(self).SetDisabled(value)
+	return self
 }
 
 /*
@@ -229,9 +231,10 @@ func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
-// SetDebugColor sets the property returned by [GetDebugColor].
-func (self Instance) SetDebugColor(value Color.RGBA) {
+// SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugColor(value Color.RGBA) Instance {
 	class(self).SetDebugColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -241,9 +244,10 @@ func (self Instance) DebugFill() bool {
 	return bool(class(self).GetEnableDebugFill())
 }
 
-// SetDebugFill sets the property returned by [GetEnableDebugFill].
-func (self Instance) SetDebugFill(value bool) {
+// SetDebugFill sets the property returned by [GetEnableDebugFill]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugFill(value bool) Instance {
 	class(self).SetEnableDebugFill(value)
+	return self
 }
 
 /*

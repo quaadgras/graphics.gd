@@ -175,11 +175,14 @@ func (Instance) _value_changed(impl func(ptr gdclass.Receiver, new_value Float.X
 /*
 Sets the [Range]'s current value to the specified 'value', without emitting the [OnValueChanged] signal.
 
+Returns 'self' to enable method chaining.
+
 [OnValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.OnValueChanged
 [Range]: https://pkg.go.dev/graphics.gd/classdb/Range
 */
-func (self Instance) SetValueNoSignal(value Float.X) { //gd:Range.set_value_no_signal
+func (self Instance) SetValueNoSignal(value Float.X) Instance { //gd:Range.set_value_no_signal
 	Advanced(self).SetValueNoSignal(float64(value))
+	return self
 }
 
 /*
@@ -252,9 +255,10 @@ func (self Instance) MinValue() Float.X {
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
-// SetMinValue sets the property returned by [GetMin].
-func (self Instance) SetMinValue(value Float.X) {
+// SetMinValue sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinValue(value Float.X) Instance {
 	class(self).SetMin(float64(value))
+	return self
 }
 
 /*
@@ -267,9 +271,10 @@ func (self Instance) MaxValue() Float.X {
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
-// SetMaxValue sets the property returned by [GetMax].
-func (self Instance) SetMaxValue(value Float.X) {
+// SetMaxValue sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxValue(value Float.X) Instance {
 	class(self).SetMax(float64(value))
+	return self
 }
 
 /*
@@ -283,9 +288,10 @@ func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
-// SetStep sets the property returned by [GetStep].
-func (self Instance) SetStep(value Float.X) {
+// SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStep(value Float.X) Instance {
 	class(self).SetStep(float64(value))
+	return self
 }
 
 /*
@@ -300,9 +306,10 @@ func (self Instance) Page() Float.X {
 	return Float.X(Float.X(class(self).GetPage()))
 }
 
-// SetPage sets the property returned by [GetPage].
-func (self Instance) SetPage(value Float.X) {
+// SetPage sets the property returned by [GetPage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPage(value Float.X) Instance {
 	class(self).SetPage(float64(value))
+	return self
 }
 
 /*
@@ -315,9 +322,10 @@ func (self Instance) Value() Float.X {
 	return Float.X(Float.X(class(self).GetValue()))
 }
 
-// SetValue sets the property returned by [GetValue].
-func (self Instance) SetValue(value Float.X) {
+// SetValue sets the property returned by [GetValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetValue(value Float.X) Instance {
 	class(self).SetValue(float64(value))
+	return self
 }
 
 /*
@@ -327,9 +335,10 @@ func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetAsRatio()))
 }
 
-// SetRatio sets the property returned by [GetAsRatio].
-func (self Instance) SetRatio(value Float.X) {
+// SetRatio sets the property returned by [GetAsRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRatio(value Float.X) Instance {
 	class(self).SetAsRatio(float64(value))
+	return self
 }
 
 /*
@@ -342,9 +351,10 @@ func (self Instance) ExpEdit() bool {
 	return bool(class(self).IsRatioExp())
 }
 
-// SetExpEdit sets the property returned by [IsRatioExp].
-func (self Instance) SetExpEdit(value bool) {
+// SetExpEdit sets the property returned by [IsRatioExp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpEdit(value bool) Instance {
 	class(self).SetExpRatio(value)
+	return self
 }
 
 /*
@@ -356,9 +366,10 @@ func (self Instance) Rounded() bool {
 	return bool(class(self).IsUsingRoundedValues())
 }
 
-// SetRounded sets the property returned by [IsUsingRoundedValues].
-func (self Instance) SetRounded(value bool) {
+// SetRounded sets the property returned by [IsUsingRoundedValues]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRounded(value bool) Instance {
 	class(self).SetUseRoundedValues(value)
+	return self
 }
 
 /*
@@ -371,9 +382,10 @@ func (self Instance) AllowGreater() bool {
 	return bool(class(self).IsGreaterAllowed())
 }
 
-// SetAllowGreater sets the property returned by [IsGreaterAllowed].
-func (self Instance) SetAllowGreater(value bool) {
+// SetAllowGreater sets the property returned by [IsGreaterAllowed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowGreater(value bool) Instance {
 	class(self).SetAllowGreater(value)
+	return self
 }
 
 /*
@@ -386,9 +398,10 @@ func (self Instance) AllowLesser() bool {
 	return bool(class(self).IsLesserAllowed())
 }
 
-// SetAllowLesser sets the property returned by [IsLesserAllowed].
-func (self Instance) SetAllowLesser(value bool) {
+// SetAllowLesser sets the property returned by [IsLesserAllowed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowLesser(value bool) Instance {
 	class(self).SetAllowLesser(value)
+	return self
 }
 
 /*
@@ -567,12 +580,13 @@ Note: Unlike signals such as [OnLineedit.TextChanged], [OnValueChanged] is also 
 [Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) OnValueChanged(cb func(value Float.X), flags ...Signal.Flags) {
+func (self Instance) OnValueChanged(cb func(value Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("value_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ValueChanged() Signal.Any {
@@ -587,12 +601,13 @@ Emitted when [MinValue], [MaxValue], [Page], or [Step] change.
 [Page]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Page
 [Step]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Step
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {

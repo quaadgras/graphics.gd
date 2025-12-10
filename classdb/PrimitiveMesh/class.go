@@ -238,9 +238,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 /*
@@ -252,9 +253,10 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-// SetCustomAabb sets the property returned by [GetCustomAabb].
-func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+// SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
+	return self
 }
 
 /*
@@ -268,9 +270,10 @@ func (self Instance) FlipFaces() bool {
 	return bool(class(self).GetFlipFaces())
 }
 
-// SetFlipFaces sets the property returned by [GetFlipFaces].
-func (self Instance) SetFlipFaces(value bool) {
+// SetFlipFaces sets the property returned by [GetFlipFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipFaces(value bool) Instance {
 	class(self).SetFlipFaces(value)
+	return self
 }
 
 /*
@@ -282,9 +285,10 @@ func (self Instance) AddUv2() bool {
 	return bool(class(self).GetAddUv2())
 }
 
-// SetAddUv2 sets the property returned by [GetAddUv2].
-func (self Instance) SetAddUv2(value bool) {
+// SetAddUv2 sets the property returned by [GetAddUv2]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAddUv2(value bool) Instance {
 	class(self).SetAddUv2(value)
+	return self
 }
 
 /*
@@ -298,9 +302,10 @@ func (self Instance) Uv2Padding() Float.X {
 	return Float.X(Float.X(class(self).GetUv2Padding()))
 }
 
-// SetUv2Padding sets the property returned by [GetUv2Padding].
-func (self Instance) SetUv2Padding(value Float.X) {
+// SetUv2Padding sets the property returned by [GetUv2Padding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUv2Padding(value Float.X) Instance {
 	class(self).SetUv2Padding(float64(value))
+	return self
 }
 
 /*

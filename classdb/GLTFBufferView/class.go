@@ -182,9 +182,10 @@ func (self Instance) Buffer() int {
 	return int(int(class(self).GetBuffer()))
 }
 
-// SetBuffer sets the property returned by [GetBuffer].
-func (self Instance) SetBuffer(value int) {
+// SetBuffer sets the property returned by [GetBuffer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBuffer(value int) Instance {
 	class(self).SetBuffer(int64(value))
+	return self
 }
 
 /*
@@ -194,9 +195,10 @@ func (self Instance) ByteOffset() int {
 	return int(int(class(self).GetByteOffset()))
 }
 
-// SetByteOffset sets the property returned by [GetByteOffset].
-func (self Instance) SetByteOffset(value int) {
+// SetByteOffset sets the property returned by [GetByteOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetByteOffset(value int) Instance {
 	class(self).SetByteOffset(int64(value))
+	return self
 }
 
 /*
@@ -206,9 +208,10 @@ func (self Instance) ByteLength() int {
 	return int(int(class(self).GetByteLength()))
 }
 
-// SetByteLength sets the property returned by [GetByteLength].
-func (self Instance) SetByteLength(value int) {
+// SetByteLength sets the property returned by [GetByteLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetByteLength(value int) Instance {
 	class(self).SetByteLength(int64(value))
+	return self
 }
 
 /*
@@ -218,9 +221,10 @@ func (self Instance) ByteStride() int {
 	return int(int(class(self).GetByteStride()))
 }
 
-// SetByteStride sets the property returned by [GetByteStride].
-func (self Instance) SetByteStride(value int) {
+// SetByteStride sets the property returned by [GetByteStride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetByteStride(value int) Instance {
 	class(self).SetByteStride(int64(value))
+	return self
 }
 
 /*
@@ -232,9 +236,10 @@ func (self Instance) Indices() bool {
 	return bool(class(self).GetIndices())
 }
 
-// SetIndices sets the property returned by [GetIndices].
-func (self Instance) SetIndices(value bool) {
+// SetIndices sets the property returned by [GetIndices]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndices(value bool) Instance {
 	class(self).SetIndices(value)
+	return self
 }
 
 /*
@@ -246,9 +251,10 @@ func (self Instance) VertexAttributes() bool {
 	return bool(class(self).GetVertexAttributes())
 }
 
-// SetVertexAttributes sets the property returned by [GetVertexAttributes].
-func (self Instance) SetVertexAttributes(value bool) {
+// SetVertexAttributes sets the property returned by [GetVertexAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertexAttributes(value bool) Instance {
 	class(self).SetVertexAttributes(value)
+	return self
 }
 
 /*

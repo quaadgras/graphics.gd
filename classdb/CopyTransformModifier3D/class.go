@@ -169,9 +169,12 @@ type Any interface {
 Sets the flags to process the transform operations. If the flag is valid, the transform operation is processed.
 
 Note: If the rotation is valid for only one axis, it respects the roll of the valid axis. If the rotation is valid for two axes, it discards the roll of the invalid axis.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCopyFlags(index int, copy_flags TransformFlag) { //gd:CopyTransformModifier3D.set_copy_flags
+func (self Instance) SetCopyFlags(index int, copy_flags TransformFlag) Instance { //gd:CopyTransformModifier3D.set_copy_flags
 	Advanced(self).SetCopyFlags(int64(index), copy_flags)
+	return self
 }
 
 /*
@@ -183,9 +186,12 @@ func (self Instance) GetCopyFlags(index int) TransformFlag { //gd:CopyTransformM
 
 /*
 Sets the flags to copy axes. If the flag is valid, the axis is copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisFlags(index int, axis_flags AxisFlag) { //gd:CopyTransformModifier3D.set_axis_flags
+func (self Instance) SetAxisFlags(index int, axis_flags AxisFlag) Instance { //gd:CopyTransformModifier3D.set_axis_flags
 	Advanced(self).SetAxisFlags(int64(index), axis_flags)
+	return self
 }
 
 /*
@@ -201,9 +207,12 @@ Sets the flags to inverte axes. If the flag is valid, the axis is copied.
 Note: An inverted scale means an inverse number, not a negative scale. For example, inverting 2.0 means 0.5.
 
 Note: An inverted rotation flips the elements of the quaternion. For example, a two-axis inversion will flip the roll of each axis, and a three-axis inversion will flip the final orientation. However, be aware that flipping only one axis may cause unintended rotation by the unflipped axes, due to the characteristics of the quaternion.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInvertFlags(index int, axis_flags AxisFlag) { //gd:CopyTransformModifier3D.set_invert_flags
+func (self Instance) SetInvertFlags(index int, axis_flags AxisFlag) Instance { //gd:CopyTransformModifier3D.set_invert_flags
 	Advanced(self).SetInvertFlags(int64(index), axis_flags)
+	return self
 }
 
 /*
@@ -215,9 +224,12 @@ func (self Instance) GetInvertFlags(index int) AxisFlag { //gd:CopyTransformModi
 
 /*
 If sets 'enabled' to true, the position will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCopyPosition(index int, enabled bool) { //gd:CopyTransformModifier3D.set_copy_position
+func (self Instance) SetCopyPosition(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_copy_position
 	Advanced(self).SetCopyPosition(int64(index), enabled)
+	return self
 }
 
 /*
@@ -231,9 +243,12 @@ func (self Instance) IsPositionCopying(index int) bool { //gd:CopyTransformModif
 
 /*
 If sets 'enabled' to true, the rotation will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCopyRotation(index int, enabled bool) { //gd:CopyTransformModifier3D.set_copy_rotation
+func (self Instance) SetCopyRotation(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_copy_rotation
 	Advanced(self).SetCopyRotation(int64(index), enabled)
+	return self
 }
 
 /*
@@ -247,9 +262,12 @@ func (self Instance) IsRotationCopying(index int) bool { //gd:CopyTransformModif
 
 /*
 If sets 'enabled' to true, the scale will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCopyScale(index int, enabled bool) { //gd:CopyTransformModifier3D.set_copy_scale
+func (self Instance) SetCopyScale(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_copy_scale
 	Advanced(self).SetCopyScale(int64(index), enabled)
+	return self
 }
 
 /*
@@ -263,9 +281,12 @@ func (self Instance) IsScaleCopying(index int) bool { //gd:CopyTransformModifier
 
 /*
 If sets 'enabled' to true, the X-axis will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisXEnabled(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_x_enabled
+func (self Instance) SetAxisXEnabled(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_x_enabled
 	Advanced(self).SetAxisXEnabled(int64(index), enabled)
+	return self
 }
 
 /*
@@ -279,9 +300,12 @@ func (self Instance) IsAxisXEnabled(index int) bool { //gd:CopyTransformModifier
 
 /*
 If sets 'enabled' to true, the Y-axis will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisYEnabled(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_y_enabled
+func (self Instance) SetAxisYEnabled(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_y_enabled
 	Advanced(self).SetAxisYEnabled(int64(index), enabled)
+	return self
 }
 
 /*
@@ -295,9 +319,12 @@ func (self Instance) IsAxisYEnabled(index int) bool { //gd:CopyTransformModifier
 
 /*
 If sets 'enabled' to true, the Z-axis will be copied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisZEnabled(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_z_enabled
+func (self Instance) SetAxisZEnabled(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_z_enabled
 	Advanced(self).SetAxisZEnabled(int64(index), enabled)
+	return self
 }
 
 /*
@@ -311,9 +338,12 @@ func (self Instance) IsAxisZEnabled(index int) bool { //gd:CopyTransformModifier
 
 /*
 If sets 'enabled' to true, the X-axis will be inverted.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisXInverted(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_x_inverted
+func (self Instance) SetAxisXInverted(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_x_inverted
 	Advanced(self).SetAxisXInverted(int64(index), enabled)
+	return self
 }
 
 /*
@@ -327,9 +357,12 @@ func (self Instance) IsAxisXInverted(index int) bool { //gd:CopyTransformModifie
 
 /*
 If sets 'enabled' to true, the Y-axis will be inverted.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisYInverted(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_y_inverted
+func (self Instance) SetAxisYInverted(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_y_inverted
 	Advanced(self).SetAxisYInverted(int64(index), enabled)
+	return self
 }
 
 /*
@@ -343,9 +376,12 @@ func (self Instance) IsAxisYInverted(index int) bool { //gd:CopyTransformModifie
 
 /*
 If sets 'enabled' to true, the Z-axis will be inverted.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisZInverted(index int, enabled bool) { //gd:CopyTransformModifier3D.set_axis_z_inverted
+func (self Instance) SetAxisZInverted(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_axis_z_inverted
 	Advanced(self).SetAxisZInverted(int64(index), enabled)
+	return self
 }
 
 /*
@@ -363,9 +399,12 @@ Sets relative option in the setting at 'index' to 'enabled'.
 If sets 'enabled' to true, the extracted and applying transform is relative to the rest.
 
 If sets 'enabled' to false, the extracted transform is absolute.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRelative(index int, enabled bool) { //gd:CopyTransformModifier3D.set_relative
+func (self Instance) SetRelative(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_relative
 	Advanced(self).SetRelative(int64(index), enabled)
+	return self
 }
 
 /*
@@ -382,11 +421,14 @@ If sets 'enabled' to true, the processed transform is added to the pose of the c
 
 If sets 'enabled' to false, the pose of the current apply bone is replaced with the processed transform. However, if set [SetRelative] to true, the transform is relative to rest.
 
+Returns 'self' to enable method chaining.
+
 [BoneConstraint3D.SetApplyBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetApplyBone
 [SetRelative]: https://pkg.go.dev/graphics.gd/classdb/CopyTransformModifier3D#Instance.SetRelative
 */
-func (self Instance) SetAdditive(index int, enabled bool) { //gd:CopyTransformModifier3D.set_additive
+func (self Instance) SetAdditive(index int, enabled bool) Instance { //gd:CopyTransformModifier3D.set_additive
 	Advanced(self).SetAdditive(int64(index), enabled)
+	return self
 }
 
 /*

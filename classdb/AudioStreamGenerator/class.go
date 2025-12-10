@@ -224,9 +224,10 @@ func (self Instance) MixRateMode() AudioStreamGeneratorMixRate {
 	return AudioStreamGeneratorMixRate(class(self).GetMixRateMode())
 }
 
-// SetMixRateMode sets the property returned by [GetMixRateMode].
-func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) {
+// SetMixRateMode sets the property returned by [GetMixRateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) Instance {
 	class(self).SetMixRateMode(value)
+	return self
 }
 
 /*
@@ -250,9 +251,10 @@ func (self Instance) MixRate() Float.X {
 	return Float.X(Float.X(class(self).GetMixRate()))
 }
 
-// SetMixRate sets the property returned by [GetMixRate].
-func (self Instance) SetMixRate(value Float.X) {
+// SetMixRate sets the property returned by [GetMixRate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMixRate(value Float.X) Instance {
 	class(self).SetMixRate(float64(value))
+	return self
 }
 
 /*
@@ -262,9 +264,10 @@ func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-// SetBufferLength sets the property returned by [GetBufferLength].
-func (self Instance) SetBufferLength(value Float.X) {
+// SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBufferLength(value Float.X) Instance {
 	class(self).SetBufferLength(float64(value))
+	return self
 }
 
 //go:nosplit

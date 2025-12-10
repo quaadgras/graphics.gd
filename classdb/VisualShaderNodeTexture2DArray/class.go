@@ -168,9 +168,10 @@ func (self Instance) TextureArray() TextureLayered.Instance {
 	return TextureLayered.Instance(class(self).GetTextureArray())
 }
 
-// SetTextureArray sets the property returned by [GetTextureArray].
-func (self Instance) SetTextureArray(value TextureLayered.Instance) {
+// SetTextureArray sets the property returned by [GetTextureArray]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureArray(value TextureLayered.Instance) Instance {
 	class(self).SetTextureArray(value)
+	return self
 }
 
 //go:nosplit

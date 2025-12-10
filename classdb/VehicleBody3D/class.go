@@ -192,9 +192,10 @@ func (self Instance) EngineForce() Float.X {
 	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
-// SetEngineForce sets the property returned by [GetEngineForce].
-func (self Instance) SetEngineForce(value Float.X) {
+// SetEngineForce sets the property returned by [GetEngineForce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEngineForce(value Float.X) Instance {
 	class(self).SetEngineForce(float64(value))
+	return self
 }
 
 /*
@@ -206,9 +207,10 @@ func (self Instance) Brake() Float.X {
 	return Float.X(Float.X(class(self).GetBrake()))
 }
 
-// SetBrake sets the property returned by [GetBrake].
-func (self Instance) SetBrake(value Float.X) {
+// SetBrake sets the property returned by [GetBrake]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBrake(value Float.X) Instance {
 	class(self).SetBrake(float64(value))
+	return self
 }
 
 /*
@@ -222,9 +224,10 @@ func (self Instance) Steering() Float.X {
 	return Float.X(Float.X(class(self).GetSteering()))
 }
 
-// SetSteering sets the property returned by [GetSteering].
-func (self Instance) SetSteering(value Float.X) {
+// SetSteering sets the property returned by [GetSteering]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSteering(value Float.X) Instance {
 	class(self).SetSteering(float64(value))
+	return self
 }
 
 //go:nosplit

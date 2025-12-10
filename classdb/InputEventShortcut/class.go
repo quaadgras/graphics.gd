@@ -173,9 +173,10 @@ func (self Instance) Shortcut() Shortcut.Instance {
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
-// SetShortcut sets the property returned by [GetShortcut].
-func (self Instance) SetShortcut(value Shortcut.Instance) {
+// SetShortcut sets the property returned by [GetShortcut]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcut(value Shortcut.Instance) Instance {
 	class(self).SetShortcut(value)
+	return self
 }
 
 //go:nosplit

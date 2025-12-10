@@ -179,9 +179,10 @@ func (self Instance) Hint() Hint {
 	return Hint(class(self).GetHint())
 }
 
-// SetHint sets the property returned by [GetHint].
-func (self Instance) SetHint(value Hint) {
+// SetHint sets the property returned by [GetHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHint(value Hint) Instance {
 	class(self).SetHint(value)
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) Min() int {
 	return int(int(class(self).GetMin()))
 }
 
-// SetMin sets the property returned by [GetMin].
-func (self Instance) SetMin(value int) {
+// SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMin(value int) Instance {
 	class(self).SetMin(int64(value))
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) Max() int {
 	return int(int(class(self).GetMax()))
 }
 
-// SetMax sets the property returned by [GetMax].
-func (self Instance) SetMax(value int) {
+// SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMax(value int) Instance {
 	class(self).SetMax(int64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) Step() int {
 	return int(int(class(self).GetStep()))
 }
 
-// SetStep sets the property returned by [GetStep].
-func (self Instance) SetStep(value int) {
+// SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStep(value int) Instance {
 	class(self).SetStep(int64(value))
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) EnumNames() []string {
 	return []string(class(self).GetEnumNames().Strings())
 }
 
-// SetEnumNames sets the property returned by [GetEnumNames].
-func (self Instance) SetEnumNames(value []string) {
+// SetEnumNames sets the property returned by [GetEnumNames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnumNames(value []string) Instance {
 	class(self).SetEnumNames(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -247,9 +252,10 @@ func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
-// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
-func (self Instance) SetDefaultValueEnabled(value bool) {
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 	class(self).SetDefaultValueEnabled(value)
+	return self
 }
 
 /*
@@ -261,9 +267,10 @@ func (self Instance) DefaultValue() int {
 	return int(int(class(self).GetDefaultValue()))
 }
 
-// SetDefaultValue sets the property returned by [GetDefaultValue].
-func (self Instance) SetDefaultValue(value int) {
+// SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValue(value int) Instance {
 	class(self).SetDefaultValue(int64(value))
+	return self
 }
 
 //go:nosplit

@@ -173,9 +173,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
-// SetOffset sets the property returned by [GetTextureOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetTextureOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetTextureOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -201,9 +203,10 @@ func (self Instance) TextureScale() Float.X {
 	return Float.X(Float.X(class(self).GetTextureScale()))
 }
 
-// SetTextureScale sets the property returned by [GetTextureScale].
-func (self Instance) SetTextureScale(value Float.X) {
+// SetTextureScale sets the property returned by [GetTextureScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureScale(value Float.X) Instance {
 	class(self).SetTextureScale(float64(value))
+	return self
 }
 
 //go:nosplit

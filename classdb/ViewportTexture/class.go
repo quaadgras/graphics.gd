@@ -208,9 +208,10 @@ func (self Instance) ViewportPath() string {
 	return string(class(self).GetViewportPathInScene().String())
 }
 
-// SetViewportPath sets the property returned by [GetViewportPathInScene].
-func (self Instance) SetViewportPath(value string) {
+// SetViewportPath sets the property returned by [GetViewportPathInScene]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetViewportPath(value string) Instance {
 	class(self).SetViewportPathInScene(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit

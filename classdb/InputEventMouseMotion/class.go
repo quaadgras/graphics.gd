@@ -188,9 +188,10 @@ func (self Instance) Tilt() Vector2.XY {
 	return Vector2.XY(class(self).GetTilt())
 }
 
-// SetTilt sets the property returned by [GetTilt].
-func (self Instance) SetTilt(value Vector2.XY) {
+// SetTilt sets the property returned by [GetTilt]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTilt(value Vector2.XY) Instance {
 	class(self).SetTilt(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) Pressure() Float.X {
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
-// SetPressure sets the property returned by [GetPressure].
-func (self Instance) SetPressure(value Float.X) {
+// SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPressure(value Float.X) Instance {
 	class(self).SetPressure(float64(value))
+	return self
 }
 
 /*
@@ -214,9 +216,10 @@ func (self Instance) PenInverted() bool {
 	return bool(class(self).GetPenInverted())
 }
 
-// SetPenInverted sets the property returned by [GetPenInverted].
-func (self Instance) SetPenInverted(value bool) {
+// SetPenInverted sets the property returned by [GetPenInverted]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPenInverted(value bool) Instance {
 	class(self).SetPenInverted(value)
+	return self
 }
 
 /*
@@ -234,9 +237,10 @@ func (self Instance) Relative() Vector2.XY {
 	return Vector2.XY(class(self).GetRelative())
 }
 
-// SetRelative sets the property returned by [GetRelative].
-func (self Instance) SetRelative(value Vector2.XY) {
+// SetRelative sets the property returned by [GetRelative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRelative(value Vector2.XY) Instance {
 	class(self).SetRelative(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -254,9 +258,10 @@ func (self Instance) ScreenRelative() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenRelative())
 }
 
-// SetScreenRelative sets the property returned by [GetScreenRelative].
-func (self Instance) SetScreenRelative(value Vector2.XY) {
+// SetScreenRelative sets the property returned by [GetScreenRelative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScreenRelative(value Vector2.XY) Instance {
 	class(self).SetScreenRelative(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -273,9 +278,10 @@ func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
-// SetVelocity sets the property returned by [GetVelocity].
-func (self Instance) SetVelocity(value Vector2.XY) {
+// SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVelocity(value Vector2.XY) Instance {
 	class(self).SetVelocity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -290,9 +296,10 @@ func (self Instance) ScreenVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenVelocity())
 }
 
-// SetScreenVelocity sets the property returned by [GetScreenVelocity].
-func (self Instance) SetScreenVelocity(value Vector2.XY) {
+// SetScreenVelocity sets the property returned by [GetScreenVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScreenVelocity(value Vector2.XY) Instance {
 	class(self).SetScreenVelocity(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

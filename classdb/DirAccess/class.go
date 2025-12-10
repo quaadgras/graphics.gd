@@ -694,9 +694,10 @@ func (self Instance) IncludeNavigational() bool {
 	return bool(class(self).GetIncludeNavigational())
 }
 
-// SetIncludeNavigational sets the property returned by [GetIncludeNavigational].
-func (self Instance) SetIncludeNavigational(value bool) {
+// SetIncludeNavigational sets the property returned by [GetIncludeNavigational]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIncludeNavigational(value bool) Instance {
 	class(self).SetIncludeNavigational(value)
+	return self
 }
 
 /*
@@ -712,9 +713,10 @@ func (self Instance) IncludeHidden() bool {
 	return bool(class(self).GetIncludeHidden())
 }
 
-// SetIncludeHidden sets the property returned by [GetIncludeHidden].
-func (self Instance) SetIncludeHidden(value bool) {
+// SetIncludeHidden sets the property returned by [GetIncludeHidden]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIncludeHidden(value bool) Instance {
 	class(self).SetIncludeHidden(value)
+	return self
 }
 
 /*

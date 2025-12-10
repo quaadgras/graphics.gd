@@ -205,9 +205,12 @@ Set to [Skin8Weights] to indicate that up to 8 bone influences per vertex may be
 By default, only 4 bone influences are used ([Skin4Weights]).
 
 Note: This function takes an enum, not the exact number of weights.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
+func (self Instance) SetSkinWeightCount(count SkinWeightCount) Instance { //gd:SurfaceTool.set_skin_weight_count
 	Advanced(self).SetSkinWeightCount(count)
+	return self
 }
 
 /*
@@ -226,12 +229,15 @@ Sets the color format for this custom 'channel_index'. Use [CustomMax] to disabl
 
 Must be invoked after [Begin] and should be set before [Commit] or [CommitToArrays].
 
+Returns 'self' to enable method chaining.
+
 [Begin]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Begin
 [Commit]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Commit
 [CommitToArrays]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.CommitToArrays
 */
-func (self Instance) SetCustomFormat(channel_index int, format CustomFormat) { //gd:SurfaceTool.set_custom_format
+func (self Instance) SetCustomFormat(channel_index int, format CustomFormat) Instance { //gd:SurfaceTool.set_custom_format
 	Advanced(self).SetCustomFormat(int64(channel_index), format)
+	return self
 }
 
 /*
@@ -260,53 +266,74 @@ Specifies a [Color.RGBA] to use for the next vertex. If every vertex needs to ha
 
 Note: The material must have [BaseMaterial3D.VertexColorUseAsAlbedo] enabled for the vertex color to be visible.
 
+Returns 'self' to enable method chaining.
+
 [BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
+func (self Instance) SetColor(color Color.RGBA) Instance { //gd:SurfaceTool.set_color
 	Advanced(self).SetColor(Color.RGBA(color))
+	return self
 }
 
 /*
 Specifies a normal to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
+func (self Instance) SetNormal(normal Vector3.XYZ) Instance { //gd:SurfaceTool.set_normal
 	Advanced(self).SetNormal(Vector3.XYZ(normal))
+	return self
 }
 
 /*
 Specifies a tangent to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
+func (self Instance) SetTangent(tangent Plane.NormalD) Instance { //gd:SurfaceTool.set_tangent
 	Advanced(self).SetTangent(Plane.NormalD(tangent))
+	return self
 }
 
 /*
 Specifies a set of UV coordinates to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
+func (self Instance) SetUv(uv Vector2.XY) Instance { //gd:SurfaceTool.set_uv
 	Advanced(self).SetUv(Vector2.XY(uv))
+	return self
 }
 
 /*
 Specifies an optional second set of UV coordinates to use for the next vertex. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
+func (self Instance) SetUv2(uv2 Vector2.XY) Instance { //gd:SurfaceTool.set_uv2
 	Advanced(self).SetUv2(Vector2.XY(uv2))
+	return self
 }
 
 /*
 Specifies an array of bones to use for the next vertex. 'bones' must contain 4 integers.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBones(bones []int32) { //gd:SurfaceTool.set_bones
+func (self Instance) SetBones(bones []int32) Instance { //gd:SurfaceTool.set_bones
 	Advanced(self).SetBones(Packed.New(bones...))
+	return self
 }
 
 /*
 Specifies weight values to use for the next vertex. 'weights' must contain 4 values. If every vertex needs to have this information set and you fail to submit it for the first vertex, this information may not be used at all.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetWeights(weights []float32) { //gd:SurfaceTool.set_weights
+func (self Instance) SetWeights(weights []float32) Instance { //gd:SurfaceTool.set_weights
 	Advanced(self).SetWeights(Packed.New(weights...))
+	return self
 }
 
 /*
@@ -314,19 +341,25 @@ Sets the custom value on this vertex for 'channel_index'.
 
 [SetCustomFormat] must be called first for this 'channel_index'. Formats which are not RGBA will ignore other color channels.
 
+Returns 'self' to enable method chaining.
+
 [SetCustomFormat]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.SetCustomFormat
 */
-func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
+func (self Instance) SetCustom(channel_index int, custom_color Color.RGBA) Instance { //gd:SurfaceTool.set_custom
 	Advanced(self).SetCustom(int64(channel_index), Color.RGBA(custom_color))
+	return self
 }
 
 /*
 Specifies the smooth group to use for the next vertex. If this is never called, all vertices will have the default smooth group of 0 and will be smoothed with adjacent vertices of the same group. To produce a mesh with flat normals, set the smooth group to -1.
 
 Note: This function actually takes a uint32_t, so C# users should use uint32.MaxValue instead of -1 to produce a mesh with flat normals.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSmoothGroup(index int) { //gd:SurfaceTool.set_smooth_group
+func (self Instance) SetSmoothGroup(index int) Instance { //gd:SurfaceTool.set_smooth_group
 	Advanced(self).SetSmoothGroup(int64(index))
+	return self
 }
 
 /*
@@ -448,11 +481,14 @@ func (self MoreArgs) GenerateLod(nd_threshold Float.X, target_index_count int) [
 /*
 Sets [Material] to be used by the [Mesh] you are constructing.
 
+Returns 'self' to enable method chaining.
+
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) SetMaterial(material Material.Instance) { //gd:SurfaceTool.set_material
+func (self Instance) SetMaterial(material Material.Instance) Instance { //gd:SurfaceTool.set_material
 	Advanced(self).SetMaterial(material)
+	return self
 }
 
 /*

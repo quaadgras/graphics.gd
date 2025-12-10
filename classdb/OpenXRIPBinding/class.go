@@ -226,9 +226,10 @@ func (self Instance) Action() OpenXRAction.Instance {
 	return OpenXRAction.Instance(class(self).GetAction())
 }
 
-// SetAction sets the property returned by [GetAction].
-func (self Instance) SetAction(value OpenXRAction.Instance) {
+// SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAction(value OpenXRAction.Instance) Instance {
 	class(self).SetAction(value)
+	return self
 }
 
 /*
@@ -242,9 +243,10 @@ func (self Instance) BindingPath() string {
 	return string(class(self).GetBindingPath().String())
 }
 
-// SetBindingPath sets the property returned by [GetBindingPath].
-func (self Instance) SetBindingPath(value string) {
+// SetBindingPath sets the property returned by [GetBindingPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBindingPath(value string) Instance {
 	class(self).SetBindingPath(String.New(value))
+	return self
 }
 
 /*
@@ -254,9 +256,10 @@ func (self Instance) BindingModifiers() []OpenXRActionBindingModifier.Instance {
 	return []OpenXRActionBindingModifier.Instance(gd.ArrayAs[[]OpenXRActionBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
-// SetBindingModifiers sets the property returned by [GetBindingModifiers].
-func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) {
+// SetBindingModifiers sets the property returned by [GetBindingModifiers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) Instance {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -266,9 +269,10 @@ func (self Instance) Paths() []string {
 	return []string(class(self).GetPaths().Strings())
 }
 
-// SetPaths sets the property returned by [GetPaths].
-func (self Instance) SetPaths(value []string) {
+// SetPaths sets the property returned by [GetPaths]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaths(value []string) Instance {
 	class(self).SetPaths(Packed.MakeStrings(value...))
+	return self
 }
 
 //go:nosplit

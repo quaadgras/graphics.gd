@@ -183,9 +183,10 @@ func (self Instance) Segments() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetSegments().Values()))
 }
 
-// SetSegments sets the property returned by [GetSegments].
-func (self Instance) SetSegments(value []Vector2.XY) {
+// SetSegments sets the property returned by [GetSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSegments(value []Vector2.XY) Instance {
 	class(self).SetSegments(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

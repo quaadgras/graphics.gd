@@ -188,9 +188,10 @@ func (self Instance) MaxConcavity() Float.X {
 	return Float.X(Float.X(class(self).GetMaxConcavity()))
 }
 
-// SetMaxConcavity sets the property returned by [GetMaxConcavity].
-func (self Instance) SetMaxConcavity(value Float.X) {
+// SetMaxConcavity sets the property returned by [GetMaxConcavity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxConcavity(value Float.X) Instance {
 	class(self).SetMaxConcavity(float64(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) SymmetryPlanesClippingBias() Float.X {
 	return Float.X(Float.X(class(self).GetSymmetryPlanesClippingBias()))
 }
 
-// SetSymmetryPlanesClippingBias sets the property returned by [GetSymmetryPlanesClippingBias].
-func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) {
+// SetSymmetryPlanesClippingBias sets the property returned by [GetSymmetryPlanesClippingBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) Instance {
 	class(self).SetSymmetryPlanesClippingBias(float64(value))
+	return self
 }
 
 /*
@@ -212,9 +214,10 @@ func (self Instance) RevolutionAxesClippingBias() Float.X {
 	return Float.X(Float.X(class(self).GetRevolutionAxesClippingBias()))
 }
 
-// SetRevolutionAxesClippingBias sets the property returned by [GetRevolutionAxesClippingBias].
-func (self Instance) SetRevolutionAxesClippingBias(value Float.X) {
+// SetRevolutionAxesClippingBias sets the property returned by [GetRevolutionAxesClippingBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRevolutionAxesClippingBias(value Float.X) Instance {
 	class(self).SetRevolutionAxesClippingBias(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +227,10 @@ func (self Instance) MinVolumePerConvexHull() Float.X {
 	return Float.X(Float.X(class(self).GetMinVolumePerConvexHull()))
 }
 
-// SetMinVolumePerConvexHull sets the property returned by [GetMinVolumePerConvexHull].
-func (self Instance) SetMinVolumePerConvexHull(value Float.X) {
+// SetMinVolumePerConvexHull sets the property returned by [GetMinVolumePerConvexHull]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinVolumePerConvexHull(value Float.X) Instance {
 	class(self).SetMinVolumePerConvexHull(float64(value))
+	return self
 }
 
 /*
@@ -236,9 +240,10 @@ func (self Instance) Resolution() int {
 	return int(int(class(self).GetResolution()))
 }
 
-// SetResolution sets the property returned by [GetResolution].
-func (self Instance) SetResolution(value int) {
+// SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResolution(value int) Instance {
 	class(self).SetResolution(int64(value))
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) MaxNumVerticesPerConvexHull() int {
 	return int(int(class(self).GetMaxNumVerticesPerConvexHull()))
 }
 
-// SetMaxNumVerticesPerConvexHull sets the property returned by [GetMaxNumVerticesPerConvexHull].
-func (self Instance) SetMaxNumVerticesPerConvexHull(value int) {
+// SetMaxNumVerticesPerConvexHull sets the property returned by [GetMaxNumVerticesPerConvexHull]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxNumVerticesPerConvexHull(value int) Instance {
 	class(self).SetMaxNumVerticesPerConvexHull(int64(value))
+	return self
 }
 
 /*
@@ -260,9 +266,10 @@ func (self Instance) PlaneDownsampling() int {
 	return int(int(class(self).GetPlaneDownsampling()))
 }
 
-// SetPlaneDownsampling sets the property returned by [GetPlaneDownsampling].
-func (self Instance) SetPlaneDownsampling(value int) {
+// SetPlaneDownsampling sets the property returned by [GetPlaneDownsampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaneDownsampling(value int) Instance {
 	class(self).SetPlaneDownsampling(int64(value))
+	return self
 }
 
 /*
@@ -272,9 +279,10 @@ func (self Instance) ConvexHullDownsampling() int {
 	return int(int(class(self).GetConvexHullDownsampling()))
 }
 
-// SetConvexHullDownsampling sets the property returned by [GetConvexHullDownsampling].
-func (self Instance) SetConvexHullDownsampling(value int) {
+// SetConvexHullDownsampling sets the property returned by [GetConvexHullDownsampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConvexHullDownsampling(value int) Instance {
 	class(self).SetConvexHullDownsampling(int64(value))
+	return self
 }
 
 /*
@@ -284,9 +292,10 @@ func (self Instance) NormalizeMesh() bool {
 	return bool(class(self).GetNormalizeMesh())
 }
 
-// SetNormalizeMesh sets the property returned by [GetNormalizeMesh].
-func (self Instance) SetNormalizeMesh(value bool) {
+// SetNormalizeMesh sets the property returned by [GetNormalizeMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalizeMesh(value bool) Instance {
 	class(self).SetNormalizeMesh(value)
+	return self
 }
 
 /*
@@ -296,9 +305,10 @@ func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
-// SetMode sets the property returned by [GetMode].
-func (self Instance) SetMode(value Mode) {
+// SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode(value Mode) Instance {
 	class(self).SetMode(value)
+	return self
 }
 
 /*
@@ -308,9 +318,10 @@ func (self Instance) ConvexHullApproximation() bool {
 	return bool(class(self).GetConvexHullApproximation())
 }
 
-// SetConvexHullApproximation sets the property returned by [GetConvexHullApproximation].
-func (self Instance) SetConvexHullApproximation(value bool) {
+// SetConvexHullApproximation sets the property returned by [GetConvexHullApproximation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConvexHullApproximation(value bool) Instance {
 	class(self).SetConvexHullApproximation(value)
+	return self
 }
 
 /*
@@ -320,9 +331,10 @@ func (self Instance) MaxConvexHulls() int {
 	return int(int(class(self).GetMaxConvexHulls()))
 }
 
-// SetMaxConvexHulls sets the property returned by [GetMaxConvexHulls].
-func (self Instance) SetMaxConvexHulls(value int) {
+// SetMaxConvexHulls sets the property returned by [GetMaxConvexHulls]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxConvexHulls(value int) Instance {
 	class(self).SetMaxConvexHulls(int64(value))
+	return self
 }
 
 /*
@@ -332,9 +344,10 @@ func (self Instance) ProjectHullVertices() bool {
 	return bool(class(self).GetProjectHullVertices())
 }
 
-// SetProjectHullVertices sets the property returned by [GetProjectHullVertices].
-func (self Instance) SetProjectHullVertices(value bool) {
+// SetProjectHullVertices sets the property returned by [GetProjectHullVertices]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProjectHullVertices(value bool) Instance {
 	class(self).SetProjectHullVertices(value)
+	return self
 }
 
 //go:nosplit

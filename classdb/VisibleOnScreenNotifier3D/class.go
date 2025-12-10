@@ -184,9 +184,11 @@ func New() Instance {
 The [VisibleOnScreenNotifier3D]'s bounding box.
 
 [VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetAabb(value AABB.PositionSize) {
+func (self Instance) SetAabb(value AABB.PositionSize) Instance {
 	class(self).SetAabb(AABB.PositionSize(value))
+	return self
 }
 
 //go:nosplit
@@ -213,12 +215,13 @@ Emitted when the [VisibleOnScreenNotifier3D] enters the screen.
 
 [VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
 */
-func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("screen_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScreenEntered() Signal.Any {
@@ -230,12 +233,13 @@ Emitted when the [VisibleOnScreenNotifier3D] exits the screen.
 
 [VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
 */
-func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("screen_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScreenExited() Signal.Any {

@@ -196,9 +196,10 @@ func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
-// SetBoneName sets the property returned by [GetBoneName].
-func (self Instance) SetBoneName(value string) {
+// SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneName(value string) Instance {
 	class(self).SetBoneName(String.New(value))
+	return self
 }
 
 /*
@@ -208,9 +209,10 @@ func (self Instance) BoneIdx() int {
 	return int(int(class(self).GetBoneIdx()))
 }
 
-// SetBoneIdx sets the property returned by [GetBoneIdx].
-func (self Instance) SetBoneIdx(value int) {
+// SetBoneIdx sets the property returned by [GetBoneIdx]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneIdx(value int) Instance {
 	class(self).SetBoneIdx(int64(value))
+	return self
 }
 
 /*
@@ -225,9 +227,10 @@ func (self Instance) OverridePose() bool {
 	return bool(class(self).GetOverridePose())
 }
 
-// SetOverridePose sets the property returned by [GetOverridePose].
-func (self Instance) SetOverridePose(value bool) {
+// SetOverridePose sets the property returned by [GetOverridePose]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOverridePose(value bool) Instance {
 	class(self).SetOverridePose(value)
+	return self
 }
 
 /*
@@ -241,9 +244,10 @@ func (self Instance) UseExternalSkeleton() bool {
 	return bool(class(self).GetUseExternalSkeleton())
 }
 
-// SetUseExternalSkeleton sets the property returned by [GetUseExternalSkeleton].
-func (self Instance) SetUseExternalSkeleton(value bool) {
+// SetUseExternalSkeleton sets the property returned by [GetUseExternalSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseExternalSkeleton(value bool) Instance {
 	class(self).SetUseExternalSkeleton(value)
+	return self
 }
 
 /*
@@ -255,9 +259,10 @@ func (self Instance) ExternalSkeleton() string {
 	return string(class(self).GetExternalSkeleton().String())
 }
 
-// SetExternalSkeleton sets the property returned by [GetExternalSkeleton].
-func (self Instance) SetExternalSkeleton(value string) {
+// SetExternalSkeleton sets the property returned by [GetExternalSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExternalSkeleton(value string) Instance {
 	class(self).SetExternalSkeleton(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*

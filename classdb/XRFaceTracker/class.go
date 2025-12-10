@@ -130,9 +130,12 @@ func (self Instance) GetBlendShape(blend_shape BlendShapeEntry) Float.X { //gd:X
 
 /*
 Sets a face blend shape weight.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendShape(blend_shape BlendShapeEntry, weight Float.X) { //gd:XRFaceTracker.set_blend_shape
+func (self Instance) SetBlendShape(blend_shape BlendShapeEntry, weight Float.X) Instance { //gd:XRFaceTracker.set_blend_shape
 	Advanced(self).SetBlendShape(blend_shape, float64(weight))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -185,9 +188,10 @@ func (self Instance) BlendShapes() []float32 {
 	return []float32(slices.Collect(class(self).GetBlendShapes().Values()))
 }
 
-// SetBlendShapes sets the property returned by [GetBlendShapes].
-func (self Instance) SetBlendShapes(value []float32) {
+// SetBlendShapes sets the property returned by [GetBlendShapes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendShapes(value []float32) Instance {
 	class(self).SetBlendShapes(Packed.New(value...))
+	return self
 }
 
 /*

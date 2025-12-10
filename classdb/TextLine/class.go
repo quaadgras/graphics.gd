@@ -180,9 +180,12 @@ func (self Instance) GetInferredDirection() TextServer.Direction { //gd:TextLine
 Overrides BiDi for the structured text.
 
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBidiOverride(override []any) { //gd:TextLine.set_bidi_override
+func (self Instance) SetBidiOverride(override []any) Instance { //gd:TextLine.set_bidi_override
 	Advanced(self).SetBidiOverride(gd.EngineArrayFromSlice(override))
+	return self
 }
 
 /*
@@ -382,9 +385,10 @@ func (self Instance) Direction() TextServer.Direction {
 	return TextServer.Direction(class(self).GetDirection())
 }
 
-// SetDirection sets the property returned by [GetDirection].
-func (self Instance) SetDirection(value TextServer.Direction) {
+// SetDirection sets the property returned by [GetDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirection(value TextServer.Direction) Instance {
 	class(self).SetDirection(value)
+	return self
 }
 
 /*
@@ -394,9 +398,10 @@ func (self Instance) Orientation() TextServer.Orientation {
 	return TextServer.Orientation(class(self).GetOrientation())
 }
 
-// SetOrientation sets the property returned by [GetOrientation].
-func (self Instance) SetOrientation(value TextServer.Orientation) {
+// SetOrientation sets the property returned by [GetOrientation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOrientation(value TextServer.Orientation) Instance {
 	class(self).SetOrientation(value)
+	return self
 }
 
 /*
@@ -406,9 +411,10 @@ func (self Instance) PreserveInvalid() bool {
 	return bool(class(self).GetPreserveInvalid())
 }
 
-// SetPreserveInvalid sets the property returned by [GetPreserveInvalid].
-func (self Instance) SetPreserveInvalid(value bool) {
+// SetPreserveInvalid sets the property returned by [GetPreserveInvalid]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreserveInvalid(value bool) Instance {
 	class(self).SetPreserveInvalid(value)
+	return self
 }
 
 /*
@@ -418,9 +424,10 @@ func (self Instance) PreserveControl() bool {
 	return bool(class(self).GetPreserveControl())
 }
 
-// SetPreserveControl sets the property returned by [GetPreserveControl].
-func (self Instance) SetPreserveControl(value bool) {
+// SetPreserveControl sets the property returned by [GetPreserveControl]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreserveControl(value bool) Instance {
 	class(self).SetPreserveControl(value)
+	return self
 }
 
 /*
@@ -430,9 +437,10 @@ func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-// SetWidth sets the property returned by [GetWidth].
-func (self Instance) SetWidth(value Float.X) {
+// SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWidth(value Float.X) Instance {
 	class(self).SetWidth(float64(value))
+	return self
 }
 
 /*
@@ -442,9 +450,10 @@ func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-// SetAlignment sets the property returned by [GetHorizontalAlignment].
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
+// SetAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetHorizontalAlignment(value)
+	return self
 }
 
 /*
@@ -456,9 +465,10 @@ func (self Instance) Flags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetFlags())
 }
 
-// SetFlags sets the property returned by [GetFlags].
-func (self Instance) SetFlags(value TextServer.JustificationFlag) {
+// SetFlags sets the property returned by [GetFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlags(value TextServer.JustificationFlag) Instance {
 	class(self).SetFlags(value)
+	return self
 }
 
 /*
@@ -468,9 +478,10 @@ func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
 	class(self).SetTextOverrunBehavior(value)
+	return self
 }
 
 /*
@@ -480,9 +491,10 @@ func (self Instance) EllipsisChar() string {
 	return string(class(self).GetEllipsisChar().String())
 }
 
-// SetEllipsisChar sets the property returned by [GetEllipsisChar].
-func (self Instance) SetEllipsisChar(value string) {
+// SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEllipsisChar(value string) Instance {
 	class(self).SetEllipsisChar(String.New(value))
+	return self
 }
 
 /*

@@ -168,9 +168,10 @@ func (self Instance) Constant() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetConstant())
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value Quaternion.IJKX) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value Quaternion.IJKX) Instance {
 	class(self).SetConstant(value)
+	return self
 }
 
 //go:nosplit

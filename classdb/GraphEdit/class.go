@@ -458,9 +458,12 @@ func (self Instance) DisconnectNode(from_node string, from_port int, to_node str
 
 /*
 Sets the coloration of the connection between 'from_node”s 'from_port' and 'to_node”s 'to_port' with the color provided in the theme's 'activity' theme property. The color is linearly interpolated between the connection color and the activity color using 'amount' as weight.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) { //gd:GraphEdit.set_connection_activity
+func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) Instance { //gd:GraphEdit.set_connection_activity
 	Advanced(self).SetConnectionActivity(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), float64(amount))
+	return self
 }
 
 /*
@@ -713,9 +716,12 @@ func (self Instance) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 
 /*
 Sets the specified 'node' as the one selected.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSelected(node Node.Instance) { //gd:GraphEdit.set_selected
+func (self Instance) SetSelected(node Node.Instance) Instance { //gd:GraphEdit.set_selected
 	Advanced(self).SetSelected(node)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -767,9 +773,10 @@ func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-// SetScrollOffset sets the property returned by [GetScrollOffset].
-func (self Instance) SetScrollOffset(value Vector2.XY) {
+// SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
 	class(self).SetScrollOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -779,9 +786,10 @@ func (self Instance) ShowGrid() bool {
 	return bool(class(self).IsShowingGrid())
 }
 
-// SetShowGrid sets the property returned by [IsShowingGrid].
-func (self Instance) SetShowGrid(value bool) {
+// SetShowGrid sets the property returned by [IsShowingGrid]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowGrid(value bool) Instance {
 	class(self).SetShowGrid(value)
+	return self
 }
 
 /*
@@ -791,9 +799,10 @@ func (self Instance) GridPattern() GridPattern {
 	return GridPattern(class(self).GetGridPattern())
 }
 
-// SetGridPattern sets the property returned by [GetGridPattern].
-func (self Instance) SetGridPattern(value GridPattern) {
+// SetGridPattern sets the property returned by [GetGridPattern]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGridPattern(value GridPattern) Instance {
 	class(self).SetGridPattern(value)
+	return self
 }
 
 /*
@@ -803,9 +812,10 @@ func (self Instance) SnappingEnabled() bool {
 	return bool(class(self).IsSnappingEnabled())
 }
 
-// SetSnappingEnabled sets the property returned by [IsSnappingEnabled].
-func (self Instance) SetSnappingEnabled(value bool) {
+// SetSnappingEnabled sets the property returned by [IsSnappingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnappingEnabled(value bool) Instance {
 	class(self).SetSnappingEnabled(value)
+	return self
 }
 
 /*
@@ -815,9 +825,10 @@ func (self Instance) SnappingDistance() int {
 	return int(int(class(self).GetSnappingDistance()))
 }
 
-// SetSnappingDistance sets the property returned by [GetSnappingDistance].
-func (self Instance) SetSnappingDistance(value int) {
+// SetSnappingDistance sets the property returned by [GetSnappingDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnappingDistance(value int) Instance {
 	class(self).SetSnappingDistance(int64(value))
+	return self
 }
 
 /*
@@ -827,9 +838,10 @@ func (self Instance) PanningScheme() PanningScheme {
 	return PanningScheme(class(self).GetPanningScheme())
 }
 
-// SetPanningScheme sets the property returned by [GetPanningScheme].
-func (self Instance) SetPanningScheme(value PanningScheme) {
+// SetPanningScheme sets the property returned by [GetPanningScheme]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPanningScheme(value PanningScheme) Instance {
 	class(self).SetPanningScheme(value)
+	return self
 }
 
 /*
@@ -839,9 +851,10 @@ func (self Instance) RightDisconnects() bool {
 	return bool(class(self).IsRightDisconnectsEnabled())
 }
 
-// SetRightDisconnects sets the property returned by [IsRightDisconnectsEnabled].
-func (self Instance) SetRightDisconnects(value bool) {
+// SetRightDisconnects sets the property returned by [IsRightDisconnectsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRightDisconnects(value bool) Instance {
 	class(self).SetRightDisconnects(value)
+	return self
 }
 
 /*
@@ -851,9 +864,10 @@ func (self Instance) TypeNames() map[int]string {
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetTypeNames()))
 }
 
-// SetTypeNames sets the property returned by [GetTypeNames].
-func (self Instance) SetTypeNames(value map[int]string) {
+// SetTypeNames sets the property returned by [GetTypeNames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTypeNames(value map[int]string) Instance {
 	class(self).SetTypeNames(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -863,9 +877,10 @@ func (self Instance) ConnectionLinesCurvature() Float.X {
 	return Float.X(Float.X(class(self).GetConnectionLinesCurvature()))
 }
 
-// SetConnectionLinesCurvature sets the property returned by [GetConnectionLinesCurvature].
-func (self Instance) SetConnectionLinesCurvature(value Float.X) {
+// SetConnectionLinesCurvature sets the property returned by [GetConnectionLinesCurvature]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConnectionLinesCurvature(value Float.X) Instance {
 	class(self).SetConnectionLinesCurvature(float64(value))
+	return self
 }
 
 /*
@@ -875,9 +890,10 @@ func (self Instance) ConnectionLinesThickness() Float.X {
 	return Float.X(Float.X(class(self).GetConnectionLinesThickness()))
 }
 
-// SetConnectionLinesThickness sets the property returned by [GetConnectionLinesThickness].
-func (self Instance) SetConnectionLinesThickness(value Float.X) {
+// SetConnectionLinesThickness sets the property returned by [GetConnectionLinesThickness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConnectionLinesThickness(value Float.X) Instance {
 	class(self).SetConnectionLinesThickness(float64(value))
+	return self
 }
 
 /*
@@ -887,9 +903,10 @@ func (self Instance) ConnectionLinesAntialiased() bool {
 	return bool(class(self).IsConnectionLinesAntialiased())
 }
 
-// SetConnectionLinesAntialiased sets the property returned by [IsConnectionLinesAntialiased].
-func (self Instance) SetConnectionLinesAntialiased(value bool) {
+// SetConnectionLinesAntialiased sets the property returned by [IsConnectionLinesAntialiased]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConnectionLinesAntialiased(value bool) Instance {
 	class(self).SetConnectionLinesAntialiased(value)
+	return self
 }
 
 /*
@@ -905,9 +922,10 @@ func (self Instance) Connections() []Connection {
 	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
 }
 
-// SetConnections sets the property returned by [GetConnectionList].
-func (self Instance) SetConnections(value []Connection) {
+// SetConnections sets the property returned by [GetConnectionList]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConnections(value []Connection) Instance {
 	class(self).SetConnections(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](value))
+	return self
 }
 
 /*
@@ -917,9 +935,10 @@ func (self Instance) Zoom() Float.X {
 	return Float.X(Float.X(class(self).GetZoom()))
 }
 
-// SetZoom sets the property returned by [GetZoom].
-func (self Instance) SetZoom(value Float.X) {
+// SetZoom sets the property returned by [GetZoom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZoom(value Float.X) Instance {
 	class(self).SetZoom(float64(value))
+	return self
 }
 
 /*
@@ -929,9 +948,10 @@ func (self Instance) ZoomMin() Float.X {
 	return Float.X(Float.X(class(self).GetZoomMin()))
 }
 
-// SetZoomMin sets the property returned by [GetZoomMin].
-func (self Instance) SetZoomMin(value Float.X) {
+// SetZoomMin sets the property returned by [GetZoomMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZoomMin(value Float.X) Instance {
 	class(self).SetZoomMin(float64(value))
+	return self
 }
 
 /*
@@ -941,9 +961,10 @@ func (self Instance) ZoomMax() Float.X {
 	return Float.X(Float.X(class(self).GetZoomMax()))
 }
 
-// SetZoomMax sets the property returned by [GetZoomMax].
-func (self Instance) SetZoomMax(value Float.X) {
+// SetZoomMax sets the property returned by [GetZoomMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZoomMax(value Float.X) Instance {
 	class(self).SetZoomMax(float64(value))
+	return self
 }
 
 /*
@@ -953,9 +974,10 @@ func (self Instance) ZoomStep() Float.X {
 	return Float.X(Float.X(class(self).GetZoomStep()))
 }
 
-// SetZoomStep sets the property returned by [GetZoomStep].
-func (self Instance) SetZoomStep(value Float.X) {
+// SetZoomStep sets the property returned by [GetZoomStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZoomStep(value Float.X) Instance {
 	class(self).SetZoomStep(float64(value))
+	return self
 }
 
 /*
@@ -965,9 +987,10 @@ func (self Instance) MinimapEnabled() bool {
 	return bool(class(self).IsMinimapEnabled())
 }
 
-// SetMinimapEnabled sets the property returned by [IsMinimapEnabled].
-func (self Instance) SetMinimapEnabled(value bool) {
+// SetMinimapEnabled sets the property returned by [IsMinimapEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimapEnabled(value bool) Instance {
 	class(self).SetMinimapEnabled(value)
+	return self
 }
 
 /*
@@ -977,9 +1000,10 @@ func (self Instance) MinimapSize() Vector2.XY {
 	return Vector2.XY(class(self).GetMinimapSize())
 }
 
-// SetMinimapSize sets the property returned by [GetMinimapSize].
-func (self Instance) SetMinimapSize(value Vector2.XY) {
+// SetMinimapSize sets the property returned by [GetMinimapSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimapSize(value Vector2.XY) Instance {
 	class(self).SetMinimapSize(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -989,9 +1013,10 @@ func (self Instance) MinimapOpacity() Float.X {
 	return Float.X(Float.X(class(self).GetMinimapOpacity()))
 }
 
-// SetMinimapOpacity sets the property returned by [GetMinimapOpacity].
-func (self Instance) SetMinimapOpacity(value Float.X) {
+// SetMinimapOpacity sets the property returned by [GetMinimapOpacity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimapOpacity(value Float.X) Instance {
 	class(self).SetMinimapOpacity(float64(value))
+	return self
 }
 
 /*
@@ -1001,9 +1026,10 @@ func (self Instance) ShowMenu() bool {
 	return bool(class(self).IsShowingMenu())
 }
 
-// SetShowMenu sets the property returned by [IsShowingMenu].
-func (self Instance) SetShowMenu(value bool) {
+// SetShowMenu sets the property returned by [IsShowingMenu]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowMenu(value bool) Instance {
 	class(self).SetShowMenu(value)
+	return self
 }
 
 /*
@@ -1013,9 +1039,10 @@ func (self Instance) ShowZoomLabel() bool {
 	return bool(class(self).IsShowingZoomLabel())
 }
 
-// SetShowZoomLabel sets the property returned by [IsShowingZoomLabel].
-func (self Instance) SetShowZoomLabel(value bool) {
+// SetShowZoomLabel sets the property returned by [IsShowingZoomLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowZoomLabel(value bool) Instance {
 	class(self).SetShowZoomLabel(value)
+	return self
 }
 
 /*
@@ -1025,9 +1052,10 @@ func (self Instance) ShowZoomButtons() bool {
 	return bool(class(self).IsShowingZoomButtons())
 }
 
-// SetShowZoomButtons sets the property returned by [IsShowingZoomButtons].
-func (self Instance) SetShowZoomButtons(value bool) {
+// SetShowZoomButtons sets the property returned by [IsShowingZoomButtons]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowZoomButtons(value bool) Instance {
 	class(self).SetShowZoomButtons(value)
+	return self
 }
 
 /*
@@ -1037,9 +1065,10 @@ func (self Instance) ShowGridButtons() bool {
 	return bool(class(self).IsShowingGridButtons())
 }
 
-// SetShowGridButtons sets the property returned by [IsShowingGridButtons].
-func (self Instance) SetShowGridButtons(value bool) {
+// SetShowGridButtons sets the property returned by [IsShowingGridButtons]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowGridButtons(value bool) Instance {
 	class(self).SetShowGridButtons(value)
+	return self
 }
 
 /*
@@ -1049,9 +1078,10 @@ func (self Instance) ShowMinimapButton() bool {
 	return bool(class(self).IsShowingMinimapButton())
 }
 
-// SetShowMinimapButton sets the property returned by [IsShowingMinimapButton].
-func (self Instance) SetShowMinimapButton(value bool) {
+// SetShowMinimapButton sets the property returned by [IsShowingMinimapButton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowMinimapButton(value bool) Instance {
 	class(self).SetShowMinimapButton(value)
+	return self
 }
 
 /*
@@ -1061,9 +1091,10 @@ func (self Instance) ShowArrangeButton() bool {
 	return bool(class(self).IsShowingArrangeButton())
 }
 
-// SetShowArrangeButton sets the property returned by [IsShowingArrangeButton].
-func (self Instance) SetShowArrangeButton(value bool) {
+// SetShowArrangeButton sets the property returned by [IsShowingArrangeButton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowArrangeButton(value bool) Instance {
 	class(self).SetShowArrangeButton(value)
+	return self
 }
 
 /*
@@ -1846,12 +1877,13 @@ Emitted to the GraphEdit when the connection between the 'from_port' of the 'fro
 
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
-func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
+func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionRequest() Signal.Any {
@@ -1863,12 +1895,13 @@ Emitted to the GraphEdit when the connection between 'from_port' of 'from_node' 
 
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
-func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
+func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DisconnectionRequest() Signal.Any {
@@ -1878,12 +1911,13 @@ func (self class) DisconnectionRequest() Signal.Any {
 /*
 Emitted when user drags a connection from an output port into the empty space of the graph.
 */
-func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionToEmpty() Signal.Any {
@@ -1893,12 +1927,13 @@ func (self class) ConnectionToEmpty() Signal.Any {
 /*
 Emitted when user drags a connection from an input port into the empty space of the graph.
 */
-func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionFromEmpty() Signal.Any {
@@ -1908,12 +1943,13 @@ func (self class) ConnectionFromEmpty() Signal.Any {
 /*
 Emitted at the beginning of a connection drag.
 */
-func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool), flags ...Signal.Flags) {
+func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionDragStarted() Signal.Any {
@@ -1923,12 +1959,13 @@ func (self class) ConnectionDragStarted() Signal.Any {
 /*
 Emitted at the end of a connection drag.
 */
-func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionDragEnded() Signal.Any {
@@ -1941,12 +1978,13 @@ Emitted when this [GraphEdit] captures a ui_copy action (Ctrl + C by default). I
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CopyNodesRequest() Signal.Any {
@@ -1959,12 +1997,13 @@ Emitted when this [GraphEdit] captures a ui_cut action (Ctrl + X by default). In
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CutNodesRequest() Signal.Any {
@@ -1977,12 +2016,13 @@ Emitted when this [GraphEdit] captures a ui_paste action (Ctrl + V by default). 
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PasteNodesRequest() Signal.Any {
@@ -1995,12 +2035,13 @@ Emitted when this [GraphEdit] captures a ui_graph_duplicate action (Ctrl + D by 
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DuplicateNodesRequest() Signal.Any {
@@ -2014,12 +2055,13 @@ Emitted when this [GraphEdit] captures a ui_graph_delete action (Delete by defau
 
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 */
-func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Signal.Flags) {
+func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DeleteNodesRequest() Signal.Any {
@@ -2031,12 +2073,13 @@ Emitted when the given [GraphElement] node is selected.
 
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeSelected() Signal.Any {
@@ -2048,12 +2091,13 @@ Emitted when the given [GraphElement] node is deselected.
 
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeDeselected() Signal.Any {
@@ -2065,12 +2109,13 @@ Emitted when the [GraphFrame] 'frame' is resized to 'new_rect'.
 
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
-func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize), flags ...Signal.Flags) {
+func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FrameRectChanged() Signal.Any {
@@ -2080,12 +2125,13 @@ func (self class) FrameRectChanged() Signal.Any {
 /*
 Emitted when a popup is requested. Happens on right-clicking in the GraphEdit. 'at_position' is the position of the mouse pointer when the signal is sent.
 */
-func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PopupRequest() Signal.Any {
@@ -2097,12 +2143,13 @@ Emitted at the beginning of a [GraphElement]'s movement.
 
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BeginNodeMove() Signal.Any {
@@ -2114,12 +2161,13 @@ Emitted at the end of a [GraphElement]'s movement.
 
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EndNodeMove() Signal.Any {
@@ -2134,12 +2182,13 @@ Emitted when one or more [GraphElement]s are dropped onto the [GraphFrame] named
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 [GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
 */
-func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string), flags ...Signal.Flags) {
+func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GraphElementsLinkedToFrameRequest() Signal.Any {
@@ -2149,12 +2198,13 @@ func (self class) GraphElementsLinkedToFrameRequest() Signal.Any {
 /*
 Emitted when the scroll offset is changed by the user. It will not be emitted when changed in code.
 */
-func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScrollOffsetChanged() Signal.Any {

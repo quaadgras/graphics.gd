@@ -200,9 +200,12 @@ type Any interface {
 
 /*
 Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a null value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetValue(section string, key string, value any) { //gd:ConfigFile.set_value
+func (self Instance) SetValue(section string, key string, value any) Instance { //gd:ConfigFile.set_value
 	Advanced(self).SetValue(String.New(section), String.New(key), variant.New(value))
+	return self
 }
 
 /*

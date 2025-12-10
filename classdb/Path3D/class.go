@@ -174,9 +174,10 @@ func (self Instance) Curve() Curve3D.Instance {
 	return Curve3D.Instance(class(self).GetCurve())
 }
 
-// SetCurve sets the property returned by [GetCurve].
-func (self Instance) SetCurve(value Curve3D.Instance) {
+// SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurve(value Curve3D.Instance) Instance {
 	class(self).SetCurve(value)
+	return self
 }
 
 /*
@@ -188,9 +189,10 @@ func (self Instance) DebugCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugCustomColor())
 }
 
-// SetDebugCustomColor sets the property returned by [GetDebugCustomColor].
-func (self Instance) SetDebugCustomColor(value Color.RGBA) {
+// SetDebugCustomColor sets the property returned by [GetDebugCustomColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugCustomColor(value Color.RGBA) Instance {
 	class(self).SetDebugCustomColor(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit
@@ -222,12 +224,13 @@ Emitted when the [Curve] changes.
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Path3D#Instance.Curve
 */
-func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("curve_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CurveChanged() Signal.Any {
@@ -239,12 +242,13 @@ Emitted when the [DebugCustomColor] changes.
 
 [DebugCustomColor]: https://pkg.go.dev/graphics.gd/classdb/Path3D#Instance.DebugCustomColor
 */
-func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("debug_color_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DebugColorChanged() Signal.Any {

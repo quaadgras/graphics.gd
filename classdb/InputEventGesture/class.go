@@ -171,9 +171,10 @@ func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2.XY) Instance {
 	class(self).SetPosition(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

@@ -194,9 +194,10 @@ func (self Instance) RayleighCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetRayleighCoefficient()))
 }
 
-// SetRayleighCoefficient sets the property returned by [GetRayleighCoefficient].
-func (self Instance) SetRayleighCoefficient(value Float.X) {
+// SetRayleighCoefficient sets the property returned by [GetRayleighCoefficient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRayleighCoefficient(value Float.X) Instance {
 	class(self).SetRayleighCoefficient(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +210,10 @@ func (self Instance) RayleighColor() Color.RGBA {
 	return Color.RGBA(class(self).GetRayleighColor())
 }
 
-// SetRayleighColor sets the property returned by [GetRayleighColor].
-func (self Instance) SetRayleighColor(value Color.RGBA) {
+// SetRayleighColor sets the property returned by [GetRayleighColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRayleighColor(value Color.RGBA) Instance {
 	class(self).SetRayleighColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -223,9 +225,10 @@ func (self Instance) MieCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetMieCoefficient()))
 }
 
-// SetMieCoefficient sets the property returned by [GetMieCoefficient].
-func (self Instance) SetMieCoefficient(value Float.X) {
+// SetMieCoefficient sets the property returned by [GetMieCoefficient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMieCoefficient(value Float.X) Instance {
 	class(self).SetMieCoefficient(float64(value))
+	return self
 }
 
 /*
@@ -237,9 +240,10 @@ func (self Instance) MieEccentricity() Float.X {
 	return Float.X(Float.X(class(self).GetMieEccentricity()))
 }
 
-// SetMieEccentricity sets the property returned by [GetMieEccentricity].
-func (self Instance) SetMieEccentricity(value Float.X) {
+// SetMieEccentricity sets the property returned by [GetMieEccentricity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMieEccentricity(value Float.X) Instance {
 	class(self).SetMieEccentricity(float64(value))
+	return self
 }
 
 /*
@@ -252,9 +256,10 @@ func (self Instance) MieColor() Color.RGBA {
 	return Color.RGBA(class(self).GetMieColor())
 }
 
-// SetMieColor sets the property returned by [GetMieColor].
-func (self Instance) SetMieColor(value Color.RGBA) {
+// SetMieColor sets the property returned by [GetMieColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMieColor(value Color.RGBA) Instance {
 	class(self).SetMieColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -264,9 +269,10 @@ func (self Instance) Turbidity() Float.X {
 	return Float.X(Float.X(class(self).GetTurbidity()))
 }
 
-// SetTurbidity sets the property returned by [GetTurbidity].
-func (self Instance) SetTurbidity(value Float.X) {
+// SetTurbidity sets the property returned by [GetTurbidity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTurbidity(value Float.X) Instance {
 	class(self).SetTurbidity(float64(value))
+	return self
 }
 
 /*
@@ -276,9 +282,10 @@ func (self Instance) SunDiskScale() Float.X {
 	return Float.X(Float.X(class(self).GetSunDiskScale()))
 }
 
-// SetSunDiskScale sets the property returned by [GetSunDiskScale].
-func (self Instance) SetSunDiskScale(value Float.X) {
+// SetSunDiskScale sets the property returned by [GetSunDiskScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSunDiskScale(value Float.X) Instance {
 	class(self).SetSunDiskScale(float64(value))
+	return self
 }
 
 /*
@@ -290,9 +297,10 @@ func (self Instance) GroundColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundColor())
 }
 
-// SetGroundColor sets the property returned by [GetGroundColor].
-func (self Instance) SetGroundColor(value Color.RGBA) {
+// SetGroundColor sets the property returned by [GetGroundColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroundColor(value Color.RGBA) Instance {
 	class(self).SetGroundColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -302,9 +310,10 @@ func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
-func (self Instance) SetEnergyMultiplier(value Float.X) {
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
 	class(self).SetEnergyMultiplier(float64(value))
+	return self
 }
 
 /*
@@ -314,9 +323,10 @@ func (self Instance) UseDebanding() bool {
 	return bool(class(self).GetUseDebanding())
 }
 
-// SetUseDebanding sets the property returned by [GetUseDebanding].
-func (self Instance) SetUseDebanding(value bool) {
+// SetUseDebanding sets the property returned by [GetUseDebanding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseDebanding(value bool) Instance {
 	class(self).SetUseDebanding(value)
+	return self
 }
 
 /*
@@ -328,9 +338,10 @@ func (self Instance) NightSky() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetNightSky())
 }
 
-// SetNightSky sets the property returned by [GetNightSky].
-func (self Instance) SetNightSky(value Texture2D.Instance) {
+// SetNightSky sets the property returned by [GetNightSky]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNightSky(value Texture2D.Instance) Instance {
 	class(self).SetNightSky(value)
+	return self
 }
 
 //go:nosplit

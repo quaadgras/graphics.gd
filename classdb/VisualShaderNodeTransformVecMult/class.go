@@ -164,9 +164,10 @@ func (self Instance) Operator() Operator {
 	return Operator(class(self).GetOperator())
 }
 
-// SetOperator sets the property returned by [GetOperator].
-func (self Instance) SetOperator(value Operator) {
+// SetOperator sets the property returned by [GetOperator]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOperator(value Operator) Instance {
 	class(self).SetOperator(value)
+	return self
 }
 
 //go:nosplit

@@ -208,9 +208,10 @@ func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
-// SetFormat sets the property returned by [GetFormat].
-func (self Instance) SetFormat(value Rendering.DataFormat) {
+// SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
 	class(self).SetFormat(value)
+	return self
 }
 
 /*
@@ -220,9 +221,10 @@ func (self Instance) Width() int {
 	return int(int(class(self).GetWidth()))
 }
 
-// SetWidth sets the property returned by [GetWidth].
-func (self Instance) SetWidth(value int) {
+// SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
@@ -232,9 +234,10 @@ func (self Instance) Height() int {
 	return int(int(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value int) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value int) Instance {
 	class(self).SetHeight(int64(value))
+	return self
 }
 
 /*
@@ -244,9 +247,10 @@ func (self Instance) Depth() int {
 	return int(int(class(self).GetDepth()))
 }
 
-// SetDepth sets the property returned by [GetDepth].
-func (self Instance) SetDepth(value int) {
+// SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepth(value int) Instance {
 	class(self).SetDepth(int64(value))
+	return self
 }
 
 /*
@@ -256,9 +260,10 @@ func (self Instance) ArrayLayers() int {
 	return int(int(class(self).GetArrayLayers()))
 }
 
-// SetArrayLayers sets the property returned by [GetArrayLayers].
-func (self Instance) SetArrayLayers(value int) {
+// SetArrayLayers sets the property returned by [GetArrayLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetArrayLayers(value int) Instance {
 	class(self).SetArrayLayers(int64(value))
+	return self
 }
 
 /*
@@ -268,9 +273,10 @@ func (self Instance) Mipmaps() int {
 	return int(int(class(self).GetMipmaps()))
 }
 
-// SetMipmaps sets the property returned by [GetMipmaps].
-func (self Instance) SetMipmaps(value int) {
+// SetMipmaps sets the property returned by [GetMipmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMipmaps(value int) Instance {
 	class(self).SetMipmaps(int64(value))
+	return self
 }
 
 /*
@@ -280,9 +286,10 @@ func (self Instance) TextureType() Rendering.TextureType {
 	return Rendering.TextureType(class(self).GetTextureType())
 }
 
-// SetTextureType sets the property returned by [GetTextureType].
-func (self Instance) SetTextureType(value Rendering.TextureType) {
+// SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureType(value Rendering.TextureType) Instance {
 	class(self).SetTextureType(value)
+	return self
 }
 
 /*
@@ -292,9 +299,10 @@ func (self Instance) Samples() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSamples())
 }
 
-// SetSamples sets the property returned by [GetSamples].
-func (self Instance) SetSamples(value Rendering.TextureSamples) {
+// SetSamples sets the property returned by [GetSamples]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSamples(value Rendering.TextureSamples) Instance {
 	class(self).SetSamples(value)
+	return self
 }
 
 /*
@@ -304,9 +312,10 @@ func (self Instance) UsageBits() Rendering.TextureUsageBits {
 	return Rendering.TextureUsageBits(class(self).GetUsageBits())
 }
 
-// SetUsageBits sets the property returned by [GetUsageBits].
-func (self Instance) SetUsageBits(value Rendering.TextureUsageBits) {
+// SetUsageBits sets the property returned by [GetUsageBits]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUsageBits(value Rendering.TextureUsageBits) Instance {
 	class(self).SetUsageBits(value)
+	return self
 }
 
 /*
@@ -316,9 +325,10 @@ func (self Instance) IsResolveBuffer() bool {
 	return bool(class(self).GetIsResolveBuffer())
 }
 
-// SetIsResolveBuffer sets the property returned by [GetIsResolveBuffer].
-func (self Instance) SetIsResolveBuffer(value bool) {
+// SetIsResolveBuffer sets the property returned by [GetIsResolveBuffer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIsResolveBuffer(value bool) Instance {
 	class(self).SetIsResolveBuffer(value)
+	return self
 }
 
 /*
@@ -332,9 +342,10 @@ func (self Instance) IsDiscardable() bool {
 	return bool(class(self).GetIsDiscardable())
 }
 
-// SetIsDiscardable sets the property returned by [GetIsDiscardable].
-func (self Instance) SetIsDiscardable(value bool) {
+// SetIsDiscardable sets the property returned by [GetIsDiscardable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIsDiscardable(value bool) Instance {
 	class(self).SetIsDiscardable(value)
+	return self
 }
 
 //go:nosplit

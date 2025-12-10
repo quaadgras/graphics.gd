@@ -175,9 +175,10 @@ func (self Instance) FaceTracker() string {
 	return string(class(self).GetFaceTracker().String())
 }
 
-// SetFaceTracker sets the property returned by [GetFaceTracker].
-func (self Instance) SetFaceTracker(value string) {
+// SetFaceTracker sets the property returned by [GetFaceTracker]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFaceTracker(value string) Instance {
 	class(self).SetFaceTracker(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) Target() string {
 	return string(class(self).GetTarget().String())
 }
 
-// SetTarget sets the property returned by [GetTarget].
-func (self Instance) SetTarget(value string) {
+// SetTarget sets the property returned by [GetTarget]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTarget(value string) Instance {
 	class(self).SetTarget(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit

@@ -196,9 +196,10 @@ func (self Instance) FillMode() int {
 	return int(int(class(self).GetFillMode()))
 }
 
-// SetFillMode sets the property returned by [GetFillMode].
-func (self Instance) SetFillMode(value int) {
+// SetFillMode sets the property returned by [GetFillMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFillMode(value int) Instance {
 	class(self).SetFillMode(int64(value))
+	return self
 }
 
 /*
@@ -215,9 +216,10 @@ func (self Instance) RadialInitialAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetRadialInitialAngle()))
 }
 
-// SetRadialInitialAngle sets the property returned by [GetRadialInitialAngle].
-func (self Instance) SetRadialInitialAngle(value Angle.Radians) {
+// SetRadialInitialAngle sets the property returned by [GetRadialInitialAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialInitialAngle(value Angle.Radians) Instance {
 	class(self).SetRadialInitialAngle(float64(value))
+	return self
 }
 
 /*
@@ -234,9 +236,10 @@ func (self Instance) RadialFillDegrees() Float.X {
 	return Float.X(Float.X(class(self).GetFillDegrees()))
 }
 
-// SetRadialFillDegrees sets the property returned by [GetFillDegrees].
-func (self Instance) SetRadialFillDegrees(value Float.X) {
+// SetRadialFillDegrees sets the property returned by [GetFillDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialFillDegrees(value Float.X) Instance {
 	class(self).SetFillDegrees(float64(value))
+	return self
 }
 
 /*
@@ -251,9 +254,10 @@ func (self Instance) RadialCenterOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetRadialCenterOffset())
 }
 
-// SetRadialCenterOffset sets the property returned by [GetRadialCenterOffset].
-func (self Instance) SetRadialCenterOffset(value Vector2.XY) {
+// SetRadialCenterOffset sets the property returned by [GetRadialCenterOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialCenterOffset(value Vector2.XY) Instance {
 	class(self).SetRadialCenterOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -270,9 +274,10 @@ func (self Instance) NinePatchStretch() bool {
 	return bool(class(self).GetNinePatchStretch())
 }
 
-// SetNinePatchStretch sets the property returned by [GetNinePatchStretch].
-func (self Instance) SetNinePatchStretch(value bool) {
+// SetNinePatchStretch sets the property returned by [GetNinePatchStretch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNinePatchStretch(value bool) Instance {
 	class(self).SetNinePatchStretch(value)
+	return self
 }
 
 /*
@@ -284,9 +289,10 @@ func (self Instance) StretchMarginLeft() int {
 	return int(int(class(self).GetStretchMargin(0)))
 }
 
-// SetStretchMarginLeft sets the property returned by [GetStretchMargin].
-func (self Instance) SetStretchMarginLeft(value int) {
+// SetStretchMarginLeft sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMarginLeft(value int) Instance {
 	class(self).SetStretchMargin(0, int64(value))
+	return self
 }
 
 /*
@@ -298,9 +304,10 @@ func (self Instance) StretchMarginTop() int {
 	return int(int(class(self).GetStretchMargin(1)))
 }
 
-// SetStretchMarginTop sets the property returned by [GetStretchMargin].
-func (self Instance) SetStretchMarginTop(value int) {
+// SetStretchMarginTop sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMarginTop(value int) Instance {
 	class(self).SetStretchMargin(1, int64(value))
+	return self
 }
 
 /*
@@ -312,9 +319,10 @@ func (self Instance) StretchMarginRight() int {
 	return int(int(class(self).GetStretchMargin(2)))
 }
 
-// SetStretchMarginRight sets the property returned by [GetStretchMargin].
-func (self Instance) SetStretchMarginRight(value int) {
+// SetStretchMarginRight sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMarginRight(value int) Instance {
 	class(self).SetStretchMargin(2, int64(value))
+	return self
 }
 
 /*
@@ -326,9 +334,10 @@ func (self Instance) StretchMarginBottom() int {
 	return int(int(class(self).GetStretchMargin(3)))
 }
 
-// SetStretchMarginBottom sets the property returned by [GetStretchMargin].
-func (self Instance) SetStretchMarginBottom(value int) {
+// SetStretchMarginBottom sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMarginBottom(value int) Instance {
 	class(self).SetStretchMargin(3, int64(value))
+	return self
 }
 
 /*
@@ -340,9 +349,10 @@ func (self Instance) TextureUnder() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetUnderTexture())
 }
 
-// SetTextureUnder sets the property returned by [GetUnderTexture].
-func (self Instance) SetTextureUnder(value Texture2D.Instance) {
+// SetTextureUnder sets the property returned by [GetUnderTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureUnder(value Texture2D.Instance) Instance {
 	class(self).SetUnderTexture(value)
+	return self
 }
 
 /*
@@ -355,9 +365,10 @@ func (self Instance) TextureOver() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetOverTexture())
 }
 
-// SetTextureOver sets the property returned by [GetOverTexture].
-func (self Instance) SetTextureOver(value Texture2D.Instance) {
+// SetTextureOver sets the property returned by [GetOverTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureOver(value Texture2D.Instance) Instance {
 	class(self).SetOverTexture(value)
+	return self
 }
 
 /*
@@ -376,9 +387,10 @@ func (self Instance) TextureProgress() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetProgressTexture())
 }
 
-// SetTextureProgress sets the property returned by [GetProgressTexture].
-func (self Instance) SetTextureProgress(value Texture2D.Instance) {
+// SetTextureProgress sets the property returned by [GetProgressTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureProgress(value Texture2D.Instance) Instance {
 	class(self).SetProgressTexture(value)
+	return self
 }
 
 /*
@@ -392,9 +404,10 @@ func (self Instance) TextureProgressOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureProgressOffset())
 }
 
-// SetTextureProgressOffset sets the property returned by [GetTextureProgressOffset].
-func (self Instance) SetTextureProgressOffset(value Vector2.XY) {
+// SetTextureProgressOffset sets the property returned by [GetTextureProgressOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureProgressOffset(value Vector2.XY) Instance {
 	class(self).SetTextureProgressOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -406,9 +419,10 @@ func (self Instance) TintUnder() Color.RGBA {
 	return Color.RGBA(class(self).GetTintUnder())
 }
 
-// SetTintUnder sets the property returned by [GetTintUnder].
-func (self Instance) SetTintUnder(value Color.RGBA) {
+// SetTintUnder sets the property returned by [GetTintUnder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintUnder(value Color.RGBA) Instance {
 	class(self).SetTintUnder(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -421,9 +435,10 @@ func (self Instance) TintOver() Color.RGBA {
 	return Color.RGBA(class(self).GetTintOver())
 }
 
-// SetTintOver sets the property returned by [GetTintOver].
-func (self Instance) SetTintOver(value Color.RGBA) {
+// SetTintOver sets the property returned by [GetTintOver]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintOver(value Color.RGBA) Instance {
 	class(self).SetTintOver(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -435,9 +450,10 @@ func (self Instance) TintProgress() Color.RGBA {
 	return Color.RGBA(class(self).GetTintProgress())
 }
 
-// SetTintProgress sets the property returned by [GetTintProgress].
-func (self Instance) SetTintProgress(value Color.RGBA) {
+// SetTintProgress sets the property returned by [GetTintProgress]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintProgress(value Color.RGBA) Instance {
 	class(self).SetTintProgress(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit

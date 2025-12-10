@@ -214,9 +214,10 @@ func (self Instance) FitMargin() Float.X {
 	return Float.X(Float.X(class(self).GetFitMargin()))
 }
 
-// SetFitMargin sets the property returned by [GetFitMargin].
-func (self Instance) SetFitMargin(value Float.X) {
+// SetFitMargin sets the property returned by [GetFitMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFitMargin(value Float.X) Instance {
 	class(self).SetFitMargin(float64(value))
+	return self
 }
 
 /*
@@ -229,9 +230,10 @@ func (self Instance) ClearMargin() Float.X {
 	return Float.X(Float.X(class(self).GetClearMargin()))
 }
 
-// SetClearMargin sets the property returned by [GetClearMargin].
-func (self Instance) SetClearMargin(value Float.X) {
+// SetClearMargin sets the property returned by [GetClearMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClearMargin(value Float.X) Instance {
 	class(self).SetClearMargin(float64(value))
+	return self
 }
 
 /*
@@ -244,9 +246,10 @@ func (self Instance) UseMipmaps() bool {
 	return bool(class(self).IsUsingMipmaps())
 }
 
-// SetUseMipmaps sets the property returned by [IsUsingMipmaps].
-func (self Instance) SetUseMipmaps(value bool) {
+// SetUseMipmaps sets the property returned by [IsUsingMipmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseMipmaps(value bool) Instance {
 	class(self).SetUseMipmaps(value)
+	return self
 }
 
 //go:nosplit

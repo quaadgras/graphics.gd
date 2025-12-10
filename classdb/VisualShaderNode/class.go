@@ -138,16 +138,22 @@ func (self Instance) GetDefaultInputPort(atype PortType) int { //gd:VisualShader
 
 /*
 Sets the default 'value' for the selected input 'port'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputPortDefaultValue(port int, value any) { //gd:VisualShaderNode.set_input_port_default_value
+func (self Instance) SetInputPortDefaultValue(port int, value any) Instance { //gd:VisualShaderNode.set_input_port_default_value
 	Advanced(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New([1]any{}[0]))
+	return self
 }
 
 /*
 Sets the default 'value' for the selected input 'port'.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetInputPortDefaultValue(port int, value any, prev_value any) { //gd:VisualShaderNode.set_input_port_default_value
+func (self MoreArgs) SetInputPortDefaultValue(port int, value any, prev_value any) MoreArgs { //gd:VisualShaderNode.set_input_port_default_value
 	Advanced(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New(prev_value))
+	return self
 }
 
 /*
@@ -221,18 +227,20 @@ func (self Instance) OutputPortForPreview() int {
 	return int(int(class(self).GetOutputPortForPreview()))
 }
 
-// SetOutputPortForPreview sets the property returned by [GetOutputPortForPreview].
-func (self Instance) SetOutputPortForPreview(value int) {
+// SetOutputPortForPreview sets the property returned by [GetOutputPortForPreview]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOutputPortForPreview(value int) Instance {
 	class(self).SetOutputPortForPreview(int64(value))
+	return self
 }
 
 func (self Instance) DefaultInputValues() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetDefaultInputValues())))
 }
 
-// SetDefaultInputValues sets the property returned by [GetDefaultInputValues].
-func (self Instance) SetDefaultInputValues(value []any) {
+// SetDefaultInputValues sets the property returned by [GetDefaultInputValues]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultInputValues(value []any) Instance {
 	class(self).SetDefaultInputValues(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -242,9 +250,10 @@ func (self Instance) LinkedParentGraphFrame() int {
 	return int(int(class(self).GetFrame()))
 }
 
-// SetLinkedParentGraphFrame sets the property returned by [GetFrame].
-func (self Instance) SetLinkedParentGraphFrame(value int) {
+// SetLinkedParentGraphFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinkedParentGraphFrame(value int) Instance {
 	class(self).SetFrame(int64(value))
+	return self
 }
 
 /*

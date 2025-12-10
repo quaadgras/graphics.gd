@@ -187,10 +187,13 @@ func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physic
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_mask_value
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) Instance { //gd:SoftBody3D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -205,10 +208,13 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:SoftBod
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_layer_value
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) Instance { //gd:SoftBody3D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -283,19 +289,25 @@ func (self Instance) ApplyCentralForce(force Vector3.XYZ) { //gd:SoftBody3D.appl
 /*
 Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
 
+Returns 'self' to enable method chaining.
+
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
-func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
+func (self Instance) SetPointPinned(point_index int, pinned bool) Instance { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
+	return self
 }
 
 /*
 Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
 
+Returns 'self' to enable method chaining.
+
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
-func (self MoreArgs) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) { //gd:SoftBody3D.set_point_pinned
+func (self MoreArgs) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) MoreArgs { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New(attachment_path)), int64(insert_at))
+	return self
 }
 
 /*
@@ -359,9 +371,10 @@ func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
-// SetCollisionLayer sets the property returned by [GetCollisionLayer].
-func (self Instance) SetCollisionLayer(value int) {
+// SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionLayer(value int) Instance {
 	class(self).SetCollisionLayer(int64(value))
+	return self
 }
 
 /*
@@ -376,9 +389,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -390,9 +404,10 @@ func (self Instance) ParentCollisionIgnore() string {
 	return string(class(self).GetParentCollisionIgnore().String())
 }
 
-// SetParentCollisionIgnore sets the property returned by [GetParentCollisionIgnore].
-func (self Instance) SetParentCollisionIgnore(value string) {
+// SetParentCollisionIgnore sets the property returned by [GetParentCollisionIgnore]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParentCollisionIgnore(value string) Instance {
 	class(self).SetParentCollisionIgnore(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -402,9 +417,10 @@ func (self Instance) SimulationPrecision() int {
 	return int(int(class(self).GetSimulationPrecision()))
 }
 
-// SetSimulationPrecision sets the property returned by [GetSimulationPrecision].
-func (self Instance) SetSimulationPrecision(value int) {
+// SetSimulationPrecision sets the property returned by [GetSimulationPrecision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimulationPrecision(value int) Instance {
 	class(self).SetSimulationPrecision(int64(value))
+	return self
 }
 
 /*
@@ -414,9 +430,10 @@ func (self Instance) TotalMass() Float.X {
 	return Float.X(Float.X(class(self).GetTotalMass()))
 }
 
-// SetTotalMass sets the property returned by [GetTotalMass].
-func (self Instance) SetTotalMass(value Float.X) {
+// SetTotalMass sets the property returned by [GetTotalMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTotalMass(value Float.X) Instance {
 	class(self).SetTotalMass(float64(value))
+	return self
 }
 
 /*
@@ -426,9 +443,10 @@ func (self Instance) LinearStiffness() Float.X {
 	return Float.X(Float.X(class(self).GetLinearStiffness()))
 }
 
-// SetLinearStiffness sets the property returned by [GetLinearStiffness].
-func (self Instance) SetLinearStiffness(value Float.X) {
+// SetLinearStiffness sets the property returned by [GetLinearStiffness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearStiffness(value Float.X) Instance {
 	class(self).SetLinearStiffness(float64(value))
+	return self
 }
 
 /*
@@ -443,9 +461,10 @@ func (self Instance) ShrinkingFactor() Float.X {
 	return Float.X(Float.X(class(self).GetShrinkingFactor()))
 }
 
-// SetShrinkingFactor sets the property returned by [GetShrinkingFactor].
-func (self Instance) SetShrinkingFactor(value Float.X) {
+// SetShrinkingFactor sets the property returned by [GetShrinkingFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShrinkingFactor(value Float.X) Instance {
 	class(self).SetShrinkingFactor(float64(value))
+	return self
 }
 
 /*
@@ -455,9 +474,10 @@ func (self Instance) PressureCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetPressureCoefficient()))
 }
 
-// SetPressureCoefficient sets the property returned by [GetPressureCoefficient].
-func (self Instance) SetPressureCoefficient(value Float.X) {
+// SetPressureCoefficient sets the property returned by [GetPressureCoefficient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPressureCoefficient(value Float.X) Instance {
 	class(self).SetPressureCoefficient(float64(value))
+	return self
 }
 
 /*
@@ -467,9 +487,10 @@ func (self Instance) DampingCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetDampingCoefficient()))
 }
 
-// SetDampingCoefficient sets the property returned by [GetDampingCoefficient].
-func (self Instance) SetDampingCoefficient(value Float.X) {
+// SetDampingCoefficient sets the property returned by [GetDampingCoefficient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingCoefficient(value Float.X) Instance {
 	class(self).SetDampingCoefficient(float64(value))
+	return self
 }
 
 /*
@@ -481,9 +502,10 @@ func (self Instance) DragCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetDragCoefficient()))
 }
 
-// SetDragCoefficient sets the property returned by [GetDragCoefficient].
-func (self Instance) SetDragCoefficient(value Float.X) {
+// SetDragCoefficient sets the property returned by [GetDragCoefficient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragCoefficient(value Float.X) Instance {
 	class(self).SetDragCoefficient(float64(value))
+	return self
 }
 
 /*
@@ -496,9 +518,10 @@ func (self Instance) RayPickable() bool {
 	return bool(class(self).IsRayPickable())
 }
 
-// SetRayPickable sets the property returned by [IsRayPickable].
-func (self Instance) SetRayPickable(value bool) {
+// SetRayPickable sets the property returned by [IsRayPickable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRayPickable(value bool) Instance {
 	class(self).SetRayPickable(value)
+	return self
 }
 
 /*
@@ -510,9 +533,10 @@ func (self Instance) DisableMode() DisableMode {
 	return DisableMode(class(self).GetDisableMode())
 }
 
-// SetDisableMode sets the property returned by [GetDisableMode].
-func (self Instance) SetDisableMode(value DisableMode) {
+// SetDisableMode sets the property returned by [GetDisableMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableMode(value DisableMode) Instance {
 	class(self).SetDisableMode(value)
+	return self
 }
 
 /*

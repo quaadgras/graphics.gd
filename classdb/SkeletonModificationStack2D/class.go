@@ -231,9 +231,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
-// SetEnabled sets the property returned by [GetEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -246,9 +247,10 @@ func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
-// SetStrength sets the property returned by [GetStrength].
-func (self Instance) SetStrength(value Float.X) {
+// SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStrength(value Float.X) Instance {
 	class(self).SetStrength(float64(value))
+	return self
 }
 
 /*
@@ -258,9 +260,10 @@ func (self Instance) ModificationCount() int {
 	return int(int(class(self).GetModificationCount()))
 }
 
-// SetModificationCount sets the property returned by [GetModificationCount].
-func (self Instance) SetModificationCount(value int) {
+// SetModificationCount sets the property returned by [GetModificationCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModificationCount(value int) Instance {
 	class(self).SetModificationCount(int64(value))
+	return self
 }
 
 /*

@@ -179,9 +179,10 @@ func (self Instance) Points() []Vector3.XYZ {
 	return []Vector3.XYZ(slices.Collect(class(self).GetPoints().Values()))
 }
 
-// SetPoints sets the property returned by [GetPoints].
-func (self Instance) SetPoints(value []Vector3.XYZ) {
+// SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPoints(value []Vector3.XYZ) Instance {
 	class(self).SetPoints(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

@@ -171,9 +171,10 @@ func (self Instance) TextureRdRid() RID.Texture {
 	return RID.Texture(RID.Texture(class(self).GetTextureRdRid()))
 }
 
-// SetTextureRdRid sets the property returned by [GetTextureRdRid].
-func (self Instance) SetTextureRdRid(value RID.Texture) {
+// SetTextureRdRid sets the property returned by [GetTextureRdRid]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRdRid(value RID.Texture) Instance {
 	class(self).SetTextureRdRid(RID.Any(value))
+	return self
 }
 
 //go:nosplit

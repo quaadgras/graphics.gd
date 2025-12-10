@@ -281,11 +281,14 @@ func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
 /*
 Sets the resource's path to 'path' without involving the resource cache. Useful for handling [ResourceFormatLoader.CacheMode] values when implementing a custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
 
+Returns 'self' to enable method chaining.
+
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
 */
-func (self Instance) SetPathCache(path string) { //gd:Resource.set_path_cache
+func (self Instance) SetPathCache(path string) Instance { //gd:Resource.set_path_cache
 	Advanced(self).SetPathCache(String.New(path))
+	return self
 }
 
 /*
@@ -328,11 +331,14 @@ In the internal cache for scene-unique IDs, sets the ID of this resource to 'id'
 
 Note: This method is only implemented when running in an editor context.
 
+Returns 'self' to enable method chaining.
+
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
 */
-func (self Instance) SetIdForPath(path string, id string) { //gd:Resource.set_id_for_path
+func (self Instance) SetIdForPath(path string, id string) Instance { //gd:Resource.set_id_for_path
 	Advanced(self).SetIdForPath(String.New(path), String.New(id))
+	return self
 }
 
 /*
@@ -520,9 +526,10 @@ func (self Instance) ResourceLocalToScene() bool {
 	return bool(class(self).IsLocalToScene())
 }
 
-// SetResourceLocalToScene sets the property returned by [IsLocalToScene].
-func (self Instance) SetResourceLocalToScene(value bool) {
+// SetResourceLocalToScene sets the property returned by [IsLocalToScene]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResourceLocalToScene(value bool) Instance {
 	class(self).SetLocalToScene(value)
+	return self
 }
 
 /*
@@ -537,9 +544,10 @@ func (self Instance) ResourcePath() string {
 	return string(class(self).GetPath().String())
 }
 
-// SetResourcePath sets the property returned by [GetPath].
-func (self Instance) SetResourcePath(value string) {
+// SetResourcePath sets the property returned by [GetPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResourcePath(value string) Instance {
 	class(self).SetPath(String.New(value))
+	return self
 }
 
 /*
@@ -551,9 +559,10 @@ func (self Instance) ResourceName() string {
 	return string(class(self).GetName().String())
 }
 
-// SetResourceName sets the property returned by [GetName].
-func (self Instance) SetResourceName(value string) {
+// SetResourceName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResourceName(value string) Instance {
 	class(self).SetName(String.New(value))
+	return self
 }
 
 /*
@@ -572,9 +581,10 @@ func (self Instance) ResourceSceneUniqueId() string {
 	return string(class(self).GetSceneUniqueId().String())
 }
 
-// SetResourceSceneUniqueId sets the property returned by [GetSceneUniqueId].
-func (self Instance) SetResourceSceneUniqueId(value string) {
+// SetResourceSceneUniqueId sets the property returned by [GetSceneUniqueId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResourceSceneUniqueId(value string) Instance {
 	class(self).SetSceneUniqueId(String.New(value))
+	return self
 }
 
 /*
@@ -907,12 +917,13 @@ Note: This signal is not emitted automatically for properties of custom resource
 
 [EmitChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.EmitChanged
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {
@@ -924,12 +935,13 @@ Emitted by a newly duplicated resource with [ResourceLocalToScene] set to true.
 
 [ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
 */
-func (self Instance) OnSetupLocalToSceneRequested(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSetupLocalToSceneRequested(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("setup_local_to_scene_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SetupLocalToSceneRequested() Signal.Any {

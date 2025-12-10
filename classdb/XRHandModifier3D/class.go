@@ -177,9 +177,10 @@ func (self Instance) HandTracker() string {
 	return string(class(self).GetHandTracker().String())
 }
 
-// SetHandTracker sets the property returned by [GetHandTracker].
-func (self Instance) SetHandTracker(value string) {
+// SetHandTracker sets the property returned by [GetHandTracker]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandTracker(value string) Instance {
 	class(self).SetHandTracker(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-// SetBoneUpdate sets the property returned by [GetBoneUpdate].
-func (self Instance) SetBoneUpdate(value BoneUpdate) {
+// SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
 	class(self).SetBoneUpdate(value)
+	return self
 }
 
 //go:nosplit

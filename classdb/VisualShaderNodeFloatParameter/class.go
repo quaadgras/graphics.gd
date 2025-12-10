@@ -175,9 +175,10 @@ func (self Instance) Hint() Hint {
 	return Hint(class(self).GetHint())
 }
 
-// SetHint sets the property returned by [GetHint].
-func (self Instance) SetHint(value Hint) {
+// SetHint sets the property returned by [GetHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHint(value Hint) Instance {
 	class(self).SetHint(value)
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) Min() Float.X {
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
-// SetMin sets the property returned by [GetMin].
-func (self Instance) SetMin(value Float.X) {
+// SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMin(value Float.X) Instance {
 	class(self).SetMin(float64(value))
+	return self
 }
 
 /*
@@ -203,9 +205,10 @@ func (self Instance) Max() Float.X {
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
-// SetMax sets the property returned by [GetMax].
-func (self Instance) SetMax(value Float.X) {
+// SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMax(value Float.X) Instance {
 	class(self).SetMax(float64(value))
+	return self
 }
 
 /*
@@ -217,9 +220,10 @@ func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
-// SetStep sets the property returned by [GetStep].
-func (self Instance) SetStep(value Float.X) {
+// SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStep(value Float.X) Instance {
 	class(self).SetStep(float64(value))
+	return self
 }
 
 /*
@@ -231,9 +235,10 @@ func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
-// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
-func (self Instance) SetDefaultValueEnabled(value bool) {
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 	class(self).SetDefaultValueEnabled(value)
+	return self
 }
 
 /*
@@ -243,9 +248,10 @@ func (self Instance) DefaultValue() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultValue()))
 }
 
-// SetDefaultValue sets the property returned by [GetDefaultValue].
-func (self Instance) SetDefaultValue(value Float.X) {
+// SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValue(value Float.X) Instance {
 	class(self).SetDefaultValue(float64(value))
+	return self
 }
 
 //go:nosplit

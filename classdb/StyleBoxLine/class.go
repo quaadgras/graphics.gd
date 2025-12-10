@@ -175,9 +175,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) GrowBegin() Float.X {
 	return Float.X(Float.X(class(self).GetGrowBegin()))
 }
 
-// SetGrowBegin sets the property returned by [GetGrowBegin].
-func (self Instance) SetGrowBegin(value Float.X) {
+// SetGrowBegin sets the property returned by [GetGrowBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGrowBegin(value Float.X) Instance {
 	class(self).SetGrowBegin(float64(value))
+	return self
 }
 
 /*
@@ -203,9 +205,10 @@ func (self Instance) GrowEnd() Float.X {
 	return Float.X(Float.X(class(self).GetGrowEnd()))
 }
 
-// SetGrowEnd sets the property returned by [GetGrowEnd].
-func (self Instance) SetGrowEnd(value Float.X) {
+// SetGrowEnd sets the property returned by [GetGrowEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGrowEnd(value Float.X) Instance {
 	class(self).SetGrowEnd(float64(value))
+	return self
 }
 
 /*
@@ -215,9 +218,10 @@ func (self Instance) Thickness() int {
 	return int(int(class(self).GetThickness()))
 }
 
-// SetThickness sets the property returned by [GetThickness].
-func (self Instance) SetThickness(value int) {
+// SetThickness sets the property returned by [GetThickness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThickness(value int) Instance {
 	class(self).SetThickness(int64(value))
+	return self
 }
 
 /*
@@ -227,9 +231,10 @@ func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
-// SetVertical sets the property returned by [IsVertical].
-func (self Instance) SetVertical(value bool) {
+// SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertical(value bool) Instance {
 	class(self).SetVertical(value)
+	return self
 }
 
 //go:nosplit

@@ -168,10 +168,13 @@ func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_sett
 /*
 Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Object.Set] on the EditorSettings instance.
 
+Returns 'self' to enable method chaining.
+
 [Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
 */
-func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
+func (self Instance) SetSetting(name string, value any) Instance { //gd:EditorSettings.set_setting
 	Advanced(self).SetSetting(String.New(name), variant.New(value))
+	return self
 }
 
 /*
@@ -192,9 +195,12 @@ func (self Instance) Erase(property string) { //gd:EditorSettings.erase
 
 /*
 Sets the initial value of the setting specified by 'name' to 'value'. This is used to provide a value for the Revert button in the Editor Settings. If 'update_current' is true, the setting is reset to 'value' as well.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
+func (self Instance) SetInitialValue(name string, value any, update_current bool) Instance { //gd:EditorSettings.set_initial_value
 	Advanced(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
+	return self
 }
 
 /*
@@ -213,10 +219,13 @@ func (self Instance) AddPropertyInfo(info Object.PropertyInfo) { //gd:EditorSett
 /*
 Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [GetProjectMetadata].
 
+Returns 'self' to enable method chaining.
+
 [GetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetProjectMetadata
 */
-func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
+func (self Instance) SetProjectMetadata(section string, key string, data any) Instance { //gd:EditorSettings.set_project_metadata
 	Advanced(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
+	return self
 }
 
 /*
@@ -239,9 +248,12 @@ func (self MoreArgs) GetProjectMetadata(section string, key string, def any) any
 
 /*
 Sets the list of favorite files and directories for this project.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFavorites(dirs []string) { //gd:EditorSettings.set_favorites
+func (self Instance) SetFavorites(dirs []string) Instance { //gd:EditorSettings.set_favorites
 	Advanced(self).SetFavorites(Packed.MakeStrings(dirs...))
+	return self
 }
 
 /*
@@ -253,9 +265,12 @@ func (self Instance) GetFavorites() []string { //gd:EditorSettings.get_favorites
 
 /*
 Sets the list of recently visited folders in the file dialog for this project.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRecentDirs(dirs []string) { //gd:EditorSettings.set_recent_dirs
+func (self Instance) SetRecentDirs(dirs []string) Instance { //gd:EditorSettings.set_recent_dirs
 	Advanced(self).SetRecentDirs(Packed.MakeStrings(dirs...))
+	return self
 }
 
 /*
@@ -267,9 +282,12 @@ func (self Instance) GetRecentDirs() []string { //gd:EditorSettings.get_recent_d
 
 /*
 Overrides the built-in editor action 'name' with the input actions defined in 'actions_list'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputEvent.Instance) { //gd:EditorSettings.set_builtin_action_override
+func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputEvent.Instance) Instance { //gd:EditorSettings.set_builtin_action_override
 	Advanced(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
+	return self
 }
 
 /*
@@ -529,12 +547,13 @@ func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSetti
 /*
 Emitted after any editor setting has changed.
 */
-func (self Instance) OnSettingsChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSettingsChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("settings_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SettingsChanged() Signal.Any {

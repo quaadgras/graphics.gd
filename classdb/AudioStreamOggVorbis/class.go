@@ -202,36 +202,40 @@ func (self Instance) PacketSequence() OggPacketSequence.Instance {
 	return OggPacketSequence.Instance(class(self).GetPacketSequence())
 }
 
-// SetPacketSequence sets the property returned by [GetPacketSequence].
-func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) {
+// SetPacketSequence sets the property returned by [GetPacketSequence]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) Instance {
 	class(self).SetPacketSequence(value)
+	return self
 }
 
 func (self Instance) Bpm() Float.X {
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
-// SetBpm sets the property returned by [GetBpm].
-func (self Instance) SetBpm(value Float.X) {
+// SetBpm sets the property returned by [GetBpm]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBpm(value Float.X) Instance {
 	class(self).SetBpm(float64(value))
+	return self
 }
 
 func (self Instance) BeatCount() int {
 	return int(int(class(self).GetBeatCount()))
 }
 
-// SetBeatCount sets the property returned by [GetBeatCount].
-func (self Instance) SetBeatCount(value int) {
+// SetBeatCount sets the property returned by [GetBeatCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBeatCount(value int) Instance {
 	class(self).SetBeatCount(int64(value))
+	return self
 }
 
 func (self Instance) BarBeats() int {
 	return int(int(class(self).GetBarBeats()))
 }
 
-// SetBarBeats sets the property returned by [GetBarBeats].
-func (self Instance) SetBarBeats(value int) {
+// SetBarBeats sets the property returned by [GetBarBeats]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBarBeats(value int) Instance {
 	class(self).SetBarBeats(int64(value))
+	return self
 }
 
 /*
@@ -245,9 +249,10 @@ func (self Instance) Tags() map[string]interface{} {
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
-// SetTags sets the property returned by [GetTags].
-func (self Instance) SetTags(value map[string]interface{}) {
+// SetTags sets the property returned by [GetTags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTags(value map[string]interface{}) Instance {
 	class(self).SetTags(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -259,9 +264,10 @@ func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
-// SetLoop sets the property returned by [HasLoop].
-func (self Instance) SetLoop(value bool) {
+// SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoop(value bool) Instance {
 	class(self).SetLoop(value)
+	return self
 }
 
 /*
@@ -271,9 +277,10 @@ func (self Instance) LoopOffset() Float.X {
 	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
-// SetLoopOffset sets the property returned by [GetLoopOffset].
-func (self Instance) SetLoopOffset(value Float.X) {
+// SetLoopOffset sets the property returned by [GetLoopOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopOffset(value Float.X) Instance {
 	class(self).SetLoopOffset(float64(value))
+	return self
 }
 
 /*

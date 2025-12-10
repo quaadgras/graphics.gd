@@ -173,9 +173,10 @@ func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
-// SetRatio sets the property returned by [GetRatio].
-func (self Instance) SetRatio(value Float.X) {
+// SetRatio sets the property returned by [GetRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRatio(value Float.X) Instance {
 	class(self).SetRatio(float64(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
-// SetStretchMode sets the property returned by [GetStretchMode].
-func (self Instance) SetStretchMode(value StretchMode) {
+// SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMode(value StretchMode) Instance {
 	class(self).SetStretchMode(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) AlignmentHorizontal() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignmentHorizontal())
 }
 
-// SetAlignmentHorizontal sets the property returned by [GetAlignmentHorizontal].
-func (self Instance) SetAlignmentHorizontal(value AlignmentMode) {
+// SetAlignmentHorizontal sets the property returned by [GetAlignmentHorizontal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignmentHorizontal(value AlignmentMode) Instance {
 	class(self).SetAlignmentHorizontal(value)
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) AlignmentVertical() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignmentVertical())
 }
 
-// SetAlignmentVertical sets the property returned by [GetAlignmentVertical].
-func (self Instance) SetAlignmentVertical(value AlignmentMode) {
+// SetAlignmentVertical sets the property returned by [GetAlignmentVertical]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignmentVertical(value AlignmentMode) Instance {
 	class(self).SetAlignmentVertical(value)
+	return self
 }
 
 //go:nosplit

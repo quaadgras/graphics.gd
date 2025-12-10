@@ -191,9 +191,10 @@ func (self Instance) UniformType() Rendering.UniformType {
 	return Rendering.UniformType(class(self).GetUniformType())
 }
 
-// SetUniformType sets the property returned by [GetUniformType].
-func (self Instance) SetUniformType(value Rendering.UniformType) {
+// SetUniformType sets the property returned by [GetUniformType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUniformType(value Rendering.UniformType) Instance {
 	class(self).SetUniformType(value)
+	return self
 }
 
 /*
@@ -203,9 +204,10 @@ func (self Instance) Binding() int {
 	return int(int(class(self).GetBinding()))
 }
 
-// SetBinding sets the property returned by [GetBinding].
-func (self Instance) SetBinding(value int) {
+// SetBinding sets the property returned by [GetBinding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBinding(value int) Instance {
 	class(self).SetBinding(int64(value))
+	return self
 }
 
 //go:nosplit

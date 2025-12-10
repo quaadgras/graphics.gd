@@ -218,9 +218,12 @@ func (self Instance) GetBlendShapeName(index int) string { //gd:ArrayMesh.get_bl
 
 /*
 Sets the name of the blend shape at this index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendShapeName(index int, name string) { //gd:ArrayMesh.set_blend_shape_name
+func (self Instance) SetBlendShapeName(index int, name string) Instance { //gd:ArrayMesh.set_blend_shape_name
 	Advanced(self).SetBlendShapeName(int64(index), String.Name(String.New(name)))
+	return self
 }
 
 /*
@@ -435,9 +438,10 @@ func (self Instance) BlendShapeMode() Mesh.BlendShapeMode {
 	return Mesh.BlendShapeMode(class(self).GetBlendShapeMode())
 }
 
-// SetBlendShapeMode sets the property returned by [GetBlendShapeMode].
-func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) {
+// SetBlendShapeMode sets the property returned by [GetBlendShapeMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) Instance {
 	class(self).SetBlendShapeMode(value)
+	return self
 }
 
 /*
@@ -449,9 +453,10 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-// SetCustomAabb sets the property returned by [GetCustomAabb].
-func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+// SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
+	return self
 }
 
 /*
@@ -463,9 +468,10 @@ func (self Instance) ShadowMesh() Instance {
 	return Instance(class(self).GetShadowMesh())
 }
 
-// SetShadowMesh sets the property returned by [GetShadowMesh].
-func (self Instance) SetShadowMesh(value Instance) {
+// SetShadowMesh sets the property returned by [GetShadowMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowMesh(value Instance) Instance {
 	class(self).SetShadowMesh(value)
+	return self
 }
 
 /*

@@ -230,9 +230,12 @@ func (self Instance) GetNodeList() []string { //gd:AnimationNodeStateMachine.get
 
 /*
 Sets the animation node's coordinates. Used for display in the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeStateMachine.set_node_position
+func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance { //gd:AnimationNodeStateMachine.set_node_position
 	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -300,9 +303,12 @@ func (self Instance) RemoveTransition(from string, to string) { //gd:AnimationNo
 
 /*
 Sets the draw offset of the graph. Used for display in the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMachine.set_graph_offset
+func (self Instance) SetGraphOffset(offset Vector2.XY) Instance { //gd:AnimationNodeStateMachine.set_graph_offset
 	Advanced(self).SetGraphOffset(Vector2.XY(offset))
+	return self
 }
 
 /*
@@ -362,9 +368,10 @@ func (self Instance) StateMachineType() StateMachineType {
 	return StateMachineType(class(self).GetStateMachineType())
 }
 
-// SetStateMachineType sets the property returned by [GetStateMachineType].
-func (self Instance) SetStateMachineType(value StateMachineType) {
+// SetStateMachineType sets the property returned by [GetStateMachineType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStateMachineType(value StateMachineType) Instance {
 	class(self).SetStateMachineType(value)
+	return self
 }
 
 /*
@@ -376,9 +383,10 @@ func (self Instance) AllowTransitionToSelf() bool {
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
-// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf].
-func (self Instance) SetAllowTransitionToSelf(value bool) {
+// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowTransitionToSelf(value bool) Instance {
 	class(self).SetAllowTransitionToSelf(value)
+	return self
 }
 
 /*
@@ -392,9 +400,10 @@ func (self Instance) ResetEnds() bool {
 	return bool(class(self).AreEndsReset())
 }
 
-// SetResetEnds sets the property returned by [AreEndsReset].
-func (self Instance) SetResetEnds(value bool) {
+// SetResetEnds sets the property returned by [AreEndsReset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResetEnds(value bool) Instance {
 	class(self).SetResetEnds(value)
+	return self
 }
 
 /*

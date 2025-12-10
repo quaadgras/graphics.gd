@@ -226,9 +226,10 @@ func (self Instance) Channel() int {
 	return int(int(class(self).GetChannel()))
 }
 
-// SetChannel sets the property returned by [GetChannel].
-func (self Instance) SetChannel(value int) {
+// SetChannel sets the property returned by [GetChannel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetChannel(value int) Instance {
 	class(self).SetChannel(int64(value))
+	return self
 }
 
 /*
@@ -242,9 +243,10 @@ func (self Instance) Message() Message {
 	return Message(class(self).GetMessage())
 }
 
-// SetMessage sets the property returned by [GetMessage].
-func (self Instance) SetMessage(value Message) {
+// SetMessage sets the property returned by [GetMessage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMessage(value Message) Instance {
 	class(self).SetMessage(value)
+	return self
 }
 
 /*
@@ -258,9 +260,10 @@ func (self Instance) Pitch() int {
 	return int(int(class(self).GetPitch()))
 }
 
-// SetPitch sets the property returned by [GetPitch].
-func (self Instance) SetPitch(value int) {
+// SetPitch sets the property returned by [GetPitch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPitch(value int) Instance {
 	class(self).SetPitch(int64(value))
+	return self
 }
 
 /*
@@ -272,9 +275,10 @@ func (self Instance) Velocity() int {
 	return int(int(class(self).GetVelocity()))
 }
 
-// SetVelocity sets the property returned by [GetVelocity].
-func (self Instance) SetVelocity(value int) {
+// SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVelocity(value int) Instance {
 	class(self).SetVelocity(int64(value))
+	return self
 }
 
 /*
@@ -288,9 +292,10 @@ func (self Instance) Instrument() int {
 	return int(int(class(self).GetInstrument()))
 }
 
-// SetInstrument sets the property returned by [GetInstrument].
-func (self Instance) SetInstrument(value int) {
+// SetInstrument sets the property returned by [GetInstrument]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInstrument(value int) Instance {
 	class(self).SetInstrument(int64(value))
+	return self
 }
 
 /*
@@ -304,9 +309,10 @@ func (self Instance) Pressure() int {
 	return int(int(class(self).GetPressure()))
 }
 
-// SetPressure sets the property returned by [GetPressure].
-func (self Instance) SetPressure(value int) {
+// SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPressure(value int) Instance {
 	class(self).SetPressure(int64(value))
+	return self
 }
 
 /*
@@ -319,9 +325,10 @@ func (self Instance) ControllerNumber() int {
 	return int(int(class(self).GetControllerNumber()))
 }
 
-// SetControllerNumber sets the property returned by [GetControllerNumber].
-func (self Instance) SetControllerNumber(value int) {
+// SetControllerNumber sets the property returned by [GetControllerNumber]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetControllerNumber(value int) Instance {
 	class(self).SetControllerNumber(int64(value))
+	return self
 }
 
 /*
@@ -334,9 +341,10 @@ func (self Instance) ControllerValue() int {
 	return int(int(class(self).GetControllerValue()))
 }
 
-// SetControllerValue sets the property returned by [GetControllerValue].
-func (self Instance) SetControllerValue(value int) {
+// SetControllerValue sets the property returned by [GetControllerValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetControllerValue(value int) Instance {
 	class(self).SetControllerValue(int64(value))
+	return self
 }
 
 //go:nosplit

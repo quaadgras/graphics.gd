@@ -337,14 +337,17 @@ Sets the tile identifiers for the cell at coordinates 'coords'. Each tile of the
 
 If 'source_id' is set to -1, 'atlas_coords' to Vector2i(-1, -1), or 'alternative_tile' to -1, the cell will be erased. An erased cell gets all its identifiers automatically set to their respective invalid values, namely -1, Vector2i(-1, -1) and -1.
 
+Returns 'self' to enable method chaining.
+
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 [TileSet.SetSourceId]: https://pkg.go.dev/graphics.gd/classdb/TileSet#Instance.SetSourceId
 [TileSetAtlasSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource
 [TileSetScenesCollectionSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetScenesCollectionSource
 [TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
 */
-func (self Instance) SetCell(coords Vector2i.XY) { //gd:TileMapLayer.set_cell
+func (self Instance) SetCell(coords Vector2i.XY) Instance { //gd:TileMapLayer.set_cell
 	Advanced(self).SetCell(Vector2i.XY(coords), int64(-1), Vector2i.XY(gd.Vector2i{-1, -1}), int64(0))
+	return self
 }
 
 /*
@@ -358,14 +361,17 @@ Sets the tile identifiers for the cell at coordinates 'coords'. Each tile of the
 
 If 'source_id' is set to -1, 'atlas_coords' to Vector2i(-1, -1), or 'alternative_tile' to -1, the cell will be erased. An erased cell gets all its identifiers automatically set to their respective invalid values, namely -1, Vector2i(-1, -1) and -1.
 
+Returns 'self' to enable method chaining.
+
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 [TileSet.SetSourceId]: https://pkg.go.dev/graphics.gd/classdb/TileSet#Instance.SetSourceId
 [TileSetAtlasSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource
 [TileSetScenesCollectionSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetScenesCollectionSource
 [TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
 */
-func (self MoreArgs) SetCell(coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileMapLayer.set_cell
+func (self MoreArgs) SetCell(coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) MoreArgs { //gd:TileMapLayer.set_cell
 	Advanced(self).SetCell(Vector2i.XY(coords), int64(source_id), Vector2i.XY(atlas_coords), int64(alternative_tile))
+	return self
 }
 
 /*
@@ -510,11 +516,14 @@ func (self Instance) GetPattern(coords_array []Vector2i.XY) TileMapPattern.Insta
 /*
 Pastes the [TileMapPattern] at the given 'position' in the tile map. See also [GetPattern].
 
+Returns 'self' to enable method chaining.
+
 [GetPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.GetPattern
 [TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
 */
-func (self Instance) SetPattern(position Vector2i.XY, pattern TileMapPattern.Instance) { //gd:TileMapLayer.set_pattern
+func (self Instance) SetPattern(position Vector2i.XY, pattern TileMapPattern.Instance) Instance { //gd:TileMapLayer.set_pattern
 	Advanced(self).SetPattern(Vector2i.XY(position), pattern)
+	return self
 }
 
 /*
@@ -524,10 +533,13 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 
 Note: To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 
+Returns 'self' to enable method chaining.
+
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_connect
+func (self Instance) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int) Instance { //gd:TileMapLayer.set_cells_terrain_connect
 	Advanced(self).SetCellsTerrainConnect(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](cells), int64(terrain_set), int64(terrain), true)
+	return self
 }
 
 /*
@@ -537,10 +549,13 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 
 Note: To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 
+Returns 'self' to enable method chaining.
+
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self MoreArgs) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_connect
+func (self MoreArgs) SetCellsTerrainConnect(cells []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) MoreArgs { //gd:TileMapLayer.set_cells_terrain_connect
 	Advanced(self).SetCellsTerrainConnect(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](cells), int64(terrain_set), int64(terrain), ignore_empty_terrains)
+	return self
 }
 
 /*
@@ -550,10 +565,13 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 
 Note: To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 
+Returns 'self' to enable method chaining.
+
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMapLayer.set_cells_terrain_path
+func (self Instance) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int) Instance { //gd:TileMapLayer.set_cells_terrain_path
 	Advanced(self).SetCellsTerrainPath(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](path), int64(terrain_set), int64(terrain), true)
+	return self
 }
 
 /*
@@ -563,10 +581,13 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 
 Note: To work correctly, this method requires the [TileMapLayer]'s TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
 
+Returns 'self' to enable method chaining.
+
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self MoreArgs) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_path
+func (self MoreArgs) SetCellsTerrainPath(path []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) MoreArgs { //gd:TileMapLayer.set_cells_terrain_path
 	Advanced(self).SetCellsTerrainPath(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](path), int64(terrain_set), int64(terrain), ignore_empty_terrains)
+	return self
 }
 
 /*
@@ -670,11 +691,14 @@ func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:Ti
 /*
 Sets a custom 'map' as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 
+Returns 'self' to enable method chaining.
+
 [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 */
-func (self Instance) SetNavigationMap(map_ RID.NavigationMap2D) { //gd:TileMapLayer.set_navigation_map
+func (self Instance) SetNavigationMap(map_ RID.NavigationMap2D) Instance { //gd:TileMapLayer.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(map_))
+	return self
 }
 
 /*
@@ -741,9 +765,10 @@ func (self Instance) TileMapData() []byte {
 	return []byte(class(self).GetTileMapDataAsArray().Bytes())
 }
 
-// SetTileMapData sets the property returned by [GetTileMapDataAsArray].
-func (self Instance) SetTileMapData(value []byte) {
+// SetTileMapData sets the property returned by [GetTileMapDataAsArray]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileMapData(value []byte) Instance {
 	class(self).SetTileMapDataFromArray(Packed.BytesFrom(value...))
+	return self
 }
 
 /*
@@ -755,9 +780,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -769,9 +795,10 @@ func (self Instance) TileSet() TileSet.Instance {
 	return TileSet.Instance(class(self).GetTileSet())
 }
 
-// SetTileSet sets the property returned by [GetTileSet].
-func (self Instance) SetTileSet(value TileSet.Instance) {
+// SetTileSet sets the property returned by [GetTileSet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileSet(value TileSet.Instance) Instance {
 	class(self).SetTileSet(value)
+	return self
 }
 
 /*
@@ -781,9 +808,10 @@ func (self Instance) OcclusionEnabled() bool {
 	return bool(class(self).IsOcclusionEnabled())
 }
 
-// SetOcclusionEnabled sets the property returned by [IsOcclusionEnabled].
-func (self Instance) SetOcclusionEnabled(value bool) {
+// SetOcclusionEnabled sets the property returned by [IsOcclusionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOcclusionEnabled(value bool) Instance {
 	class(self).SetOcclusionEnabled(value)
+	return self
 }
 
 /*
@@ -793,9 +821,10 @@ func (self Instance) YSortOrigin() int {
 	return int(int(class(self).GetYSortOrigin()))
 }
 
-// SetYSortOrigin sets the property returned by [GetYSortOrigin].
-func (self Instance) SetYSortOrigin(value int) {
+// SetYSortOrigin sets the property returned by [GetYSortOrigin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetYSortOrigin(value int) Instance {
 	class(self).SetYSortOrigin(int64(value))
+	return self
 }
 
 /*
@@ -807,9 +836,10 @@ func (self Instance) XDrawOrderReversed() bool {
 	return bool(class(self).IsXDrawOrderReversed())
 }
 
-// SetXDrawOrderReversed sets the property returned by [IsXDrawOrderReversed].
-func (self Instance) SetXDrawOrderReversed(value bool) {
+// SetXDrawOrderReversed sets the property returned by [IsXDrawOrderReversed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXDrawOrderReversed(value bool) Instance {
 	class(self).SetXDrawOrderReversed(value)
+	return self
 }
 
 /*
@@ -826,9 +856,10 @@ func (self Instance) RenderingQuadrantSize() int {
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
-// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize].
-func (self Instance) SetRenderingQuadrantSize(value int) {
+// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderingQuadrantSize(value int) Instance {
 	class(self).SetRenderingQuadrantSize(int64(value))
+	return self
 }
 
 /*
@@ -838,9 +869,10 @@ func (self Instance) CollisionEnabled() bool {
 	return bool(class(self).IsCollisionEnabled())
 }
 
-// SetCollisionEnabled sets the property returned by [IsCollisionEnabled].
-func (self Instance) SetCollisionEnabled(value bool) {
+// SetCollisionEnabled sets the property returned by [IsCollisionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionEnabled(value bool) Instance {
 	class(self).SetCollisionEnabled(value)
+	return self
 }
 
 /*
@@ -852,9 +884,10 @@ func (self Instance) UseKinematicBodies() bool {
 	return bool(class(self).IsUsingKinematicBodies())
 }
 
-// SetUseKinematicBodies sets the property returned by [IsUsingKinematicBodies].
-func (self Instance) SetUseKinematicBodies(value bool) {
+// SetUseKinematicBodies sets the property returned by [IsUsingKinematicBodies]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseKinematicBodies(value bool) Instance {
 	class(self).SetUseKinematicBodies(value)
+	return self
 }
 
 /*
@@ -866,9 +899,10 @@ func (self Instance) CollisionVisibilityMode() DebugVisibilityMode {
 	return DebugVisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
-// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode].
-func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) {
+// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) Instance {
 	class(self).SetCollisionVisibilityMode(value)
+	return self
 }
 
 /*
@@ -886,9 +920,10 @@ func (self Instance) PhysicsQuadrantSize() int {
 	return int(int(class(self).GetPhysicsQuadrantSize()))
 }
 
-// SetPhysicsQuadrantSize sets the property returned by [GetPhysicsQuadrantSize].
-func (self Instance) SetPhysicsQuadrantSize(value int) {
+// SetPhysicsQuadrantSize sets the property returned by [GetPhysicsQuadrantSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsQuadrantSize(value int) Instance {
 	class(self).SetPhysicsQuadrantSize(int64(value))
+	return self
 }
 
 /*
@@ -898,9 +933,10 @@ func (self Instance) NavigationEnabled() bool {
 	return bool(class(self).IsNavigationEnabled())
 }
 
-// SetNavigationEnabled sets the property returned by [IsNavigationEnabled].
-func (self Instance) SetNavigationEnabled(value bool) {
+// SetNavigationEnabled sets the property returned by [IsNavigationEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationEnabled(value bool) Instance {
 	class(self).SetNavigationEnabled(value)
+	return self
 }
 
 /*
@@ -912,9 +948,10 @@ func (self Instance) NavigationVisibilityMode() DebugVisibilityMode {
 	return DebugVisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
-// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode].
-func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) {
+// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) Instance {
 	class(self).SetNavigationVisibilityMode(value)
+	return self
 }
 
 /*
@@ -1560,12 +1597,13 @@ Note: This signal may be emitted very often when batch-modifying a [TileMapLayer
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {

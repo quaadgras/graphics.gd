@@ -183,9 +183,10 @@ func (self Instance) InnerRadius() Float.X {
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
-// SetInnerRadius sets the property returned by [GetInnerRadius].
-func (self Instance) SetInnerRadius(value Float.X) {
+// SetInnerRadius sets the property returned by [GetInnerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInnerRadius(value Float.X) Instance {
 	class(self).SetInnerRadius(float64(value))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) OuterRadius() Float.X {
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
-// SetOuterRadius sets the property returned by [GetOuterRadius].
-func (self Instance) SetOuterRadius(value Float.X) {
+// SetOuterRadius sets the property returned by [GetOuterRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOuterRadius(value Float.X) Instance {
 	class(self).SetOuterRadius(float64(value))
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) Sides() int {
 	return int(int(class(self).GetSides()))
 }
 
-// SetSides sets the property returned by [GetSides].
-func (self Instance) SetSides(value int) {
+// SetSides sets the property returned by [GetSides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSides(value int) Instance {
 	class(self).SetSides(int64(value))
+	return self
 }
 
 /*
@@ -219,9 +222,10 @@ func (self Instance) RingSides() int {
 	return int(int(class(self).GetRingSides()))
 }
 
-// SetRingSides sets the property returned by [GetRingSides].
-func (self Instance) SetRingSides(value int) {
+// SetRingSides sets the property returned by [GetRingSides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRingSides(value int) Instance {
 	class(self).SetRingSides(int64(value))
+	return self
 }
 
 /*
@@ -231,9 +235,10 @@ func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
-// SetSmoothFaces sets the property returned by [GetSmoothFaces].
-func (self Instance) SetSmoothFaces(value bool) {
+// SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSmoothFaces(value bool) Instance {
 	class(self).SetSmoothFaces(value)
+	return self
 }
 
 /*
@@ -243,9 +248,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 //go:nosplit

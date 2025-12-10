@@ -184,9 +184,12 @@ func (self Instance) GetAnimationNames() []string { //gd:SpriteFrames.get_animat
 
 /*
 Sets the speed for the 'anim' animation in frames per second.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAnimationSpeed(anim string, fps Float.X) { //gd:SpriteFrames.set_animation_speed
+func (self Instance) SetAnimationSpeed(anim string, fps Float.X) Instance { //gd:SpriteFrames.set_animation_speed
 	Advanced(self).SetAnimationSpeed(String.Name(String.New(anim)), float64(fps))
+	return self
 }
 
 /*
@@ -198,9 +201,12 @@ func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.
 
 /*
 If 'loop' is true, the 'anim' animation will loop when it reaches the end, or the start if it is played in reverse.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAnimationLoop(anim string, loop bool) { //gd:SpriteFrames.set_animation_loop
+func (self Instance) SetAnimationLoop(anim string, loop bool) Instance { //gd:SpriteFrames.set_animation_loop
 	Advanced(self).SetAnimationLoop(String.Name(String.New(anim)), loop)
+	return self
 }
 
 /*
@@ -231,19 +237,25 @@ func (self MoreArgs) AddFrame(anim string, texture Texture2D.Instance, duration 
 /*
 Sets the 'texture' and the 'duration' of the frame 'idx' in the 'anim' animation. 'duration' specifies the relative duration, see [GetFrameDuration] for details.
 
+Returns 'self' to enable method chaining.
+
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
-func (self Instance) SetFrame(anim string, idx int, texture Texture2D.Instance) { //gd:SpriteFrames.set_frame
+func (self Instance) SetFrame(anim string, idx int, texture Texture2D.Instance) Instance { //gd:SpriteFrames.set_frame
 	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(1.0))
+	return self
 }
 
 /*
 Sets the 'texture' and the 'duration' of the frame 'idx' in the 'anim' animation. 'duration' specifies the relative duration, see [GetFrameDuration] for details.
 
+Returns 'self' to enable method chaining.
+
 [GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
 */
-func (self MoreArgs) SetFrame(anim string, idx int, texture Texture2D.Instance, duration Float.X) { //gd:SpriteFrames.set_frame
+func (self MoreArgs) SetFrame(anim string, idx int, texture Texture2D.Instance, duration Float.X) MoreArgs { //gd:SpriteFrames.set_frame
 	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(duration))
+	return self
 }
 
 /*

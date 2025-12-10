@@ -245,9 +245,10 @@ func (self Instance) SpawnPath() string {
 	return string(class(self).GetSpawnPath().String())
 }
 
-// SetSpawnPath sets the property returned by [GetSpawnPath].
-func (self Instance) SetSpawnPath(value string) {
+// SetSpawnPath sets the property returned by [GetSpawnPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpawnPath(value string) Instance {
 	class(self).SetSpawnPath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -259,9 +260,10 @@ func (self Instance) SpawnLimit() int {
 	return int(int(class(self).GetSpawnLimit()))
 }
 
-// SetSpawnLimit sets the property returned by [GetSpawnLimit].
-func (self Instance) SetSpawnLimit(value int) {
+// SetSpawnLimit sets the property returned by [GetSpawnLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpawnLimit(value int) Instance {
 	class(self).SetSpawnLimit(int64(value))
+	return self
 }
 
 /*
@@ -277,9 +279,10 @@ func (self Instance) SpawnFunction() func(data any) Node.Instance {
 	return (func(data any) Node.Instance)(gd.CallableAs[func(data any) Node.Instance](gd.InternalCallable(class(self).GetSpawnFunction())))
 }
 
-// SetSpawnFunction sets the property returned by [GetSpawnFunction].
-func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) {
+// SetSpawnFunction sets the property returned by [GetSpawnFunction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) Instance {
 	class(self).SetSpawnFunction(Callable.New(value))
+	return self
 }
 
 /*
@@ -375,12 +378,13 @@ func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:Mult
 /*
 Emitted when a spawnable scene or custom spawn was despawned by the multiplayer authority. Only called on remote peers.
 */
-func (self Instance) OnDespawned(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnDespawned(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Despawned() Signal.Any {
@@ -390,12 +394,13 @@ func (self class) Despawned() Signal.Any {
 /*
 Emitted when a spawnable scene or custom spawn was spawned by the multiplayer authority. Only called on remote peers.
 */
-func (self Instance) OnSpawned(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnSpawned(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Spawned() Signal.Any {

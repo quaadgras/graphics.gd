@@ -171,9 +171,10 @@ func (self Instance) Type() ComparisonType {
 	return ComparisonType(class(self).GetComparisonType())
 }
 
-// SetType sets the property returned by [GetComparisonType].
-func (self Instance) SetType(value ComparisonType) {
+// SetType sets the property returned by [GetComparisonType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetType(value ComparisonType) Instance {
 	class(self).SetComparisonType(value)
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
-// SetFunction sets the property returned by [GetFunction].
-func (self Instance) SetFunction(value Function) {
+// SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFunction(value Function) Instance {
 	class(self).SetFunction(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) Condition() Condition {
 	return Condition(class(self).GetCondition())
 }
 
-// SetCondition sets the property returned by [GetCondition].
-func (self Instance) SetCondition(value Condition) {
+// SetCondition sets the property returned by [GetCondition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCondition(value Condition) Instance {
 	class(self).SetCondition(value)
+	return self
 }
 
 //go:nosplit

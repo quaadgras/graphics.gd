@@ -185,9 +185,10 @@ func (self Instance) EnableDepthClamp() bool {
 	return bool(class(self).GetEnableDepthClamp())
 }
 
-// SetEnableDepthClamp sets the property returned by [GetEnableDepthClamp].
-func (self Instance) SetEnableDepthClamp(value bool) {
+// SetEnableDepthClamp sets the property returned by [GetEnableDepthClamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableDepthClamp(value bool) Instance {
 	class(self).SetEnableDepthClamp(value)
+	return self
 }
 
 /*
@@ -197,9 +198,10 @@ func (self Instance) DiscardPrimitives() bool {
 	return bool(class(self).GetDiscardPrimitives())
 }
 
-// SetDiscardPrimitives sets the property returned by [GetDiscardPrimitives].
-func (self Instance) SetDiscardPrimitives(value bool) {
+// SetDiscardPrimitives sets the property returned by [GetDiscardPrimitives]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiscardPrimitives(value bool) Instance {
 	class(self).SetDiscardPrimitives(value)
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) Wireframe() bool {
 	return bool(class(self).GetWireframe())
 }
 
-// SetWireframe sets the property returned by [GetWireframe].
-func (self Instance) SetWireframe(value bool) {
+// SetWireframe sets the property returned by [GetWireframe]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWireframe(value bool) Instance {
 	class(self).SetWireframe(value)
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) CullMode() Rendering.PolygonCullMode {
 	return Rendering.PolygonCullMode(class(self).GetCullMode())
 }
 
-// SetCullMode sets the property returned by [GetCullMode].
-func (self Instance) SetCullMode(value Rendering.PolygonCullMode) {
+// SetCullMode sets the property returned by [GetCullMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMode(value Rendering.PolygonCullMode) Instance {
 	class(self).SetCullMode(value)
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) FrontFace() Rendering.PolygonFrontFace {
 	return Rendering.PolygonFrontFace(class(self).GetFrontFace())
 }
 
-// SetFrontFace sets the property returned by [GetFrontFace].
-func (self Instance) SetFrontFace(value Rendering.PolygonFrontFace) {
+// SetFrontFace sets the property returned by [GetFrontFace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontFace(value Rendering.PolygonFrontFace) Instance {
 	class(self).SetFrontFace(value)
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) DepthBiasEnabled() bool {
 	return bool(class(self).GetDepthBiasEnabled())
 }
 
-// SetDepthBiasEnabled sets the property returned by [GetDepthBiasEnabled].
-func (self Instance) SetDepthBiasEnabled(value bool) {
+// SetDepthBiasEnabled sets the property returned by [GetDepthBiasEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthBiasEnabled(value bool) Instance {
 	class(self).SetDepthBiasEnabled(value)
+	return self
 }
 
 /*
@@ -262,9 +268,10 @@ func (self Instance) DepthBiasConstantFactor() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasConstantFactor()))
 }
 
-// SetDepthBiasConstantFactor sets the property returned by [GetDepthBiasConstantFactor].
-func (self Instance) SetDepthBiasConstantFactor(value Float.X) {
+// SetDepthBiasConstantFactor sets the property returned by [GetDepthBiasConstantFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthBiasConstantFactor(value Float.X) Instance {
 	class(self).SetDepthBiasConstantFactor(float64(value))
+	return self
 }
 
 /*
@@ -274,9 +281,10 @@ func (self Instance) DepthBiasClamp() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasClamp()))
 }
 
-// SetDepthBiasClamp sets the property returned by [GetDepthBiasClamp].
-func (self Instance) SetDepthBiasClamp(value Float.X) {
+// SetDepthBiasClamp sets the property returned by [GetDepthBiasClamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthBiasClamp(value Float.X) Instance {
 	class(self).SetDepthBiasClamp(float64(value))
+	return self
 }
 
 /*
@@ -288,9 +296,10 @@ func (self Instance) DepthBiasSlopeFactor() Float.X {
 	return Float.X(Float.X(class(self).GetDepthBiasSlopeFactor()))
 }
 
-// SetDepthBiasSlopeFactor sets the property returned by [GetDepthBiasSlopeFactor].
-func (self Instance) SetDepthBiasSlopeFactor(value Float.X) {
+// SetDepthBiasSlopeFactor sets the property returned by [GetDepthBiasSlopeFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthBiasSlopeFactor(value Float.X) Instance {
 	class(self).SetDepthBiasSlopeFactor(float64(value))
+	return self
 }
 
 /*
@@ -300,9 +309,10 @@ func (self Instance) LineWidth() Float.X {
 	return Float.X(Float.X(class(self).GetLineWidth()))
 }
 
-// SetLineWidth sets the property returned by [GetLineWidth].
-func (self Instance) SetLineWidth(value Float.X) {
+// SetLineWidth sets the property returned by [GetLineWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLineWidth(value Float.X) Instance {
 	class(self).SetLineWidth(float64(value))
+	return self
 }
 
 /*
@@ -312,9 +322,10 @@ func (self Instance) PatchControlPoints() int {
 	return int(int(class(self).GetPatchControlPoints()))
 }
 
-// SetPatchControlPoints sets the property returned by [GetPatchControlPoints].
-func (self Instance) SetPatchControlPoints(value int) {
+// SetPatchControlPoints sets the property returned by [GetPatchControlPoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPatchControlPoints(value int) Instance {
 	class(self).SetPatchControlPoints(int64(value))
+	return self
 }
 
 //go:nosplit

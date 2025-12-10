@@ -189,9 +189,10 @@ func (self Instance) ActionSet() OpenXRActionSet.Instance {
 	return OpenXRActionSet.Instance(class(self).GetActionSet())
 }
 
-// SetActionSet sets the property returned by [GetActionSet].
-func (self Instance) SetActionSet(value OpenXRActionSet.Instance) {
+// SetActionSet sets the property returned by [GetActionSet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActionSet(value OpenXRActionSet.Instance) Instance {
 	class(self).SetActionSet(value)
+	return self
 }
 
 /*
@@ -201,9 +202,10 @@ func (self Instance) InputPath() string {
 	return string(class(self).GetInputPath().String())
 }
 
-// SetInputPath sets the property returned by [GetInputPath].
-func (self Instance) SetInputPath(value string) {
+// SetInputPath sets the property returned by [GetInputPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInputPath(value string) Instance {
 	class(self).SetInputPath(String.New(value))
+	return self
 }
 
 /*
@@ -215,9 +217,10 @@ func (self Instance) Threshold() Float.X {
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
-// SetThreshold sets the property returned by [GetThreshold].
-func (self Instance) SetThreshold(value Float.X) {
+// SetThreshold sets the property returned by [GetThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThreshold(value Float.X) Instance {
 	class(self).SetThreshold(float64(value))
+	return self
 }
 
 /*
@@ -227,9 +230,10 @@ func (self Instance) ThresholdReleased() Float.X {
 	return Float.X(Float.X(class(self).GetThresholdReleased()))
 }
 
-// SetThresholdReleased sets the property returned by [GetThresholdReleased].
-func (self Instance) SetThresholdReleased(value Float.X) {
+// SetThresholdReleased sets the property returned by [GetThresholdReleased]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThresholdReleased(value Float.X) Instance {
 	class(self).SetThresholdReleased(float64(value))
+	return self
 }
 
 /*
@@ -239,9 +243,10 @@ func (self Instance) CenterRegion() Float.X {
 	return Float.X(Float.X(class(self).GetCenterRegion()))
 }
 
-// SetCenterRegion sets the property returned by [GetCenterRegion].
-func (self Instance) SetCenterRegion(value Float.X) {
+// SetCenterRegion sets the property returned by [GetCenterRegion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCenterRegion(value Float.X) Instance {
 	class(self).SetCenterRegion(float64(value))
+	return self
 }
 
 /*
@@ -251,9 +256,10 @@ func (self Instance) WedgeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetWedgeAngle()))
 }
 
-// SetWedgeAngle sets the property returned by [GetWedgeAngle].
-func (self Instance) SetWedgeAngle(value Angle.Radians) {
+// SetWedgeAngle sets the property returned by [GetWedgeAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWedgeAngle(value Angle.Radians) Instance {
 	class(self).SetWedgeAngle(float64(value))
+	return self
 }
 
 /*
@@ -265,9 +271,10 @@ func (self Instance) IsSticky() bool {
 	return bool(class(self).GetIsSticky())
 }
 
-// SetIsSticky sets the property returned by [GetIsSticky].
-func (self Instance) SetIsSticky(value bool) {
+// SetIsSticky sets the property returned by [GetIsSticky]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIsSticky(value bool) Instance {
 	class(self).SetIsSticky(value)
+	return self
 }
 
 /*
@@ -277,9 +284,10 @@ func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
-// SetOnHaptic sets the property returned by [GetOnHaptic].
-func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) {
+// SetOnHaptic sets the property returned by [GetOnHaptic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
 	class(self).SetOnHaptic(value)
+	return self
 }
 
 /*
@@ -289,9 +297,10 @@ func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
-// SetOffHaptic sets the property returned by [GetOffHaptic].
-func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
+// SetOffHaptic sets the property returned by [GetOffHaptic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance {
 	class(self).SetOffHaptic(value)
+	return self
 }
 
 //go:nosplit

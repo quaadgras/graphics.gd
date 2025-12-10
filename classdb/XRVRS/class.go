@@ -177,9 +177,10 @@ func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
-func (self Instance) SetVrsMinRadius(value Float.X) {
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsMinRadius(value Float.X) Instance {
 	class(self).SetVrsMinRadius(float64(value))
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-// SetVrsStrength sets the property returned by [GetVrsStrength].
-func (self Instance) SetVrsStrength(value Float.X) {
+// SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsStrength(value Float.X) Instance {
 	class(self).SetVrsStrength(float64(value))
+	return self
 }
 
 /*
@@ -201,9 +203,10 @@ func (self Instance) VrsRenderRegion() Rect2i.PositionSize {
 	return Rect2i.PositionSize(class(self).GetVrsRenderRegion())
 }
 
-// SetVrsRenderRegion sets the property returned by [GetVrsRenderRegion].
-func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) {
+// SetVrsRenderRegion sets the property returned by [GetVrsRenderRegion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) Instance {
 	class(self).SetVrsRenderRegion(Rect2i.PositionSize(value))
+	return self
 }
 
 //go:nosplit

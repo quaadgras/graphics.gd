@@ -231,9 +231,12 @@ func (self Instance) GetTabControl(tab_idx int) Control.Instance { //gd:TabConta
 
 /*
 Sets a custom title for the tab at index 'tab_idx' (tab titles default to the name of the indexed child node). Set it back to the child's name to make the tab default to it again.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabContainer.set_tab_title
+func (self Instance) SetTabTitle(tab_idx int, title string) Instance { //gd:TabContainer.set_tab_title
 	Advanced(self).SetTabTitle(int64(tab_idx), String.New(title))
+	return self
 }
 
 /*
@@ -249,9 +252,12 @@ func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabContainer.get_tab
 Sets a custom tooltip text for tab at index 'tab_idx'.
 
 Note: By default, if the 'tooltip' is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign " " as the 'tooltip' text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabContainer.set_tab_tooltip
+func (self Instance) SetTabTooltip(tab_idx int, tooltip string) Instance { //gd:TabContainer.set_tab_tooltip
 	Advanced(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
+	return self
 }
 
 /*
@@ -263,9 +269,12 @@ func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabContainer.get_t
 
 /*
 Sets an icon for the tab at index 'tab_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabContainer.set_tab_icon
+func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) Instance { //gd:TabContainer.set_tab_icon
 	Advanced(self).SetTabIcon(int64(tab_idx), icon)
+	return self
 }
 
 /*
@@ -279,9 +288,12 @@ func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabContai
 
 /*
 Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) { //gd:TabContainer.set_tab_icon_max_width
+func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) Instance { //gd:TabContainer.set_tab_icon_max_width
 	Advanced(self).SetTabIconMaxWidth(int64(tab_idx), int64(width))
+	return self
 }
 
 /*
@@ -293,9 +305,12 @@ func (self Instance) GetTabIconMaxWidth(tab_idx int) int { //gd:TabContainer.get
 
 /*
 If 'disabled' is true, disables the tab at index 'tab_idx', making it non-interactable.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabDisabled(tab_idx int, disabled bool) { //gd:TabContainer.set_tab_disabled
+func (self Instance) SetTabDisabled(tab_idx int, disabled bool) Instance { //gd:TabContainer.set_tab_disabled
 	Advanced(self).SetTabDisabled(int64(tab_idx), disabled)
+	return self
 }
 
 /*
@@ -307,9 +322,12 @@ func (self Instance) IsTabDisabled(tab_idx int) bool { //gd:TabContainer.is_tab_
 
 /*
 If 'hidden' is true, hides the tab at index 'tab_idx', making it disappear from the tab area.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabHidden(tab_idx int, hidden bool) { //gd:TabContainer.set_tab_hidden
+func (self Instance) SetTabHidden(tab_idx int, hidden bool) Instance { //gd:TabContainer.set_tab_hidden
 	Advanced(self).SetTabHidden(int64(tab_idx), hidden)
+	return self
 }
 
 /*
@@ -322,10 +340,13 @@ func (self Instance) IsTabHidden(tab_idx int) bool { //gd:TabContainer.is_tab_hi
 /*
 Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [GetTabMetadata].
 
+Returns 'self' to enable method chaining.
+
 [GetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.GetTabMetadata
 */
-func (self Instance) SetTabMetadata(tab_idx int, metadata any) { //gd:TabContainer.set_tab_metadata
+func (self Instance) SetTabMetadata(tab_idx int, metadata any) Instance { //gd:TabContainer.set_tab_metadata
 	Advanced(self).SetTabMetadata(int64(tab_idx), variant.New(metadata))
+	return self
 }
 
 /*
@@ -339,9 +360,12 @@ func (self Instance) GetTabMetadata(tab_idx int) any { //gd:TabContainer.get_tab
 
 /*
 Sets the button icon from the tab at index 'tab_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabContainer.set_tab_button_icon
+func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) Instance { //gd:TabContainer.set_tab_button_icon
 	Advanced(self).SetTabButtonIcon(int64(tab_idx), icon)
+	return self
 }
 
 /*
@@ -370,11 +394,14 @@ func (self Instance) GetTabIdxFromControl(control Control.Instance) int { //gd:T
 /*
 If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to null will make it go away). Clicking it will expand the [Popup] node.
 
+Returns 'self' to enable method chaining.
+
 [Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
 [TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
-func (self Instance) SetPopup(popup Node.Instance) { //gd:TabContainer.set_popup
+func (self Instance) SetPopup(popup Node.Instance) Instance { //gd:TabContainer.set_popup
 	Advanced(self).SetPopup(popup)
+	return self
 }
 
 /*
@@ -439,9 +466,10 @@ func (self Instance) TabAlignment() TabBar.AlignmentMode {
 	return TabBar.AlignmentMode(class(self).GetTabAlignment())
 }
 
-// SetTabAlignment sets the property returned by [GetTabAlignment].
-func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) {
+// SetTabAlignment sets the property returned by [GetTabAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) Instance {
 	class(self).SetTabAlignment(value)
+	return self
 }
 
 /*
@@ -455,9 +483,10 @@ func (self Instance) CurrentTab() int {
 	return int(int(class(self).GetCurrentTab()))
 }
 
-// SetCurrentTab sets the property returned by [GetCurrentTab].
-func (self Instance) SetCurrentTab(value int) {
+// SetCurrentTab sets the property returned by [GetCurrentTab]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentTab(value int) Instance {
 	class(self).SetCurrentTab(int64(value))
+	return self
 }
 
 /*
@@ -467,9 +496,10 @@ func (self Instance) TabsPosition() TabPosition {
 	return TabPosition(class(self).GetTabsPosition())
 }
 
-// SetTabsPosition sets the property returned by [GetTabsPosition].
-func (self Instance) SetTabsPosition(value TabPosition) {
+// SetTabsPosition sets the property returned by [GetTabsPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabsPosition(value TabPosition) Instance {
 	class(self).SetTabsPosition(value)
+	return self
 }
 
 /*
@@ -479,9 +509,10 @@ func (self Instance) ClipTabs() bool {
 	return bool(class(self).GetClipTabs())
 }
 
-// SetClipTabs sets the property returned by [GetClipTabs].
-func (self Instance) SetClipTabs(value bool) {
+// SetClipTabs sets the property returned by [GetClipTabs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipTabs(value bool) Instance {
 	class(self).SetClipTabs(value)
+	return self
 }
 
 /*
@@ -491,9 +522,10 @@ func (self Instance) TabsVisible() bool {
 	return bool(class(self).AreTabsVisible())
 }
 
-// SetTabsVisible sets the property returned by [AreTabsVisible].
-func (self Instance) SetTabsVisible(value bool) {
+// SetTabsVisible sets the property returned by [AreTabsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabsVisible(value bool) Instance {
 	class(self).SetTabsVisible(value)
+	return self
 }
 
 /*
@@ -503,9 +535,10 @@ func (self Instance) AllTabsInFront() bool {
 	return bool(class(self).IsAllTabsInFront())
 }
 
-// SetAllTabsInFront sets the property returned by [IsAllTabsInFront].
-func (self Instance) SetAllTabsInFront(value bool) {
+// SetAllTabsInFront sets the property returned by [IsAllTabsInFront]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllTabsInFront(value bool) Instance {
 	class(self).SetAllTabsInFront(value)
+	return self
 }
 
 /*
@@ -515,9 +548,10 @@ func (self Instance) DragToRearrangeEnabled() bool {
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
-// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled].
-func (self Instance) SetDragToRearrangeEnabled(value bool) {
+// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragToRearrangeEnabled(value bool) Instance {
 	class(self).SetDragToRearrangeEnabled(value)
+	return self
 }
 
 /*
@@ -532,9 +566,10 @@ func (self Instance) TabsRearrangeGroup() int {
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
-// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup].
-func (self Instance) SetTabsRearrangeGroup(value int) {
+// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabsRearrangeGroup(value int) Instance {
 	class(self).SetTabsRearrangeGroup(int64(value))
+	return self
 }
 
 /*
@@ -546,9 +581,10 @@ func (self Instance) UseHiddenTabsForMinSize() bool {
 	return bool(class(self).GetUseHiddenTabsForMinSize())
 }
 
-// SetUseHiddenTabsForMinSize sets the property returned by [GetUseHiddenTabsForMinSize].
-func (self Instance) SetUseHiddenTabsForMinSize(value bool) {
+// SetUseHiddenTabsForMinSize sets the property returned by [GetUseHiddenTabsForMinSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseHiddenTabsForMinSize(value bool) Instance {
 	class(self).SetUseHiddenTabsForMinSize(value)
+	return self
 }
 
 /*
@@ -560,9 +596,10 @@ func (self Instance) TabFocusMode() Control.FocusMode {
 	return Control.FocusMode(class(self).GetTabFocusMode())
 }
 
-// SetTabFocusMode sets the property returned by [GetTabFocusMode].
-func (self Instance) SetTabFocusMode(value Control.FocusMode) {
+// SetTabFocusMode sets the property returned by [GetTabFocusMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabFocusMode(value Control.FocusMode) Instance {
 	class(self).SetTabFocusMode(value)
+	return self
 }
 
 /*
@@ -576,9 +613,10 @@ func (self Instance) DeselectEnabled() bool {
 	return bool(class(self).GetDeselectEnabled())
 }
 
-// SetDeselectEnabled sets the property returned by [GetDeselectEnabled].
-func (self Instance) SetDeselectEnabled(value bool) {
+// SetDeselectEnabled sets the property returned by [GetDeselectEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeselectEnabled(value bool) Instance {
 	class(self).SetDeselectEnabled(value)
+	return self
 }
 
 /*
@@ -1024,12 +1062,13 @@ Emitted when the active tab is rearranged via mouse drag. See [DragToRearrangeEn
 
 [DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.DragToRearrangeEnabled
 */
-func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) {
+func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ActiveTabRearranged() Signal.Any {
@@ -1039,12 +1078,13 @@ func (self class) ActiveTabRearranged() Signal.Any {
 /*
 Emitted when switching to another tab.
 */
-func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabChanged() Signal.Any {
@@ -1054,12 +1094,13 @@ func (self class) TabChanged() Signal.Any {
 /*
 Emitted when a tab is clicked, even if it is the current tab.
 */
-func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabClicked() Signal.Any {
@@ -1069,12 +1110,13 @@ func (self class) TabClicked() Signal.Any {
 /*
 Emitted when a tab is hovered by the mouse.
 */
-func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabHovered() Signal.Any {
@@ -1084,12 +1126,13 @@ func (self class) TabHovered() Signal.Any {
 /*
 Emitted when a tab is selected via click, directional input, or script, even if it is the current tab.
 */
-func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabSelected() Signal.Any {
@@ -1099,12 +1142,13 @@ func (self class) TabSelected() Signal.Any {
 /*
 Emitted when the user clicks on the button icon on this tab.
 */
-func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabButtonPressed() Signal.Any {
@@ -1118,12 +1162,13 @@ Emitted when the [TabContainer]'s [Popup] button is clicked. See [SetPopup] for 
 [SetPopup]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetPopup
 [TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
-func (self Instance) OnPrePopupPressed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPrePopupPressed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pre_popup_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PrePopupPressed() Signal.Any {

@@ -191,10 +191,13 @@ func (self Instance) RemoveVisibilityFilter(filter Callable.Function) { //gd:Mul
 /*
 Sets the visibility of 'peer' to 'visible'. If 'peer' is 0, the value of [PublicVisibility] will be updated instead.
 
+Returns 'self' to enable method chaining.
+
 [PublicVisibility]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.PublicVisibility
 */
-func (self Instance) SetVisibilityFor(peer int, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
+func (self Instance) SetVisibilityFor(peer int, visible bool) Instance { //gd:MultiplayerSynchronizer.set_visibility_for
 	Advanced(self).SetVisibilityFor(int64(peer), visible)
+	return self
 }
 
 /*
@@ -258,9 +261,10 @@ func (self Instance) RootPath() string {
 	return string(class(self).GetRootPath().String())
 }
 
-// SetRootPath sets the property returned by [GetRootPath].
-func (self Instance) SetRootPath(value string) {
+// SetRootPath sets the property returned by [GetRootPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootPath(value string) Instance {
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -270,9 +274,10 @@ func (self Instance) ReplicationInterval() Float.X {
 	return Float.X(Float.X(class(self).GetReplicationInterval()))
 }
 
-// SetReplicationInterval sets the property returned by [GetReplicationInterval].
-func (self Instance) SetReplicationInterval(value Float.X) {
+// SetReplicationInterval sets the property returned by [GetReplicationInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReplicationInterval(value Float.X) Instance {
 	class(self).SetReplicationInterval(float64(value))
+	return self
 }
 
 /*
@@ -282,9 +287,10 @@ func (self Instance) DeltaInterval() Float.X {
 	return Float.X(Float.X(class(self).GetDeltaInterval()))
 }
 
-// SetDeltaInterval sets the property returned by [GetDeltaInterval].
-func (self Instance) SetDeltaInterval(value Float.X) {
+// SetDeltaInterval sets the property returned by [GetDeltaInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeltaInterval(value Float.X) Instance {
 	class(self).SetDeltaInterval(float64(value))
+	return self
 }
 
 /*
@@ -294,9 +300,10 @@ func (self Instance) ReplicationConfig() SceneReplicationConfig.Instance {
 	return SceneReplicationConfig.Instance(class(self).GetReplicationConfig())
 }
 
-// SetReplicationConfig sets the property returned by [GetReplicationConfig].
-func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) {
+// SetReplicationConfig sets the property returned by [GetReplicationConfig]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) Instance {
 	class(self).SetReplicationConfig(value)
+	return self
 }
 
 /*
@@ -306,9 +313,10 @@ func (self Instance) VisibilityUpdateMode() VisibilityUpdateMode {
 	return VisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
-// SetVisibilityUpdateMode sets the property returned by [GetVisibilityUpdateMode].
-func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) {
+// SetVisibilityUpdateMode sets the property returned by [GetVisibilityUpdateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) Instance {
 	class(self).SetVisibilityUpdateMode(value)
+	return self
 }
 
 /*
@@ -321,9 +329,10 @@ func (self Instance) PublicVisibility() bool {
 	return bool(class(self).IsVisibilityPublic())
 }
 
-// SetPublicVisibility sets the property returned by [IsVisibilityPublic].
-func (self Instance) SetPublicVisibility(value bool) {
+// SetPublicVisibility sets the property returned by [IsVisibilityPublic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPublicVisibility(value bool) Instance {
 	class(self).SetVisibilityPublic(value)
+	return self
 }
 
 //go:nosplit
@@ -450,12 +459,13 @@ func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchroniz
 /*
 Emitted when a new synchronization state is received by this synchronizer after the properties have been updated.
 */
-func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Synchronized() Signal.Any {
@@ -465,12 +475,13 @@ func (self class) Synchronized() Signal.Any {
 /*
 Emitted when a new delta synchronization state is received by this synchronizer after the properties have been updated.
 */
-func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DeltaSynchronized() Signal.Any {
@@ -482,12 +493,13 @@ Emitted when visibility of 'for_peer' is updated. See [UpdateVisibility].
 
 [UpdateVisibility]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.UpdateVisibility
 */
-func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityChanged() Signal.Any {

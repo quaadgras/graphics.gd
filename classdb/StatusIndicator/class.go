@@ -178,9 +178,10 @@ func (self Instance) Tooltip() string {
 	return string(class(self).GetTooltip().String())
 }
 
-// SetTooltip sets the property returned by [GetTooltip].
-func (self Instance) SetTooltip(value string) {
+// SetTooltip sets the property returned by [GetTooltip]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTooltip(value string) Instance {
 	class(self).SetTooltip(String.New(value))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) Icon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetIcon())
 }
 
-// SetIcon sets the property returned by [GetIcon].
-func (self Instance) SetIcon(value Texture2D.Instance) {
+// SetIcon sets the property returned by [GetIcon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIcon(value Texture2D.Instance) Instance {
 	class(self).SetIcon(value)
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) Menu() string {
 	return string(class(self).GetMenu().String())
 }
 
-// SetMenu sets the property returned by [GetMenu].
-func (self Instance) SetMenu(value string) {
+// SetMenu sets the property returned by [GetMenu]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMenu(value string) Instance {
 	class(self).SetMenu(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -219,9 +222,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 //go:nosplit
@@ -287,12 +291,13 @@ func (self class) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
 /*
 Emitted when the status indicator is pressed.
 */
-func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY), flags ...Signal.Flags) {
+func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Pressed() Signal.Any {

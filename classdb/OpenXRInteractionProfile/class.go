@@ -207,9 +207,10 @@ func (self Instance) InteractionProfilePath() string {
 	return string(class(self).GetInteractionProfilePath().String())
 }
 
-// SetInteractionProfilePath sets the property returned by [GetInteractionProfilePath].
-func (self Instance) SetInteractionProfilePath(value string) {
+// SetInteractionProfilePath sets the property returned by [GetInteractionProfilePath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInteractionProfilePath(value string) Instance {
 	class(self).SetInteractionProfilePath(String.New(value))
+	return self
 }
 
 /*
@@ -219,9 +220,10 @@ func (self Instance) Bindings() []OpenXRIPBinding.Instance {
 	return []OpenXRIPBinding.Instance(gd.ArrayAs[[]OpenXRIPBinding.Instance](gd.InternalArray(class(self).GetBindings())))
 }
 
-// SetBindings sets the property returned by [GetBindings].
-func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) {
+// SetBindings sets the property returned by [GetBindings]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) Instance {
 	class(self).SetBindings(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -231,9 +233,10 @@ func (self Instance) BindingModifiers() []OpenXRIPBindingModifier.Instance {
 	return []OpenXRIPBindingModifier.Instance(gd.ArrayAs[[]OpenXRIPBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
-// SetBindingModifiers sets the property returned by [GetBindingModifiers].
-func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) {
+// SetBindingModifiers sets the property returned by [GetBindingModifiers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) Instance {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 //go:nosplit

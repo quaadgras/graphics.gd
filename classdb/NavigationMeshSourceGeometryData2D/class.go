@@ -248,27 +248,30 @@ func (self Instance) TraversableOutlines() [][]Vector2.XY {
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetTraversableOutlines())))
 }
 
-// SetTraversableOutlines sets the property returned by [GetTraversableOutlines].
-func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) {
+// SetTraversableOutlines sets the property returned by [GetTraversableOutlines]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) Instance {
 	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
+	return self
 }
 
 func (self Instance) ObstructionOutlines() [][]Vector2.XY {
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetObstructionOutlines())))
 }
 
-// SetObstructionOutlines sets the property returned by [GetObstructionOutlines].
-func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
+// SetObstructionOutlines sets the property returned by [GetObstructionOutlines]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) Instance {
 	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
+	return self
 }
 
 func (self Instance) ProjectedObstructions() []ProjectedObstruction2D {
 	return []ProjectedObstruction2D(gd.ArrayAs[[]ProjectedObstruction2D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
-// SetProjectedObstructions sets the property returned by [GetProjectedObstructions].
-func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) {
+// SetProjectedObstructions sets the property returned by [GetProjectedObstructions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) Instance {
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*

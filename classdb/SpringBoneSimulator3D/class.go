@@ -224,9 +224,12 @@ type Any interface {
 
 /*
 Sets the root bone name of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRootBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_root_bone_name
+func (self Instance) SetRootBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_root_bone_name
 	Advanced(self).SetRootBoneName(int64(index), String.New(bone_name))
+	return self
 }
 
 /*
@@ -238,9 +241,12 @@ func (self Instance) GetRootBoneName(index int) string { //gd:SpringBoneSimulato
 
 /*
 Sets the root bone index of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRootBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_root_bone
+func (self Instance) SetRootBone(index int, bone int) Instance { //gd:SpringBoneSimulator3D.set_root_bone
 	Advanced(self).SetRootBone(int64(index), int64(bone))
+	return self
 }
 
 /*
@@ -255,10 +261,13 @@ Sets the end bone name of the bone chain.
 
 Note: End bone must be the root bone or a child of the root bone. If they are the same, the tail must be extended by [SetExtendEndBone] to jiggle the bone.
 
+Returns 'self' to enable method chaining.
+
 [SetExtendEndBone]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetExtendEndBone
 */
-func (self Instance) SetEndBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_end_bone_name
+func (self Instance) SetEndBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_end_bone_name
 	Advanced(self).SetEndBoneName(int64(index), String.New(bone_name))
+	return self
 }
 
 /*
@@ -270,9 +279,12 @@ func (self Instance) GetEndBoneName(index int) string { //gd:SpringBoneSimulator
 
 /*
 Sets the end bone index of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEndBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_end_bone
+func (self Instance) SetEndBone(index int, bone int) Instance { //gd:SpringBoneSimulator3D.set_end_bone
 	Advanced(self).SetEndBone(int64(index), int64(bone))
+	return self
 }
 
 /*
@@ -288,9 +300,12 @@ If 'enabled' is true, the end bone is extended to have the tail.
 The extended tail config is allocated to the last element in the joint list.
 
 In other words, if you set 'enabled' is false, the config of last element in the joint list has no effect in the simulated result.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExtendEndBone(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_extend_end_bone
+func (self Instance) SetExtendEndBone(index int, enabled bool) Instance { //gd:SpringBoneSimulator3D.set_extend_end_bone
 	Advanced(self).SetExtendEndBone(int64(index), enabled)
+	return self
 }
 
 /*
@@ -303,10 +318,13 @@ func (self Instance) IsEndBoneExtended(index int) bool { //gd:SpringBoneSimulato
 /*
 Sets the end bone tail direction of the bone chain when [IsEndBoneExtended] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsEndBoneExtended]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsEndBoneExtended
 */
-func (self Instance) SetEndBoneDirection(index int, bone_direction BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+func (self Instance) SetEndBoneDirection(index int, bone_direction BoneDirection) Instance { //gd:SpringBoneSimulator3D.set_end_bone_direction
 	Advanced(self).SetEndBoneDirection(int64(index), bone_direction)
+	return self
 }
 
 /*
@@ -321,10 +339,13 @@ func (self Instance) GetEndBoneDirection(index int) BoneDirection { //gd:SpringB
 /*
 Sets the end bone tail length of the bone chain when [IsEndBoneExtended] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsEndBoneExtended]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsEndBoneExtended
 */
-func (self Instance) SetEndBoneLength(index int, length Float.X) { //gd:SpringBoneSimulator3D.set_end_bone_length
+func (self Instance) SetEndBoneLength(index int, length Float.X) Instance { //gd:SpringBoneSimulator3D.set_end_bone_length
 	Advanced(self).SetEndBoneLength(int64(index), float64(length))
+	return self
 }
 
 /*
@@ -345,10 +366,13 @@ For example, if the parent [Skeleton3D] is used as the center, the bones are con
 
 In this case, only a change in the bone pose is considered to be a bone movement.
 
+Returns 'self' to enable method chaining.
+
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) SetCenterFrom(index int, center_from CenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
+func (self Instance) SetCenterFrom(index int, center_from CenterFrom) Instance { //gd:SpringBoneSimulator3D.set_center_from
 	Advanced(self).SetCenterFrom(int64(index), center_from)
+	return self
 }
 
 /*
@@ -360,9 +384,12 @@ func (self Instance) GetCenterFrom(index int) CenterFrom { //gd:SpringBoneSimula
 
 /*
 Sets the center node path of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCenterNode(index int, node_path string) { //gd:SpringBoneSimulator3D.set_center_node
+func (self Instance) SetCenterNode(index int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_center_node
 	Advanced(self).SetCenterNode(int64(index), Path.ToNode(String.New(node_path)))
+	return self
 }
 
 /*
@@ -374,9 +401,12 @@ func (self Instance) GetCenterNode(index int) string { //gd:SpringBoneSimulator3
 
 /*
 Sets the center bone name of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCenterBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_center_bone_name
+func (self Instance) SetCenterBoneName(index int, bone_name string) Instance { //gd:SpringBoneSimulator3D.set_center_bone_name
 	Advanced(self).SetCenterBoneName(int64(index), String.New(bone_name))
+	return self
 }
 
 /*
@@ -388,9 +418,12 @@ func (self Instance) GetCenterBoneName(index int) string { //gd:SpringBoneSimula
 
 /*
 Sets the center bone index of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCenterBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_center_bone
+func (self Instance) SetCenterBone(index int, bone int) Instance { //gd:SpringBoneSimulator3D.set_center_bone
 	Advanced(self).SetCenterBone(int64(index), int64(bone))
+	return self
 }
 
 /*
@@ -405,11 +438,14 @@ Sets the joint radius of the bone chain. It is used to move and slide with the [
 
 The value is scaled by [SetRadiusDampingCurve] and cached in each joint setting in the joint list.
 
+Returns 'self' to enable method chaining.
+
 [SetRadiusDampingCurve]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetRadiusDampingCurve
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
-func (self Instance) SetRadius(index int, radius Float.X) { //gd:SpringBoneSimulator3D.set_radius
+func (self Instance) SetRadius(index int, radius Float.X) Instance { //gd:SpringBoneSimulator3D.set_radius
 	Advanced(self).SetRadius(int64(index), float64(radius))
+	return self
 }
 
 /*
@@ -426,11 +462,14 @@ The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Rotati
 
 Note: The rotation axis vector and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
+Returns 'self' to enable method chaining.
+
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
-func (self Instance) SetRotationAxis(index int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+func (self Instance) SetRotationAxis(index int, axis RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_rotation_axis
 	Advanced(self).SetRotationAxis(int64(index), axis)
+	return self
 }
 
 /*
@@ -446,9 +485,12 @@ Sets the rotation axis vector of the bone chain. The value is cached in each joi
 This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
 
 If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRotationAxisVector(index int, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_rotation_axis_vector
+func (self Instance) SetRotationAxisVector(index int, vector Vector3.XYZ) Instance { //gd:SpringBoneSimulator3D.set_rotation_axis_vector
 	Advanced(self).SetRotationAxisVector(int64(index), Vector3.XYZ(vector))
+	return self
 }
 
 /*
@@ -464,9 +506,12 @@ func (self Instance) GetRotationAxisVector(index int) Vector3.XYZ { //gd:SpringB
 
 /*
 Sets the joint radius damping curve of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRadiusDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
+func (self Instance) SetRadiusDampingCurve(index int, curve Curve.Instance) Instance { //gd:SpringBoneSimulator3D.set_radius_damping_curve
 	Advanced(self).SetRadiusDampingCurve(int64(index), curve)
+	return self
 }
 
 /*
@@ -483,10 +528,13 @@ If 'stiffness' is 0, the modified pose will not return to the original pose.
 
 The value is scaled by [SetStiffnessDampingCurve] and cached in each joint setting in the joint list.
 
+Returns 'self' to enable method chaining.
+
 [SetStiffnessDampingCurve]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetStiffnessDampingCurve
 */
-func (self Instance) SetStiffness(index int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_stiffness
+func (self Instance) SetStiffness(index int, stiffness Float.X) Instance { //gd:SpringBoneSimulator3D.set_stiffness
 	Advanced(self).SetStiffness(int64(index), float64(stiffness))
+	return self
 }
 
 /*
@@ -498,9 +546,12 @@ func (self Instance) GetStiffness(index int) Float.X { //gd:SpringBoneSimulator3
 
 /*
 Sets the stiffness force damping curve of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStiffnessDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
+func (self Instance) SetStiffnessDampingCurve(index int, curve Curve.Instance) Instance { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
 	Advanced(self).SetStiffnessDampingCurve(int64(index), curve)
+	return self
 }
 
 /*
@@ -515,10 +566,13 @@ Sets the drag force of the bone chain. The greater the value, the more suppresse
 
 The value is scaled by [SetDragDampingCurve] and cached in each joint setting in the joint list.
 
+Returns 'self' to enable method chaining.
+
 [SetDragDampingCurve]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetDragDampingCurve
 */
-func (self Instance) SetDrag(index int, drag Float.X) { //gd:SpringBoneSimulator3D.set_drag
+func (self Instance) SetDrag(index int, drag Float.X) Instance { //gd:SpringBoneSimulator3D.set_drag
 	Advanced(self).SetDrag(int64(index), float64(drag))
+	return self
 }
 
 /*
@@ -530,9 +584,12 @@ func (self Instance) GetDrag(index int) Float.X { //gd:SpringBoneSimulator3D.get
 
 /*
 Sets the drag force damping curve of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDragDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
+func (self Instance) SetDragDampingCurve(index int, curve Curve.Instance) Instance { //gd:SpringBoneSimulator3D.set_drag_damping_curve
 	Advanced(self).SetDragDampingCurve(int64(index), curve)
+	return self
 }
 
 /*
@@ -549,11 +606,14 @@ If 'gravity' is not 0, the modified pose will not return to the original pose si
 
 The value is scaled by [SetGravityDampingCurve] and cached in each joint setting in the joint list.
 
+Returns 'self' to enable method chaining.
+
 [SetGravityDampingCurve]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetGravityDampingCurve
 [SetGravityDirection]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetGravityDirection
 */
-func (self Instance) SetGravity(index int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_gravity
+func (self Instance) SetGravity(index int, gravity Float.X) Instance { //gd:SpringBoneSimulator3D.set_gravity
 	Advanced(self).SetGravity(int64(index), float64(gravity))
+	return self
 }
 
 /*
@@ -565,9 +625,12 @@ func (self Instance) GetGravity(index int) Float.X { //gd:SpringBoneSimulator3D.
 
 /*
 Sets the gravity amount damping curve of the bone chain.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGravityDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
+func (self Instance) SetGravityDampingCurve(index int, curve Curve.Instance) Instance { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
 	Advanced(self).SetGravityDampingCurve(int64(index), curve)
+	return self
 }
 
 /*
@@ -582,10 +645,13 @@ Sets the gravity direction of the bone chain. This value is internally normalize
 
 The value is cached in each joint setting in the joint list.
 
+Returns 'self' to enable method chaining.
+
 [SetGravity]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetGravity
 */
-func (self Instance) SetGravityDirection(index int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_gravity_direction
+func (self Instance) SetGravityDirection(index int, gravity_direction Vector3.XYZ) Instance { //gd:SpringBoneSimulator3D.set_gravity_direction
 	Advanced(self).SetGravityDirection(int64(index), Vector3.XYZ(gravity_direction))
+	return self
 }
 
 /*
@@ -604,9 +670,12 @@ func (self Instance) ClearSettings() { //gd:SpringBoneSimulator3D.clear_settings
 
 /*
 If 'enabled' is true, the config can be edited individually for each joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIndividualConfig(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_individual_config
+func (self Instance) SetIndividualConfig(index int, enabled bool) Instance { //gd:SpringBoneSimulator3D.set_individual_config
 	Advanced(self).SetIndividualConfig(int64(index), enabled)
+	return self
 }
 
 /*
@@ -637,12 +706,15 @@ The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Rotati
 
 Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
-func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
+	return self
 }
 
 /*
@@ -658,9 +730,12 @@ Sets the rotation axis vector for the specified joint in the bone chain.
 This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
 
 If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJointRotationAxisVector(index int, joint int, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis_vector
+func (self Instance) SetJointRotationAxisVector(index int, joint int, vector Vector3.XYZ) Instance { //gd:SpringBoneSimulator3D.set_joint_rotation_axis_vector
 	Advanced(self).SetJointRotationAxisVector(int64(index), int64(joint), Vector3.XYZ(vector))
+	return self
 }
 
 /*
@@ -677,10 +752,13 @@ func (self Instance) GetJointRotationAxisVector(index int, joint int) Vector3.XY
 /*
 Sets the joint radius at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 */
-func (self Instance) SetJointRadius(index int, joint int, radius Float.X) { //gd:SpringBoneSimulator3D.set_joint_radius
+func (self Instance) SetJointRadius(index int, joint int, radius Float.X) Instance { //gd:SpringBoneSimulator3D.set_joint_radius
 	Advanced(self).SetJointRadius(int64(index), int64(joint), float64(radius))
+	return self
 }
 
 /*
@@ -693,10 +771,13 @@ func (self Instance) GetJointRadius(index int, joint int) Float.X { //gd:SpringB
 /*
 Sets the stiffness force at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 */
-func (self Instance) SetJointStiffness(index int, joint int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_joint_stiffness
+func (self Instance) SetJointStiffness(index int, joint int, stiffness Float.X) Instance { //gd:SpringBoneSimulator3D.set_joint_stiffness
 	Advanced(self).SetJointStiffness(int64(index), int64(joint), float64(stiffness))
+	return self
 }
 
 /*
@@ -709,10 +790,13 @@ func (self Instance) GetJointStiffness(index int, joint int) Float.X { //gd:Spri
 /*
 Sets the drag force at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 */
-func (self Instance) SetJointDrag(index int, joint int, drag Float.X) { //gd:SpringBoneSimulator3D.set_joint_drag
+func (self Instance) SetJointDrag(index int, joint int, drag Float.X) Instance { //gd:SpringBoneSimulator3D.set_joint_drag
 	Advanced(self).SetJointDrag(int64(index), int64(joint), float64(drag))
+	return self
 }
 
 /*
@@ -725,10 +809,13 @@ func (self Instance) GetJointDrag(index int, joint int) Float.X { //gd:SpringBon
 /*
 Sets the gravity amount at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 */
-func (self Instance) SetJointGravity(index int, joint int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_joint_gravity
+func (self Instance) SetJointGravity(index int, joint int, gravity Float.X) Instance { //gd:SpringBoneSimulator3D.set_joint_gravity
 	Advanced(self).SetJointGravity(int64(index), int64(joint), float64(gravity))
+	return self
 }
 
 /*
@@ -741,10 +828,13 @@ func (self Instance) GetJointGravity(index int, joint int) Float.X { //gd:Spring
 /*
 Sets the gravity direction at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
+Returns 'self' to enable method chaining.
+
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
 */
-func (self Instance) SetJointGravityDirection(index int, joint int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
+func (self Instance) SetJointGravityDirection(index int, joint int, gravity_direction Vector3.XYZ) Instance { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
 	Advanced(self).SetJointGravityDirection(int64(index), int64(joint), Vector3.XYZ(gravity_direction))
+	return self
 }
 
 /*
@@ -766,12 +856,15 @@ If 'enabled' is true, all child [SpringBoneCollision3D]s are colliding and [SetE
 
 If 'enabled' is false, you need to manually register all valid collisions with [SetCollisionPath].
 
+Returns 'self' to enable method chaining.
+
 [SetCollisionPath]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetCollisionPath
 [SetExcludeCollisionPath]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.SetExcludeCollisionPath
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
-func (self Instance) SetEnableAllChildCollisions(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
+func (self Instance) SetEnableAllChildCollisions(index int, enabled bool) Instance { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
 	Advanced(self).SetEnableAllChildCollisions(int64(index), enabled)
+	return self
 }
 
 /*
@@ -786,11 +879,14 @@ func (self Instance) AreAllChildCollisionsEnabled(index int) bool { //gd:SpringB
 /*
 Sets the node path of the [SpringBoneCollision3D] at 'collision' in the bone chain's exclude collision list when [AreAllChildCollisionsEnabled] is true.
 
+Returns 'self' to enable method chaining.
+
 [AreAllChildCollisionsEnabled]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.AreAllChildCollisionsEnabled
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
-func (self Instance) SetExcludeCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_exclude_collision_path
+func (self Instance) SetExcludeCollisionPath(index int, collision int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_exclude_collision_path
 	Advanced(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	return self
 }
 
 /*
@@ -806,10 +902,13 @@ func (self Instance) GetExcludeCollisionPath(index int, collision int) string { 
 /*
 Sets the number of exclude collisions in the exclude collision list at 'index' in the settings when [AreAllChildCollisionsEnabled] is true.
 
+Returns 'self' to enable method chaining.
+
 [AreAllChildCollisionsEnabled]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.AreAllChildCollisionsEnabled
 */
-func (self Instance) SetExcludeCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_exclude_collision_count
+func (self Instance) SetExcludeCollisionCount(index int, count int) Instance { //gd:SpringBoneSimulator3D.set_exclude_collision_count
 	Advanced(self).SetExcludeCollisionCount(int64(index), int64(count))
+	return self
 }
 
 /*
@@ -833,11 +932,14 @@ func (self Instance) ClearExcludeCollisions(index int) { //gd:SpringBoneSimulato
 /*
 Sets the node path of the [SpringBoneCollision3D] at 'collision' in the bone chain's collision list when [AreAllChildCollisionsEnabled] is false.
 
+Returns 'self' to enable method chaining.
+
 [AreAllChildCollisionsEnabled]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.AreAllChildCollisionsEnabled
 [SpringBoneCollision3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D
 */
-func (self Instance) SetCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_collision_path
+func (self Instance) SetCollisionPath(index int, collision int, node_path string) Instance { //gd:SpringBoneSimulator3D.set_collision_path
 	Advanced(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	return self
 }
 
 /*
@@ -853,10 +955,13 @@ func (self Instance) GetCollisionPath(index int, collision int) string { //gd:Sp
 /*
 Sets the number of collisions in the collision list at 'index' in the settings when [AreAllChildCollisionsEnabled] is false.
 
+Returns 'self' to enable method chaining.
+
 [AreAllChildCollisionsEnabled]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.AreAllChildCollisionsEnabled
 */
-func (self Instance) SetCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_collision_count
+func (self Instance) SetCollisionCount(index int, count int) Instance { //gd:SpringBoneSimulator3D.set_collision_count
 	Advanced(self).SetCollisionCount(int64(index), int64(count))
+	return self
 }
 
 /*
@@ -942,9 +1047,10 @@ func (self Instance) ExternalForce() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetExternalForce())
 }
 
-// SetExternalForce sets the property returned by [GetExternalForce].
-func (self Instance) SetExternalForce(value Vector3.XYZ) {
+// SetExternalForce sets the property returned by [GetExternalForce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExternalForce(value Vector3.XYZ) Instance {
 	class(self).SetExternalForce(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -954,9 +1060,10 @@ func (self Instance) SettingCount() int {
 	return int(int(class(self).GetSettingCount()))
 }
 
-// SetSettingCount sets the property returned by [GetSettingCount].
-func (self Instance) SetSettingCount(value int) {
+// SetSettingCount sets the property returned by [GetSettingCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSettingCount(value int) Instance {
 	class(self).SetSettingCount(int64(value))
+	return self
 }
 
 /*

@@ -206,9 +206,10 @@ func (self Instance) EnableDepthTest() bool {
 	return bool(class(self).GetEnableDepthTest())
 }
 
-// SetEnableDepthTest sets the property returned by [GetEnableDepthTest].
-func (self Instance) SetEnableDepthTest(value bool) {
+// SetEnableDepthTest sets the property returned by [GetEnableDepthTest]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableDepthTest(value bool) Instance {
 	class(self).SetEnableDepthTest(value)
+	return self
 }
 
 /*
@@ -218,9 +219,10 @@ func (self Instance) EnableDepthWrite() bool {
 	return bool(class(self).GetEnableDepthWrite())
 }
 
-// SetEnableDepthWrite sets the property returned by [GetEnableDepthWrite].
-func (self Instance) SetEnableDepthWrite(value bool) {
+// SetEnableDepthWrite sets the property returned by [GetEnableDepthWrite]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableDepthWrite(value bool) Instance {
 	class(self).SetEnableDepthWrite(value)
+	return self
 }
 
 /*
@@ -230,9 +232,10 @@ func (self Instance) DepthCompareOperator() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetDepthCompareOperator())
 }
 
-// SetDepthCompareOperator sets the property returned by [GetDepthCompareOperator].
-func (self Instance) SetDepthCompareOperator(value Rendering.CompareOperator) {
+// SetDepthCompareOperator sets the property returned by [GetDepthCompareOperator]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthCompareOperator(value Rendering.CompareOperator) Instance {
 	class(self).SetDepthCompareOperator(value)
+	return self
 }
 
 /*
@@ -245,9 +248,10 @@ func (self Instance) EnableDepthRange() bool {
 	return bool(class(self).GetEnableDepthRange())
 }
 
-// SetEnableDepthRange sets the property returned by [GetEnableDepthRange].
-func (self Instance) SetEnableDepthRange(value bool) {
+// SetEnableDepthRange sets the property returned by [GetEnableDepthRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableDepthRange(value bool) Instance {
 	class(self).SetEnableDepthRange(value)
+	return self
 }
 
 /*
@@ -259,9 +263,10 @@ func (self Instance) DepthRangeMin() Float.X {
 	return Float.X(Float.X(class(self).GetDepthRangeMin()))
 }
 
-// SetDepthRangeMin sets the property returned by [GetDepthRangeMin].
-func (self Instance) SetDepthRangeMin(value Float.X) {
+// SetDepthRangeMin sets the property returned by [GetDepthRangeMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthRangeMin(value Float.X) Instance {
 	class(self).SetDepthRangeMin(float64(value))
+	return self
 }
 
 /*
@@ -273,9 +278,10 @@ func (self Instance) DepthRangeMax() Float.X {
 	return Float.X(Float.X(class(self).GetDepthRangeMax()))
 }
 
-// SetDepthRangeMax sets the property returned by [GetDepthRangeMax].
-func (self Instance) SetDepthRangeMax(value Float.X) {
+// SetDepthRangeMax sets the property returned by [GetDepthRangeMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthRangeMax(value Float.X) Instance {
 	class(self).SetDepthRangeMax(float64(value))
+	return self
 }
 
 /*
@@ -285,9 +291,10 @@ func (self Instance) EnableStencil() bool {
 	return bool(class(self).GetEnableStencil())
 }
 
-// SetEnableStencil sets the property returned by [GetEnableStencil].
-func (self Instance) SetEnableStencil(value bool) {
+// SetEnableStencil sets the property returned by [GetEnableStencil]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableStencil(value bool) Instance {
 	class(self).SetEnableStencil(value)
+	return self
 }
 
 /*
@@ -297,9 +304,10 @@ func (self Instance) FrontOpFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpFail())
 }
 
-// SetFrontOpFail sets the property returned by [GetFrontOpFail].
-func (self Instance) SetFrontOpFail(value Rendering.StencilOperation) {
+// SetFrontOpFail sets the property returned by [GetFrontOpFail]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpFail(value Rendering.StencilOperation) Instance {
 	class(self).SetFrontOpFail(value)
+	return self
 }
 
 /*
@@ -309,9 +317,10 @@ func (self Instance) FrontOpPass() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpPass())
 }
 
-// SetFrontOpPass sets the property returned by [GetFrontOpPass].
-func (self Instance) SetFrontOpPass(value Rendering.StencilOperation) {
+// SetFrontOpPass sets the property returned by [GetFrontOpPass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpPass(value Rendering.StencilOperation) Instance {
 	class(self).SetFrontOpPass(value)
+	return self
 }
 
 /*
@@ -321,9 +330,10 @@ func (self Instance) FrontOpDepthFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetFrontOpDepthFail())
 }
 
-// SetFrontOpDepthFail sets the property returned by [GetFrontOpDepthFail].
-func (self Instance) SetFrontOpDepthFail(value Rendering.StencilOperation) {
+// SetFrontOpDepthFail sets the property returned by [GetFrontOpDepthFail]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpDepthFail(value Rendering.StencilOperation) Instance {
 	class(self).SetFrontOpDepthFail(value)
+	return self
 }
 
 /*
@@ -335,9 +345,10 @@ func (self Instance) FrontOpCompare() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetFrontOpCompare())
 }
 
-// SetFrontOpCompare sets the property returned by [GetFrontOpCompare].
-func (self Instance) SetFrontOpCompare(value Rendering.CompareOperator) {
+// SetFrontOpCompare sets the property returned by [GetFrontOpCompare]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpCompare(value Rendering.CompareOperator) Instance {
 	class(self).SetFrontOpCompare(value)
+	return self
 }
 
 /*
@@ -347,9 +358,10 @@ func (self Instance) FrontOpCompareMask() int {
 	return int(int(class(self).GetFrontOpCompareMask()))
 }
 
-// SetFrontOpCompareMask sets the property returned by [GetFrontOpCompareMask].
-func (self Instance) SetFrontOpCompareMask(value int) {
+// SetFrontOpCompareMask sets the property returned by [GetFrontOpCompareMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpCompareMask(value int) Instance {
 	class(self).SetFrontOpCompareMask(int64(value))
+	return self
 }
 
 /*
@@ -359,9 +371,10 @@ func (self Instance) FrontOpWriteMask() int {
 	return int(int(class(self).GetFrontOpWriteMask()))
 }
 
-// SetFrontOpWriteMask sets the property returned by [GetFrontOpWriteMask].
-func (self Instance) SetFrontOpWriteMask(value int) {
+// SetFrontOpWriteMask sets the property returned by [GetFrontOpWriteMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpWriteMask(value int) Instance {
 	class(self).SetFrontOpWriteMask(int64(value))
+	return self
 }
 
 /*
@@ -371,9 +384,10 @@ func (self Instance) FrontOpReference() int {
 	return int(int(class(self).GetFrontOpReference()))
 }
 
-// SetFrontOpReference sets the property returned by [GetFrontOpReference].
-func (self Instance) SetFrontOpReference(value int) {
+// SetFrontOpReference sets the property returned by [GetFrontOpReference]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrontOpReference(value int) Instance {
 	class(self).SetFrontOpReference(int64(value))
+	return self
 }
 
 /*
@@ -383,9 +397,10 @@ func (self Instance) BackOpFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpFail())
 }
 
-// SetBackOpFail sets the property returned by [GetBackOpFail].
-func (self Instance) SetBackOpFail(value Rendering.StencilOperation) {
+// SetBackOpFail sets the property returned by [GetBackOpFail]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpFail(value Rendering.StencilOperation) Instance {
 	class(self).SetBackOpFail(value)
+	return self
 }
 
 /*
@@ -395,9 +410,10 @@ func (self Instance) BackOpPass() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpPass())
 }
 
-// SetBackOpPass sets the property returned by [GetBackOpPass].
-func (self Instance) SetBackOpPass(value Rendering.StencilOperation) {
+// SetBackOpPass sets the property returned by [GetBackOpPass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpPass(value Rendering.StencilOperation) Instance {
 	class(self).SetBackOpPass(value)
+	return self
 }
 
 /*
@@ -407,9 +423,10 @@ func (self Instance) BackOpDepthFail() Rendering.StencilOperation {
 	return Rendering.StencilOperation(class(self).GetBackOpDepthFail())
 }
 
-// SetBackOpDepthFail sets the property returned by [GetBackOpDepthFail].
-func (self Instance) SetBackOpDepthFail(value Rendering.StencilOperation) {
+// SetBackOpDepthFail sets the property returned by [GetBackOpDepthFail]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpDepthFail(value Rendering.StencilOperation) Instance {
 	class(self).SetBackOpDepthFail(value)
+	return self
 }
 
 /*
@@ -421,9 +438,10 @@ func (self Instance) BackOpCompare() Rendering.CompareOperator {
 	return Rendering.CompareOperator(class(self).GetBackOpCompare())
 }
 
-// SetBackOpCompare sets the property returned by [GetBackOpCompare].
-func (self Instance) SetBackOpCompare(value Rendering.CompareOperator) {
+// SetBackOpCompare sets the property returned by [GetBackOpCompare]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpCompare(value Rendering.CompareOperator) Instance {
 	class(self).SetBackOpCompare(value)
+	return self
 }
 
 /*
@@ -433,9 +451,10 @@ func (self Instance) BackOpCompareMask() int {
 	return int(int(class(self).GetBackOpCompareMask()))
 }
 
-// SetBackOpCompareMask sets the property returned by [GetBackOpCompareMask].
-func (self Instance) SetBackOpCompareMask(value int) {
+// SetBackOpCompareMask sets the property returned by [GetBackOpCompareMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpCompareMask(value int) Instance {
 	class(self).SetBackOpCompareMask(int64(value))
+	return self
 }
 
 /*
@@ -445,9 +464,10 @@ func (self Instance) BackOpWriteMask() int {
 	return int(int(class(self).GetBackOpWriteMask()))
 }
 
-// SetBackOpWriteMask sets the property returned by [GetBackOpWriteMask].
-func (self Instance) SetBackOpWriteMask(value int) {
+// SetBackOpWriteMask sets the property returned by [GetBackOpWriteMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpWriteMask(value int) Instance {
 	class(self).SetBackOpWriteMask(int64(value))
+	return self
 }
 
 /*
@@ -457,9 +477,10 @@ func (self Instance) BackOpReference() int {
 	return int(int(class(self).GetBackOpReference()))
 }
 
-// SetBackOpReference sets the property returned by [GetBackOpReference].
-func (self Instance) SetBackOpReference(value int) {
+// SetBackOpReference sets the property returned by [GetBackOpReference]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackOpReference(value int) Instance {
 	class(self).SetBackOpReference(int64(value))
+	return self
 }
 
 //go:nosplit

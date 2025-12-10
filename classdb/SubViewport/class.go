@@ -188,9 +188,10 @@ func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector2i.XY) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector2i.XY) Instance {
 	class(self).SetSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) Size2dOverride() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize2dOverride())
 }
 
-// SetSize2dOverride sets the property returned by [GetSize2dOverride].
-func (self Instance) SetSize2dOverride(value Vector2i.XY) {
+// SetSize2dOverride sets the property returned by [GetSize2dOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize2dOverride(value Vector2i.XY) Instance {
 	class(self).SetSize2dOverride(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -212,9 +214,10 @@ func (self Instance) Size2dOverrideStretch() bool {
 	return bool(class(self).IsSize2dOverrideStretchEnabled())
 }
 
-// SetSize2dOverrideStretch sets the property returned by [IsSize2dOverrideStretchEnabled].
-func (self Instance) SetSize2dOverrideStretch(value bool) {
+// SetSize2dOverrideStretch sets the property returned by [IsSize2dOverrideStretchEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize2dOverrideStretch(value bool) Instance {
 	class(self).SetSize2dOverrideStretch(value)
+	return self
 }
 
 /*
@@ -226,9 +229,10 @@ func (self Instance) RenderTargetClearMode() ClearMode {
 	return ClearMode(class(self).GetClearMode())
 }
 
-// SetRenderTargetClearMode sets the property returned by [GetClearMode].
-func (self Instance) SetRenderTargetClearMode(value ClearMode) {
+// SetRenderTargetClearMode sets the property returned by [GetClearMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderTargetClearMode(value ClearMode) Instance {
 	class(self).SetClearMode(value)
+	return self
 }
 
 /*
@@ -238,9 +242,10 @@ func (self Instance) RenderTargetUpdateMode() UpdateMode {
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
-// SetRenderTargetUpdateMode sets the property returned by [GetUpdateMode].
-func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) {
+// SetRenderTargetUpdateMode sets the property returned by [GetUpdateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) Instance {
 	class(self).SetUpdateMode(value)
+	return self
 }
 
 //go:nosplit

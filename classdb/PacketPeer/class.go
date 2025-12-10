@@ -261,9 +261,10 @@ func (self Instance) EncodeBufferMaxSize() int {
 	return int(int(class(self).GetEncodeBufferMaxSize()))
 }
 
-// SetEncodeBufferMaxSize sets the property returned by [GetEncodeBufferMaxSize].
-func (self Instance) SetEncodeBufferMaxSize(value int) {
+// SetEncodeBufferMaxSize sets the property returned by [GetEncodeBufferMaxSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEncodeBufferMaxSize(value int) Instance {
 	class(self).SetEncodeBufferMaxSize(int64(value))
+	return self
 }
 
 /*

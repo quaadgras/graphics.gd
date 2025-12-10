@@ -206,9 +206,10 @@ func (self Instance) File() string {
 	return string(class(self).GetFile().String())
 }
 
-// SetFile sets the property returned by [GetFile].
-func (self Instance) SetFile(value string) {
+// SetFile sets the property returned by [GetFile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFile(value string) Instance {
 	class(self).SetFile(String.New(value))
+	return self
 }
 
 /*

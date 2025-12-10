@@ -195,9 +195,12 @@ func (self Instance) RemoveStackedOutline(index int) { //gd:LabelSettings.remove
 
 /*
 Sets the size of the stacked outline identified by the given 'index' to 'size'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStackedOutlineSize(index int, size int) { //gd:LabelSettings.set_stacked_outline_size
+func (self Instance) SetStackedOutlineSize(index int, size int) Instance { //gd:LabelSettings.set_stacked_outline_size
 	Advanced(self).SetStackedOutlineSize(int64(index), int64(size))
+	return self
 }
 
 /*
@@ -209,9 +212,12 @@ func (self Instance) GetStackedOutlineSize(index int) int { //gd:LabelSettings.g
 
 /*
 Sets the color of the stacked outline identified by the given 'index' to 'color'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStackedOutlineColor(index int, color Color.RGBA) { //gd:LabelSettings.set_stacked_outline_color
+func (self Instance) SetStackedOutlineColor(index int, color Color.RGBA) Instance { //gd:LabelSettings.set_stacked_outline_color
 	Advanced(self).SetStackedOutlineColor(int64(index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -251,9 +257,12 @@ func (self Instance) RemoveStackedShadow(index int) { //gd:LabelSettings.remove_
 
 /*
 Sets the offset of the stacked shadow identified by the given 'index' to 'offset'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStackedShadowOffset(index int, offset Vector2.XY) { //gd:LabelSettings.set_stacked_shadow_offset
+func (self Instance) SetStackedShadowOffset(index int, offset Vector2.XY) Instance { //gd:LabelSettings.set_stacked_shadow_offset
 	Advanced(self).SetStackedShadowOffset(int64(index), Vector2.XY(offset))
+	return self
 }
 
 /*
@@ -265,9 +274,12 @@ func (self Instance) GetStackedShadowOffset(index int) Vector2.XY { //gd:LabelSe
 
 /*
 Sets the color of the stacked shadow identified by the given 'index' to 'color'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStackedShadowColor(index int, color Color.RGBA) { //gd:LabelSettings.set_stacked_shadow_color
+func (self Instance) SetStackedShadowColor(index int, color Color.RGBA) Instance { //gd:LabelSettings.set_stacked_shadow_color
 	Advanced(self).SetStackedShadowColor(int64(index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -279,9 +291,12 @@ func (self Instance) GetStackedShadowColor(index int) Color.RGBA { //gd:LabelSet
 
 /*
 Sets the outline size of the stacked shadow identified by the given 'index' to 'size'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStackedShadowOutlineSize(index int, size int) { //gd:LabelSettings.set_stacked_shadow_outline_size
+func (self Instance) SetStackedShadowOutlineSize(index int, size int) Instance { //gd:LabelSettings.set_stacked_shadow_outline_size
 	Advanced(self).SetStackedShadowOutlineSize(int64(index), int64(size))
+	return self
 }
 
 /*
@@ -341,9 +356,10 @@ func (self Instance) LineSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
-// SetLineSpacing sets the property returned by [GetLineSpacing].
-func (self Instance) SetLineSpacing(value Float.X) {
+// SetLineSpacing sets the property returned by [GetLineSpacing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLineSpacing(value Float.X) Instance {
 	class(self).SetLineSpacing(float64(value))
+	return self
 }
 
 /*
@@ -355,9 +371,10 @@ func (self Instance) ParagraphSpacing() Float.X {
 	return Float.X(Float.X(class(self).GetParagraphSpacing()))
 }
 
-// SetParagraphSpacing sets the property returned by [GetParagraphSpacing].
-func (self Instance) SetParagraphSpacing(value Float.X) {
+// SetParagraphSpacing sets the property returned by [GetParagraphSpacing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParagraphSpacing(value Float.X) Instance {
 	class(self).SetParagraphSpacing(float64(value))
+	return self
 }
 
 /*
@@ -369,9 +386,10 @@ func (self Instance) Font() Font.Instance {
 	return Font.Instance(class(self).GetFont())
 }
 
-// SetFont sets the property returned by [GetFont].
-func (self Instance) SetFont(value Font.Instance) {
+// SetFont sets the property returned by [GetFont]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFont(value Font.Instance) Instance {
 	class(self).SetFont(value)
+	return self
 }
 
 /*
@@ -381,9 +399,10 @@ func (self Instance) FontSize() int {
 	return int(int(class(self).GetFontSize()))
 }
 
-// SetFontSize sets the property returned by [GetFontSize].
-func (self Instance) SetFontSize(value int) {
+// SetFontSize sets the property returned by [GetFontSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFontSize(value int) Instance {
 	class(self).SetFontSize(int64(value))
+	return self
 }
 
 /*
@@ -393,9 +412,10 @@ func (self Instance) FontColor() Color.RGBA {
 	return Color.RGBA(class(self).GetFontColor())
 }
 
-// SetFontColor sets the property returned by [GetFontColor].
-func (self Instance) SetFontColor(value Color.RGBA) {
+// SetFontColor sets the property returned by [GetFontColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFontColor(value Color.RGBA) Instance {
 	class(self).SetFontColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -405,9 +425,10 @@ func (self Instance) OutlineSize() int {
 	return int(int(class(self).GetOutlineSize()))
 }
 
-// SetOutlineSize sets the property returned by [GetOutlineSize].
-func (self Instance) SetOutlineSize(value int) {
+// SetOutlineSize sets the property returned by [GetOutlineSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOutlineSize(value int) Instance {
 	class(self).SetOutlineSize(int64(value))
+	return self
 }
 
 /*
@@ -417,9 +438,10 @@ func (self Instance) OutlineColor() Color.RGBA {
 	return Color.RGBA(class(self).GetOutlineColor())
 }
 
-// SetOutlineColor sets the property returned by [GetOutlineColor].
-func (self Instance) SetOutlineColor(value Color.RGBA) {
+// SetOutlineColor sets the property returned by [GetOutlineColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOutlineColor(value Color.RGBA) Instance {
 	class(self).SetOutlineColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -429,9 +451,10 @@ func (self Instance) ShadowSize() int {
 	return int(int(class(self).GetShadowSize()))
 }
 
-// SetShadowSize sets the property returned by [GetShadowSize].
-func (self Instance) SetShadowSize(value int) {
+// SetShadowSize sets the property returned by [GetShadowSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowSize(value int) Instance {
 	class(self).SetShadowSize(int64(value))
+	return self
 }
 
 /*
@@ -441,9 +464,10 @@ func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
-// SetShadowColor sets the property returned by [GetShadowColor].
-func (self Instance) SetShadowColor(value Color.RGBA) {
+// SetShadowColor sets the property returned by [GetShadowColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowColor(value Color.RGBA) Instance {
 	class(self).SetShadowColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -453,9 +477,10 @@ func (self Instance) ShadowOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetShadowOffset())
 }
 
-// SetShadowOffset sets the property returned by [GetShadowOffset].
-func (self Instance) SetShadowOffset(value Vector2.XY) {
+// SetShadowOffset sets the property returned by [GetShadowOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowOffset(value Vector2.XY) Instance {
 	class(self).SetShadowOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -465,9 +490,10 @@ func (self Instance) StackedOutlineCount() int {
 	return int(int(class(self).GetStackedOutlineCount()))
 }
 
-// SetStackedOutlineCount sets the property returned by [GetStackedOutlineCount].
-func (self Instance) SetStackedOutlineCount(value int) {
+// SetStackedOutlineCount sets the property returned by [GetStackedOutlineCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStackedOutlineCount(value int) Instance {
 	class(self).SetStackedOutlineCount(int64(value))
+	return self
 }
 
 /*
@@ -477,9 +503,10 @@ func (self Instance) StackedShadowCount() int {
 	return int(int(class(self).GetStackedShadowCount()))
 }
 
-// SetStackedShadowCount sets the property returned by [GetStackedShadowCount].
-func (self Instance) SetStackedShadowCount(value int) {
+// SetStackedShadowCount sets the property returned by [GetStackedShadowCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStackedShadowCount(value int) Instance {
 	class(self).SetStackedShadowCount(int64(value))
+	return self
 }
 
 //go:nosplit

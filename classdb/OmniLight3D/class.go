@@ -170,9 +170,10 @@ func (self Instance) OmniShadowMode() ShadowMode {
 	return ShadowMode(class(self).GetShadowMode())
 }
 
-// SetOmniShadowMode sets the property returned by [GetShadowMode].
-func (self Instance) SetOmniShadowMode(value ShadowMode) {
+// SetOmniShadowMode sets the property returned by [GetShadowMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOmniShadowMode(value ShadowMode) Instance {
 	class(self).SetShadowMode(value)
+	return self
 }
 
 //go:nosplit

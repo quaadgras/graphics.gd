@@ -585,12 +585,13 @@ func (self class) ClearHistory(id int64, increase_version bool) { //gd:EditorUnd
 /*
 Emitted when the list of actions in any history has changed, either when an action is committed or a history is cleared.
 */
-func (self Instance) OnHistoryChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnHistoryChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("history_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) HistoryChanged() Signal.Any {
@@ -600,12 +601,13 @@ func (self class) HistoryChanged() Signal.Any {
 /*
 Emitted when the version of any history has changed as a result of undo or redo call.
 */
-func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VersionChanged() Signal.Any {

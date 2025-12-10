@@ -278,9 +278,10 @@ func (self Instance) Stream() AudioStream.Instance {
 	return AudioStream.Instance(class(self).GetStream())
 }
 
-// SetStream sets the property returned by [GetStream].
-func (self Instance) SetStream(value AudioStream.Instance) {
+// SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStream(value AudioStream.Instance) Instance {
 	class(self).SetStream(value)
+	return self
 }
 
 /*
@@ -297,9 +298,10 @@ func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-// SetVolumeDb sets the property returned by [GetVolumeDb].
-func (self Instance) SetVolumeDb(value Float.X) {
+// SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolumeDb(value Float.X) Instance {
 	class(self).SetVolumeDb(float64(value))
+	return self
 }
 
 /*
@@ -315,9 +317,10 @@ func (self Instance) VolumeLinear() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
-// SetVolumeLinear sets the property returned by [GetVolumeLinear].
-func (self Instance) SetVolumeLinear(value Float.X) {
+// SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolumeLinear(value Float.X) Instance {
 	class(self).SetVolumeLinear(float64(value))
+	return self
 }
 
 /*
@@ -329,9 +332,10 @@ func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
-// SetPitchScale sets the property returned by [GetPitchScale].
-func (self Instance) SetPitchScale(value Float.X) {
+// SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPitchScale(value Float.X) Instance {
 	class(self).SetPitchScale(float64(value))
+	return self
 }
 
 /*
@@ -344,9 +348,10 @@ func (self Instance) Playing() bool {
 	return bool(class(self).IsPlaying())
 }
 
-// SetPlaying sets the property returned by [IsPlaying].
-func (self Instance) SetPlaying(value bool) {
+// SetPlaying sets the property returned by [IsPlaying]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaying(value bool) Instance {
 	class(self).SetPlaying(value)
+	return self
 }
 
 /*
@@ -358,9 +363,10 @@ func (self Instance) Autoplay() bool {
 	return bool(class(self).IsAutoplayEnabled())
 }
 
-// SetAutoplay sets the property returned by [IsAutoplayEnabled].
-func (self Instance) SetAutoplay(value bool) {
+// SetAutoplay sets the property returned by [IsAutoplayEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoplay(value bool) Instance {
 	class(self).SetAutoplay(value)
+	return self
 }
 
 /*
@@ -375,9 +381,10 @@ func (self Instance) StreamPaused() bool {
 	return bool(class(self).GetStreamPaused())
 }
 
-// SetStreamPaused sets the property returned by [GetStreamPaused].
-func (self Instance) SetStreamPaused(value bool) {
+// SetStreamPaused sets the property returned by [GetStreamPaused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStreamPaused(value bool) Instance {
 	class(self).SetStreamPaused(value)
+	return self
 }
 
 /*
@@ -387,9 +394,10 @@ func (self Instance) MixTarget() MixTarget {
 	return MixTarget(class(self).GetMixTarget())
 }
 
-// SetMixTarget sets the property returned by [GetMixTarget].
-func (self Instance) SetMixTarget(value MixTarget) {
+// SetMixTarget sets the property returned by [GetMixTarget]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMixTarget(value MixTarget) Instance {
 	class(self).SetMixTarget(value)
+	return self
 }
 
 /*
@@ -401,9 +409,10 @@ func (self Instance) MaxPolyphony() int {
 	return int(int(class(self).GetMaxPolyphony()))
 }
 
-// SetMaxPolyphony sets the property returned by [GetMaxPolyphony].
-func (self Instance) SetMaxPolyphony(value int) {
+// SetMaxPolyphony sets the property returned by [GetMaxPolyphony]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxPolyphony(value int) Instance {
 	class(self).SetMaxPolyphony(int64(value))
+	return self
 }
 
 /*
@@ -417,9 +426,10 @@ func (self Instance) Bus() string {
 	return string(class(self).GetBus().String())
 }
 
-// SetBus sets the property returned by [GetBus].
-func (self Instance) SetBus(value string) {
+// SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBus(value string) Instance {
 	class(self).SetBus(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -429,9 +439,10 @@ func (self Instance) PlaybackType() AudioServer.PlaybackType {
 	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
-// SetPlaybackType sets the property returned by [GetPlaybackType].
-func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
+// SetPlaybackType sets the property returned by [GetPlaybackType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance {
 	class(self).SetPlaybackType(value)
+	return self
 }
 
 //go:nosplit
@@ -642,12 +653,13 @@ Emitted when a sound finishes playing without interruptions. This signal is not 
 
 [Stop]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Stop
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

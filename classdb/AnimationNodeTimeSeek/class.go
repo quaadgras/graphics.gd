@@ -184,9 +184,10 @@ func (self Instance) ExplicitElapse() bool {
 	return bool(class(self).IsExplicitElapse())
 }
 
-// SetExplicitElapse sets the property returned by [IsExplicitElapse].
-func (self Instance) SetExplicitElapse(value bool) {
+// SetExplicitElapse sets the property returned by [IsExplicitElapse]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExplicitElapse(value bool) Instance {
 	class(self).SetExplicitElapse(value)
+	return self
 }
 
 //go:nosplit

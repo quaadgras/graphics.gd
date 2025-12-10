@@ -458,9 +458,10 @@ func (self Instance) MaxSteps() int {
 	return int(int(class(self).GetMaxSteps()))
 }
 
-// SetMaxSteps sets the property returned by [GetMaxSteps].
-func (self Instance) SetMaxSteps(value int) {
+// SetMaxSteps sets the property returned by [GetMaxSteps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSteps(value int) Instance {
 	class(self).SetMaxSteps(int64(value))
+	return self
 }
 
 /*
@@ -716,12 +717,13 @@ Called when [Undo] or [Redo] was called.
 [Redo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Redo
 [Undo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Undo
 */
-func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VersionChanged() Signal.Any {

@@ -174,9 +174,10 @@ func (self Instance) Plane() Plane.NormalD {
 	return Plane.NormalD(class(self).GetPlane())
 }
 
-// SetPlane sets the property returned by [GetPlane].
-func (self Instance) SetPlane(value Plane.NormalD) {
+// SetPlane sets the property returned by [GetPlane]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlane(value Plane.NormalD) Instance {
 	class(self).SetPlane(Plane.NormalD(value))
+	return self
 }
 
 //go:nosplit

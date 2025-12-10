@@ -188,9 +188,10 @@ func (self Instance) Atlas() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetAtlas())
 }
 
-// SetAtlas sets the property returned by [GetAtlas].
-func (self Instance) SetAtlas(value Texture2D.Instance) {
+// SetAtlas sets the property returned by [GetAtlas]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAtlas(value Texture2D.Instance) Instance {
 	class(self).SetAtlas(value)
+	return self
 }
 
 /*
@@ -202,9 +203,10 @@ func (self Instance) Region() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegion())
 }
 
-// SetRegion sets the property returned by [GetRegion].
-func (self Instance) SetRegion(value Rect2.PositionSize) {
+// SetRegion sets the property returned by [GetRegion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegion(value Rect2.PositionSize) Instance {
 	class(self).SetRegion(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -217,9 +219,10 @@ func (self Instance) Margin() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetMargin())
 }
 
-// SetMargin sets the property returned by [GetMargin].
-func (self Instance) SetMargin(value Rect2.PositionSize) {
+// SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargin(value Rect2.PositionSize) Instance {
 	class(self).SetMargin(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -231,9 +234,10 @@ func (self Instance) FilterClip() bool {
 	return bool(class(self).HasFilterClip())
 }
 
-// SetFilterClip sets the property returned by [HasFilterClip].
-func (self Instance) SetFilterClip(value bool) {
+// SetFilterClip sets the property returned by [HasFilterClip]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilterClip(value bool) Instance {
 	class(self).SetFilterClip(value)
+	return self
 }
 
 //go:nosplit

@@ -189,9 +189,10 @@ func (self Instance) Rect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
-// SetRect sets the property returned by [GetRect].
-func (self Instance) SetRect(value Rect2.PositionSize) {
+// SetRect sets the property returned by [GetRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRect(value Rect2.PositionSize) Instance {
 	class(self).SetRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -203,9 +204,10 @@ func (self Instance) ShowRect() bool {
 	return bool(class(self).IsShowingRect())
 }
 
-// SetShowRect sets the property returned by [IsShowingRect].
-func (self Instance) SetShowRect(value bool) {
+// SetShowRect sets the property returned by [IsShowingRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowRect(value bool) Instance {
 	class(self).SetShowRect(value)
+	return self
 }
 
 //go:nosplit
@@ -249,12 +251,13 @@ func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_scree
 /*
 Emitted when the VisibleOnScreenNotifier2D enters the screen.
 */
-func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScreenEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("screen_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScreenEntered() Signal.Any {
@@ -264,12 +267,13 @@ func (self class) ScreenEntered() Signal.Any {
 /*
 Emitted when the VisibleOnScreenNotifier2D exits the screen.
 */
-func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScreenExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("screen_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScreenExited() Signal.Any {

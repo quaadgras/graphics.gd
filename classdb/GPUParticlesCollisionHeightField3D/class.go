@@ -144,10 +144,13 @@ type Any interface {
 /*
 Based on 'value', enables or disables the specified layer in the [HeightfieldMask], given a 'layer_number' between 1 and 20, inclusive.
 
+Returns 'self' to enable method chaining.
+
 [HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
 */
-func (self Instance) SetHeightfieldMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
+func (self Instance) SetHeightfieldMaskValue(layer_number int, value bool) Instance { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
 	Advanced(self).SetHeightfieldMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -210,9 +213,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -224,9 +228,10 @@ func (self Instance) Resolution() Resolution {
 	return Resolution(class(self).GetResolution())
 }
 
-// SetResolution sets the property returned by [GetResolution].
-func (self Instance) SetResolution(value Resolution) {
+// SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResolution(value Resolution) Instance {
 	class(self).SetResolution(value)
+	return self
 }
 
 /*
@@ -236,9 +241,10 @@ func (self Instance) UpdateMode() UpdateMode {
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
-// SetUpdateMode sets the property returned by [GetUpdateMode].
-func (self Instance) SetUpdateMode(value UpdateMode) {
+// SetUpdateMode sets the property returned by [GetUpdateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpdateMode(value UpdateMode) Instance {
 	class(self).SetUpdateMode(value)
+	return self
 }
 
 /*
@@ -255,9 +261,10 @@ func (self Instance) FollowCameraEnabled() bool {
 	return bool(class(self).IsFollowCameraEnabled())
 }
 
-// SetFollowCameraEnabled sets the property returned by [IsFollowCameraEnabled].
-func (self Instance) SetFollowCameraEnabled(value bool) {
+// SetFollowCameraEnabled sets the property returned by [IsFollowCameraEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowCameraEnabled(value bool) Instance {
 	class(self).SetFollowCameraEnabled(value)
+	return self
 }
 
 /*
@@ -277,9 +284,10 @@ func (self Instance) HeightfieldMask() int {
 	return int(int(class(self).GetHeightfieldMask()))
 }
 
-// SetHeightfieldMask sets the property returned by [GetHeightfieldMask].
-func (self Instance) SetHeightfieldMask(value int) {
+// SetHeightfieldMask sets the property returned by [GetHeightfieldMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeightfieldMask(value int) Instance {
 	class(self).SetHeightfieldMask(int64(value))
+	return self
 }
 
 //go:nosplit

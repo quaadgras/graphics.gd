@@ -152,9 +152,12 @@ func (self Instance) ShowPopup() { //gd:MenuButton.show_popup
 
 /*
 If true, shortcuts are disabled and cannot be used to trigger the button.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
+func (self Instance) SetDisableShortcuts(disabled bool) Instance { //gd:MenuButton.set_disable_shortcuts
 	Advanced(self).SetDisableShortcuts(disabled)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -209,9 +212,10 @@ func (self Instance) SwitchOnHover() bool {
 	return bool(class(self).IsSwitchOnHover())
 }
 
-// SetSwitchOnHover sets the property returned by [IsSwitchOnHover].
-func (self Instance) SetSwitchOnHover(value bool) {
+// SetSwitchOnHover sets the property returned by [IsSwitchOnHover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwitchOnHover(value bool) Instance {
 	class(self).SetSwitchOnHover(value)
+	return self
 }
 
 /*
@@ -221,9 +225,10 @@ func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
-// SetItemCount sets the property returned by [GetItemCount].
-func (self Instance) SetItemCount(value int) {
+// SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetItemCount(value int) Instance {
 	class(self).SetItemCount(int64(value))
+	return self
 }
 
 /*
@@ -289,12 +294,13 @@ Emitted when the [PopupMenu] of this MenuButton is about to show.
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AboutToPopup() Signal.Any {

@@ -261,9 +261,10 @@ func (self Instance) Data() []byte {
 	return []byte(class(self).GetData().Bytes())
 }
 
-// SetData sets the property returned by [GetData].
-func (self Instance) SetData(value []byte) {
+// SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetData(value []byte) Instance {
 	class(self).SetData(Packed.BytesFrom(value...))
+	return self
 }
 
 /*
@@ -273,9 +274,10 @@ func (self Instance) Format() Format {
 	return Format(class(self).GetFormat())
 }
 
-// SetFormat sets the property returned by [GetFormat].
-func (self Instance) SetFormat(value Format) {
+// SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormat(value Format) Instance {
 	class(self).SetFormat(value)
+	return self
 }
 
 /*
@@ -285,9 +287,10 @@ func (self Instance) LoopMode() LoopMode {
 	return LoopMode(class(self).GetLoopMode())
 }
 
-// SetLoopMode sets the property returned by [GetLoopMode].
-func (self Instance) SetLoopMode(value LoopMode) {
+// SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopMode(value LoopMode) Instance {
 	class(self).SetLoopMode(value)
+	return self
 }
 
 /*
@@ -297,9 +300,10 @@ func (self Instance) LoopBegin() int {
 	return int(int(class(self).GetLoopBegin()))
 }
 
-// SetLoopBegin sets the property returned by [GetLoopBegin].
-func (self Instance) SetLoopBegin(value int) {
+// SetLoopBegin sets the property returned by [GetLoopBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopBegin(value int) Instance {
 	class(self).SetLoopBegin(int64(value))
+	return self
 }
 
 /*
@@ -309,9 +313,10 @@ func (self Instance) LoopEnd() int {
 	return int(int(class(self).GetLoopEnd()))
 }
 
-// SetLoopEnd sets the property returned by [GetLoopEnd].
-func (self Instance) SetLoopEnd(value int) {
+// SetLoopEnd sets the property returned by [GetLoopEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopEnd(value int) Instance {
 	class(self).SetLoopEnd(int64(value))
+	return self
 }
 
 /*
@@ -327,9 +332,10 @@ func (self Instance) MixRate() int {
 	return int(int(class(self).GetMixRate()))
 }
 
-// SetMixRate sets the property returned by [GetMixRate].
-func (self Instance) SetMixRate(value int) {
+// SetMixRate sets the property returned by [GetMixRate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMixRate(value int) Instance {
 	class(self).SetMixRate(int64(value))
+	return self
 }
 
 /*
@@ -339,9 +345,10 @@ func (self Instance) Stereo() bool {
 	return bool(class(self).IsStereo())
 }
 
-// SetStereo sets the property returned by [IsStereo].
-func (self Instance) SetStereo(value bool) {
+// SetStereo sets the property returned by [IsStereo]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStereo(value bool) Instance {
 	class(self).SetStereo(value)
+	return self
 }
 
 /*
@@ -357,9 +364,10 @@ func (self Instance) Tags() map[string]interface{} {
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
-// SetTags sets the property returned by [GetTags].
-func (self Instance) SetTags(value map[string]interface{}) {
+// SetTags sets the property returned by [GetTags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTags(value map[string]interface{}) Instance {
 	class(self).SetTags(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*

@@ -178,9 +178,10 @@ func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
-// SetBlendMode sets the property returned by [GetBlendMode].
-func (self Instance) SetBlendMode(value BlendMode) {
+// SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendMode(value BlendMode) Instance {
 	class(self).SetBlendMode(value)
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) LightMode() LightMode {
 	return LightMode(class(self).GetLightMode())
 }
 
-// SetLightMode sets the property returned by [GetLightMode].
-func (self Instance) SetLightMode(value LightMode) {
+// SetLightMode sets the property returned by [GetLightMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightMode(value LightMode) Instance {
 	class(self).SetLightMode(value)
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) ParticlesAnimation() bool {
 	return bool(class(self).GetParticlesAnimation())
 }
 
-// SetParticlesAnimation sets the property returned by [GetParticlesAnimation].
-func (self Instance) SetParticlesAnimation(value bool) {
+// SetParticlesAnimation sets the property returned by [GetParticlesAnimation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticlesAnimation(value bool) Instance {
 	class(self).SetParticlesAnimation(value)
+	return self
 }
 
 /*
@@ -228,9 +231,10 @@ func (self Instance) ParticlesAnimHFrames() int {
 	return int(int(class(self).GetParticlesAnimHFrames()))
 }
 
-// SetParticlesAnimHFrames sets the property returned by [GetParticlesAnimHFrames].
-func (self Instance) SetParticlesAnimHFrames(value int) {
+// SetParticlesAnimHFrames sets the property returned by [GetParticlesAnimHFrames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticlesAnimHFrames(value int) Instance {
 	class(self).SetParticlesAnimHFrames(int64(value))
+	return self
 }
 
 /*
@@ -247,9 +251,10 @@ func (self Instance) ParticlesAnimVFrames() int {
 	return int(int(class(self).GetParticlesAnimVFrames()))
 }
 
-// SetParticlesAnimVFrames sets the property returned by [GetParticlesAnimVFrames].
-func (self Instance) SetParticlesAnimVFrames(value int) {
+// SetParticlesAnimVFrames sets the property returned by [GetParticlesAnimVFrames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticlesAnimVFrames(value int) Instance {
 	class(self).SetParticlesAnimVFrames(int64(value))
+	return self
 }
 
 /*
@@ -263,9 +268,10 @@ func (self Instance) ParticlesAnimLoop() bool {
 	return bool(class(self).GetParticlesAnimLoop())
 }
 
-// SetParticlesAnimLoop sets the property returned by [GetParticlesAnimLoop].
-func (self Instance) SetParticlesAnimLoop(value bool) {
+// SetParticlesAnimLoop sets the property returned by [GetParticlesAnimLoop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticlesAnimLoop(value bool) Instance {
 	class(self).SetParticlesAnimLoop(value)
+	return self
 }
 
 //go:nosplit

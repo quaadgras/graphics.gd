@@ -173,9 +173,10 @@ func (self Instance) DiffuseImg() Image.Instance {
 	return Image.Instance(class(self).GetDiffuseImg())
 }
 
-// SetDiffuseImg sets the property returned by [GetDiffuseImg].
-func (self Instance) SetDiffuseImg(value Image.Instance) {
+// SetDiffuseImg sets the property returned by [GetDiffuseImg]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiffuseImg(value Image.Instance) Instance {
 	class(self).SetDiffuseImg(value)
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) DiffuseFactor() Color.RGBA {
 	return Color.RGBA(class(self).GetDiffuseFactor())
 }
 
-// SetDiffuseFactor sets the property returned by [GetDiffuseFactor].
-func (self Instance) SetDiffuseFactor(value Color.RGBA) {
+// SetDiffuseFactor sets the property returned by [GetDiffuseFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiffuseFactor(value Color.RGBA) Instance {
 	class(self).SetDiffuseFactor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) GlossFactor() Float.X {
 	return Float.X(Float.X(class(self).GetGlossFactor()))
 }
 
-// SetGlossFactor sets the property returned by [GetGlossFactor].
-func (self Instance) SetGlossFactor(value Float.X) {
+// SetGlossFactor sets the property returned by [GetGlossFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlossFactor(value Float.X) Instance {
 	class(self).SetGlossFactor(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) SpecularFactor() Color.RGBA {
 	return Color.RGBA(class(self).GetSpecularFactor())
 }
 
-// SetSpecularFactor sets the property returned by [GetSpecularFactor].
-func (self Instance) SetSpecularFactor(value Color.RGBA) {
+// SetSpecularFactor sets the property returned by [GetSpecularFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpecularFactor(value Color.RGBA) Instance {
 	class(self).SetSpecularFactor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -221,9 +225,10 @@ func (self Instance) SpecGlossImg() Image.Instance {
 	return Image.Instance(class(self).GetSpecGlossImg())
 }
 
-// SetSpecGlossImg sets the property returned by [GetSpecGlossImg].
-func (self Instance) SetSpecGlossImg(value Image.Instance) {
+// SetSpecGlossImg sets the property returned by [GetSpecGlossImg]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpecGlossImg(value Image.Instance) Instance {
 	class(self).SetSpecGlossImg(value)
+	return self
 }
 
 //go:nosplit

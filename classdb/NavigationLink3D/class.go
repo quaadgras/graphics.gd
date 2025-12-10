@@ -151,11 +151,14 @@ func (self Instance) GetRid() RID.NavigationLink3D { //gd:NavigationLink3D.get_r
 /*
 Sets the [Resource.ID] of the navigation map this link should use. By default the link will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 
+Returns 'self' to enable method chaining.
+
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
-func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationLink3D.set_navigation_map
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) Instance { //gd:NavigationLink3D.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
+	return self
 }
 
 /*
@@ -170,10 +173,13 @@ func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationLin
 /*
 Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink3D#Instance.NavigationLayers
 */
-func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationLink3D.set_navigation_layer_value
+func (self Instance) SetNavigationLayerValue(layer_number int, value bool) Instance { //gd:NavigationLink3D.set_navigation_layer_value
 	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -188,10 +194,13 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 /*
 Sets the [StartPosition] that is relative to the link from a global 'position'.
 
+Returns 'self' to enable method chaining.
+
 [StartPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink3D#Instance.StartPosition
 */
-func (self Instance) SetGlobalStartPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_start_position
+func (self Instance) SetGlobalStartPosition(position Vector3.XYZ) Instance { //gd:NavigationLink3D.set_global_start_position
 	Advanced(self).SetGlobalStartPosition(Vector3.XYZ(position))
+	return self
 }
 
 /*
@@ -206,10 +215,13 @@ func (self Instance) GetGlobalStartPosition() Vector3.XYZ { //gd:NavigationLink3
 /*
 Sets the [EndPosition] that is relative to the link from a global 'position'.
 
+Returns 'self' to enable method chaining.
+
 [EndPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink3D#Instance.EndPosition
 */
-func (self Instance) SetGlobalEndPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_end_position
+func (self Instance) SetGlobalEndPosition(position Vector3.XYZ) Instance { //gd:NavigationLink3D.set_global_end_position
 	Advanced(self).SetGlobalEndPosition(Vector3.XYZ(position))
+	return self
 }
 
 /*
@@ -272,9 +284,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -287,9 +300,10 @@ func (self Instance) Bidirectional() bool {
 	return bool(class(self).IsBidirectional())
 }
 
-// SetBidirectional sets the property returned by [IsBidirectional].
-func (self Instance) SetBidirectional(value bool) {
+// SetBidirectional sets the property returned by [IsBidirectional]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBidirectional(value bool) Instance {
 	class(self).SetBidirectional(value)
+	return self
 }
 
 /*
@@ -301,9 +315,10 @@ func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
-// SetNavigationLayers sets the property returned by [GetNavigationLayers].
-func (self Instance) SetNavigationLayers(value int) {
+// SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationLayers(value int) Instance {
 	class(self).SetNavigationLayers(int64(value))
+	return self
 }
 
 /*
@@ -319,9 +334,10 @@ func (self Instance) StartPosition() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetStartPosition())
 }
 
-// SetStartPosition sets the property returned by [GetStartPosition].
-func (self Instance) SetStartPosition(value Vector3.XYZ) {
+// SetStartPosition sets the property returned by [GetStartPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStartPosition(value Vector3.XYZ) Instance {
 	class(self).SetStartPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -337,9 +353,10 @@ func (self Instance) EndPosition() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetEndPosition())
 }
 
-// SetEndPosition sets the property returned by [GetEndPosition].
-func (self Instance) SetEndPosition(value Vector3.XYZ) {
+// SetEndPosition sets the property returned by [GetEndPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEndPosition(value Vector3.XYZ) Instance {
 	class(self).SetEndPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -351,9 +368,10 @@ func (self Instance) EnterCost() Float.X {
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
-// SetEnterCost sets the property returned by [GetEnterCost].
-func (self Instance) SetEnterCost(value Float.X) {
+// SetEnterCost sets the property returned by [GetEnterCost]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnterCost(value Float.X) Instance {
 	class(self).SetEnterCost(float64(value))
+	return self
 }
 
 /*
@@ -365,9 +383,10 @@ func (self Instance) TravelCost() Float.X {
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
-// SetTravelCost sets the property returned by [GetTravelCost].
-func (self Instance) SetTravelCost(value Float.X) {
+// SetTravelCost sets the property returned by [GetTravelCost]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTravelCost(value Float.X) Instance {
 	class(self).SetTravelCost(float64(value))
+	return self
 }
 
 /*

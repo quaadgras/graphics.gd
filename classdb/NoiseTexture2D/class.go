@@ -206,16 +206,20 @@ func New() Instance {
 
 /*
 Width of the generated texture (in pixels).
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) {
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
 Height of the generated texture (in pixels).
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetHeight(value int) {
+func (self Instance) SetHeight(value int) Instance {
 	class(self).SetHeight(int64(value))
+	return self
 }
 
 /*
@@ -230,9 +234,10 @@ func (self Instance) GenerateMipmaps() bool {
 	return bool(class(self).IsGeneratingMipmaps())
 }
 
-// SetGenerateMipmaps sets the property returned by [IsGeneratingMipmaps].
-func (self Instance) SetGenerateMipmaps(value bool) {
+// SetGenerateMipmaps sets the property returned by [IsGeneratingMipmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGenerateMipmaps(value bool) Instance {
 	class(self).SetGenerateMipmaps(value)
+	return self
 }
 
 /*
@@ -244,9 +249,10 @@ func (self Instance) Noise() Noise.Instance {
 	return Noise.Instance(class(self).GetNoise())
 }
 
-// SetNoise sets the property returned by [GetNoise].
-func (self Instance) SetNoise(value Noise.Instance) {
+// SetNoise sets the property returned by [GetNoise]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNoise(value Noise.Instance) Instance {
 	class(self).SetNoise(value)
+	return self
 }
 
 /*
@@ -258,9 +264,10 @@ func (self Instance) ColorRamp() Gradient.Instance {
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
-// SetColorRamp sets the property returned by [GetColorRamp].
-func (self Instance) SetColorRamp(value Gradient.Instance) {
+// SetColorRamp sets the property returned by [GetColorRamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorRamp(value Gradient.Instance) Instance {
 	class(self).SetColorRamp(value)
+	return self
 }
 
 /*
@@ -280,9 +287,10 @@ func (self Instance) Seamless() bool {
 	return bool(class(self).GetSeamless())
 }
 
-// SetSeamless sets the property returned by [GetSeamless].
-func (self Instance) SetSeamless(value bool) {
+// SetSeamless sets the property returned by [GetSeamless]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeamless(value bool) Instance {
 	class(self).SetSeamless(value)
+	return self
 }
 
 /*
@@ -292,9 +300,10 @@ func (self Instance) Invert() bool {
 	return bool(class(self).GetInvert())
 }
 
-// SetInvert sets the property returned by [GetInvert].
-func (self Instance) SetInvert(value bool) {
+// SetInvert sets the property returned by [GetInvert]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInvert(value bool) Instance {
 	class(self).SetInvert(value)
+	return self
 }
 
 /*
@@ -304,9 +313,10 @@ func (self Instance) In3dSpace() bool {
 	return bool(class(self).IsIn3dSpace())
 }
 
-// SetIn3dSpace sets the property returned by [IsIn3dSpace].
-func (self Instance) SetIn3dSpace(value bool) {
+// SetIn3dSpace sets the property returned by [IsIn3dSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIn3dSpace(value bool) Instance {
 	class(self).SetIn3dSpace(value)
+	return self
 }
 
 /*
@@ -316,9 +326,10 @@ func (self Instance) AsNormalMap() bool {
 	return bool(class(self).IsNormalMap())
 }
 
-// SetAsNormalMap sets the property returned by [IsNormalMap].
-func (self Instance) SetAsNormalMap(value bool) {
+// SetAsNormalMap sets the property returned by [IsNormalMap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAsNormalMap(value bool) Instance {
 	class(self).SetAsNormalMap(value)
+	return self
 }
 
 /*
@@ -330,9 +341,10 @@ func (self Instance) Normalize() bool {
 	return bool(class(self).IsNormalized())
 }
 
-// SetNormalize sets the property returned by [IsNormalized].
-func (self Instance) SetNormalize(value bool) {
+// SetNormalize sets the property returned by [IsNormalized]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalize(value bool) Instance {
 	class(self).SetNormalize(value)
+	return self
 }
 
 /*
@@ -349,9 +361,10 @@ func (self Instance) SeamlessBlendSkirt() Float.X {
 	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
-// SetSeamlessBlendSkirt sets the property returned by [GetSeamlessBlendSkirt].
-func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
+// SetSeamlessBlendSkirt sets the property returned by [GetSeamlessBlendSkirt]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance {
 	class(self).SetSeamlessBlendSkirt(float64(value))
+	return self
 }
 
 /*
@@ -361,9 +374,10 @@ func (self Instance) BumpStrength() Float.X {
 	return Float.X(Float.X(class(self).GetBumpStrength()))
 }
 
-// SetBumpStrength sets the property returned by [GetBumpStrength].
-func (self Instance) SetBumpStrength(value Float.X) {
+// SetBumpStrength sets the property returned by [GetBumpStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBumpStrength(value Float.X) Instance {
 	class(self).SetBumpStrength(float64(value))
+	return self
 }
 
 //go:nosplit

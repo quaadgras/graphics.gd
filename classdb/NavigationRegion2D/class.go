@@ -178,11 +178,14 @@ func (self Instance) GetRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.g
 /*
 Sets the [Resource.ID] of the navigation map this region should use. By default the region will automatically join the [World2D] default navigation map so this function is only required to override the default map.
 
+Returns 'self' to enable method chaining.
+
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 */
-func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationRegion2D.set_navigation_map
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) Instance { //gd:NavigationRegion2D.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
+	return self
 }
 
 /*
@@ -197,10 +200,13 @@ func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationReg
 /*
 Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D#Instance.NavigationLayers
 */
-func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationRegion2D.set_navigation_layer_value
+func (self Instance) SetNavigationLayerValue(layer_number int, value bool) Instance { //gd:NavigationRegion2D.set_navigation_layer_value
 	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -307,9 +313,10 @@ func (self Instance) NavigationPolygon() NavigationPolygon.Instance {
 	return NavigationPolygon.Instance(class(self).GetNavigationPolygon())
 }
 
-// SetNavigationPolygon sets the property returned by [GetNavigationPolygon].
-func (self Instance) SetNavigationPolygon(value NavigationPolygon.Instance) {
+// SetNavigationPolygon sets the property returned by [GetNavigationPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationPolygon(value NavigationPolygon.Instance) Instance {
 	class(self).SetNavigationPolygon(value)
+	return self
 }
 
 /*
@@ -321,9 +328,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -333,9 +341,10 @@ func (self Instance) UseEdgeConnections() bool {
 	return bool(class(self).GetUseEdgeConnections())
 }
 
-// SetUseEdgeConnections sets the property returned by [GetUseEdgeConnections].
-func (self Instance) SetUseEdgeConnections(value bool) {
+// SetUseEdgeConnections sets the property returned by [GetUseEdgeConnections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseEdgeConnections(value bool) Instance {
 	class(self).SetUseEdgeConnections(value)
+	return self
 }
 
 /*
@@ -347,9 +356,10 @@ func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
-// SetNavigationLayers sets the property returned by [GetNavigationLayers].
-func (self Instance) SetNavigationLayers(value int) {
+// SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationLayers(value int) Instance {
 	class(self).SetNavigationLayers(int64(value))
+	return self
 }
 
 /*
@@ -361,9 +371,10 @@ func (self Instance) EnterCost() Float.X {
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
-// SetEnterCost sets the property returned by [GetEnterCost].
-func (self Instance) SetEnterCost(value Float.X) {
+// SetEnterCost sets the property returned by [GetEnterCost]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnterCost(value Float.X) Instance {
 	class(self).SetEnterCost(float64(value))
+	return self
 }
 
 /*
@@ -375,9 +386,10 @@ func (self Instance) TravelCost() Float.X {
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
-// SetTravelCost sets the property returned by [GetTravelCost].
-func (self Instance) SetTravelCost(value Float.X) {
+// SetTravelCost sets the property returned by [GetTravelCost]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTravelCost(value Float.X) Instance {
 	class(self).SetTravelCost(float64(value))
+	return self
 }
 
 /*
@@ -563,12 +575,13 @@ func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_b
 /*
 Emitted when the used navigation polygon is replaced or changes to the internals of the current navigation polygon are committed.
 */
-func (self Instance) OnNavigationPolygonChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNavigationPolygonChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_polygon_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NavigationPolygonChanged() Signal.Any {
@@ -578,12 +591,13 @@ func (self class) NavigationPolygonChanged() Signal.Any {
 /*
 Emitted when a navigation polygon bake operation is completed.
 */
-func (self Instance) OnBakeFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnBakeFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("bake_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BakeFinished() Signal.Any {

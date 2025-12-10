@@ -242,9 +242,10 @@ func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-// SetAlignment sets the property returned by [GetHorizontalAlignment].
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
+// SetAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetHorizontalAlignment(value)
+	return self
 }
 
 /*
@@ -256,9 +257,10 @@ func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
-// SetEditable sets the property returned by [IsEditable].
-func (self Instance) SetEditable(value bool) {
+// SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditable(value bool) Instance {
 	class(self).SetEditable(value)
+	return self
 }
 
 /*
@@ -276,9 +278,10 @@ func (self Instance) UpdateOnTextChanged() bool {
 	return bool(class(self).GetUpdateOnTextChanged())
 }
 
-// SetUpdateOnTextChanged sets the property returned by [GetUpdateOnTextChanged].
-func (self Instance) SetUpdateOnTextChanged(value bool) {
+// SetUpdateOnTextChanged sets the property returned by [GetUpdateOnTextChanged]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpdateOnTextChanged(value bool) Instance {
 	class(self).SetUpdateOnTextChanged(value)
+	return self
 }
 
 /*
@@ -290,9 +293,10 @@ func (self Instance) Prefix() string {
 	return string(class(self).GetPrefix().String())
 }
 
-// SetPrefix sets the property returned by [GetPrefix].
-func (self Instance) SetPrefix(value string) {
+// SetPrefix sets the property returned by [GetPrefix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrefix(value string) Instance {
 	class(self).SetPrefix(String.New(value))
+	return self
 }
 
 /*
@@ -304,9 +308,10 @@ func (self Instance) Suffix() string {
 	return string(class(self).GetSuffix().String())
 }
 
-// SetSuffix sets the property returned by [GetSuffix].
-func (self Instance) SetSuffix(value string) {
+// SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSuffix(value string) Instance {
 	class(self).SetSuffix(String.New(value))
+	return self
 }
 
 /*
@@ -322,9 +327,10 @@ func (self Instance) CustomArrowStep() Float.X {
 	return Float.X(Float.X(class(self).GetCustomArrowStep()))
 }
 
-// SetCustomArrowStep sets the property returned by [GetCustomArrowStep].
-func (self Instance) SetCustomArrowStep(value Float.X) {
+// SetCustomArrowStep sets the property returned by [GetCustomArrowStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomArrowStep(value Float.X) Instance {
 	class(self).SetCustomArrowStep(float64(value))
+	return self
 }
 
 /*
@@ -337,9 +343,10 @@ func (self Instance) SelectAllOnFocus() bool {
 	return bool(class(self).IsSelectAllOnFocus())
 }
 
-// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus].
-func (self Instance) SetSelectAllOnFocus(value bool) {
+// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectAllOnFocus(value bool) Instance {
 	class(self).SetSelectAllOnFocus(value)
+	return self
 }
 
 //go:nosplit

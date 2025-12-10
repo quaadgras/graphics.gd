@@ -231,9 +231,10 @@ func (self Instance) FollowFocus() bool {
 	return bool(class(self).IsFollowingFocus())
 }
 
-// SetFollowFocus sets the property returned by [IsFollowingFocus].
-func (self Instance) SetFollowFocus(value bool) {
+// SetFollowFocus sets the property returned by [IsFollowingFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowFocus(value bool) Instance {
 	class(self).SetFollowFocus(value)
+	return self
 }
 
 /*
@@ -243,9 +244,10 @@ func (self Instance) DrawFocusBorder() bool {
 	return bool(class(self).GetDrawFocusBorder())
 }
 
-// SetDrawFocusBorder sets the property returned by [GetDrawFocusBorder].
-func (self Instance) SetDrawFocusBorder(value bool) {
+// SetDrawFocusBorder sets the property returned by [GetDrawFocusBorder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawFocusBorder(value bool) Instance {
 	class(self).SetDrawFocusBorder(value)
+	return self
 }
 
 /*
@@ -261,9 +263,10 @@ func (self Instance) ScrollHorizontal() int {
 	return int(int(class(self).GetHScroll()))
 }
 
-// SetScrollHorizontal sets the property returned by [GetHScroll].
-func (self Instance) SetScrollHorizontal(value int) {
+// SetScrollHorizontal sets the property returned by [GetHScroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHorizontal(value int) Instance {
 	class(self).SetHScroll(int64(value))
+	return self
 }
 
 /*
@@ -277,9 +280,10 @@ func (self Instance) ScrollVertical() int {
 	return int(int(class(self).GetVScroll()))
 }
 
-// SetScrollVertical sets the property returned by [GetVScroll].
-func (self Instance) SetScrollVertical(value int) {
+// SetScrollVertical sets the property returned by [GetVScroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollVertical(value int) Instance {
 	class(self).SetVScroll(int64(value))
+	return self
 }
 
 /*
@@ -292,9 +296,10 @@ func (self Instance) ScrollHorizontalCustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetHorizontalCustomStep()))
 }
 
-// SetScrollHorizontalCustomStep sets the property returned by [GetHorizontalCustomStep].
-func (self Instance) SetScrollHorizontalCustomStep(value Float.X) {
+// SetScrollHorizontalCustomStep sets the property returned by [GetHorizontalCustomStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHorizontalCustomStep(value Float.X) Instance {
 	class(self).SetHorizontalCustomStep(float64(value))
+	return self
 }
 
 /*
@@ -307,9 +312,10 @@ func (self Instance) ScrollVerticalCustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetVerticalCustomStep()))
 }
 
-// SetScrollVerticalCustomStep sets the property returned by [GetVerticalCustomStep].
-func (self Instance) SetScrollVerticalCustomStep(value Float.X) {
+// SetScrollVerticalCustomStep sets the property returned by [GetVerticalCustomStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollVerticalCustomStep(value Float.X) Instance {
 	class(self).SetVerticalCustomStep(float64(value))
+	return self
 }
 
 /*
@@ -319,9 +325,10 @@ func (self Instance) HorizontalScrollMode() ScrollMode {
 	return ScrollMode(class(self).GetHorizontalScrollMode())
 }
 
-// SetHorizontalScrollMode sets the property returned by [GetHorizontalScrollMode].
-func (self Instance) SetHorizontalScrollMode(value ScrollMode) {
+// SetHorizontalScrollMode sets the property returned by [GetHorizontalScrollMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHorizontalScrollMode(value ScrollMode) Instance {
 	class(self).SetHorizontalScrollMode(value)
+	return self
 }
 
 /*
@@ -331,9 +338,10 @@ func (self Instance) VerticalScrollMode() ScrollMode {
 	return ScrollMode(class(self).GetVerticalScrollMode())
 }
 
-// SetVerticalScrollMode sets the property returned by [GetVerticalScrollMode].
-func (self Instance) SetVerticalScrollMode(value ScrollMode) {
+// SetVerticalScrollMode sets the property returned by [GetVerticalScrollMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVerticalScrollMode(value ScrollMode) Instance {
 	class(self).SetVerticalScrollMode(value)
+	return self
 }
 
 /*
@@ -343,9 +351,10 @@ func (self Instance) ScrollDeadzone() int {
 	return int(int(class(self).GetDeadzone()))
 }
 
-// SetScrollDeadzone sets the property returned by [GetDeadzone].
-func (self Instance) SetScrollDeadzone(value int) {
+// SetScrollDeadzone sets the property returned by [GetDeadzone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollDeadzone(value int) Instance {
 	class(self).SetDeadzone(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -515,12 +524,13 @@ Note: This signal is only emitted on Android or iOS, or on desktop/web platforms
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) OnScrollStarted(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScrollStarted(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScrollStarted() Signal.Any {
@@ -534,12 +544,13 @@ Note: This signal is only emitted on Android or iOS, or on desktop/web platforms
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) OnScrollEnded(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScrollEnded(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScrollEnded() Signal.Any {

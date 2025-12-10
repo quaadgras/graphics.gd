@@ -27,7 +27,11 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		}
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+signal.Name+"."+arg.Name, arg.Meta, arg.Type))
 	}
-	fmt.Fprint(w, "), flags ...Signal.Flags) {\n\t")
+	if singleton {
+		fmt.Fprint(w, "), flags ...Signal.Flags) {\n\t")
+	} else {
+		fmt.Fprint(w, "), flags ...Signal.Flags) Instance {\n\t")
+	}
 	fmt.Fprintln(w, "var flags_together Signal.Flags")
 	fmt.Fprint(w, "\tfor _, flag := range flags {\n")
 	fmt.Fprint(w, "\t\tflags_together |= flag\n")
@@ -36,6 +40,9 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
 	}
 	fmt.Fprintf(w, `self[0].AsObject()[0].Connect(gd.NewStringName("%s"), gd.NewCallable(cb), int64(flags_together))`, signal.Name)
+	if !singleton {
+		fmt.Fprint(w, "\n\treturn self")
+	}
 	fmt.Fprint(w, "\n}\n\n")
 	fmt.Fprintln(w)
 	fmt.Fprintf(w, "\nfunc (self class) %s() Signal.Any {\n", convertName(signal.Name))
@@ -56,9 +63,15 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	if class.Name == "FileAccess" && method.Name == "close" {
 		return // we will implement fs.File in extra.go
 	}
+
+	var ReturnsSelfForChaining = method.ReturnValue.Type == "" && (method.Name == "add_child" || strings.HasPrefix(method.Name, "set_")) && !(method.IsStatic || singleton)
+
 	if method.Description != "" {
 		fmt.Fprintln(w, "\n/*")
 		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, classDB, class.Name, class.Name+"_"+convertName(method.Name)))
+		if ReturnsSelfForChaining {
+			fmt.Fprint(w, "\n\nReturns 'self' to enable method chaining.")
+		}
 		fmt.Fprintln(w, "\n*/")
 	}
 	if method.IsVirtual {
@@ -137,6 +150,13 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			if method.ReturnValue.Type != "" {
 				fmt.Fprintf(w, "%v ", resultSimple)
 			}
+		}
+	}
+	if ReturnsSelfForChaining {
+		if defaults {
+			fmt.Fprint(w, " Instance ")
+		} else {
+			fmt.Fprint(w, " MoreArgs ")
 		}
 	}
 	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", class.Name, method.Name)
@@ -266,6 +286,9 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 				}
 			}
 		}
+	}
+	if ReturnsSelfForChaining {
+		fmt.Fprint(w, "\n\treturn self")
 	}
 	fmt.Fprintf(w, "\n}\n")
 }

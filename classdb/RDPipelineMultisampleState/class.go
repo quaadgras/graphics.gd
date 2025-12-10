@@ -178,9 +178,10 @@ func (self Instance) SampleCount() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSampleCount())
 }
 
-// SetSampleCount sets the property returned by [GetSampleCount].
-func (self Instance) SetSampleCount(value Rendering.TextureSamples) {
+// SetSampleCount sets the property returned by [GetSampleCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSampleCount(value Rendering.TextureSamples) Instance {
 	class(self).SetSampleCount(value)
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) EnableSampleShading() bool {
 	return bool(class(self).GetEnableSampleShading())
 }
 
-// SetEnableSampleShading sets the property returned by [GetEnableSampleShading].
-func (self Instance) SetEnableSampleShading(value bool) {
+// SetEnableSampleShading sets the property returned by [GetEnableSampleShading]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableSampleShading(value bool) Instance {
 	class(self).SetEnableSampleShading(value)
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) MinSampleShading() Float.X {
 	return Float.X(Float.X(class(self).GetMinSampleShading()))
 }
 
-// SetMinSampleShading sets the property returned by [GetMinSampleShading].
-func (self Instance) SetMinSampleShading(value Float.X) {
+// SetMinSampleShading sets the property returned by [GetMinSampleShading]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinSampleShading(value Float.X) Instance {
 	class(self).SetMinSampleShading(float64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) EnableAlphaToCoverage() bool {
 	return bool(class(self).GetEnableAlphaToCoverage())
 }
 
-// SetEnableAlphaToCoverage sets the property returned by [GetEnableAlphaToCoverage].
-func (self Instance) SetEnableAlphaToCoverage(value bool) {
+// SetEnableAlphaToCoverage sets the property returned by [GetEnableAlphaToCoverage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableAlphaToCoverage(value bool) Instance {
 	class(self).SetEnableAlphaToCoverage(value)
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) EnableAlphaToOne() bool {
 	return bool(class(self).GetEnableAlphaToOne())
 }
 
-// SetEnableAlphaToOne sets the property returned by [GetEnableAlphaToOne].
-func (self Instance) SetEnableAlphaToOne(value bool) {
+// SetEnableAlphaToOne sets the property returned by [GetEnableAlphaToOne]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableAlphaToOne(value bool) Instance {
 	class(self).SetEnableAlphaToOne(value)
+	return self
 }
 
 /*
@@ -249,9 +254,10 @@ func (self Instance) SampleMasks() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetSampleMasks())))
 }
 
-// SetSampleMasks sets the property returned by [GetSampleMasks].
-func (self Instance) SetSampleMasks(value []int) {
+// SetSampleMasks sets the property returned by [GetSampleMasks]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSampleMasks(value []int) Instance {
 	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[int64]](value))
+	return self
 }
 
 //go:nosplit

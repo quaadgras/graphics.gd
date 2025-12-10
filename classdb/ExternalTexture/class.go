@@ -137,9 +137,12 @@ func (self Instance) GetExternalTextureId() int { //gd:ExternalTexture.get_exter
 Sets the external buffer ID.
 
 Depending on your use case, you may need to call this with data received from a platform API, for example, SurfaceTexture.getHardwareBuffer() on Android.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExternalBufferId(external_buffer_id int) { //gd:ExternalTexture.set_external_buffer_id
+func (self Instance) SetExternalBufferId(external_buffer_id int) Instance { //gd:ExternalTexture.set_external_buffer_id
 	Advanced(self).SetExternalBufferId(int64(external_buffer_id))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -187,9 +190,11 @@ func New() Instance {
 
 /*
 External texture size.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSize(value Vector2.XY) {
+func (self Instance) SetSize(value Vector2.XY) Instance {
 	class(self).SetSize(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

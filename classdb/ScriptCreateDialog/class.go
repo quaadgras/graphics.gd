@@ -210,12 +210,13 @@ func (self class) Config(inherits String.Readable, path String.Readable, built_i
 /*
 Emitted when the user clicks the OK button.
 */
-func (self Instance) OnScriptCreated(cb func(script Script.Instance), flags ...Signal.Flags) {
+func (self Instance) OnScriptCreated(cb func(script Script.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ScriptCreated() Signal.Any {

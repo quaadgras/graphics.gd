@@ -169,9 +169,10 @@ func (self Instance) Colors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
-// SetColors sets the property returned by [GetColors].
-func (self Instance) SetColors(value []Color.RGBA) {
+// SetColors sets the property returned by [GetColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColors(value []Color.RGBA) Instance {
 	class(self).SetColors(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

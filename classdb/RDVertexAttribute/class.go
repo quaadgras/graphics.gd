@@ -173,9 +173,10 @@ func (self Instance) Location() int {
 	return int(int(class(self).GetLocation()))
 }
 
-// SetLocation sets the property returned by [GetLocation].
-func (self Instance) SetLocation(value int) {
+// SetLocation sets the property returned by [GetLocation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocation(value int) Instance {
 	class(self).SetLocation(int64(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) Offset() int {
 	return int(int(class(self).GetOffset()))
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value int) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value int) Instance {
 	class(self).SetOffset(int64(value))
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
-// SetFormat sets the property returned by [GetFormat].
-func (self Instance) SetFormat(value Rendering.DataFormat) {
+// SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
 	class(self).SetFormat(value)
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) Stride() int {
 	return int(int(class(self).GetStride()))
 }
 
-// SetStride sets the property returned by [GetStride].
-func (self Instance) SetStride(value int) {
+// SetStride sets the property returned by [GetStride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStride(value int) Instance {
 	class(self).SetStride(int64(value))
+	return self
 }
 
 /*
@@ -221,9 +225,10 @@ func (self Instance) Frequency() Rendering.VertexFrequency {
 	return Rendering.VertexFrequency(class(self).GetFrequency())
 }
 
-// SetFrequency sets the property returned by [GetFrequency].
-func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
+// SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrequency(value Rendering.VertexFrequency) Instance {
 	class(self).SetFrequency(value)
+	return self
 }
 
 //go:nosplit

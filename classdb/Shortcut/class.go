@@ -246,9 +246,10 @@ func (self Instance) Events() []InputEvent.Instance {
 	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(class(self).GetEvents())))
 }
 
-// SetEvents sets the property returned by [GetEvents].
-func (self Instance) SetEvents(value []InputEvent.Instance) {
+// SetEvents sets the property returned by [GetEvents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEvents(value []InputEvent.Instance) Instance {
 	class(self).SetEvents(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 //go:nosplit

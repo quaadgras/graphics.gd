@@ -144,10 +144,13 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the CCDIK joint at 'joint_idx'.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
+func (self Instance) SetCcdikJointBone2dNode(joint_idx int, bone2d_nodepath string) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
 	Advanced(self).SetCcdikJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
+	return self
 }
 
 /*
@@ -161,9 +164,12 @@ func (self Instance) GetCcdikJointBone2dNode(joint_idx int) string { //gd:Skelet
 
 /*
 Sets the bone index, 'bone_idx', of the CCDIK joint at 'joint_idx'. When possible, this will also update the bone2d_node of the CCDIK joint based on data provided by the linked skeleton.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
+func (self Instance) SetCcdikJointBoneIndex(joint_idx int, bone_idx int) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
 	Advanced(self).SetCcdikJointBoneIndex(int64(joint_idx), int64(bone_idx))
+	return self
 }
 
 /*
@@ -177,9 +183,12 @@ func (self Instance) GetCcdikJointBoneIndex(joint_idx int) int { //gd:SkeletonMo
 
 /*
 Sets whether the joint at 'joint_idx' is set to rotate from the joint, true, or to rotate from the tip, false.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointRotateFromJoint(joint_idx int, rotate_from_joint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
+func (self Instance) SetCcdikJointRotateFromJoint(joint_idx int, rotate_from_joint bool) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
 	Advanced(self).SetCcdikJointRotateFromJoint(int64(joint_idx), rotate_from_joint)
+	return self
 }
 
 /*
@@ -191,9 +200,12 @@ func (self Instance) GetCcdikJointRotateFromJoint(joint_idx int) bool { //gd:Ske
 
 /*
 Determines whether angle constraints on the CCDIK joint at 'joint_idx' are enabled. When true, constraints will be enabled and taken into account when solving.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointEnableConstraint(joint_idx int, enable_constraint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
+func (self Instance) SetCcdikJointEnableConstraint(joint_idx int, enable_constraint bool) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
 	Advanced(self).SetCcdikJointEnableConstraint(int64(joint_idx), enable_constraint)
+	return self
 }
 
 /*
@@ -205,9 +217,12 @@ func (self Instance) GetCcdikJointEnableConstraint(joint_idx int) bool { //gd:Sk
 
 /*
 Sets the minimum angle constraint for the joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Angle.Radians) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
+func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Angle.Radians) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
 	Advanced(self).SetCcdikJointConstraintAngleMin(int64(joint_idx), float64(angle_min))
+	return self
 }
 
 /*
@@ -219,9 +234,12 @@ func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Angle.Radian
 
 /*
 Sets the maximum angle constraint for the joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Angle.Radians) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
+func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Angle.Radians) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
 	Advanced(self).SetCcdikJointConstraintAngleMax(int64(joint_idx), float64(angle_max))
+	return self
 }
 
 /*
@@ -235,9 +253,12 @@ func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Angle.Radian
 Sets whether the CCDIK joint at 'joint_idx' uses an inverted joint constraint.
 
 An inverted joint constraint only constraints the CCDIK joint to the angles outside of the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCcdikJointConstraintAngleInvert(joint_idx int, invert bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
+func (self Instance) SetCcdikJointConstraintAngleInvert(joint_idx int, invert bool) Instance { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
 	Advanced(self).SetCcdikJointConstraintAngleInvert(int64(joint_idx), invert)
+	return self
 }
 
 /*
@@ -299,9 +320,10 @@ func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNodepath sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNodepath(value string) {
+// SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNodepath(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -313,9 +335,10 @@ func (self Instance) TipNodepath() string {
 	return string(class(self).GetTipNode().String())
 }
 
-// SetTipNodepath sets the property returned by [GetTipNode].
-func (self Instance) SetTipNodepath(value string) {
+// SetTipNodepath sets the property returned by [GetTipNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTipNodepath(value string) Instance {
 	class(self).SetTipNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -325,9 +348,10 @@ func (self Instance) CcdikDataChainLength() int {
 	return int(int(class(self).GetCcdikDataChainLength()))
 }
 
-// SetCcdikDataChainLength sets the property returned by [GetCcdikDataChainLength].
-func (self Instance) SetCcdikDataChainLength(value int) {
+// SetCcdikDataChainLength sets the property returned by [GetCcdikDataChainLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCcdikDataChainLength(value int) Instance {
 	class(self).SetCcdikDataChainLength(int64(value))
+	return self
 }
 
 //go:nosplit

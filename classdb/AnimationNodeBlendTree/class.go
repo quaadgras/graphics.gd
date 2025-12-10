@@ -212,9 +212,12 @@ func (self Instance) GetNodeList() []string { //gd:AnimationNodeBlendTree.get_no
 
 /*
 Modifies the position of a sub animation node.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeBlendTree.set_node_position
+func (self Instance) SetNodePosition(name string, position Vector2.XY) Instance { //gd:AnimationNodeBlendTree.set_node_position
 	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -274,9 +277,10 @@ func (self Instance) GraphOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetGraphOffset())
 }
 
-// SetGraphOffset sets the property returned by [GetGraphOffset].
-func (self Instance) SetGraphOffset(value Vector2.XY) {
+// SetGraphOffset sets the property returned by [GetGraphOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGraphOffset(value Vector2.XY) Instance {
 	class(self).SetGraphOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -403,12 +407,13 @@ func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeBlendTree.get_
 /*
 Emitted when the input port information is changed.
 */
-func (self Instance) OnNodeChanged(cb func(node_name string), flags ...Signal.Flags) {
+func (self Instance) OnNodeChanged(cb func(node_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeChanged() Signal.Any {

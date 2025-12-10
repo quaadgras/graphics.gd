@@ -202,10 +202,13 @@ func (self Instance) GetAllowedTypes() []string { //gd:EditorResourcePicker.get_
 /*
 Sets the toggle mode state for the main button. Works only if [ToggleMode] is set to true.
 
+Returns 'self' to enable method chaining.
+
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.ToggleMode
 */
-func (self Instance) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
+func (self Instance) SetTogglePressed(pressed bool) Instance { //gd:EditorResourcePicker.set_toggle_pressed
 	Advanced(self).SetTogglePressed(pressed)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -257,9 +260,10 @@ func (self Instance) BaseType() string {
 	return string(class(self).GetBaseType().String())
 }
 
-// SetBaseType sets the property returned by [GetBaseType].
-func (self Instance) SetBaseType(value string) {
+// SetBaseType sets the property returned by [GetBaseType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaseType(value string) Instance {
 	class(self).SetBaseType(String.New(value))
+	return self
 }
 
 /*
@@ -269,9 +273,10 @@ func (self Instance) EditedResource() Resource.Instance {
 	return Resource.Instance(class(self).GetEditedResource())
 }
 
-// SetEditedResource sets the property returned by [GetEditedResource].
-func (self Instance) SetEditedResource(value Resource.Instance) {
+// SetEditedResource sets the property returned by [GetEditedResource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditedResource(value Resource.Instance) Instance {
 	class(self).SetEditedResource(value)
+	return self
 }
 
 /*
@@ -281,9 +286,10 @@ func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
-// SetEditable sets the property returned by [IsEditable].
-func (self Instance) SetEditable(value bool) {
+// SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditable(value bool) Instance {
 	class(self).SetEditable(value)
+	return self
 }
 
 /*
@@ -295,9 +301,10 @@ func (self Instance) ToggleMode() bool {
 	return bool(class(self).IsToggleMode())
 }
 
-// SetToggleMode sets the property returned by [IsToggleMode].
-func (self Instance) SetToggleMode(value bool) {
+// SetToggleMode sets the property returned by [IsToggleMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetToggleMode(value bool) Instance {
 	class(self).SetToggleMode(value)
+	return self
 }
 
 /*
@@ -405,12 +412,13 @@ func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
 /*
 Emitted when the resource value was set and user clicked to edit it. When 'inspect' is true, the signal was caused by the context menu "Edit" or "Inspect" option.
 */
-func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, inspect bool), flags ...Signal.Flags) {
+func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, inspect bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceSelected() Signal.Any {
@@ -420,12 +428,13 @@ func (self class) ResourceSelected() Signal.Any {
 /*
 Emitted when the value of the edited resource was changed.
 */
-func (self Instance) OnResourceChanged(cb func(resource Resource.Instance), flags ...Signal.Flags) {
+func (self Instance) OnResourceChanged(cb func(resource Resource.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceChanged() Signal.Any {

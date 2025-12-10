@@ -170,9 +170,10 @@ func (self Instance) Value() any {
 	return any(class(self).GetValue().Interface())
 }
 
-// SetValue sets the property returned by [GetValue].
-func (self Instance) SetValue(value any) {
+// SetValue sets the property returned by [GetValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetValue(value any) Instance {
 	class(self).SetValue(variant.New(value))
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) ConstantId() int {
 	return int(int(class(self).GetConstantId()))
 }
 
-// SetConstantId sets the property returned by [GetConstantId].
-func (self Instance) SetConstantId(value int) {
+// SetConstantId sets the property returned by [GetConstantId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstantId(value int) Instance {
 	class(self).SetConstantId(int64(value))
+	return self
 }
 
 //go:nosplit

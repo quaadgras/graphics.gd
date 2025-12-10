@@ -166,9 +166,12 @@ func (self MoreArgs) AddBlendPoint(node AnimationRootNode.Instance, pos Float.X,
 
 /*
 Updates the position of the point at index 'point' on the blend axis.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendPointPosition(point int, pos Float.X) { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
+func (self Instance) SetBlendPointPosition(point int, pos Float.X) Instance { //gd:AnimationNodeBlendSpace1D.set_blend_point_position
 	Advanced(self).SetBlendPointPosition(int64(point), float64(pos))
+	return self
 }
 
 /*
@@ -181,10 +184,13 @@ func (self Instance) GetBlendPointPosition(point int) Float.X { //gd:AnimationNo
 /*
 Changes the [AnimationNode] referenced by the point at index 'point'.
 
+Returns 'self' to enable method chaining.
+
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
-func (self Instance) SetBlendPointNode(point int, node AnimationRootNode.Instance) { //gd:AnimationNodeBlendSpace1D.set_blend_point_node
+func (self Instance) SetBlendPointNode(point int, node AnimationRootNode.Instance) Instance { //gd:AnimationNodeBlendSpace1D.set_blend_point_node
 	Advanced(self).SetBlendPointNode(int64(point), node)
+	return self
 }
 
 /*
@@ -262,9 +268,10 @@ func (self Instance) MinSpace() Float.X {
 	return Float.X(Float.X(class(self).GetMinSpace()))
 }
 
-// SetMinSpace sets the property returned by [GetMinSpace].
-func (self Instance) SetMinSpace(value Float.X) {
+// SetMinSpace sets the property returned by [GetMinSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinSpace(value Float.X) Instance {
 	class(self).SetMinSpace(float64(value))
+	return self
 }
 
 /*
@@ -276,9 +283,10 @@ func (self Instance) MaxSpace() Float.X {
 	return Float.X(Float.X(class(self).GetMaxSpace()))
 }
 
-// SetMaxSpace sets the property returned by [GetMaxSpace].
-func (self Instance) SetMaxSpace(value Float.X) {
+// SetMaxSpace sets the property returned by [GetMaxSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSpace(value Float.X) Instance {
 	class(self).SetMaxSpace(float64(value))
+	return self
 }
 
 /*
@@ -288,9 +296,10 @@ func (self Instance) Snap() Float.X {
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
-// SetSnap sets the property returned by [GetSnap].
-func (self Instance) SetSnap(value Float.X) {
+// SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnap(value Float.X) Instance {
 	class(self).SetSnap(float64(value))
+	return self
 }
 
 /*
@@ -300,9 +309,10 @@ func (self Instance) ValueLabel() string {
 	return string(class(self).GetValueLabel().String())
 }
 
-// SetValueLabel sets the property returned by [GetValueLabel].
-func (self Instance) SetValueLabel(value string) {
+// SetValueLabel sets the property returned by [GetValueLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetValueLabel(value string) Instance {
 	class(self).SetValueLabel(String.New(value))
+	return self
 }
 
 /*
@@ -312,9 +322,10 @@ func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
-// SetBlendMode sets the property returned by [GetBlendMode].
-func (self Instance) SetBlendMode(value BlendMode) {
+// SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendMode(value BlendMode) Instance {
 	class(self).SetBlendMode(value)
+	return self
 }
 
 /*
@@ -326,9 +337,10 @@ func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
-// SetSync sets the property returned by [IsUsingSync].
-func (self Instance) SetSync(value bool) {
+// SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSync(value bool) Instance {
 	class(self).SetUseSync(value)
+	return self
 }
 
 /*

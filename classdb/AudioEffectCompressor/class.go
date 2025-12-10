@@ -188,9 +188,10 @@ func (self Instance) Threshold() Float.X {
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
-// SetThreshold sets the property returned by [GetThreshold].
-func (self Instance) SetThreshold(value Float.X) {
+// SetThreshold sets the property returned by [GetThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThreshold(value Float.X) Instance {
 	class(self).SetThreshold(float64(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
-// SetRatio sets the property returned by [GetRatio].
-func (self Instance) SetRatio(value Float.X) {
+// SetRatio sets the property returned by [GetRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRatio(value Float.X) Instance {
 	class(self).SetRatio(float64(value))
+	return self
 }
 
 /*
@@ -212,9 +214,10 @@ func (self Instance) Gain() Float.X {
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
-// SetGain sets the property returned by [GetGain].
-func (self Instance) SetGain(value Float.X) {
+// SetGain sets the property returned by [GetGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGain(value Float.X) Instance {
 	class(self).SetGain(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +227,10 @@ func (self Instance) AttackUs() Float.X {
 	return Float.X(Float.X(class(self).GetAttackUs()))
 }
 
-// SetAttackUs sets the property returned by [GetAttackUs].
-func (self Instance) SetAttackUs(value Float.X) {
+// SetAttackUs sets the property returned by [GetAttackUs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAttackUs(value Float.X) Instance {
 	class(self).SetAttackUs(float64(value))
+	return self
 }
 
 /*
@@ -236,9 +240,10 @@ func (self Instance) ReleaseMs() Float.X {
 	return Float.X(Float.X(class(self).GetReleaseMs()))
 }
 
-// SetReleaseMs sets the property returned by [GetReleaseMs].
-func (self Instance) SetReleaseMs(value Float.X) {
+// SetReleaseMs sets the property returned by [GetReleaseMs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReleaseMs(value Float.X) Instance {
 	class(self).SetReleaseMs(float64(value))
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) Mix() Float.X {
 	return Float.X(Float.X(class(self).GetMix()))
 }
 
-// SetMix sets the property returned by [GetMix].
-func (self Instance) SetMix(value Float.X) {
+// SetMix sets the property returned by [GetMix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMix(value Float.X) Instance {
 	class(self).SetMix(float64(value))
+	return self
 }
 
 /*
@@ -260,9 +266,10 @@ func (self Instance) Sidechain() string {
 	return string(class(self).GetSidechain().String())
 }
 
-// SetSidechain sets the property returned by [GetSidechain].
-func (self Instance) SetSidechain(value string) {
+// SetSidechain sets the property returned by [GetSidechain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSidechain(value string) Instance {
 	class(self).SetSidechain(String.Name(String.New(value)))
+	return self
 }
 
 //go:nosplit

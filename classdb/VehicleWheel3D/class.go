@@ -255,9 +255,10 @@ func (self Instance) EngineForce() Float.X {
 	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
-// SetEngineForce sets the property returned by [GetEngineForce].
-func (self Instance) SetEngineForce(value Float.X) {
+// SetEngineForce sets the property returned by [GetEngineForce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEngineForce(value Float.X) Instance {
 	class(self).SetEngineForce(float64(value))
+	return self
 }
 
 /*
@@ -269,9 +270,10 @@ func (self Instance) Brake() Float.X {
 	return Float.X(Float.X(class(self).GetBrake()))
 }
 
-// SetBrake sets the property returned by [GetBrake].
-func (self Instance) SetBrake(value Float.X) {
+// SetBrake sets the property returned by [GetBrake]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBrake(value Float.X) Instance {
 	class(self).SetBrake(float64(value))
+	return self
 }
 
 /*
@@ -281,9 +283,10 @@ func (self Instance) Steering() Float.X {
 	return Float.X(Float.X(class(self).GetSteering()))
 }
 
-// SetSteering sets the property returned by [GetSteering].
-func (self Instance) SetSteering(value Float.X) {
+// SetSteering sets the property returned by [GetSteering]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSteering(value Float.X) Instance {
 	class(self).SetSteering(float64(value))
+	return self
 }
 
 /*
@@ -296,9 +299,10 @@ func (self Instance) UseAsTraction() bool {
 	return bool(class(self).IsUsedAsTraction())
 }
 
-// SetUseAsTraction sets the property returned by [IsUsedAsTraction].
-func (self Instance) SetUseAsTraction(value bool) {
+// SetUseAsTraction sets the property returned by [IsUsedAsTraction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAsTraction(value bool) Instance {
 	class(self).SetUseAsTraction(value)
+	return self
 }
 
 /*
@@ -311,9 +315,10 @@ func (self Instance) UseAsSteering() bool {
 	return bool(class(self).IsUsedAsSteering())
 }
 
-// SetUseAsSteering sets the property returned by [IsUsedAsSteering].
-func (self Instance) SetUseAsSteering(value bool) {
+// SetUseAsSteering sets the property returned by [IsUsedAsSteering]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAsSteering(value bool) Instance {
 	class(self).SetUseAsSteering(value)
+	return self
 }
 
 /*
@@ -323,9 +328,10 @@ func (self Instance) WheelRollInfluence() Float.X {
 	return Float.X(Float.X(class(self).GetRollInfluence()))
 }
 
-// SetWheelRollInfluence sets the property returned by [GetRollInfluence].
-func (self Instance) SetWheelRollInfluence(value Float.X) {
+// SetWheelRollInfluence sets the property returned by [GetRollInfluence]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWheelRollInfluence(value Float.X) Instance {
 	class(self).SetRollInfluence(float64(value))
+	return self
 }
 
 /*
@@ -335,9 +341,10 @@ func (self Instance) WheelRadius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetWheelRadius sets the property returned by [GetRadius].
-func (self Instance) SetWheelRadius(value Float.X) {
+// SetWheelRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWheelRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -347,9 +354,10 @@ func (self Instance) WheelRestLength() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionRestLength()))
 }
 
-// SetWheelRestLength sets the property returned by [GetSuspensionRestLength].
-func (self Instance) SetWheelRestLength(value Float.X) {
+// SetWheelRestLength sets the property returned by [GetSuspensionRestLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWheelRestLength(value Float.X) Instance {
 	class(self).SetSuspensionRestLength(float64(value))
+	return self
 }
 
 /*
@@ -361,9 +369,10 @@ func (self Instance) WheelFrictionSlip() Float.X {
 	return Float.X(Float.X(class(self).GetFrictionSlip()))
 }
 
-// SetWheelFrictionSlip sets the property returned by [GetFrictionSlip].
-func (self Instance) SetWheelFrictionSlip(value Float.X) {
+// SetWheelFrictionSlip sets the property returned by [GetFrictionSlip]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWheelFrictionSlip(value Float.X) Instance {
 	class(self).SetFrictionSlip(float64(value))
+	return self
 }
 
 /*
@@ -373,9 +382,10 @@ func (self Instance) SuspensionTravel() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionTravel()))
 }
 
-// SetSuspensionTravel sets the property returned by [GetSuspensionTravel].
-func (self Instance) SetSuspensionTravel(value Float.X) {
+// SetSuspensionTravel sets the property returned by [GetSuspensionTravel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSuspensionTravel(value Float.X) Instance {
 	class(self).SetSuspensionTravel(float64(value))
+	return self
 }
 
 /*
@@ -385,9 +395,10 @@ func (self Instance) SuspensionStiffness() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionStiffness()))
 }
 
-// SetSuspensionStiffness sets the property returned by [GetSuspensionStiffness].
-func (self Instance) SetSuspensionStiffness(value Float.X) {
+// SetSuspensionStiffness sets the property returned by [GetSuspensionStiffness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSuspensionStiffness(value Float.X) Instance {
 	class(self).SetSuspensionStiffness(float64(value))
+	return self
 }
 
 /*
@@ -400,9 +411,10 @@ func (self Instance) SuspensionMaxForce() Float.X {
 	return Float.X(Float.X(class(self).GetSuspensionMaxForce()))
 }
 
-// SetSuspensionMaxForce sets the property returned by [GetSuspensionMaxForce].
-func (self Instance) SetSuspensionMaxForce(value Float.X) {
+// SetSuspensionMaxForce sets the property returned by [GetSuspensionMaxForce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSuspensionMaxForce(value Float.X) Instance {
 	class(self).SetSuspensionMaxForce(float64(value))
+	return self
 }
 
 /*
@@ -412,9 +424,10 @@ func (self Instance) DampingCompression() Float.X {
 	return Float.X(Float.X(class(self).GetDampingCompression()))
 }
 
-// SetDampingCompression sets the property returned by [GetDampingCompression].
-func (self Instance) SetDampingCompression(value Float.X) {
+// SetDampingCompression sets the property returned by [GetDampingCompression]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingCompression(value Float.X) Instance {
 	class(self).SetDampingCompression(float64(value))
+	return self
 }
 
 /*
@@ -426,9 +439,10 @@ func (self Instance) DampingRelaxation() Float.X {
 	return Float.X(Float.X(class(self).GetDampingRelaxation()))
 }
 
-// SetDampingRelaxation sets the property returned by [GetDampingRelaxation].
-func (self Instance) SetDampingRelaxation(value Float.X) {
+// SetDampingRelaxation sets the property returned by [GetDampingRelaxation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingRelaxation(value Float.X) Instance {
 	class(self).SetDampingRelaxation(float64(value))
+	return self
 }
 
 //go:nosplit

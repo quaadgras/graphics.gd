@@ -180,9 +180,10 @@ func (self Instance) From() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetFrom())
 }
 
-// SetFrom sets the property returned by [GetFrom].
-func (self Instance) SetFrom(value Transform2D.OriginXY) {
+// SetFrom sets the property returned by [GetFrom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrom(value Transform2D.OriginXY) Instance {
 	class(self).SetFrom(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -192,9 +193,10 @@ func (self Instance) Motion() Vector2.XY {
 	return Vector2.XY(class(self).GetMotion())
 }
 
-// SetMotion sets the property returned by [GetMotion].
-func (self Instance) SetMotion(value Vector2.XY) {
+// SetMotion sets the property returned by [GetMotion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotion(value Vector2.XY) Instance {
 	class(self).SetMotion(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -204,9 +206,10 @@ func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-// SetMargin sets the property returned by [GetMargin].
-func (self Instance) SetMargin(value Float.X) {
+// SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargin(value Float.X) Instance {
 	class(self).SetMargin(float64(value))
+	return self
 }
 
 /*
@@ -218,9 +221,10 @@ func (self Instance) CollideSeparationRay() bool {
 	return bool(class(self).IsCollideSeparationRayEnabled())
 }
 
-// SetCollideSeparationRay sets the property returned by [IsCollideSeparationRayEnabled].
-func (self Instance) SetCollideSeparationRay(value bool) {
+// SetCollideSeparationRay sets the property returned by [IsCollideSeparationRayEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideSeparationRay(value bool) Instance {
 	class(self).SetCollideSeparationRayEnabled(value)
+	return self
 }
 
 /*
@@ -234,9 +238,10 @@ func (self Instance) ExcludeBodies() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludeBodies())))
 }
 
-// SetExcludeBodies sets the property returned by [GetExcludeBodies].
-func (self Instance) SetExcludeBodies(value []RID.Any) {
+// SetExcludeBodies sets the property returned by [GetExcludeBodies]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExcludeBodies(value []RID.Any) Instance {
 	class(self).SetExcludeBodies(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) ExcludeObjects() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetExcludeObjects())))
 }
 
-// SetExcludeObjects sets the property returned by [GetExcludeObjects].
-func (self Instance) SetExcludeObjects(value []int) {
+// SetExcludeObjects sets the property returned by [GetExcludeObjects]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExcludeObjects(value []int) Instance {
 	class(self).SetExcludeObjects(gd.ArrayFromSlice[Array.Contains[int64]](value))
+	return self
 }
 
 /*
@@ -264,9 +270,10 @@ func (self Instance) RecoveryAsCollision() bool {
 	return bool(class(self).IsRecoveryAsCollisionEnabled())
 }
 
-// SetRecoveryAsCollision sets the property returned by [IsRecoveryAsCollisionEnabled].
-func (self Instance) SetRecoveryAsCollision(value bool) {
+// SetRecoveryAsCollision sets the property returned by [IsRecoveryAsCollisionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRecoveryAsCollision(value bool) Instance {
 	class(self).SetRecoveryAsCollisionEnabled(value)
+	return self
 }
 
 //go:nosplit

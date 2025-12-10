@@ -174,9 +174,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -186,9 +187,10 @@ func (self Instance) CentralHorizontalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetCentralHorizontalAngle()))
 }
 
-// SetCentralHorizontalAngle sets the property returned by [GetCentralHorizontalAngle].
-func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) {
+// SetCentralHorizontalAngle sets the property returned by [GetCentralHorizontalAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) Instance {
 	class(self).SetCentralHorizontalAngle(float64(value))
+	return self
 }
 
 /*
@@ -200,9 +202,10 @@ func (self Instance) UpperVerticalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetUpperVerticalAngle()))
 }
 
-// SetUpperVerticalAngle sets the property returned by [GetUpperVerticalAngle].
-func (self Instance) SetUpperVerticalAngle(value Angle.Radians) {
+// SetUpperVerticalAngle sets the property returned by [GetUpperVerticalAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpperVerticalAngle(value Angle.Radians) Instance {
 	class(self).SetUpperVerticalAngle(float64(value))
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) LowerVerticalAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetLowerVerticalAngle()))
 }
 
-// SetLowerVerticalAngle sets the property returned by [GetLowerVerticalAngle].
-func (self Instance) SetLowerVerticalAngle(value Angle.Radians) {
+// SetLowerVerticalAngle sets the property returned by [GetLowerVerticalAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLowerVerticalAngle(value Angle.Radians) Instance {
 	class(self).SetLowerVerticalAngle(float64(value))
+	return self
 }
 
 /*
@@ -226,9 +230,10 @@ func (self Instance) FallbackSegments() int {
 	return int(int(class(self).GetFallbackSegments()))
 }
 
-// SetFallbackSegments sets the property returned by [GetFallbackSegments].
-func (self Instance) SetFallbackSegments(value int) {
+// SetFallbackSegments sets the property returned by [GetFallbackSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbackSegments(value int) Instance {
 	class(self).SetFallbackSegments(int64(value))
+	return self
 }
 
 //go:nosplit

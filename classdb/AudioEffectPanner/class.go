@@ -164,9 +164,10 @@ func (self Instance) Pan() Float.X {
 	return Float.X(Float.X(class(self).GetPan()))
 }
 
-// SetPan sets the property returned by [GetPan].
-func (self Instance) SetPan(value Float.X) {
+// SetPan sets the property returned by [GetPan]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPan(value Float.X) Instance {
 	class(self).SetPan(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -321,9 +321,10 @@ func (self Instance) Emitting() bool {
 	return bool(class(self).IsEmitting())
 }
 
-// SetEmitting sets the property returned by [IsEmitting].
-func (self Instance) SetEmitting(value bool) {
+// SetEmitting sets the property returned by [IsEmitting]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmitting(value bool) Instance {
 	class(self).SetEmitting(value)
+	return self
 }
 
 /*
@@ -337,9 +338,10 @@ func (self Instance) Amount() int {
 	return int(int(class(self).GetAmount()))
 }
 
-// SetAmount sets the property returned by [GetAmount].
-func (self Instance) SetAmount(value int) {
+// SetAmount sets the property returned by [GetAmount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAmount(value int) Instance {
 	class(self).SetAmount(int64(value))
+	return self
 }
 
 /*
@@ -354,9 +356,10 @@ func (self Instance) AmountRatio() Float.X {
 	return Float.X(Float.X(class(self).GetAmountRatio()))
 }
 
-// SetAmountRatio sets the property returned by [GetAmountRatio].
-func (self Instance) SetAmountRatio(value Float.X) {
+// SetAmountRatio sets the property returned by [GetAmountRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAmountRatio(value Float.X) Instance {
 	class(self).SetAmountRatio(float64(value))
+	return self
 }
 
 /*
@@ -372,9 +375,10 @@ func (self Instance) SubEmitter() string {
 	return string(class(self).GetSubEmitter().String())
 }
 
-// SetSubEmitter sets the property returned by [GetSubEmitter].
-func (self Instance) SetSubEmitter(value string) {
+// SetSubEmitter sets the property returned by [GetSubEmitter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubEmitter(value string) Instance {
 	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -384,9 +388,10 @@ func (self Instance) Lifetime() Float.X {
 	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
-// SetLifetime sets the property returned by [GetLifetime].
-func (self Instance) SetLifetime(value Float.X) {
+// SetLifetime sets the property returned by [GetLifetime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLifetime(value Float.X) Instance {
 	class(self).SetLifetime(float64(value))
+	return self
 }
 
 /*
@@ -400,9 +405,10 @@ func (self Instance) InterpToEnd() Float.X {
 	return Float.X(Float.X(class(self).GetInterpToEnd()))
 }
 
-// SetInterpToEnd sets the property returned by [GetInterpToEnd].
-func (self Instance) SetInterpToEnd(value Float.X) {
+// SetInterpToEnd sets the property returned by [GetInterpToEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterpToEnd(value Float.X) Instance {
 	class(self).SetInterpToEnd(float64(value))
+	return self
 }
 
 /*
@@ -414,9 +420,10 @@ func (self Instance) OneShot() bool {
 	return bool(class(self).GetOneShot())
 }
 
-// SetOneShot sets the property returned by [GetOneShot].
-func (self Instance) SetOneShot(value bool) {
+// SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneShot(value bool) Instance {
 	class(self).SetOneShot(value)
+	return self
 }
 
 /*
@@ -430,9 +437,10 @@ func (self Instance) Preprocess() Float.X {
 	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
-// SetPreprocess sets the property returned by [GetPreProcessTime].
-func (self Instance) SetPreprocess(value Float.X) {
+// SetPreprocess sets the property returned by [GetPreProcessTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreprocess(value Float.X) Instance {
 	class(self).SetPreProcessTime(float64(value))
+	return self
 }
 
 /*
@@ -442,9 +450,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 /*
@@ -454,9 +463,10 @@ func (self Instance) Explosiveness() Float.X {
 	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
-// SetExplosiveness sets the property returned by [GetExplosivenessRatio].
-func (self Instance) SetExplosiveness(value Float.X) {
+// SetExplosiveness sets the property returned by [GetExplosivenessRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExplosiveness(value Float.X) Instance {
 	class(self).SetExplosivenessRatio(float64(value))
+	return self
 }
 
 /*
@@ -466,9 +476,10 @@ func (self Instance) Randomness() Float.X {
 	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
-// SetRandomness sets the property returned by [GetRandomnessRatio].
-func (self Instance) SetRandomness(value Float.X) {
+// SetRandomness sets the property returned by [GetRandomnessRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRandomness(value Float.X) Instance {
 	class(self).SetRandomnessRatio(float64(value))
+	return self
 }
 
 /*
@@ -480,9 +491,10 @@ func (self Instance) UseFixedSeed() bool {
 	return bool(class(self).GetUseFixedSeed())
 }
 
-// SetUseFixedSeed sets the property returned by [GetUseFixedSeed].
-func (self Instance) SetUseFixedSeed(value bool) {
+// SetUseFixedSeed sets the property returned by [GetUseFixedSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseFixedSeed(value bool) Instance {
 	class(self).SetUseFixedSeed(value)
+	return self
 }
 
 /*
@@ -494,9 +506,10 @@ func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
-// SetSeed sets the property returned by [GetSeed].
-func (self Instance) SetSeed(value int) {
+// SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeed(value int) Instance {
 	class(self).SetSeed(int64(value))
+	return self
 }
 
 /*
@@ -506,9 +519,10 @@ func (self Instance) FixedFps() int {
 	return int(int(class(self).GetFixedFps()))
 }
 
-// SetFixedFps sets the property returned by [GetFixedFps].
-func (self Instance) SetFixedFps(value int) {
+// SetFixedFps sets the property returned by [GetFixedFps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedFps(value int) Instance {
 	class(self).SetFixedFps(int64(value))
+	return self
 }
 
 /*
@@ -520,9 +534,10 @@ func (self Instance) Interpolate() bool {
 	return bool(class(self).GetInterpolate())
 }
 
-// SetInterpolate sets the property returned by [GetInterpolate].
-func (self Instance) SetInterpolate(value bool) {
+// SetInterpolate sets the property returned by [GetInterpolate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterpolate(value bool) Instance {
 	class(self).SetInterpolate(value)
+	return self
 }
 
 /*
@@ -532,9 +547,10 @@ func (self Instance) FractDelta() bool {
 	return bool(class(self).GetFractionalDelta())
 }
 
-// SetFractDelta sets the property returned by [GetFractionalDelta].
-func (self Instance) SetFractDelta(value bool) {
+// SetFractDelta sets the property returned by [GetFractionalDelta]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractDelta(value bool) Instance {
 	class(self).SetFractionalDelta(value)
+	return self
 }
 
 /*
@@ -548,9 +564,10 @@ func (self Instance) CollisionBaseSize() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionBaseSize()))
 }
 
-// SetCollisionBaseSize sets the property returned by [GetCollisionBaseSize].
-func (self Instance) SetCollisionBaseSize(value Float.X) {
+// SetCollisionBaseSize sets the property returned by [GetCollisionBaseSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionBaseSize(value Float.X) Instance {
 	class(self).SetCollisionBaseSize(float64(value))
+	return self
 }
 
 /*
@@ -569,9 +586,10 @@ func (self Instance) VisibilityAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetVisibilityAabb())
 }
 
-// SetVisibilityAabb sets the property returned by [GetVisibilityAabb].
-func (self Instance) SetVisibilityAabb(value AABB.PositionSize) {
+// SetVisibilityAabb sets the property returned by [GetVisibilityAabb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityAabb(value AABB.PositionSize) Instance {
 	class(self).SetVisibilityAabb(AABB.PositionSize(value))
+	return self
 }
 
 /*
@@ -583,9 +601,10 @@ func (self Instance) LocalCoords() bool {
 	return bool(class(self).GetUseLocalCoordinates())
 }
 
-// SetLocalCoords sets the property returned by [GetUseLocalCoordinates].
-func (self Instance) SetLocalCoords(value bool) {
+// SetLocalCoords sets the property returned by [GetUseLocalCoordinates]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocalCoords(value bool) Instance {
 	class(self).SetUseLocalCoordinates(value)
+	return self
 }
 
 /*
@@ -597,18 +616,20 @@ func (self Instance) DrawOrder() DrawOrder {
 	return DrawOrder(class(self).GetDrawOrder())
 }
 
-// SetDrawOrder sets the property returned by [GetDrawOrder].
-func (self Instance) SetDrawOrder(value DrawOrder) {
+// SetDrawOrder sets the property returned by [GetDrawOrder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawOrder(value DrawOrder) Instance {
 	class(self).SetDrawOrder(value)
+	return self
 }
 
 func (self Instance) TransformAlign() TransformAlign {
 	return TransformAlign(class(self).GetTransformAlign())
 }
 
-// SetTransformAlign sets the property returned by [GetTransformAlign].
-func (self Instance) SetTransformAlign(value TransformAlign) {
+// SetTransformAlign sets the property returned by [GetTransformAlign]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransformAlign(value TransformAlign) Instance {
 	class(self).SetTransformAlign(value)
+	return self
 }
 
 /*
@@ -628,9 +649,10 @@ func (self Instance) TrailEnabled() bool {
 	return bool(class(self).IsTrailEnabled())
 }
 
-// SetTrailEnabled sets the property returned by [IsTrailEnabled].
-func (self Instance) SetTrailEnabled(value bool) {
+// SetTrailEnabled sets the property returned by [IsTrailEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTrailEnabled(value bool) Instance {
 	class(self).SetTrailEnabled(value)
+	return self
 }
 
 /*
@@ -642,9 +664,10 @@ func (self Instance) TrailLifetime() Float.X {
 	return Float.X(Float.X(class(self).GetTrailLifetime()))
 }
 
-// SetTrailLifetime sets the property returned by [GetTrailLifetime].
-func (self Instance) SetTrailLifetime(value Float.X) {
+// SetTrailLifetime sets the property returned by [GetTrailLifetime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTrailLifetime(value Float.X) Instance {
 	class(self).SetTrailLifetime(float64(value))
+	return self
 }
 
 /*
@@ -658,9 +681,10 @@ func (self Instance) ProcessMaterial() Material.Instance {
 	return Material.Instance(class(self).GetProcessMaterial())
 }
 
-// SetProcessMaterial sets the property returned by [GetProcessMaterial].
-func (self Instance) SetProcessMaterial(value Material.Instance) {
+// SetProcessMaterial sets the property returned by [GetProcessMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessMaterial(value Material.Instance) Instance {
 	class(self).SetProcessMaterial(value)
+	return self
 }
 
 /*
@@ -670,9 +694,10 @@ func (self Instance) DrawPasses() int {
 	return int(int(class(self).GetDrawPasses()))
 }
 
-// SetDrawPasses sets the property returned by [GetDrawPasses].
-func (self Instance) SetDrawPasses(value int) {
+// SetDrawPasses sets the property returned by [GetDrawPasses]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawPasses(value int) Instance {
 	class(self).SetDrawPasses(int64(value))
+	return self
 }
 
 /*
@@ -684,9 +709,10 @@ func (self Instance) DrawPass1() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(0))
 }
 
-// SetDrawPass1 sets the property returned by [GetDrawPassMesh].
-func (self Instance) SetDrawPass1(value Mesh.Instance) {
+// SetDrawPass1 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawPass1(value Mesh.Instance) Instance {
 	class(self).SetDrawPassMesh(0, value)
+	return self
 }
 
 /*
@@ -698,9 +724,10 @@ func (self Instance) DrawPass2() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(1))
 }
 
-// SetDrawPass2 sets the property returned by [GetDrawPassMesh].
-func (self Instance) SetDrawPass2(value Mesh.Instance) {
+// SetDrawPass2 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawPass2(value Mesh.Instance) Instance {
 	class(self).SetDrawPassMesh(1, value)
+	return self
 }
 
 /*
@@ -712,9 +739,10 @@ func (self Instance) DrawPass3() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(2))
 }
 
-// SetDrawPass3 sets the property returned by [GetDrawPassMesh].
-func (self Instance) SetDrawPass3(value Mesh.Instance) {
+// SetDrawPass3 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawPass3(value Mesh.Instance) Instance {
 	class(self).SetDrawPassMesh(2, value)
+	return self
 }
 
 /*
@@ -726,18 +754,20 @@ func (self Instance) DrawPass4() Mesh.Instance {
 	return Mesh.Instance(class(self).GetDrawPassMesh(3))
 }
 
-// SetDrawPass4 sets the property returned by [GetDrawPassMesh].
-func (self Instance) SetDrawPass4(value Mesh.Instance) {
+// SetDrawPass4 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawPass4(value Mesh.Instance) Instance {
 	class(self).SetDrawPassMesh(3, value)
+	return self
 }
 
 func (self Instance) DrawSkin() Skin.Instance {
 	return Skin.Instance(class(self).GetSkin())
 }
 
-// SetDrawSkin sets the property returned by [GetSkin].
-func (self Instance) SetDrawSkin(value Skin.Instance) {
+// SetDrawSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawSkin(value Skin.Instance) Instance {
 	class(self).SetSkin(value)
+	return self
 }
 
 //go:nosplit
@@ -1156,12 +1186,13 @@ Note: For [OneShot] emitters, due to the particles being computed on the GPU, th
 [OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
 [Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

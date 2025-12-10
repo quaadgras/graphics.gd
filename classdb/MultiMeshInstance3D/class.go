@@ -175,9 +175,10 @@ func (self Instance) Multimesh() MultiMesh.Instance {
 	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
-// SetMultimesh sets the property returned by [GetMultimesh].
-func (self Instance) SetMultimesh(value MultiMesh.Instance) {
+// SetMultimesh sets the property returned by [GetMultimesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance {
 	class(self).SetMultimesh(value)
+	return self
 }
 
 //go:nosplit

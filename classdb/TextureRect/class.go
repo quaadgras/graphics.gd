@@ -177,9 +177,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) ExpandMode() ExpandMode {
 	return ExpandMode(class(self).GetExpandMode())
 }
 
-// SetExpandMode sets the property returned by [GetExpandMode].
-func (self Instance) SetExpandMode(value ExpandMode) {
+// SetExpandMode sets the property returned by [GetExpandMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMode(value ExpandMode) Instance {
 	class(self).SetExpandMode(value)
+	return self
 }
 
 /*
@@ -201,9 +203,10 @@ func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
-// SetStretchMode sets the property returned by [GetStretchMode].
-func (self Instance) SetStretchMode(value StretchMode) {
+// SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMode(value StretchMode) Instance {
 	class(self).SetStretchMode(value)
+	return self
 }
 
 /*
@@ -213,9 +216,10 @@ func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
-// SetFlipH sets the property returned by [IsFlippedH].
-func (self Instance) SetFlipH(value bool) {
+// SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipH(value bool) Instance {
 	class(self).SetFlipH(value)
+	return self
 }
 
 /*
@@ -225,9 +229,10 @@ func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
-// SetFlipV sets the property returned by [IsFlippedV].
-func (self Instance) SetFlipV(value bool) {
+// SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipV(value bool) Instance {
 	class(self).SetFlipV(value)
+	return self
 }
 
 //go:nosplit

@@ -170,9 +170,10 @@ func (self Instance) Axis() Input.JoyAxis {
 	return Input.JoyAxis(class(self).GetAxis())
 }
 
-// SetAxis sets the property returned by [GetAxis].
-func (self Instance) SetAxis(value Input.JoyAxis) {
+// SetAxis sets the property returned by [GetAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxis(value Input.JoyAxis) Instance {
 	class(self).SetAxis(value)
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) AxisValue() Float.X {
 	return Float.X(Float.X(class(self).GetAxisValue()))
 }
 
-// SetAxisValue sets the property returned by [GetAxisValue].
-func (self Instance) SetAxisValue(value Float.X) {
+// SetAxisValue sets the property returned by [GetAxisValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisValue(value Float.X) Instance {
 	class(self).SetAxisValue(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -156,8 +156,9 @@ Returns true if 'point' falls inside the polygon area.
 func (self Instance) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
 	return bool(Advanced(self).IsPointInside(Vector2.XY(point)))
 }
-func (self Instance) SetPointPenalty(idx int, penalty Float.X) { //gd:PolygonPathFinder.set_point_penalty
+func (self Instance) SetPointPenalty(idx int, penalty Float.X) Instance { //gd:PolygonPathFinder.set_point_penalty
 	Advanced(self).SetPointPenalty(int64(idx), float64(penalty))
+	return self
 }
 func (self Instance) GetPointPenalty(idx int) Float.X { //gd:PolygonPathFinder.get_point_penalty
 	return Float.X(Float.X(Advanced(self).GetPointPenalty(int64(idx))))

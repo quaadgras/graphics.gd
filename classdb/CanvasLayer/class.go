@@ -242,9 +242,10 @@ func (self Instance) Layer() int {
 	return int(int(class(self).GetLayer()))
 }
 
-// SetLayer sets the property returned by [GetLayer].
-func (self Instance) SetLayer(value int) {
+// SetLayer sets the property returned by [GetLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayer(value int) Instance {
 	class(self).SetLayer(int64(value))
+	return self
 }
 
 /*
@@ -260,9 +261,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 /*
@@ -272,9 +274,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -284,9 +287,10 @@ func (self Instance) Rotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
-// SetRotation sets the property returned by [GetRotation].
-func (self Instance) SetRotation(value Angle.Radians) {
+// SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation(value Angle.Radians) Instance {
 	class(self).SetRotation(float64(value))
+	return self
 }
 
 /*
@@ -296,9 +300,10 @@ func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
-// SetScale sets the property returned by [GetScale].
-func (self Instance) SetScale(value Vector2.XY) {
+// SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale(value Vector2.XY) Instance {
 	class(self).SetScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -308,9 +313,10 @@ func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform2D.OriginXY) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -323,9 +329,10 @@ func (self Instance) CustomViewport() Node.Instance {
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
-// SetCustomViewport sets the property returned by [GetCustomViewport].
-func (self Instance) SetCustomViewport(value Node.Instance) {
+// SetCustomViewport sets the property returned by [GetCustomViewport]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomViewport(value Node.Instance) Instance {
 	class(self).SetCustomViewport(value)
+	return self
 }
 
 /*
@@ -340,9 +347,10 @@ func (self Instance) FollowViewportEnabled() bool {
 	return bool(class(self).IsFollowingViewport())
 }
 
-// SetFollowViewportEnabled sets the property returned by [IsFollowingViewport].
-func (self Instance) SetFollowViewportEnabled(value bool) {
+// SetFollowViewportEnabled sets the property returned by [IsFollowingViewport]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowViewportEnabled(value bool) Instance {
 	class(self).SetFollowViewport(value)
+	return self
 }
 
 /*
@@ -354,9 +362,10 @@ func (self Instance) FollowViewportScale() Float.X {
 	return Float.X(Float.X(class(self).GetFollowViewportScale()))
 }
 
-// SetFollowViewportScale sets the property returned by [GetFollowViewportScale].
-func (self Instance) SetFollowViewportScale(value Float.X) {
+// SetFollowViewportScale sets the property returned by [GetFollowViewportScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowViewportScale(value Float.X) Instance {
 	class(self).SetFollowViewportScale(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -519,12 +528,13 @@ Emitted when visibility of the layer is changed. See [Visible].
 
 [Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.Visible
 */
-func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityChanged() Signal.Any {

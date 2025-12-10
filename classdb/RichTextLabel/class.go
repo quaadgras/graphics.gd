@@ -661,9 +661,12 @@ Edits the selected column's expansion options. If 'expand' is true, the column e
 For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
 
 If 'expand' is false, the column will not contribute to the total ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTableColumnExpand(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand
+func (self Instance) SetTableColumnExpand(column int, expand bool) Instance { //gd:RichTextLabel.set_table_column_expand
 	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(1), true)
+	return self
 }
 
 /*
@@ -672,44 +675,62 @@ Edits the selected column's expansion options. If 'expand' is true, the column e
 For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
 
 If 'expand' is false, the column will not contribute to the total ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetTableColumnExpand(column int, expand bool, ratio int, shrink bool) { //gd:RichTextLabel.set_table_column_expand
+func (self MoreArgs) SetTableColumnExpand(column int, expand bool, ratio int, shrink bool) MoreArgs { //gd:RichTextLabel.set_table_column_expand
 	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(ratio), shrink)
+	return self
 }
 
 /*
 Sets table column name for assistive apps.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTableColumnName(column int, name string) { //gd:RichTextLabel.set_table_column_name
+func (self Instance) SetTableColumnName(column int, name string) Instance { //gd:RichTextLabel.set_table_column_name
 	Advanced(self).SetTableColumnName(int64(column), String.New(name))
+	return self
 }
 
 /*
 Sets color of a table cell. Separate colors for alternating rows can be specified.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
+func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) Instance { //gd:RichTextLabel.set_cell_row_background_color
 	Advanced(self).SetCellRowBackgroundColor(Color.RGBA(odd_row_bg), Color.RGBA(even_row_bg))
+	return self
 }
 
 /*
 Sets color of a table cell border.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
+func (self Instance) SetCellBorderColor(color Color.RGBA) Instance { //gd:RichTextLabel.set_cell_border_color
 	Advanced(self).SetCellBorderColor(Color.RGBA(color))
+	return self
 }
 
 /*
 Sets minimum and maximum size overrides for a table cell.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
+func (self Instance) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) Instance { //gd:RichTextLabel.set_cell_size_override
 	Advanced(self).SetCellSizeOverride(Vector2.XY(min_size), Vector2.XY(max_size))
+	return self
 }
 
 /*
 Sets inner padding of a table cell.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
+func (self Instance) SetCellPadding(padding Rect2.PositionSize) Instance { //gd:RichTextLabel.set_cell_padding
 	Advanced(self).SetCellPadding(Rect2.PositionSize(padding))
+	return self
 }
 
 /*
@@ -1271,9 +1292,10 @@ func (self Instance) BbcodeEnabled() bool {
 	return bool(class(self).IsUsingBbcode())
 }
 
-// SetBbcodeEnabled sets the property returned by [IsUsingBbcode].
-func (self Instance) SetBbcodeEnabled(value bool) {
+// SetBbcodeEnabled sets the property returned by [IsUsingBbcode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBbcodeEnabled(value bool) Instance {
 	class(self).SetUseBbcode(value)
+	return self
 }
 
 /*
@@ -1289,9 +1311,10 @@ func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
-// SetText sets the property returned by [GetText].
-func (self Instance) SetText(value string) {
+// SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetText(value string) Instance {
 	class(self).SetText(String.New(value))
+	return self
 }
 
 /*
@@ -1303,9 +1326,10 @@ func (self Instance) FitContent() bool {
 	return bool(class(self).IsFitContentEnabled())
 }
 
-// SetFitContent sets the property returned by [IsFitContentEnabled].
-func (self Instance) SetFitContent(value bool) {
+// SetFitContent sets the property returned by [IsFitContentEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFitContent(value bool) Instance {
 	class(self).SetFitContent(value)
+	return self
 }
 
 /*
@@ -1317,9 +1341,10 @@ func (self Instance) ScrollActive() bool {
 	return bool(class(self).IsScrollActive())
 }
 
-// SetScrollActive sets the property returned by [IsScrollActive].
-func (self Instance) SetScrollActive(value bool) {
+// SetScrollActive sets the property returned by [IsScrollActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollActive(value bool) Instance {
 	class(self).SetScrollActive(value)
+	return self
 }
 
 /*
@@ -1329,9 +1354,10 @@ func (self Instance) ScrollFollowing() bool {
 	return bool(class(self).IsScrollFollowing())
 }
 
-// SetScrollFollowing sets the property returned by [IsScrollFollowing].
-func (self Instance) SetScrollFollowing(value bool) {
+// SetScrollFollowing sets the property returned by [IsScrollFollowing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollFollowing(value bool) Instance {
 	class(self).SetScrollFollow(value)
+	return self
 }
 
 /*
@@ -1344,9 +1370,10 @@ func (self Instance) ScrollFollowingVisibleCharacters() bool {
 	return bool(class(self).IsScrollFollowingVisibleCharacters())
 }
 
-// SetScrollFollowingVisibleCharacters sets the property returned by [IsScrollFollowingVisibleCharacters].
-func (self Instance) SetScrollFollowingVisibleCharacters(value bool) {
+// SetScrollFollowingVisibleCharacters sets the property returned by [IsScrollFollowingVisibleCharacters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollFollowingVisibleCharacters(value bool) Instance {
 	class(self).SetScrollFollowVisibleCharacters(value)
+	return self
 }
 
 /*
@@ -1356,9 +1383,10 @@ func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-// SetAutowrapMode sets the property returned by [GetAutowrapMode].
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
+// SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 	class(self).SetAutowrapMode(value)
+	return self
 }
 
 /*
@@ -1368,9 +1396,10 @@ func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
-// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
-func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance {
 	class(self).SetAutowrapTrimFlags(value)
+	return self
 }
 
 /*
@@ -1380,9 +1409,10 @@ func (self Instance) TabSize() int {
 	return int(int(class(self).GetTabSize()))
 }
 
-// SetTabSize sets the property returned by [GetTabSize].
-func (self Instance) SetTabSize(value int) {
+// SetTabSize sets the property returned by [GetTabSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabSize(value int) Instance {
 	class(self).SetTabSize(int64(value))
+	return self
 }
 
 /*
@@ -1392,9 +1422,10 @@ func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
-// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
-func (self Instance) SetContextMenuEnabled(value bool) {
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContextMenuEnabled(value bool) Instance {
 	class(self).SetContextMenuEnabled(value)
+	return self
 }
 
 /*
@@ -1404,9 +1435,10 @@ func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
-// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
-func (self Instance) SetShortcutKeysEnabled(value bool) {
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
 	class(self).SetShortcutKeysEnabled(value)
+	return self
 }
 
 /*
@@ -1416,9 +1448,10 @@ func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment].
-func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
+// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetHorizontalAlignment(value)
+	return self
 }
 
 /*
@@ -1428,9 +1461,10 @@ func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
-// SetVerticalAlignment sets the property returned by [GetVerticalAlignment].
-func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
+// SetVerticalAlignment sets the property returned by [GetVerticalAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance {
 	class(self).SetVerticalAlignment(value)
+	return self
 }
 
 /*
@@ -1440,9 +1474,10 @@ func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
-// SetJustificationFlags sets the property returned by [GetJustificationFlags].
-func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
+// SetJustificationFlags sets the property returned by [GetJustificationFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance {
 	class(self).SetJustificationFlags(value)
+	return self
 }
 
 /*
@@ -1452,9 +1487,10 @@ func (self Instance) TabStops() []float32 {
 	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
-// SetTabStops sets the property returned by [GetTabStops].
-func (self Instance) SetTabStops(value []float32) {
+// SetTabStops sets the property returned by [GetTabStops]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabStops(value []float32) Instance {
 	class(self).SetTabStops(Packed.New(value...))
+	return self
 }
 
 /*
@@ -1469,9 +1505,10 @@ func (self Instance) CustomEffects() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetEffects())))
 }
 
-// SetCustomEffects sets the property returned by [GetEffects].
-func (self Instance) SetCustomEffects(value []any) {
+// SetCustomEffects sets the property returned by [GetEffects]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomEffects(value []any) Instance {
 	class(self).SetEffects(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -1483,9 +1520,10 @@ func (self Instance) MetaUnderlined() bool {
 	return bool(class(self).IsMetaUnderlined())
 }
 
-// SetMetaUnderlined sets the property returned by [IsMetaUnderlined].
-func (self Instance) SetMetaUnderlined(value bool) {
+// SetMetaUnderlined sets the property returned by [IsMetaUnderlined]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMetaUnderlined(value bool) Instance {
 	class(self).SetMetaUnderline(value)
+	return self
 }
 
 /*
@@ -1495,9 +1533,10 @@ func (self Instance) HintUnderlined() bool {
 	return bool(class(self).IsHintUnderlined())
 }
 
-// SetHintUnderlined sets the property returned by [IsHintUnderlined].
-func (self Instance) SetHintUnderlined(value bool) {
+// SetHintUnderlined sets the property returned by [IsHintUnderlined]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHintUnderlined(value bool) Instance {
 	class(self).SetHintUnderline(value)
+	return self
 }
 
 /*
@@ -1507,9 +1546,10 @@ func (self Instance) Threaded() bool {
 	return bool(class(self).IsThreaded())
 }
 
-// SetThreaded sets the property returned by [IsThreaded].
-func (self Instance) SetThreaded(value bool) {
+// SetThreaded sets the property returned by [IsThreaded]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThreaded(value bool) Instance {
 	class(self).SetThreaded(value)
+	return self
 }
 
 /*
@@ -1523,9 +1563,10 @@ func (self Instance) ProgressBarDelay() int {
 	return int(int(class(self).GetProgressBarDelay()))
 }
 
-// SetProgressBarDelay sets the property returned by [GetProgressBarDelay].
-func (self Instance) SetProgressBarDelay(value int) {
+// SetProgressBarDelay sets the property returned by [GetProgressBarDelay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProgressBarDelay(value int) Instance {
 	class(self).SetProgressBarDelay(int64(value))
+	return self
 }
 
 /*
@@ -1535,9 +1576,10 @@ func (self Instance) SelectionEnabled() bool {
 	return bool(class(self).IsSelectionEnabled())
 }
 
-// SetSelectionEnabled sets the property returned by [IsSelectionEnabled].
-func (self Instance) SetSelectionEnabled(value bool) {
+// SetSelectionEnabled sets the property returned by [IsSelectionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectionEnabled(value bool) Instance {
 	class(self).SetSelectionEnabled(value)
+	return self
 }
 
 /*
@@ -1547,9 +1589,10 @@ func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
-// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
-func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
 	class(self).SetDeselectOnFocusLossEnabled(value)
+	return self
 }
 
 /*
@@ -1559,9 +1602,10 @@ func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
-// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
-func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
 	class(self).SetDragAndDropSelectionEnabled(value)
+	return self
 }
 
 /*
@@ -1577,9 +1621,10 @@ func (self Instance) VisibleCharacters() int {
 	return int(int(class(self).GetVisibleCharacters()))
 }
 
-// SetVisibleCharacters sets the property returned by [GetVisibleCharacters].
-func (self Instance) SetVisibleCharacters(value int) {
+// SetVisibleCharacters sets the property returned by [GetVisibleCharacters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibleCharacters(value int) Instance {
 	class(self).SetVisibleCharacters(int64(value))
+	return self
 }
 
 /*
@@ -1592,9 +1637,10 @@ func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBeh
 	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
-// SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior].
-func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) {
+// SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) Instance {
 	class(self).SetVisibleCharactersBehavior(value)
+	return self
 }
 
 /*
@@ -1609,9 +1655,10 @@ func (self Instance) VisibleRatio() Float.X {
 	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
-// SetVisibleRatio sets the property returned by [GetVisibleRatio].
-func (self Instance) SetVisibleRatio(value Float.X) {
+// SetVisibleRatio sets the property returned by [GetVisibleRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibleRatio(value Float.X) Instance {
 	class(self).SetVisibleRatio(float64(value))
+	return self
 }
 
 /*
@@ -1621,9 +1668,10 @@ func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-// SetTextDirection sets the property returned by [GetTextDirection].
-func (self Instance) SetTextDirection(value Control.TextDirection) {
+// SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTextDirection(value)
+	return self
 }
 
 /*
@@ -1633,9 +1681,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 /*
@@ -1645,9 +1694,10 @@ func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParse
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
 	class(self).SetStructuredTextBidiOverride(value)
+	return self
 }
 
 /*
@@ -1657,9 +1707,10 @@ func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
-// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -3056,12 +3107,13 @@ For example, the following method can be connected to [OnMetaClicked] to open cl
 [OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
 [PushMeta]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.PushMeta
 */
-func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) {
+func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MetaClicked() Signal.Any {
@@ -3071,12 +3123,13 @@ func (self class) MetaClicked() Signal.Any {
 /*
 Triggers when the mouse enters a meta tag.
 */
-func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags) {
+func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MetaHoverStarted() Signal.Any {
@@ -3086,12 +3139,13 @@ func (self class) MetaHoverStarted() Signal.Any {
 /*
 Triggers when the mouse exits a meta tag.
 */
-func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) {
+func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MetaHoverEnded() Signal.Any {
@@ -3103,12 +3157,13 @@ Triggered when the document is fully loaded.
 
 Note: This can happen before the text is processed for drawing. Scrolling values may not be valid until the document is drawn for the first time after this signal.
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

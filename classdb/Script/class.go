@@ -335,9 +335,10 @@ func (self Instance) SourceCode() string {
 	return string(class(self).GetSourceCode().String())
 }
 
-// SetSourceCode sets the property returned by [GetSourceCode].
-func (self Instance) SetSourceCode(value string) {
+// SetSourceCode sets the property returned by [GetSourceCode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceCode(value string) Instance {
 	class(self).SetSourceCode(String.New(value))
+	return self
 }
 
 /*

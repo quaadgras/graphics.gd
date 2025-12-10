@@ -263,37 +263,49 @@ func (self Instance) GetRoot() TreeItem.Instance { //gd:Tree.get_root
 /*
 Overrides the calculated minimum width of a column. It can be set to 0 to restore the default behavior. Columns that have the "Expand" flag will use their "min_width" in a similar fashion to [Control.SizeFlagsStretchRatio].
 
+Returns 'self' to enable method chaining.
+
 [Control.SizeFlagsStretchRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsStretchRatio
 */
-func (self Instance) SetColumnCustomMinimumWidth(column int, min_width int) { //gd:Tree.set_column_custom_minimum_width
+func (self Instance) SetColumnCustomMinimumWidth(column int, min_width int) Instance { //gd:Tree.set_column_custom_minimum_width
 	Advanced(self).SetColumnCustomMinimumWidth(int64(column), int64(min_width))
+	return self
 }
 
 /*
 If true, the column will have the "Expand" flag of [Control]. Columns that have the "Expand" flag will use their expand ratio in a similar fashion to [Control.SizeFlagsStretchRatio] (see [SetColumnExpandRatio]).
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Control.SizeFlagsStretchRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsStretchRatio
 [SetColumnExpandRatio]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnExpandRatio
 */
-func (self Instance) SetColumnExpand(column int, expand bool) { //gd:Tree.set_column_expand
+func (self Instance) SetColumnExpand(column int, expand bool) Instance { //gd:Tree.set_column_expand
 	Advanced(self).SetColumnExpand(int64(column), expand)
+	return self
 }
 
 /*
 Sets the relative expand ratio for a column. See [SetColumnExpand].
 
+Returns 'self' to enable method chaining.
+
 [SetColumnExpand]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnExpand
 */
-func (self Instance) SetColumnExpandRatio(column int, ratio int) { //gd:Tree.set_column_expand_ratio
+func (self Instance) SetColumnExpandRatio(column int, ratio int) Instance { //gd:Tree.set_column_expand_ratio
 	Advanced(self).SetColumnExpandRatio(int64(column), int64(ratio))
+	return self
 }
 
 /*
 Allows to enable clipping for column's content, making the content size ignored.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColumnClipContent(column int, enable bool) { //gd:Tree.set_column_clip_content
+func (self Instance) SetColumnClipContent(column int, enable bool) Instance { //gd:Tree.set_column_clip_content
 	Advanced(self).SetColumnClipContent(int64(column), enable)
+	return self
 }
 
 /*
@@ -355,10 +367,13 @@ func (self Instance) GetSelected() TreeItem.Instance { //gd:Tree.get_selected
 /*
 Selects the specified [TreeItem] and column.
 
+Returns 'self' to enable method chaining.
+
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) SetSelected(item TreeItem.Instance, column int) { //gd:Tree.set_selected
+func (self Instance) SetSelected(item TreeItem.Instance, column int) Instance { //gd:Tree.set_selected
 	Advanced(self).SetSelected(item, int64(column))
+	return self
 }
 
 /*
@@ -504,9 +519,12 @@ func (self Instance) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visibl
 
 /*
 Sets the title of a column.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColumnTitle(column int, title string) { //gd:Tree.set_column_title
+func (self Instance) SetColumnTitle(column int, title string) Instance { //gd:Tree.set_column_title
 	Advanced(self).SetColumnTitle(int64(column), String.New(title))
+	return self
 }
 
 /*
@@ -518,9 +536,12 @@ func (self Instance) GetColumnTitle(column int) string { //gd:Tree.get_column_ti
 
 /*
 Sets the column title alignment. Note that [@Globalscope.HorizontalAlignmentFill] is not supported for column titles.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColumnTitleAlignment(column int, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
+func (self Instance) SetColumnTitleAlignment(column int, title_alignment GUI.HorizontalAlignment) Instance { //gd:Tree.set_column_title_alignment
 	Advanced(self).SetColumnTitleAlignment(int64(column), title_alignment)
+	return self
 }
 
 /*
@@ -532,9 +553,12 @@ func (self Instance) GetColumnTitleAlignment(column int) GUI.HorizontalAlignment
 
 /*
 Sets column title base writing direction.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColumnTitleDirection(column int, direction Control.TextDirection) { //gd:Tree.set_column_title_direction
+func (self Instance) SetColumnTitleDirection(column int, direction Control.TextDirection) Instance { //gd:Tree.set_column_title_direction
 	Advanced(self).SetColumnTitleDirection(int64(column), direction)
+	return self
 }
 
 /*
@@ -546,9 +570,12 @@ func (self Instance) GetColumnTitleDirection(column int) Control.TextDirection {
 
 /*
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColumnTitleLanguage(column int, language string) { //gd:Tree.set_column_title_language
+func (self Instance) SetColumnTitleLanguage(column int, language string) Instance { //gd:Tree.set_column_title_language
 	Advanced(self).SetColumnTitleLanguage(int64(column), String.New(language))
+	return self
 }
 
 /*
@@ -641,9 +668,10 @@ func (self Instance) Columns() int {
 	return int(int(class(self).GetColumns()))
 }
 
-// SetColumns sets the property returned by [GetColumns].
-func (self Instance) SetColumns(value int) {
+// SetColumns sets the property returned by [GetColumns]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColumns(value int) Instance {
 	class(self).SetColumns(int64(value))
+	return self
 }
 
 /*
@@ -653,9 +681,10 @@ func (self Instance) ColumnTitlesVisible() bool {
 	return bool(class(self).AreColumnTitlesVisible())
 }
 
-// SetColumnTitlesVisible sets the property returned by [AreColumnTitlesVisible].
-func (self Instance) SetColumnTitlesVisible(value bool) {
+// SetColumnTitlesVisible sets the property returned by [AreColumnTitlesVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColumnTitlesVisible(value bool) Instance {
 	class(self).SetColumnTitlesVisible(value)
+	return self
 }
 
 /*
@@ -665,9 +694,10 @@ func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
-// SetAllowReselect sets the property returned by [GetAllowReselect].
-func (self Instance) SetAllowReselect(value bool) {
+// SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowReselect(value bool) Instance {
 	class(self).SetAllowReselect(value)
+	return self
 }
 
 /*
@@ -677,9 +707,10 @@ func (self Instance) AllowRmbSelect() bool {
 	return bool(class(self).GetAllowRmbSelect())
 }
 
-// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect].
-func (self Instance) SetAllowRmbSelect(value bool) {
+// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowRmbSelect(value bool) Instance {
 	class(self).SetAllowRmbSelect(value)
+	return self
 }
 
 /*
@@ -691,9 +722,10 @@ func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
-// SetAllowSearch sets the property returned by [GetAllowSearch].
-func (self Instance) SetAllowSearch(value bool) {
+// SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowSearch(value bool) Instance {
 	class(self).SetAllowSearch(value)
+	return self
 }
 
 /*
@@ -703,9 +735,10 @@ func (self Instance) HideFolding() bool {
 	return bool(class(self).IsFoldingHidden())
 }
 
-// SetHideFolding sets the property returned by [IsFoldingHidden].
-func (self Instance) SetHideFolding(value bool) {
+// SetHideFolding sets the property returned by [IsFoldingHidden]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideFolding(value bool) Instance {
 	class(self).SetHideFolding(value)
+	return self
 }
 
 /*
@@ -718,9 +751,10 @@ func (self Instance) EnableRecursiveFolding() bool {
 	return bool(class(self).IsRecursiveFoldingEnabled())
 }
 
-// SetEnableRecursiveFolding sets the property returned by [IsRecursiveFoldingEnabled].
-func (self Instance) SetEnableRecursiveFolding(value bool) {
+// SetEnableRecursiveFolding sets the property returned by [IsRecursiveFoldingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableRecursiveFolding(value bool) Instance {
 	class(self).SetEnableRecursiveFolding(value)
+	return self
 }
 
 /*
@@ -730,9 +764,10 @@ func (self Instance) HideRoot() bool {
 	return bool(class(self).IsRootHidden())
 }
 
-// SetHideRoot sets the property returned by [IsRootHidden].
-func (self Instance) SetHideRoot(value bool) {
+// SetHideRoot sets the property returned by [IsRootHidden]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideRoot(value bool) Instance {
 	class(self).SetHideRoot(value)
+	return self
 }
 
 /*
@@ -746,9 +781,10 @@ func (self Instance) DropModeFlags() int {
 	return int(int(class(self).GetDropModeFlags()))
 }
 
-// SetDropModeFlags sets the property returned by [GetDropModeFlags].
-func (self Instance) SetDropModeFlags(value int) {
+// SetDropModeFlags sets the property returned by [GetDropModeFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDropModeFlags(value int) Instance {
 	class(self).SetDropModeFlags(int64(value))
+	return self
 }
 
 /*
@@ -758,9 +794,10 @@ func (self Instance) SelectMode() SelectMode {
 	return SelectMode(class(self).GetSelectMode())
 }
 
-// SetSelectMode sets the property returned by [GetSelectMode].
-func (self Instance) SetSelectMode(value SelectMode) {
+// SetSelectMode sets the property returned by [GetSelectMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectMode(value SelectMode) Instance {
 	class(self).SetSelectMode(value)
+	return self
 }
 
 /*
@@ -770,9 +807,10 @@ func (self Instance) ScrollHorizontalEnabled() bool {
 	return bool(class(self).IsHScrollEnabled())
 }
 
-// SetScrollHorizontalEnabled sets the property returned by [IsHScrollEnabled].
-func (self Instance) SetScrollHorizontalEnabled(value bool) {
+// SetScrollHorizontalEnabled sets the property returned by [IsHScrollEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHorizontalEnabled(value bool) Instance {
 	class(self).SetHScrollEnabled(value)
+	return self
 }
 
 /*
@@ -782,9 +820,10 @@ func (self Instance) ScrollVerticalEnabled() bool {
 	return bool(class(self).IsVScrollEnabled())
 }
 
-// SetScrollVerticalEnabled sets the property returned by [IsVScrollEnabled].
-func (self Instance) SetScrollVerticalEnabled(value bool) {
+// SetScrollVerticalEnabled sets the property returned by [IsVScrollEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollVerticalEnabled(value bool) Instance {
 	class(self).SetVScrollEnabled(value)
+	return self
 }
 
 /*
@@ -797,9 +836,10 @@ func (self Instance) AutoTooltip() bool {
 	return bool(class(self).IsAutoTooltipEnabled())
 }
 
-// SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled].
-func (self Instance) SetAutoTooltip(value bool) {
+// SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTooltip(value bool) Instance {
 	class(self).SetAutoTooltip(value)
+	return self
 }
 
 /*
@@ -1405,12 +1445,13 @@ func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enable
 /*
 Emitted when an item is selected.
 */
-func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemSelected() Signal.Any {
@@ -1420,12 +1461,13 @@ func (self class) ItemSelected() Signal.Any {
 /*
 Emitted when a cell is selected.
 */
-func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CellSelected() Signal.Any {
@@ -1438,12 +1480,13 @@ Emitted instead of [OnItemSelected] if [SelectMode] is set to [SelectMulti].
 [OnItemSelected]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemSelected
 [SelectMode]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SelectMode
 */
-func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool), flags ...Signal.Flags) {
+func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MultiSelected() Signal.Any {
@@ -1453,12 +1496,13 @@ func (self class) MultiSelected() Signal.Any {
 /*
 Emitted when an item is selected with a mouse button.
 */
-func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemMouseSelected() Signal.Any {
@@ -1468,12 +1512,13 @@ func (self class) ItemMouseSelected() Signal.Any {
 /*
 Emitted when a mouse button is clicked in the empty space of the tree.
 */
-func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EmptyClicked() Signal.Any {
@@ -1483,12 +1528,13 @@ func (self class) EmptyClicked() Signal.Any {
 /*
 Emitted when an item is edited.
 */
-func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemEdited() Signal.Any {
@@ -1498,12 +1544,13 @@ func (self class) ItemEdited() Signal.Any {
 /*
 Emitted when an item with [Treeitem.CellModeCustom] is clicked with a mouse button.
 */
-func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CustomItemClicked() Signal.Any {
@@ -1515,12 +1562,13 @@ Emitted when an item's icon is double-clicked. For a signal that emits when any 
 
 [OnItemActivated]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemActivated
 */
-func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemIconDoubleClicked() Signal.Any {
@@ -1532,12 +1580,13 @@ Emitted when an item is expanded or collapsed by clicking on the folding arrow o
 
 Note: Despite its name, this signal is also emitted when an item is expanded.
 */
-func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...Signal.Flags) {
+func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemCollapsed() Signal.Any {
@@ -1549,12 +1598,13 @@ Emitted when [TreeItem.PropagateCheck] is called. Connect to this signal to proc
 
 [TreeItem.PropagateCheck]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.PropagateCheck
 */
-func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int), flags ...Signal.Flags) {
+func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CheckPropagatedToItem() Signal.Any {
@@ -1566,12 +1616,13 @@ Emitted when a button on the tree was pressed (see [TreeItem.AddButton]).
 
 [TreeItem.AddButton]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.AddButton
 */
-func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonClicked() Signal.Any {
@@ -1581,12 +1632,13 @@ func (self class) ButtonClicked() Signal.Any {
 /*
 Emitted when a cell with the [Treeitem.CellModeCustom] is clicked to be edited.
 */
-func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...Signal.Flags) {
+func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CustomPopupEdited() Signal.Any {
@@ -1596,12 +1648,13 @@ func (self class) CustomPopupEdited() Signal.Any {
 /*
 Emitted when an item is double-clicked, or selected with a ui_accept input event (e.g. using Enter or Space on the keyboard).
 */
-func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemActivated() Signal.Any {
@@ -1611,12 +1664,13 @@ func (self class) ItemActivated() Signal.Any {
 /*
 Emitted when a column's title is clicked with either [MouseButtonLeft] or [MouseButtonRight].
 */
-func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ColumnTitleClicked() Signal.Any {
@@ -1626,12 +1680,13 @@ func (self class) ColumnTitleClicked() Signal.Any {
 /*
 Emitted when a left mouse button click does not select any item.
 */
-func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NothingSelected() Signal.Any {

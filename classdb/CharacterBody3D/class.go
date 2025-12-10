@@ -445,9 +445,10 @@ func (self Instance) MotionMode() MotionMode {
 	return MotionMode(class(self).GetMotionMode())
 }
 
-// SetMotionMode sets the property returned by [GetMotionMode].
-func (self Instance) SetMotionMode(value MotionMode) {
+// SetMotionMode sets the property returned by [GetMotionMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionMode(value MotionMode) Instance {
 	class(self).SetMotionMode(value)
+	return self
 }
 
 /*
@@ -460,9 +461,10 @@ func (self Instance) UpDirection() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUpDirection())
 }
 
-// SetUpDirection sets the property returned by [GetUpDirection].
-func (self Instance) SetUpDirection(value Vector3.XYZ) {
+// SetUpDirection sets the property returned by [GetUpDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpDirection(value Vector3.XYZ) Instance {
 	class(self).SetUpDirection(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -472,9 +474,10 @@ func (self Instance) SlideOnCeiling() bool {
 	return bool(class(self).IsSlideOnCeilingEnabled())
 }
 
-// SetSlideOnCeiling sets the property returned by [IsSlideOnCeilingEnabled].
-func (self Instance) SetSlideOnCeiling(value bool) {
+// SetSlideOnCeiling sets the property returned by [IsSlideOnCeilingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSlideOnCeiling(value bool) Instance {
 	class(self).SetSlideOnCeilingEnabled(value)
+	return self
 }
 
 /*
@@ -486,9 +489,10 @@ func (self Instance) Velocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetVelocity())
 }
 
-// SetVelocity sets the property returned by [GetVelocity].
-func (self Instance) SetVelocity(value Vector3.XYZ) {
+// SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVelocity(value Vector3.XYZ) Instance {
 	class(self).SetVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -500,9 +504,10 @@ func (self Instance) MaxSlides() int {
 	return int(int(class(self).GetMaxSlides()))
 }
 
-// SetMaxSlides sets the property returned by [GetMaxSlides].
-func (self Instance) SetMaxSlides(value int) {
+// SetMaxSlides sets the property returned by [GetMaxSlides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSlides(value int) Instance {
 	class(self).SetMaxSlides(int64(value))
+	return self
 }
 
 /*
@@ -515,9 +520,10 @@ func (self Instance) WallMinSlideAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetWallMinSlideAngle()))
 }
 
-// SetWallMinSlideAngle sets the property returned by [GetWallMinSlideAngle].
-func (self Instance) SetWallMinSlideAngle(value Angle.Radians) {
+// SetWallMinSlideAngle sets the property returned by [GetWallMinSlideAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWallMinSlideAngle(value Angle.Radians) Instance {
 	class(self).SetWallMinSlideAngle(float64(value))
+	return self
 }
 
 /*
@@ -532,9 +538,10 @@ func (self Instance) FloorStopOnSlope() bool {
 	return bool(class(self).IsFloorStopOnSlopeEnabled())
 }
 
-// SetFloorStopOnSlope sets the property returned by [IsFloorStopOnSlopeEnabled].
-func (self Instance) SetFloorStopOnSlope(value bool) {
+// SetFloorStopOnSlope sets the property returned by [IsFloorStopOnSlopeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFloorStopOnSlope(value bool) Instance {
 	class(self).SetFloorStopOnSlopeEnabled(value)
+	return self
 }
 
 /*
@@ -548,9 +555,10 @@ func (self Instance) FloorConstantSpeed() bool {
 	return bool(class(self).IsFloorConstantSpeedEnabled())
 }
 
-// SetFloorConstantSpeed sets the property returned by [IsFloorConstantSpeedEnabled].
-func (self Instance) SetFloorConstantSpeed(value bool) {
+// SetFloorConstantSpeed sets the property returned by [IsFloorConstantSpeedEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFloorConstantSpeed(value bool) Instance {
 	class(self).SetFloorConstantSpeedEnabled(value)
+	return self
 }
 
 /*
@@ -560,9 +568,10 @@ func (self Instance) FloorBlockOnWall() bool {
 	return bool(class(self).IsFloorBlockOnWallEnabled())
 }
 
-// SetFloorBlockOnWall sets the property returned by [IsFloorBlockOnWallEnabled].
-func (self Instance) SetFloorBlockOnWall(value bool) {
+// SetFloorBlockOnWall sets the property returned by [IsFloorBlockOnWallEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFloorBlockOnWall(value bool) Instance {
 	class(self).SetFloorBlockOnWallEnabled(value)
+	return self
 }
 
 /*
@@ -574,9 +583,10 @@ func (self Instance) FloorMaxAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetFloorMaxAngle()))
 }
 
-// SetFloorMaxAngle sets the property returned by [GetFloorMaxAngle].
-func (self Instance) SetFloorMaxAngle(value Angle.Radians) {
+// SetFloorMaxAngle sets the property returned by [GetFloorMaxAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFloorMaxAngle(value Angle.Radians) Instance {
 	class(self).SetFloorMaxAngle(float64(value))
+	return self
 }
 
 /*
@@ -592,9 +602,10 @@ func (self Instance) FloorSnapLength() Float.X {
 	return Float.X(Float.X(class(self).GetFloorSnapLength()))
 }
 
-// SetFloorSnapLength sets the property returned by [GetFloorSnapLength].
-func (self Instance) SetFloorSnapLength(value Float.X) {
+// SetFloorSnapLength sets the property returned by [GetFloorSnapLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFloorSnapLength(value Float.X) Instance {
 	class(self).SetFloorSnapLength(float64(value))
+	return self
 }
 
 /*
@@ -604,9 +615,10 @@ func (self Instance) PlatformOnLeave() PlatformOnLeave {
 	return PlatformOnLeave(class(self).GetPlatformOnLeave())
 }
 
-// SetPlatformOnLeave sets the property returned by [GetPlatformOnLeave].
-func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) {
+// SetPlatformOnLeave sets the property returned by [GetPlatformOnLeave]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) Instance {
 	class(self).SetPlatformOnLeave(value)
+	return self
 }
 
 /*
@@ -618,9 +630,10 @@ func (self Instance) PlatformFloorLayers() int {
 	return int(int(class(self).GetPlatformFloorLayers()))
 }
 
-// SetPlatformFloorLayers sets the property returned by [GetPlatformFloorLayers].
-func (self Instance) SetPlatformFloorLayers(value int) {
+// SetPlatformFloorLayers sets the property returned by [GetPlatformFloorLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlatformFloorLayers(value int) Instance {
 	class(self).SetPlatformFloorLayers(int64(value))
+	return self
 }
 
 /*
@@ -632,9 +645,10 @@ func (self Instance) PlatformWallLayers() int {
 	return int(int(class(self).GetPlatformWallLayers()))
 }
 
-// SetPlatformWallLayers sets the property returned by [GetPlatformWallLayers].
-func (self Instance) SetPlatformWallLayers(value int) {
+// SetPlatformWallLayers sets the property returned by [GetPlatformWallLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlatformWallLayers(value int) Instance {
 	class(self).SetPlatformWallLayers(int64(value))
+	return self
 }
 
 /*
@@ -652,9 +666,10 @@ func (self Instance) SafeMargin() Float.X {
 	return Float.X(Float.X(class(self).GetSafeMargin()))
 }
 
-// SetSafeMargin sets the property returned by [GetSafeMargin].
-func (self Instance) SetSafeMargin(value Float.X) {
+// SetSafeMargin sets the property returned by [GetSafeMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSafeMargin(value Float.X) Instance {
 	class(self).SetSafeMargin(float64(value))
+	return self
 }
 
 /*

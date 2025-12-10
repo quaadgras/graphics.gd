@@ -957,9 +957,10 @@ func (self Instance) BigEndian() bool {
 	return bool(class(self).IsBigEndian())
 }
 
-// SetBigEndian sets the property returned by [IsBigEndian].
-func (self Instance) SetBigEndian(value bool) {
+// SetBigEndian sets the property returned by [IsBigEndian]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBigEndian(value bool) Instance {
 	class(self).SetBigEndian(value)
+	return self
 }
 
 /*

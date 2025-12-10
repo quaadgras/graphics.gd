@@ -132,11 +132,14 @@ type Any interface {
 /*
 Based on the set of points provided, this assigns the [Points] property using the convex hull algorithm, removing all unneeded points. See [Geometry2D.ConvexHull] for details.
 
+Returns 'self' to enable method chaining.
+
 [Geometry2D.ConvexHull]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#ConvexHull
 [Points]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape2D#Instance.Points
 */
-func (self Instance) SetPointCloud(point_cloud []Vector2.XY) { //gd:ConvexPolygonShape2D.set_point_cloud
+func (self Instance) SetPointCloud(point_cloud []Vector2.XY) Instance { //gd:ConvexPolygonShape2D.set_point_cloud
 	Advanced(self).SetPointCloud(Packed.New(point_cloud...))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -193,9 +196,10 @@ func (self Instance) Points() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
-// SetPoints sets the property returned by [GetPoints].
-func (self Instance) SetPoints(value []Vector2.XY) {
+// SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPoints(value []Vector2.XY) Instance {
 	class(self).SetPoints(Packed.New(value...))
+	return self
 }
 
 /*

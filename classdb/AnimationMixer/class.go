@@ -570,9 +570,10 @@ func (self Instance) Active() bool {
 	return bool(class(self).IsActive())
 }
 
-// SetActive sets the property returned by [IsActive].
-func (self Instance) SetActive(value bool) {
+// SetActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActive(value bool) Instance {
 	class(self).SetActive(value)
+	return self
 }
 
 /*
@@ -598,9 +599,10 @@ func (self Instance) Deterministic() bool {
 	return bool(class(self).IsDeterministic())
 }
 
-// SetDeterministic sets the property returned by [IsDeterministic].
-func (self Instance) SetDeterministic(value bool) {
+// SetDeterministic sets the property returned by [IsDeterministic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeterministic(value bool) Instance {
 	class(self).SetDeterministic(value)
+	return self
 }
 
 /*
@@ -612,9 +614,10 @@ func (self Instance) ResetOnSave() bool {
 	return bool(class(self).IsResetOnSaveEnabled())
 }
 
-// SetResetOnSave sets the property returned by [IsResetOnSaveEnabled].
-func (self Instance) SetResetOnSave(value bool) {
+// SetResetOnSave sets the property returned by [IsResetOnSaveEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResetOnSave(value bool) Instance {
 	class(self).SetResetOnSaveEnabled(value)
+	return self
 }
 
 /*
@@ -624,9 +627,10 @@ func (self Instance) RootNode() string {
 	return string(class(self).GetRootNode().String())
 }
 
-// SetRootNode sets the property returned by [GetRootNode].
-func (self Instance) SetRootNode(value string) {
+// SetRootNode sets the property returned by [GetRootNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootNode(value string) Instance {
 	class(self).SetRootNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -645,9 +649,10 @@ func (self Instance) RootMotionTrack() string {
 	return string(class(self).GetRootMotionTrack().String())
 }
 
-// SetRootMotionTrack sets the property returned by [GetRootMotionTrack].
-func (self Instance) SetRootMotionTrack(value string) {
+// SetRootMotionTrack sets the property returned by [GetRootMotionTrack]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootMotionTrack(value string) Instance {
 	class(self).SetRootMotionTrack(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -659,9 +664,10 @@ func (self Instance) RootMotionLocal() bool {
 	return bool(class(self).IsRootMotionLocal())
 }
 
-// SetRootMotionLocal sets the property returned by [IsRootMotionLocal].
-func (self Instance) SetRootMotionLocal(value bool) {
+// SetRootMotionLocal sets the property returned by [IsRootMotionLocal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootMotionLocal(value bool) Instance {
 	class(self).SetRootMotionLocal(value)
+	return self
 }
 
 /*
@@ -675,9 +681,10 @@ func (self Instance) AudioMaxPolyphony() int {
 	return int(int(class(self).GetAudioMaxPolyphony()))
 }
 
-// SetAudioMaxPolyphony sets the property returned by [GetAudioMaxPolyphony].
-func (self Instance) SetAudioMaxPolyphony(value int) {
+// SetAudioMaxPolyphony sets the property returned by [GetAudioMaxPolyphony]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioMaxPolyphony(value int) Instance {
 	class(self).SetAudioMaxPolyphony(int64(value))
+	return self
 }
 
 /*
@@ -687,9 +694,10 @@ func (self Instance) CallbackModeProcess() AnimationCallbackModeProcess {
 	return AnimationCallbackModeProcess(class(self).GetCallbackModeProcess())
 }
 
-// SetCallbackModeProcess sets the property returned by [GetCallbackModeProcess].
-func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) {
+// SetCallbackModeProcess sets the property returned by [GetCallbackModeProcess]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) Instance {
 	class(self).SetCallbackModeProcess(value)
+	return self
 }
 
 /*
@@ -699,9 +707,10 @@ func (self Instance) CallbackModeMethod() AnimationCallbackModeMethod {
 	return AnimationCallbackModeMethod(class(self).GetCallbackModeMethod())
 }
 
-// SetCallbackModeMethod sets the property returned by [GetCallbackModeMethod].
-func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) {
+// SetCallbackModeMethod sets the property returned by [GetCallbackModeMethod]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) Instance {
 	class(self).SetCallbackModeMethod(value)
+	return self
 }
 
 /*
@@ -717,9 +726,10 @@ func (self Instance) CallbackModeDiscrete() AnimationCallbackModeDiscrete {
 	return AnimationCallbackModeDiscrete(class(self).GetCallbackModeDiscrete())
 }
 
-// SetCallbackModeDiscrete sets the property returned by [GetCallbackModeDiscrete].
-func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) {
+// SetCallbackModeDiscrete sets the property returned by [GetCallbackModeDiscrete]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) Instance {
 	class(self).SetCallbackModeDiscrete(value)
+	return self
 }
 
 /*
@@ -1247,12 +1257,13 @@ func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Na
 /*
 Notifies when an animation list is changed.
 */
-func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_list_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationListChanged() Signal.Any {
@@ -1262,12 +1273,13 @@ func (self class) AnimationListChanged() Signal.Any {
 /*
 Notifies when the animation libraries have changed.
 */
-func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_libraries_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationLibrariesUpdated() Signal.Any {
@@ -1279,12 +1291,13 @@ Notifies when an animation finished playing.
 
 Note: This signal is not emitted if an animation is looping.
 */
-func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationFinished() Signal.Any {
@@ -1296,12 +1309,13 @@ Notifies when an animation starts playing.
 
 Note: This signal is not emitted if an animation is looping.
 */
-func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationStarted() Signal.Any {
@@ -1313,12 +1327,13 @@ Notifies when the caches have been cleared, either automatically, or manually vi
 
 [ClearCaches]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.ClearCaches
 */
-func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("caches_cleared"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CachesCleared() Signal.Any {
@@ -1328,12 +1343,13 @@ func (self class) CachesCleared() Signal.Any {
 /*
 Notifies when the blending result related have been applied to the target objects.
 */
-func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mixer_applied"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MixerApplied() Signal.Any {
@@ -1343,12 +1359,13 @@ func (self class) MixerApplied() Signal.Any {
 /*
 Notifies when the property related process have been updated.
 */
-func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mixer_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MixerUpdated() Signal.Any {

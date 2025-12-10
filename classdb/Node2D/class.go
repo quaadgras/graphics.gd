@@ -324,9 +324,10 @@ func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2.XY) Instance {
 	class(self).SetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -341,9 +342,10 @@ func (self Instance) Rotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
-// SetRotation sets the property returned by [GetRotation].
-func (self Instance) SetRotation(value Angle.Radians) {
+// SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation(value Angle.Radians) Instance {
 	class(self).SetRotation(float64(value))
+	return self
 }
 
 /*
@@ -356,9 +358,10 @@ func (self Instance) RotationDegrees() Angle.Degrees {
 	return Angle.Degrees(Float.X(class(self).GetRotationDegrees()))
 }
 
-// SetRotationDegrees sets the property returned by [GetRotationDegrees].
-func (self Instance) SetRotationDegrees(value Angle.Degrees) {
+// SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationDegrees(value Angle.Degrees) Instance {
 	class(self).SetRotationDegrees(float64(value))
+	return self
 }
 
 /*
@@ -372,9 +375,10 @@ func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
-// SetScale sets the property returned by [GetScale].
-func (self Instance) SetScale(value Vector2.XY) {
+// SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale(value Vector2.XY) Instance {
 	class(self).SetScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -390,9 +394,10 @@ func (self Instance) Skew() Float.X {
 	return Float.X(Float.X(class(self).GetSkew()))
 }
 
-// SetSkew sets the property returned by [GetSkew].
-func (self Instance) SetSkew(value Float.X) {
+// SetSkew sets the property returned by [GetSkew]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkew(value Float.X) Instance {
 	class(self).SetSkew(float64(value))
+	return self
 }
 
 /*
@@ -400,9 +405,11 @@ The node's [Transform2D.OriginXY], relative to the node's parent. See also [Glob
 
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalTransform
 [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetTransform(value Transform2D.OriginXY) {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -414,9 +421,10 @@ func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-// SetGlobalPosition sets the property returned by [GetGlobalPosition].
-func (self Instance) SetGlobalPosition(value Vector2.XY) {
+// SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalPosition(value Vector2.XY) Instance {
 	class(self).SetGlobalPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -428,9 +436,10 @@ func (self Instance) GlobalRotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetGlobalRotation()))
 }
 
-// SetGlobalRotation sets the property returned by [GetGlobalRotation].
-func (self Instance) SetGlobalRotation(value Angle.Radians) {
+// SetGlobalRotation sets the property returned by [GetGlobalRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalRotation(value Angle.Radians) Instance {
 	class(self).SetGlobalRotation(float64(value))
+	return self
 }
 
 /*
@@ -443,9 +452,10 @@ func (self Instance) GlobalRotationDegrees() Angle.Degrees {
 	return Angle.Degrees(Float.X(class(self).GetGlobalRotationDegrees()))
 }
 
-// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees].
-func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) {
+// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) Instance {
 	class(self).SetGlobalRotationDegrees(float64(value))
+	return self
 }
 
 /*
@@ -457,9 +467,10 @@ func (self Instance) GlobalScale() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalScale())
 }
 
-// SetGlobalScale sets the property returned by [GetGlobalScale].
-func (self Instance) SetGlobalScale(value Vector2.XY) {
+// SetGlobalScale sets the property returned by [GetGlobalScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalScale(value Vector2.XY) Instance {
 	class(self).SetGlobalScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -471,9 +482,10 @@ func (self Instance) GlobalSkew() Float.X {
 	return Float.X(Float.X(class(self).GetGlobalSkew()))
 }
 
-// SetGlobalSkew sets the property returned by [GetGlobalSkew].
-func (self Instance) SetGlobalSkew(value Float.X) {
+// SetGlobalSkew sets the property returned by [GetGlobalSkew]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalSkew(value Float.X) Instance {
 	class(self).SetGlobalSkew(float64(value))
+	return self
 }
 
 /*
@@ -481,9 +493,11 @@ Global [Transform2D.OriginXY]. See also [Transform].
 
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
 [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) {
+func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetGlobalTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 //go:nosplit

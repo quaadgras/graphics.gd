@@ -293,12 +293,13 @@ func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRCont
 /*
 Emitted when a button on this controller is pressed.
 */
-func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonPressed() Signal.Any {
@@ -308,12 +309,13 @@ func (self class) ButtonPressed() Signal.Any {
 /*
 Emitted when a button on this controller is released.
 */
-func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonReleased() Signal.Any {
@@ -323,12 +325,13 @@ func (self class) ButtonReleased() Signal.Any {
 /*
 Emitted when a trigger or similar input on this controller changes value.
 */
-func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) {
+func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputFloatChanged() Signal.Any {
@@ -338,12 +341,13 @@ func (self class) InputFloatChanged() Signal.Any {
 /*
 Emitted when a thumbstick or thumbpad on this controller is moved.
 */
-func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputVector2Changed() Signal.Any {
@@ -353,12 +357,13 @@ func (self class) InputVector2Changed() Signal.Any {
 /*
 Emitted when the interaction profile on this controller is changed.
 */
-func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) {
+func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProfileChanged() Signal.Any {

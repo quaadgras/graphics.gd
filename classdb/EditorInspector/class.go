@@ -264,12 +264,13 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 /*
 Emitted when a property is selected in the inspector.
 */
-func (self Instance) OnPropertySelected(cb func(property string), flags ...Signal.Flags) {
+func (self Instance) OnPropertySelected(cb func(property string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertySelected() Signal.Any {
@@ -279,12 +280,13 @@ func (self class) PropertySelected() Signal.Any {
 /*
 Emitted when a property is keyed in the inspector. Properties can be keyed by clicking the "key" icon next to a property when the Animation panel is toggled.
 */
-func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyKeyed() Signal.Any {
@@ -294,12 +296,13 @@ func (self class) PropertyKeyed() Signal.Any {
 /*
 Emitted when a property is removed from the inspector.
 */
-func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) {
+func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyDeleted() Signal.Any {
@@ -309,12 +312,13 @@ func (self class) PropertyDeleted() Signal.Any {
 /*
 Emitted when a resource is selected in the inspector.
 */
-func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path string), flags ...Signal.Flags) {
+func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceSelected() Signal.Any {
@@ -326,12 +330,13 @@ Emitted when the Edit button of an [Object] has been pressed in the inspector. T
 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
-func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ObjectIdSelected() Signal.Any {
@@ -341,12 +346,13 @@ func (self class) ObjectIdSelected() Signal.Any {
 /*
 Emitted when a property is edited in the inspector.
 */
-func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.Flags) {
+func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyEdited() Signal.Any {
@@ -358,12 +364,13 @@ Emitted when a boolean property is toggled in the inspector.
 
 Note: This signal is never emitted if the internal autoclear property enabled. Since this property is always enabled in the editor inspector, this signal is never emitted by the editor itself.
 */
-func (self Instance) OnPropertyToggled(cb func(property string, checked bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyToggled(cb func(property string, checked bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyToggled() Signal.Any {
@@ -373,12 +380,13 @@ func (self class) PropertyToggled() Signal.Any {
 /*
 Emitted when the object being edited by the inspector has changed.
 */
-func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditedObjectChanged() Signal.Any {
@@ -388,12 +396,13 @@ func (self class) EditedObjectChanged() Signal.Any {
 /*
 Emitted when a property that requires a restart to be applied is edited in the inspector. This is only used in the Project Settings and Editor Settings.
 */
-func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RestartRequested() Signal.Any {

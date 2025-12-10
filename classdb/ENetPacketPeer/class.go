@@ -239,9 +239,12 @@ func (self Instance) ThrottleConfigure(interval int, acceleration int, decelerat
 Sets the timeout parameters for a peer. The timeout parameters control how and when a peer will timeout from a failure to acknowledge reliable traffic. Timeout values are expressed in milliseconds.
 
 The 'timeout' is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached 'timeout_min'. The 'timeout_max' parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) { //gd:ENetPacketPeer.set_timeout
+func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) Instance { //gd:ENetPacketPeer.set_timeout
 	Advanced(self).SetTimeout(int64(timeout), int64(timeout_min), int64(timeout_max))
+	return self
 }
 
 /*

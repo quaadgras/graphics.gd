@@ -168,9 +168,10 @@ func (self Instance) OpType() OpType {
 	return OpType(class(self).GetOpType())
 }
 
-// SetOpType sets the property returned by [GetOpType].
-func (self Instance) SetOpType(value OpType) {
+// SetOpType sets the property returned by [GetOpType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOpType(value OpType) Instance {
 	class(self).SetOpType(value)
+	return self
 }
 
 /*
@@ -180,9 +181,10 @@ func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
-// SetFunction sets the property returned by [GetFunction].
-func (self Instance) SetFunction(value Function) {
+// SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFunction(value Function) Instance {
 	class(self).SetFunction(value)
+	return self
 }
 
 /*
@@ -192,9 +194,10 @@ func (self Instance) Precision() Precision {
 	return Precision(class(self).GetPrecision())
 }
 
-// SetPrecision sets the property returned by [GetPrecision].
-func (self Instance) SetPrecision(value Precision) {
+// SetPrecision sets the property returned by [GetPrecision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPrecision(value Precision) Instance {
 	class(self).SetPrecision(value)
+	return self
 }
 
 //go:nosplit

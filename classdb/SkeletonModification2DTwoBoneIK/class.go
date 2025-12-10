@@ -136,10 +136,13 @@ type Any interface {
 /*
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetJointOneBone2dNode(bone2d_node string) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
+func (self Instance) SetJointOneBone2dNode(bone2d_node string) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
 	Advanced(self).SetJointOneBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	return self
 }
 
 /*
@@ -154,10 +157,13 @@ func (self Instance) GetJointOneBone2dNode() string { //gd:SkeletonModification2
 /*
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetJointOneBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
+func (self Instance) SetJointOneBoneIdx(bone_idx int) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
 	Advanced(self).SetJointOneBoneIdx(int64(bone_idx))
+	return self
 }
 
 /*
@@ -172,10 +178,13 @@ func (self Instance) GetJointOneBoneIdx() int { //gd:SkeletonModification2DTwoBo
 /*
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetJointTwoBone2dNode(bone2d_node string) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
+func (self Instance) SetJointTwoBone2dNode(bone2d_node string) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
 	Advanced(self).SetJointTwoBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	return self
 }
 
 /*
@@ -190,10 +199,13 @@ func (self Instance) GetJointTwoBone2dNode() string { //gd:SkeletonModification2
 /*
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetJointTwoBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
+func (self Instance) SetJointTwoBoneIdx(bone_idx int) Instance { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
 	Advanced(self).SetJointTwoBoneIdx(int64(bone_idx))
+	return self
 }
 
 /*
@@ -257,9 +269,10 @@ func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNodepath sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNodepath(value string) {
+// SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNodepath(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -269,9 +282,10 @@ func (self Instance) TargetMinimumDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetMinimumDistance()))
 }
 
-// SetTargetMinimumDistance sets the property returned by [GetTargetMinimumDistance].
-func (self Instance) SetTargetMinimumDistance(value Float.X) {
+// SetTargetMinimumDistance sets the property returned by [GetTargetMinimumDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetMinimumDistance(value Float.X) Instance {
 	class(self).SetTargetMinimumDistance(float64(value))
+	return self
 }
 
 /*
@@ -281,9 +295,10 @@ func (self Instance) TargetMaximumDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetMaximumDistance()))
 }
 
-// SetTargetMaximumDistance sets the property returned by [GetTargetMaximumDistance].
-func (self Instance) SetTargetMaximumDistance(value Float.X) {
+// SetTargetMaximumDistance sets the property returned by [GetTargetMaximumDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetMaximumDistance(value Float.X) Instance {
 	class(self).SetTargetMaximumDistance(float64(value))
+	return self
 }
 
 /*
@@ -293,9 +308,10 @@ func (self Instance) FlipBendDirection() bool {
 	return bool(class(self).GetFlipBendDirection())
 }
 
-// SetFlipBendDirection sets the property returned by [GetFlipBendDirection].
-func (self Instance) SetFlipBendDirection(value bool) {
+// SetFlipBendDirection sets the property returned by [GetFlipBendDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipBendDirection(value bool) Instance {
 	class(self).SetFlipBendDirection(value)
+	return self
 }
 
 //go:nosplit

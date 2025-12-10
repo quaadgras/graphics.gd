@@ -261,9 +261,11 @@ func New() Instance {
 
 /*
 If true, the key's state is pressed. If false, the key's state is released.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) {
+func (self Instance) SetPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 /*
@@ -277,9 +279,10 @@ func (self Instance) Keycode() Input.Key {
 	return Input.Key(class(self).GetKeycode())
 }
 
-// SetKeycode sets the property returned by [GetKeycode].
-func (self Instance) SetKeycode(value Input.Key) {
+// SetKeycode sets the property returned by [GetKeycode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeycode(value Input.Key) Instance {
 	class(self).SetKeycode(value)
+	return self
 }
 
 /*
@@ -295,9 +298,10 @@ func (self Instance) PhysicalKeycode() Input.Key {
 	return Input.Key(class(self).GetPhysicalKeycode())
 }
 
-// SetPhysicalKeycode sets the property returned by [GetPhysicalKeycode].
-func (self Instance) SetPhysicalKeycode(value Input.Key) {
+// SetPhysicalKeycode sets the property returned by [GetPhysicalKeycode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicalKeycode(value Input.Key) Instance {
 	class(self).SetPhysicalKeycode(value)
+	return self
 }
 
 /*
@@ -314,9 +318,10 @@ func (self Instance) KeyLabel() Input.Key {
 	return Input.Key(class(self).GetKeyLabel())
 }
 
-// SetKeyLabel sets the property returned by [GetKeyLabel].
-func (self Instance) SetKeyLabel(value Input.Key) {
+// SetKeyLabel sets the property returned by [GetKeyLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeyLabel(value Input.Key) Instance {
 	class(self).SetKeyLabel(value)
+	return self
 }
 
 /*
@@ -328,9 +333,10 @@ func (self Instance) Unicode() int {
 	return int(int(class(self).GetUnicode()))
 }
 
-// SetUnicode sets the property returned by [GetUnicode].
-func (self Instance) SetUnicode(value int) {
+// SetUnicode sets the property returned by [GetUnicode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUnicode(value int) Instance {
 	class(self).SetUnicode(int64(value))
+	return self
 }
 
 /*
@@ -340,18 +346,21 @@ func (self Instance) Location() Input.KeyLocation {
 	return Input.KeyLocation(class(self).GetLocation())
 }
 
-// SetLocation sets the property returned by [GetLocation].
-func (self Instance) SetLocation(value Input.KeyLocation) {
+// SetLocation sets the property returned by [GetLocation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocation(value Input.KeyLocation) Instance {
 	class(self).SetLocation(value)
+	return self
 }
 
 /*
 If true, the key was already pressed before this event. An echo event is a repeated key event sent when the user is holding down the key.
 
 Note: The rate at which echo events are sent is typically around 20 events per second (after holding down the key for roughly half a second). However, the key repeat delay/speed can be changed by the user or disabled entirely in the operating system settings. To ensure your project works correctly on all configurations, do not assume the user has a specific key repeat configuration in your project's behavior.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetEcho(value bool) {
+func (self Instance) SetEcho(value bool) Instance {
 	class(self).SetEcho(value)
+	return self
 }
 
 //go:nosplit

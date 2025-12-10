@@ -178,9 +178,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
-// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
-func (self Instance) SetDrawCenter(value bool) {
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawCenter(value bool) Instance {
 	class(self).SetDrawCenter(value)
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-// SetRegionRect sets the property returned by [GetRegionRect].
-func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+// SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) PatchMarginLeft() int {
 	return int(int(class(self).GetPatchMargin(0)))
 }
 
-// SetPatchMarginLeft sets the property returned by [GetPatchMargin].
-func (self Instance) SetPatchMarginLeft(value int) {
+// SetPatchMarginLeft sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPatchMarginLeft(value int) Instance {
 	class(self).SetPatchMargin(0, int64(value))
+	return self
 }
 
 /*
@@ -226,9 +230,10 @@ func (self Instance) PatchMarginTop() int {
 	return int(int(class(self).GetPatchMargin(1)))
 }
 
-// SetPatchMarginTop sets the property returned by [GetPatchMargin].
-func (self Instance) SetPatchMarginTop(value int) {
+// SetPatchMarginTop sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPatchMarginTop(value int) Instance {
 	class(self).SetPatchMargin(1, int64(value))
+	return self
 }
 
 /*
@@ -238,9 +243,10 @@ func (self Instance) PatchMarginRight() int {
 	return int(int(class(self).GetPatchMargin(2)))
 }
 
-// SetPatchMarginRight sets the property returned by [GetPatchMargin].
-func (self Instance) SetPatchMarginRight(value int) {
+// SetPatchMarginRight sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPatchMarginRight(value int) Instance {
 	class(self).SetPatchMargin(2, int64(value))
+	return self
 }
 
 /*
@@ -250,9 +256,10 @@ func (self Instance) PatchMarginBottom() int {
 	return int(int(class(self).GetPatchMargin(3)))
 }
 
-// SetPatchMarginBottom sets the property returned by [GetPatchMargin].
-func (self Instance) SetPatchMarginBottom(value int) {
+// SetPatchMarginBottom sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPatchMarginBottom(value int) Instance {
 	class(self).SetPatchMargin(3, int64(value))
+	return self
 }
 
 /*
@@ -262,9 +269,10 @@ func (self Instance) AxisStretchHorizontal() AxisStretchMode {
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
-// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode].
-func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
+// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
 	class(self).SetHAxisStretchMode(value)
+	return self
 }
 
 /*
@@ -274,9 +282,10 @@ func (self Instance) AxisStretchVertical() AxisStretchMode {
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
-// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode].
-func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
+// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance {
 	class(self).SetVAxisStretchMode(value)
+	return self
 }
 
 //go:nosplit
@@ -363,12 +372,13 @@ func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get
 /*
 Emitted when the node's texture changes.
 */
-func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("texture_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextureChanged() Signal.Any {

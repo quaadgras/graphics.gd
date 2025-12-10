@@ -171,9 +171,10 @@ func (self Instance) Factor() Float.X {
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
-// SetFactor sets the property returned by [GetFactor].
-func (self Instance) SetFactor(value Float.X) {
+// SetFactor sets the property returned by [GetFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFactor(value Float.X) Instance {
 	class(self).SetFactor(float64(value))
+	return self
 }
 
 //go:nosplit

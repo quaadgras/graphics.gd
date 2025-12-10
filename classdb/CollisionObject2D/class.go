@@ -305,10 +305,13 @@ func (self Instance) GetRid() RID.Body2D { //gd:CollisionObject2D.get_rid
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CollisionObject2D.set_collision_layer_value
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) Instance { //gd:CollisionObject2D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -323,10 +326,13 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:Collis
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CollisionObject2D.set_collision_mask_value
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) Instance { //gd:CollisionObject2D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -536,9 +542,10 @@ func (self Instance) DisableMode() DisableMode {
 	return DisableMode(class(self).GetDisableMode())
 }
 
-// SetDisableMode sets the property returned by [GetDisableMode].
-func (self Instance) SetDisableMode(value DisableMode) {
+// SetDisableMode sets the property returned by [GetDisableMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableMode(value DisableMode) Instance {
 	class(self).SetDisableMode(value)
+	return self
 }
 
 /*
@@ -553,9 +560,10 @@ func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
-// SetCollisionLayer sets the property returned by [GetCollisionLayer].
-func (self Instance) SetCollisionLayer(value int) {
+// SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionLayer(value int) Instance {
 	class(self).SetCollisionLayer(int64(value))
+	return self
 }
 
 /*
@@ -570,9 +578,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -582,9 +591,10 @@ func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-// SetCollisionPriority sets the property returned by [GetCollisionPriority].
-func (self Instance) SetCollisionPriority(value Float.X) {
+// SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionPriority(value Float.X) Instance {
 	class(self).SetCollisionPriority(float64(value))
+	return self
 }
 
 /*
@@ -596,9 +606,10 @@ func (self Instance) InputPickable() bool {
 	return bool(class(self).IsPickable())
 }
 
-// SetInputPickable sets the property returned by [IsPickable].
-func (self Instance) SetInputPickable(value bool) {
+// SetInputPickable sets the property returned by [IsPickable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInputPickable(value bool) Instance {
 	class(self).SetPickable(value)
+	return self
 }
 
 /*
@@ -1025,12 +1036,13 @@ Emitted when an input event occurs. Requires [InputPickable] to be true and at l
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Interface
 [InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
 */
-func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEvent.Instance, shape_idx int), flags ...Signal.Flags) {
+func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEvent.Instance, shape_idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputEvent() Signal.Any {
@@ -1046,12 +1058,13 @@ Note: Due to the lack of continuous collision detection, this signal may not be 
 [CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
 [InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
 */
-func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseEntered() Signal.Any {
@@ -1067,12 +1080,13 @@ Note: Due to the lack of continuous collision detection, this signal may not be 
 [CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
 [InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
 */
-func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseExited() Signal.Any {
@@ -1086,12 +1100,13 @@ Emitted when the mouse pointer enters any of this object's shapes or moves from 
 [InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
 [Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
 */
-func (self Instance) OnMouseShapeEntered(cb func(shape_idx int), flags ...Signal.Flags) {
+func (self Instance) OnMouseShapeEntered(cb func(shape_idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseShapeEntered() Signal.Any {
@@ -1105,12 +1120,13 @@ Emitted when the mouse pointer exits any of this object's shapes. 'shape_idx' is
 [InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
 [Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
 */
-func (self Instance) OnMouseShapeExited(cb func(shape_idx int), flags ...Signal.Flags) {
+func (self Instance) OnMouseShapeExited(cb func(shape_idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseShapeExited() Signal.Any {

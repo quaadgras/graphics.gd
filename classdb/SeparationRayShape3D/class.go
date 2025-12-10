@@ -169,9 +169,10 @@ func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
-// SetLength sets the property returned by [GetLength].
-func (self Instance) SetLength(value Float.X) {
+// SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLength(value Float.X) Instance {
 	class(self).SetLength(float64(value))
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) SlideOnSlope() bool {
 	return bool(class(self).GetSlideOnSlope())
 }
 
-// SetSlideOnSlope sets the property returned by [GetSlideOnSlope].
-func (self Instance) SetSlideOnSlope(value bool) {
+// SetSlideOnSlope sets the property returned by [GetSlideOnSlope]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSlideOnSlope(value bool) Instance {
 	class(self).SetSlideOnSlope(value)
+	return self
 }
 
 //go:nosplit

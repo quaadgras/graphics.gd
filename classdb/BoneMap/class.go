@@ -135,9 +135,12 @@ func (self Instance) GetSkeletonBoneName(profile_bone_name string) string { //gd
 Maps a skeleton bone name to 'profile_bone_name'.
 
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) { //gd:BoneMap.set_skeleton_bone_name
+func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) Instance { //gd:BoneMap.set_skeleton_bone_name
 	Advanced(self).SetSkeletonBoneName(String.Name(String.New(profile_bone_name)), String.Name(String.New(skeleton_bone_name)))
+	return self
 }
 
 /*
@@ -202,9 +205,10 @@ func (self Instance) Profile() SkeletonProfile.Instance {
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
-// SetProfile sets the property returned by [GetProfile].
-func (self Instance) SetProfile(value SkeletonProfile.Instance) {
+// SetProfile sets the property returned by [GetProfile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance {
 	class(self).SetProfile(value)
+	return self
 }
 
 //go:nosplit
@@ -261,12 +265,13 @@ This signal is emitted when change the key value in the [BoneMap]. This is used 
 
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) OnBoneMapUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnBoneMapUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("bone_map_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BoneMapUpdated() Signal.Any {
@@ -278,12 +283,13 @@ This signal is emitted when change the value in profile or change the reference 
 
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProfileUpdated() Signal.Any {

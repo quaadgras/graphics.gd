@@ -271,9 +271,10 @@ func (self Instance) RootBone() string {
 	return string(class(self).GetRootBone().String())
 }
 
-// SetRootBone sets the property returned by [GetRootBone].
-func (self Instance) SetRootBone(value string) {
+// SetRootBone sets the property returned by [GetRootBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootBone(value string) Instance {
 	class(self).SetRootBone(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -286,9 +287,10 @@ func (self Instance) TipBone() string {
 	return string(class(self).GetTipBone().String())
 }
 
-// SetTipBone sets the property returned by [GetTipBone].
-func (self Instance) SetTipBone(value string) {
+// SetTipBone sets the property returned by [GetTipBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTipBone(value string) Instance {
 	class(self).SetTipBone(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -301,9 +303,10 @@ func (self Instance) Target() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTargetTransform())
 }
 
-// SetTarget sets the property returned by [GetTargetTransform].
-func (self Instance) SetTarget(value Transform3D.BasisOrigin) {
+// SetTarget sets the property returned by [GetTargetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTarget(value Transform3D.BasisOrigin) Instance {
 	class(self).SetTargetTransform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -316,9 +319,10 @@ func (self Instance) OverrideTipBasis() bool {
 	return bool(class(self).IsOverrideTipBasis())
 }
 
-// SetOverrideTipBasis sets the property returned by [IsOverrideTipBasis].
-func (self Instance) SetOverrideTipBasis(value bool) {
+// SetOverrideTipBasis sets the property returned by [IsOverrideTipBasis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOverrideTipBasis(value bool) Instance {
 	class(self).SetOverrideTipBasis(value)
+	return self
 }
 
 /*
@@ -328,9 +332,10 @@ func (self Instance) UseMagnet() bool {
 	return bool(class(self).IsUsingMagnet())
 }
 
-// SetUseMagnet sets the property returned by [IsUsingMagnet].
-func (self Instance) SetUseMagnet(value bool) {
+// SetUseMagnet sets the property returned by [IsUsingMagnet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseMagnet(value bool) Instance {
 	class(self).SetUseMagnet(value)
+	return self
 }
 
 /*
@@ -343,9 +348,10 @@ func (self Instance) Magnet() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetMagnetPosition())
 }
 
-// SetMagnet sets the property returned by [GetMagnetPosition].
-func (self Instance) SetMagnet(value Vector3.XYZ) {
+// SetMagnet sets the property returned by [GetMagnetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMagnet(value Vector3.XYZ) Instance {
 	class(self).SetMagnetPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -358,9 +364,10 @@ func (self Instance) TargetNode() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNode sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNode(value string) {
+// SetTargetNode sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNode(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -370,9 +377,10 @@ func (self Instance) MinDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMinDistance()))
 }
 
-// SetMinDistance sets the property returned by [GetMinDistance].
-func (self Instance) SetMinDistance(value Float.X) {
+// SetMinDistance sets the property returned by [GetMinDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinDistance(value Float.X) Instance {
 	class(self).SetMinDistance(float64(value))
+	return self
 }
 
 /*
@@ -382,9 +390,10 @@ func (self Instance) MaxIterations() int {
 	return int(int(class(self).GetMaxIterations()))
 }
 
-// SetMaxIterations sets the property returned by [GetMaxIterations].
-func (self Instance) SetMaxIterations(value int) {
+// SetMaxIterations sets the property returned by [GetMaxIterations]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxIterations(value int) Instance {
 	class(self).SetMaxIterations(int64(value))
+	return self
 }
 
 /*
@@ -394,9 +403,10 @@ func (self Instance) Interpolation() Float.X {
 	return Float.X(Float.X(class(self).GetInterpolation()))
 }
 
-// SetInterpolation sets the property returned by [GetInterpolation].
-func (self Instance) SetInterpolation(value Float.X) {
+// SetInterpolation sets the property returned by [GetInterpolation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterpolation(value Float.X) Instance {
 	class(self).SetInterpolation(float64(value))
+	return self
 }
 
 //go:nosplit

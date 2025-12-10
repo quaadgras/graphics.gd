@@ -186,9 +186,10 @@ func (self Instance) Animation() string {
 	return string(class(self).GetAnimation().String())
 }
 
-// SetAnimation sets the property returned by [GetAnimation].
-func (self Instance) SetAnimation(value string) {
+// SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimation(value string) Instance {
 	class(self).SetAnimation(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -198,9 +199,10 @@ func (self Instance) PlayMode() PlayMode {
 	return PlayMode(class(self).GetPlayMode())
 }
 
-// SetPlayMode sets the property returned by [GetPlayMode].
-func (self Instance) SetPlayMode(value PlayMode) {
+// SetPlayMode sets the property returned by [GetPlayMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlayMode(value PlayMode) Instance {
 	class(self).SetPlayMode(value)
+	return self
 }
 
 /*
@@ -214,9 +216,10 @@ func (self Instance) AdvanceOnStart() bool {
 	return bool(class(self).IsAdvanceOnStart())
 }
 
-// SetAdvanceOnStart sets the property returned by [IsAdvanceOnStart].
-func (self Instance) SetAdvanceOnStart(value bool) {
+// SetAdvanceOnStart sets the property returned by [IsAdvanceOnStart]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAdvanceOnStart(value bool) Instance {
 	class(self).SetAdvanceOnStart(value)
+	return self
 }
 
 /*
@@ -229,9 +232,10 @@ func (self Instance) UseCustomTimeline() bool {
 	return bool(class(self).IsUsingCustomTimeline())
 }
 
-// SetUseCustomTimeline sets the property returned by [IsUsingCustomTimeline].
-func (self Instance) SetUseCustomTimeline(value bool) {
+// SetUseCustomTimeline sets the property returned by [IsUsingCustomTimeline]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseCustomTimeline(value bool) Instance {
 	class(self).SetUseCustomTimeline(value)
+	return self
 }
 
 /*
@@ -243,9 +247,10 @@ func (self Instance) TimelineLength() Float.X {
 	return Float.X(Float.X(class(self).GetTimelineLength()))
 }
 
-// SetTimelineLength sets the property returned by [GetTimelineLength].
-func (self Instance) SetTimelineLength(value Float.X) {
+// SetTimelineLength sets the property returned by [GetTimelineLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimelineLength(value Float.X) Instance {
 	class(self).SetTimelineLength(float64(value))
+	return self
 }
 
 /*
@@ -262,9 +267,10 @@ func (self Instance) StretchTimeScale() bool {
 	return bool(class(self).IsStretchingTimeScale())
 }
 
-// SetStretchTimeScale sets the property returned by [IsStretchingTimeScale].
-func (self Instance) SetStretchTimeScale(value bool) {
+// SetStretchTimeScale sets the property returned by [IsStretchingTimeScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchTimeScale(value bool) Instance {
 	class(self).SetStretchTimeScale(value)
+	return self
 }
 
 /*
@@ -278,9 +284,10 @@ func (self Instance) StartOffset() Float.X {
 	return Float.X(Float.X(class(self).GetStartOffset()))
 }
 
-// SetStartOffset sets the property returned by [GetStartOffset].
-func (self Instance) SetStartOffset(value Float.X) {
+// SetStartOffset sets the property returned by [GetStartOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStartOffset(value Float.X) Instance {
 	class(self).SetStartOffset(float64(value))
+	return self
 }
 
 /*
@@ -297,9 +304,10 @@ func (self Instance) LoopMode() Animation.LoopMode {
 	return Animation.LoopMode(class(self).GetLoopMode())
 }
 
-// SetLoopMode sets the property returned by [GetLoopMode].
-func (self Instance) SetLoopMode(value Animation.LoopMode) {
+// SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopMode(value Animation.LoopMode) Instance {
 	class(self).SetLoopMode(value)
+	return self
 }
 
 //go:nosplit

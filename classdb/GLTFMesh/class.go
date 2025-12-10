@@ -140,11 +140,14 @@ Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 
+Returns 'self' to enable method chaining.
+
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
 [GLTFMesh]: https://pkg.go.dev/graphics.gd/classdb/GLTFMesh
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFMesh.set_additional_data
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFMesh.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -197,9 +200,10 @@ func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
-// SetOriginalName sets the property returned by [GetOriginalName].
-func (self Instance) SetOriginalName(value string) {
+// SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginalName(value string) Instance {
 	class(self).SetOriginalName(String.New(value))
+	return self
 }
 
 /*
@@ -211,9 +215,10 @@ func (self Instance) Mesh() ImporterMesh.Instance {
 	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value ImporterMesh.Instance) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value ImporterMesh.Instance) Instance {
 	class(self).SetMesh(value)
+	return self
 }
 
 /*
@@ -223,9 +228,10 @@ func (self Instance) BlendWeights() []float32 {
 	return []float32(slices.Collect(class(self).GetBlendWeights().Values()))
 }
 
-// SetBlendWeights sets the property returned by [GetBlendWeights].
-func (self Instance) SetBlendWeights(value []float32) {
+// SetBlendWeights sets the property returned by [GetBlendWeights]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendWeights(value []float32) Instance {
 	class(self).SetBlendWeights(Packed.New(value...))
+	return self
 }
 
 /*
@@ -235,9 +241,10 @@ func (self Instance) InstanceMaterials() []Material.Instance {
 	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetInstanceMaterials())))
 }
 
-// SetInstanceMaterials sets the property returned by [GetInstanceMaterials].
-func (self Instance) SetInstanceMaterials(value []Material.Instance) {
+// SetInstanceMaterials sets the property returned by [GetInstanceMaterials]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInstanceMaterials(value []Material.Instance) Instance {
 	class(self).SetInstanceMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
+	return self
 }
 
 //go:nosplit

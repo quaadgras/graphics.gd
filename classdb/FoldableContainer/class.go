@@ -236,9 +236,10 @@ func (self Instance) Folded() bool {
 	return bool(class(self).IsFolded())
 }
 
-// SetFolded sets the property returned by [IsFolded].
-func (self Instance) SetFolded(value bool) {
+// SetFolded sets the property returned by [IsFolded]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFolded(value bool) Instance {
 	class(self).SetFolded(value)
+	return self
 }
 
 /*
@@ -248,9 +249,10 @@ func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
-// SetTitle sets the property returned by [GetTitle].
-func (self Instance) SetTitle(value string) {
+// SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitle(value string) Instance {
 	class(self).SetTitle(String.New(value))
+	return self
 }
 
 /*
@@ -260,9 +262,10 @@ func (self Instance) TitleAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetTitleAlignment())
 }
 
-// SetTitleAlignment sets the property returned by [GetTitleAlignment].
-func (self Instance) SetTitleAlignment(value GUI.HorizontalAlignment) {
+// SetTitleAlignment sets the property returned by [GetTitleAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitleAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetTitleAlignment(value)
+	return self
 }
 
 /*
@@ -272,9 +275,10 @@ func (self Instance) TitlePosition() TitlePosition {
 	return TitlePosition(class(self).GetTitlePosition())
 }
 
-// SetTitlePosition sets the property returned by [GetTitlePosition].
-func (self Instance) SetTitlePosition(value TitlePosition) {
+// SetTitlePosition sets the property returned by [GetTitlePosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitlePosition(value TitlePosition) Instance {
 	class(self).SetTitlePosition(value)
+	return self
 }
 
 /*
@@ -284,9 +288,10 @@ func (self Instance) TitleTextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTitleTextOverrunBehavior())
 }
 
-// SetTitleTextOverrunBehavior sets the property returned by [GetTitleTextOverrunBehavior].
-func (self Instance) SetTitleTextOverrunBehavior(value TextServer.OverrunBehavior) {
+// SetTitleTextOverrunBehavior sets the property returned by [GetTitleTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitleTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
 	class(self).SetTitleTextOverrunBehavior(value)
+	return self
 }
 
 /*
@@ -296,9 +301,10 @@ func (self Instance) TitleTextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTitleTextDirection())
 }
 
-// SetTitleTextDirection sets the property returned by [GetTitleTextDirection].
-func (self Instance) SetTitleTextDirection(value Control.TextDirection) {
+// SetTitleTextDirection sets the property returned by [GetTitleTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitleTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTitleTextDirection(value)
+	return self
 }
 
 /*
@@ -308,9 +314,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 /*
@@ -457,12 +464,13 @@ func (self class) RemoveTitleBarControl(control [1]gdclass.Control) { //gd:Folda
 /*
 Emitted when the container is folded/expanded.
 */
-func (self Instance) OnFoldingChanged(cb func(is_folded bool), flags ...Signal.Flags) {
+func (self Instance) OnFoldingChanged(cb func(is_folded bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("folding_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FoldingChanged() Signal.Any {

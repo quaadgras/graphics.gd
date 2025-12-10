@@ -243,27 +243,36 @@ func (self Instance) ProjectPosition(screen_point Vector2.XY, z_depth Float.X) V
 
 /*
 Sets the camera projection to perspective mode (see [ProjectionPerspective]), by specifying a 'fov' (field of view) angle in degrees, and the 'z_near' and 'z_far' clip planes in world space units.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_perspective
+func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) Instance { //gd:Camera3D.set_perspective
 	Advanced(self).SetPerspective(float64(fov), float64(z_near), float64(z_far))
+	return self
 }
 
 /*
 Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units.
 
 As a hint, 3D games that look 2D often use this projection, with 'size' specified in pixels.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_orthogonal
+func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) Instance { //gd:Camera3D.set_orthogonal
 	Advanced(self).SetOrthogonal(float64(size), float64(z_near), float64(z_far))
+	return self
 }
 
 /*
 Sets the camera projection to frustum mode (see [ProjectionFrustum]), by specifying a 'size', an 'offset', and the 'z_near' and 'z_far' clip planes in world space units. See also [FrustumOffset].
 
+Returns 'self' to enable method chaining.
+
 [FrustumOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.FrustumOffset
 */
-func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_frustum
+func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) Instance { //gd:Camera3D.set_frustum
 	Advanced(self).SetFrustum(float64(size), Vector2.XY(offset), float64(z_near), float64(z_far))
+	return self
 }
 
 /*
@@ -345,10 +354,13 @@ func (self Instance) GetPyramidShapeRid() RID.Shape3D { //gd:Camera3D.get_pyrami
 /*
 Based on 'value', enables or disables the specified layer in the [CullMask], given a 'layer_number' between 1 and 20.
 
+Returns 'self' to enable method chaining.
+
 [CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
 */
-func (self Instance) SetCullMaskValue(layer_number int, value bool) { //gd:Camera3D.set_cull_mask_value
+func (self Instance) SetCullMaskValue(layer_number int, value bool) Instance { //gd:Camera3D.set_cull_mask_value
 	Advanced(self).SetCullMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -412,9 +424,10 @@ func (self Instance) KeepAspect() KeepAspect {
 	return KeepAspect(class(self).GetKeepAspectMode())
 }
 
-// SetKeepAspect sets the property returned by [GetKeepAspectMode].
-func (self Instance) SetKeepAspect(value KeepAspect) {
+// SetKeepAspect sets the property returned by [GetKeepAspectMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepAspect(value KeepAspect) Instance {
 	class(self).SetKeepAspectMode(value)
+	return self
 }
 
 /*
@@ -439,9 +452,10 @@ func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
-// SetCullMask sets the property returned by [GetCullMask].
-func (self Instance) SetCullMask(value int) {
+// SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMask(value int) Instance {
 	class(self).SetCullMask(int64(value))
+	return self
 }
 
 /*
@@ -453,9 +467,10 @@ func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
-// SetEnvironment sets the property returned by [GetEnvironment].
-func (self Instance) SetEnvironment(value Environment.Instance) {
+// SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironment(value Environment.Instance) Instance {
 	class(self).SetEnvironment(value)
+	return self
 }
 
 /*
@@ -467,9 +482,10 @@ func (self Instance) Attributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetAttributes())
 }
 
-// SetAttributes sets the property returned by [GetAttributes].
-func (self Instance) SetAttributes(value CameraAttributes.Instance) {
+// SetAttributes sets the property returned by [GetAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAttributes(value CameraAttributes.Instance) Instance {
 	class(self).SetAttributes(value)
+	return self
 }
 
 /*
@@ -481,9 +497,10 @@ func (self Instance) Compositor() Compositor.Instance {
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
-// SetCompositor sets the property returned by [GetCompositor].
-func (self Instance) SetCompositor(value Compositor.Instance) {
+// SetCompositor sets the property returned by [GetCompositor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompositor(value Compositor.Instance) Instance {
 	class(self).SetCompositor(value)
+	return self
 }
 
 /*
@@ -493,9 +510,10 @@ func (self Instance) HOffset() Float.X {
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
-// SetHOffset sets the property returned by [GetHOffset].
-func (self Instance) SetHOffset(value Float.X) {
+// SetHOffset sets the property returned by [GetHOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHOffset(value Float.X) Instance {
 	class(self).SetHOffset(float64(value))
+	return self
 }
 
 /*
@@ -505,9 +523,10 @@ func (self Instance) VOffset() Float.X {
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
-// SetVOffset sets the property returned by [GetVOffset].
-func (self Instance) SetVOffset(value Float.X) {
+// SetVOffset sets the property returned by [GetVOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVOffset(value Float.X) Instance {
 	class(self).SetVOffset(float64(value))
+	return self
 }
 
 /*
@@ -523,9 +542,10 @@ func (self Instance) DopplerTracking() DopplerTracking {
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
-// SetDopplerTracking sets the property returned by [GetDopplerTracking].
-func (self Instance) SetDopplerTracking(value DopplerTracking) {
+// SetDopplerTracking sets the property returned by [GetDopplerTracking]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
 	class(self).SetDopplerTracking(value)
+	return self
 }
 
 /*
@@ -535,9 +555,10 @@ func (self Instance) Projection() ProjectionType {
 	return ProjectionType(class(self).GetProjection())
 }
 
-// SetProjection sets the property returned by [GetProjection].
-func (self Instance) SetProjection(value ProjectionType) {
+// SetProjection sets the property returned by [GetProjection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProjection(value ProjectionType) Instance {
 	class(self).SetProjection(value)
+	return self
 }
 
 /*
@@ -553,9 +574,10 @@ func (self Instance) Current() bool {
 	return bool(class(self).IsCurrent())
 }
 
-// SetCurrent sets the property returned by [IsCurrent].
-func (self Instance) SetCurrent(value bool) {
+// SetCurrent sets the property returned by [IsCurrent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrent(value bool) Instance {
 	class(self).SetCurrent(value)
+	return self
 }
 
 /*
@@ -578,9 +600,10 @@ func (self Instance) Fov() Float.X {
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
-// SetFov sets the property returned by [GetFov].
-func (self Instance) SetFov(value Float.X) {
+// SetFov sets the property returned by [GetFov]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFov(value Float.X) Instance {
 	class(self).SetFov(float64(value))
+	return self
 }
 
 /*
@@ -592,9 +615,10 @@ func (self Instance) Size() Float.X {
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Float.X) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Float.X) Instance {
 	class(self).SetSize(float64(value))
+	return self
 }
 
 /*
@@ -609,9 +633,10 @@ func (self Instance) FrustumOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetFrustumOffset())
 }
 
-// SetFrustumOffset sets the property returned by [GetFrustumOffset].
-func (self Instance) SetFrustumOffset(value Vector2.XY) {
+// SetFrustumOffset sets the property returned by [GetFrustumOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrustumOffset(value Vector2.XY) Instance {
 	class(self).SetFrustumOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -621,9 +646,10 @@ func (self Instance) Near() Float.X {
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
-// SetNear sets the property returned by [GetNear].
-func (self Instance) SetNear(value Float.X) {
+// SetNear sets the property returned by [GetNear]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNear(value Float.X) Instance {
 	class(self).SetNear(float64(value))
+	return self
 }
 
 /*
@@ -635,9 +661,10 @@ func (self Instance) Far() Float.X {
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
-// SetFar sets the property returned by [GetFar].
-func (self Instance) SetFar(value Float.X) {
+// SetFar sets the property returned by [GetFar]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFar(value Float.X) Instance {
 	class(self).SetFar(float64(value))
+	return self
 }
 
 /*

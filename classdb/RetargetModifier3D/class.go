@@ -136,10 +136,13 @@ type Any interface {
 /*
 Sets [TransformFlagPosition] into [Enable].
 
+Returns 'self' to enable method chaining.
+
 [Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
 */
-func (self Instance) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
+func (self Instance) SetPositionEnabled(enabled bool) Instance { //gd:RetargetModifier3D.set_position_enabled
 	Advanced(self).SetPositionEnabled(enabled)
+	return self
 }
 
 /*
@@ -154,10 +157,13 @@ func (self Instance) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_posit
 /*
 Sets [TransformFlagRotation] into [Enable].
 
+Returns 'self' to enable method chaining.
+
 [Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
 */
-func (self Instance) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
+func (self Instance) SetRotationEnabled(enabled bool) Instance { //gd:RetargetModifier3D.set_rotation_enabled
 	Advanced(self).SetRotationEnabled(enabled)
+	return self
 }
 
 /*
@@ -172,10 +178,13 @@ func (self Instance) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotat
 /*
 Sets [TransformFlagScale] into [Enable].
 
+Returns 'self' to enable method chaining.
+
 [Enable]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.Enable
 */
-func (self Instance) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
+func (self Instance) SetScaleEnabled(enabled bool) Instance { //gd:RetargetModifier3D.set_scale_enabled
 	Advanced(self).SetScaleEnabled(enabled)
+	return self
 }
 
 /*
@@ -238,9 +247,10 @@ func (self Instance) Profile() SkeletonProfile.Instance {
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
-// SetProfile sets the property returned by [GetProfile].
-func (self Instance) SetProfile(value SkeletonProfile.Instance) {
+// SetProfile sets the property returned by [GetProfile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance {
 	class(self).SetProfile(value)
+	return self
 }
 
 /*
@@ -258,9 +268,10 @@ func (self Instance) UseGlobalPose() bool {
 	return bool(class(self).IsUsingGlobalPose())
 }
 
-// SetUseGlobalPose sets the property returned by [IsUsingGlobalPose].
-func (self Instance) SetUseGlobalPose(value bool) {
+// SetUseGlobalPose sets the property returned by [IsUsingGlobalPose]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseGlobalPose(value bool) Instance {
 	class(self).SetUseGlobalPose(value)
+	return self
 }
 
 /*
@@ -272,9 +283,10 @@ func (self Instance) Enable() TransformFlag {
 	return TransformFlag(class(self).GetEnableFlags())
 }
 
-// SetEnable sets the property returned by [GetEnableFlags].
-func (self Instance) SetEnable(value TransformFlag) {
+// SetEnable sets the property returned by [GetEnableFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnable(value TransformFlag) Instance {
 	class(self).SetEnableFlags(value)
+	return self
 }
 
 //go:nosplit

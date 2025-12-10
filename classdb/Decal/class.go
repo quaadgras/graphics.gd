@@ -213,9 +213,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -234,9 +235,10 @@ func (self Instance) TextureAlbedo() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
-// SetTextureAlbedo sets the property returned by [GetTexture].
-func (self Instance) SetTextureAlbedo(value Texture2D.Instance) {
+// SetTextureAlbedo sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureAlbedo(value Texture2D.Instance) Instance {
 	class(self).SetTexture(0, value)
+	return self
 }
 
 /*
@@ -257,9 +259,10 @@ func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
-// SetTextureNormal sets the property returned by [GetTexture].
-func (self Instance) SetTextureNormal(value Texture2D.Instance) {
+// SetTextureNormal sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
 	class(self).SetTexture(1, value)
+	return self
 }
 
 /*
@@ -280,9 +283,10 @@ func (self Instance) TextureOrm() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
-// SetTextureOrm sets the property returned by [GetTexture].
-func (self Instance) SetTextureOrm(value Texture2D.Instance) {
+// SetTextureOrm sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureOrm(value Texture2D.Instance) Instance {
 	class(self).SetTexture(2, value)
+	return self
 }
 
 /*
@@ -301,9 +305,10 @@ func (self Instance) TextureEmission() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
-// SetTextureEmission sets the property returned by [GetTexture].
-func (self Instance) SetTextureEmission(value Texture2D.Instance) {
+// SetTextureEmission sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureEmission(value Texture2D.Instance) Instance {
 	class(self).SetTexture(3, value)
+	return self
 }
 
 /*
@@ -315,9 +320,10 @@ func (self Instance) EmissionEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionEnergy()))
 }
 
-// SetEmissionEnergy sets the property returned by [GetEmissionEnergy].
-func (self Instance) SetEmissionEnergy(value Float.X) {
+// SetEmissionEnergy sets the property returned by [GetEmissionEnergy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionEnergy(value Float.X) Instance {
 	class(self).SetEmissionEnergy(float64(value))
+	return self
 }
 
 /*
@@ -331,9 +337,10 @@ func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
-// SetModulate sets the property returned by [GetModulate].
-func (self Instance) SetModulate(value Color.RGBA) {
+// SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulate(value Color.RGBA) Instance {
 	class(self).SetModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -346,9 +353,10 @@ func (self Instance) AlbedoMix() Float.X {
 	return Float.X(Float.X(class(self).GetAlbedoMix()))
 }
 
-// SetAlbedoMix sets the property returned by [GetAlbedoMix].
-func (self Instance) SetAlbedoMix(value Float.X) {
+// SetAlbedoMix sets the property returned by [GetAlbedoMix]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlbedoMix(value Float.X) Instance {
 	class(self).SetAlbedoMix(float64(value))
+	return self
 }
 
 /*
@@ -363,9 +371,10 @@ func (self Instance) NormalFade() Float.X {
 	return Float.X(Float.X(class(self).GetNormalFade()))
 }
 
-// SetNormalFade sets the property returned by [GetNormalFade].
-func (self Instance) SetNormalFade(value Float.X) {
+// SetNormalFade sets the property returned by [GetNormalFade]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalFade(value Float.X) Instance {
 	class(self).SetNormalFade(float64(value))
+	return self
 }
 
 /*
@@ -378,9 +387,10 @@ func (self Instance) UpperFade() Float.X {
 	return Float.X(Float.X(class(self).GetUpperFade()))
 }
 
-// SetUpperFade sets the property returned by [GetUpperFade].
-func (self Instance) SetUpperFade(value Float.X) {
+// SetUpperFade sets the property returned by [GetUpperFade]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpperFade(value Float.X) Instance {
 	class(self).SetUpperFade(float64(value))
+	return self
 }
 
 /*
@@ -393,9 +403,10 @@ func (self Instance) LowerFade() Float.X {
 	return Float.X(Float.X(class(self).GetLowerFade()))
 }
 
-// SetLowerFade sets the property returned by [GetLowerFade].
-func (self Instance) SetLowerFade(value Float.X) {
+// SetLowerFade sets the property returned by [GetLowerFade]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLowerFade(value Float.X) Instance {
 	class(self).SetLowerFade(float64(value))
+	return self
 }
 
 /*
@@ -409,9 +420,10 @@ func (self Instance) DistanceFadeEnabled() bool {
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
-// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled].
-func (self Instance) SetDistanceFadeEnabled(value bool) {
+// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeEnabled(value bool) Instance {
 	class(self).SetEnableDistanceFade(value)
+	return self
 }
 
 /*
@@ -421,9 +433,10 @@ func (self Instance) DistanceFadeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
-// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin].
-func (self Instance) SetDistanceFadeBegin(value Float.X) {
+// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeBegin(value Float.X) Instance {
 	class(self).SetDistanceFadeBegin(float64(value))
+	return self
 }
 
 /*
@@ -433,9 +446,10 @@ func (self Instance) DistanceFadeLength() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
-// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength].
-func (self Instance) SetDistanceFadeLength(value Float.X) {
+// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeLength(value Float.X) Instance {
 	class(self).SetDistanceFadeLength(float64(value))
+	return self
 }
 
 /*
@@ -447,9 +461,10 @@ func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
-// SetCullMask sets the property returned by [GetCullMask].
-func (self Instance) SetCullMask(value int) {
+// SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMask(value int) Instance {
 	class(self).SetCullMask(int64(value))
+	return self
 }
 
 //go:nosplit

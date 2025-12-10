@@ -897,12 +897,15 @@ func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb 
 /*
 Sets current configuration error message text. This method should be called only from the [CanExport], [HasValidExportConfiguration], or [HasValidProjectConfiguration] implementations.
 
+Returns 'self' to enable method chaining.
+
 [CanExport]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [HasValidProjectConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 */
-func (self Instance) SetConfigError(error_text string) { //gd:EditorExportPlatformExtension.set_config_error
+func (self Instance) SetConfigError(error_text string) Instance { //gd:EditorExportPlatformExtension.set_config_error
 	Advanced(self).SetConfigError(String.New(error_text))
+	return self
 }
 
 /*
@@ -919,12 +922,15 @@ func (self Instance) GetConfigError() string { //gd:EditorExportPlatformExtensio
 /*
 Set to true is export templates are missing from the current configuration. This method should be called only from the [CanExport], [HasValidExportConfiguration], or [HasValidProjectConfiguration] implementations.
 
+Returns 'self' to enable method chaining.
+
 [CanExport]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [HasValidProjectConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 */
-func (self Instance) SetConfigMissingTemplates(missing_templates bool) { //gd:EditorExportPlatformExtension.set_config_missing_templates
+func (self Instance) SetConfigMissingTemplates(missing_templates bool) Instance { //gd:EditorExportPlatformExtension.set_config_missing_templates
 	Advanced(self).SetConfigMissingTemplates(missing_templates)
+	return self
 }
 
 /*

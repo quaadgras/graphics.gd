@@ -227,9 +227,10 @@ func (self Instance) Tracker() string {
 	return string(class(self).GetTracker().String())
 }
 
-// SetTracker sets the property returned by [GetTracker].
-func (self Instance) SetTracker(value string) {
+// SetTracker sets the property returned by [GetTracker]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTracker(value string) Instance {
 	class(self).SetTracker(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -243,9 +244,10 @@ func (self Instance) Pose() string {
 	return string(class(self).GetPoseName().String())
 }
 
-// SetPose sets the property returned by [GetPoseName].
-func (self Instance) SetPose(value string) {
+// SetPose sets the property returned by [GetPoseName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPose(value string) Instance {
 	class(self).SetPoseName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -255,9 +257,10 @@ func (self Instance) ShowWhenTracked() bool {
 	return bool(class(self).GetShowWhenTracked())
 }
 
-// SetShowWhenTracked sets the property returned by [GetShowWhenTracked].
-func (self Instance) SetShowWhenTracked(value bool) {
+// SetShowWhenTracked sets the property returned by [GetShowWhenTracked]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowWhenTracked(value bool) Instance {
 	class(self).SetShowWhenTracked(value)
+	return self
 }
 
 //go:nosplit
@@ -364,12 +367,13 @@ Emitted when the [Tracker] starts or stops receiving updated tracking data for t
 [Pose]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Pose
 [Tracker]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Tracker
 */
-func (self Instance) OnTrackingChanged(cb func(tracking bool), flags ...Signal.Flags) {
+func (self Instance) OnTrackingChanged(cb func(tracking bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tracking_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TrackingChanged() Signal.Any {

@@ -173,9 +173,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

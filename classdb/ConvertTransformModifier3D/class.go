@@ -160,9 +160,12 @@ type Any interface {
 
 /*
 Sets the operation of the remapping destination transform.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyTransformMode(index int, transform_mode TransformMode) { //gd:ConvertTransformModifier3D.set_apply_transform_mode
+func (self Instance) SetApplyTransformMode(index int, transform_mode TransformMode) Instance { //gd:ConvertTransformModifier3D.set_apply_transform_mode
 	Advanced(self).SetApplyTransformMode(int64(index), transform_mode)
+	return self
 }
 
 /*
@@ -174,9 +177,12 @@ func (self Instance) GetApplyTransformMode(index int) TransformMode { //gd:Conve
 
 /*
 Sets the axis of the remapping destination transform.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyAxis(index int, axis Vector3.Axis) { //gd:ConvertTransformModifier3D.set_apply_axis
+func (self Instance) SetApplyAxis(index int, axis Vector3.Axis) Instance { //gd:ConvertTransformModifier3D.set_apply_axis
 	Advanced(self).SetApplyAxis(int64(index), axis)
+	return self
 }
 
 /*
@@ -188,9 +194,12 @@ func (self Instance) GetApplyAxis(index int) Vector3.Axis { //gd:ConvertTransfor
 
 /*
 Sets the minimum value of the remapping destination range.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyRangeMin(index int, range_min Float.X) { //gd:ConvertTransformModifier3D.set_apply_range_min
+func (self Instance) SetApplyRangeMin(index int, range_min Float.X) Instance { //gd:ConvertTransformModifier3D.set_apply_range_min
 	Advanced(self).SetApplyRangeMin(int64(index), float64(range_min))
+	return self
 }
 
 /*
@@ -202,9 +211,12 @@ func (self Instance) GetApplyRangeMin(index int) Float.X { //gd:ConvertTransform
 
 /*
 Sets the maximum value of the remapping destination range.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyRangeMax(index int, range_max Float.X) { //gd:ConvertTransformModifier3D.set_apply_range_max
+func (self Instance) SetApplyRangeMax(index int, range_max Float.X) Instance { //gd:ConvertTransformModifier3D.set_apply_range_max
 	Advanced(self).SetApplyRangeMax(int64(index), float64(range_max))
+	return self
 }
 
 /*
@@ -216,9 +228,12 @@ func (self Instance) GetApplyRangeMax(index int) Float.X { //gd:ConvertTransform
 
 /*
 Sets the operation of the remapping source transform.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceTransformMode(index int, transform_mode TransformMode) { //gd:ConvertTransformModifier3D.set_reference_transform_mode
+func (self Instance) SetReferenceTransformMode(index int, transform_mode TransformMode) Instance { //gd:ConvertTransformModifier3D.set_reference_transform_mode
 	Advanced(self).SetReferenceTransformMode(int64(index), transform_mode)
+	return self
 }
 
 /*
@@ -230,9 +245,12 @@ func (self Instance) GetReferenceTransformMode(index int) TransformMode { //gd:C
 
 /*
 Sets the axis of the remapping source transform.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceAxis(index int, axis Vector3.Axis) { //gd:ConvertTransformModifier3D.set_reference_axis
+func (self Instance) SetReferenceAxis(index int, axis Vector3.Axis) Instance { //gd:ConvertTransformModifier3D.set_reference_axis
 	Advanced(self).SetReferenceAxis(int64(index), axis)
+	return self
 }
 
 /*
@@ -244,9 +262,12 @@ func (self Instance) GetReferenceAxis(index int) Vector3.Axis { //gd:ConvertTran
 
 /*
 Sets the minimum value of the remapping source range.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceRangeMin(index int, range_min Float.X) { //gd:ConvertTransformModifier3D.set_reference_range_min
+func (self Instance) SetReferenceRangeMin(index int, range_min Float.X) Instance { //gd:ConvertTransformModifier3D.set_reference_range_min
 	Advanced(self).SetReferenceRangeMin(int64(index), float64(range_min))
+	return self
 }
 
 /*
@@ -258,9 +279,12 @@ func (self Instance) GetReferenceRangeMin(index int) Float.X { //gd:ConvertTrans
 
 /*
 Sets the maximum value of the remapping source range.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceRangeMax(index int, range_max Float.X) { //gd:ConvertTransformModifier3D.set_reference_range_max
+func (self Instance) SetReferenceRangeMax(index int, range_max Float.X) Instance { //gd:ConvertTransformModifier3D.set_reference_range_max
 	Advanced(self).SetReferenceRangeMax(int64(index), float64(range_max))
+	return self
 }
 
 /*
@@ -276,9 +300,12 @@ Sets relative option in the setting at 'index' to 'enabled'.
 If sets 'enabled' to true, the extracted and applying transform is relative to the rest.
 
 If sets 'enabled' to false, the extracted transform is absolute.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRelative(index int, enabled bool) { //gd:ConvertTransformModifier3D.set_relative
+func (self Instance) SetRelative(index int, enabled bool) Instance { //gd:ConvertTransformModifier3D.set_relative
 	Advanced(self).SetRelative(int64(index), enabled)
+	return self
 }
 
 /*
@@ -295,11 +322,14 @@ If sets 'enabled' to true, the processed transform is added to the pose of the c
 
 If sets 'enabled' to false, the pose of the current apply bone is replaced with the processed transform. However, if set [SetRelative] to true, the transform is relative to rest.
 
+Returns 'self' to enable method chaining.
+
 [BoneConstraint3D.SetApplyBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetApplyBone
 [SetRelative]: https://pkg.go.dev/graphics.gd/classdb/ConvertTransformModifier3D#Instance.SetRelative
 */
-func (self Instance) SetAdditive(index int, enabled bool) { //gd:ConvertTransformModifier3D.set_additive
+func (self Instance) SetAdditive(index int, enabled bool) Instance { //gd:ConvertTransformModifier3D.set_additive
 	Advanced(self).SetAdditive(int64(index), enabled)
+	return self
 }
 
 /*

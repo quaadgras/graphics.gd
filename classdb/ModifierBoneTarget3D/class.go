@@ -173,9 +173,10 @@ func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
-// SetBoneName sets the property returned by [GetBoneName].
-func (self Instance) SetBoneName(value string) {
+// SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneName(value string) Instance {
 	class(self).SetBoneName(String.New(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) Bone() int {
 	return int(int(class(self).GetBone()))
 }
 
-// SetBone sets the property returned by [GetBone].
-func (self Instance) SetBone(value int) {
+// SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone(value int) Instance {
 	class(self).SetBone(int64(value))
+	return self
 }
 
 //go:nosplit

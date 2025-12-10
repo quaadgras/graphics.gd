@@ -169,9 +169,10 @@ func (self Instance) Normal() Vector2.XY {
 	return Vector2.XY(class(self).GetNormal())
 }
 
-// SetNormal sets the property returned by [GetNormal].
-func (self Instance) SetNormal(value Vector2.XY) {
+// SetNormal sets the property returned by [GetNormal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormal(value Vector2.XY) Instance {
 	class(self).SetNormal(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) Distance() Float.X {
 	return Float.X(Float.X(class(self).GetDistance()))
 }
 
-// SetDistance sets the property returned by [GetDistance].
-func (self Instance) SetDistance(value Float.X) {
+// SetDistance sets the property returned by [GetDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistance(value Float.X) Instance {
 	class(self).SetDistance(float64(value))
+	return self
 }
 
 //go:nosplit

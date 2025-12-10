@@ -174,9 +174,10 @@ func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
-// SetMode sets the property returned by [GetMode].
-func (self Instance) SetMode(value Mode) {
+// SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode(value Mode) Instance {
 	class(self).SetMode(value)
+	return self
 }
 
 /*
@@ -186,9 +187,10 @@ func (self Instance) PreGain() Float.X {
 	return Float.X(Float.X(class(self).GetPreGain()))
 }
 
-// SetPreGain sets the property returned by [GetPreGain].
-func (self Instance) SetPreGain(value Float.X) {
+// SetPreGain sets the property returned by [GetPreGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreGain(value Float.X) Instance {
 	class(self).SetPreGain(float64(value))
+	return self
 }
 
 /*
@@ -198,9 +200,10 @@ func (self Instance) KeepHfHz() Float.X {
 	return Float.X(Float.X(class(self).GetKeepHfHz()))
 }
 
-// SetKeepHfHz sets the property returned by [GetKeepHfHz].
-func (self Instance) SetKeepHfHz(value Float.X) {
+// SetKeepHfHz sets the property returned by [GetKeepHfHz]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepHfHz(value Float.X) Instance {
 	class(self).SetKeepHfHz(float64(value))
+	return self
 }
 
 /*
@@ -210,9 +213,10 @@ func (self Instance) Drive() Float.X {
 	return Float.X(Float.X(class(self).GetDrive()))
 }
 
-// SetDrive sets the property returned by [GetDrive].
-func (self Instance) SetDrive(value Float.X) {
+// SetDrive sets the property returned by [GetDrive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrive(value Float.X) Instance {
 	class(self).SetDrive(float64(value))
+	return self
 }
 
 /*
@@ -222,9 +226,10 @@ func (self Instance) PostGain() Float.X {
 	return Float.X(Float.X(class(self).GetPostGain()))
 }
 
-// SetPostGain sets the property returned by [GetPostGain].
-func (self Instance) SetPostGain(value Float.X) {
+// SetPostGain sets the property returned by [GetPostGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPostGain(value Float.X) Instance {
 	class(self).SetPostGain(float64(value))
+	return self
 }
 
 //go:nosplit

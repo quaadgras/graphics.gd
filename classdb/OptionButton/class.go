@@ -209,46 +209,64 @@ func (self MoreArgs) AddIconItem(texture Texture2D.Instance, label string, id in
 
 /*
 Sets the text of the item at index 'idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemText(idx int, text string) { //gd:OptionButton.set_item_text
+func (self Instance) SetItemText(idx int, text string) Instance { //gd:OptionButton.set_item_text
 	Advanced(self).SetItemText(int64(idx), String.New(text))
+	return self
 }
 
 /*
 Sets the icon of the item at index 'idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemIcon(idx int, texture Texture2D.Instance) { //gd:OptionButton.set_item_icon
+func (self Instance) SetItemIcon(idx int, texture Texture2D.Instance) Instance { //gd:OptionButton.set_item_icon
 	Advanced(self).SetItemIcon(int64(idx), texture)
+	return self
 }
 
 /*
 Sets whether the item at index 'idx' is disabled.
 
 Disabled items are drawn differently in the dropdown and are not selectable by the user. If the current selected item is set as disabled, it will remain selected.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:OptionButton.set_item_disabled
+func (self Instance) SetItemDisabled(idx int, disabled bool) Instance { //gd:OptionButton.set_item_disabled
 	Advanced(self).SetItemDisabled(int64(idx), disabled)
+	return self
 }
 
 /*
 Sets the ID of the item at index 'idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemId(idx int, id int) { //gd:OptionButton.set_item_id
+func (self Instance) SetItemId(idx int, id int) Instance { //gd:OptionButton.set_item_id
 	Advanced(self).SetItemId(int64(idx), int64(id))
+	return self
 }
 
 /*
 Sets the metadata of an item. Metadata may be of any type and can be used to store extra information about an item, such as an external string ID.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:OptionButton.set_item_metadata
+func (self Instance) SetItemMetadata(idx int, metadata any) Instance { //gd:OptionButton.set_item_metadata
 	Advanced(self).SetItemMetadata(int64(idx), variant.New(metadata))
+	return self
 }
 
 /*
 Sets the tooltip of the item at index 'idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:OptionButton.set_item_tooltip
+func (self Instance) SetItemTooltip(idx int, tooltip string) Instance { //gd:OptionButton.set_item_tooltip
 	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	return self
 }
 
 /*
@@ -256,10 +274,13 @@ Sets the auto translate mode of the item at index 'idx'.
 
 Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [OptionButton] itself.
 
+Returns 'self' to enable method chaining.
+
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) { //gd:OptionButton.set_item_auto_translate_mode
+func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) Instance { //gd:OptionButton.set_item_auto_translate_mode
 	Advanced(self).SetItemAutoTranslateMode(int64(idx), mode)
+	return self
 }
 
 /*
@@ -429,9 +450,12 @@ func (self MoreArgs) GetSelectableItem(from_last bool) int { //gd:OptionButton.g
 
 /*
 If true, shortcuts are disabled and cannot be used to trigger the button.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
+func (self Instance) SetDisableShortcuts(disabled bool) Instance { //gd:OptionButton.set_disable_shortcuts
 	Advanced(self).SetDisableShortcuts(disabled)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -492,9 +516,10 @@ func (self Instance) FitToLongestItem() bool {
 	return bool(class(self).IsFitToLongestItem())
 }
 
-// SetFitToLongestItem sets the property returned by [IsFitToLongestItem].
-func (self Instance) SetFitToLongestItem(value bool) {
+// SetFitToLongestItem sets the property returned by [IsFitToLongestItem]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFitToLongestItem(value bool) Instance {
 	class(self).SetFitToLongestItem(value)
+	return self
 }
 
 /*
@@ -504,9 +529,10 @@ func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
-// SetAllowReselect sets the property returned by [GetAllowReselect].
-func (self Instance) SetAllowReselect(value bool) {
+// SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowReselect(value bool) Instance {
 	class(self).SetAllowReselect(value)
+	return self
 }
 
 /*
@@ -516,9 +542,10 @@ func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
-// SetItemCount sets the property returned by [GetItemCount].
-func (self Instance) SetItemCount(value int) {
+// SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetItemCount(value int) Instance {
 	class(self).SetItemCount(int64(value))
+	return self
 }
 
 /*
@@ -885,12 +912,13 @@ Emitted when the current item has been changed by the user. The index of the ite
 
 [AllowReselect]: https://pkg.go.dev/graphics.gd/classdb/OptionButton#Instance.AllowReselect
 */
-func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
+func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemSelected() Signal.Any {
@@ -902,12 +930,13 @@ Emitted when the user navigates to an item using the [ProjectSettings] "input/ui
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) OnItemFocused(cb func(index int), flags ...Signal.Flags) {
+func (self Instance) OnItemFocused(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_focused"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemFocused() Signal.Any {

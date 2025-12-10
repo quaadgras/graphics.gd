@@ -192,9 +192,10 @@ func (self Instance) CancelButtonText() string {
 	return string(class(self).GetCancelButtonText().String())
 }
 
-// SetCancelButtonText sets the property returned by [GetCancelButtonText].
-func (self Instance) SetCancelButtonText(value string) {
+// SetCancelButtonText sets the property returned by [GetCancelButtonText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCancelButtonText(value string) Instance {
 	class(self).SetCancelButtonText(String.New(value))
+	return self
 }
 
 /*

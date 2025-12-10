@@ -177,9 +177,10 @@ func (self Instance) SkyMaterial() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetSkyMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetSkyMaterial(value Material.Instance) {
+// SetSkyMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) ProcessMode() ProcessMode {
 	return ProcessMode(class(self).GetProcessMode())
 }
 
-// SetProcessMode sets the property returned by [GetProcessMode].
-func (self Instance) SetProcessMode(value ProcessMode) {
+// SetProcessMode sets the property returned by [GetProcessMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessMode(value ProcessMode) Instance {
 	class(self).SetProcessMode(value)
+	return self
 }
 
 /*
@@ -205,9 +207,10 @@ func (self Instance) RadianceSize() RadianceSize {
 	return RadianceSize(class(self).GetRadianceSize())
 }
 
-// SetRadianceSize sets the property returned by [GetRadianceSize].
-func (self Instance) SetRadianceSize(value RadianceSize) {
+// SetRadianceSize sets the property returned by [GetRadianceSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadianceSize(value RadianceSize) Instance {
 	class(self).SetRadianceSize(value)
+	return self
 }
 
 //go:nosplit

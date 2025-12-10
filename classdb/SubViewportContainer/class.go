@@ -215,9 +215,10 @@ func (self Instance) Stretch() bool {
 	return bool(class(self).IsStretchEnabled())
 }
 
-// SetStretch sets the property returned by [IsStretchEnabled].
-func (self Instance) SetStretch(value bool) {
+// SetStretch sets the property returned by [IsStretchEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretch(value bool) Instance {
 	class(self).SetStretch(value)
+	return self
 }
 
 /*
@@ -234,9 +235,10 @@ func (self Instance) StretchShrink() int {
 	return int(int(class(self).GetStretchShrink()))
 }
 
-// SetStretchShrink sets the property returned by [GetStretchShrink].
-func (self Instance) SetStretchShrink(value int) {
+// SetStretchShrink sets the property returned by [GetStretchShrink]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchShrink(value int) Instance {
 	class(self).SetStretchShrink(int64(value))
+	return self
 }
 
 /*
@@ -254,9 +256,10 @@ func (self Instance) MouseTarget() bool {
 	return bool(class(self).IsMouseTargetEnabled())
 }
 
-// SetMouseTarget sets the property returned by [IsMouseTargetEnabled].
-func (self Instance) SetMouseTarget(value bool) {
+// SetMouseTarget sets the property returned by [IsMouseTargetEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMouseTarget(value bool) Instance {
 	class(self).SetMouseTarget(value)
+	return self
 }
 
 /*

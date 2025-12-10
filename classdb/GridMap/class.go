@@ -187,10 +187,13 @@ type Any interface {
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionMask
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:GridMap.set_collision_mask_value
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) Instance { //gd:GridMap.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -205,10 +208,13 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:GridMap
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionLayer
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:GridMap.set_collision_layer_value
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) Instance { //gd:GridMap.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -223,10 +229,13 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:GridMa
 /*
 Sets the [Resource.ID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 
+Returns 'self' to enable method chaining.
+
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:GridMap.set_navigation_map
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) Instance { //gd:GridMap.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
+	return self
 }
 
 /*
@@ -247,10 +256,13 @@ A negative item index such as [InvalidCellItem] will clear the cell.
 
 Optionally, the item's orientation can be passed. For valid orientation values, see [GetOrthogonalIndexFromBasis].
 
+Returns 'self' to enable method chaining.
+
 [GetOrthogonalIndexFromBasis]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.GetOrthogonalIndexFromBasis
 */
-func (self Instance) SetCellItem(position Vector3i.XYZ, item CellItem) { //gd:GridMap.set_cell_item
+func (self Instance) SetCellItem(position Vector3i.XYZ, item CellItem) Instance { //gd:GridMap.set_cell_item
 	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(0))
+	return self
 }
 
 /*
@@ -260,10 +272,13 @@ A negative item index such as [InvalidCellItem] will clear the cell.
 
 Optionally, the item's orientation can be passed. For valid orientation values, see [GetOrthogonalIndexFromBasis].
 
+Returns 'self' to enable method chaining.
+
 [GetOrthogonalIndexFromBasis]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.GetOrthogonalIndexFromBasis
 */
-func (self MoreArgs) SetCellItem(position Vector3i.XYZ, item CellItem, orientation int) { //gd:GridMap.set_cell_item
+func (self MoreArgs) SetCellItem(position Vector3i.XYZ, item CellItem, orientation int) MoreArgs { //gd:GridMap.set_cell_item
 	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(orientation))
+	return self
 }
 
 /*
@@ -473,9 +488,10 @@ func (self Instance) MeshLibrary() MeshLibrary.Instance {
 	return MeshLibrary.Instance(class(self).GetMeshLibrary())
 }
 
-// SetMeshLibrary sets the property returned by [GetMeshLibrary].
-func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) {
+// SetMeshLibrary sets the property returned by [GetMeshLibrary]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) Instance {
 	class(self).SetMeshLibrary(value)
+	return self
 }
 
 /*
@@ -487,9 +503,10 @@ func (self Instance) PhysicsMaterial() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterial())
 }
 
-// SetPhysicsMaterial sets the property returned by [GetPhysicsMaterial].
-func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) {
+// SetPhysicsMaterial sets the property returned by [GetPhysicsMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) Instance {
 	class(self).SetPhysicsMaterial(value)
+	return self
 }
 
 /*
@@ -503,9 +520,10 @@ func (self Instance) CellSize() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCellSize())
 }
 
-// SetCellSize sets the property returned by [GetCellSize].
-func (self Instance) SetCellSize(value Vector3.XYZ) {
+// SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellSize(value Vector3.XYZ) Instance {
 	class(self).SetCellSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -515,9 +533,10 @@ func (self Instance) CellOctantSize() int {
 	return int(int(class(self).GetOctantSize()))
 }
 
-// SetCellOctantSize sets the property returned by [GetOctantSize].
-func (self Instance) SetCellOctantSize(value int) {
+// SetCellOctantSize sets the property returned by [GetOctantSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellOctantSize(value int) Instance {
 	class(self).SetOctantSize(int64(value))
+	return self
 }
 
 /*
@@ -527,9 +546,10 @@ func (self Instance) CellCenterX() bool {
 	return bool(class(self).GetCenterX())
 }
 
-// SetCellCenterX sets the property returned by [GetCenterX].
-func (self Instance) SetCellCenterX(value bool) {
+// SetCellCenterX sets the property returned by [GetCenterX]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellCenterX(value bool) Instance {
 	class(self).SetCenterX(value)
+	return self
 }
 
 /*
@@ -539,9 +559,10 @@ func (self Instance) CellCenterY() bool {
 	return bool(class(self).GetCenterY())
 }
 
-// SetCellCenterY sets the property returned by [GetCenterY].
-func (self Instance) SetCellCenterY(value bool) {
+// SetCellCenterY sets the property returned by [GetCenterY]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellCenterY(value bool) Instance {
 	class(self).SetCenterY(value)
+	return self
 }
 
 /*
@@ -551,9 +572,10 @@ func (self Instance) CellCenterZ() bool {
 	return bool(class(self).GetCenterZ())
 }
 
-// SetCellCenterZ sets the property returned by [GetCenterZ].
-func (self Instance) SetCellCenterZ(value bool) {
+// SetCellCenterZ sets the property returned by [GetCenterZ]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellCenterZ(value bool) Instance {
 	class(self).SetCenterZ(value)
+	return self
 }
 
 /*
@@ -565,9 +587,10 @@ func (self Instance) CellScale() Float.X {
 	return Float.X(Float.X(class(self).GetCellScale()))
 }
 
-// SetCellScale sets the property returned by [GetCellScale].
-func (self Instance) SetCellScale(value Float.X) {
+// SetCellScale sets the property returned by [GetCellScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellScale(value Float.X) Instance {
 	class(self).SetCellScale(float64(value))
+	return self
 }
 
 /*
@@ -579,9 +602,10 @@ func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
-// SetCollisionLayer sets the property returned by [GetCollisionLayer].
-func (self Instance) SetCollisionLayer(value int) {
+// SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionLayer(value int) Instance {
 	class(self).SetCollisionLayer(int64(value))
+	return self
 }
 
 /*
@@ -593,9 +617,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -605,9 +630,10 @@ func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-// SetCollisionPriority sets the property returned by [GetCollisionPriority].
-func (self Instance) SetCollisionPriority(value Float.X) {
+// SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionPriority(value Float.X) Instance {
 	class(self).SetCollisionPriority(float64(value))
+	return self
 }
 
 /*
@@ -619,9 +645,10 @@ func (self Instance) BakeNavigation() bool {
 	return bool(class(self).IsBakingNavigation())
 }
 
-// SetBakeNavigation sets the property returned by [IsBakingNavigation].
-func (self Instance) SetBakeNavigation(value bool) {
+// SetBakeNavigation sets the property returned by [IsBakingNavigation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeNavigation(value bool) Instance {
 	class(self).SetBakeNavigation(value)
+	return self
 }
 
 //go:nosplit
@@ -1050,12 +1077,13 @@ Emitted when [CellSize] changes.
 
 [CellSize]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CellSize
 */
-func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ), flags ...Signal.Flags) {
+func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("cell_size_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CellSizeChanged() Signal.Any {
@@ -1067,12 +1095,13 @@ Emitted when the [MeshLibrary] of this GridMap changes.
 
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {

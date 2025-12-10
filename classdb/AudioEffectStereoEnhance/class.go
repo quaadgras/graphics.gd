@@ -168,9 +168,10 @@ func (self Instance) PanPullout() Float.X {
 	return Float.X(Float.X(class(self).GetPanPullout()))
 }
 
-// SetPanPullout sets the property returned by [GetPanPullout].
-func (self Instance) SetPanPullout(value Float.X) {
+// SetPanPullout sets the property returned by [GetPanPullout]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPanPullout(value Float.X) Instance {
 	class(self).SetPanPullout(float64(value))
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) TimePulloutMs() Float.X {
 	return Float.X(Float.X(class(self).GetTimePullout()))
 }
 
-// SetTimePulloutMs sets the property returned by [GetTimePullout].
-func (self Instance) SetTimePulloutMs(value Float.X) {
+// SetTimePulloutMs sets the property returned by [GetTimePullout]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimePulloutMs(value Float.X) Instance {
 	class(self).SetTimePullout(float64(value))
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) Surround() Float.X {
 	return Float.X(Float.X(class(self).GetSurround()))
 }
 
-// SetSurround sets the property returned by [GetSurround].
-func (self Instance) SetSurround(value Float.X) {
+// SetSurround sets the property returned by [GetSurround]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSurround(value Float.X) Instance {
 	class(self).SetSurround(float64(value))
+	return self
 }
 
 //go:nosplit

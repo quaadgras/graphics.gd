@@ -204,9 +204,10 @@ func (self Instance) SkyTopColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyTopColor())
 }
 
-// SetSkyTopColor sets the property returned by [GetSkyTopColor].
-func (self Instance) SetSkyTopColor(value Color.RGBA) {
+// SetSkyTopColor sets the property returned by [GetSkyTopColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyTopColor(value Color.RGBA) Instance {
 	class(self).SetSkyTopColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -218,9 +219,10 @@ func (self Instance) SkyHorizonColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyHorizonColor())
 }
 
-// SetSkyHorizonColor sets the property returned by [GetSkyHorizonColor].
-func (self Instance) SetSkyHorizonColor(value Color.RGBA) {
+// SetSkyHorizonColor sets the property returned by [GetSkyHorizonColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyHorizonColor(value Color.RGBA) Instance {
 	class(self).SetSkyHorizonColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -233,9 +235,10 @@ func (self Instance) SkyCurve() Float.X {
 	return Float.X(Float.X(class(self).GetSkyCurve()))
 }
 
-// SetSkyCurve sets the property returned by [GetSkyCurve].
-func (self Instance) SetSkyCurve(value Float.X) {
+// SetSkyCurve sets the property returned by [GetSkyCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyCurve(value Float.X) Instance {
 	class(self).SetSkyCurve(float64(value))
+	return self
 }
 
 /*
@@ -245,9 +248,10 @@ func (self Instance) SkyEnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetSkyEnergyMultiplier()))
 }
 
-// SetSkyEnergyMultiplier sets the property returned by [GetSkyEnergyMultiplier].
-func (self Instance) SetSkyEnergyMultiplier(value Float.X) {
+// SetSkyEnergyMultiplier sets the property returned by [GetSkyEnergyMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyEnergyMultiplier(value Float.X) Instance {
 	class(self).SetSkyEnergyMultiplier(float64(value))
+	return self
 }
 
 /*
@@ -261,9 +265,10 @@ func (self Instance) SkyCover() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetSkyCover())
 }
 
-// SetSkyCover sets the property returned by [GetSkyCover].
-func (self Instance) SetSkyCover(value Texture2D.Instance) {
+// SetSkyCover sets the property returned by [GetSkyCover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyCover(value Texture2D.Instance) Instance {
 	class(self).SetSkyCover(value)
+	return self
 }
 
 /*
@@ -275,9 +280,10 @@ func (self Instance) SkyCoverModulate() Color.RGBA {
 	return Color.RGBA(class(self).GetSkyCoverModulate())
 }
 
-// SetSkyCoverModulate sets the property returned by [GetSkyCoverModulate].
-func (self Instance) SetSkyCoverModulate(value Color.RGBA) {
+// SetSkyCoverModulate sets the property returned by [GetSkyCoverModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyCoverModulate(value Color.RGBA) Instance {
 	class(self).SetSkyCoverModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -289,9 +295,10 @@ func (self Instance) GroundBottomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundBottomColor())
 }
 
-// SetGroundBottomColor sets the property returned by [GetGroundBottomColor].
-func (self Instance) SetGroundBottomColor(value Color.RGBA) {
+// SetGroundBottomColor sets the property returned by [GetGroundBottomColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroundBottomColor(value Color.RGBA) Instance {
 	class(self).SetGroundBottomColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -303,9 +310,10 @@ func (self Instance) GroundHorizonColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundHorizonColor())
 }
 
-// SetGroundHorizonColor sets the property returned by [GetGroundHorizonColor].
-func (self Instance) SetGroundHorizonColor(value Color.RGBA) {
+// SetGroundHorizonColor sets the property returned by [GetGroundHorizonColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroundHorizonColor(value Color.RGBA) Instance {
 	class(self).SetGroundHorizonColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -318,9 +326,10 @@ func (self Instance) GroundCurve() Float.X {
 	return Float.X(Float.X(class(self).GetGroundCurve()))
 }
 
-// SetGroundCurve sets the property returned by [GetGroundCurve].
-func (self Instance) SetGroundCurve(value Float.X) {
+// SetGroundCurve sets the property returned by [GetGroundCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroundCurve(value Float.X) Instance {
 	class(self).SetGroundCurve(float64(value))
+	return self
 }
 
 /*
@@ -330,9 +339,10 @@ func (self Instance) GroundEnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetGroundEnergyMultiplier()))
 }
 
-// SetGroundEnergyMultiplier sets the property returned by [GetGroundEnergyMultiplier].
-func (self Instance) SetGroundEnergyMultiplier(value Float.X) {
+// SetGroundEnergyMultiplier sets the property returned by [GetGroundEnergyMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroundEnergyMultiplier(value Float.X) Instance {
 	class(self).SetGroundEnergyMultiplier(float64(value))
+	return self
 }
 
 /*
@@ -342,9 +352,10 @@ func (self Instance) SunAngleMax() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetSunAngleMax()))
 }
 
-// SetSunAngleMax sets the property returned by [GetSunAngleMax].
-func (self Instance) SetSunAngleMax(value Angle.Radians) {
+// SetSunAngleMax sets the property returned by [GetSunAngleMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSunAngleMax(value Angle.Radians) Instance {
 	class(self).SetSunAngleMax(float64(value))
+	return self
 }
 
 /*
@@ -356,9 +367,10 @@ func (self Instance) SunCurve() Float.X {
 	return Float.X(Float.X(class(self).GetSunCurve()))
 }
 
-// SetSunCurve sets the property returned by [GetSunCurve].
-func (self Instance) SetSunCurve(value Float.X) {
+// SetSunCurve sets the property returned by [GetSunCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSunCurve(value Float.X) Instance {
 	class(self).SetSunCurve(float64(value))
+	return self
 }
 
 /*
@@ -368,9 +380,10 @@ func (self Instance) UseDebanding() bool {
 	return bool(class(self).GetUseDebanding())
 }
 
-// SetUseDebanding sets the property returned by [GetUseDebanding].
-func (self Instance) SetUseDebanding(value bool) {
+// SetUseDebanding sets the property returned by [GetUseDebanding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseDebanding(value bool) Instance {
 	class(self).SetUseDebanding(value)
+	return self
 }
 
 /*
@@ -380,9 +393,10 @@ func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
-// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
-func (self Instance) SetEnergyMultiplier(value Float.X) {
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
 	class(self).SetEnergyMultiplier(float64(value))
+	return self
 }
 
 //go:nosplit

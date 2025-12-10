@@ -178,9 +178,12 @@ func (self Instance) GetBlendShapeName(blend_shape_idx int) string { //gd:Import
 
 /*
 Sets the blend shape mode.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
+func (self Instance) SetBlendShapeMode(mode Mesh.BlendShapeMode) Instance { //gd:ImporterMesh.set_blend_shape_mode
 	Advanced(self).SetBlendShapeMode(mode)
+	return self
 }
 
 /*
@@ -312,18 +315,24 @@ func (self Instance) GetSurfaceFormat(surface_idx int) int { //gd:ImporterMesh.g
 
 /*
 Sets a name for a given surface.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSurfaceName(surface_idx int, name string) { //gd:ImporterMesh.set_surface_name
+func (self Instance) SetSurfaceName(surface_idx int, name string) Instance { //gd:ImporterMesh.set_surface_name
 	Advanced(self).SetSurfaceName(int64(surface_idx), String.New(name))
+	return self
 }
 
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 
+Returns 'self' to enable method chaining.
+
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 */
-func (self Instance) SetSurfaceMaterial(surface_idx int, material Material.Instance) { //gd:ImporterMesh.set_surface_material
+func (self Instance) SetSurfaceMaterial(surface_idx int, material Material.Instance) Instance { //gd:ImporterMesh.set_surface_material
 	Advanced(self).SetSurfaceMaterial(int64(surface_idx), material)
+	return self
 }
 
 /*
@@ -410,9 +419,12 @@ func (self Instance) Clear() { //gd:ImporterMesh.clear
 
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLightmapSizeHint(size Vector2i.XY) { //gd:ImporterMesh.set_lightmap_size_hint
+func (self Instance) SetLightmapSizeHint(size Vector2i.XY) Instance { //gd:ImporterMesh.set_lightmap_size_hint
 	Advanced(self).SetLightmapSizeHint(Vector2i.XY(size))
+	return self
 }
 
 /*

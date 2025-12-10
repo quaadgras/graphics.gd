@@ -194,9 +194,10 @@ func (self Instance) Progress() Float.X {
 	return Float.X(Float.X(class(self).GetProgress()))
 }
 
-// SetProgress sets the property returned by [GetProgress].
-func (self Instance) SetProgress(value Float.X) {
+// SetProgress sets the property returned by [GetProgress]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProgress(value Float.X) Instance {
 	class(self).SetProgress(float64(value))
+	return self
 }
 
 /*
@@ -212,9 +213,10 @@ func (self Instance) ProgressRatio() Float.X {
 	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
-// SetProgressRatio sets the property returned by [GetProgressRatio].
-func (self Instance) SetProgressRatio(value Float.X) {
+// SetProgressRatio sets the property returned by [GetProgressRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProgressRatio(value Float.X) Instance {
 	class(self).SetProgressRatio(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) HOffset() Float.X {
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
-// SetHOffset sets the property returned by [GetHOffset].
-func (self Instance) SetHOffset(value Float.X) {
+// SetHOffset sets the property returned by [GetHOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHOffset(value Float.X) Instance {
 	class(self).SetHOffset(float64(value))
+	return self
 }
 
 /*
@@ -236,9 +239,10 @@ func (self Instance) VOffset() Float.X {
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
-// SetVOffset sets the property returned by [GetVOffset].
-func (self Instance) SetVOffset(value Float.X) {
+// SetVOffset sets the property returned by [GetVOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVOffset(value Float.X) Instance {
 	class(self).SetVOffset(float64(value))
+	return self
 }
 
 /*
@@ -248,9 +252,10 @@ func (self Instance) RotationMode() RotationMode {
 	return RotationMode(class(self).GetRotationMode())
 }
 
-// SetRotationMode sets the property returned by [GetRotationMode].
-func (self Instance) SetRotationMode(value RotationMode) {
+// SetRotationMode sets the property returned by [GetRotationMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationMode(value RotationMode) Instance {
 	class(self).SetRotationMode(value)
+	return self
 }
 
 /*
@@ -260,9 +265,10 @@ func (self Instance) UseModelFront() bool {
 	return bool(class(self).IsUsingModelFront())
 }
 
-// SetUseModelFront sets the property returned by [IsUsingModelFront].
-func (self Instance) SetUseModelFront(value bool) {
+// SetUseModelFront sets the property returned by [IsUsingModelFront]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseModelFront(value bool) Instance {
 	class(self).SetUseModelFront(value)
+	return self
 }
 
 /*
@@ -279,9 +285,10 @@ func (self Instance) CubicInterp() bool {
 	return bool(class(self).GetCubicInterpolation())
 }
 
-// SetCubicInterp sets the property returned by [GetCubicInterpolation].
-func (self Instance) SetCubicInterp(value bool) {
+// SetCubicInterp sets the property returned by [GetCubicInterpolation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCubicInterp(value bool) Instance {
 	class(self).SetCubicInterpolation(value)
+	return self
 }
 
 /*
@@ -291,9 +298,10 @@ func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
-// SetLoop sets the property returned by [HasLoop].
-func (self Instance) SetLoop(value bool) {
+// SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoop(value bool) Instance {
 	class(self).SetLoop(value)
+	return self
 }
 
 /*
@@ -305,9 +313,10 @@ func (self Instance) TiltEnabled() bool {
 	return bool(class(self).IsTiltEnabled())
 }
 
-// SetTiltEnabled sets the property returned by [IsTiltEnabled].
-func (self Instance) SetTiltEnabled(value bool) {
+// SetTiltEnabled sets the property returned by [IsTiltEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTiltEnabled(value bool) Instance {
 	class(self).SetTiltEnabled(value)
+	return self
 }
 
 //go:nosplit

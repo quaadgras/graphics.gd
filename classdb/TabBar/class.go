@@ -206,9 +206,12 @@ func (self Instance) SelectNextAvailable() bool { //gd:TabBar.select_next_availa
 
 /*
 Sets a 'title' for the tab at index 'tab_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabBar.set_tab_title
+func (self Instance) SetTabTitle(tab_idx int, title string) Instance { //gd:TabBar.set_tab_title
 	Advanced(self).SetTabTitle(int64(tab_idx), String.New(title))
+	return self
 }
 
 /*
@@ -222,9 +225,12 @@ func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabBar.get_tab_title
 Sets a 'tooltip' for tab at index 'tab_idx'.
 
 Note: By default, if the 'tooltip' is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign " " as the 'tooltip' text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabBar.set_tab_tooltip
+func (self Instance) SetTabTooltip(tab_idx int, tooltip string) Instance { //gd:TabBar.set_tab_tooltip
 	Advanced(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
+	return self
 }
 
 /*
@@ -236,9 +242,12 @@ func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabBar.get_tab_too
 
 /*
 Sets tab title base writing direction.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabTextDirection(tab_idx int, direction Control.TextDirection) { //gd:TabBar.set_tab_text_direction
+func (self Instance) SetTabTextDirection(tab_idx int, direction Control.TextDirection) Instance { //gd:TabBar.set_tab_text_direction
 	Advanced(self).SetTabTextDirection(int64(tab_idx), direction)
+	return self
 }
 
 /*
@@ -250,9 +259,12 @@ func (self Instance) GetTabTextDirection(tab_idx int) Control.TextDirection { //
 
 /*
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabLanguage(tab_idx int, language string) { //gd:TabBar.set_tab_language
+func (self Instance) SetTabLanguage(tab_idx int, language string) Instance { //gd:TabBar.set_tab_language
 	Advanced(self).SetTabLanguage(int64(tab_idx), String.New(language))
+	return self
 }
 
 /*
@@ -264,9 +276,12 @@ func (self Instance) GetTabLanguage(tab_idx int) string { //gd:TabBar.get_tab_la
 
 /*
 Sets an 'icon' for the tab at index 'tab_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabBar.set_tab_icon
+func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) Instance { //gd:TabBar.set_tab_icon
 	Advanced(self).SetTabIcon(int64(tab_idx), icon)
+	return self
 }
 
 /*
@@ -278,9 +293,12 @@ func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabBar.ge
 
 /*
 Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) { //gd:TabBar.set_tab_icon_max_width
+func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) Instance { //gd:TabBar.set_tab_icon_max_width
 	Advanced(self).SetTabIconMaxWidth(int64(tab_idx), int64(width))
+	return self
 }
 
 /*
@@ -293,10 +311,13 @@ func (self Instance) GetTabIconMaxWidth(tab_idx int) int { //gd:TabBar.get_tab_i
 /*
 Sets an 'icon' for the button of the tab at index 'tab_idx' (located to the right, before the close button), making it visible and clickable (See [OnTabButtonPressed]). Giving it a null value will hide the button.
 
+Returns 'self' to enable method chaining.
+
 [OnTabButtonPressed]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.OnTabButtonPressed
 */
-func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabBar.set_tab_button_icon
+func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) Instance { //gd:TabBar.set_tab_button_icon
 	Advanced(self).SetTabButtonIcon(int64(tab_idx), icon)
+	return self
 }
 
 /*
@@ -308,9 +329,12 @@ func (self Instance) GetTabButtonIcon(tab_idx int) Texture2D.Instance { //gd:Tab
 
 /*
 If 'disabled' is true, disables the tab at index 'tab_idx', making it non-interactable.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabDisabled(tab_idx int, disabled bool) { //gd:TabBar.set_tab_disabled
+func (self Instance) SetTabDisabled(tab_idx int, disabled bool) Instance { //gd:TabBar.set_tab_disabled
 	Advanced(self).SetTabDisabled(int64(tab_idx), disabled)
+	return self
 }
 
 /*
@@ -322,9 +346,12 @@ func (self Instance) IsTabDisabled(tab_idx int) bool { //gd:TabBar.is_tab_disabl
 
 /*
 If 'hidden' is true, hides the tab at index 'tab_idx', making it disappear from the tab area.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTabHidden(tab_idx int, hidden bool) { //gd:TabBar.set_tab_hidden
+func (self Instance) SetTabHidden(tab_idx int, hidden bool) Instance { //gd:TabBar.set_tab_hidden
 	Advanced(self).SetTabHidden(int64(tab_idx), hidden)
+	return self
 }
 
 /*
@@ -337,10 +364,13 @@ func (self Instance) IsTabHidden(tab_idx int) bool { //gd:TabBar.is_tab_hidden
 /*
 Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [GetTabMetadata].
 
+Returns 'self' to enable method chaining.
+
 [GetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.GetTabMetadata
 */
-func (self Instance) SetTabMetadata(tab_idx int, metadata any) { //gd:TabBar.set_tab_metadata
+func (self Instance) SetTabMetadata(tab_idx int, metadata any) Instance { //gd:TabBar.set_tab_metadata
 	Advanced(self).SetTabMetadata(int64(tab_idx), variant.New(metadata))
+	return self
 }
 
 /*
@@ -475,9 +505,10 @@ func (self Instance) CurrentTab() int {
 	return int(int(class(self).GetCurrentTab()))
 }
 
-// SetCurrentTab sets the property returned by [GetCurrentTab].
-func (self Instance) SetCurrentTab(value int) {
+// SetCurrentTab sets the property returned by [GetCurrentTab]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentTab(value int) Instance {
 	class(self).SetCurrentTab(int64(value))
+	return self
 }
 
 /*
@@ -487,9 +518,10 @@ func (self Instance) TabAlignment() AlignmentMode {
 	return AlignmentMode(class(self).GetTabAlignment())
 }
 
-// SetTabAlignment sets the property returned by [GetTabAlignment].
-func (self Instance) SetTabAlignment(value AlignmentMode) {
+// SetTabAlignment sets the property returned by [GetTabAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabAlignment(value AlignmentMode) Instance {
 	class(self).SetTabAlignment(value)
+	return self
 }
 
 /*
@@ -499,9 +531,10 @@ func (self Instance) ClipTabs() bool {
 	return bool(class(self).GetClipTabs())
 }
 
-// SetClipTabs sets the property returned by [GetClipTabs].
-func (self Instance) SetClipTabs(value bool) {
+// SetClipTabs sets the property returned by [GetClipTabs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipTabs(value bool) Instance {
 	class(self).SetClipTabs(value)
+	return self
 }
 
 /*
@@ -513,9 +546,10 @@ func (self Instance) CloseWithMiddleMouse() bool {
 	return bool(class(self).GetCloseWithMiddleMouse())
 }
 
-// SetCloseWithMiddleMouse sets the property returned by [GetCloseWithMiddleMouse].
-func (self Instance) SetCloseWithMiddleMouse(value bool) {
+// SetCloseWithMiddleMouse sets the property returned by [GetCloseWithMiddleMouse]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCloseWithMiddleMouse(value bool) Instance {
 	class(self).SetCloseWithMiddleMouse(value)
+	return self
 }
 
 /*
@@ -525,9 +559,10 @@ func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy {
 	return CloseButtonDisplayPolicy(class(self).GetTabCloseDisplayPolicy())
 }
 
-// SetTabCloseDisplayPolicy sets the property returned by [GetTabCloseDisplayPolicy].
-func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) {
+// SetTabCloseDisplayPolicy sets the property returned by [GetTabCloseDisplayPolicy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) Instance {
 	class(self).SetTabCloseDisplayPolicy(value)
+	return self
 }
 
 /*
@@ -537,9 +572,10 @@ func (self Instance) MaxTabWidth() int {
 	return int(int(class(self).GetMaxTabWidth()))
 }
 
-// SetMaxTabWidth sets the property returned by [GetMaxTabWidth].
-func (self Instance) SetMaxTabWidth(value int) {
+// SetMaxTabWidth sets the property returned by [GetMaxTabWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxTabWidth(value int) Instance {
 	class(self).SetMaxTabWidth(int64(value))
+	return self
 }
 
 /*
@@ -549,9 +585,10 @@ func (self Instance) ScrollingEnabled() bool {
 	return bool(class(self).GetScrollingEnabled())
 }
 
-// SetScrollingEnabled sets the property returned by [GetScrollingEnabled].
-func (self Instance) SetScrollingEnabled(value bool) {
+// SetScrollingEnabled sets the property returned by [GetScrollingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollingEnabled(value bool) Instance {
 	class(self).SetScrollingEnabled(value)
+	return self
 }
 
 /*
@@ -561,9 +598,10 @@ func (self Instance) DragToRearrangeEnabled() bool {
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
-// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled].
-func (self Instance) SetDragToRearrangeEnabled(value bool) {
+// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragToRearrangeEnabled(value bool) Instance {
 	class(self).SetDragToRearrangeEnabled(value)
+	return self
 }
 
 /*
@@ -578,9 +616,10 @@ func (self Instance) TabsRearrangeGroup() int {
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
-// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup].
-func (self Instance) SetTabsRearrangeGroup(value int) {
+// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabsRearrangeGroup(value int) Instance {
 	class(self).SetTabsRearrangeGroup(int64(value))
+	return self
 }
 
 /*
@@ -590,9 +629,10 @@ func (self Instance) ScrollToSelected() bool {
 	return bool(class(self).GetScrollToSelected())
 }
 
-// SetScrollToSelected sets the property returned by [GetScrollToSelected].
-func (self Instance) SetScrollToSelected(value bool) {
+// SetScrollToSelected sets the property returned by [GetScrollToSelected]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollToSelected(value bool) Instance {
 	class(self).SetScrollToSelected(value)
+	return self
 }
 
 /*
@@ -602,9 +642,10 @@ func (self Instance) SelectWithRmb() bool {
 	return bool(class(self).GetSelectWithRmb())
 }
 
-// SetSelectWithRmb sets the property returned by [GetSelectWithRmb].
-func (self Instance) SetSelectWithRmb(value bool) {
+// SetSelectWithRmb sets the property returned by [GetSelectWithRmb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectWithRmb(value bool) Instance {
 	class(self).SetSelectWithRmb(value)
+	return self
 }
 
 /*
@@ -614,9 +655,10 @@ func (self Instance) DeselectEnabled() bool {
 	return bool(class(self).GetDeselectEnabled())
 }
 
-// SetDeselectEnabled sets the property returned by [GetDeselectEnabled].
-func (self Instance) SetDeselectEnabled(value bool) {
+// SetDeselectEnabled sets the property returned by [GetDeselectEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeselectEnabled(value bool) Instance {
 	class(self).SetDeselectEnabled(value)
+	return self
 }
 
 /*
@@ -626,9 +668,10 @@ func (self Instance) TabCount() int {
 	return int(int(class(self).GetTabCount()))
 }
 
-// SetTabCount sets the property returned by [GetTabCount].
-func (self Instance) SetTabCount(value int) {
+// SetTabCount sets the property returned by [GetTabCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabCount(value int) Instance {
 	class(self).SetTabCount(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -1126,12 +1169,13 @@ func (self class) ClearTabs() { //gd:TabBar.clear_tabs
 /*
 Emitted when a tab is selected via click, directional input, or script, even if it is the current tab.
 */
-func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabSelected() Signal.Any {
@@ -1141,12 +1185,13 @@ func (self class) TabSelected() Signal.Any {
 /*
 Emitted when switching to another tab.
 */
-func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabChanged() Signal.Any {
@@ -1156,12 +1201,13 @@ func (self class) TabChanged() Signal.Any {
 /*
 Emitted when a tab is clicked, even if it is the current tab.
 */
-func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabClicked() Signal.Any {
@@ -1173,12 +1219,13 @@ Emitted when a tab is right-clicked. [SelectWithRmb] must be enabled.
 
 [SelectWithRmb]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.SelectWithRmb
 */
-func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_rmb_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabRmbClicked() Signal.Any {
@@ -1192,12 +1239,13 @@ Note: Tabs are not removed automatically once the close button is pressed, this 
 
 [CloseWithMiddleMouse]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.CloseWithMiddleMouse
 */
-func (self Instance) OnTabClosePressed(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabClosePressed(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_close_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabClosePressed() Signal.Any {
@@ -1209,12 +1257,13 @@ Emitted when a tab's right button is pressed. See [SetTabButtonIcon].
 
 [SetTabButtonIcon]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.SetTabButtonIcon
 */
-func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabButtonPressed() Signal.Any {
@@ -1224,12 +1273,13 @@ func (self class) TabButtonPressed() Signal.Any {
 /*
 Emitted when a tab is hovered by the mouse.
 */
-func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
+func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TabHovered() Signal.Any {
@@ -1241,12 +1291,13 @@ Emitted when the active tab is rearranged via mouse drag. See [DragToRearrangeEn
 
 [DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DragToRearrangeEnabled
 */
-func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) {
+func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ActiveTabRearranged() Signal.Any {

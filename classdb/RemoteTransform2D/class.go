@@ -188,9 +188,10 @@ func (self Instance) RemotePath() string {
 	return string(class(self).GetRemoteNode().String())
 }
 
-// SetRemotePath sets the property returned by [GetRemoteNode].
-func (self Instance) SetRemotePath(value string) {
+// SetRemotePath sets the property returned by [GetRemoteNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRemotePath(value string) Instance {
 	class(self).SetRemoteNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) UseGlobalCoordinates() bool {
 	return bool(class(self).GetUseGlobalCoordinates())
 }
 
-// SetUseGlobalCoordinates sets the property returned by [GetUseGlobalCoordinates].
-func (self Instance) SetUseGlobalCoordinates(value bool) {
+// SetUseGlobalCoordinates sets the property returned by [GetUseGlobalCoordinates]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseGlobalCoordinates(value bool) Instance {
 	class(self).SetUseGlobalCoordinates(value)
+	return self
 }
 
 /*
@@ -212,9 +214,10 @@ func (self Instance) UpdatePosition() bool {
 	return bool(class(self).GetUpdatePosition())
 }
 
-// SetUpdatePosition sets the property returned by [GetUpdatePosition].
-func (self Instance) SetUpdatePosition(value bool) {
+// SetUpdatePosition sets the property returned by [GetUpdatePosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpdatePosition(value bool) Instance {
 	class(self).SetUpdatePosition(value)
+	return self
 }
 
 /*
@@ -224,9 +227,10 @@ func (self Instance) UpdateRotation() bool {
 	return bool(class(self).GetUpdateRotation())
 }
 
-// SetUpdateRotation sets the property returned by [GetUpdateRotation].
-func (self Instance) SetUpdateRotation(value bool) {
+// SetUpdateRotation sets the property returned by [GetUpdateRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpdateRotation(value bool) Instance {
 	class(self).SetUpdateRotation(value)
+	return self
 }
 
 /*
@@ -236,9 +240,10 @@ func (self Instance) UpdateScale() bool {
 	return bool(class(self).GetUpdateScale())
 }
 
-// SetUpdateScale sets the property returned by [GetUpdateScale].
-func (self Instance) SetUpdateScale(value bool) {
+// SetUpdateScale sets the property returned by [GetUpdateScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpdateScale(value bool) Instance {
 	class(self).SetUpdateScale(value)
+	return self
 }
 
 //go:nosplit

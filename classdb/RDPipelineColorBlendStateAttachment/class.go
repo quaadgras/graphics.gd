@@ -241,14 +241,17 @@ type Any interface {
 /*
 Convenience method to perform standard mix blending with straight (non-premultiplied) alpha. This sets [EnableBlend] to true, [SrcColorBlendFactor] to [Renderingdevice.BlendFactorSrcAlpha], [DstColorBlendFactor] to [Renderingdevice.BlendFactorOneMinusSrcAlpha], [SrcAlphaBlendFactor] to [Renderingdevice.BlendFactorSrcAlpha] and [DstAlphaBlendFactor] to [Renderingdevice.BlendFactorOneMinusSrcAlpha].
 
+Returns 'self' to enable method chaining.
+
 [DstAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstAlphaBlendFactor
 [DstColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstColorBlendFactor
 [EnableBlend]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.EnableBlend
 [SrcAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcAlphaBlendFactor
 [SrcColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcColorBlendFactor
 */
-func (self Instance) SetAsMix() { //gd:RDPipelineColorBlendStateAttachment.set_as_mix
+func (self Instance) SetAsMix() Instance { //gd:RDPipelineColorBlendStateAttachment.set_as_mix
 	Advanced(self).SetAsMix()
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -312,9 +315,10 @@ func (self Instance) EnableBlend() bool {
 	return bool(class(self).GetEnableBlend())
 }
 
-// SetEnableBlend sets the property returned by [GetEnableBlend].
-func (self Instance) SetEnableBlend(value bool) {
+// SetEnableBlend sets the property returned by [GetEnableBlend]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableBlend(value bool) Instance {
 	class(self).SetEnableBlend(value)
+	return self
 }
 
 /*
@@ -324,9 +328,10 @@ func (self Instance) SrcColorBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetSrcColorBlendFactor())
 }
 
-// SetSrcColorBlendFactor sets the property returned by [GetSrcColorBlendFactor].
-func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) {
+// SetSrcColorBlendFactor sets the property returned by [GetSrcColorBlendFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) Instance {
 	class(self).SetSrcColorBlendFactor(value)
+	return self
 }
 
 /*
@@ -336,9 +341,10 @@ func (self Instance) DstColorBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetDstColorBlendFactor())
 }
 
-// SetDstColorBlendFactor sets the property returned by [GetDstColorBlendFactor].
-func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) {
+// SetDstColorBlendFactor sets the property returned by [GetDstColorBlendFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) Instance {
 	class(self).SetDstColorBlendFactor(value)
+	return self
 }
 
 /*
@@ -348,9 +354,10 @@ func (self Instance) ColorBlendOp() Rendering.BlendOperation {
 	return Rendering.BlendOperation(class(self).GetColorBlendOp())
 }
 
-// SetColorBlendOp sets the property returned by [GetColorBlendOp].
-func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) {
+// SetColorBlendOp sets the property returned by [GetColorBlendOp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) Instance {
 	class(self).SetColorBlendOp(value)
+	return self
 }
 
 /*
@@ -360,9 +367,10 @@ func (self Instance) SrcAlphaBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetSrcAlphaBlendFactor())
 }
 
-// SetSrcAlphaBlendFactor sets the property returned by [GetSrcAlphaBlendFactor].
-func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) {
+// SetSrcAlphaBlendFactor sets the property returned by [GetSrcAlphaBlendFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) Instance {
 	class(self).SetSrcAlphaBlendFactor(value)
+	return self
 }
 
 /*
@@ -372,9 +380,10 @@ func (self Instance) DstAlphaBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetDstAlphaBlendFactor())
 }
 
-// SetDstAlphaBlendFactor sets the property returned by [GetDstAlphaBlendFactor].
-func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) {
+// SetDstAlphaBlendFactor sets the property returned by [GetDstAlphaBlendFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) Instance {
 	class(self).SetDstAlphaBlendFactor(value)
+	return self
 }
 
 /*
@@ -384,9 +393,10 @@ func (self Instance) AlphaBlendOp() Rendering.BlendOperation {
 	return Rendering.BlendOperation(class(self).GetAlphaBlendOp())
 }
 
-// SetAlphaBlendOp sets the property returned by [GetAlphaBlendOp].
-func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) {
+// SetAlphaBlendOp sets the property returned by [GetAlphaBlendOp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) Instance {
 	class(self).SetAlphaBlendOp(value)
+	return self
 }
 
 /*
@@ -396,9 +406,10 @@ func (self Instance) WriteR() bool {
 	return bool(class(self).GetWriteR())
 }
 
-// SetWriteR sets the property returned by [GetWriteR].
-func (self Instance) SetWriteR(value bool) {
+// SetWriteR sets the property returned by [GetWriteR]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWriteR(value bool) Instance {
 	class(self).SetWriteR(value)
+	return self
 }
 
 /*
@@ -408,9 +419,10 @@ func (self Instance) WriteG() bool {
 	return bool(class(self).GetWriteG())
 }
 
-// SetWriteG sets the property returned by [GetWriteG].
-func (self Instance) SetWriteG(value bool) {
+// SetWriteG sets the property returned by [GetWriteG]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWriteG(value bool) Instance {
 	class(self).SetWriteG(value)
+	return self
 }
 
 /*
@@ -420,9 +432,10 @@ func (self Instance) WriteB() bool {
 	return bool(class(self).GetWriteB())
 }
 
-// SetWriteB sets the property returned by [GetWriteB].
-func (self Instance) SetWriteB(value bool) {
+// SetWriteB sets the property returned by [GetWriteB]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWriteB(value bool) Instance {
 	class(self).SetWriteB(value)
+	return self
 }
 
 /*
@@ -432,9 +445,10 @@ func (self Instance) WriteA() bool {
 	return bool(class(self).GetWriteA())
 }
 
-// SetWriteA sets the property returned by [GetWriteA].
-func (self Instance) SetWriteA(value bool) {
+// SetWriteA sets the property returned by [GetWriteA]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWriteA(value bool) Instance {
 	class(self).SetWriteA(value)
+	return self
 }
 
 /*

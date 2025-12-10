@@ -381,10 +381,13 @@ If 'unparent' is true, the window is automatically unparented when going invisib
 
 Note: Make sure to keep a reference to the node, otherwise it will be orphaned. You also need to manually call [Node.QueueFree] to free the window if it's not parented.
 
+Returns 'self' to enable method chaining.
+
 [Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
-func (self Instance) SetUnparentWhenInvisible(unparent bool) { //gd:Window.set_unparent_when_invisible
+func (self Instance) SetUnparentWhenInvisible(unparent bool) Instance { //gd:Window.set_unparent_when_invisible
 	Advanced(self).SetUnparentWhenInvisible(unparent)
+	return self
 }
 
 /*
@@ -424,16 +427,22 @@ func (self Instance) StartResize(edge DisplayServer.WindowResizeEdge) { //gd:Win
 
 /*
 If 'active' is true, enables system's native IME (Input Method Editor).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetImeActive(active bool) { //gd:Window.set_ime_active
+func (self Instance) SetImeActive(active bool) Instance { //gd:Window.set_ime_active
 	Advanced(self).SetImeActive(active)
+	return self
 }
 
 /*
 Moves IME to the given position.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetImePosition(position Vector2i.XY) { //gd:Window.set_ime_position
+func (self Instance) SetImePosition(position Vector2i.XY) Instance { //gd:Window.set_ime_position
 	Advanced(self).SetImePosition(Vector2i.XY(position))
+	return self
 }
 
 /*
@@ -1043,9 +1052,12 @@ func GetFocusedWindow() Instance { //gd:Window.get_focused_window
 
 /*
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayoutDirection(direction LayoutDirection) { //gd:Window.set_layout_direction
+func (self Instance) SetLayoutDirection(direction LayoutDirection) Instance { //gd:Window.set_layout_direction
 	Advanced(self).SetLayoutDirection(direction)
+	return self
 }
 
 /*
@@ -1064,9 +1076,12 @@ func (self Instance) IsLayoutRtl() bool { //gd:Window.is_layout_rtl
 
 /*
 Enables font oversampling. This makes fonts look better when they are scaled up.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
+func (self Instance) SetUseFontOversampling(enable bool) Instance { //gd:Window.set_use_font_oversampling
 	Advanced(self).SetUseFontOversampling(enable)
+	return self
 }
 
 /*
@@ -1389,9 +1404,10 @@ func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
-// SetMode sets the property returned by [GetMode].
-func (self Instance) SetMode(value Mode) {
+// SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode(value Mode) Instance {
 	class(self).SetMode(value)
+	return self
 }
 
 /*
@@ -1404,9 +1420,10 @@ func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
-// SetTitle sets the property returned by [GetTitle].
-func (self Instance) SetTitle(value string) {
+// SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitle(value string) Instance {
 	class(self).SetTitle(String.New(value))
+	return self
 }
 
 /*
@@ -1418,9 +1435,10 @@ func (self Instance) InitialPosition() WindowInitialPosition {
 	return WindowInitialPosition(class(self).GetInitialPosition())
 }
 
-// SetInitialPosition sets the property returned by [GetInitialPosition].
-func (self Instance) SetInitialPosition(value WindowInitialPosition) {
+// SetInitialPosition sets the property returned by [GetInitialPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInitialPosition(value WindowInitialPosition) Instance {
 	class(self).SetInitialPosition(value)
+	return self
 }
 
 /*
@@ -1438,9 +1456,10 @@ func (self Instance) Position() Vector2i.XY {
 	return Vector2i.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2i.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2i.XY) Instance {
 	class(self).SetPosition(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1450,9 +1469,10 @@ func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector2i.XY) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector2i.XY) Instance {
 	class(self).SetSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1462,9 +1482,10 @@ func (self Instance) CurrentScreen() int {
 	return int(int(class(self).GetCurrentScreen()))
 }
 
-// SetCurrentScreen sets the property returned by [GetCurrentScreen].
-func (self Instance) SetCurrentScreen(value int) {
+// SetCurrentScreen sets the property returned by [GetCurrentScreen]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentScreen(value int) Instance {
 	class(self).SetCurrentScreen(int64(value))
+	return self
 }
 
 /*
@@ -1484,9 +1505,10 @@ func (self Instance) MousePassthroughPolygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetMousePassthroughPolygon().Values()))
 }
 
-// SetMousePassthroughPolygon sets the property returned by [GetMousePassthroughPolygon].
-func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) {
+// SetMousePassthroughPolygon sets the property returned by [GetMousePassthroughPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) Instance {
 	class(self).SetMousePassthroughPolygon(Packed.New(value...))
+	return self
 }
 
 /*
@@ -1496,9 +1518,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 /*
@@ -1513,9 +1536,10 @@ func (self Instance) WrapControls() bool {
 	return bool(class(self).IsWrappingControls())
 }
 
-// SetWrapControls sets the property returned by [IsWrappingControls].
-func (self Instance) SetWrapControls(value bool) {
+// SetWrapControls sets the property returned by [IsWrappingControls]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWrapControls(value bool) Instance {
 	class(self).SetWrapControls(value)
+	return self
 }
 
 /*
@@ -1529,9 +1553,10 @@ func (self Instance) Transient() bool {
 	return bool(class(self).IsTransient())
 }
 
-// SetTransient sets the property returned by [IsTransient].
-func (self Instance) SetTransient(value bool) {
+// SetTransient sets the property returned by [IsTransient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransient(value bool) Instance {
 	class(self).SetTransient(value)
+	return self
 }
 
 /*
@@ -1544,9 +1569,10 @@ func (self Instance) TransientToFocused() bool {
 	return bool(class(self).IsTransientToFocused())
 }
 
-// SetTransientToFocused sets the property returned by [IsTransientToFocused].
-func (self Instance) SetTransientToFocused(value bool) {
+// SetTransientToFocused sets the property returned by [IsTransientToFocused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransientToFocused(value bool) Instance {
 	class(self).SetTransientToFocused(value)
+	return self
 }
 
 /*
@@ -1561,9 +1587,10 @@ func (self Instance) Exclusive() bool {
 	return bool(class(self).IsExclusive())
 }
 
-// SetExclusive sets the property returned by [IsExclusive].
-func (self Instance) SetExclusive(value bool) {
+// SetExclusive sets the property returned by [IsExclusive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExclusive(value bool) Instance {
 	class(self).SetExclusive(value)
+	return self
 }
 
 /*
@@ -1573,9 +1600,10 @@ func (self Instance) Unresizable() bool {
 	return bool(class(self).GetFlag(0))
 }
 
-// SetUnresizable sets the property returned by [GetFlag].
-func (self Instance) SetUnresizable(value bool) {
+// SetUnresizable sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUnresizable(value bool) Instance {
 	class(self).SetFlag(0, value)
+	return self
 }
 
 /*
@@ -1585,9 +1613,10 @@ func (self Instance) Borderless() bool {
 	return bool(class(self).GetFlag(1))
 }
 
-// SetBorderless sets the property returned by [GetFlag].
-func (self Instance) SetBorderless(value bool) {
+// SetBorderless sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderless(value bool) Instance {
 	class(self).SetFlag(1, value)
+	return self
 }
 
 /*
@@ -1599,9 +1628,10 @@ func (self Instance) AlwaysOnTop() bool {
 	return bool(class(self).GetFlag(2))
 }
 
-// SetAlwaysOnTop sets the property returned by [GetFlag].
-func (self Instance) SetAlwaysOnTop(value bool) {
+// SetAlwaysOnTop sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlwaysOnTop(value bool) Instance {
 	class(self).SetFlag(2, value)
+	return self
 }
 
 /*
@@ -1618,9 +1648,10 @@ func (self Instance) Transparent() bool {
 	return bool(class(self).GetFlag(3))
 }
 
-// SetTransparent sets the property returned by [GetFlag].
-func (self Instance) SetTransparent(value bool) {
+// SetTransparent sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransparent(value bool) Instance {
 	class(self).SetFlag(3, value)
+	return self
 }
 
 /*
@@ -1632,9 +1663,10 @@ func (self Instance) Unfocusable() bool {
 	return bool(class(self).GetFlag(4))
 }
 
-// SetUnfocusable sets the property returned by [GetFlag].
-func (self Instance) SetUnfocusable(value bool) {
+// SetUnfocusable sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUnfocusable(value bool) Instance {
 	class(self).SetFlag(4, value)
+	return self
 }
 
 /*
@@ -1647,9 +1679,10 @@ func (self Instance) PopupWindow() bool {
 	return bool(class(self).GetFlag(5))
 }
 
-// SetPopupWindow sets the property returned by [GetFlag].
-func (self Instance) SetPopupWindow(value bool) {
+// SetPopupWindow sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPopupWindow(value bool) Instance {
 	class(self).SetFlag(5, value)
+	return self
 }
 
 /*
@@ -1665,9 +1698,10 @@ func (self Instance) ExtendToTitle() bool {
 	return bool(class(self).GetFlag(6))
 }
 
-// SetExtendToTitle sets the property returned by [GetFlag].
-func (self Instance) SetExtendToTitle(value bool) {
+// SetExtendToTitle sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExtendToTitle(value bool) Instance {
 	class(self).SetFlag(6, value)
+	return self
 }
 
 /*
@@ -1683,9 +1717,10 @@ func (self Instance) MousePassthrough() bool {
 	return bool(class(self).GetFlag(7))
 }
 
-// SetMousePassthrough sets the property returned by [GetFlag].
-func (self Instance) SetMousePassthrough(value bool) {
+// SetMousePassthrough sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMousePassthrough(value bool) Instance {
 	class(self).SetFlag(7, value)
+	return self
 }
 
 /*
@@ -1701,9 +1736,10 @@ func (self Instance) SharpCorners() bool {
 	return bool(class(self).GetFlag(8))
 }
 
-// SetSharpCorners sets the property returned by [GetFlag].
-func (self Instance) SetSharpCorners(value bool) {
+// SetSharpCorners sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSharpCorners(value bool) Instance {
 	class(self).SetFlag(8, value)
+	return self
 }
 
 /*
@@ -1722,9 +1758,10 @@ func (self Instance) ExcludeFromCapture() bool {
 	return bool(class(self).GetFlag(9))
 }
 
-// SetExcludeFromCapture sets the property returned by [GetFlag].
-func (self Instance) SetExcludeFromCapture(value bool) {
+// SetExcludeFromCapture sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExcludeFromCapture(value bool) Instance {
 	class(self).SetFlag(9, value)
+	return self
 }
 
 /*
@@ -1736,9 +1773,10 @@ func (self Instance) PopupWmHint() bool {
 	return bool(class(self).GetFlag(10))
 }
 
-// SetPopupWmHint sets the property returned by [GetFlag].
-func (self Instance) SetPopupWmHint(value bool) {
+// SetPopupWmHint sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPopupWmHint(value bool) Instance {
 	class(self).SetFlag(10, value)
+	return self
 }
 
 /*
@@ -1754,9 +1792,10 @@ func (self Instance) MinimizeDisabled() bool {
 	return bool(class(self).GetFlag(11))
 }
 
-// SetMinimizeDisabled sets the property returned by [GetFlag].
-func (self Instance) SetMinimizeDisabled(value bool) {
+// SetMinimizeDisabled sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimizeDisabled(value bool) Instance {
 	class(self).SetFlag(11, value)
+	return self
 }
 
 /*
@@ -1772,9 +1811,10 @@ func (self Instance) MaximizeDisabled() bool {
 	return bool(class(self).GetFlag(12))
 }
 
-// SetMaximizeDisabled sets the property returned by [GetFlag].
-func (self Instance) SetMaximizeDisabled(value bool) {
+// SetMaximizeDisabled sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaximizeDisabled(value bool) Instance {
 	class(self).SetFlag(12, value)
+	return self
 }
 
 /*
@@ -1784,9 +1824,10 @@ func (self Instance) ForceNative() bool {
 	return bool(class(self).GetForceNative())
 }
 
-// SetForceNative sets the property returned by [GetForceNative].
-func (self Instance) SetForceNative(value bool) {
+// SetForceNative sets the property returned by [GetForceNative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetForceNative(value bool) Instance {
 	class(self).SetForceNative(value)
+	return self
 }
 
 /*
@@ -1802,9 +1843,10 @@ func (self Instance) MinSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMinSize())
 }
 
-// SetMinSize sets the property returned by [GetMinSize].
-func (self Instance) SetMinSize(value Vector2i.XY) {
+// SetMinSize sets the property returned by [GetMinSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinSize(value Vector2i.XY) Instance {
 	class(self).SetMinSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1819,9 +1861,10 @@ func (self Instance) MaxSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMaxSize())
 }
 
-// SetMaxSize sets the property returned by [GetMaxSize].
-func (self Instance) SetMaxSize(value Vector2i.XY) {
+// SetMaxSize sets the property returned by [GetMaxSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSize(value Vector2i.XY) Instance {
 	class(self).SetMaxSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1833,9 +1876,10 @@ func (self Instance) KeepTitleVisible() bool {
 	return bool(class(self).GetKeepTitleVisible())
 }
 
-// SetKeepTitleVisible sets the property returned by [GetKeepTitleVisible].
-func (self Instance) SetKeepTitleVisible(value bool) {
+// SetKeepTitleVisible sets the property returned by [GetKeepTitleVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepTitleVisible(value bool) Instance {
 	class(self).SetKeepTitleVisible(value)
+	return self
 }
 
 /*
@@ -1847,9 +1891,10 @@ func (self Instance) ContentScaleSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetContentScaleSize())
 }
 
-// SetContentScaleSize sets the property returned by [GetContentScaleSize].
-func (self Instance) SetContentScaleSize(value Vector2i.XY) {
+// SetContentScaleSize sets the property returned by [GetContentScaleSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentScaleSize(value Vector2i.XY) Instance {
 	class(self).SetContentScaleSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1861,9 +1906,10 @@ func (self Instance) ContentScaleMode() ContentScaleMode {
 	return ContentScaleMode(class(self).GetContentScaleMode())
 }
 
-// SetContentScaleMode sets the property returned by [GetContentScaleMode].
-func (self Instance) SetContentScaleMode(value ContentScaleMode) {
+// SetContentScaleMode sets the property returned by [GetContentScaleMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentScaleMode(value ContentScaleMode) Instance {
 	class(self).SetContentScaleMode(value)
+	return self
 }
 
 /*
@@ -1876,9 +1922,10 @@ func (self Instance) ContentScaleAspect() ContentScaleAspect {
 	return ContentScaleAspect(class(self).GetContentScaleAspect())
 }
 
-// SetContentScaleAspect sets the property returned by [GetContentScaleAspect].
-func (self Instance) SetContentScaleAspect(value ContentScaleAspect) {
+// SetContentScaleAspect sets the property returned by [GetContentScaleAspect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentScaleAspect(value ContentScaleAspect) Instance {
 	class(self).SetContentScaleAspect(value)
+	return self
 }
 
 /*
@@ -1891,9 +1938,10 @@ func (self Instance) ContentScaleStretch() ContentScaleStretch {
 	return ContentScaleStretch(class(self).GetContentScaleStretch())
 }
 
-// SetContentScaleStretch sets the property returned by [GetContentScaleStretch].
-func (self Instance) SetContentScaleStretch(value ContentScaleStretch) {
+// SetContentScaleStretch sets the property returned by [GetContentScaleStretch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentScaleStretch(value ContentScaleStretch) Instance {
 	class(self).SetContentScaleStretch(value)
+	return self
 }
 
 /*
@@ -1908,9 +1956,10 @@ func (self Instance) ContentScaleFactor() Float.X {
 	return Float.X(Float.X(class(self).GetContentScaleFactor()))
 }
 
-// SetContentScaleFactor sets the property returned by [GetContentScaleFactor].
-func (self Instance) SetContentScaleFactor(value Float.X) {
+// SetContentScaleFactor sets the property returned by [GetContentScaleFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentScaleFactor(value Float.X) Instance {
 	class(self).SetContentScaleFactor(float64(value))
+	return self
 }
 
 /*
@@ -1920,9 +1969,10 @@ func (self Instance) AutoTranslate() bool {
 	return bool(class(self).IsAutoTranslating())
 }
 
-// SetAutoTranslate sets the property returned by [IsAutoTranslating].
-func (self Instance) SetAutoTranslate(value bool) {
+// SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTranslate(value bool) Instance {
 	class(self).SetAutoTranslate(value)
+	return self
 }
 
 /*
@@ -1932,9 +1982,10 @@ func (self Instance) AccessibilityName() string {
 	return string(class(self).GetAccessibilityName().String())
 }
 
-// SetAccessibilityName sets the property returned by [GetAccessibilityName].
-func (self Instance) SetAccessibilityName(value string) {
+// SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityName(value string) Instance {
 	class(self).SetAccessibilityName(String.New(value))
+	return self
 }
 
 /*
@@ -1944,9 +1995,10 @@ func (self Instance) AccessibilityDescription() string {
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
-// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription].
-func (self Instance) SetAccessibilityDescription(value string) {
+// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityDescription(value string) Instance {
 	class(self).SetAccessibilityDescription(String.New(value))
+	return self
 }
 
 /*
@@ -1962,9 +2014,10 @@ func (self Instance) Theme() Theme.Instance {
 	return Theme.Instance(class(self).GetTheme())
 }
 
-// SetTheme sets the property returned by [GetTheme].
-func (self Instance) SetTheme(value Theme.Instance) {
+// SetTheme sets the property returned by [GetTheme]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTheme(value Theme.Instance) Instance {
 	class(self).SetTheme(value)
+	return self
 }
 
 /*
@@ -1977,9 +2030,10 @@ func (self Instance) ThemeTypeVariation() string {
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
-// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation].
-func (self Instance) SetThemeTypeVariation(value string) {
+// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThemeTypeVariation(value string) Instance {
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -3316,12 +3370,13 @@ Emitted when the [Window] is currently focused and receives any input, passing t
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
+func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) WindowInput() Signal.Any {
@@ -3336,12 +3391,13 @@ Note: This signal only works with native windows, i.e. the main window and [Wind
 [Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Flags) {
+func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilesDropped() Signal.Any {
@@ -3355,12 +3411,13 @@ Emitted when the mouse cursor enters the [Window]'s visible area, that is not oc
 [Viewport.GuiDisableInput]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiDisableInput
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseEntered() Signal.Any {
@@ -3374,12 +3431,13 @@ Emitted when the mouse cursor leaves the [Window]'s visible area, that is not oc
 [Viewport.GuiDisableInput]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiDisableInput
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MouseExited() Signal.Any {
@@ -3391,12 +3449,13 @@ Emitted when the [Window] gains focus.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FocusEntered() Signal.Any {
@@ -3408,12 +3467,13 @@ Emitted when the [Window] loses its focus.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FocusExited() Signal.Any {
@@ -3429,12 +3489,13 @@ This signal can be used to handle window closing, e.g. by connecting it to [Hide
 [PopupWindow]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupWindow
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CloseRequested() Signal.Any {
@@ -3444,12 +3505,13 @@ func (self class) CloseRequested() Signal.Any {
 /*
 Emitted when a go back request is sent (e.g. pressing the "Back" button on Android), right after [Node.NotificationWmGoBackRequest].
 */
-func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GoBackRequested() Signal.Any {
@@ -3461,12 +3523,13 @@ Emitted when [Window] is made visible or disappears.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityChanged() Signal.Any {
@@ -3479,12 +3542,13 @@ Emitted right after [Popup] call, before the [Window] appears or does anything.
 [Popup]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Popup
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AboutToPopup() Signal.Any {
@@ -3494,12 +3558,13 @@ func (self class) AboutToPopup() Signal.Any {
 /*
 Emitted when the [NotificationThemeChanged] notification is sent.
 */
-func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ThemeChanged() Signal.Any {
@@ -3513,12 +3578,13 @@ Note: Only implemented on macOS and Linux (Wayland).
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DpiChanged() Signal.Any {
@@ -3528,12 +3594,13 @@ func (self class) DpiChanged() Signal.Any {
 /*
 Emitted when window title bar decorations are changed, e.g. macOS window enter/exit full screen mode, or extend-to-title flag is changed.
 */
-func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TitlebarChanged() Signal.Any {
@@ -3543,12 +3610,13 @@ func (self class) TitlebarChanged() Signal.Any {
 /*
 Emitted when window title bar text is changed.
 */
-func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TitleChanged() Signal.Any {

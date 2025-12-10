@@ -179,9 +179,10 @@ func (self Instance) Data() []Vector3.XYZ {
 	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
 }
 
-// SetData sets the property returned by [GetFaces].
-func (self Instance) SetData(value []Vector3.XYZ) {
+// SetData sets the property returned by [GetFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetData(value []Vector3.XYZ) Instance {
 	class(self).SetFaces(Packed.New(value...))
+	return self
 }
 
 /*
@@ -191,9 +192,10 @@ func (self Instance) BackfaceCollision() bool {
 	return bool(class(self).IsBackfaceCollisionEnabled())
 }
 
-// SetBackfaceCollision sets the property returned by [IsBackfaceCollisionEnabled].
-func (self Instance) SetBackfaceCollision(value bool) {
+// SetBackfaceCollision sets the property returned by [IsBackfaceCollisionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackfaceCollision(value bool) Instance {
 	class(self).SetBackfaceCollisionEnabled(value)
+	return self
 }
 
 /*

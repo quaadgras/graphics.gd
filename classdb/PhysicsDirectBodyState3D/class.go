@@ -348,11 +348,14 @@ Sets the body's total constant positional forces applied during each physics upd
 
 See [AddConstantForce] and [AddConstantCentralForce].
 
+Returns 'self' to enable method chaining.
+
 [AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantCentralForce
 [AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantForce
 */
-func (self Instance) SetConstantForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_force
+func (self Instance) SetConstantForce(force Vector3.XYZ) Instance { //gd:PhysicsDirectBodyState3D.set_constant_force
 	Advanced(self).SetConstantForce(Vector3.XYZ(force))
+	return self
 }
 
 /*
@@ -372,10 +375,13 @@ Sets the body's total constant rotational forces applied during each physics upd
 
 See [AddConstantTorque].
 
+Returns 'self' to enable method chaining.
+
 [AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantTorque
 */
-func (self Instance) SetConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_torque
+func (self Instance) SetConstantTorque(torque Vector3.XYZ) Instance { //gd:PhysicsDirectBodyState3D.set_constant_torque
 	Advanced(self).SetConstantTorque(Vector3.XYZ(torque))
+	return self
 }
 
 /*
@@ -609,9 +615,10 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-// SetAngularVelocity sets the property returned by [GetAngularVelocity].
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+// SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -621,9 +628,10 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-// SetLinearVelocity sets the property returned by [GetLinearVelocity].
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+// SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -633,9 +641,10 @@ func (self Instance) Sleeping() bool {
 	return bool(class(self).IsSleeping())
 }
 
-// SetSleeping sets the property returned by [IsSleeping].
-func (self Instance) SetSleeping(value bool) {
+// SetSleeping sets the property returned by [IsSleeping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSleeping(value bool) Instance {
 	class(self).SetSleepState(value)
+	return self
 }
 
 /*
@@ -645,9 +654,10 @@ func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
-// SetCollisionLayer sets the property returned by [GetCollisionLayer].
-func (self Instance) SetCollisionLayer(value int) {
+// SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionLayer(value int) Instance {
 	class(self).SetCollisionLayer(int64(value))
+	return self
 }
 
 /*
@@ -657,9 +667,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -669,9 +680,10 @@ func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 //go:nosplit

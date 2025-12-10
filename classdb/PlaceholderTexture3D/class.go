@@ -174,9 +174,10 @@ func (self Instance) Size() Vector3i.XYZ {
 	return Vector3i.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3i.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3i.XYZ) Instance {
 	class(self).SetSize(Vector3i.XYZ(value))
+	return self
 }
 
 //go:nosplit

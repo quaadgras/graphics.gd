@@ -247,9 +247,12 @@ func (self Instance) GetContactCount() int { //gd:RigidBody2D.get_contact_count
 
 /*
 Sets the body's velocity on the given axis. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
+func (self Instance) SetAxisVelocity(axis_velocity Vector2.XY) Instance { //gd:RigidBody2D.set_axis_velocity
 	Advanced(self).SetAxisVelocity(Vector2.XY(axis_velocity))
+	return self
 }
 
 /*
@@ -452,9 +455,10 @@ func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
-// SetMass sets the property returned by [GetMass].
-func (self Instance) SetMass(value Float.X) {
+// SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMass(value Float.X) Instance {
 	class(self).SetMass(float64(value))
+	return self
 }
 
 /*
@@ -466,9 +470,10 @@ func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
-// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride].
-func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
+// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance {
 	class(self).SetPhysicsMaterialOverride(value)
+	return self
 }
 
 /*
@@ -481,9 +486,10 @@ func (self Instance) GravityScale() Float.X {
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
-// SetGravityScale sets the property returned by [GetGravityScale].
-func (self Instance) SetGravityScale(value Float.X) {
+// SetGravityScale sets the property returned by [GetGravityScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityScale(value Float.X) Instance {
 	class(self).SetGravityScale(float64(value))
+	return self
 }
 
 /*
@@ -493,9 +499,10 @@ func (self Instance) CenterOfMassMode() CenterOfMassMode {
 	return CenterOfMassMode(class(self).GetCenterOfMassMode())
 }
 
-// SetCenterOfMassMode sets the property returned by [GetCenterOfMassMode].
-func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) {
+// SetCenterOfMassMode sets the property returned by [GetCenterOfMassMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) Instance {
 	class(self).SetCenterOfMassMode(value)
+	return self
 }
 
 /*
@@ -510,9 +517,10 @@ func (self Instance) CenterOfMass() Vector2.XY {
 	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
-// SetCenterOfMass sets the property returned by [GetCenterOfMass].
-func (self Instance) SetCenterOfMass(value Vector2.XY) {
+// SetCenterOfMass sets the property returned by [GetCenterOfMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCenterOfMass(value Vector2.XY) Instance {
 	class(self).SetCenterOfMass(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -528,9 +536,10 @@ func (self Instance) Inertia() Float.X {
 	return Float.X(Float.X(class(self).GetInertia()))
 }
 
-// SetInertia sets the property returned by [GetInertia].
-func (self Instance) SetInertia(value Float.X) {
+// SetInertia sets the property returned by [GetInertia]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInertia(value Float.X) Instance {
 	class(self).SetInertia(float64(value))
+	return self
 }
 
 /*
@@ -543,9 +552,10 @@ func (self Instance) Sleeping() bool {
 	return bool(class(self).IsSleeping())
 }
 
-// SetSleeping sets the property returned by [IsSleeping].
-func (self Instance) SetSleeping(value bool) {
+// SetSleeping sets the property returned by [IsSleeping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSleeping(value bool) Instance {
 	class(self).SetSleeping(value)
+	return self
 }
 
 /*
@@ -557,9 +567,10 @@ func (self Instance) CanSleep() bool {
 	return bool(class(self).IsAbleToSleep())
 }
 
-// SetCanSleep sets the property returned by [IsAbleToSleep].
-func (self Instance) SetCanSleep(value bool) {
+// SetCanSleep sets the property returned by [IsAbleToSleep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanSleep(value bool) Instance {
 	class(self).SetCanSleep(value)
+	return self
 }
 
 /*
@@ -569,9 +580,10 @@ func (self Instance) LockRotation() bool {
 	return bool(class(self).IsLockRotationEnabled())
 }
 
-// SetLockRotation sets the property returned by [IsLockRotationEnabled].
-func (self Instance) SetLockRotation(value bool) {
+// SetLockRotation sets the property returned by [IsLockRotationEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLockRotation(value bool) Instance {
 	class(self).SetLockRotationEnabled(value)
+	return self
 }
 
 /*
@@ -589,9 +601,10 @@ func (self Instance) Freeze() bool {
 	return bool(class(self).IsFreezeEnabled())
 }
 
-// SetFreeze sets the property returned by [IsFreezeEnabled].
-func (self Instance) SetFreeze(value bool) {
+// SetFreeze sets the property returned by [IsFreezeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFreeze(value bool) Instance {
 	class(self).SetFreezeEnabled(value)
+	return self
 }
 
 /*
@@ -607,9 +620,10 @@ func (self Instance) FreezeMode() FreezeMode {
 	return FreezeMode(class(self).GetFreezeMode())
 }
 
-// SetFreezeMode sets the property returned by [GetFreezeMode].
-func (self Instance) SetFreezeMode(value FreezeMode) {
+// SetFreezeMode sets the property returned by [GetFreezeMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFreezeMode(value FreezeMode) Instance {
 	class(self).SetFreezeMode(value)
+	return self
 }
 
 /*
@@ -624,9 +638,10 @@ func (self Instance) CustomIntegrator() bool {
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
-// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator].
-func (self Instance) SetCustomIntegrator(value bool) {
+// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomIntegrator(value bool) Instance {
 	class(self).SetUseCustomIntegrator(value)
+	return self
 }
 
 /*
@@ -638,9 +653,10 @@ func (self Instance) ContinuousCd() CCDMode {
 	return CCDMode(class(self).GetContinuousCollisionDetectionMode())
 }
 
-// SetContinuousCd sets the property returned by [GetContinuousCollisionDetectionMode].
-func (self Instance) SetContinuousCd(value CCDMode) {
+// SetContinuousCd sets the property returned by [GetContinuousCollisionDetectionMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContinuousCd(value CCDMode) Instance {
 	class(self).SetContinuousCollisionDetectionMode(value)
+	return self
 }
 
 /*
@@ -654,9 +670,10 @@ func (self Instance) ContactMonitor() bool {
 	return bool(class(self).IsContactMonitorEnabled())
 }
 
-// SetContactMonitor sets the property returned by [IsContactMonitorEnabled].
-func (self Instance) SetContactMonitor(value bool) {
+// SetContactMonitor sets the property returned by [IsContactMonitorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContactMonitor(value bool) Instance {
 	class(self).SetContactMonitor(value)
+	return self
 }
 
 /*
@@ -672,9 +689,10 @@ func (self Instance) MaxContactsReported() int {
 	return int(int(class(self).GetMaxContactsReported()))
 }
 
-// SetMaxContactsReported sets the property returned by [GetMaxContactsReported].
-func (self Instance) SetMaxContactsReported(value int) {
+// SetMaxContactsReported sets the property returned by [GetMaxContactsReported]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxContactsReported(value int) Instance {
 	class(self).SetMaxContactsReported(int64(value))
+	return self
 }
 
 /*
@@ -686,9 +704,10 @@ func (self Instance) LinearVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
-// SetLinearVelocity sets the property returned by [GetLinearVelocity].
-func (self Instance) SetLinearVelocity(value Vector2.XY) {
+// SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearVelocity(value Vector2.XY) Instance {
 	class(self).SetLinearVelocity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -700,9 +719,10 @@ func (self Instance) LinearDampMode() DampMode {
 	return DampMode(class(self).GetLinearDampMode())
 }
 
-// SetLinearDampMode sets the property returned by [GetLinearDampMode].
-func (self Instance) SetLinearDampMode(value DampMode) {
+// SetLinearDampMode sets the property returned by [GetLinearDampMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDampMode(value DampMode) Instance {
 	class(self).SetLinearDampMode(value)
+	return self
 }
 
 /*
@@ -719,9 +739,10 @@ func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-// SetLinearDamp sets the property returned by [GetLinearDamp].
-func (self Instance) SetLinearDamp(value Float.X) {
+// SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDamp(value Float.X) Instance {
 	class(self).SetLinearDamp(float64(value))
+	return self
 }
 
 /*
@@ -731,9 +752,10 @@ func (self Instance) AngularVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
-// SetAngularVelocity sets the property returned by [GetAngularVelocity].
-func (self Instance) SetAngularVelocity(value Float.X) {
+// SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocity(value Float.X) Instance {
 	class(self).SetAngularVelocity(float64(value))
+	return self
 }
 
 /*
@@ -745,9 +767,10 @@ func (self Instance) AngularDampMode() DampMode {
 	return DampMode(class(self).GetAngularDampMode())
 }
 
-// SetAngularDampMode sets the property returned by [GetAngularDampMode].
-func (self Instance) SetAngularDampMode(value DampMode) {
+// SetAngularDampMode sets the property returned by [GetAngularDampMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDampMode(value DampMode) Instance {
 	class(self).SetAngularDampMode(value)
+	return self
 }
 
 /*
@@ -764,9 +787,10 @@ func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-// SetAngularDamp sets the property returned by [GetAngularDamp].
-func (self Instance) SetAngularDamp(value Float.X) {
+// SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDamp(value Float.X) Instance {
 	class(self).SetAngularDamp(float64(value))
+	return self
 }
 
 /*
@@ -781,9 +805,10 @@ func (self Instance) ConstantForce() Vector2.XY {
 	return Vector2.XY(class(self).GetConstantForce())
 }
 
-// SetConstantForce sets the property returned by [GetConstantForce].
-func (self Instance) SetConstantForce(value Vector2.XY) {
+// SetConstantForce sets the property returned by [GetConstantForce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstantForce(value Vector2.XY) Instance {
 	class(self).SetConstantForce(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -797,9 +822,10 @@ func (self Instance) ConstantTorque() Float.X {
 	return Float.X(Float.X(class(self).GetConstantTorque()))
 }
 
-// SetConstantTorque sets the property returned by [GetConstantTorque].
-func (self Instance) SetConstantTorque(value Float.X) {
+// SetConstantTorque sets the property returned by [GetConstantTorque]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstantTorque(value Float.X) Instance {
 	class(self).SetConstantTorque(float64(value))
+	return self
 }
 
 /*
@@ -1269,12 +1295,13 @@ Emitted when one of this RigidBody2D's [Shape2D]s collides with another [Physics
 [TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyShapeEntered() Signal.Any {
@@ -1304,12 +1331,13 @@ Emitted when the collision between one of this RigidBody2D's [Shape2D]s and anot
 [TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyShapeExited() Signal.Any {
@@ -1329,12 +1357,13 @@ Emitted when a collision with another [PhysicsBody2D] or [TileMap] occurs. Requi
 [TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyEntered() Signal.Any {
@@ -1354,12 +1383,13 @@ Emitted when the collision with another [PhysicsBody2D] or [TileMap] ends. Requi
 [TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BodyExited() Signal.Any {
@@ -1373,12 +1403,13 @@ Note: Changing the value [Sleeping] will not trigger this signal. It is only emi
 
 [Sleeping]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Sleeping
 */
-func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SleepingStateChanged() Signal.Any {

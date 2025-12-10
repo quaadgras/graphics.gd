@@ -454,9 +454,10 @@ func (self Instance) Device() int {
 	return int(int(class(self).GetDevice()))
 }
 
-// SetDevice sets the property returned by [GetDevice].
-func (self Instance) SetDevice(value int) {
+// SetDevice sets the property returned by [GetDevice]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDevice(value int) Instance {
 	class(self).SetDevice(int64(value))
+	return self
 }
 
 //go:nosplit

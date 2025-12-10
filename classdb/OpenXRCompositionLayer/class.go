@@ -240,9 +240,10 @@ func (self Instance) LayerViewport() SubViewport.Instance {
 	return SubViewport.Instance(class(self).GetLayerViewport())
 }
 
-// SetLayerViewport sets the property returned by [GetLayerViewport].
-func (self Instance) SetLayerViewport(value SubViewport.Instance) {
+// SetLayerViewport sets the property returned by [GetLayerViewport]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayerViewport(value SubViewport.Instance) Instance {
 	class(self).SetLayerViewport(value)
+	return self
 }
 
 /*
@@ -260,9 +261,10 @@ func (self Instance) UseAndroidSurface() bool {
 	return bool(class(self).GetUseAndroidSurface())
 }
 
-// SetUseAndroidSurface sets the property returned by [GetUseAndroidSurface].
-func (self Instance) SetUseAndroidSurface(value bool) {
+// SetUseAndroidSurface sets the property returned by [GetUseAndroidSurface]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseAndroidSurface(value bool) Instance {
 	class(self).SetUseAndroidSurface(value)
+	return self
 }
 
 /*
@@ -274,9 +276,10 @@ func (self Instance) AndroidSurfaceSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetAndroidSurfaceSize())
 }
 
-// SetAndroidSurfaceSize sets the property returned by [GetAndroidSurfaceSize].
-func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) {
+// SetAndroidSurfaceSize sets the property returned by [GetAndroidSurfaceSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) Instance {
 	class(self).SetAndroidSurfaceSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -288,9 +291,10 @@ func (self Instance) SortOrder() int {
 	return int(int(class(self).GetSortOrder()))
 }
 
-// SetSortOrder sets the property returned by [GetSortOrder].
-func (self Instance) SetSortOrder(value int) {
+// SetSortOrder sets the property returned by [GetSortOrder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSortOrder(value int) Instance {
 	class(self).SetSortOrder(int64(value))
+	return self
 }
 
 /*
@@ -304,9 +308,10 @@ func (self Instance) AlphaBlend() bool {
 	return bool(class(self).GetAlphaBlend())
 }
 
-// SetAlphaBlend sets the property returned by [GetAlphaBlend].
-func (self Instance) SetAlphaBlend(value bool) {
+// SetAlphaBlend sets the property returned by [GetAlphaBlend]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaBlend(value bool) Instance {
 	class(self).SetAlphaBlend(value)
+	return self
 }
 
 /*
@@ -320,9 +325,10 @@ func (self Instance) EnableHolePunch() bool {
 	return bool(class(self).GetEnableHolePunch())
 }
 
-// SetEnableHolePunch sets the property returned by [GetEnableHolePunch].
-func (self Instance) SetEnableHolePunch(value bool) {
+// SetEnableHolePunch sets the property returned by [GetEnableHolePunch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableHolePunch(value bool) Instance {
 	class(self).SetEnableHolePunch(value)
+	return self
 }
 
 /*
@@ -334,9 +340,10 @@ func (self Instance) SwapchainStateMinFilter() Filter {
 	return Filter(class(self).GetMinFilter())
 }
 
-// SetSwapchainStateMinFilter sets the property returned by [GetMinFilter].
-func (self Instance) SetSwapchainStateMinFilter(value Filter) {
+// SetSwapchainStateMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateMinFilter(value Filter) Instance {
 	class(self).SetMinFilter(value)
+	return self
 }
 
 /*
@@ -348,9 +355,10 @@ func (self Instance) SwapchainStateMagFilter() Filter {
 	return Filter(class(self).GetMagFilter())
 }
 
-// SetSwapchainStateMagFilter sets the property returned by [GetMagFilter].
-func (self Instance) SetSwapchainStateMagFilter(value Filter) {
+// SetSwapchainStateMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateMagFilter(value Filter) Instance {
 	class(self).SetMagFilter(value)
+	return self
 }
 
 /*
@@ -362,9 +370,10 @@ func (self Instance) SwapchainStateMipmapMode() MipmapMode {
 	return MipmapMode(class(self).GetMipmapMode())
 }
 
-// SetSwapchainStateMipmapMode sets the property returned by [GetMipmapMode].
-func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) {
+// SetSwapchainStateMipmapMode sets the property returned by [GetMipmapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) Instance {
 	class(self).SetMipmapMode(value)
+	return self
 }
 
 /*
@@ -376,9 +385,10 @@ func (self Instance) SwapchainStateHorizontalWrap() Wrap {
 	return Wrap(class(self).GetHorizontalWrap())
 }
 
-// SetSwapchainStateHorizontalWrap sets the property returned by [GetHorizontalWrap].
-func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) {
+// SetSwapchainStateHorizontalWrap sets the property returned by [GetHorizontalWrap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) Instance {
 	class(self).SetHorizontalWrap(value)
+	return self
 }
 
 /*
@@ -390,9 +400,10 @@ func (self Instance) SwapchainStateVerticalWrap() Wrap {
 	return Wrap(class(self).GetVerticalWrap())
 }
 
-// SetSwapchainStateVerticalWrap sets the property returned by [GetVerticalWrap].
-func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) {
+// SetSwapchainStateVerticalWrap sets the property returned by [GetVerticalWrap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) Instance {
 	class(self).SetVerticalWrap(value)
+	return self
 }
 
 /*
@@ -404,9 +415,10 @@ func (self Instance) SwapchainStateRedSwizzle() Swizzle {
 	return Swizzle(class(self).GetRedSwizzle())
 }
 
-// SetSwapchainStateRedSwizzle sets the property returned by [GetRedSwizzle].
-func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) {
+// SetSwapchainStateRedSwizzle sets the property returned by [GetRedSwizzle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) Instance {
 	class(self).SetRedSwizzle(value)
+	return self
 }
 
 /*
@@ -418,9 +430,10 @@ func (self Instance) SwapchainStateGreenSwizzle() Swizzle {
 	return Swizzle(class(self).GetGreenSwizzle())
 }
 
-// SetSwapchainStateGreenSwizzle sets the property returned by [GetGreenSwizzle].
-func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) {
+// SetSwapchainStateGreenSwizzle sets the property returned by [GetGreenSwizzle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) Instance {
 	class(self).SetGreenSwizzle(value)
+	return self
 }
 
 /*
@@ -432,9 +445,10 @@ func (self Instance) SwapchainStateBlueSwizzle() Swizzle {
 	return Swizzle(class(self).GetBlueSwizzle())
 }
 
-// SetSwapchainStateBlueSwizzle sets the property returned by [GetBlueSwizzle].
-func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) {
+// SetSwapchainStateBlueSwizzle sets the property returned by [GetBlueSwizzle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) Instance {
 	class(self).SetBlueSwizzle(value)
+	return self
 }
 
 /*
@@ -446,9 +460,10 @@ func (self Instance) SwapchainStateAlphaSwizzle() Swizzle {
 	return Swizzle(class(self).GetAlphaSwizzle())
 }
 
-// SetSwapchainStateAlphaSwizzle sets the property returned by [GetAlphaSwizzle].
-func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) {
+// SetSwapchainStateAlphaSwizzle sets the property returned by [GetAlphaSwizzle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) Instance {
 	class(self).SetAlphaSwizzle(value)
+	return self
 }
 
 /*
@@ -460,9 +475,10 @@ func (self Instance) SwapchainStateMaxAnisotropy() Float.X {
 	return Float.X(Float.X(class(self).GetMaxAnisotropy()))
 }
 
-// SetSwapchainStateMaxAnisotropy sets the property returned by [GetMaxAnisotropy].
-func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) {
+// SetSwapchainStateMaxAnisotropy sets the property returned by [GetMaxAnisotropy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) Instance {
 	class(self).SetMaxAnisotropy(float64(value))
+	return self
 }
 
 /*
@@ -474,9 +490,10 @@ func (self Instance) SwapchainStateBorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
-// SetSwapchainStateBorderColor sets the property returned by [GetBorderColor].
-func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) {
+// SetSwapchainStateBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) Instance {
 	class(self).SetBorderColor(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit

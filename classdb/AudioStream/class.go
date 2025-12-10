@@ -653,12 +653,13 @@ func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
 /*
 Signal to be emitted to notify when the parameter list changed.
 */
-func (self Instance) OnParameterListChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnParameterListChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("parameter_list_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ParameterListChanged() Signal.Any {

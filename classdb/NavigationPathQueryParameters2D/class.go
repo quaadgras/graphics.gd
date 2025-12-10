@@ -195,9 +195,10 @@ func (self Instance) Map() RID.NavigationMap2D {
 	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetMap()))
 }
 
-// SetMap sets the property returned by [GetMap].
-func (self Instance) SetMap(value RID.NavigationMap2D) {
+// SetMap sets the property returned by [GetMap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMap(value RID.NavigationMap2D) Instance {
 	class(self).SetMap(RID.Any(value))
+	return self
 }
 
 /*
@@ -207,9 +208,10 @@ func (self Instance) StartPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetStartPosition())
 }
 
-// SetStartPosition sets the property returned by [GetStartPosition].
-func (self Instance) SetStartPosition(value Vector2.XY) {
+// SetStartPosition sets the property returned by [GetStartPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStartPosition(value Vector2.XY) Instance {
 	class(self).SetStartPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -219,9 +221,10 @@ func (self Instance) TargetPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
-// SetTargetPosition sets the property returned by [GetTargetPosition].
-func (self Instance) SetTargetPosition(value Vector2.XY) {
+// SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
 	class(self).SetTargetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -231,9 +234,10 @@ func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
-// SetNavigationLayers sets the property returned by [GetNavigationLayers].
-func (self Instance) SetNavigationLayers(value int) {
+// SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationLayers(value int) Instance {
 	class(self).SetNavigationLayers(int64(value))
+	return self
 }
 
 /*
@@ -243,9 +247,10 @@ func (self Instance) PathfindingAlgorithm() PathfindingAlgorithm {
 	return PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
-// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm].
-func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) {
+// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) Instance {
 	class(self).SetPathfindingAlgorithm(value)
+	return self
 }
 
 /*
@@ -257,9 +262,10 @@ func (self Instance) PathPostprocessing() PathPostProcessing {
 	return PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
-// SetPathPostprocessing sets the property returned by [GetPathPostprocessing].
-func (self Instance) SetPathPostprocessing(value PathPostProcessing) {
+// SetPathPostprocessing sets the property returned by [GetPathPostprocessing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathPostprocessing(value PathPostProcessing) Instance {
 	class(self).SetPathPostprocessing(value)
+	return self
 }
 
 /*
@@ -269,9 +275,10 @@ func (self Instance) MetadataFlags() PathMetadataFlags {
 	return PathMetadataFlags(class(self).GetMetadataFlags())
 }
 
-// SetMetadataFlags sets the property returned by [GetMetadataFlags].
-func (self Instance) SetMetadataFlags(value PathMetadataFlags) {
+// SetMetadataFlags sets the property returned by [GetMetadataFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMetadataFlags(value PathMetadataFlags) Instance {
 	class(self).SetMetadataFlags(value)
+	return self
 }
 
 /*
@@ -285,9 +292,10 @@ func (self Instance) SimplifyPath() bool {
 	return bool(class(self).GetSimplifyPath())
 }
 
-// SetSimplifyPath sets the property returned by [GetSimplifyPath].
-func (self Instance) SetSimplifyPath(value bool) {
+// SetSimplifyPath sets the property returned by [GetSimplifyPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimplifyPath(value bool) Instance {
 	class(self).SetSimplifyPath(value)
+	return self
 }
 
 /*
@@ -297,9 +305,10 @@ func (self Instance) SimplifyEpsilon() Float.X {
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
-// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon].
-func (self Instance) SetSimplifyEpsilon(value Float.X) {
+// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimplifyEpsilon(value Float.X) Instance {
 	class(self).SetSimplifyEpsilon(float64(value))
+	return self
 }
 
 /*
@@ -315,9 +324,10 @@ func (self Instance) ExcludedRegions() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludedRegions())))
 }
 
-// SetExcludedRegions sets the property returned by [GetExcludedRegions].
-func (self Instance) SetExcludedRegions(value []RID.Any) {
+// SetExcludedRegions sets the property returned by [GetExcludedRegions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExcludedRegions(value []RID.Any) Instance {
 	class(self).SetExcludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -333,9 +343,10 @@ func (self Instance) IncludedRegions() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetIncludedRegions())))
 }
 
-// SetIncludedRegions sets the property returned by [GetIncludedRegions].
-func (self Instance) SetIncludedRegions(value []RID.Any) {
+// SetIncludedRegions sets the property returned by [GetIncludedRegions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIncludedRegions(value []RID.Any) Instance {
 	class(self).SetIncludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -345,9 +356,10 @@ func (self Instance) PathReturnMaxLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
-// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength].
-func (self Instance) SetPathReturnMaxLength(value Float.X) {
+// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathReturnMaxLength(value Float.X) Instance {
 	class(self).SetPathReturnMaxLength(float64(value))
+	return self
 }
 
 /*
@@ -359,9 +371,10 @@ func (self Instance) PathReturnMaxRadius() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
-// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius].
-func (self Instance) SetPathReturnMaxRadius(value Float.X) {
+// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
 	class(self).SetPathReturnMaxRadius(float64(value))
+	return self
 }
 
 /*
@@ -371,9 +384,10 @@ func (self Instance) PathSearchMaxPolygons() int {
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
-// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons].
-func (self Instance) SetPathSearchMaxPolygons(value int) {
+// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
 	class(self).SetPathSearchMaxPolygons(int64(value))
+	return self
 }
 
 /*
@@ -383,9 +397,10 @@ func (self Instance) PathSearchMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
-// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance].
-func (self Instance) SetPathSearchMaxDistance(value Float.X) {
+// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance {
 	class(self).SetPathSearchMaxDistance(float64(value))
+	return self
 }
 
 //go:nosplit

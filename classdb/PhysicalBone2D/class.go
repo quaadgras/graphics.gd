@@ -212,9 +212,10 @@ func (self Instance) Bone2dNodepath() string {
 	return string(class(self).GetBone2dNodepath().String())
 }
 
-// SetBone2dNodepath sets the property returned by [GetBone2dNodepath].
-func (self Instance) SetBone2dNodepath(value string) {
+// SetBone2dNodepath sets the property returned by [GetBone2dNodepath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone2dNodepath(value string) Instance {
 	class(self).SetBone2dNodepath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -227,9 +228,10 @@ func (self Instance) Bone2dIndex() int {
 	return int(int(class(self).GetBone2dIndex()))
 }
 
-// SetBone2dIndex sets the property returned by [GetBone2dIndex].
-func (self Instance) SetBone2dIndex(value int) {
+// SetBone2dIndex sets the property returned by [GetBone2dIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone2dIndex(value int) Instance {
 	class(self).SetBone2dIndex(int64(value))
+	return self
 }
 
 /*
@@ -242,9 +244,10 @@ func (self Instance) AutoConfigureJoint() bool {
 	return bool(class(self).GetAutoConfigureJoint())
 }
 
-// SetAutoConfigureJoint sets the property returned by [GetAutoConfigureJoint].
-func (self Instance) SetAutoConfigureJoint(value bool) {
+// SetAutoConfigureJoint sets the property returned by [GetAutoConfigureJoint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoConfigureJoint(value bool) Instance {
 	class(self).SetAutoConfigureJoint(value)
+	return self
 }
 
 /*
@@ -261,9 +264,10 @@ func (self Instance) SimulatePhysics() bool {
 	return bool(class(self).GetSimulatePhysics())
 }
 
-// SetSimulatePhysics sets the property returned by [GetSimulatePhysics].
-func (self Instance) SetSimulatePhysics(value bool) {
+// SetSimulatePhysics sets the property returned by [GetSimulatePhysics]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimulatePhysics(value bool) Instance {
 	class(self).SetSimulatePhysics(value)
+	return self
 }
 
 /*
@@ -275,9 +279,10 @@ func (self Instance) FollowBoneWhenSimulating() bool {
 	return bool(class(self).GetFollowBoneWhenSimulating())
 }
 
-// SetFollowBoneWhenSimulating sets the property returned by [GetFollowBoneWhenSimulating].
-func (self Instance) SetFollowBoneWhenSimulating(value bool) {
+// SetFollowBoneWhenSimulating sets the property returned by [GetFollowBoneWhenSimulating]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowBoneWhenSimulating(value bool) Instance {
 	class(self).SetFollowBoneWhenSimulating(value)
+	return self
 }
 
 /*

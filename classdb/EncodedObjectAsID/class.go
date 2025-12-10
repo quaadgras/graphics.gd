@@ -172,9 +172,10 @@ func (self Instance) ObjectId() int {
 	return int(int(class(self).GetObjectId()))
 }
 
-// SetObjectId sets the property returned by [GetObjectId].
-func (self Instance) SetObjectId(value int) {
+// SetObjectId sets the property returned by [GetObjectId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetObjectId(value int) Instance {
 	class(self).SetObjectId(int64(value))
+	return self
 }
 
 //go:nosplit

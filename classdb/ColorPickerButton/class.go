@@ -207,9 +207,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetPickColor())
 }
 
-// SetColor sets the property returned by [GetPickColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetPickColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetPickColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -221,9 +222,10 @@ func (self Instance) EditAlpha() bool {
 	return bool(class(self).IsEditingAlpha())
 }
 
-// SetEditAlpha sets the property returned by [IsEditingAlpha].
-func (self Instance) SetEditAlpha(value bool) {
+// SetEditAlpha sets the property returned by [IsEditingAlpha]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditAlpha(value bool) Instance {
 	class(self).SetEditAlpha(value)
+	return self
 }
 
 /*
@@ -235,9 +237,10 @@ func (self Instance) EditIntensity() bool {
 	return bool(class(self).IsEditingIntensity())
 }
 
-// SetEditIntensity sets the property returned by [IsEditingIntensity].
-func (self Instance) SetEditIntensity(value bool) {
+// SetEditIntensity sets the property returned by [IsEditingIntensity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditIntensity(value bool) Instance {
 	class(self).SetEditIntensity(value)
+	return self
 }
 
 //go:nosplit
@@ -309,12 +312,13 @@ func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_
 /*
 Emitted when the color changes.
 */
-func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) {
+func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ColorChanged() Signal.Any {
@@ -326,12 +330,13 @@ Emitted when the [ColorPicker] is closed.
 
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
 */
-func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("popup_closed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PopupClosed() Signal.Any {
@@ -343,12 +348,13 @@ Emitted when the [ColorPicker] is created (the button is pressed for the first t
 
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
 */
-func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("picker_created"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PickerCreated() Signal.Any {

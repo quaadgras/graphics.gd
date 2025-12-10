@@ -175,9 +175,10 @@ func (self Instance) EnableLogicOp() bool {
 	return bool(class(self).GetEnableLogicOp())
 }
 
-// SetEnableLogicOp sets the property returned by [GetEnableLogicOp].
-func (self Instance) SetEnableLogicOp(value bool) {
+// SetEnableLogicOp sets the property returned by [GetEnableLogicOp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnableLogicOp(value bool) Instance {
 	class(self).SetEnableLogicOp(value)
+	return self
 }
 
 /*
@@ -189,9 +190,10 @@ func (self Instance) LogicOp() Rendering.LogicOperation {
 	return Rendering.LogicOperation(class(self).GetLogicOp())
 }
 
-// SetLogicOp sets the property returned by [GetLogicOp].
-func (self Instance) SetLogicOp(value Rendering.LogicOperation) {
+// SetLogicOp sets the property returned by [GetLogicOp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLogicOp(value Rendering.LogicOperation) Instance {
 	class(self).SetLogicOp(value)
+	return self
 }
 
 /*
@@ -203,9 +205,10 @@ func (self Instance) BlendConstant() Color.RGBA {
 	return Color.RGBA(class(self).GetBlendConstant())
 }
 
-// SetBlendConstant sets the property returned by [GetBlendConstant].
-func (self Instance) SetBlendConstant(value Color.RGBA) {
+// SetBlendConstant sets the property returned by [GetBlendConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendConstant(value Color.RGBA) Instance {
 	class(self).SetBlendConstant(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -215,9 +218,10 @@ func (self Instance) Attachments() []RDPipelineColorBlendStateAttachment.Instanc
 	return []RDPipelineColorBlendStateAttachment.Instance(gd.ArrayAs[[]RDPipelineColorBlendStateAttachment.Instance](gd.InternalArray(class(self).GetAttachments())))
 }
 
-// SetAttachments sets the property returned by [GetAttachments].
-func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) {
+// SetAttachments sets the property returned by [GetAttachments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) Instance {
 	class(self).SetAttachments(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]](value))
+	return self
 }
 
 //go:nosplit

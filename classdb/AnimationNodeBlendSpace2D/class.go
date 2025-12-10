@@ -177,9 +177,12 @@ func (self MoreArgs) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.
 
 /*
 Updates the position of the point at index 'point' in the blend space.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendPointPosition(point int, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
+func (self Instance) SetBlendPointPosition(point int, pos Vector2.XY) Instance { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
 	Advanced(self).SetBlendPointPosition(int64(point), Vector2.XY(pos))
+	return self
 }
 
 /*
@@ -192,10 +195,13 @@ func (self Instance) GetBlendPointPosition(point int) Vector2.XY { //gd:Animatio
 /*
 Changes the [AnimationNode] referenced by the point at index 'point'.
 
+Returns 'self' to enable method chaining.
+
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
-func (self Instance) SetBlendPointNode(point int, node AnimationRootNode.Instance) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
+func (self Instance) SetBlendPointNode(point int, node AnimationRootNode.Instance) Instance { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
 	Advanced(self).SetBlendPointNode(int64(point), node)
+	return self
 }
 
 /*
@@ -309,9 +315,10 @@ func (self Instance) AutoTriangles() bool {
 	return bool(class(self).GetAutoTriangles())
 }
 
-// SetAutoTriangles sets the property returned by [GetAutoTriangles].
-func (self Instance) SetAutoTriangles(value bool) {
+// SetAutoTriangles sets the property returned by [GetAutoTriangles]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTriangles(value bool) Instance {
 	class(self).SetAutoTriangles(value)
+	return self
 }
 
 /*
@@ -323,9 +330,10 @@ func (self Instance) MinSpace() Vector2.XY {
 	return Vector2.XY(class(self).GetMinSpace())
 }
 
-// SetMinSpace sets the property returned by [GetMinSpace].
-func (self Instance) SetMinSpace(value Vector2.XY) {
+// SetMinSpace sets the property returned by [GetMinSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinSpace(value Vector2.XY) Instance {
 	class(self).SetMinSpace(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -337,9 +345,10 @@ func (self Instance) MaxSpace() Vector2.XY {
 	return Vector2.XY(class(self).GetMaxSpace())
 }
 
-// SetMaxSpace sets the property returned by [GetMaxSpace].
-func (self Instance) SetMaxSpace(value Vector2.XY) {
+// SetMaxSpace sets the property returned by [GetMaxSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSpace(value Vector2.XY) Instance {
 	class(self).SetMaxSpace(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -349,9 +358,10 @@ func (self Instance) Snap() Vector2.XY {
 	return Vector2.XY(class(self).GetSnap())
 }
 
-// SetSnap sets the property returned by [GetSnap].
-func (self Instance) SetSnap(value Vector2.XY) {
+// SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnap(value Vector2.XY) Instance {
 	class(self).SetSnap(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -361,9 +371,10 @@ func (self Instance) XLabel() string {
 	return string(class(self).GetXLabel().String())
 }
 
-// SetXLabel sets the property returned by [GetXLabel].
-func (self Instance) SetXLabel(value string) {
+// SetXLabel sets the property returned by [GetXLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXLabel(value string) Instance {
 	class(self).SetXLabel(String.New(value))
+	return self
 }
 
 /*
@@ -373,9 +384,10 @@ func (self Instance) YLabel() string {
 	return string(class(self).GetYLabel().String())
 }
 
-// SetYLabel sets the property returned by [GetYLabel].
-func (self Instance) SetYLabel(value string) {
+// SetYLabel sets the property returned by [GetYLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetYLabel(value string) Instance {
 	class(self).SetYLabel(String.New(value))
+	return self
 }
 
 /*
@@ -385,9 +397,10 @@ func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
-// SetBlendMode sets the property returned by [GetBlendMode].
-func (self Instance) SetBlendMode(value BlendMode) {
+// SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendMode(value BlendMode) Instance {
 	class(self).SetBlendMode(value)
+	return self
 }
 
 /*
@@ -399,9 +412,10 @@ func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
-// SetSync sets the property returned by [IsUsingSync].
-func (self Instance) SetSync(value bool) {
+// SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSync(value bool) Instance {
 	class(self).SetUseSync(value)
+	return self
 }
 
 /*
@@ -623,12 +637,13 @@ func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_s
 /*
 Emitted every time the blend space's triangles are created, removed, or when one of their vertices changes position.
 */
-func (self Instance) OnTrianglesUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTrianglesUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("triangles_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TrianglesUpdated() Signal.Any {

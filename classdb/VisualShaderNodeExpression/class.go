@@ -170,9 +170,10 @@ func (self Instance) Expression() string {
 	return string(class(self).GetExpression().String())
 }
 
-// SetExpression sets the property returned by [GetExpression].
-func (self Instance) SetExpression(value string) {
+// SetExpression sets the property returned by [GetExpression]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpression(value string) Instance {
 	class(self).SetExpression(String.New(value))
+	return self
 }
 
 //go:nosplit

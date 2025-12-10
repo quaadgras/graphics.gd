@@ -173,9 +173,11 @@ func New() Instance {
 
 /*
 The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) {
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
@@ -187,9 +189,10 @@ func (self Instance) CurveX() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveX())
 }
 
-// SetCurveX sets the property returned by [GetCurveX].
-func (self Instance) SetCurveX(value Curve.Instance) {
+// SetCurveX sets the property returned by [GetCurveX]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurveX(value Curve.Instance) Instance {
 	class(self).SetCurveX(value)
+	return self
 }
 
 /*
@@ -201,9 +204,10 @@ func (self Instance) CurveY() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveY())
 }
 
-// SetCurveY sets the property returned by [GetCurveY].
-func (self Instance) SetCurveY(value Curve.Instance) {
+// SetCurveY sets the property returned by [GetCurveY]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurveY(value Curve.Instance) Instance {
 	class(self).SetCurveY(value)
+	return self
 }
 
 /*
@@ -215,9 +219,10 @@ func (self Instance) CurveZ() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveZ())
 }
 
-// SetCurveZ sets the property returned by [GetCurveZ].
-func (self Instance) SetCurveZ(value Curve.Instance) {
+// SetCurveZ sets the property returned by [GetCurveZ]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurveZ(value Curve.Instance) Instance {
 	class(self).SetCurveZ(value)
+	return self
 }
 
 //go:nosplit

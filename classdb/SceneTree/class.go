@@ -363,9 +363,12 @@ func (self Instance) NotifyGroupFlags(call_flags int, group string, notification
 Sets the given 'property' to 'value' on all nodes inside this tree added to the given 'group'. Nodes that do not have the 'property' are ignored. Use 'call_flags' to customize this method's behavior (see [GroupCallFlags]).
 
 Note: In C#, 'property' must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the PropertyName class to avoid allocating a new string on each call.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
+func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) Instance { //gd:SceneTree.set_group_flags
 	Advanced(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
+	return self
 }
 
 /*
@@ -407,11 +410,14 @@ Note: This method acts immediately on all selected nodes at once, which may caus
 
 Note: In C#, 'property' must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the PropertyName class to avoid allocating a new string on each call.
 
+Returns 'self' to enable method chaining.
+
 [CallGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CallGroup
 [NotifyGroup]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.NotifyGroup
 */
-func (self Instance) SetGroup(group string, property string, value any) { //gd:SceneTree.set_group
+func (self Instance) SetGroup(group string, property string, value any) Instance { //gd:SceneTree.set_group
 	Advanced(self).SetGroup(String.Name(String.New(group)), String.New(property), variant.New(value))
+	return self
 }
 
 /*
@@ -504,13 +510,16 @@ Note: No [MultiplayerAPI] must be configured for the subpath containing 'root_pa
 
 Note: [SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [MultiplayerSpawner] or [MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
 
+Returns 'self' to enable method chaining.
+
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 [MultiplayerSpawner]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
-func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) { //gd:SceneTree.set_multiplayer
+func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) Instance { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
+	return self
 }
 
 /*
@@ -520,13 +529,16 @@ Note: No [MultiplayerAPI] must be configured for the subpath containing 'root_pa
 
 Note: [SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [MultiplayerSpawner] or [MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
 
+Returns 'self' to enable method chaining.
+
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 [MultiplayerSpawner]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 [SetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.SetMultiplayer
 */
-func (self MoreArgs) SetMultiplayer(multiplayer MultiplayerAPI.Instance, root_path string) { //gd:SceneTree.set_multiplayer
+func (self MoreArgs) SetMultiplayer(multiplayer MultiplayerAPI.Instance, root_path string) MoreArgs { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New(root_path)))
+	return self
 }
 
 /*
@@ -609,9 +621,10 @@ func (self Instance) AutoAcceptQuit() bool {
 	return bool(class(self).IsAutoAcceptQuit())
 }
 
-// SetAutoAcceptQuit sets the property returned by [IsAutoAcceptQuit].
-func (self Instance) SetAutoAcceptQuit(value bool) {
+// SetAutoAcceptQuit sets the property returned by [IsAutoAcceptQuit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoAcceptQuit(value bool) Instance {
 	class(self).SetAutoAcceptQuit(value)
+	return self
 }
 
 /*
@@ -623,9 +636,10 @@ func (self Instance) QuitOnGoBack() bool {
 	return bool(class(self).IsQuitOnGoBack())
 }
 
-// SetQuitOnGoBack sets the property returned by [IsQuitOnGoBack].
-func (self Instance) SetQuitOnGoBack(value bool) {
+// SetQuitOnGoBack sets the property returned by [IsQuitOnGoBack]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetQuitOnGoBack(value bool) Instance {
 	class(self).SetQuitOnGoBack(value)
+	return self
 }
 
 /*
@@ -639,9 +653,10 @@ func (self Instance) DebugCollisionsHint() bool {
 	return bool(class(self).IsDebuggingCollisionsHint())
 }
 
-// SetDebugCollisionsHint sets the property returned by [IsDebuggingCollisionsHint].
-func (self Instance) SetDebugCollisionsHint(value bool) {
+// SetDebugCollisionsHint sets the property returned by [IsDebuggingCollisionsHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugCollisionsHint(value bool) Instance {
 	class(self).SetDebugCollisionsHint(value)
+	return self
 }
 
 /*
@@ -657,9 +672,10 @@ func (self Instance) DebugPathsHint() bool {
 	return bool(class(self).IsDebuggingPathsHint())
 }
 
-// SetDebugPathsHint sets the property returned by [IsDebuggingPathsHint].
-func (self Instance) SetDebugPathsHint(value bool) {
+// SetDebugPathsHint sets the property returned by [IsDebuggingPathsHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugPathsHint(value bool) Instance {
 	class(self).SetDebugPathsHint(value)
+	return self
 }
 
 /*
@@ -673,9 +689,10 @@ func (self Instance) DebugNavigationHint() bool {
 	return bool(class(self).IsDebuggingNavigationHint())
 }
 
-// SetDebugNavigationHint sets the property returned by [IsDebuggingNavigationHint].
-func (self Instance) SetDebugNavigationHint(value bool) {
+// SetDebugNavigationHint sets the property returned by [IsDebuggingNavigationHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugNavigationHint(value bool) Instance {
 	class(self).SetDebugNavigationHint(value)
+	return self
 }
 
 /*
@@ -694,9 +711,10 @@ func (self Instance) Paused() bool {
 	return bool(class(self).IsPaused())
 }
 
-// SetPaused sets the property returned by [IsPaused].
-func (self Instance) SetPaused(value bool) {
+// SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaused(value bool) Instance {
 	class(self).SetPause(value)
+	return self
 }
 
 /*
@@ -710,9 +728,10 @@ func (self Instance) EditedSceneRoot() Node.Instance {
 	return Node.Instance(class(self).GetEditedSceneRoot())
 }
 
-// SetEditedSceneRoot sets the property returned by [GetEditedSceneRoot].
-func (self Instance) SetEditedSceneRoot(value Node.Instance) {
+// SetEditedSceneRoot sets the property returned by [GetEditedSceneRoot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditedSceneRoot(value Node.Instance) Instance {
 	class(self).SetEditedSceneRoot(value)
+	return self
 }
 
 /*
@@ -729,9 +748,10 @@ func (self Instance) CurrentScene() Node.Instance {
 	return Node.Instance(class(self).GetCurrentScene())
 }
 
-// SetCurrentScene sets the property returned by [GetCurrentScene].
-func (self Instance) SetCurrentScene(value Node.Instance) {
+// SetCurrentScene sets the property returned by [GetCurrentScene]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentScene(value Node.Instance) Instance {
 	class(self).SetCurrentScene(value)
+	return self
 }
 
 /*
@@ -762,9 +782,10 @@ func (self Instance) MultiplayerPoll() bool {
 	return bool(class(self).IsMultiplayerPollEnabled())
 }
 
-// SetMultiplayerPoll sets the property returned by [IsMultiplayerPollEnabled].
-func (self Instance) SetMultiplayerPoll(value bool) {
+// SetMultiplayerPoll sets the property returned by [IsMultiplayerPollEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMultiplayerPoll(value bool) Instance {
 	class(self).SetMultiplayerPollEnabled(value)
+	return self
 }
 
 /*
@@ -782,9 +803,10 @@ func (self Instance) PhysicsInterpolation() bool {
 	return bool(class(self).IsPhysicsInterpolationEnabled())
 }
 
-// SetPhysicsInterpolation sets the property returned by [IsPhysicsInterpolationEnabled].
-func (self Instance) SetPhysicsInterpolation(value bool) {
+// SetPhysicsInterpolation sets the property returned by [IsPhysicsInterpolationEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsInterpolation(value bool) Instance {
 	class(self).SetPhysicsInterpolationEnabled(value)
+	return self
 }
 
 //go:nosplit
@@ -1314,12 +1336,13 @@ func (self class) IsMultiplayerPollEnabled() bool { //gd:SceneTree.is_multiplaye
 /*
 Emitted any time the tree's hierarchy changes (nodes being moved, renamed, etc.).
 */
-func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeChanged() Signal.Any {
@@ -1331,12 +1354,13 @@ Emitted after the new scene is added to scene tree and initialized. Can be used 
 
 [CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
 */
-func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SceneChanged() Signal.Any {
@@ -1348,12 +1372,13 @@ Emitted when the [Node.ProcessMode] of any node inside the tree is changed. Only
 
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 */
-func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeProcessModeChanged() Signal.Any {
@@ -1363,12 +1388,13 @@ func (self class) TreeProcessModeChanged() Signal.Any {
 /*
 Emitted when the 'node' enters this tree.
 */
-func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeAdded() Signal.Any {
@@ -1378,12 +1404,13 @@ func (self class) NodeAdded() Signal.Any {
 /*
 Emitted when the 'node' exits this tree.
 */
-func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeRemoved() Signal.Any {
@@ -1395,12 +1422,13 @@ Emitted when the 'node”s [Node.Name] is changed.
 
 [Node.Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 */
-func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeRenamed() Signal.Any {
@@ -1412,12 +1440,13 @@ Emitted when the 'node”s [Node.UpdateConfigurationWarnings] is called. Only em
 
 [Node.UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
 */
-func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeConfigurationWarningChanged() Signal.Any {
@@ -1429,12 +1458,13 @@ Emitted immediately before [Node.Process] is called on every node in this tree.
 
 [Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
-func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProcessFrame() Signal.Any {
@@ -1446,12 +1476,13 @@ Emitted immediately before [Node.PhysicsProcess] is called on every node in this
 
 [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 */
-func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PhysicsFrame() Signal.Any {

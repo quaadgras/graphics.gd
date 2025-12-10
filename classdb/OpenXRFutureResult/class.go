@@ -140,9 +140,12 @@ func (self Instance) CancelFuture() { //gd:OpenXRFutureResult.cancel_future
 Stores the result value we expose to the user.
 
 Note: This method should only be called by an OpenXR extension that implements an asynchronous function.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetResultValue(result_value any) { //gd:OpenXRFutureResult.set_result_value
+func (self Instance) SetResultValue(result_value any) Instance { //gd:OpenXRFutureResult.set_result_value
 	Advanced(self).SetResultValue(variant.New(result_value))
+	return self
 }
 
 /*
@@ -246,12 +249,13 @@ func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_res
 /*
 Emitted when the asynchronous function is finished or has been cancelled.
 */
-func (self Instance) OnCompleted(cb func(result Instance), flags ...Signal.Flags) {
+func (self Instance) OnCompleted(cb func(result Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("completed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Completed() Signal.Any {

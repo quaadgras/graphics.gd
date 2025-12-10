@@ -198,9 +198,12 @@ func (self Instance) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_siz
 
 /*
 Sets the default margin to 'offset' pixels for all sides.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetContentMarginAll(offset Float.X) { //gd:StyleBox.set_content_margin_all
+func (self Instance) SetContentMarginAll(offset Float.X) Instance { //gd:StyleBox.set_content_margin_all
 	Advanced(self).SetContentMarginAll(float64(offset))
+	return self
 }
 
 /*
@@ -299,9 +302,10 @@ func (self Instance) ContentMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(0)))
 }
 
-// SetContentMarginLeft sets the property returned by [GetContentMargin].
-func (self Instance) SetContentMarginLeft(value Float.X) {
+// SetContentMarginLeft sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentMarginLeft(value Float.X) Instance {
 	class(self).SetContentMargin(0, float64(value))
+	return self
 }
 
 /*
@@ -315,9 +319,10 @@ func (self Instance) ContentMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(1)))
 }
 
-// SetContentMarginTop sets the property returned by [GetContentMargin].
-func (self Instance) SetContentMarginTop(value Float.X) {
+// SetContentMarginTop sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentMarginTop(value Float.X) Instance {
 	class(self).SetContentMargin(1, float64(value))
+	return self
 }
 
 /*
@@ -331,9 +336,10 @@ func (self Instance) ContentMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(2)))
 }
 
-// SetContentMarginRight sets the property returned by [GetContentMargin].
-func (self Instance) SetContentMarginRight(value Float.X) {
+// SetContentMarginRight sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentMarginRight(value Float.X) Instance {
 	class(self).SetContentMargin(2, float64(value))
+	return self
 }
 
 /*
@@ -353,9 +359,10 @@ func (self Instance) ContentMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(3)))
 }
 
-// SetContentMarginBottom sets the property returned by [GetContentMargin].
-func (self Instance) SetContentMarginBottom(value Float.X) {
+// SetContentMarginBottom sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContentMarginBottom(value Float.X) Instance {
 	class(self).SetContentMargin(3, float64(value))
+	return self
 }
 
 func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -160,52 +160,73 @@ Sets the item's name.
 
 This name is shown in the editor. It can also be used to look up the item later using [FindItemByName].
 
+Returns 'self' to enable method chaining.
+
 [FindItemByName]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary#Instance.FindItemByName
 */
-func (self Instance) SetItemName(id int, name string) { //gd:MeshLibrary.set_item_name
+func (self Instance) SetItemName(id int, name string) Instance { //gd:MeshLibrary.set_item_name
 	Advanced(self).SetItemName(int64(id), String.New(name))
+	return self
 }
 
 /*
 Sets the item's mesh.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemMesh(id int, mesh Mesh.Instance) { //gd:MeshLibrary.set_item_mesh
+func (self Instance) SetItemMesh(id int, mesh Mesh.Instance) Instance { //gd:MeshLibrary.set_item_mesh
 	Advanced(self).SetItemMesh(int64(id), mesh)
+	return self
 }
 
 /*
 Sets the transform to apply to the item's mesh.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
+func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.BasisOrigin) Instance { //gd:MeshLibrary.set_item_mesh_transform
 	Advanced(self).SetItemMeshTransform(int64(id), Transform3D.BasisOrigin(mesh_transform))
+	return self
 }
 
 /*
 Sets the item's shadow casting mode to 'shadow_casting_setting'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
+func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting RenderingServer.ShadowCastingSetting) Instance { //gd:MeshLibrary.set_item_mesh_cast_shadow
 	Advanced(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
+	return self
 }
 
 /*
 Sets the item's navigation mesh.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemNavigationMesh(id int, navigation_mesh NavigationMesh.Instance) { //gd:MeshLibrary.set_item_navigation_mesh
+func (self Instance) SetItemNavigationMesh(id int, navigation_mesh NavigationMesh.Instance) Instance { //gd:MeshLibrary.set_item_navigation_mesh
 	Advanced(self).SetItemNavigationMesh(int64(id), navigation_mesh)
+	return self
 }
 
 /*
 Sets the transform to apply to the item's navigation mesh.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
+func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh Transform3D.BasisOrigin) Instance { //gd:MeshLibrary.set_item_navigation_mesh_transform
 	Advanced(self).SetItemNavigationMeshTransform(int64(id), Transform3D.BasisOrigin(navigation_mesh))
+	return self
 }
 
 /*
 Sets the item's navigation layers bitmask.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) { //gd:MeshLibrary.set_item_navigation_layers
+func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) Instance { //gd:MeshLibrary.set_item_navigation_layers
 	Advanced(self).SetItemNavigationLayers(int64(id), int64(navigation_layers))
+	return self
 }
 
 /*
@@ -213,18 +234,24 @@ Sets an item's collision shapes.
 
 The array should consist of [Shape3D] objects, each followed by a [Transform3D.BasisOrigin] that will be applied to it. For shapes that should not have a transform, use [Transform3d.Identity].
 
+Returns 'self' to enable method chaining.
+
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
-func (self Instance) SetItemShapes(id int, shapes []Shape3D.Instance) { //gd:MeshLibrary.set_item_shapes
+func (self Instance) SetItemShapes(id int, shapes []Shape3D.Instance) Instance { //gd:MeshLibrary.set_item_shapes
 	Advanced(self).SetItemShapes(int64(id), gd.EngineArrayFromSlice(shapes))
+	return self
 }
 
 /*
 Sets a texture to use as the item's preview icon in the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemPreview(id int, texture Texture2D.Instance) { //gd:MeshLibrary.set_item_preview
+func (self Instance) SetItemPreview(id int, texture Texture2D.Instance) Instance { //gd:MeshLibrary.set_item_preview
 	Advanced(self).SetItemPreview(int64(id), texture)
+	return self
 }
 
 /*

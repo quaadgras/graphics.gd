@@ -196,9 +196,10 @@ func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
-// SetTitle sets the property returned by [GetTitle].
-func (self Instance) SetTitle(value string) {
+// SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitle(value string) Instance {
 	class(self).SetTitle(String.New(value))
+	return self
 }
 
 /*
@@ -210,9 +211,10 @@ func (self Instance) AutoshrinkEnabled() bool {
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
-// SetAutoshrinkEnabled sets the property returned by [IsAutoshrinkEnabled].
-func (self Instance) SetAutoshrinkEnabled(value bool) {
+// SetAutoshrinkEnabled sets the property returned by [IsAutoshrinkEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoshrinkEnabled(value bool) Instance {
 	class(self).SetAutoshrinkEnabled(value)
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) AutoshrinkMargin() int {
 	return int(int(class(self).GetAutoshrinkMargin()))
 }
 
-// SetAutoshrinkMargin sets the property returned by [GetAutoshrinkMargin].
-func (self Instance) SetAutoshrinkMargin(value int) {
+// SetAutoshrinkMargin sets the property returned by [GetAutoshrinkMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoshrinkMargin(value int) Instance {
 	class(self).SetAutoshrinkMargin(int64(value))
+	return self
 }
 
 /*
@@ -236,9 +239,10 @@ func (self Instance) DragMargin() int {
 	return int(int(class(self).GetDragMargin()))
 }
 
-// SetDragMargin sets the property returned by [GetDragMargin].
-func (self Instance) SetDragMargin(value int) {
+// SetDragMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragMargin(value int) Instance {
 	class(self).SetDragMargin(int64(value))
+	return self
 }
 
 /*
@@ -248,9 +252,10 @@ func (self Instance) TintColorEnabled() bool {
 	return bool(class(self).IsTintColorEnabled())
 }
 
-// SetTintColorEnabled sets the property returned by [IsTintColorEnabled].
-func (self Instance) SetTintColorEnabled(value bool) {
+// SetTintColorEnabled sets the property returned by [IsTintColorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintColorEnabled(value bool) Instance {
 	class(self).SetTintColorEnabled(value)
+	return self
 }
 
 /*
@@ -262,9 +267,10 @@ func (self Instance) TintColor() Color.RGBA {
 	return Color.RGBA(class(self).GetTintColor())
 }
 
-// SetTintColor sets the property returned by [GetTintColor].
-func (self Instance) SetTintColor(value Color.RGBA) {
+// SetTintColor sets the property returned by [GetTintColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintColor(value Color.RGBA) Instance {
 	class(self).SetTintColor(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit
@@ -360,12 +366,13 @@ Emitted when [AutoshrinkEnabled] or [AutoshrinkMargin] changes.
 [AutoshrinkEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkEnabled
 [AutoshrinkMargin]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkMargin
 */
-func (self Instance) OnAutoshrinkChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAutoshrinkChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("autoshrink_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AutoshrinkChanged() Signal.Any {

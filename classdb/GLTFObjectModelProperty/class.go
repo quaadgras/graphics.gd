@@ -194,11 +194,14 @@ func (self Instance) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_j
 /*
 Sets the [VariantType] and [ObjectModelType] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 
+Returns 'self' to enable method chaining.
+
 [ObjectModelType]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.ObjectModelType
 [VariantType]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.VariantType
 */
-func (self Instance) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
+func (self Instance) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) Instance { //gd:GLTFObjectModelProperty.set_types
 	Advanced(self).SetTypes(variant_type, obj_model_type)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -253,9 +256,10 @@ func (self Instance) GltfToGodotExpression() Expression.Instance {
 	return Expression.Instance(class(self).GetGltfToGodotExpression())
 }
 
-// SetGltfToGodotExpression sets the property returned by [GetGltfToGodotExpression].
-func (self Instance) SetGltfToGodotExpression(value Expression.Instance) {
+// SetGltfToGodotExpression sets the property returned by [GetGltfToGodotExpression]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGltfToGodotExpression(value Expression.Instance) Instance {
 	class(self).SetGltfToGodotExpression(value)
+	return self
 }
 
 /*
@@ -267,9 +271,10 @@ func (self Instance) GodotToGltfExpression() Expression.Instance {
 	return Expression.Instance(class(self).GetGodotToGltfExpression())
 }
 
-// SetGodotToGltfExpression sets the property returned by [GetGodotToGltfExpression].
-func (self Instance) SetGodotToGltfExpression(value Expression.Instance) {
+// SetGodotToGltfExpression sets the property returned by [GetGodotToGltfExpression]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGodotToGltfExpression(value Expression.Instance) Instance {
 	class(self).SetGodotToGltfExpression(value)
+	return self
 }
 
 /*
@@ -288,9 +293,10 @@ func (self Instance) NodePaths() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetNodePaths())))
 }
 
-// SetNodePaths sets the property returned by [GetNodePaths].
-func (self Instance) SetNodePaths(value []string) {
+// SetNodePaths sets the property returned by [GetNodePaths]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNodePaths(value []string) Instance {
 	class(self).SetNodePaths(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+	return self
 }
 
 /*
@@ -300,9 +306,10 @@ func (self Instance) ObjectModelType() GLTFObjectModelType {
 	return GLTFObjectModelType(class(self).GetObjectModelType())
 }
 
-// SetObjectModelType sets the property returned by [GetObjectModelType].
-func (self Instance) SetObjectModelType(value GLTFObjectModelType) {
+// SetObjectModelType sets the property returned by [GetObjectModelType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetObjectModelType(value GLTFObjectModelType) Instance {
 	class(self).SetObjectModelType(value)
+	return self
 }
 
 /*
@@ -312,9 +319,10 @@ func (self Instance) JsonPointers() [][]string {
 	return [][]string(gd.ArrayAs[[][]string](gd.InternalArray(class(self).GetJsonPointers())))
 }
 
-// SetJsonPointers sets the property returned by [GetJsonPointers].
-func (self Instance) SetJsonPointers(value [][]string) {
+// SetJsonPointers sets the property returned by [GetJsonPointers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJsonPointers(value [][]string) Instance {
 	class(self).SetJsonPointers(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](value))
+	return self
 }
 
 /*
@@ -326,9 +334,10 @@ func (self Instance) VariantType() variant.Type {
 	return variant.Type(class(self).GetVariantType())
 }
 
-// SetVariantType sets the property returned by [GetVariantType].
-func (self Instance) SetVariantType(value variant.Type) {
+// SetVariantType sets the property returned by [GetVariantType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVariantType(value variant.Type) Instance {
 	class(self).SetVariantType(value)
+	return self
 }
 
 /*

@@ -165,9 +165,10 @@ func (self Instance) GizmoExtents() Float.X {
 	return Float.X(Float.X(class(self).GetGizmoExtents()))
 }
 
-// SetGizmoExtents sets the property returned by [GetGizmoExtents].
-func (self Instance) SetGizmoExtents(value Float.X) {
+// SetGizmoExtents sets the property returned by [GetGizmoExtents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGizmoExtents(value Float.X) Instance {
 	class(self).SetGizmoExtents(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -211,9 +211,10 @@ func (self Instance) DopplerTracking() DopplerTracking {
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
-// SetDopplerTracking sets the property returned by [GetDopplerTracking].
-func (self Instance) SetDopplerTracking(value DopplerTracking) {
+// SetDopplerTracking sets the property returned by [GetDopplerTracking]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
 	class(self).SetDopplerTracking(value)
+	return self
 }
 
 /*

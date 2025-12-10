@@ -204,16 +204,22 @@ func (self Instance) ClearBones() { //gd:Polygon2D.clear_bones
 
 /*
 Sets the path to the node associated with the specified bone.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBonePath(index int, path string) { //gd:Polygon2D.set_bone_path
+func (self Instance) SetBonePath(index int, path string) Instance { //gd:Polygon2D.set_bone_path
 	Advanced(self).SetBonePath(int64(index), Path.ToNode(String.New(path)))
+	return self
 }
 
 /*
 Sets the weight values for the specified bone.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneWeights(index int, weights []float32) { //gd:Polygon2D.set_bone_weights
+func (self Instance) SetBoneWeights(index int, weights []float32) Instance { //gd:Polygon2D.set_bone_weights
 	Advanced(self).SetBoneWeights(int64(index), Packed.New(weights...))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -268,9 +274,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -280,9 +287,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -292,9 +300,10 @@ func (self Instance) Antialiased() bool {
 	return bool(class(self).GetAntialiased())
 }
 
-// SetAntialiased sets the property returned by [GetAntialiased].
-func (self Instance) SetAntialiased(value bool) {
+// SetAntialiased sets the property returned by [GetAntialiased]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntialiased(value bool) Instance {
 	class(self).SetAntialiased(value)
+	return self
 }
 
 /*
@@ -306,9 +315,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -320,9 +330,10 @@ func (self Instance) TextureOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
-// SetTextureOffset sets the property returned by [GetTextureOffset].
-func (self Instance) SetTextureOffset(value Vector2.XY) {
+// SetTextureOffset sets the property returned by [GetTextureOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureOffset(value Vector2.XY) Instance {
 	class(self).SetTextureOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -335,9 +346,10 @@ func (self Instance) TextureScale() Vector2.XY {
 	return Vector2.XY(class(self).GetTextureScale())
 }
 
-// SetTextureScale sets the property returned by [GetTextureScale].
-func (self Instance) SetTextureScale(value Vector2.XY) {
+// SetTextureScale sets the property returned by [GetTextureScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureScale(value Vector2.XY) Instance {
 	class(self).SetTextureScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -347,9 +359,10 @@ func (self Instance) TextureRotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetTextureRotation()))
 }
 
-// SetTextureRotation sets the property returned by [GetTextureRotation].
-func (self Instance) SetTextureRotation(value Angle.Radians) {
+// SetTextureRotation sets the property returned by [GetTextureRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRotation(value Angle.Radians) Instance {
 	class(self).SetTextureRotation(float64(value))
+	return self
 }
 
 /*
@@ -361,9 +374,10 @@ func (self Instance) Skeleton() string {
 	return string(class(self).GetSkeleton().String())
 }
 
-// SetSkeleton sets the property returned by [GetSkeleton].
-func (self Instance) SetSkeleton(value string) {
+// SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkeleton(value string) Instance {
 	class(self).SetSkeleton(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -375,9 +389,10 @@ func (self Instance) InvertEnabled() bool {
 	return bool(class(self).GetInvertEnabled())
 }
 
-// SetInvertEnabled sets the property returned by [GetInvertEnabled].
-func (self Instance) SetInvertEnabled(value bool) {
+// SetInvertEnabled sets the property returned by [GetInvertEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInvertEnabled(value bool) Instance {
 	class(self).SetInvertEnabled(value)
+	return self
 }
 
 /*
@@ -389,9 +404,10 @@ func (self Instance) InvertBorder() Float.X {
 	return Float.X(Float.X(class(self).GetInvertBorder()))
 }
 
-// SetInvertBorder sets the property returned by [GetInvertBorder].
-func (self Instance) SetInvertBorder(value Float.X) {
+// SetInvertBorder sets the property returned by [GetInvertBorder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInvertBorder(value Float.X) Instance {
 	class(self).SetInvertBorder(float64(value))
+	return self
 }
 
 /*
@@ -401,9 +417,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 /*
@@ -413,9 +430,10 @@ func (self Instance) Uv() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetUv().Values()))
 }
 
-// SetUv sets the property returned by [GetUv].
-func (self Instance) SetUv(value []Vector2.XY) {
+// SetUv sets the property returned by [GetUv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUv(value []Vector2.XY) Instance {
 	class(self).SetUv(Packed.New(value...))
+	return self
 }
 
 /*
@@ -427,9 +445,10 @@ func (self Instance) VertexColors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetVertexColors().Values()))
 }
 
-// SetVertexColors sets the property returned by [GetVertexColors].
-func (self Instance) SetVertexColors(value []Color.RGBA) {
+// SetVertexColors sets the property returned by [GetVertexColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertexColors(value []Color.RGBA) Instance {
 	class(self).SetVertexColors(Packed.New(value...))
+	return self
 }
 
 /*
@@ -441,9 +460,10 @@ func (self Instance) Polygons() [][]int32 {
 	return [][]int32(gd.ArrayAs[[][]int32](gd.InternalArray(class(self).GetPolygons())))
 }
 
-// SetPolygons sets the property returned by [GetPolygons].
-func (self Instance) SetPolygons(value [][]int32) {
+// SetPolygons sets the property returned by [GetPolygons]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygons(value [][]int32) Instance {
 	class(self).SetPolygons(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -453,9 +473,10 @@ func (self Instance) InternalVertexCount() int {
 	return int(int(class(self).GetInternalVertexCount()))
 }
 
-// SetInternalVertexCount sets the property returned by [GetInternalVertexCount].
-func (self Instance) SetInternalVertexCount(value int) {
+// SetInternalVertexCount sets the property returned by [GetInternalVertexCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInternalVertexCount(value int) Instance {
 	class(self).SetInternalVertexCount(int64(value))
+	return self
 }
 
 //go:nosplit
