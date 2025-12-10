@@ -225,9 +225,10 @@ func (self Instance) BodyType() string {
 	return string(class(self).GetBodyType().String())
 }
 
-// SetBodyType sets the property returned by [GetBodyType].
-func (self Instance) SetBodyType(value string) {
+// SetBodyType sets the property returned by [GetBodyType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodyType(value string) Instance {
 	class(self).SetBodyType(String.New(value))
+	return self
 }
 
 /*
@@ -237,9 +238,10 @@ func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
-// SetMass sets the property returned by [GetMass].
-func (self Instance) SetMass(value Float.X) {
+// SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMass(value Float.X) Instance {
 	class(self).SetMass(float64(value))
+	return self
 }
 
 /*
@@ -249,9 +251,10 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-// SetLinearVelocity sets the property returned by [GetLinearVelocity].
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+// SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -261,9 +264,10 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-// SetAngularVelocity sets the property returned by [GetAngularVelocity].
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+// SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -273,9 +277,10 @@ func (self Instance) CenterOfMass() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCenterOfMass())
 }
 
-// SetCenterOfMass sets the property returned by [GetCenterOfMass].
-func (self Instance) SetCenterOfMass(value Vector3.XYZ) {
+// SetCenterOfMass sets the property returned by [GetCenterOfMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCenterOfMass(value Vector3.XYZ) Instance {
 	class(self).SetCenterOfMass(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -289,9 +294,10 @@ func (self Instance) InertiaDiagonal() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetInertiaDiagonal())
 }
 
-// SetInertiaDiagonal sets the property returned by [GetInertiaDiagonal].
-func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) {
+// SetInertiaDiagonal sets the property returned by [GetInertiaDiagonal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) Instance {
 	class(self).SetInertiaDiagonal(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -303,9 +309,10 @@ func (self Instance) InertiaOrientation() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetInertiaOrientation())
 }
 
-// SetInertiaOrientation sets the property returned by [GetInertiaOrientation].
-func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) {
+// SetInertiaOrientation sets the property returned by [GetInertiaOrientation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) Instance {
 	class(self).SetInertiaOrientation(value)
+	return self
 }
 
 /*
@@ -319,9 +326,10 @@ func (self Instance) InertiaTensor() Basis.XYZ {
 	return Basis.XYZ(class(self).GetInertiaTensor())
 }
 
-// SetInertiaTensor sets the property returned by [GetInertiaTensor].
-func (self Instance) SetInertiaTensor(value Basis.XYZ) {
+// SetInertiaTensor sets the property returned by [GetInertiaTensor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInertiaTensor(value Basis.XYZ) Instance {
 	class(self).SetInertiaTensor(Basis.XYZ(value))
+	return self
 }
 
 /*

@@ -244,9 +244,10 @@ func (self Instance) Subdiv() Subdiv {
 	return Subdiv(class(self).GetSubdiv())
 }
 
-// SetSubdiv sets the property returned by [GetSubdiv].
-func (self Instance) SetSubdiv(value Subdiv) {
+// SetSubdiv sets the property returned by [GetSubdiv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubdiv(value Subdiv) Instance {
 	class(self).SetSubdiv(value)
+	return self
 }
 
 /*
@@ -261,9 +262,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -276,9 +278,10 @@ func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-// SetCameraAttributes sets the property returned by [GetCameraAttributes].
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
+// SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
 	class(self).SetCameraAttributes(value)
+	return self
 }
 
 /*
@@ -291,9 +294,10 @@ func (self Instance) Data() VoxelGIData.Instance {
 	return VoxelGIData.Instance(class(self).GetProbeData())
 }
 
-// SetData sets the property returned by [GetProbeData].
-func (self Instance) SetData(value VoxelGIData.Instance) {
+// SetData sets the property returned by [GetProbeData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetData(value VoxelGIData.Instance) Instance {
 	class(self).SetProbeData(value)
+	return self
 }
 
 //go:nosplit

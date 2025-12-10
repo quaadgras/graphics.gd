@@ -175,9 +175,10 @@ func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
-// SetEditable sets the property returned by [IsEditable].
-func (self Instance) SetEditable(value bool) {
+// SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditable(value bool) Instance {
 	class(self).SetEditable(value)
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) Scrollable() bool {
 	return bool(class(self).IsScrollable())
 }
 
-// SetScrollable sets the property returned by [IsScrollable].
-func (self Instance) SetScrollable(value bool) {
+// SetScrollable sets the property returned by [IsScrollable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollable(value bool) Instance {
 	class(self).SetScrollable(value)
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) TickCount() int {
 	return int(int(class(self).GetTicks()))
 }
 
-// SetTickCount sets the property returned by [GetTicks].
-func (self Instance) SetTickCount(value int) {
+// SetTickCount sets the property returned by [GetTicks]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTickCount(value int) Instance {
 	class(self).SetTicks(int64(value))
+	return self
 }
 
 /*
@@ -211,9 +214,10 @@ func (self Instance) TicksOnBorders() bool {
 	return bool(class(self).GetTicksOnBorders())
 }
 
-// SetTicksOnBorders sets the property returned by [GetTicksOnBorders].
-func (self Instance) SetTicksOnBorders(value bool) {
+// SetTicksOnBorders sets the property returned by [GetTicksOnBorders]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTicksOnBorders(value bool) Instance {
 	class(self).SetTicksOnBorders(value)
+	return self
 }
 
 /*
@@ -223,9 +227,10 @@ func (self Instance) TicksPosition() TickPosition {
 	return TickPosition(class(self).GetTicksPosition())
 }
 
-// SetTicksPosition sets the property returned by [GetTicksPosition].
-func (self Instance) SetTicksPosition(value TickPosition) {
+// SetTicksPosition sets the property returned by [GetTicksPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTicksPosition(value TickPosition) Instance {
 	class(self).SetTicksPosition(value)
+	return self
 }
 
 //go:nosplit
@@ -293,12 +298,13 @@ Emitted when the grabber starts being dragged. This is emitted before the corres
 
 [OnRange.ValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Slider#Instance.OnRange.ValueChanged
 */
-func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("drag_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DragStarted() Signal.Any {
@@ -310,12 +316,13 @@ Emitted when the grabber stops being dragged. If 'value_changed' is true, [Range
 
 [Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) OnDragEnded(cb func(value_changed bool), flags ...Signal.Flags) {
+func (self Instance) OnDragEnded(cb func(value_changed bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("drag_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DragEnded() Signal.Any {

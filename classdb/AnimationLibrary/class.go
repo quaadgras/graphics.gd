@@ -314,12 +314,13 @@ Emitted when an [Animation] is added, under the key 'name'.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationAdded() Signal.Any {
@@ -331,12 +332,13 @@ Emitted when an [Animation] stored with the key 'name' is removed.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationRemoved() Signal.Any {
@@ -348,12 +350,13 @@ Emitted when the key for an [Animation] is changed, from 'name' to 'to_name'.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_renamed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationRenamed() Signal.Any {
@@ -367,12 +370,13 @@ See also [OnResource.Changed], which this acts as a relay for.
 
 [OnResource.Changed]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary#Instance.OnResource.Changed
 */
-func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationChanged() Signal.Any {

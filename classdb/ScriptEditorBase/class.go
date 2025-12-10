@@ -208,12 +208,13 @@ func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighli
 /*
 Emitted after script validation or when the edited resource has changed.
 */
-func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NameChanged() Signal.Any {
@@ -223,12 +224,13 @@ func (self class) NameChanged() Signal.Any {
 /*
 Emitted after script validation.
 */
-func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditedScriptChanged() Signal.Any {
@@ -238,12 +240,13 @@ func (self class) EditedScriptChanged() Signal.Any {
 /*
 Emitted when the user requests contextual help.
 */
-func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags) {
+func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RequestHelp() Signal.Any {
@@ -255,12 +258,13 @@ Emitted when the user requests to view a specific line of a script, similar to [
 
 [OnGoToMethod]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase#Instance.OnGoToMethod
 */
-func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int), flags ...Signal.Flags) {
+func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RequestOpenScriptAtLine() Signal.Any {
@@ -270,12 +274,13 @@ func (self class) RequestOpenScriptAtLine() Signal.Any {
 /*
 Emitted when the user contextual goto and the item is in the same script.
 */
-func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RequestSaveHistory() Signal.Any {
@@ -285,12 +290,13 @@ func (self class) RequestSaveHistory() Signal.Any {
 /*
 Emitted when the user changes current script or moves caret by 10 or more columns within the same script.
 */
-func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) {
+func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RequestSavePreviousState() Signal.Any {
@@ -300,12 +306,13 @@ func (self class) RequestSavePreviousState() Signal.Any {
 /*
 Emitted when the user requests a specific documentation page.
 */
-func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) {
+func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GoToHelp() Signal.Any {
@@ -315,12 +322,13 @@ func (self class) GoToHelp() Signal.Any {
 /*
 Emitted when the user request to search text in the file system.
 */
-func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) {
+func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SearchInFilesRequested() Signal.Any {
@@ -330,12 +338,13 @@ func (self class) SearchInFilesRequested() Signal.Any {
 /*
 Emitted when the user request to find and replace text in the file system.
 */
-func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Signal.Flags) {
+func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ReplaceInFilesRequested() Signal.Any {
@@ -347,12 +356,13 @@ Emitted when the user requests to view a specific method of a script, similar to
 
 [OnRequestOpenScriptAtLine]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase#Instance.OnRequestOpenScriptAtLine
 */
-func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string), flags ...Signal.Flags) {
+func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GoToMethod() Signal.Any {

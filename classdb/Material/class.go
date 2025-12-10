@@ -280,9 +280,10 @@ func (self Instance) RenderPriority() RenderPriority {
 	return RenderPriority(RenderPriority(class(self).GetRenderPriority()))
 }
 
-// SetRenderPriority sets the property returned by [GetRenderPriority].
-func (self Instance) SetRenderPriority(value RenderPriority) {
+// SetRenderPriority sets the property returned by [GetRenderPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderPriority(value RenderPriority) Instance {
 	class(self).SetRenderPriority(int64(value))
+	return self
 }
 
 /*
@@ -302,9 +303,10 @@ func (self Instance) NextPass() Instance {
 	return Instance(class(self).GetNextPass())
 }
 
-// SetNextPass sets the property returned by [GetNextPass].
-func (self Instance) SetNextPass(value Instance) {
+// SetNextPass sets the property returned by [GetNextPass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNextPass(value Instance) Instance {
 	class(self).SetNextPass(value)
+	return self
 }
 
 /*

@@ -198,10 +198,13 @@ type Any interface {
 /*
 Creates or changes the value of the icon property defined by 'name' and 'theme_type'. Use [ClearIcon] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearIcon]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearIcon
 */
-func (self Instance) SetIcon(name string, theme_type string, texture Texture2D.Instance) { //gd:Theme.set_icon
+func (self Instance) SetIcon(name string, theme_type string, texture Texture2D.Instance) Instance { //gd:Theme.set_icon
 	Advanced(self).SetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
+	return self
 }
 
 /*
@@ -271,11 +274,14 @@ func (self Instance) GetIconTypeList() []string { //gd:Theme.get_icon_type_list
 /*
 Creates or changes the value of the [StyleBox] property defined by 'name' and 'theme_type'. Use [ClearStylebox] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearStylebox
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
-func (self Instance) SetStylebox(name string, theme_type string, texture StyleBox.Instance) { //gd:Theme.set_stylebox
+func (self Instance) SetStylebox(name string, theme_type string, texture StyleBox.Instance) Instance { //gd:Theme.set_stylebox
 	Advanced(self).SetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
+	return self
 }
 
 /*
@@ -351,11 +357,14 @@ func (self Instance) GetStyleboxTypeList() []string { //gd:Theme.get_stylebox_ty
 /*
 Creates or changes the value of the [Font] property defined by 'name' and 'theme_type'. Use [ClearFont] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFont
 [Font]: https://pkg.go.dev/graphics.gd/classdb/Font
 */
-func (self Instance) SetFont(name string, theme_type string, font Font.Instance) { //gd:Theme.set_font
+func (self Instance) SetFont(name string, theme_type string, font Font.Instance) Instance { //gd:Theme.set_font
 	Advanced(self).SetFont(String.Name(String.New(name)), String.Name(String.New(theme_type)), font)
+	return self
 }
 
 /*
@@ -436,10 +445,13 @@ func (self Instance) GetFontTypeList() []string { //gd:Theme.get_font_type_list
 /*
 Creates or changes the value of the font size property defined by 'name' and 'theme_type'. Use [ClearFontSize] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearFontSize
 */
-func (self Instance) SetFontSize(name string, theme_type string, font_size int) { //gd:Theme.set_font_size
+func (self Instance) SetFontSize(name string, theme_type string, font_size int) Instance { //gd:Theme.set_font_size
 	Advanced(self).SetFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(font_size))
+	return self
 }
 
 /*
@@ -514,11 +526,14 @@ func (self Instance) GetFontSizeTypeList() []string { //gd:Theme.get_font_size_t
 /*
 Creates or changes the value of the [Color.RGBA] property defined by 'name' and 'theme_type'. Use [ClearColor] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearColor]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearColor
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) { //gd:Theme.set_color
+func (self Instance) SetColor(name string, theme_type string, color Color.RGBA) Instance { //gd:Theme.set_color
 	Advanced(self).SetColor(String.Name(String.New(name)), String.Name(String.New(theme_type)), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -593,10 +608,13 @@ func (self Instance) GetColorTypeList() []string { //gd:Theme.get_color_type_lis
 /*
 Creates or changes the value of the constant property defined by 'name' and 'theme_type'. Use [ClearConstant] to remove the property.
 
+Returns 'self' to enable method chaining.
+
 [ClearConstant]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearConstant
 */
-func (self Instance) SetConstant(name string, theme_type string, constant int) { //gd:Theme.set_constant
+func (self Instance) SetConstant(name string, theme_type string, constant int) Instance { //gd:Theme.set_constant
 	Advanced(self).SetConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)), int64(constant))
+	return self
 }
 
 /*
@@ -702,10 +720,13 @@ Fails if the 'value' type is not accepted by 'data_type'.
 
 Note: This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 
+Returns 'self' to enable method chaining.
+
 [ClearThemeItem]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.ClearThemeItem
 */
-func (self Instance) SetThemeItem(data_type DataType, name string, theme_type string, value any) { //gd:Theme.set_theme_item
+func (self Instance) SetThemeItem(data_type DataType, name string, theme_type string, value any) Instance { //gd:Theme.set_theme_item
 	Advanced(self).SetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)), variant.New(value))
+	return self
 }
 
 /*
@@ -793,12 +814,15 @@ Variations can also be nested, i.e. 'base_type' can be another variation. If a c
 
 Note: Suggestions only show up if this theme resource is set as the project default theme. See [ProjectSettings] "gui/theme/custom".
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Control.ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) SetTypeVariation(theme_type string, base_type string) { //gd:Theme.set_type_variation
+func (self Instance) SetTypeVariation(theme_type string, base_type string) Instance { //gd:Theme.set_type_variation
 	Advanced(self).SetTypeVariation(String.Name(String.New(theme_type)), String.Name(String.New(base_type)))
+	return self
 }
 
 /*
@@ -934,9 +958,10 @@ func (self Instance) DefaultBaseScale() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultBaseScale()))
 }
 
-// SetDefaultBaseScale sets the property returned by [GetDefaultBaseScale].
-func (self Instance) SetDefaultBaseScale(value Float.X) {
+// SetDefaultBaseScale sets the property returned by [GetDefaultBaseScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultBaseScale(value Float.X) Instance {
 	class(self).SetDefaultBaseScale(float64(value))
+	return self
 }
 
 /*
@@ -951,9 +976,10 @@ func (self Instance) DefaultFont() Font.Instance {
 	return Font.Instance(class(self).GetDefaultFont())
 }
 
-// SetDefaultFont sets the property returned by [GetDefaultFont].
-func (self Instance) SetDefaultFont(value Font.Instance) {
+// SetDefaultFont sets the property returned by [GetDefaultFont]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultFont(value Font.Instance) Instance {
 	class(self).SetDefaultFont(value)
+	return self
 }
 
 /*
@@ -968,9 +994,10 @@ func (self Instance) DefaultFontSize() int {
 	return int(int(class(self).GetDefaultFontSize()))
 }
 
-// SetDefaultFontSize sets the property returned by [GetDefaultFontSize].
-func (self Instance) SetDefaultFontSize(value int) {
+// SetDefaultFontSize sets the property returned by [GetDefaultFontSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultFontSize(value int) Instance {
 	class(self).SetDefaultFontSize(int64(value))
+	return self
 }
 
 /*

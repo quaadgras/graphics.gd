@@ -176,9 +176,10 @@ func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
-// SetEnvironment sets the property returned by [GetEnvironment].
-func (self Instance) SetEnvironment(value Environment.Instance) {
+// SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironment(value Environment.Instance) Instance {
 	class(self).SetEnvironment(value)
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) FallbackEnvironment() Environment.Instance {
 	return Environment.Instance(class(self).GetFallbackEnvironment())
 }
 
-// SetFallbackEnvironment sets the property returned by [GetFallbackEnvironment].
-func (self Instance) SetFallbackEnvironment(value Environment.Instance) {
+// SetFallbackEnvironment sets the property returned by [GetFallbackEnvironment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbackEnvironment(value Environment.Instance) Instance {
 	class(self).SetFallbackEnvironment(value)
+	return self
 }
 
 /*
@@ -205,9 +207,10 @@ func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-// SetCameraAttributes sets the property returned by [GetCameraAttributes].
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
+// SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
 	class(self).SetCameraAttributes(value)
+	return self
 }
 
 /*

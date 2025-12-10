@@ -167,9 +167,10 @@ func (self Instance) VaryingName() string {
 	return string(class(self).GetVaryingName().String())
 }
 
-// SetVaryingName sets the property returned by [GetVaryingName].
-func (self Instance) SetVaryingName(value string) {
+// SetVaryingName sets the property returned by [GetVaryingName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVaryingName(value string) Instance {
 	class(self).SetVaryingName(String.New(value))
+	return self
 }
 
 /*
@@ -179,9 +180,10 @@ func (self Instance) VaryingType() VisualShader.VaryingType {
 	return VisualShader.VaryingType(class(self).GetVaryingType())
 }
 
-// SetVaryingType sets the property returned by [GetVaryingType].
-func (self Instance) SetVaryingType(value VisualShader.VaryingType) {
+// SetVaryingType sets the property returned by [GetVaryingType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVaryingType(value VisualShader.VaryingType) Instance {
 	class(self).SetVaryingType(value)
+	return self
 }
 
 //go:nosplit

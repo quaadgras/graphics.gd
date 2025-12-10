@@ -212,9 +212,10 @@ func (self Instance) Perspective() bool {
 	return bool(class(self).GetPerspective())
 }
 
-// SetPerspective sets the property returned by [GetPerspective].
-func (self Instance) SetPerspective(value bool) {
+// SetPerspective sets the property returned by [GetPerspective]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPerspective(value bool) Instance {
 	class(self).SetPerspective(value)
+	return self
 }
 
 /*
@@ -226,9 +227,10 @@ func (self Instance) Fov() Float.X {
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
-// SetFov sets the property returned by [GetFov].
-func (self Instance) SetFov(value Float.X) {
+// SetFov sets the property returned by [GetFov]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFov(value Float.X) Instance {
 	class(self).SetFov(float64(value))
+	return self
 }
 
 /*
@@ -240,9 +242,10 @@ func (self Instance) SizeMag() Float.X {
 	return Float.X(Float.X(class(self).GetSizeMag()))
 }
 
-// SetSizeMag sets the property returned by [GetSizeMag].
-func (self Instance) SetSizeMag(value Float.X) {
+// SetSizeMag sets the property returned by [GetSizeMag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSizeMag(value Float.X) Instance {
 	class(self).SetSizeMag(float64(value))
+	return self
 }
 
 /*
@@ -252,9 +255,10 @@ func (self Instance) DepthFar() Float.X {
 	return Float.X(Float.X(class(self).GetDepthFar()))
 }
 
-// SetDepthFar sets the property returned by [GetDepthFar].
-func (self Instance) SetDepthFar(value Float.X) {
+// SetDepthFar sets the property returned by [GetDepthFar]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthFar(value Float.X) Instance {
 	class(self).SetDepthFar(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +268,10 @@ func (self Instance) DepthNear() Float.X {
 	return Float.X(Float.X(class(self).GetDepthNear()))
 }
 
-// SetDepthNear sets the property returned by [GetDepthNear].
-func (self Instance) SetDepthNear(value Float.X) {
+// SetDepthNear sets the property returned by [GetDepthNear]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepthNear(value Float.X) Instance {
 	class(self).SetDepthNear(float64(value))
+	return self
 }
 
 /*

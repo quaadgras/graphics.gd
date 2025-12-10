@@ -151,11 +151,14 @@ func (Instance) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb
 /*
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [RenderingServer.InstanceSetBase].
 
+Returns 'self' to enable method chaining.
+
 [RenderingServer.InstanceSetBase]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#InstanceSetBase
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
-func (self Instance) SetBase(base RID.VisualInstance) { //gd:VisualInstance3D.set_base
+func (self Instance) SetBase(base RID.VisualInstance) Instance { //gd:VisualInstance3D.set_base
 	Advanced(self).SetBase(RID.Any(base))
+	return self
 }
 
 /*
@@ -183,10 +186,13 @@ func (self Instance) GetInstance() RID.VisualInstance { //gd:VisualInstance3D.ge
 /*
 Based on 'value', enables or disables the specified layer in the [Layers], given a 'layer_number' between 1 and 20.
 
+Returns 'self' to enable method chaining.
+
 [Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) SetLayerMaskValue(layer_number int, value bool) { //gd:VisualInstance3D.set_layer_mask_value
+func (self Instance) SetLayerMaskValue(layer_number int, value bool) Instance { //gd:VisualInstance3D.set_layer_mask_value
 	Advanced(self).SetLayerMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -278,9 +284,10 @@ func (self Instance) Layers() int {
 	return int(int(class(self).GetLayerMask()))
 }
 
-// SetLayers sets the property returned by [GetLayerMask].
-func (self Instance) SetLayers(value int) {
+// SetLayers sets the property returned by [GetLayerMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayers(value int) Instance {
 	class(self).SetLayerMask(int64(value))
+	return self
 }
 
 /*
@@ -292,9 +299,10 @@ func (self Instance) SortingOffset() Float.X {
 	return Float.X(Float.X(class(self).GetSortingOffset()))
 }
 
-// SetSortingOffset sets the property returned by [GetSortingOffset].
-func (self Instance) SetSortingOffset(value Float.X) {
+// SetSortingOffset sets the property returned by [GetSortingOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSortingOffset(value Float.X) Instance {
 	class(self).SetSortingOffset(float64(value))
+	return self
 }
 
 /*
@@ -310,9 +318,10 @@ func (self Instance) SortingUseAabbCenter() bool {
 	return bool(class(self).IsSortingUseAabbCenter())
 }
 
-// SetSortingUseAabbCenter sets the property returned by [IsSortingUseAabbCenter].
-func (self Instance) SetSortingUseAabbCenter(value bool) {
+// SetSortingUseAabbCenter sets the property returned by [IsSortingUseAabbCenter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSortingUseAabbCenter(value bool) Instance {
 	class(self).SetSortingUseAabbCenter(value)
+	return self
 }
 
 func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {

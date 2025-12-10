@@ -189,9 +189,10 @@ func (self Instance) DiffuseTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetDiffuseTexture())
 }
 
-// SetDiffuseTexture sets the property returned by [GetDiffuseTexture].
-func (self Instance) SetDiffuseTexture(value Texture2D.Instance) {
+// SetDiffuseTexture sets the property returned by [GetDiffuseTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiffuseTexture(value Texture2D.Instance) Instance {
 	class(self).SetDiffuseTexture(value)
+	return self
 }
 
 /*
@@ -207,9 +208,10 @@ func (self Instance) NormalTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetNormalTexture())
 }
 
-// SetNormalTexture sets the property returned by [GetNormalTexture].
-func (self Instance) SetNormalTexture(value Texture2D.Instance) {
+// SetNormalTexture sets the property returned by [GetNormalTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalTexture(value Texture2D.Instance) Instance {
 	class(self).SetNormalTexture(value)
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) SpecularTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetSpecularTexture())
 }
 
-// SetSpecularTexture sets the property returned by [GetSpecularTexture].
-func (self Instance) SetSpecularTexture(value Texture2D.Instance) {
+// SetSpecularTexture sets the property returned by [GetSpecularTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpecularTexture(value Texture2D.Instance) Instance {
 	class(self).SetSpecularTexture(value)
+	return self
 }
 
 /*
@@ -239,9 +242,10 @@ func (self Instance) SpecularColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSpecularColor())
 }
 
-// SetSpecularColor sets the property returned by [GetSpecularColor].
-func (self Instance) SetSpecularColor(value Color.RGBA) {
+// SetSpecularColor sets the property returned by [GetSpecularColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpecularColor(value Color.RGBA) Instance {
 	class(self).SetSpecularColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -254,9 +258,10 @@ func (self Instance) SpecularShininess() Float.X {
 	return Float.X(Float.X(class(self).GetSpecularShininess()))
 }
 
-// SetSpecularShininess sets the property returned by [GetSpecularShininess].
-func (self Instance) SetSpecularShininess(value Float.X) {
+// SetSpecularShininess sets the property returned by [GetSpecularShininess]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpecularShininess(value Float.X) Instance {
 	class(self).SetSpecularShininess(float64(value))
+	return self
 }
 
 /*
@@ -268,9 +273,10 @@ func (self Instance) TextureFilter() CanvasItem.TextureFilter {
 	return CanvasItem.TextureFilter(class(self).GetTextureFilter())
 }
 
-// SetTextureFilter sets the property returned by [GetTextureFilter].
-func (self Instance) SetTextureFilter(value CanvasItem.TextureFilter) {
+// SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureFilter(value CanvasItem.TextureFilter) Instance {
 	class(self).SetTextureFilter(value)
+	return self
 }
 
 /*
@@ -282,9 +288,10 @@ func (self Instance) TextureRepeat() CanvasItem.TextureRepeat {
 	return CanvasItem.TextureRepeat(class(self).GetTextureRepeat())
 }
 
-// SetTextureRepeat sets the property returned by [GetTextureRepeat].
-func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) {
+// SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) Instance {
 	class(self).SetTextureRepeat(value)
+	return self
 }
 
 //go:nosplit

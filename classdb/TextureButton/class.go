@@ -199,9 +199,10 @@ func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
-// SetTextureNormal sets the property returned by [GetTextureNormal].
-func (self Instance) SetTextureNormal(value Texture2D.Instance) {
+// SetTextureNormal sets the property returned by [GetTextureNormal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
 	class(self).SetTextureNormal(value)
+	return self
 }
 
 /*
@@ -215,9 +216,10 @@ func (self Instance) TexturePressed() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
-// SetTexturePressed sets the property returned by [GetTexturePressed].
-func (self Instance) SetTexturePressed(value Texture2D.Instance) {
+// SetTexturePressed sets the property returned by [GetTexturePressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance {
 	class(self).SetTexturePressed(value)
+	return self
 }
 
 /*
@@ -230,9 +232,10 @@ func (self Instance) TextureHover() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureHover())
 }
 
-// SetTextureHover sets the property returned by [GetTextureHover].
-func (self Instance) SetTextureHover(value Texture2D.Instance) {
+// SetTextureHover sets the property returned by [GetTextureHover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureHover(value Texture2D.Instance) Instance {
 	class(self).SetTextureHover(value)
+	return self
 }
 
 /*
@@ -246,9 +249,10 @@ func (self Instance) TextureDisabled() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureDisabled())
 }
 
-// SetTextureDisabled sets the property returned by [GetTextureDisabled].
-func (self Instance) SetTextureDisabled(value Texture2D.Instance) {
+// SetTextureDisabled sets the property returned by [GetTextureDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureDisabled(value Texture2D.Instance) Instance {
 	class(self).SetTextureDisabled(value)
+	return self
 }
 
 /*
@@ -260,9 +264,10 @@ func (self Instance) TextureFocused() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureFocused())
 }
 
-// SetTextureFocused sets the property returned by [GetTextureFocused].
-func (self Instance) SetTextureFocused(value Texture2D.Instance) {
+// SetTextureFocused sets the property returned by [GetTextureFocused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureFocused(value Texture2D.Instance) Instance {
 	class(self).SetTextureFocused(value)
+	return self
 }
 
 /*
@@ -274,9 +279,10 @@ func (self Instance) TextureClickMask() BitMap.Instance {
 	return BitMap.Instance(class(self).GetClickMask())
 }
 
-// SetTextureClickMask sets the property returned by [GetClickMask].
-func (self Instance) SetTextureClickMask(value BitMap.Instance) {
+// SetTextureClickMask sets the property returned by [GetClickMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureClickMask(value BitMap.Instance) Instance {
 	class(self).SetClickMask(value)
+	return self
 }
 
 /*
@@ -288,9 +294,10 @@ func (self Instance) IgnoreTextureSize() bool {
 	return bool(class(self).GetIgnoreTextureSize())
 }
 
-// SetIgnoreTextureSize sets the property returned by [GetIgnoreTextureSize].
-func (self Instance) SetIgnoreTextureSize(value bool) {
+// SetIgnoreTextureSize sets the property returned by [GetIgnoreTextureSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreTextureSize(value bool) Instance {
 	class(self).SetIgnoreTextureSize(value)
+	return self
 }
 
 /*
@@ -300,9 +307,10 @@ func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
-// SetStretchMode sets the property returned by [GetStretchMode].
-func (self Instance) SetStretchMode(value StretchMode) {
+// SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStretchMode(value StretchMode) Instance {
 	class(self).SetStretchMode(value)
+	return self
 }
 
 /*
@@ -312,9 +320,10 @@ func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
-// SetFlipH sets the property returned by [IsFlippedH].
-func (self Instance) SetFlipH(value bool) {
+// SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipH(value bool) Instance {
 	class(self).SetFlipH(value)
+	return self
 }
 
 /*
@@ -324,9 +333,10 @@ func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
-// SetFlipV sets the property returned by [IsFlippedV].
-func (self Instance) SetFlipV(value bool) {
+// SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipV(value bool) Instance {
 	class(self).SetFlipV(value)
+	return self
 }
 
 //go:nosplit

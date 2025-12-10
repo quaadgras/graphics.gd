@@ -170,9 +170,10 @@ func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
-// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
-func (self Instance) SetDefaultValueEnabled(value bool) {
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 	class(self).SetDefaultValueEnabled(value)
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) DefaultValue() Vector4.XYZW {
 	return Vector4.XYZW(class(self).GetDefaultValue())
 }
 
-// SetDefaultValue sets the property returned by [GetDefaultValue].
-func (self Instance) SetDefaultValue(value Vector4.XYZW) {
+// SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultValue(value Vector4.XYZW) Instance {
 	class(self).SetDefaultValue(Vector4.XYZW(value))
+	return self
 }
 
 //go:nosplit

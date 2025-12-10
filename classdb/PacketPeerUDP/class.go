@@ -299,9 +299,12 @@ func (self Instance) SetDestAddress(host string, port int) error { //gd:PacketPe
 Enable or disable sending of broadcast packets (e.g. set_dest_address("255.255.255.255", 4343). This option is disabled by default.
 
 Note: Some Android devices might require the CHANGE_WIFI_MULTICAST_STATE permission and this option to be enabled to receive broadcast packets too.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBroadcastEnabled(enabled bool) { //gd:PacketPeerUDP.set_broadcast_enabled
+func (self Instance) SetBroadcastEnabled(enabled bool) Instance { //gd:PacketPeerUDP.set_broadcast_enabled
 	Advanced(self).SetBroadcastEnabled(enabled)
+	return self
 }
 
 /*

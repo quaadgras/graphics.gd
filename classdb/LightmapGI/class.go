@@ -240,9 +240,10 @@ func (self Instance) Quality() BakeQuality {
 	return BakeQuality(class(self).GetBakeQuality())
 }
 
-// SetQuality sets the property returned by [GetBakeQuality].
-func (self Instance) SetQuality(value BakeQuality) {
+// SetQuality sets the property returned by [GetBakeQuality]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetQuality(value BakeQuality) Instance {
 	class(self).SetBakeQuality(value)
+	return self
 }
 
 /*
@@ -256,9 +257,10 @@ func (self Instance) Supersampling() bool {
 	return bool(class(self).IsSupersamplingEnabled())
 }
 
-// SetSupersampling sets the property returned by [IsSupersamplingEnabled].
-func (self Instance) SetSupersampling(value bool) {
+// SetSupersampling sets the property returned by [IsSupersamplingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSupersampling(value bool) Instance {
 	class(self).SetSupersamplingEnabled(value)
+	return self
 }
 
 /*
@@ -274,9 +276,10 @@ func (self Instance) SupersamplingFactor() Float.X {
 	return Float.X(Float.X(class(self).GetSupersamplingFactor()))
 }
 
-// SetSupersamplingFactor sets the property returned by [GetSupersamplingFactor].
-func (self Instance) SetSupersamplingFactor(value Float.X) {
+// SetSupersamplingFactor sets the property returned by [GetSupersamplingFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSupersamplingFactor(value Float.X) Instance {
 	class(self).SetSupersamplingFactor(float64(value))
+	return self
 }
 
 /*
@@ -286,9 +289,10 @@ func (self Instance) Bounces() int {
 	return int(int(class(self).GetBounces()))
 }
 
-// SetBounces sets the property returned by [GetBounces].
-func (self Instance) SetBounces(value int) {
+// SetBounces sets the property returned by [GetBounces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBounces(value int) Instance {
 	class(self).SetBounces(int64(value))
+	return self
 }
 
 /*
@@ -303,9 +307,10 @@ func (self Instance) BounceIndirectEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetBounceIndirectEnergy()))
 }
 
-// SetBounceIndirectEnergy sets the property returned by [GetBounceIndirectEnergy].
-func (self Instance) SetBounceIndirectEnergy(value Float.X) {
+// SetBounceIndirectEnergy sets the property returned by [GetBounceIndirectEnergy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBounceIndirectEnergy(value Float.X) Instance {
 	class(self).SetBounceIndirectEnergy(float64(value))
+	return self
 }
 
 /*
@@ -322,9 +327,10 @@ func (self Instance) Directional() bool {
 	return bool(class(self).IsDirectional())
 }
 
-// SetDirectional sets the property returned by [IsDirectional].
-func (self Instance) SetDirectional(value bool) {
+// SetDirectional sets the property returned by [IsDirectional]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirectional(value bool) Instance {
 	class(self).SetDirectional(value)
+	return self
 }
 
 /*
@@ -343,9 +349,10 @@ func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode {
 	return LightmapGIData.ShadowmaskMode(class(self).GetShadowmaskMode())
 }
 
-// SetShadowmaskMode sets the property returned by [GetShadowmaskMode].
-func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) {
+// SetShadowmaskMode sets the property returned by [GetShadowmaskMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) Instance {
 	class(self).SetShadowmaskMode(value)
+	return self
 }
 
 /*
@@ -360,9 +367,10 @@ func (self Instance) UseTextureForBounces() bool {
 	return bool(class(self).IsUsingTextureForBounces())
 }
 
-// SetUseTextureForBounces sets the property returned by [IsUsingTextureForBounces].
-func (self Instance) SetUseTextureForBounces(value bool) {
+// SetUseTextureForBounces sets the property returned by [IsUsingTextureForBounces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseTextureForBounces(value bool) Instance {
 	class(self).SetUseTextureForBounces(value)
+	return self
 }
 
 /*
@@ -372,9 +380,10 @@ func (self Instance) Interior() bool {
 	return bool(class(self).IsInterior())
 }
 
-// SetInterior sets the property returned by [IsInterior].
-func (self Instance) SetInterior(value bool) {
+// SetInterior sets the property returned by [IsInterior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterior(value bool) Instance {
 	class(self).SetInterior(value)
+	return self
 }
 
 /*
@@ -384,9 +393,10 @@ func (self Instance) UseDenoiser() bool {
 	return bool(class(self).IsUsingDenoiser())
 }
 
-// SetUseDenoiser sets the property returned by [IsUsingDenoiser].
-func (self Instance) SetUseDenoiser(value bool) {
+// SetUseDenoiser sets the property returned by [IsUsingDenoiser]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseDenoiser(value bool) Instance {
 	class(self).SetUseDenoiser(value)
+	return self
 }
 
 /*
@@ -399,9 +409,10 @@ func (self Instance) DenoiserStrength() Float.X {
 	return Float.X(Float.X(class(self).GetDenoiserStrength()))
 }
 
-// SetDenoiserStrength sets the property returned by [GetDenoiserStrength].
-func (self Instance) SetDenoiserStrength(value Float.X) {
+// SetDenoiserStrength sets the property returned by [GetDenoiserStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDenoiserStrength(value Float.X) Instance {
 	class(self).SetDenoiserStrength(float64(value))
+	return self
 }
 
 /*
@@ -414,9 +425,10 @@ func (self Instance) DenoiserRange() int {
 	return int(int(class(self).GetDenoiserRange()))
 }
 
-// SetDenoiserRange sets the property returned by [GetDenoiserRange].
-func (self Instance) SetDenoiserRange(value int) {
+// SetDenoiserRange sets the property returned by [GetDenoiserRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDenoiserRange(value int) Instance {
 	class(self).SetDenoiserRange(int64(value))
+	return self
 }
 
 /*
@@ -429,9 +441,10 @@ func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
-// SetBias sets the property returned by [GetBias].
-func (self Instance) SetBias(value Float.X) {
+// SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBias(value Float.X) Instance {
 	class(self).SetBias(float64(value))
+	return self
 }
 
 /*
@@ -445,9 +458,10 @@ func (self Instance) TexelScale() Float.X {
 	return Float.X(Float.X(class(self).GetTexelScale()))
 }
 
-// SetTexelScale sets the property returned by [GetTexelScale].
-func (self Instance) SetTexelScale(value Float.X) {
+// SetTexelScale sets the property returned by [GetTexelScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexelScale(value Float.X) Instance {
 	class(self).SetTexelScale(float64(value))
+	return self
 }
 
 /*
@@ -459,9 +473,10 @@ func (self Instance) MaxTextureSize() int {
 	return int(int(class(self).GetMaxTextureSize()))
 }
 
-// SetMaxTextureSize sets the property returned by [GetMaxTextureSize].
-func (self Instance) SetMaxTextureSize(value int) {
+// SetMaxTextureSize sets the property returned by [GetMaxTextureSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxTextureSize(value int) Instance {
 	class(self).SetMaxTextureSize(int64(value))
+	return self
 }
 
 /*
@@ -471,9 +486,10 @@ func (self Instance) EnvironmentMode() EnvironmentMode {
 	return EnvironmentMode(class(self).GetEnvironmentMode())
 }
 
-// SetEnvironmentMode sets the property returned by [GetEnvironmentMode].
-func (self Instance) SetEnvironmentMode(value EnvironmentMode) {
+// SetEnvironmentMode sets the property returned by [GetEnvironmentMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironmentMode(value EnvironmentMode) Instance {
 	class(self).SetEnvironmentMode(value)
+	return self
 }
 
 /*
@@ -485,9 +501,10 @@ func (self Instance) EnvironmentCustomSky() Sky.Instance {
 	return Sky.Instance(class(self).GetEnvironmentCustomSky())
 }
 
-// SetEnvironmentCustomSky sets the property returned by [GetEnvironmentCustomSky].
-func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) {
+// SetEnvironmentCustomSky sets the property returned by [GetEnvironmentCustomSky]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) Instance {
 	class(self).SetEnvironmentCustomSky(value)
+	return self
 }
 
 /*
@@ -499,9 +516,10 @@ func (self Instance) EnvironmentCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetEnvironmentCustomColor())
 }
 
-// SetEnvironmentCustomColor sets the property returned by [GetEnvironmentCustomColor].
-func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) {
+// SetEnvironmentCustomColor sets the property returned by [GetEnvironmentCustomColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) Instance {
 	class(self).SetEnvironmentCustomColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -513,9 +531,10 @@ func (self Instance) EnvironmentCustomEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetEnvironmentCustomEnergy()))
 }
 
-// SetEnvironmentCustomEnergy sets the property returned by [GetEnvironmentCustomEnergy].
-func (self Instance) SetEnvironmentCustomEnergy(value Float.X) {
+// SetEnvironmentCustomEnergy sets the property returned by [GetEnvironmentCustomEnergy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironmentCustomEnergy(value Float.X) Instance {
 	class(self).SetEnvironmentCustomEnergy(float64(value))
+	return self
 }
 
 /*
@@ -528,9 +547,10 @@ func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-// SetCameraAttributes sets the property returned by [GetCameraAttributes].
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
+// SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
 	class(self).SetCameraAttributes(value)
+	return self
 }
 
 /*
@@ -548,9 +568,10 @@ func (self Instance) GenerateProbesSubdiv() GenerateProbes {
 	return GenerateProbes(class(self).GetGenerateProbes())
 }
 
-// SetGenerateProbesSubdiv sets the property returned by [GetGenerateProbes].
-func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) {
+// SetGenerateProbesSubdiv sets the property returned by [GetGenerateProbes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) Instance {
 	class(self).SetGenerateProbes(value)
+	return self
 }
 
 /*
@@ -563,9 +584,10 @@ func (self Instance) LightData() LightmapGIData.Instance {
 	return LightmapGIData.Instance(class(self).GetLightData())
 }
 
-// SetLightData sets the property returned by [GetLightData].
-func (self Instance) SetLightData(value LightmapGIData.Instance) {
+// SetLightData sets the property returned by [GetLightData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightData(value LightmapGIData.Instance) Instance {
 	class(self).SetLightData(value)
+	return self
 }
 
 //go:nosplit

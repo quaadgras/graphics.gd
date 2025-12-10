@@ -151,9 +151,12 @@ type Any interface {
 
 /*
 Set the name of the current clip (for easier identification).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetClipName(clip_index Clip, name string) { //gd:AudioStreamInteractive.set_clip_name
+func (self Instance) SetClipName(clip_index Clip, name string) Instance { //gd:AudioStreamInteractive.set_clip_name
 	Advanced(self).SetClipName(int64(clip_index), String.Name(String.New(name)))
+	return self
 }
 
 /*
@@ -166,10 +169,13 @@ func (self Instance) GetClipName(clip_index Clip) string { //gd:AudioStreamInter
 /*
 Set the [AudioStream] associated with the current clip.
 
+Returns 'self' to enable method chaining.
+
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Instance) SetClipStream(clip_index Clip, stream AudioStream.Instance) { //gd:AudioStreamInteractive.set_clip_stream
+func (self Instance) SetClipStream(clip_index Clip, stream AudioStream.Instance) Instance { //gd:AudioStreamInteractive.set_clip_stream
 	Advanced(self).SetClipStream(int64(clip_index), stream)
+	return self
 }
 
 /*
@@ -183,9 +189,12 @@ func (self Instance) GetClipStream(clip_index Clip) AudioStream.Instance { //gd:
 
 /*
 Set whether a clip will auto-advance by changing the auto-advance mode.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetClipAutoAdvance(clip_index Clip, mode AutoAdvanceMode) { //gd:AudioStreamInteractive.set_clip_auto_advance
+func (self Instance) SetClipAutoAdvance(clip_index Clip, mode AutoAdvanceMode) Instance { //gd:AudioStreamInteractive.set_clip_auto_advance
 	Advanced(self).SetClipAutoAdvance(int64(clip_index), mode)
+	return self
 }
 
 /*
@@ -199,9 +208,12 @@ func (self Instance) GetClipAutoAdvance(clip_index Clip) AutoAdvanceMode { //gd:
 
 /*
 Set the index of the next clip towards which this clip will auto advance to when finished. If the clip being played loops, then auto-advance will be ignored.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetClipAutoAdvanceNextClip(clip_index Clip, auto_advance_next_clip Clip) { //gd:AudioStreamInteractive.set_clip_auto_advance_next_clip
+func (self Instance) SetClipAutoAdvanceNextClip(clip_index Clip, auto_advance_next_clip Clip) Instance { //gd:AudioStreamInteractive.set_clip_auto_advance_next_clip
 	Advanced(self).SetClipAutoAdvanceNextClip(int64(clip_index), int64(auto_advance_next_clip))
+	return self
 }
 
 /*
@@ -389,9 +401,10 @@ func (self Instance) ClipCount() Clip {
 	return Clip(Clip(class(self).GetClipCount()))
 }
 
-// SetClipCount sets the property returned by [GetClipCount].
-func (self Instance) SetClipCount(value Clip) {
+// SetClipCount sets the property returned by [GetClipCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipCount(value Clip) Instance {
 	class(self).SetClipCount(int64(value))
+	return self
 }
 
 /*
@@ -401,9 +414,10 @@ func (self Instance) InitialClip() Clip {
 	return Clip(Clip(class(self).GetInitialClip()))
 }
 
-// SetInitialClip sets the property returned by [GetInitialClip].
-func (self Instance) SetInitialClip(value Clip) {
+// SetInitialClip sets the property returned by [GetInitialClip]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInitialClip(value Clip) Instance {
 	class(self).SetInitialClip(int64(value))
+	return self
 }
 
 //go:nosplit

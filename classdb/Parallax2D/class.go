@@ -195,9 +195,10 @@ func (self Instance) ScrollScale() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollScale())
 }
 
-// SetScrollScale sets the property returned by [GetScrollScale].
-func (self Instance) SetScrollScale(value Vector2.XY) {
+// SetScrollScale sets the property returned by [GetScrollScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollScale(value Vector2.XY) Instance {
 	class(self).SetScrollScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -214,9 +215,10 @@ func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
-// SetScrollOffset sets the property returned by [GetScrollOffset].
-func (self Instance) SetScrollOffset(value Vector2.XY) {
+// SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
 	class(self).SetScrollOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -228,9 +230,10 @@ func (self Instance) RepeatSize() Vector2.XY {
 	return Vector2.XY(class(self).GetRepeatSize())
 }
 
-// SetRepeatSize sets the property returned by [GetRepeatSize].
-func (self Instance) SetRepeatSize(value Vector2.XY) {
+// SetRepeatSize sets the property returned by [GetRepeatSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeatSize(value Vector2.XY) Instance {
 	class(self).SetRepeatSize(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -240,9 +243,10 @@ func (self Instance) Autoscroll() Vector2.XY {
 	return Vector2.XY(class(self).GetAutoscroll())
 }
 
-// SetAutoscroll sets the property returned by [GetAutoscroll].
-func (self Instance) SetAutoscroll(value Vector2.XY) {
+// SetAutoscroll sets the property returned by [GetAutoscroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoscroll(value Vector2.XY) Instance {
 	class(self).SetAutoscroll(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -254,9 +258,10 @@ func (self Instance) RepeatTimes() int {
 	return int(int(class(self).GetRepeatTimes()))
 }
 
-// SetRepeatTimes sets the property returned by [GetRepeatTimes].
-func (self Instance) SetRepeatTimes(value int) {
+// SetRepeatTimes sets the property returned by [GetRepeatTimes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeatTimes(value int) Instance {
 	class(self).SetRepeatTimes(int64(value))
+	return self
 }
 
 /*
@@ -269,9 +274,10 @@ func (self Instance) LimitBegin() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
-// SetLimitBegin sets the property returned by [GetLimitBegin].
-func (self Instance) SetLimitBegin(value Vector2.XY) {
+// SetLimitBegin sets the property returned by [GetLimitBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitBegin(value Vector2.XY) Instance {
 	class(self).SetLimitBegin(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -284,9 +290,10 @@ func (self Instance) LimitEnd() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
-// SetLimitEnd sets the property returned by [GetLimitEnd].
-func (self Instance) SetLimitEnd(value Vector2.XY) {
+// SetLimitEnd sets the property returned by [GetLimitEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitEnd(value Vector2.XY) Instance {
 	class(self).SetLimitEnd(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -300,9 +307,10 @@ func (self Instance) FollowViewport() bool {
 	return bool(class(self).GetFollowViewport())
 }
 
-// SetFollowViewport sets the property returned by [GetFollowViewport].
-func (self Instance) SetFollowViewport(value bool) {
+// SetFollowViewport sets the property returned by [GetFollowViewport]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFollowViewport(value bool) Instance {
 	class(self).SetFollowViewport(value)
+	return self
 }
 
 /*
@@ -314,9 +322,10 @@ func (self Instance) IgnoreCameraScroll() bool {
 	return bool(class(self).IsIgnoreCameraScroll())
 }
 
-// SetIgnoreCameraScroll sets the property returned by [IsIgnoreCameraScroll].
-func (self Instance) SetIgnoreCameraScroll(value bool) {
+// SetIgnoreCameraScroll sets the property returned by [IsIgnoreCameraScroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreCameraScroll(value bool) Instance {
 	class(self).SetIgnoreCameraScroll(value)
+	return self
 }
 
 /*
@@ -329,9 +338,10 @@ func (self Instance) ScreenOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenOffset())
 }
 
-// SetScreenOffset sets the property returned by [GetScreenOffset].
-func (self Instance) SetScreenOffset(value Vector2.XY) {
+// SetScreenOffset sets the property returned by [GetScreenOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScreenOffset(value Vector2.XY) Instance {
 	class(self).SetScreenOffset(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

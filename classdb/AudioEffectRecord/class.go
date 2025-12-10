@@ -131,9 +131,12 @@ type Any interface {
 
 /*
 If true, the sound will be recorded. Note that restarting the recording will remove the previously recorded sample.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
+func (self Instance) SetRecordingActive(record bool) Instance { //gd:AudioEffectRecord.set_recording_active
 	Advanced(self).SetRecordingActive(record)
+	return self
 }
 
 /*
@@ -200,9 +203,10 @@ func (self Instance) Format() AudioStreamWAV.Format {
 	return AudioStreamWAV.Format(class(self).GetFormat())
 }
 
-// SetFormat sets the property returned by [GetFormat].
-func (self Instance) SetFormat(value AudioStreamWAV.Format) {
+// SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormat(value AudioStreamWAV.Format) Instance {
 	class(self).SetFormat(value)
+	return self
 }
 
 /*

@@ -164,9 +164,10 @@ func (self Instance) Source() Source {
 	return Source(class(self).GetSource())
 }
 
-// SetSource sets the property returned by [GetSource].
-func (self Instance) SetSource(value Source) {
+// SetSource sets the property returned by [GetSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSource(value Source) Instance {
 	class(self).SetSource(value)
+	return self
 }
 
 //go:nosplit

@@ -891,6 +891,8 @@ If you need the child node to be added below a specific node in the list of chil
 
 Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 
+Returns 'self' to enable method chaining.
+
 [AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 [AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
@@ -903,8 +905,9 @@ Note: If you want a child to be persisted to a [PackedScene], you must set [Owne
 [editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
 [tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
-func (self Instance) AddChild(node Instance) { //gd:Node.add_child
+func (self Instance) AddChild(node Instance) Instance { //gd:Node.add_child
 	Advanced(self).AddChild(node, false, 0)
+	return self
 }
 
 /*
@@ -926,6 +929,8 @@ If you need the child node to be added below a specific node in the list of chil
 
 Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 
+Returns 'self' to enable method chaining.
+
 [AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 [AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
@@ -938,8 +943,9 @@ Note: If you want a child to be persisted to a [PackedScene], you must set [Owne
 [editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
 [tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
-func (self MoreArgs) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
+func (self MoreArgs) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) MoreArgs { //gd:Node.add_child
 	Advanced(self).AddChild(node, force_readable_name, internal_)
+	return self
 }
 
 /*
@@ -1535,12 +1541,15 @@ If set to true, enables physics (fixed framerate) processing. When a node is bei
 
 Note: If [PhysicsProcess] is overridden, this will be automatically enabled before [Ready] is called.
 
+Returns 'self' to enable method chaining.
+
 [Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
 [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
+func (self Instance) SetPhysicsProcess(enable bool) Instance { //gd:Node.set_physics_process
 	Advanced(self).SetPhysicsProcess(enable)
+	return self
 }
 
 /*
@@ -1591,13 +1600,16 @@ Note: If [Process] is overridden, this will be automatically enabled before [Rea
 
 Note: This method only affects the [Process] callback, i.e. it has no effect on other callbacks like [PhysicsProcess]. If you want to disable all processing for the node, set [ProcessMode] to [ProcessModeDisabled].
 
+Returns 'self' to enable method chaining.
+
 [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) SetProcess(enable bool) { //gd:Node.set_process
+func (self Instance) SetProcess(enable bool) Instance { //gd:Node.set_process
 	Advanced(self).SetProcess(enable)
+	return self
 }
 
 /*
@@ -1614,13 +1626,16 @@ If set to true, enables input processing.
 
 Note: If [Input] is overridden, this will be automatically enabled before [Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 
+Returns 'self' to enable method chaining.
+
 [Button]: https://pkg.go.dev/graphics.gd/classdb/Button
 [Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) SetProcessInput(enable bool) { //gd:Node.set_process_input
+func (self Instance) SetProcessInput(enable bool) Instance { //gd:Node.set_process_input
 	Advanced(self).SetProcessInput(enable)
+	return self
 }
 
 /*
@@ -1637,11 +1652,14 @@ If set to true, enables shortcut processing for this node.
 
 Note: If [ShortcutInput] is overridden, this will be automatically enabled before [Ready] is called.
 
+Returns 'self' to enable method chaining.
+
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
+func (self Instance) SetProcessShortcutInput(enable bool) Instance { //gd:Node.set_process_shortcut_input
 	Advanced(self).SetProcessShortcutInput(enable)
+	return self
 }
 
 /*
@@ -1658,14 +1676,17 @@ If set to true, enables unhandled input processing. It enables the node to recei
 
 Note: If [UnhandledInput] is overridden, this will be automatically enabled before [Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 
+Returns 'self' to enable method chaining.
+
 [Button]: https://pkg.go.dev/graphics.gd/classdb/Button
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 [UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
+func (self Instance) SetProcessUnhandledInput(enable bool) Instance { //gd:Node.set_process_unhandled_input
 	Advanced(self).SetProcessUnhandledInput(enable)
+	return self
 }
 
 /*
@@ -1682,11 +1703,14 @@ If set to true, enables unhandled key input processing.
 
 Note: If [UnhandledKeyInput] is overridden, this will be automatically enabled before [Ready] is called.
 
+Returns 'self' to enable method chaining.
+
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
+func (self Instance) SetProcessUnhandledKeyInput(enable bool) Instance { //gd:Node.set_process_unhandled_key_input
 	Advanced(self).SetProcessUnhandledKeyInput(enable)
+	return self
 }
 
 /*
@@ -1742,10 +1766,13 @@ func (self Instance) GetAccessibilityElement() RID.AccessibilityElement { //gd:N
 /*
 If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsDisplayedFolded].
 
+Returns 'self' to enable method chaining.
+
 [IsDisplayedFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsDisplayedFolded
 */
-func (self Instance) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
+func (self Instance) SetDisplayFolded(fold bool) Instance { //gd:Node.set_display_folded
 	Advanced(self).SetDisplayFolded(fold)
+	return self
 }
 
 /*
@@ -1762,11 +1789,14 @@ If set to true, enables internal processing for this node. Internal processing h
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 
+Returns 'self' to enable method chaining.
+
 [Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
-func (self Instance) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
+func (self Instance) SetProcessInternal(enable bool) Instance { //gd:Node.set_process_internal
 	Advanced(self).SetProcessInternal(enable)
+	return self
 }
 
 /*
@@ -1783,11 +1813,14 @@ If set to true, enables internal physics for this node. Internal physics process
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 
+Returns 'self' to enable method chaining.
+
 [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
-func (self Instance) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
+func (self Instance) SetPhysicsProcessInternal(enable bool) Instance { //gd:Node.set_physics_process_internal
 	Advanced(self).SetPhysicsProcessInternal(enable)
+	return self
 }
 
 /*
@@ -1858,10 +1891,13 @@ Makes this node inherit the translation domain from its parent node. If this nod
 
 This is the default behavior for all nodes. Calling [Object.SetTranslationDomain] disables this behavior.
 
+Returns 'self' to enable method chaining.
+
 [Object.SetTranslationDomain]: https://pkg.go.dev/graphics.gd/variant/Object#SetTranslationDomain
 */
-func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
+func (self Instance) SetTranslationDomainInherited() Instance { //gd:Node.set_translation_domain_inherited
 	Advanced(self).SetTranslationDomainInherited()
+	return self
 }
 
 /*
@@ -1939,12 +1975,15 @@ func (self MoreArgs) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.repl
 /*
 If set to true, the node becomes an [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [GetSceneInstanceLoadPlaceholder].
 
+Returns 'self' to enable method chaining.
+
 [GetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetSceneInstanceLoadPlaceholder
 [InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
-func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
+func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) Instance { //gd:Node.set_scene_instance_load_placeholder
 	Advanced(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
+	return self
 }
 
 /*
@@ -1960,11 +1999,14 @@ func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scen
 /*
 Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsEditableInstance].
 
+Returns 'self' to enable method chaining.
+
 [IsEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsEditableInstance
 [Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
-func (self Instance) SetEditableInstance(node Instance, is_editable bool) { //gd:Node.set_editable_instance
+func (self Instance) SetEditableInstance(node Instance, is_editable bool) Instance { //gd:Node.set_editable_instance
 	Advanced(self).SetEditableInstance(node, is_editable)
+	return self
 }
 
 /*
@@ -2021,13 +2063,16 @@ If 'recursive' is true, the given peer is recursively set as the authority for a
 
 Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
 
+Returns 'self' to enable method chaining.
+
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 [MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 [RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
-func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
+func (self Instance) SetMultiplayerAuthority(id int) Instance { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), true)
+	return self
 }
 
 /*
@@ -2037,13 +2082,16 @@ If 'recursive' is true, the given peer is recursively set as the authority for a
 
 Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
 
+Returns 'self' to enable method chaining.
+
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 [MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 [RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
-func (self MoreArgs) SetMultiplayerAuthority(id int, recursive bool) { //gd:Node.set_multiplayer_authority
+func (self MoreArgs) SetMultiplayerAuthority(id int, recursive bool) MoreArgs { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), recursive)
+	return self
 }
 
 /*
@@ -2254,10 +2302,13 @@ func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { /
 /*
 Similar to [CallDeferredThreadGroup], but for setting properties.
 
+Returns 'self' to enable method chaining.
+
 [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
-func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
+func (self Instance) SetDeferredThreadGroup(property string, value any) Instance { //gd:Node.set_deferred_thread_group
 	Advanced(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
+	return self
 }
 
 /*
@@ -2283,10 +2334,13 @@ func (self Instance) CallThreadSafe(method string, args ...any) any { //gd:Node.
 /*
 Similar to [CallThreadSafe], but for setting properties.
 
+Returns 'self' to enable method chaining.
+
 [CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
-func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
+func (self Instance) SetThreadSafe(property string, value any) Instance { //gd:Node.set_thread_safe
 	Advanced(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
+	return self
 }
 
 /*
@@ -2366,9 +2420,10 @@ func (self Instance) Name() string {
 	return string(class(self).GetName().String())
 }
 
-// SetName sets the property returned by [GetName].
-func (self Instance) SetName(value string) {
+// SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetName(value string) Instance {
 	class(self).SetName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -2384,9 +2439,10 @@ func (self Instance) UniqueNameInOwner() bool {
 	return bool(class(self).IsUniqueNameInOwner())
 }
 
-// SetUniqueNameInOwner sets the property returned by [IsUniqueNameInOwner].
-func (self Instance) SetUniqueNameInOwner(value bool) {
+// SetUniqueNameInOwner sets the property returned by [IsUniqueNameInOwner]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUniqueNameInOwner(value bool) Instance {
 	class(self).SetUniqueNameInOwner(value)
+	return self
 }
 
 /*
@@ -2398,9 +2454,10 @@ func (self Instance) SceneFilePath() string {
 	return string(class(self).GetSceneFilePath().String())
 }
 
-// SetSceneFilePath sets the property returned by [GetSceneFilePath].
-func (self Instance) SetSceneFilePath(value string) {
+// SetSceneFilePath sets the property returned by [GetSceneFilePath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSceneFilePath(value string) Instance {
 	class(self).SetSceneFilePath(String.New(value))
+	return self
 }
 
 /*
@@ -2416,9 +2473,10 @@ func (self Instance) Owner() Instance {
 	return Instance(class(self).GetOwner())
 }
 
-// SetOwner sets the property returned by [GetOwner].
-func (self Instance) SetOwner(value Instance) {
+// SetOwner sets the property returned by [GetOwner]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOwner(value Instance) Instance {
 	class(self).SetOwner(value)
+	return self
 }
 
 /*
@@ -2442,9 +2500,10 @@ func (self Instance) ProcessMode() ProcessMode {
 	return ProcessMode(class(self).GetProcessMode())
 }
 
-// SetProcessMode sets the property returned by [GetProcessMode].
-func (self Instance) SetProcessMode(value ProcessMode) {
+// SetProcessMode sets the property returned by [GetProcessMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessMode(value ProcessMode) Instance {
 	class(self).SetProcessMode(value)
+	return self
 }
 
 /*
@@ -2456,9 +2515,10 @@ func (self Instance) ProcessPriority() int {
 	return int(int(class(self).GetProcessPriority()))
 }
 
-// SetProcessPriority sets the property returned by [GetProcessPriority].
-func (self Instance) SetProcessPriority(value int) {
+// SetProcessPriority sets the property returned by [GetProcessPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessPriority(value int) Instance {
 	class(self).SetProcessPriority(int64(value))
+	return self
 }
 
 /*
@@ -2471,9 +2531,10 @@ func (self Instance) ProcessPhysicsPriority() int {
 	return int(int(class(self).GetPhysicsProcessPriority()))
 }
 
-// SetProcessPhysicsPriority sets the property returned by [GetPhysicsProcessPriority].
-func (self Instance) SetProcessPhysicsPriority(value int) {
+// SetProcessPhysicsPriority sets the property returned by [GetPhysicsProcessPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessPhysicsPriority(value int) Instance {
 	class(self).SetPhysicsProcessPriority(int64(value))
+	return self
 }
 
 /*
@@ -2496,9 +2557,10 @@ func (self Instance) ProcessThreadGroup() ProcessThreadGroup {
 	return ProcessThreadGroup(class(self).GetProcessThreadGroup())
 }
 
-// SetProcessThreadGroup sets the property returned by [GetProcessThreadGroup].
-func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) {
+// SetProcessThreadGroup sets the property returned by [GetProcessThreadGroup]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) Instance {
 	class(self).SetProcessThreadGroup(value)
+	return self
 }
 
 /*
@@ -2508,9 +2570,10 @@ func (self Instance) ProcessThreadGroupOrder() int {
 	return int(int(class(self).GetProcessThreadGroupOrder()))
 }
 
-// SetProcessThreadGroupOrder sets the property returned by [GetProcessThreadGroupOrder].
-func (self Instance) SetProcessThreadGroupOrder(value int) {
+// SetProcessThreadGroupOrder sets the property returned by [GetProcessThreadGroupOrder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessThreadGroupOrder(value int) Instance {
 	class(self).SetProcessThreadGroupOrder(int64(value))
+	return self
 }
 
 /*
@@ -2522,9 +2585,10 @@ func (self Instance) ProcessThreadMessages() ProcessThreadMessages {
 	return ProcessThreadMessages(class(self).GetProcessThreadMessages())
 }
 
-// SetProcessThreadMessages sets the property returned by [GetProcessThreadMessages].
-func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) {
+// SetProcessThreadMessages sets the property returned by [GetProcessThreadMessages]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) Instance {
 	class(self).SetProcessThreadMessages(value)
+	return self
 }
 
 /*
@@ -2545,9 +2609,10 @@ func (self Instance) PhysicsInterpolationMode() PhysicsInterpolationMode {
 	return PhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
 }
 
-// SetPhysicsInterpolationMode sets the property returned by [GetPhysicsInterpolationMode].
-func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) {
+// SetPhysicsInterpolationMode sets the property returned by [GetPhysicsInterpolationMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) Instance {
 	class(self).SetPhysicsInterpolationMode(value)
+	return self
 }
 
 /*
@@ -2564,9 +2629,10 @@ func (self Instance) AutoTranslateMode() AutoTranslateMode {
 	return AutoTranslateMode(class(self).GetAutoTranslateMode())
 }
 
-// SetAutoTranslateMode sets the property returned by [GetAutoTranslateMode].
-func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) {
+// SetAutoTranslateMode sets the property returned by [GetAutoTranslateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) Instance {
 	class(self).SetAutoTranslateMode(value)
+	return self
 }
 
 /*
@@ -2576,9 +2642,10 @@ func (self Instance) EditorDescription() string {
 	return string(class(self).GetEditorDescription().String())
 }
 
-// SetEditorDescription sets the property returned by [GetEditorDescription].
-func (self Instance) SetEditorDescription(value string) {
+// SetEditorDescription sets the property returned by [GetEditorDescription]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorDescription(value string) Instance {
 	class(self).SetEditorDescription(String.New(value))
+	return self
 }
 
 /*
@@ -4590,12 +4657,13 @@ Emitted when the node is considered ready, after [Ready] is called.
 
 [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) OnReady(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnReady(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Ready() Signal.Any {
@@ -4607,12 +4675,13 @@ Emitted when the node's [Name] is changed, if the node is inside the tree.
 
 [Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 */
-func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Renamed() Signal.Any {
@@ -4624,12 +4693,13 @@ Emitted when the node enters the tree.
 
 This signal is emitted after the related [NotificationEnterTree] notification.
 */
-func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeEntered() Signal.Any {
@@ -4643,12 +4713,13 @@ This signal is emitted after the node's [ExitTree], and before the related [Noti
 
 [ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeExiting() Signal.Any {
@@ -4660,12 +4731,13 @@ Emitted after the node exits the tree and is no longer active.
 
 This signal is emitted after the related [NotificationExitTree] notification.
 */
-func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TreeExited() Signal.Any {
@@ -4681,12 +4753,13 @@ This signal is emitted after the child node's own [NotificationEnterTree] and [O
 [OnTreeEntered]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeEntered
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.Flags) {
+func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ChildEnteredTree() Signal.Any {
@@ -4701,12 +4774,13 @@ When this signal is received, the child 'node' is still accessible inside the tr
 [OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.Flags) {
+func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ChildExitingTree() Signal.Any {
@@ -4716,12 +4790,13 @@ func (self class) ChildExitingTree() Signal.Any {
 /*
 Emitted when the list of children is changed. This happens when child nodes are added, moved or removed.
 */
-func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ChildOrderChanged() Signal.Any {
@@ -4735,12 +4810,13 @@ This signal is emitted after 'node' has been added as a child of the original pa
 
 [ReplaceBy]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ReplaceBy
 */
-func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags) {
+func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ReplacingBy() Signal.Any {
@@ -4750,12 +4826,13 @@ func (self class) ReplacingBy() Signal.Any {
 /*
 Emitted when the node's editor description field changed.
 */
-func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ...Signal.Flags) {
+func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditorDescriptionChanged() Signal.Any {
@@ -4765,12 +4842,13 @@ func (self class) EditorDescriptionChanged() Signal.Any {
 /*
 Emitted when an attribute of the node that is relevant to the editor is changed. Only emitted in the editor.
 */
-func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditorStateChanged() Signal.Any {

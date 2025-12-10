@@ -120,8 +120,9 @@ type Any interface {
 	AsSkin() Instance
 }
 
-func (self Instance) SetBindCount(bind_count int) { //gd:Skin.set_bind_count
+func (self Instance) SetBindCount(bind_count int) Instance { //gd:Skin.set_bind_count
 	Advanced(self).SetBindCount(int64(bind_count))
+	return self
 }
 func (self Instance) GetBindCount() int { //gd:Skin.get_bind_count
 	return int(int(Advanced(self).GetBindCount()))
@@ -132,20 +133,23 @@ func (self Instance) AddBind(bone int, pose Transform3D.BasisOrigin) { //gd:Skin
 func (self Instance) AddNamedBind(name string, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
 	Advanced(self).AddNamedBind(String.New(name), Transform3D.BasisOrigin(pose))
 }
-func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
+func (self Instance) SetBindPose(bind_index int, pose Transform3D.BasisOrigin) Instance { //gd:Skin.set_bind_pose
 	Advanced(self).SetBindPose(int64(bind_index), Transform3D.BasisOrigin(pose))
+	return self
 }
 func (self Instance) GetBindPose(bind_index int) Transform3D.BasisOrigin { //gd:Skin.get_bind_pose
 	return Transform3D.BasisOrigin(Advanced(self).GetBindPose(int64(bind_index)))
 }
-func (self Instance) SetBindName(bind_index int, name string) { //gd:Skin.set_bind_name
+func (self Instance) SetBindName(bind_index int, name string) Instance { //gd:Skin.set_bind_name
 	Advanced(self).SetBindName(int64(bind_index), String.Name(String.New(name)))
+	return self
 }
 func (self Instance) GetBindName(bind_index int) string { //gd:Skin.get_bind_name
 	return string(Advanced(self).GetBindName(int64(bind_index)).String())
 }
-func (self Instance) SetBindBone(bind_index int, bone int) { //gd:Skin.set_bind_bone
+func (self Instance) SetBindBone(bind_index int, bone int) Instance { //gd:Skin.set_bind_bone
 	Advanced(self).SetBindBone(int64(bind_index), int64(bone))
+	return self
 }
 func (self Instance) GetBindBone(bind_index int) int { //gd:Skin.get_bind_bone
 	return int(int(Advanced(self).GetBindBone(int64(bind_index))))

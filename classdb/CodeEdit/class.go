@@ -398,12 +398,15 @@ func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string { //
 /*
 Sets the given line as a breakpoint. If true and [GuttersDrawBreakpointsGutter] is true, draws the theme's 'breakpoint' icon in the gutter for this line. See [GetBreakpointedLines] and [IsLineBreakpointed].
 
+Returns 'self' to enable method chaining.
+
 [GetBreakpointedLines]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GetBreakpointedLines
 [GuttersDrawBreakpointsGutter]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawBreakpointsGutter
 [IsLineBreakpointed]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IsLineBreakpointed
 */
-func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
+func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) Instance { //gd:CodeEdit.set_line_as_breakpoint
 	Advanced(self).SetLineAsBreakpoint(int64(line), breakpointed)
+	return self
 }
 
 /*
@@ -432,12 +435,15 @@ func (self Instance) GetBreakpointedLines() []int32 { //gd:CodeEdit.get_breakpoi
 /*
 Sets the given line as bookmarked. If true and [GuttersDrawBookmarks] is true, draws the theme's 'bookmark' icon in the gutter for this line. See [GetBookmarkedLines] and [IsLineBookmarked].
 
+Returns 'self' to enable method chaining.
+
 [GetBookmarkedLines]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GetBookmarkedLines
 [GuttersDrawBookmarks]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawBookmarks
 [IsLineBookmarked]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IsLineBookmarked
 */
-func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
+func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) Instance { //gd:CodeEdit.set_line_as_bookmarked
 	Advanced(self).SetLineAsBookmarked(int64(line), bookmarked)
+	return self
 }
 
 /*
@@ -466,12 +472,15 @@ func (self Instance) GetBookmarkedLines() []int32 { //gd:CodeEdit.get_bookmarked
 /*
 Sets the given line as executing. If true and [GuttersDrawExecutingLines] is true, draws the theme's 'executing_line' icon in the gutter for this line. See [GetExecutingLines] and [IsLineExecuting].
 
+Returns 'self' to enable method chaining.
+
 [GetExecutingLines]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GetExecutingLines
 [GuttersDrawExecutingLines]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawExecutingLines
 [IsLineExecuting]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IsLineExecuting
 */
-func (self Instance) SetLineAsExecuting(line int, executing bool) { //gd:CodeEdit.set_line_as_executing
+func (self Instance) SetLineAsExecuting(line int, executing bool) Instance { //gd:CodeEdit.set_line_as_executing
 	Advanced(self).SetLineAsExecuting(int64(line), executing)
+	return self
 }
 
 /*
@@ -601,16 +610,22 @@ func (self Instance) GetCodeRegionEndTag() string { //gd:CodeEdit.get_code_regio
 
 /*
 Sets the code region start and end tags (without comment delimiter).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCodeRegionTags() { //gd:CodeEdit.set_code_region_tags
+func (self Instance) SetCodeRegionTags() Instance { //gd:CodeEdit.set_code_region_tags
 	Advanced(self).SetCodeRegionTags(String.New("region"), String.New("endregion"))
+	return self
 }
 
 /*
 Sets the code region start and end tags (without comment delimiter).
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetCodeRegionTags(start string, end string) { //gd:CodeEdit.set_code_region_tags
+func (self MoreArgs) SetCodeRegionTags(start string, end string) MoreArgs { //gd:CodeEdit.set_code_region_tags
 	Advanced(self).SetCodeRegionTags(String.New(start), String.New(end))
+	return self
 }
 
 /*
@@ -771,18 +786,24 @@ func (self Instance) GetDelimiterEndPosition(line int, column int) Vector2.XY { 
 
 /*
 Sets the code hint text. Pass an empty string to clear.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCodeHint(code_hint string) { //gd:CodeEdit.set_code_hint
+func (self Instance) SetCodeHint(code_hint string) Instance { //gd:CodeEdit.set_code_hint
 	Advanced(self).SetCodeHint(String.New(code_hint))
+	return self
 }
 
 /*
 If true, the code hint will draw below the main caret. If false, the code hint will draw above the main caret. See [SetCodeHint].
 
+Returns 'self' to enable method chaining.
+
 [SetCodeHint]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetCodeHint
 */
-func (self Instance) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
+func (self Instance) SetCodeHintDrawBelow(draw_below bool) Instance { //gd:CodeEdit.set_code_hint_draw_below
 	Advanced(self).SetCodeHintDrawBelow(draw_below)
+	return self
 }
 
 /*
@@ -884,9 +905,12 @@ func (self Instance) GetCodeCompletionSelectedIndex() int { //gd:CodeEdit.get_co
 
 /*
 Sets the current selected completion option.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCodeCompletionSelectedIndex(index int) { //gd:CodeEdit.set_code_completion_selected_index
+func (self Instance) SetCodeCompletionSelectedIndex(index int) Instance { //gd:CodeEdit.set_code_completion_selected_index
 	Advanced(self).SetCodeCompletionSelectedIndex(int64(index))
+	return self
 }
 
 /*
@@ -927,10 +951,13 @@ func (self Instance) GetTextWithCursorChar(line int, column int) string { //gd:C
 /*
 Sets the symbol emitted by [OnSymbolValidate] as a valid lookup.
 
+Returns 'self' to enable method chaining.
+
 [OnSymbolValidate]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolValidate
 */
-func (self Instance) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_symbol_lookup_word_as_valid
+func (self Instance) SetSymbolLookupWordAsValid(valid bool) Instance { //gd:CodeEdit.set_symbol_lookup_word_as_valid
 	Advanced(self).SetSymbolLookupWordAsValid(valid)
+	return self
 }
 
 /*
@@ -1020,9 +1047,10 @@ func (self Instance) SymbolLookupOnClick() bool {
 	return bool(class(self).IsSymbolLookupOnClickEnabled())
 }
 
-// SetSymbolLookupOnClick sets the property returned by [IsSymbolLookupOnClickEnabled].
-func (self Instance) SetSymbolLookupOnClick(value bool) {
+// SetSymbolLookupOnClick sets the property returned by [IsSymbolLookupOnClickEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSymbolLookupOnClick(value bool) Instance {
 	class(self).SetSymbolLookupOnClickEnabled(value)
+	return self
 }
 
 /*
@@ -1034,9 +1062,10 @@ func (self Instance) SymbolTooltipOnHover() bool {
 	return bool(class(self).IsSymbolTooltipOnHoverEnabled())
 }
 
-// SetSymbolTooltipOnHover sets the property returned by [IsSymbolTooltipOnHoverEnabled].
-func (self Instance) SetSymbolTooltipOnHover(value bool) {
+// SetSymbolTooltipOnHover sets the property returned by [IsSymbolTooltipOnHoverEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSymbolTooltipOnHover(value bool) Instance {
 	class(self).SetSymbolTooltipOnHoverEnabled(value)
+	return self
 }
 
 /*
@@ -1050,9 +1079,10 @@ func (self Instance) LineFolding() bool {
 	return bool(class(self).IsLineFoldingEnabled())
 }
 
-// SetLineFolding sets the property returned by [IsLineFoldingEnabled].
-func (self Instance) SetLineFolding(value bool) {
+// SetLineFolding sets the property returned by [IsLineFoldingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLineFolding(value bool) Instance {
 	class(self).SetLineFoldingEnabled(value)
+	return self
 }
 
 /*
@@ -1062,9 +1092,10 @@ func (self Instance) LineLengthGuidelines() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetLineLengthGuidelines())))
 }
 
-// SetLineLengthGuidelines sets the property returned by [GetLineLengthGuidelines].
-func (self Instance) SetLineLengthGuidelines(value []int) {
+// SetLineLengthGuidelines sets the property returned by [GetLineLengthGuidelines]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLineLengthGuidelines(value []int) Instance {
 	class(self).SetLineLengthGuidelines(gd.ArrayFromSlice[Array.Contains[int64]](value))
+	return self
 }
 
 /*
@@ -1076,9 +1107,10 @@ func (self Instance) GuttersDrawBreakpointsGutter() bool {
 	return bool(class(self).IsDrawingBreakpointsGutter())
 }
 
-// SetGuttersDrawBreakpointsGutter sets the property returned by [IsDrawingBreakpointsGutter].
-func (self Instance) SetGuttersDrawBreakpointsGutter(value bool) {
+// SetGuttersDrawBreakpointsGutter sets the property returned by [IsDrawingBreakpointsGutter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersDrawBreakpointsGutter(value bool) Instance {
 	class(self).SetDrawBreakpointsGutter(value)
+	return self
 }
 
 /*
@@ -1090,9 +1122,10 @@ func (self Instance) GuttersDrawBookmarks() bool {
 	return bool(class(self).IsDrawingBookmarksGutter())
 }
 
-// SetGuttersDrawBookmarks sets the property returned by [IsDrawingBookmarksGutter].
-func (self Instance) SetGuttersDrawBookmarks(value bool) {
+// SetGuttersDrawBookmarks sets the property returned by [IsDrawingBookmarksGutter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersDrawBookmarks(value bool) Instance {
 	class(self).SetDrawBookmarksGutter(value)
+	return self
 }
 
 /*
@@ -1104,9 +1137,10 @@ func (self Instance) GuttersDrawExecutingLines() bool {
 	return bool(class(self).IsDrawingExecutingLinesGutter())
 }
 
-// SetGuttersDrawExecutingLines sets the property returned by [IsDrawingExecutingLinesGutter].
-func (self Instance) SetGuttersDrawExecutingLines(value bool) {
+// SetGuttersDrawExecutingLines sets the property returned by [IsDrawingExecutingLinesGutter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersDrawExecutingLines(value bool) Instance {
 	class(self).SetDrawExecutingLinesGutter(value)
+	return self
 }
 
 /*
@@ -1116,9 +1150,10 @@ func (self Instance) GuttersDrawLineNumbers() bool {
 	return bool(class(self).IsDrawLineNumbersEnabled())
 }
 
-// SetGuttersDrawLineNumbers sets the property returned by [IsDrawLineNumbersEnabled].
-func (self Instance) SetGuttersDrawLineNumbers(value bool) {
+// SetGuttersDrawLineNumbers sets the property returned by [IsDrawLineNumbersEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersDrawLineNumbers(value bool) Instance {
 	class(self).SetDrawLineNumbers(value)
+	return self
 }
 
 /*
@@ -1130,9 +1165,10 @@ func (self Instance) GuttersZeroPadLineNumbers() bool {
 	return bool(class(self).IsLineNumbersZeroPadded())
 }
 
-// SetGuttersZeroPadLineNumbers sets the property returned by [IsLineNumbersZeroPadded].
-func (self Instance) SetGuttersZeroPadLineNumbers(value bool) {
+// SetGuttersZeroPadLineNumbers sets the property returned by [IsLineNumbersZeroPadded]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersZeroPadLineNumbers(value bool) Instance {
 	class(self).SetLineNumbersZeroPadded(value)
+	return self
 }
 
 /*
@@ -1147,9 +1183,10 @@ func (self Instance) GuttersDrawFoldGutter() bool {
 	return bool(class(self).IsDrawingFoldGutter())
 }
 
-// SetGuttersDrawFoldGutter sets the property returned by [IsDrawingFoldGutter].
-func (self Instance) SetGuttersDrawFoldGutter(value bool) {
+// SetGuttersDrawFoldGutter sets the property returned by [IsDrawingFoldGutter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuttersDrawFoldGutter(value bool) Instance {
 	class(self).SetDrawFoldGutter(value)
+	return self
 }
 
 /*
@@ -1159,9 +1196,10 @@ func (self Instance) DelimiterStrings() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetStringDelimiters())))
 }
 
-// SetDelimiterStrings sets the property returned by [GetStringDelimiters].
-func (self Instance) SetDelimiterStrings(value []string) {
+// SetDelimiterStrings sets the property returned by [GetStringDelimiters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDelimiterStrings(value []string) Instance {
 	class(self).SetStringDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
+	return self
 }
 
 /*
@@ -1171,9 +1209,10 @@ func (self Instance) DelimiterComments() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCommentDelimiters())))
 }
 
-// SetDelimiterComments sets the property returned by [GetCommentDelimiters].
-func (self Instance) SetDelimiterComments(value []string) {
+// SetDelimiterComments sets the property returned by [GetCommentDelimiters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDelimiterComments(value []string) Instance {
 	class(self).SetCommentDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
+	return self
 }
 
 /*
@@ -1187,9 +1226,10 @@ func (self Instance) CodeCompletionEnabled() bool {
 	return bool(class(self).IsCodeCompletionEnabled())
 }
 
-// SetCodeCompletionEnabled sets the property returned by [IsCodeCompletionEnabled].
-func (self Instance) SetCodeCompletionEnabled(value bool) {
+// SetCodeCompletionEnabled sets the property returned by [IsCodeCompletionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCodeCompletionEnabled(value bool) Instance {
 	class(self).SetCodeCompletionEnabled(value)
+	return self
 }
 
 /*
@@ -1199,9 +1239,10 @@ func (self Instance) CodeCompletionPrefixes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCodeCompletionPrefixes())))
 }
 
-// SetCodeCompletionPrefixes sets the property returned by [GetCodeCompletionPrefixes].
-func (self Instance) SetCodeCompletionPrefixes(value []string) {
+// SetCodeCompletionPrefixes sets the property returned by [GetCodeCompletionPrefixes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCodeCompletionPrefixes(value []string) Instance {
 	class(self).SetCodeCompletionPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
+	return self
 }
 
 /*
@@ -1213,9 +1254,10 @@ func (self Instance) IndentSize() int {
 	return int(int(class(self).GetIndentSize()))
 }
 
-// SetIndentSize sets the property returned by [GetIndentSize].
-func (self Instance) SetIndentSize(value int) {
+// SetIndentSize sets the property returned by [GetIndentSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndentSize(value int) Instance {
 	class(self).SetIndentSize(int64(value))
+	return self
 }
 
 /*
@@ -1225,9 +1267,10 @@ func (self Instance) IndentUseSpaces() bool {
 	return bool(class(self).IsIndentUsingSpaces())
 }
 
-// SetIndentUseSpaces sets the property returned by [IsIndentUsingSpaces].
-func (self Instance) SetIndentUseSpaces(value bool) {
+// SetIndentUseSpaces sets the property returned by [IsIndentUsingSpaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndentUseSpaces(value bool) Instance {
 	class(self).SetIndentUsingSpaces(value)
+	return self
 }
 
 /*
@@ -1240,9 +1283,10 @@ func (self Instance) IndentAutomatic() bool {
 	return bool(class(self).IsAutoIndentEnabled())
 }
 
-// SetIndentAutomatic sets the property returned by [IsAutoIndentEnabled].
-func (self Instance) SetIndentAutomatic(value bool) {
+// SetIndentAutomatic sets the property returned by [IsAutoIndentEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndentAutomatic(value bool) Instance {
 	class(self).SetAutoIndentEnabled(value)
+	return self
 }
 
 /*
@@ -1254,9 +1298,10 @@ func (self Instance) IndentAutomaticPrefixes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAutoIndentPrefixes())))
 }
 
-// SetIndentAutomaticPrefixes sets the property returned by [GetAutoIndentPrefixes].
-func (self Instance) SetIndentAutomaticPrefixes(value []string) {
+// SetIndentAutomaticPrefixes sets the property returned by [GetAutoIndentPrefixes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndentAutomaticPrefixes(value []string) Instance {
 	class(self).SetAutoIndentPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
+	return self
 }
 
 /*
@@ -1268,9 +1313,10 @@ func (self Instance) AutoBraceCompletionEnabled() bool {
 	return bool(class(self).IsAutoBraceCompletionEnabled())
 }
 
-// SetAutoBraceCompletionEnabled sets the property returned by [IsAutoBraceCompletionEnabled].
-func (self Instance) SetAutoBraceCompletionEnabled(value bool) {
+// SetAutoBraceCompletionEnabled sets the property returned by [IsAutoBraceCompletionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoBraceCompletionEnabled(value bool) Instance {
 	class(self).SetAutoBraceCompletionEnabled(value)
+	return self
 }
 
 /*
@@ -1282,9 +1328,10 @@ func (self Instance) AutoBraceCompletionHighlightMatching() bool {
 	return bool(class(self).IsHighlightMatchingBracesEnabled())
 }
 
-// SetAutoBraceCompletionHighlightMatching sets the property returned by [IsHighlightMatchingBracesEnabled].
-func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) {
+// SetAutoBraceCompletionHighlightMatching sets the property returned by [IsHighlightMatchingBracesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) Instance {
 	class(self).SetHighlightMatchingBracesEnabled(value)
+	return self
 }
 
 /*
@@ -1297,9 +1344,10 @@ func (self Instance) AutoBraceCompletionPairs() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAutoBraceCompletionPairs()))
 }
 
-// SetAutoBraceCompletionPairs sets the property returned by [GetAutoBraceCompletionPairs].
-func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) {
+// SetAutoBraceCompletionPairs sets the property returned by [GetAutoBraceCompletionPairs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) Instance {
 	class(self).SetAutoBraceCompletionPairs(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -2358,12 +2406,13 @@ func (self class) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 /*
 Emitted when a breakpoint is added or removed from a line. If the line is removed via backspace, a signal is emitted at the old line.
 */
-func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flags) {
+func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BreakpointToggled() Signal.Any {
@@ -2376,12 +2425,13 @@ Emitted when the user requests code completion. This signal will not be sent if 
 [CodeCompletionEnabled]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.CodeCompletionEnabled
 [RequestCodeCompletion]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Interface
 */
-func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CodeCompletionRequested() Signal.Any {
@@ -2391,12 +2441,13 @@ func (self class) CodeCompletionRequested() Signal.Any {
 /*
 Emitted when the user has clicked on a valid symbol.
 */
-func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
+func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SymbolLookup() Signal.Any {
@@ -2411,12 +2462,13 @@ Note: [SymbolLookupOnClick] must be true for this signal to be emitted.
 [SetSymbolLookupWordAsValid]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetSymbolLookupWordAsValid
 [SymbolLookupOnClick]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SymbolLookupOnClick
 */
-func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Flags) {
+func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SymbolValidate() Signal.Any {
@@ -2432,12 +2484,13 @@ Note: [SymbolTooltipOnHover] must be true for this signal to be emitted.
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [SymbolTooltipOnHover]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SymbolTooltipOnHover
 */
-func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
+func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SymbolHovered() Signal.Any {

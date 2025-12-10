@@ -341,18 +341,24 @@ func (self Instance) Poll() error { //gd:HTTPClient.poll
 Sets the proxy server for HTTP requests.
 
 The proxy server is unset if 'host' is empty or 'port' is -1.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPClient.set_http_proxy
+func (self Instance) SetHttpProxy(host string, port int) Instance { //gd:HTTPClient.set_http_proxy
 	Advanced(self).SetHttpProxy(String.New(host), int64(port))
+	return self
 }
 
 /*
 Sets the proxy server for HTTPS requests.
 
 The proxy server is unset if 'host' is empty or 'port' is -1.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPClient.set_https_proxy
+func (self Instance) SetHttpsProxy(host string, port int) Instance { //gd:HTTPClient.set_https_proxy
 	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
+	return self
 }
 
 /*
@@ -418,9 +424,10 @@ func (self Instance) BlockingModeEnabled() bool {
 	return bool(class(self).IsBlockingModeEnabled())
 }
 
-// SetBlockingModeEnabled sets the property returned by [IsBlockingModeEnabled].
-func (self Instance) SetBlockingModeEnabled(value bool) {
+// SetBlockingModeEnabled sets the property returned by [IsBlockingModeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlockingModeEnabled(value bool) Instance {
 	class(self).SetBlockingMode(value)
+	return self
 }
 
 /*
@@ -430,9 +437,10 @@ func (self Instance) Connection() StreamPeer.Instance {
 	return StreamPeer.Instance(class(self).GetConnection())
 }
 
-// SetConnection sets the property returned by [GetConnection].
-func (self Instance) SetConnection(value StreamPeer.Instance) {
+// SetConnection sets the property returned by [GetConnection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConnection(value StreamPeer.Instance) Instance {
 	class(self).SetConnection(value)
+	return self
 }
 
 /*
@@ -444,9 +452,10 @@ func (self Instance) ReadChunkSize() int {
 	return int(int(class(self).GetReadChunkSize()))
 }
 
-// SetReadChunkSize sets the property returned by [GetReadChunkSize].
-func (self Instance) SetReadChunkSize(value int) {
+// SetReadChunkSize sets the property returned by [GetReadChunkSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReadChunkSize(value int) Instance {
 	class(self).SetReadChunkSize(int64(value))
+	return self
 }
 
 /*

@@ -207,9 +207,10 @@ func (self Instance) FontNames() []string {
 	return []string(class(self).GetFontNames().Strings())
 }
 
-// SetFontNames sets the property returned by [GetFontNames].
-func (self Instance) SetFontNames(value []string) {
+// SetFontNames sets the property returned by [GetFontNames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFontNames(value []string) Instance {
 	class(self).SetFontNames(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -219,23 +220,28 @@ func (self Instance) FontItalic() bool {
 	return bool(class(self).GetFontItalic())
 }
 
-// SetFontItalic sets the property returned by [GetFontItalic].
-func (self Instance) SetFontItalic(value bool) {
+// SetFontItalic sets the property returned by [GetFontItalic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFontItalic(value bool) Instance {
 	class(self).SetFontItalic(value)
+	return self
 }
 
 /*
 Preferred weight (boldness) of the font. A value in the 100...999 range, normal font weight is 400, bold font weight is 700.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontWeight(value int) {
+func (self Instance) SetFontWeight(value int) Instance {
 	class(self).SetFontWeight(int64(value))
+	return self
 }
 
 /*
 Preferred font stretch amount, compared to a normal width. A percentage value between 50% and 200%.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontStretch(value int) {
+func (self Instance) SetFontStretch(value int) Instance {
 	class(self).SetFontStretch(int64(value))
+	return self
 }
 
 /*
@@ -245,9 +251,10 @@ func (self Instance) Antialiasing() TextServer.FontAntialiasing {
 	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
-// SetAntialiasing sets the property returned by [GetAntialiasing].
-func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) {
+// SetAntialiasing sets the property returned by [GetAntialiasing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) Instance {
 	class(self).SetAntialiasing(value)
+	return self
 }
 
 /*
@@ -257,9 +264,10 @@ func (self Instance) GenerateMipmaps() bool {
 	return bool(class(self).GetGenerateMipmaps())
 }
 
-// SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps].
-func (self Instance) SetGenerateMipmaps(value bool) {
+// SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGenerateMipmaps(value bool) Instance {
 	class(self).SetGenerateMipmaps(value)
+	return self
 }
 
 /*
@@ -269,9 +277,10 @@ func (self Instance) DisableEmbeddedBitmaps() bool {
 	return bool(class(self).GetDisableEmbeddedBitmaps())
 }
 
-// SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps].
-func (self Instance) SetDisableEmbeddedBitmaps(value bool) {
+// SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableEmbeddedBitmaps(value bool) Instance {
 	class(self).SetDisableEmbeddedBitmaps(value)
+	return self
 }
 
 /*
@@ -281,9 +290,10 @@ func (self Instance) AllowSystemFallback() bool {
 	return bool(class(self).IsAllowSystemFallback())
 }
 
-// SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback].
-func (self Instance) SetAllowSystemFallback(value bool) {
+// SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowSystemFallback(value bool) Instance {
 	class(self).SetAllowSystemFallback(value)
+	return self
 }
 
 /*
@@ -293,9 +303,10 @@ func (self Instance) ForceAutohinter() bool {
 	return bool(class(self).IsForceAutohinter())
 }
 
-// SetForceAutohinter sets the property returned by [IsForceAutohinter].
-func (self Instance) SetForceAutohinter(value bool) {
+// SetForceAutohinter sets the property returned by [IsForceAutohinter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetForceAutohinter(value bool) Instance {
 	class(self).SetForceAutohinter(value)
+	return self
 }
 
 /*
@@ -305,9 +316,10 @@ func (self Instance) ModulateColorGlyphs() bool {
 	return bool(class(self).IsModulateColorGlyphs())
 }
 
-// SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs].
-func (self Instance) SetModulateColorGlyphs(value bool) {
+// SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulateColorGlyphs(value bool) Instance {
 	class(self).SetModulateColorGlyphs(value)
+	return self
 }
 
 /*
@@ -317,9 +329,10 @@ func (self Instance) Hinting() TextServer.Hinting {
 	return TextServer.Hinting(class(self).GetHinting())
 }
 
-// SetHinting sets the property returned by [GetHinting].
-func (self Instance) SetHinting(value TextServer.Hinting) {
+// SetHinting sets the property returned by [GetHinting]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHinting(value TextServer.Hinting) Instance {
 	class(self).SetHinting(value)
+	return self
 }
 
 /*
@@ -329,9 +342,10 @@ func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
 	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
-// SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning].
-func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) {
+// SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) Instance {
 	class(self).SetSubpixelPositioning(value)
+	return self
 }
 
 /*
@@ -341,9 +355,10 @@ func (self Instance) KeepRoundingRemainders() bool {
 	return bool(class(self).GetKeepRoundingRemainders())
 }
 
-// SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders].
-func (self Instance) SetKeepRoundingRemainders(value bool) {
+// SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepRoundingRemainders(value bool) Instance {
 	class(self).SetKeepRoundingRemainders(value)
+	return self
 }
 
 /*
@@ -353,9 +368,10 @@ func (self Instance) MultichannelSignedDistanceField() bool {
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
 
-// SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField].
-func (self Instance) SetMultichannelSignedDistanceField(value bool) {
+// SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMultichannelSignedDistanceField(value bool) Instance {
 	class(self).SetMultichannelSignedDistanceField(value)
+	return self
 }
 
 /*
@@ -367,9 +383,10 @@ func (self Instance) MsdfPixelRange() int {
 	return int(int(class(self).GetMsdfPixelRange()))
 }
 
-// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange].
-func (self Instance) SetMsdfPixelRange(value int) {
+// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsdfPixelRange(value int) Instance {
 	class(self).SetMsdfPixelRange(int64(value))
+	return self
 }
 
 /*
@@ -379,9 +396,10 @@ func (self Instance) MsdfSize() int {
 	return int(int(class(self).GetMsdfSize()))
 }
 
-// SetMsdfSize sets the property returned by [GetMsdfSize].
-func (self Instance) SetMsdfSize(value int) {
+// SetMsdfSize sets the property returned by [GetMsdfSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsdfSize(value int) Instance {
 	class(self).SetMsdfSize(int64(value))
+	return self
 }
 
 /*
@@ -393,9 +411,10 @@ func (self Instance) Oversampling() Float.X {
 	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
-// SetOversampling sets the property returned by [GetOversampling].
-func (self Instance) SetOversampling(value Float.X) {
+// SetOversampling sets the property returned by [GetOversampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversampling(value Float.X) Instance {
 	class(self).SetOversampling(float64(value))
+	return self
 }
 
 //go:nosplit

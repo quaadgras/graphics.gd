@@ -234,30 +234,39 @@ func (self Instance) GetOptionDefault(option int) int { //gd:EditorFileDialog.ge
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionName(option int, name string) { //gd:EditorFileDialog.set_option_name
+func (self Instance) SetOptionName(option int, name string) Instance { //gd:EditorFileDialog.set_option_name
 	Advanced(self).SetOptionName(int64(option), String.New(name))
+	return self
 }
 
 /*
 Sets the option values of the [OptionButton] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionValues(option int, values []string) { //gd:EditorFileDialog.set_option_values
+func (self Instance) SetOptionValues(option int, values []string) Instance { //gd:EditorFileDialog.set_option_values
 	Advanced(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
+	return self
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:EditorFileDialog.set_option_default
+func (self Instance) SetOptionDefault(option int, default_value_index int) Instance { //gd:EditorFileDialog.set_option_default
 	Advanced(self).SetOptionDefault(int64(option), int64(default_value_index))
+	return self
 }
 
 /*
@@ -291,9 +300,12 @@ func (self Instance) ClearFilenameFilter() { //gd:EditorFileDialog.clear_filenam
 
 /*
 Sets the value of the filter for file names.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFilenameFilter(filter string) { //gd:EditorFileDialog.set_filename_filter
+func (self Instance) SetFilenameFilter(filter string) Instance { //gd:EditorFileDialog.set_filename_filter
 	Advanced(self).SetFilenameFilter(String.New(filter))
+	return self
 }
 
 /*
@@ -407,9 +419,10 @@ func (self Instance) Access() Access {
 	return Access(class(self).GetAccess())
 }
 
-// SetAccess sets the property returned by [GetAccess].
-func (self Instance) SetAccess(value Access) {
+// SetAccess sets the property returned by [GetAccess]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccess(value Access) Instance {
 	class(self).SetAccess(value)
+	return self
 }
 
 /*
@@ -421,9 +434,10 @@ func (self Instance) DisplayMode() DisplayMode {
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
-// SetDisplayMode sets the property returned by [GetDisplayMode].
-func (self Instance) SetDisplayMode(value DisplayMode) {
+// SetDisplayMode sets the property returned by [GetDisplayMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisplayMode(value DisplayMode) Instance {
 	class(self).SetDisplayMode(value)
+	return self
 }
 
 /*
@@ -433,9 +447,10 @@ func (self Instance) FileMode() FileMode {
 	return FileMode(class(self).GetFileMode())
 }
 
-// SetFileMode sets the property returned by [GetFileMode].
-func (self Instance) SetFileMode(value FileMode) {
+// SetFileMode sets the property returned by [GetFileMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFileMode(value FileMode) Instance {
 	class(self).SetFileMode(value)
+	return self
 }
 
 /*
@@ -445,9 +460,10 @@ func (self Instance) CurrentDir() string {
 	return string(class(self).GetCurrentDir().String())
 }
 
-// SetCurrentDir sets the property returned by [GetCurrentDir].
-func (self Instance) SetCurrentDir(value string) {
+// SetCurrentDir sets the property returned by [GetCurrentDir]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentDir(value string) Instance {
 	class(self).SetCurrentDir(String.New(value))
+	return self
 }
 
 /*
@@ -457,9 +473,10 @@ func (self Instance) CurrentFile() string {
 	return string(class(self).GetCurrentFile().String())
 }
 
-// SetCurrentFile sets the property returned by [GetCurrentFile].
-func (self Instance) SetCurrentFile(value string) {
+// SetCurrentFile sets the property returned by [GetCurrentFile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentFile(value string) Instance {
 	class(self).SetCurrentFile(String.New(value))
+	return self
 }
 
 /*
@@ -469,9 +486,10 @@ func (self Instance) CurrentPath() string {
 	return string(class(self).GetCurrentPath().String())
 }
 
-// SetCurrentPath sets the property returned by [GetCurrentPath].
-func (self Instance) SetCurrentPath(value string) {
+// SetCurrentPath sets the property returned by [GetCurrentPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentPath(value string) Instance {
 	class(self).SetCurrentPath(String.New(value))
+	return self
 }
 
 /*
@@ -481,9 +499,10 @@ func (self Instance) Filters() []string {
 	return []string(class(self).GetFilters().Strings())
 }
 
-// SetFilters sets the property returned by [GetFilters].
-func (self Instance) SetFilters(value []string) {
+// SetFilters sets the property returned by [GetFilters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilters(value []string) Instance {
 	class(self).SetFilters(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -496,9 +515,10 @@ func (self Instance) OptionCount() int {
 	return int(int(class(self).GetOptionCount()))
 }
 
-// SetOptionCount sets the property returned by [GetOptionCount].
-func (self Instance) SetOptionCount(value int) {
+// SetOptionCount sets the property returned by [GetOptionCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOptionCount(value int) Instance {
 	class(self).SetOptionCount(int64(value))
+	return self
 }
 
 /*
@@ -511,9 +531,10 @@ func (self Instance) ShowHiddenFiles() bool {
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
-// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles].
-func (self Instance) SetShowHiddenFiles(value bool) {
+// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowHiddenFiles(value bool) Instance {
 	class(self).SetShowHiddenFiles(value)
+	return self
 }
 
 /*
@@ -525,9 +546,10 @@ func (self Instance) DisableOverwriteWarning() bool {
 	return bool(class(self).IsOverwriteWarningDisabled())
 }
 
-// SetDisableOverwriteWarning sets the property returned by [IsOverwriteWarningDisabled].
-func (self Instance) SetDisableOverwriteWarning(value bool) {
+// SetDisableOverwriteWarning sets the property returned by [IsOverwriteWarningDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableOverwriteWarning(value bool) Instance {
 	class(self).SetDisableOverwriteWarning(value)
+	return self
 }
 
 /*
@@ -875,12 +897,13 @@ func (self class) Invalidate() { //gd:EditorFileDialog.invalidate
 /*
 Emitted when a file is selected.
 */
-func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) {
+func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FileSelected() Signal.Any {
@@ -890,12 +913,13 @@ func (self class) FileSelected() Signal.Any {
 /*
 Emitted when multiple files are selected.
 */
-func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) {
+func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilesSelected() Signal.Any {
@@ -905,12 +929,13 @@ func (self class) FilesSelected() Signal.Any {
 /*
 Emitted when a directory is selected.
 */
-func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
+func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DirSelected() Signal.Any {
@@ -920,12 +945,13 @@ func (self class) DirSelected() Signal.Any {
 /*
 Emitted when the filter for file names changes.
 */
-func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) {
+func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilenameFilterChanged() Signal.Any {

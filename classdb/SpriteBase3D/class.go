@@ -223,9 +223,10 @@ func (self Instance) Centered() bool {
 	return bool(class(self).IsCentered())
 }
 
-// SetCentered sets the property returned by [IsCentered].
-func (self Instance) SetCentered(value bool) {
+// SetCentered sets the property returned by [IsCentered]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCentered(value bool) Instance {
 	class(self).SetCentered(value)
+	return self
 }
 
 /*
@@ -239,9 +240,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -251,9 +253,10 @@ func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
-// SetFlipH sets the property returned by [IsFlippedH].
-func (self Instance) SetFlipH(value bool) {
+// SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipH(value bool) Instance {
 	class(self).SetFlipH(value)
+	return self
 }
 
 /*
@@ -263,9 +266,10 @@ func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
-// SetFlipV sets the property returned by [IsFlippedV].
-func (self Instance) SetFlipV(value bool) {
+// SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipV(value bool) Instance {
 	class(self).SetFlipV(value)
+	return self
 }
 
 /*
@@ -287,9 +291,10 @@ func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
-// SetModulate sets the property returned by [GetModulate].
-func (self Instance) SetModulate(value Color.RGBA) {
+// SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulate(value Color.RGBA) Instance {
 	class(self).SetModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -299,9 +304,10 @@ func (self Instance) PixelSize() Float.X {
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
-// SetPixelSize sets the property returned by [GetPixelSize].
-func (self Instance) SetPixelSize(value Float.X) {
+// SetPixelSize sets the property returned by [GetPixelSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPixelSize(value Float.X) Instance {
 	class(self).SetPixelSize(float64(value))
+	return self
 }
 
 /*
@@ -311,9 +317,10 @@ func (self Instance) Axis() Vector3.Axis {
 	return Vector3.Axis(class(self).GetAxis())
 }
 
-// SetAxis sets the property returned by [GetAxis].
-func (self Instance) SetAxis(value Vector3.Axis) {
+// SetAxis sets the property returned by [GetAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxis(value Vector3.Axis) Instance {
 	class(self).SetAxis(value)
+	return self
 }
 
 /*
@@ -327,9 +334,10 @@ func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
 	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
-// SetBillboard sets the property returned by [GetBillboardMode].
-func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) {
+// SetBillboard sets the property returned by [GetBillboardMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) Instance {
 	class(self).SetBillboardMode(value)
+	return self
 }
 
 /*
@@ -339,9 +347,10 @@ func (self Instance) Transparent() bool {
 	return bool(class(self).GetDrawFlag(0))
 }
 
-// SetTransparent sets the property returned by [GetDrawFlag].
-func (self Instance) SetTransparent(value bool) {
+// SetTransparent sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransparent(value bool) Instance {
 	class(self).SetDrawFlag(0, value)
+	return self
 }
 
 /*
@@ -354,9 +363,10 @@ func (self Instance) Shaded() bool {
 	return bool(class(self).GetDrawFlag(1))
 }
 
-// SetShaded sets the property returned by [GetDrawFlag].
-func (self Instance) SetShaded(value bool) {
+// SetShaded sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShaded(value bool) Instance {
 	class(self).SetDrawFlag(1, value)
+	return self
 }
 
 /*
@@ -366,9 +376,10 @@ func (self Instance) DoubleSided() bool {
 	return bool(class(self).GetDrawFlag(2))
 }
 
-// SetDoubleSided sets the property returned by [GetDrawFlag].
-func (self Instance) SetDoubleSided(value bool) {
+// SetDoubleSided sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDoubleSided(value bool) Instance {
 	class(self).SetDrawFlag(2, value)
+	return self
 }
 
 /*
@@ -378,9 +389,10 @@ func (self Instance) NoDepthTest() bool {
 	return bool(class(self).GetDrawFlag(3))
 }
 
-// SetNoDepthTest sets the property returned by [GetDrawFlag].
-func (self Instance) SetNoDepthTest(value bool) {
+// SetNoDepthTest sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNoDepthTest(value bool) Instance {
 	class(self).SetDrawFlag(3, value)
+	return self
 }
 
 /*
@@ -393,9 +405,10 @@ func (self Instance) FixedSize() bool {
 	return bool(class(self).GetDrawFlag(4))
 }
 
-// SetFixedSize sets the property returned by [GetDrawFlag].
-func (self Instance) SetFixedSize(value bool) {
+// SetFixedSize sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedSize(value bool) Instance {
 	class(self).SetDrawFlag(4, value)
+	return self
 }
 
 /*
@@ -405,9 +418,10 @@ func (self Instance) AlphaCut() AlphaCutMode {
 	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
-// SetAlphaCut sets the property returned by [GetAlphaCutMode].
-func (self Instance) SetAlphaCut(value AlphaCutMode) {
+// SetAlphaCut sets the property returned by [GetAlphaCutMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaCut(value AlphaCutMode) Instance {
 	class(self).SetAlphaCutMode(value)
+	return self
 }
 
 /*
@@ -417,9 +431,10 @@ func (self Instance) AlphaScissorThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
-// SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold].
-func (self Instance) SetAlphaScissorThreshold(value Float.X) {
+// SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaScissorThreshold(value Float.X) Instance {
 	class(self).SetAlphaScissorThreshold(float64(value))
+	return self
 }
 
 /*
@@ -429,9 +444,10 @@ func (self Instance) AlphaHashScale() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
-// SetAlphaHashScale sets the property returned by [GetAlphaHashScale].
-func (self Instance) SetAlphaHashScale(value Float.X) {
+// SetAlphaHashScale sets the property returned by [GetAlphaHashScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaHashScale(value Float.X) Instance {
 	class(self).SetAlphaHashScale(float64(value))
+	return self
 }
 
 /*
@@ -441,9 +457,10 @@ func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
 	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
-// SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing].
-func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) {
+// SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) Instance {
 	class(self).SetAlphaAntialiasing(value)
+	return self
 }
 
 /*
@@ -453,9 +470,10 @@ func (self Instance) AlphaAntialiasingEdge() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
-// SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge].
-func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
+// SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlphaAntialiasingEdge(value Float.X) Instance {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
+	return self
 }
 
 /*
@@ -467,9 +485,10 @@ func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
 	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
-// SetTextureFilter sets the property returned by [GetTextureFilter].
-func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) {
+// SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) Instance {
 	class(self).SetTextureFilter(value)
+	return self
 }
 
 /*
@@ -485,9 +504,10 @@ func (self Instance) RenderPriority() int {
 	return int(int(class(self).GetRenderPriority()))
 }
 
-// SetRenderPriority sets the property returned by [GetRenderPriority].
-func (self Instance) SetRenderPriority(value int) {
+// SetRenderPriority sets the property returned by [GetRenderPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderPriority(value int) Instance {
 	class(self).SetRenderPriority(int64(value))
+	return self
 }
 
 //go:nosplit

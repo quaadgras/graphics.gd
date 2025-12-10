@@ -173,9 +173,10 @@ func (self Instance) TextureType() TextureType {
 	return TextureType(class(self).GetTextureType())
 }
 
-// SetTextureType sets the property returned by [GetTextureType].
-func (self Instance) SetTextureType(value TextureType) {
+// SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureType(value TextureType) Instance {
 	class(self).SetTextureType(value)
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) ColorDefault() ColorDefault {
 	return ColorDefault(class(self).GetColorDefault())
 }
 
-// SetColorDefault sets the property returned by [GetColorDefault].
-func (self Instance) SetColorDefault(value ColorDefault) {
+// SetColorDefault sets the property returned by [GetColorDefault]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorDefault(value ColorDefault) Instance {
 	class(self).SetColorDefault(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) TextureFilter() TextureFilter {
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
-// SetTextureFilter sets the property returned by [GetTextureFilter].
-func (self Instance) SetTextureFilter(value TextureFilter) {
+// SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureFilter(value TextureFilter) Instance {
 	class(self).SetTextureFilter(value)
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) TextureRepeat() TextureRepeat {
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
-// SetTextureRepeat sets the property returned by [GetTextureRepeat].
-func (self Instance) SetTextureRepeat(value TextureRepeat) {
+// SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRepeat(value TextureRepeat) Instance {
 	class(self).SetTextureRepeat(value)
+	return self
 }
 
 /*
@@ -221,9 +225,10 @@ func (self Instance) TextureSource() TextureSource {
 	return TextureSource(class(self).GetTextureSource())
 }
 
-// SetTextureSource sets the property returned by [GetTextureSource].
-func (self Instance) SetTextureSource(value TextureSource) {
+// SetTextureSource sets the property returned by [GetTextureSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureSource(value TextureSource) Instance {
 	class(self).SetTextureSource(value)
+	return self
 }
 
 //go:nosplit

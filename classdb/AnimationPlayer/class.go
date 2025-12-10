@@ -199,9 +199,12 @@ func (self Instance) AnimationGetNext(animation_from string) string { //gd:Anima
 
 /*
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) { //gd:AnimationPlayer.set_blend_time
+func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) Instance { //gd:AnimationPlayer.set_blend_time
 	Advanced(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), float64(sec))
+	return self
 }
 
 /*
@@ -491,10 +494,13 @@ Changes the start and end markers of the section being played. The current playb
 
 If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
 
+Returns 'self' to enable method chaining.
+
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
-func (self Instance) SetSectionWithMarkers() { //gd:AnimationPlayer.set_section_with_markers
+func (self Instance) SetSectionWithMarkers() Instance { //gd:AnimationPlayer.set_section_with_markers
 	Advanced(self).SetSectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")))
+	return self
 }
 
 /*
@@ -502,28 +508,37 @@ Changes the start and end markers of the section being played. The current playb
 
 If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
 
+Returns 'self' to enable method chaining.
+
 [PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
 */
-func (self MoreArgs) SetSectionWithMarkers(start_marker string, end_marker string) { //gd:AnimationPlayer.set_section_with_markers
+func (self MoreArgs) SetSectionWithMarkers(start_marker string, end_marker string) MoreArgs { //gd:AnimationPlayer.set_section_with_markers
 	Advanced(self).SetSectionWithMarkers(String.Name(String.New(start_marker)), String.Name(String.New(end_marker)))
+	return self
 }
 
 /*
 Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [PlaySection].
 
+Returns 'self' to enable method chaining.
+
 [PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
 */
-func (self Instance) SetSection() { //gd:AnimationPlayer.set_section
+func (self Instance) SetSection() Instance { //gd:AnimationPlayer.set_section
 	Advanced(self).SetSection(float64(-1), float64(-1))
+	return self
 }
 
 /*
 Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [PlaySection].
 
+Returns 'self' to enable method chaining.
+
 [PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
 */
-func (self MoreArgs) SetSection(start_time Float.X, end_time Float.X) { //gd:AnimationPlayer.set_section
+func (self MoreArgs) SetSection(start_time Float.X, end_time Float.X) MoreArgs { //gd:AnimationPlayer.set_section
 	Advanced(self).SetSection(float64(start_time), float64(end_time))
+	return self
 }
 
 /*
@@ -584,9 +599,12 @@ func (self MoreArgs) SeekTo(seconds Float.X, update bool, update_only bool) { //
 
 /*
 Sets the process notification in which to update animations.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
+func (self Instance) SetProcessCallback(mode AnimationProcessCallback) Instance { //gd:AnimationPlayer.set_process_callback
 	Advanced(self).SetProcessCallback(mode)
+	return self
 }
 
 /*
@@ -598,9 +616,12 @@ func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:Animat
 
 /*
 Sets the call mode used for "Call Method" tracks.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
+func (self Instance) SetMethodCallMode(mode AnimationMethodCallMode) Instance { //gd:AnimationPlayer.set_method_call_mode
 	Advanced(self).SetMethodCallMode(mode)
+	return self
 }
 
 /*
@@ -612,9 +633,12 @@ func (self Instance) GetMethodCallMode() AnimationMethodCallMode { //gd:Animatio
 
 /*
 Sets the node which node path references will travel from.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRoot(path string) { //gd:AnimationPlayer.set_root
+func (self Instance) SetRoot(path string) Instance { //gd:AnimationPlayer.set_root
 	Advanced(self).SetRoot(Path.ToNode(String.New(path)))
+	return self
 }
 
 /*
@@ -678,9 +702,10 @@ func (self Instance) CurrentAnimation() string {
 	return string(class(self).GetCurrentAnimation().String())
 }
 
-// SetCurrentAnimation sets the property returned by [GetCurrentAnimation].
-func (self Instance) SetCurrentAnimation(value string) {
+// SetCurrentAnimation sets the property returned by [GetCurrentAnimation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentAnimation(value string) Instance {
 	class(self).SetCurrentAnimation(String.New(value))
+	return self
 }
 
 /*
@@ -692,9 +717,10 @@ func (self Instance) AssignedAnimation() string {
 	return string(class(self).GetAssignedAnimation().String())
 }
 
-// SetAssignedAnimation sets the property returned by [GetAssignedAnimation].
-func (self Instance) SetAssignedAnimation(value string) {
+// SetAssignedAnimation sets the property returned by [GetAssignedAnimation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAssignedAnimation(value string) Instance {
 	class(self).SetAssignedAnimation(String.New(value))
+	return self
 }
 
 /*
@@ -704,9 +730,10 @@ func (self Instance) Autoplay() string {
 	return string(class(self).GetAutoplay().String())
 }
 
-// SetAutoplay sets the property returned by [GetAutoplay].
-func (self Instance) SetAutoplay(value string) {
+// SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoplay(value string) Instance {
 	class(self).SetAutoplay(String.New(value))
+	return self
 }
 
 /*
@@ -736,9 +763,10 @@ func (self Instance) PlaybackAutoCapture() bool {
 	return bool(class(self).IsAutoCapture())
 }
 
-// SetPlaybackAutoCapture sets the property returned by [IsAutoCapture].
-func (self Instance) SetPlaybackAutoCapture(value bool) {
+// SetPlaybackAutoCapture sets the property returned by [IsAutoCapture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackAutoCapture(value bool) Instance {
 	class(self).SetAutoCapture(value)
+	return self
 }
 
 /*
@@ -754,9 +782,10 @@ func (self Instance) PlaybackAutoCaptureDuration() Float.X {
 	return Float.X(Float.X(class(self).GetAutoCaptureDuration()))
 }
 
-// SetPlaybackAutoCaptureDuration sets the property returned by [GetAutoCaptureDuration].
-func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) {
+// SetPlaybackAutoCaptureDuration sets the property returned by [GetAutoCaptureDuration]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) Instance {
 	class(self).SetAutoCaptureDuration(float64(value))
+	return self
 }
 
 /*
@@ -766,9 +795,10 @@ func (self Instance) PlaybackAutoCaptureTransitionType() Tween.TransitionType {
 	return Tween.TransitionType(class(self).GetAutoCaptureTransitionType())
 }
 
-// SetPlaybackAutoCaptureTransitionType sets the property returned by [GetAutoCaptureTransitionType].
-func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) {
+// SetPlaybackAutoCaptureTransitionType sets the property returned by [GetAutoCaptureTransitionType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) Instance {
 	class(self).SetAutoCaptureTransitionType(value)
+	return self
 }
 
 /*
@@ -778,9 +808,10 @@ func (self Instance) PlaybackAutoCaptureEaseType() Tween.EaseType {
 	return Tween.EaseType(class(self).GetAutoCaptureEaseType())
 }
 
-// SetPlaybackAutoCaptureEaseType sets the property returned by [GetAutoCaptureEaseType].
-func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) {
+// SetPlaybackAutoCaptureEaseType sets the property returned by [GetAutoCaptureEaseType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) Instance {
 	class(self).SetAutoCaptureEaseType(value)
+	return self
 }
 
 /*
@@ -790,9 +821,10 @@ func (self Instance) PlaybackDefaultBlendTime() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultBlendTime()))
 }
 
-// SetPlaybackDefaultBlendTime sets the property returned by [GetDefaultBlendTime].
-func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) {
+// SetPlaybackDefaultBlendTime sets the property returned by [GetDefaultBlendTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) Instance {
 	class(self).SetDefaultBlendTime(float64(value))
+	return self
 }
 
 /*
@@ -804,9 +836,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 /*
@@ -823,9 +856,10 @@ func (self Instance) MovieQuitOnFinish() bool {
 	return bool(class(self).IsMovieQuitOnFinishEnabled())
 }
 
-// SetMovieQuitOnFinish sets the property returned by [IsMovieQuitOnFinishEnabled].
-func (self Instance) SetMovieQuitOnFinish(value bool) {
+// SetMovieQuitOnFinish sets the property returned by [IsMovieQuitOnFinishEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMovieQuitOnFinish(value bool) Instance {
 	class(self).SetMovieQuitOnFinishEnabled(value)
+	return self
 }
 
 /*
@@ -1381,12 +1415,13 @@ Emitted when [CurrentAnimation] changes.
 
 [CurrentAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimation
 */
-func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("current_animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CurrentAnimationChanged() Signal.Any {
@@ -1402,12 +1437,13 @@ Note: The signal is not emitted when the animation is changed via [AnimationPlay
 [AnimationPlayer.Queue]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Queue
 [AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
 */
-func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string), flags ...Signal.Flags) {
+func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationChanged() Signal.Any {

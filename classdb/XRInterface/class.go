@@ -372,9 +372,10 @@ func (self Instance) InterfaceIsPrimary() bool {
 	return bool(class(self).IsPrimary())
 }
 
-// SetInterfaceIsPrimary sets the property returned by [IsPrimary].
-func (self Instance) SetInterfaceIsPrimary(value bool) {
+// SetInterfaceIsPrimary sets the property returned by [IsPrimary]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterfaceIsPrimary(value bool) Instance {
 	class(self).SetPrimary(value)
+	return self
 }
 
 /*
@@ -384,9 +385,10 @@ func (self Instance) XrPlayAreaMode() PlayAreaMode {
 	return PlayAreaMode(class(self).GetPlayAreaMode())
 }
 
-// SetXrPlayAreaMode sets the property returned by [GetPlayAreaMode].
-func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) {
+// SetXrPlayAreaMode sets the property returned by [GetPlayAreaMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) Instance {
 	class(self).SetPlayAreaMode(value)
+	return self
 }
 
 /*
@@ -396,9 +398,10 @@ func (self Instance) EnvironmentBlendMode() EnvironmentBlendMode {
 	return EnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
 }
 
-// SetEnvironmentBlendMode sets the property returned by [GetEnvironmentBlendMode].
-func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) {
+// SetEnvironmentBlendMode sets the property returned by [GetEnvironmentBlendMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) Instance {
 	class(self).SetEnvironmentBlendMode(value)
+	return self
 }
 
 /*
@@ -408,9 +411,10 @@ func (self Instance) ArIsAnchorDetectionEnabled() bool {
 	return bool(class(self).GetAnchorDetectionIsEnabled())
 }
 
-// SetArIsAnchorDetectionEnabled sets the property returned by [GetAnchorDetectionIsEnabled].
-func (self Instance) SetArIsAnchorDetectionEnabled(value bool) {
+// SetArIsAnchorDetectionEnabled sets the property returned by [GetAnchorDetectionIsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetArIsAnchorDetectionEnabled(value bool) Instance {
 	class(self).SetAnchorDetectionIsEnabled(value)
+	return self
 }
 
 /*
@@ -743,12 +747,13 @@ func (self class) GetEnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterf
 /*
 Emitted when the play area is changed. This can be a result of the player resetting the boundary or entering a new play area, the player changing the play area mode, the world scale changing or the player resetting their headset orientation.
 */
-func (self Instance) OnPlayAreaChanged(cb func(mode int), flags ...Signal.Flags) {
+func (self Instance) OnPlayAreaChanged(cb func(mode int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("play_area_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PlayAreaChanged() Signal.Any {

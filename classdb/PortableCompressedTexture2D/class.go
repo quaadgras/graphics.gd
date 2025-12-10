@@ -181,11 +181,14 @@ Sets the compressor parameters for Basis Universal compression. See also the set
 
 Note: This must be set before [CreateFromImage] to take effect.
 
+Returns 'self' to enable method chaining.
+
 [CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
 [ResourceImporterTexture]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterTexture
 */
-func (self Instance) SetBasisuCompressorParams(uastc_level int, rdo_quality_loss Float.X) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
+func (self Instance) SetBasisuCompressorParams(uastc_level int, rdo_quality_loss Float.X) Instance { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
 	Advanced(self).SetBasisuCompressorParams(int64(uastc_level), float64(rdo_quality_loss))
+	return self
 }
 
 /*
@@ -254,9 +257,10 @@ func (self Instance) SizeOverride() Vector2.XY {
 	return Vector2.XY(class(self).GetSizeOverride())
 }
 
-// SetSizeOverride sets the property returned by [GetSizeOverride].
-func (self Instance) SetSizeOverride(value Vector2.XY) {
+// SetSizeOverride sets the property returned by [GetSizeOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSizeOverride(value Vector2.XY) Instance {
 	class(self).SetSizeOverride(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -272,9 +276,10 @@ func (self Instance) KeepCompressedBuffer() bool {
 	return bool(class(self).IsKeepingCompressedBuffer())
 }
 
-// SetKeepCompressedBuffer sets the property returned by [IsKeepingCompressedBuffer].
-func (self Instance) SetKeepCompressedBuffer(value bool) {
+// SetKeepCompressedBuffer sets the property returned by [IsKeepingCompressedBuffer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepCompressedBuffer(value bool) Instance {
 	class(self).SetKeepCompressedBuffer(value)
+	return self
 }
 
 /*

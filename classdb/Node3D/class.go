@@ -241,9 +241,12 @@ func (self Instance) GetParentNode3d() Instance { //gd:Node3D.get_parent_node_3d
 If true, the node will not receive [NotificationTransformChanged] or [NotificationLocalTransformChanged].
 
 It may useful to call this method when handling these notifications to prevent infinite recursion.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIgnoreTransformNotification(enabled bool) { //gd:Node3D.set_ignore_transform_notification
+func (self Instance) SetIgnoreTransformNotification(enabled bool) Instance { //gd:Node3D.set_ignore_transform_notification
 	Advanced(self).SetIgnoreTransformNotification(enabled)
+	return self
 }
 
 /*
@@ -251,13 +254,16 @@ If true, this node's [GlobalTransform] is automatically orthonormalized. This re
 
 Note: [Transform] is not affected by this setting.
 
+Returns 'self' to enable method chaining.
+
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [IsScaleDisabled]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.IsScaleDisabled
 [Orthonormalize]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Orthonormalize
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 */
-func (self Instance) SetDisableScale(disable bool) { //gd:Node3D.set_disable_scale
+func (self Instance) SetDisableScale(disable bool) Instance { //gd:Node3D.set_disable_scale
 	Advanced(self).SetDisableScale(disable)
+	return self
 }
 
 /*
@@ -344,11 +350,14 @@ Selects the 'gizmo”s subgizmo with the given 'id' and sets its transform. Only
 
 Note: The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 
+Returns 'self' to enable method chaining.
+
 [EditorNode3DGizmo]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
-func (self Instance) SetSubgizmoSelection(gizmo Node3DGizmo.Instance, id int, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
+func (self Instance) SetSubgizmoSelection(gizmo Node3DGizmo.Instance, id int, transform Transform3D.BasisOrigin) Instance { //gd:Node3D.set_subgizmo_selection
 	Advanced(self).SetSubgizmoSelection(gizmo, int64(id), Transform3D.BasisOrigin(transform))
+	return self
 }
 
 /*
@@ -399,12 +408,15 @@ If true, the node will receive [NotificationLocalTransformChanged] whenever [Tra
 
 Note: Some 3D nodes such as [CSGShape3D] or [CollisionShape3D] automatically enable this to function correctly.
 
+Returns 'self' to enable method chaining.
+
 [CSGShape3D]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D
 [CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 */
-func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:Node3D.set_notify_local_transform
+func (self Instance) SetNotifyLocalTransform(enable bool) Instance { //gd:Node3D.set_notify_local_transform
 	Advanced(self).SetNotifyLocalTransform(enable)
+	return self
 }
 
 /*
@@ -424,13 +436,16 @@ Note: Most 3D nodes such as [VisualInstance3D] or [CollisionObject3D] automatica
 
 Note: In the editor, nodes will propagate this notification to their children if a gizmo is attached (see [AddGizmo]).
 
+Returns 'self' to enable method chaining.
+
 [AddGizmo]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.AddGizmo
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
-func (self Instance) SetNotifyTransform(enable bool) { //gd:Node3D.set_notify_transform
+func (self Instance) SetNotifyTransform(enable bool) Instance { //gd:Node3D.set_notify_transform
 	Advanced(self).SetNotifyTransform(enable)
+	return self
 }
 
 /*
@@ -572,13 +587,16 @@ func (self Instance) Orthonormalize() { //gd:Node3D.orthonormalize
 /*
 Sets this node's [Transform] to [Transform3d.Identity], which resets all transformations in parent space ([Position], [Rotation], and [Scale]).
 
+Returns 'self' to enable method chaining.
+
 [Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
 [Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 */
-func (self Instance) SetIdentity() { //gd:Node3D.set_identity
+func (self Instance) SetIdentity() Instance { //gd:Node3D.set_identity
 	Advanced(self).SetIdentity()
+	return self
 }
 
 /*
@@ -704,9 +722,10 @@ func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -721,9 +740,10 @@ func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetGlobalTransform())
 }
 
-// SetGlobalTransform sets the property returned by [GetGlobalTransform].
-func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) {
+// SetGlobalTransform sets the property returned by [GetGlobalTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) Instance {
 	class(self).SetGlobalTransform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -736,9 +756,10 @@ func (self Instance) Position() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector3.XYZ) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector3.XYZ) Instance {
 	class(self).SetPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -766,9 +787,10 @@ func (self Instance) Rotation() Euler.Radians {
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetRotation()))
 }
 
-// SetRotation sets the property returned by [GetRotation].
-func (self Instance) SetRotation(value Euler.Radians) {
+// SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation(value Euler.Radians) Instance {
 	class(self).SetRotation(value.Vector3())
+	return self
 }
 
 /*
@@ -782,9 +804,10 @@ func (self Instance) RotationDegrees() Euler.Degrees {
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetRotationDegrees()))
 }
 
-// SetRotationDegrees sets the property returned by [GetRotationDegrees].
-func (self Instance) SetRotationDegrees(value Euler.Degrees) {
+// SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationDegrees(value Euler.Degrees) Instance {
 	class(self).SetRotationDegrees(value.Vector3())
+	return self
 }
 
 /*
@@ -800,9 +823,10 @@ func (self Instance) Quaternion() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetQuaternion())
 }
 
-// SetQuaternion sets the property returned by [GetQuaternion].
-func (self Instance) SetQuaternion(value Quaternion.IJKX) {
+// SetQuaternion sets the property returned by [GetQuaternion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetQuaternion(value Quaternion.IJKX) Instance {
 	class(self).SetQuaternion(value)
+	return self
 }
 
 /*
@@ -814,9 +838,10 @@ func (self Instance) Basis() Basis.XYZ {
 	return Basis.XYZ(class(self).GetBasis())
 }
 
-// SetBasis sets the property returned by [GetBasis].
-func (self Instance) SetBasis(value Basis.XYZ) {
+// SetBasis sets the property returned by [GetBasis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBasis(value Basis.XYZ) Instance {
 	class(self).SetBasis(Basis.XYZ(value))
+	return self
 }
 
 /*
@@ -835,9 +860,10 @@ func (self Instance) Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetScale())
 }
 
-// SetScale sets the property returned by [GetScale].
-func (self Instance) SetScale(value Vector3.XYZ) {
+// SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale(value Vector3.XYZ) Instance {
 	class(self).SetScale(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -847,9 +873,10 @@ func (self Instance) RotationEditMode() RotationEditMode {
 	return RotationEditMode(class(self).GetRotationEditMode())
 }
 
-// SetRotationEditMode sets the property returned by [GetRotationEditMode].
-func (self Instance) SetRotationEditMode(value RotationEditMode) {
+// SetRotationEditMode sets the property returned by [GetRotationEditMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationEditMode(value RotationEditMode) Instance {
 	class(self).SetRotationEditMode(value)
+	return self
 }
 
 /*
@@ -861,9 +888,10 @@ func (self Instance) RotationOrder() Angle.Order {
 	return Angle.Order(class(self).GetRotationOrder())
 }
 
-// SetRotationOrder sets the property returned by [GetRotationOrder].
-func (self Instance) SetRotationOrder(value Angle.Order) {
+// SetRotationOrder sets the property returned by [GetRotationOrder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationOrder(value Angle.Order) Instance {
 	class(self).SetRotationOrder(value)
+	return self
 }
 
 /*
@@ -876,9 +904,10 @@ func (self Instance) TopLevel() bool {
 	return bool(class(self).IsSetAsTopLevel())
 }
 
-// SetTopLevel sets the property returned by [IsSetAsTopLevel].
-func (self Instance) SetTopLevel(value bool) {
+// SetTopLevel sets the property returned by [IsSetAsTopLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTopLevel(value bool) Instance {
 	class(self).SetAsTopLevel(value)
+	return self
 }
 
 /*
@@ -893,9 +922,10 @@ func (self Instance) GlobalPosition() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetGlobalPosition())
 }
 
-// SetGlobalPosition sets the property returned by [GetGlobalPosition].
-func (self Instance) SetGlobalPosition(value Vector3.XYZ) {
+// SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalPosition(value Vector3.XYZ) Instance {
 	class(self).SetGlobalPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -909,9 +939,10 @@ func (self Instance) GlobalBasis() Basis.XYZ {
 	return Basis.XYZ(class(self).GetGlobalBasis())
 }
 
-// SetGlobalBasis sets the property returned by [GetGlobalBasis].
-func (self Instance) SetGlobalBasis(value Basis.XYZ) {
+// SetGlobalBasis sets the property returned by [GetGlobalBasis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalBasis(value Basis.XYZ) Instance {
 	class(self).SetGlobalBasis(Basis.XYZ(value))
+	return self
 }
 
 /*
@@ -938,9 +969,10 @@ func (self Instance) GlobalRotation() Euler.Radians {
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetGlobalRotation()))
 }
 
-// SetGlobalRotation sets the property returned by [GetGlobalRotation].
-func (self Instance) SetGlobalRotation(value Euler.Radians) {
+// SetGlobalRotation sets the property returned by [GetGlobalRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalRotation(value Euler.Radians) Instance {
 	class(self).SetGlobalRotation(value.Vector3())
+	return self
 }
 
 /*
@@ -954,9 +986,10 @@ func (self Instance) GlobalRotationDegrees() Euler.Degrees {
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetGlobalRotationDegrees()))
 }
 
-// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees].
-func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) {
+// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) Instance {
 	class(self).SetGlobalRotationDegrees(value.Vector3())
+	return self
 }
 
 /*
@@ -968,9 +1001,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 /*
@@ -986,9 +1020,10 @@ func (self Instance) VisibilityParent() string {
 	return string(class(self).GetVisibilityParent().String())
 }
 
-// SetVisibilityParent sets the property returned by [GetVisibilityParent].
-func (self Instance) SetVisibilityParent(value string) {
+// SetVisibilityParent sets the property returned by [GetVisibilityParent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityParent(value string) Instance {
 	class(self).SetVisibilityParent(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit
@@ -1701,12 +1736,13 @@ This signal is emitted after the related [NotificationVisibilityChanged] notific
 [IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.IsVisibleInTree
 [Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */
-func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityChanged() Signal.Any {

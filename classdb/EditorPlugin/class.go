@@ -1397,9 +1397,12 @@ func (self Instance) RemoveControlFromContainer(container CustomControlContainer
 
 /*
 Sets the tab icon for the given control in a dock slot. Setting to null removes the icon.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDockTabIcon(control Control.Instance, icon Texture2D.Instance) { //gd:EditorPlugin.set_dock_tab_icon
+func (self Instance) SetDockTabIcon(control Control.Instance, icon Texture2D.Instance) Instance { //gd:EditorPlugin.set_dock_tab_icon
 	Advanced(self).SetDockTabIcon(control, icon)
+	return self
 }
 
 /*
@@ -1795,20 +1798,26 @@ func (self Instance) RemoveResourceConversionPlugin(plugin EditorResourceConvers
 /*
 Use this method if you always want to receive inputs from 3D view screen inside [Forward3dGuiInput]. It might be especially usable if your plugin will want to use raycast in the scene.
 
+Returns 'self' to enable method chaining.
+
 [Forward3dGuiInput]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
-func (self Instance) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
+func (self Instance) SetInputEventForwardingAlwaysEnabled() Instance { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
 	Advanced(self).SetInputEventForwardingAlwaysEnabled()
+	return self
 }
 
 /*
 Enables calling of [ForwardCanvasForceDrawOverViewport] for the 2D editor and [Forward3dForceDrawOverViewport] for the 3D editor when their viewports are updated. You need to call this method only once and it will work permanently for this plugin.
 
+Returns 'self' to enable method chaining.
+
 [Forward3dForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 [ForwardCanvasForceDrawOverViewport]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
-func (self Instance) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
+func (self Instance) SetForceDrawOverForwardingEnabled() Instance { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
 	Advanced(self).SetForceDrawOverForwardingEnabled()
+	return self
 }
 
 /*
@@ -3046,12 +3055,13 @@ func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plu
 /*
 Emitted when the scene is changed in the editor. The argument will return the root node of the scene that has just become active. If this scene is new and empty, the argument will be null.
 */
-func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...Signal.Flags) {
+func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SceneChanged() Signal.Any {
@@ -3061,12 +3071,13 @@ func (self class) SceneChanged() Signal.Any {
 /*
 Emitted when user closes a scene. The argument is a file path to the closed scene.
 */
-func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Flags) {
+func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SceneClosed() Signal.Any {
@@ -3076,12 +3087,13 @@ func (self class) SceneClosed() Signal.Any {
 /*
 Emitted when user changes the workspace (2D, 3D, Script, Game, AssetLib). Also works with custom screens defined by plugins.
 */
-func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...Signal.Flags) {
+func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MainScreenChanged() Signal.Any {
@@ -3093,12 +3105,13 @@ Emitted when the given 'resource' was saved on disc. See also [OnSceneSaved].
 
 [OnSceneSaved]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.OnSceneSaved
 */
-func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
+func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceSaved() Signal.Any {
@@ -3110,12 +3123,13 @@ Emitted when a scene was saved on disc. The argument is a file path to the saved
 
 [OnResourceSaved]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.OnResourceSaved
 */
-func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flags) {
+func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SceneSaved() Signal.Any {
@@ -3125,12 +3139,13 @@ func (self class) SceneSaved() Signal.Any {
 /*
 Emitted when any project setting has changed.
 */
-func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProjectSettingsChanged() Signal.Any {

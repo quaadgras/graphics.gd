@@ -153,9 +153,12 @@ type Any interface {
 
 /*
 Sets the border width to 'width' pixels for all sides.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBorderWidthAll(width int) { //gd:StyleBoxFlat.set_border_width_all
+func (self Instance) SetBorderWidthAll(width int) Instance { //gd:StyleBoxFlat.set_border_width_all
 	Advanced(self).SetBorderWidthAll(int64(width))
+	return self
 }
 
 /*
@@ -167,16 +170,22 @@ func (self Instance) GetBorderWidthMin() int { //gd:StyleBoxFlat.get_border_widt
 
 /*
 Sets the corner radius to 'radius' pixels for all corners.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCornerRadiusAll(radius int) { //gd:StyleBoxFlat.set_corner_radius_all
+func (self Instance) SetCornerRadiusAll(radius int) Instance { //gd:StyleBoxFlat.set_corner_radius_all
 	Advanced(self).SetCornerRadiusAll(int64(radius))
+	return self
 }
 
 /*
 Sets the expand margin to 'size' pixels for all sides.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxFlat.set_expand_margin_all
+func (self Instance) SetExpandMarginAll(size Float.X) Instance { //gd:StyleBoxFlat.set_expand_margin_all
 	Advanced(self).SetExpandMarginAll(float64(size))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -229,9 +238,10 @@ func (self Instance) BgColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBgColor())
 }
 
-// SetBgColor sets the property returned by [GetBgColor].
-func (self Instance) SetBgColor(value Color.RGBA) {
+// SetBgColor sets the property returned by [GetBgColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBgColor(value Color.RGBA) Instance {
 	class(self).SetBgColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -241,9 +251,10 @@ func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
-// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
-func (self Instance) SetDrawCenter(value bool) {
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawCenter(value bool) Instance {
 	class(self).SetDrawCenter(value)
+	return self
 }
 
 /*
@@ -261,9 +272,10 @@ func (self Instance) Skew() Vector2.XY {
 	return Vector2.XY(class(self).GetSkew())
 }
 
-// SetSkew sets the property returned by [GetSkew].
-func (self Instance) SetSkew(value Vector2.XY) {
+// SetSkew sets the property returned by [GetSkew]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkew(value Vector2.XY) Instance {
 	class(self).SetSkew(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -273,9 +285,10 @@ func (self Instance) BorderWidthLeft() int {
 	return int(int(class(self).GetBorderWidth(0)))
 }
 
-// SetBorderWidthLeft sets the property returned by [GetBorderWidth].
-func (self Instance) SetBorderWidthLeft(value int) {
+// SetBorderWidthLeft sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderWidthLeft(value int) Instance {
 	class(self).SetBorderWidth(0, int64(value))
+	return self
 }
 
 /*
@@ -285,9 +298,10 @@ func (self Instance) BorderWidthTop() int {
 	return int(int(class(self).GetBorderWidth(1)))
 }
 
-// SetBorderWidthTop sets the property returned by [GetBorderWidth].
-func (self Instance) SetBorderWidthTop(value int) {
+// SetBorderWidthTop sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderWidthTop(value int) Instance {
 	class(self).SetBorderWidth(1, int64(value))
+	return self
 }
 
 /*
@@ -297,9 +311,10 @@ func (self Instance) BorderWidthRight() int {
 	return int(int(class(self).GetBorderWidth(2)))
 }
 
-// SetBorderWidthRight sets the property returned by [GetBorderWidth].
-func (self Instance) SetBorderWidthRight(value int) {
+// SetBorderWidthRight sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderWidthRight(value int) Instance {
 	class(self).SetBorderWidth(2, int64(value))
+	return self
 }
 
 /*
@@ -309,9 +324,10 @@ func (self Instance) BorderWidthBottom() int {
 	return int(int(class(self).GetBorderWidth(3)))
 }
 
-// SetBorderWidthBottom sets the property returned by [GetBorderWidth].
-func (self Instance) SetBorderWidthBottom(value int) {
+// SetBorderWidthBottom sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderWidthBottom(value int) Instance {
 	class(self).SetBorderWidth(3, int64(value))
+	return self
 }
 
 /*
@@ -321,9 +337,10 @@ func (self Instance) BorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
-// SetBorderColor sets the property returned by [GetBorderColor].
-func (self Instance) SetBorderColor(value Color.RGBA) {
+// SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderColor(value Color.RGBA) Instance {
 	class(self).SetBorderColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -333,9 +350,10 @@ func (self Instance) BorderBlend() bool {
 	return bool(class(self).GetBorderBlend())
 }
 
-// SetBorderBlend sets the property returned by [GetBorderBlend].
-func (self Instance) SetBorderBlend(value bool) {
+// SetBorderBlend sets the property returned by [GetBorderBlend]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderBlend(value bool) Instance {
 	class(self).SetBorderBlend(value)
+	return self
 }
 
 /*
@@ -345,9 +363,10 @@ func (self Instance) CornerRadiusTopLeft() int {
 	return int(int(class(self).GetCornerRadius(0)))
 }
 
-// SetCornerRadiusTopLeft sets the property returned by [GetCornerRadius].
-func (self Instance) SetCornerRadiusTopLeft(value int) {
+// SetCornerRadiusTopLeft sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCornerRadiusTopLeft(value int) Instance {
 	class(self).SetCornerRadius(0, int64(value))
+	return self
 }
 
 /*
@@ -357,9 +376,10 @@ func (self Instance) CornerRadiusTopRight() int {
 	return int(int(class(self).GetCornerRadius(1)))
 }
 
-// SetCornerRadiusTopRight sets the property returned by [GetCornerRadius].
-func (self Instance) SetCornerRadiusTopRight(value int) {
+// SetCornerRadiusTopRight sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCornerRadiusTopRight(value int) Instance {
 	class(self).SetCornerRadius(1, int64(value))
+	return self
 }
 
 /*
@@ -369,9 +389,10 @@ func (self Instance) CornerRadiusBottomRight() int {
 	return int(int(class(self).GetCornerRadius(2)))
 }
 
-// SetCornerRadiusBottomRight sets the property returned by [GetCornerRadius].
-func (self Instance) SetCornerRadiusBottomRight(value int) {
+// SetCornerRadiusBottomRight sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCornerRadiusBottomRight(value int) Instance {
 	class(self).SetCornerRadius(2, int64(value))
+	return self
 }
 
 /*
@@ -381,9 +402,10 @@ func (self Instance) CornerRadiusBottomLeft() int {
 	return int(int(class(self).GetCornerRadius(3)))
 }
 
-// SetCornerRadiusBottomLeft sets the property returned by [GetCornerRadius].
-func (self Instance) SetCornerRadiusBottomLeft(value int) {
+// SetCornerRadiusBottomLeft sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCornerRadiusBottomLeft(value int) Instance {
 	class(self).SetCornerRadius(3, int64(value))
+	return self
 }
 
 /*
@@ -399,9 +421,10 @@ func (self Instance) CornerDetail() int {
 	return int(int(class(self).GetCornerDetail()))
 }
 
-// SetCornerDetail sets the property returned by [GetCornerDetail].
-func (self Instance) SetCornerDetail(value int) {
+// SetCornerDetail sets the property returned by [GetCornerDetail]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCornerDetail(value int) Instance {
 	class(self).SetCornerDetail(int64(value))
+	return self
 }
 
 /*
@@ -418,9 +441,10 @@ func (self Instance) ExpandMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
-// SetExpandMarginLeft sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginLeft(value Float.X) {
+// SetExpandMarginLeft sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginLeft(value Float.X) Instance {
 	class(self).SetExpandMargin(0, float64(value))
+	return self
 }
 
 /*
@@ -437,9 +461,10 @@ func (self Instance) ExpandMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
-// SetExpandMarginTop sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginTop(value Float.X) {
+// SetExpandMarginTop sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginTop(value Float.X) Instance {
 	class(self).SetExpandMargin(1, float64(value))
+	return self
 }
 
 /*
@@ -456,9 +481,10 @@ func (self Instance) ExpandMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
-// SetExpandMarginRight sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginRight(value Float.X) {
+// SetExpandMarginRight sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginRight(value Float.X) Instance {
 	class(self).SetExpandMargin(2, float64(value))
+	return self
 }
 
 /*
@@ -475,9 +501,10 @@ func (self Instance) ExpandMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
-// SetExpandMarginBottom sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginBottom(value Float.X) {
+// SetExpandMarginBottom sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginBottom(value Float.X) Instance {
 	class(self).SetExpandMargin(3, float64(value))
+	return self
 }
 
 /*
@@ -489,9 +516,10 @@ func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
-// SetShadowColor sets the property returned by [GetShadowColor].
-func (self Instance) SetShadowColor(value Color.RGBA) {
+// SetShadowColor sets the property returned by [GetShadowColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowColor(value Color.RGBA) Instance {
 	class(self).SetShadowColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -501,9 +529,10 @@ func (self Instance) ShadowSize() int {
 	return int(int(class(self).GetShadowSize()))
 }
 
-// SetShadowSize sets the property returned by [GetShadowSize].
-func (self Instance) SetShadowSize(value int) {
+// SetShadowSize sets the property returned by [GetShadowSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowSize(value int) Instance {
 	class(self).SetShadowSize(int64(value))
+	return self
 }
 
 /*
@@ -513,9 +542,10 @@ func (self Instance) ShadowOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetShadowOffset())
 }
 
-// SetShadowOffset sets the property returned by [GetShadowOffset].
-func (self Instance) SetShadowOffset(value Vector2.XY) {
+// SetShadowOffset sets the property returned by [GetShadowOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowOffset(value Vector2.XY) Instance {
 	class(self).SetShadowOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -531,9 +561,10 @@ func (self Instance) AntiAliasing() bool {
 	return bool(class(self).IsAntiAliased())
 }
 
-// SetAntiAliasing sets the property returned by [IsAntiAliased].
-func (self Instance) SetAntiAliasing(value bool) {
+// SetAntiAliasing sets the property returned by [IsAntiAliased]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntiAliasing(value bool) Instance {
 	class(self).SetAntiAliased(value)
+	return self
 }
 
 /*
@@ -545,9 +576,10 @@ func (self Instance) AntiAliasingSize() Float.X {
 	return Float.X(Float.X(class(self).GetAaSize()))
 }
 
-// SetAntiAliasingSize sets the property returned by [GetAaSize].
-func (self Instance) SetAntiAliasingSize(value Float.X) {
+// SetAntiAliasingSize sets the property returned by [GetAaSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntiAliasingSize(value Float.X) Instance {
 	class(self).SetAaSize(float64(value))
+	return self
 }
 
 //go:nosplit

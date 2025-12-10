@@ -179,9 +179,10 @@ func (self Instance) Factor() Float.X {
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
-// SetFactor sets the property returned by [GetFactor].
-func (self Instance) SetFactor(value Float.X) {
+// SetFactor sets the property returned by [GetFactor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFactor(value Float.X) Instance {
 	class(self).SetFactor(float64(value))
+	return self
 }
 
 /*
@@ -191,23 +192,28 @@ func (self Instance) ButtonIndex() Input.MouseButton {
 	return Input.MouseButton(class(self).GetButtonIndex())
 }
 
-// SetButtonIndex sets the property returned by [GetButtonIndex].
-func (self Instance) SetButtonIndex(value Input.MouseButton) {
+// SetButtonIndex sets the property returned by [GetButtonIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetButtonIndex(value Input.MouseButton) Instance {
 	class(self).SetButtonIndex(value)
+	return self
 }
 
 /*
 If true, the mouse button event has been canceled.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetCanceled(value bool) {
+func (self Instance) SetCanceled(value bool) Instance {
 	class(self).SetCanceled(value)
+	return self
 }
 
 /*
 If true, the mouse button's state is pressed. If false, the mouse button's state is released.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) {
+func (self Instance) SetPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 /*
@@ -217,9 +223,10 @@ func (self Instance) DoubleClick() bool {
 	return bool(class(self).IsDoubleClick())
 }
 
-// SetDoubleClick sets the property returned by [IsDoubleClick].
-func (self Instance) SetDoubleClick(value bool) {
+// SetDoubleClick sets the property returned by [IsDoubleClick]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDoubleClick(value bool) Instance {
 	class(self).SetDoubleClick(value)
+	return self
 }
 
 //go:nosplit

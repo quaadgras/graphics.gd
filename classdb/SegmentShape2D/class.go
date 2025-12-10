@@ -169,9 +169,10 @@ func (self Instance) A() Vector2.XY {
 	return Vector2.XY(class(self).GetA())
 }
 
-// SetA sets the property returned by [GetA].
-func (self Instance) SetA(value Vector2.XY) {
+// SetA sets the property returned by [GetA]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetA(value Vector2.XY) Instance {
 	class(self).SetA(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -181,9 +182,10 @@ func (self Instance) B() Vector2.XY {
 	return Vector2.XY(class(self).GetB())
 }
 
-// SetB sets the property returned by [GetB].
-func (self Instance) SetB(value Vector2.XY) {
+// SetB sets the property returned by [GetB]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetB(value Vector2.XY) Instance {
 	class(self).SetB(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

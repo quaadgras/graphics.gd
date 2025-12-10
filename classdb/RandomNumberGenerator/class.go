@@ -271,9 +271,10 @@ func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
-// SetSeed sets the property returned by [GetSeed].
-func (self Instance) SetSeed(value int) {
+// SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeed(value int) Instance {
 	class(self).SetSeed(int64(value))
+	return self
 }
 
 /*
@@ -290,9 +291,10 @@ func (self Instance) State() int {
 	return int(int(class(self).GetState()))
 }
 
-// SetState sets the property returned by [GetState].
-func (self Instance) SetState(value int) {
+// SetState sets the property returned by [GetState]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetState(value int) Instance {
 	class(self).SetState(int64(value))
+	return self
 }
 
 //go:nosplit

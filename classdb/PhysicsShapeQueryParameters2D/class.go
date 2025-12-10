@@ -185,9 +185,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -203,9 +204,10 @@ func (self Instance) Exclude() []RID.Body2D {
 	return []RID.Body2D(gd.ArrayAs[[]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
-// SetExclude sets the property returned by [GetExclude].
-func (self Instance) SetExclude(value []RID.Body2D) {
+// SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExclude(value []RID.Body2D) Instance {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -215,9 +217,10 @@ func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-// SetMargin sets the property returned by [GetMargin].
-func (self Instance) SetMargin(value Float.X) {
+// SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargin(value Float.X) Instance {
 	class(self).SetMargin(float64(value))
+	return self
 }
 
 /*
@@ -227,9 +230,10 @@ func (self Instance) Motion() Vector2.XY {
 	return Vector2.XY(class(self).GetMotion())
 }
 
-// SetMotion sets the property returned by [GetMotion].
-func (self Instance) SetMotion(value Vector2.XY) {
+// SetMotion sets the property returned by [GetMotion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotion(value Vector2.XY) Instance {
 	class(self).SetMotion(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -242,9 +246,10 @@ func (self Instance) Shape() Resource.Instance {
 	return Resource.Instance(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Resource.Instance) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Resource.Instance) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -257,9 +262,10 @@ func (self Instance) ShapeRid() RID.Any {
 	return RID.Any(RID.Any(class(self).GetShapeRid()))
 }
 
-// SetShapeRid sets the property returned by [GetShapeRid].
-func (self Instance) SetShapeRid(value RID.Any) {
+// SetShapeRid sets the property returned by [GetShapeRid]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShapeRid(value RID.Any) Instance {
 	class(self).SetShapeRid(RID.Any(value))
+	return self
 }
 
 /*
@@ -269,9 +275,10 @@ func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform2D.OriginXY) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -283,9 +290,10 @@ func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
-// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
-func (self Instance) SetCollideWithBodies(value bool) {
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithBodies(value bool) Instance {
 	class(self).SetCollideWithBodies(value)
+	return self
 }
 
 /*
@@ -297,9 +305,10 @@ func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
-// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
-func (self Instance) SetCollideWithAreas(value bool) {
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithAreas(value bool) Instance {
 	class(self).SetCollideWithAreas(value)
+	return self
 }
 
 //go:nosplit

@@ -187,9 +187,10 @@ func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
-// SetHasTrackingData sets the property returned by [GetHasTrackingData].
-func (self Instance) SetHasTrackingData(value bool) {
+// SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHasTrackingData(value bool) Instance {
 	class(self).SetHasTrackingData(value)
+	return self
 }
 
 /*
@@ -209,9 +210,10 @@ func (self Instance) Name() string {
 	return string(class(self).GetName().String())
 }
 
-// SetName sets the property returned by [GetName].
-func (self Instance) SetName(value string) {
+// SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetName(value string) Instance {
 	class(self).SetName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -221,9 +223,10 @@ func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -233,9 +236,10 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-// SetLinearVelocity sets the property returned by [GetLinearVelocity].
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+// SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -245,9 +249,10 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-// SetAngularVelocity sets the property returned by [GetAngularVelocity].
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+// SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -257,9 +262,10 @@ func (self Instance) TrackingConfidence() TrackingConfidence {
 	return TrackingConfidence(class(self).GetTrackingConfidence())
 }
 
-// SetTrackingConfidence sets the property returned by [GetTrackingConfidence].
-func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
+// SetTrackingConfidence sets the property returned by [GetTrackingConfidence]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTrackingConfidence(value TrackingConfidence) Instance {
 	class(self).SetTrackingConfidence(value)
+	return self
 }
 
 //go:nosplit

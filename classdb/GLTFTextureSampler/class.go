@@ -169,9 +169,10 @@ func (self Instance) MagFilter() int {
 	return int(int(class(self).GetMagFilter()))
 }
 
-// SetMagFilter sets the property returned by [GetMagFilter].
-func (self Instance) SetMagFilter(value int) {
+// SetMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMagFilter(value int) Instance {
 	class(self).SetMagFilter(int64(value))
+	return self
 }
 
 /*
@@ -181,9 +182,10 @@ func (self Instance) MinFilter() int {
 	return int(int(class(self).GetMinFilter()))
 }
 
-// SetMinFilter sets the property returned by [GetMinFilter].
-func (self Instance) SetMinFilter(value int) {
+// SetMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinFilter(value int) Instance {
 	class(self).SetMinFilter(int64(value))
+	return self
 }
 
 /*
@@ -193,9 +195,10 @@ func (self Instance) WrapS() int {
 	return int(int(class(self).GetWrapS()))
 }
 
-// SetWrapS sets the property returned by [GetWrapS].
-func (self Instance) SetWrapS(value int) {
+// SetWrapS sets the property returned by [GetWrapS]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWrapS(value int) Instance {
 	class(self).SetWrapS(int64(value))
+	return self
 }
 
 /*
@@ -205,9 +208,10 @@ func (self Instance) WrapT() int {
 	return int(int(class(self).GetWrapT()))
 }
 
-// SetWrapT sets the property returned by [GetWrapT].
-func (self Instance) SetWrapT(value int) {
+// SetWrapT sets the property returned by [GetWrapT]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWrapT(value int) Instance {
 	class(self).SetWrapT(int64(value))
+	return self
 }
 
 //go:nosplit

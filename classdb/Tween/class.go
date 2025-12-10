@@ -1115,12 +1115,13 @@ Emitted when one step of the [Tween] is complete, providing the step index. One 
 [Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
 */
-func (self Instance) OnStepFinished(cb func(idx int), flags ...Signal.Flags) {
+func (self Instance) OnStepFinished(cb func(idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("step_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) StepFinished() Signal.Any {
@@ -1133,12 +1134,13 @@ Emitted when a full loop is complete (see [SetLoops]), providing the loop index.
 [OnFinished]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.OnFinished
 [SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
 */
-func (self Instance) OnLoopFinished(cb func(loop_count int), flags ...Signal.Flags) {
+func (self Instance) OnLoopFinished(cb func(loop_count int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("loop_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) LoopFinished() Signal.Any {
@@ -1151,12 +1153,13 @@ Emitted when the [Tween] has finished all tweening. Never emitted when the [Twee
 [SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
 [Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

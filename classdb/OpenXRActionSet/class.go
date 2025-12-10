@@ -194,9 +194,10 @@ func (self Instance) LocalizedName() string {
 	return string(class(self).GetLocalizedName().String())
 }
 
-// SetLocalizedName sets the property returned by [GetLocalizedName].
-func (self Instance) SetLocalizedName(value string) {
+// SetLocalizedName sets the property returned by [GetLocalizedName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocalizedName(value string) Instance {
 	class(self).SetLocalizedName(String.New(value))
+	return self
 }
 
 /*
@@ -206,9 +207,10 @@ func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
-// SetPriority sets the property returned by [GetPriority].
-func (self Instance) SetPriority(value int) {
+// SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPriority(value int) Instance {
 	class(self).SetPriority(int64(value))
+	return self
 }
 
 /*
@@ -218,9 +220,10 @@ func (self Instance) Actions() []OpenXRAction.Instance {
 	return []OpenXRAction.Instance(gd.ArrayAs[[]OpenXRAction.Instance](gd.InternalArray(class(self).GetActions())))
 }
 
-// SetActions sets the property returned by [GetActions].
-func (self Instance) SetActions(value []OpenXRAction.Instance) {
+// SetActions sets the property returned by [GetActions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActions(value []OpenXRAction.Instance) Instance {
 	class(self).SetActions(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 //go:nosplit

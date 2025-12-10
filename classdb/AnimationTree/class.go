@@ -129,9 +129,12 @@ type Any interface {
 
 /*
 Sets the process notification in which to update animations.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationTree.set_process_callback
+func (self Instance) SetProcessCallback(mode AnimationProcessCallback) Instance { //gd:AnimationTree.set_process_callback
 	Advanced(self).SetProcessCallback(mode)
+	return self
 }
 
 /*
@@ -193,9 +196,10 @@ func (self Instance) TreeRoot() AnimationRootNode.Instance {
 	return AnimationRootNode.Instance(class(self).GetTreeRoot())
 }
 
-// SetTreeRoot sets the property returned by [GetTreeRoot].
-func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) {
+// SetTreeRoot sets the property returned by [GetTreeRoot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) Instance {
 	class(self).SetTreeRoot(value)
+	return self
 }
 
 /*
@@ -209,9 +213,10 @@ func (self Instance) AdvanceExpressionBaseNode() string {
 	return string(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
-// SetAdvanceExpressionBaseNode sets the property returned by [GetAdvanceExpressionBaseNode].
-func (self Instance) SetAdvanceExpressionBaseNode(value string) {
+// SetAdvanceExpressionBaseNode sets the property returned by [GetAdvanceExpressionBaseNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAdvanceExpressionBaseNode(value string) Instance {
 	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -223,9 +228,10 @@ func (self Instance) AnimPlayer() string {
 	return string(class(self).GetAnimationPlayer().String())
 }
 
-// SetAnimPlayer sets the property returned by [GetAnimationPlayer].
-func (self Instance) SetAnimPlayer(value string) {
+// SetAnimPlayer sets the property returned by [GetAnimationPlayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimPlayer(value string) Instance {
 	class(self).SetAnimationPlayer(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit
@@ -287,12 +293,13 @@ Emitted when the [AnimPlayer] is changed.
 
 [AnimPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.AnimPlayer
 */
-func (self Instance) OnAnimationPlayerChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationPlayerChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_player_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationPlayerChanged() Signal.Any {

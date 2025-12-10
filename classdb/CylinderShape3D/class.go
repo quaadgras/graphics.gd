@@ -176,9 +176,10 @@ func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value Float.X) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value Float.X) Instance {
 	class(self).SetHeight(float64(value))
+	return self
 }
 
 /*
@@ -188,9 +189,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 //go:nosplit

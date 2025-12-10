@@ -180,9 +180,10 @@ func (self Instance) AnimationPath() string {
 	return string(class(self).GetAnimationPath().String())
 }
 
-// SetAnimationPath sets the property returned by [GetAnimationPath].
-func (self Instance) SetAnimationPath(value string) {
+// SetAnimationPath sets the property returned by [GetAnimationPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimationPath(value string) Instance {
 	class(self).SetAnimationPath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -192,9 +193,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -204,9 +206,10 @@ func (self Instance) CellSize() Float.X {
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
-// SetCellSize sets the property returned by [GetCellSize].
-func (self Instance) SetCellSize(value Float.X) {
+// SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellSize(value Float.X) Instance {
 	class(self).SetCellSize(float64(value))
+	return self
 }
 
 /*
@@ -218,9 +221,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -230,9 +234,10 @@ func (self Instance) ZeroY() bool {
 	return bool(class(self).GetZeroY())
 }
 
-// SetZeroY sets the property returned by [GetZeroY].
-func (self Instance) SetZeroY(value bool) {
+// SetZeroY sets the property returned by [GetZeroY]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZeroY(value bool) Instance {
 	class(self).SetZeroY(value)
+	return self
 }
 
 //go:nosplit

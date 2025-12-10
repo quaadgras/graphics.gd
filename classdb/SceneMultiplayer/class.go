@@ -276,9 +276,10 @@ func (self Instance) RootPath() string {
 	return string(class(self).GetRootPath().String())
 }
 
-// SetRootPath sets the property returned by [GetRootPath].
-func (self Instance) SetRootPath(value string) {
+// SetRootPath sets the property returned by [GetRootPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootPath(value string) Instance {
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -290,9 +291,10 @@ func (self Instance) AuthCallback() Callable.Function {
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetAuthCallback())))
 }
 
-// SetAuthCallback sets the property returned by [GetAuthCallback].
-func (self Instance) SetAuthCallback(value Callable.Function) {
+// SetAuthCallback sets the property returned by [GetAuthCallback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAuthCallback(value Callable.Function) Instance {
 	class(self).SetAuthCallback(Callable.New(value))
+	return self
 }
 
 /*
@@ -305,9 +307,10 @@ func (self Instance) AuthTimeout() Float.X {
 	return Float.X(Float.X(class(self).GetAuthTimeout()))
 }
 
-// SetAuthTimeout sets the property returned by [GetAuthTimeout].
-func (self Instance) SetAuthTimeout(value Float.X) {
+// SetAuthTimeout sets the property returned by [GetAuthTimeout]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAuthTimeout(value Float.X) Instance {
 	class(self).SetAuthTimeout(float64(value))
+	return self
 }
 
 /*
@@ -319,9 +322,10 @@ func (self Instance) AllowObjectDecoding() bool {
 	return bool(class(self).IsObjectDecodingAllowed())
 }
 
-// SetAllowObjectDecoding sets the property returned by [IsObjectDecodingAllowed].
-func (self Instance) SetAllowObjectDecoding(value bool) {
+// SetAllowObjectDecoding sets the property returned by [IsObjectDecodingAllowed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowObjectDecoding(value bool) Instance {
 	class(self).SetAllowObjectDecoding(value)
+	return self
 }
 
 /*
@@ -333,9 +337,10 @@ func (self Instance) RefuseNewConnections() bool {
 	return bool(class(self).IsRefusingNewConnections())
 }
 
-// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections].
-func (self Instance) SetRefuseNewConnections(value bool) {
+// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRefuseNewConnections(value bool) Instance {
 	class(self).SetRefuseNewConnections(value)
+	return self
 }
 
 /*
@@ -352,9 +357,10 @@ func (self Instance) ServerRelay() bool {
 	return bool(class(self).IsServerRelayEnabled())
 }
 
-// SetServerRelay sets the property returned by [IsServerRelayEnabled].
-func (self Instance) SetServerRelay(value bool) {
+// SetServerRelay sets the property returned by [IsServerRelayEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetServerRelay(value bool) Instance {
 	class(self).SetServerRelayEnabled(value)
+	return self
 }
 
 /*
@@ -366,9 +372,10 @@ func (self Instance) MaxSyncPacketSize() int {
 	return int(int(class(self).GetMaxSyncPacketSize()))
 }
 
-// SetMaxSyncPacketSize sets the property returned by [GetMaxSyncPacketSize].
-func (self Instance) SetMaxSyncPacketSize(value int) {
+// SetMaxSyncPacketSize sets the property returned by [GetMaxSyncPacketSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSyncPacketSize(value int) Instance {
 	class(self).SetMaxSyncPacketSize(int64(value))
+	return self
 }
 
 /*
@@ -380,9 +387,10 @@ func (self Instance) MaxDeltaPacketSize() int {
 	return int(int(class(self).GetMaxDeltaPacketSize()))
 }
 
-// SetMaxDeltaPacketSize sets the property returned by [GetMaxDeltaPacketSize].
-func (self Instance) SetMaxDeltaPacketSize(value int) {
+// SetMaxDeltaPacketSize sets the property returned by [GetMaxDeltaPacketSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxDeltaPacketSize(value int) Instance {
 	class(self).SetMaxDeltaPacketSize(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -570,12 +578,13 @@ Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] connects to 
 [OnMultiplayerapi.PeerConnected]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnMultiplayerapi.PeerConnected
 [SendAuth]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendAuth
 */
-func (self Instance) OnPeerAuthenticating(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerAuthenticating(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_authenticating"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerAuthenticating() Signal.Any {
@@ -588,12 +597,13 @@ Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] disconnects 
 [MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 [OnPeerAuthenticating]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticating
 */
-func (self Instance) OnPeerAuthenticationFailed(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerAuthenticationFailed(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_authentication_failed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerAuthenticationFailed() Signal.Any {
@@ -606,12 +616,13 @@ Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] receives a '
 [MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 [SendBytes]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendBytes
 */
-func (self Instance) OnPeerPacket(cb func(id int, packet []byte), flags ...Signal.Flags) {
+func (self Instance) OnPeerPacket(cb func(id int, packet []byte), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_packet"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerPacket() Signal.Any {

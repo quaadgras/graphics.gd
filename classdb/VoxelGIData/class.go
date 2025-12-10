@@ -223,9 +223,10 @@ func (self Instance) DynamicRange() Float.X {
 	return Float.X(Float.X(class(self).GetDynamicRange()))
 }
 
-// SetDynamicRange sets the property returned by [GetDynamicRange].
-func (self Instance) SetDynamicRange(value Float.X) {
+// SetDynamicRange sets the property returned by [GetDynamicRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDynamicRange(value Float.X) Instance {
 	class(self).SetDynamicRange(float64(value))
+	return self
 }
 
 /*
@@ -240,9 +241,10 @@ func (self Instance) Energy() Float.X {
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
-// SetEnergy sets the property returned by [GetEnergy].
-func (self Instance) SetEnergy(value Float.X) {
+// SetEnergy sets the property returned by [GetEnergy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnergy(value Float.X) Instance {
 	class(self).SetEnergy(float64(value))
+	return self
 }
 
 /*
@@ -255,9 +257,10 @@ func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
-// SetBias sets the property returned by [GetBias].
-func (self Instance) SetBias(value Float.X) {
+// SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBias(value Float.X) Instance {
 	class(self).SetBias(float64(value))
+	return self
 }
 
 /*
@@ -270,9 +273,10 @@ func (self Instance) NormalBias() Float.X {
 	return Float.X(Float.X(class(self).GetNormalBias()))
 }
 
-// SetNormalBias sets the property returned by [GetNormalBias].
-func (self Instance) SetNormalBias(value Float.X) {
+// SetNormalBias sets the property returned by [GetNormalBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalBias(value Float.X) Instance {
 	class(self).SetNormalBias(float64(value))
+	return self
 }
 
 /*
@@ -286,9 +290,10 @@ func (self Instance) Propagation() Float.X {
 	return Float.X(Float.X(class(self).GetPropagation()))
 }
 
-// SetPropagation sets the property returned by [GetPropagation].
-func (self Instance) SetPropagation(value Float.X) {
+// SetPropagation sets the property returned by [GetPropagation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPropagation(value Float.X) Instance {
 	class(self).SetPropagation(float64(value))
+	return self
 }
 
 /*
@@ -302,9 +307,10 @@ func (self Instance) UseTwoBounces() bool {
 	return bool(class(self).IsUsingTwoBounces())
 }
 
-// SetUseTwoBounces sets the property returned by [IsUsingTwoBounces].
-func (self Instance) SetUseTwoBounces(value bool) {
+// SetUseTwoBounces sets the property returned by [IsUsingTwoBounces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseTwoBounces(value bool) Instance {
 	class(self).SetUseTwoBounces(value)
+	return self
 }
 
 /*
@@ -317,9 +323,10 @@ func (self Instance) Interior() bool {
 	return bool(class(self).IsInterior())
 }
 
-// SetInterior sets the property returned by [IsInterior].
-func (self Instance) SetInterior(value bool) {
+// SetInterior sets the property returned by [IsInterior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterior(value bool) Instance {
 	class(self).SetInterior(value)
+	return self
 }
 
 //go:nosplit

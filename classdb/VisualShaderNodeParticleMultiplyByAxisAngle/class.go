@@ -164,9 +164,10 @@ func (self Instance) DegreesMode() bool {
 	return bool(class(self).IsDegreesMode())
 }
 
-// SetDegreesMode sets the property returned by [IsDegreesMode].
-func (self Instance) SetDegreesMode(value bool) {
+// SetDegreesMode sets the property returned by [IsDegreesMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDegreesMode(value bool) Instance {
 	class(self).SetDegreesMode(value)
+	return self
 }
 
 //go:nosplit

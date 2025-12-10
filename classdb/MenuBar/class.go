@@ -144,9 +144,12 @@ type Any interface {
 
 /*
 If true, shortcuts are disabled and cannot be used to trigger the button.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
+func (self Instance) SetDisableShortcuts(disabled bool) Instance { //gd:MenuBar.set_disable_shortcuts
 	Advanced(self).SetDisableShortcuts(disabled)
+	return self
 }
 
 /*
@@ -167,9 +170,12 @@ func (self Instance) GetMenuCount() int { //gd:MenuBar.get_menu_count
 
 /*
 Sets menu item title.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMenuTitle(menu int, title string) { //gd:MenuBar.set_menu_title
+func (self Instance) SetMenuTitle(menu int, title string) Instance { //gd:MenuBar.set_menu_title
 	Advanced(self).SetMenuTitle(int64(menu), String.New(title))
+	return self
 }
 
 /*
@@ -181,9 +187,12 @@ func (self Instance) GetMenuTitle(menu int) string { //gd:MenuBar.get_menu_title
 
 /*
 Sets menu item tooltip.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMenuTooltip(menu int, tooltip string) { //gd:MenuBar.set_menu_tooltip
+func (self Instance) SetMenuTooltip(menu int, tooltip string) Instance { //gd:MenuBar.set_menu_tooltip
 	Advanced(self).SetMenuTooltip(int64(menu), String.New(tooltip))
+	return self
 }
 
 /*
@@ -195,9 +204,12 @@ func (self Instance) GetMenuTooltip(menu int) string { //gd:MenuBar.get_menu_too
 
 /*
 If true, menu item is disabled.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMenuDisabled(menu int, disabled bool) { //gd:MenuBar.set_menu_disabled
+func (self Instance) SetMenuDisabled(menu int, disabled bool) Instance { //gd:MenuBar.set_menu_disabled
 	Advanced(self).SetMenuDisabled(int64(menu), disabled)
+	return self
 }
 
 /*
@@ -209,9 +221,12 @@ func (self Instance) IsMenuDisabled(menu int) bool { //gd:MenuBar.is_menu_disabl
 
 /*
 If true, menu item is hidden.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMenuHidden(menu int, hidden bool) { //gd:MenuBar.set_menu_hidden
+func (self Instance) SetMenuHidden(menu int, hidden bool) Instance { //gd:MenuBar.set_menu_hidden
 	Advanced(self).SetMenuHidden(int64(menu), hidden)
+	return self
 }
 
 /*
@@ -281,9 +296,10 @@ func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
-// SetFlat sets the property returned by [IsFlat].
-func (self Instance) SetFlat(value bool) {
+// SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlat(value bool) Instance {
 	class(self).SetFlat(value)
+	return self
 }
 
 /*
@@ -296,9 +312,10 @@ func (self Instance) StartIndex() int {
 	return int(int(class(self).GetStartIndex()))
 }
 
-// SetStartIndex sets the property returned by [GetStartIndex].
-func (self Instance) SetStartIndex(value int) {
+// SetStartIndex sets the property returned by [GetStartIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStartIndex(value int) Instance {
 	class(self).SetStartIndex(int64(value))
+	return self
 }
 
 /*
@@ -310,9 +327,10 @@ func (self Instance) SwitchOnHover() bool {
 	return bool(class(self).IsSwitchOnHover())
 }
 
-// SetSwitchOnHover sets the property returned by [IsSwitchOnHover].
-func (self Instance) SetSwitchOnHover(value bool) {
+// SetSwitchOnHover sets the property returned by [IsSwitchOnHover]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwitchOnHover(value bool) Instance {
 	class(self).SetSwitchOnHover(value)
+	return self
 }
 
 /*
@@ -330,9 +348,10 @@ func (self Instance) PreferGlobalMenu() bool {
 	return bool(class(self).IsPreferGlobalMenu())
 }
 
-// SetPreferGlobalMenu sets the property returned by [IsPreferGlobalMenu].
-func (self Instance) SetPreferGlobalMenu(value bool) {
+// SetPreferGlobalMenu sets the property returned by [IsPreferGlobalMenu]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreferGlobalMenu(value bool) Instance {
 	class(self).SetPreferGlobalMenu(value)
+	return self
 }
 
 /*
@@ -342,9 +361,10 @@ func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-// SetTextDirection sets the property returned by [GetTextDirection].
-func (self Instance) SetTextDirection(value Control.TextDirection) {
+// SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTextDirection(value)
+	return self
 }
 
 /*
@@ -354,9 +374,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 //go:nosplit

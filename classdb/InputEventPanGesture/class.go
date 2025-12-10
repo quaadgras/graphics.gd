@@ -172,9 +172,10 @@ func (self Instance) Delta() Vector2.XY {
 	return Vector2.XY(class(self).GetDelta())
 }
 
-// SetDelta sets the property returned by [GetDelta].
-func (self Instance) SetDelta(value Vector2.XY) {
+// SetDelta sets the property returned by [GetDelta]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDelta(value Vector2.XY) Instance {
 	class(self).SetDelta(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

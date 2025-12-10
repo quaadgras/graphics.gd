@@ -149,11 +149,14 @@ type Any interface {
 /*
 Sets the light's height, which is used in 2D normal mapping. See [PointLight2D.Height] and [DirectionalLight2D.Height].
 
+Returns 'self' to enable method chaining.
+
 [DirectionalLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.Height
 [PointLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Height
 */
-func (self Instance) SetHeight(height Float.X) { //gd:Light2D.set_height
+func (self Instance) SetHeight(height Float.X) Instance { //gd:Light2D.set_height
 	Advanced(self).SetHeight(float64(height))
+	return self
 }
 
 /*
@@ -215,9 +218,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -227,9 +231,10 @@ func (self Instance) EditorOnly() bool {
 	return bool(class(self).IsEditorOnly())
 }
 
-// SetEditorOnly sets the property returned by [IsEditorOnly].
-func (self Instance) SetEditorOnly(value bool) {
+// SetEditorOnly sets the property returned by [IsEditorOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorOnly(value bool) Instance {
 	class(self).SetEditorOnly(value)
+	return self
 }
 
 /*
@@ -241,9 +246,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -253,9 +259,10 @@ func (self Instance) Energy() Float.X {
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
-// SetEnergy sets the property returned by [GetEnergy].
-func (self Instance) SetEnergy(value Float.X) {
+// SetEnergy sets the property returned by [GetEnergy]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnergy(value Float.X) Instance {
 	class(self).SetEnergy(float64(value))
+	return self
 }
 
 /*
@@ -265,9 +272,10 @@ func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
-// SetBlendMode sets the property returned by [GetBlendMode].
-func (self Instance) SetBlendMode(value BlendMode) {
+// SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBlendMode(value BlendMode) Instance {
 	class(self).SetBlendMode(value)
+	return self
 }
 
 /*
@@ -277,9 +285,10 @@ func (self Instance) RangeZMin() int {
 	return int(int(class(self).GetZRangeMin()))
 }
 
-// SetRangeZMin sets the property returned by [GetZRangeMin].
-func (self Instance) SetRangeZMin(value int) {
+// SetRangeZMin sets the property returned by [GetZRangeMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeZMin(value int) Instance {
 	class(self).SetZRangeMin(int64(value))
+	return self
 }
 
 /*
@@ -289,9 +298,10 @@ func (self Instance) RangeZMax() int {
 	return int(int(class(self).GetZRangeMax()))
 }
 
-// SetRangeZMax sets the property returned by [GetZRangeMax].
-func (self Instance) SetRangeZMax(value int) {
+// SetRangeZMax sets the property returned by [GetZRangeMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeZMax(value int) Instance {
 	class(self).SetZRangeMax(int64(value))
+	return self
 }
 
 /*
@@ -301,9 +311,10 @@ func (self Instance) RangeLayerMin() int {
 	return int(int(class(self).GetLayerRangeMin()))
 }
 
-// SetRangeLayerMin sets the property returned by [GetLayerRangeMin].
-func (self Instance) SetRangeLayerMin(value int) {
+// SetRangeLayerMin sets the property returned by [GetLayerRangeMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeLayerMin(value int) Instance {
 	class(self).SetLayerRangeMin(int64(value))
+	return self
 }
 
 /*
@@ -313,9 +324,10 @@ func (self Instance) RangeLayerMax() int {
 	return int(int(class(self).GetLayerRangeMax()))
 }
 
-// SetRangeLayerMax sets the property returned by [GetLayerRangeMax].
-func (self Instance) SetRangeLayerMax(value int) {
+// SetRangeLayerMax sets the property returned by [GetLayerRangeMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeLayerMax(value int) Instance {
 	class(self).SetLayerRangeMax(int64(value))
+	return self
 }
 
 /*
@@ -332,9 +344,10 @@ func (self Instance) RangeItemCullMask() int {
 	return int(int(class(self).GetItemCullMask()))
 }
 
-// SetRangeItemCullMask sets the property returned by [GetItemCullMask].
-func (self Instance) SetRangeItemCullMask(value int) {
+// SetRangeItemCullMask sets the property returned by [GetItemCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRangeItemCullMask(value int) Instance {
 	class(self).SetItemCullMask(int64(value))
+	return self
 }
 
 /*
@@ -344,9 +357,10 @@ func (self Instance) ShadowEnabled() bool {
 	return bool(class(self).IsShadowEnabled())
 }
 
-// SetShadowEnabled sets the property returned by [IsShadowEnabled].
-func (self Instance) SetShadowEnabled(value bool) {
+// SetShadowEnabled sets the property returned by [IsShadowEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowEnabled(value bool) Instance {
 	class(self).SetShadowEnabled(value)
+	return self
 }
 
 /*
@@ -358,9 +372,10 @@ func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
-// SetShadowColor sets the property returned by [GetShadowColor].
-func (self Instance) SetShadowColor(value Color.RGBA) {
+// SetShadowColor sets the property returned by [GetShadowColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowColor(value Color.RGBA) Instance {
 	class(self).SetShadowColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -370,9 +385,10 @@ func (self Instance) ShadowFilter() ShadowFilter {
 	return ShadowFilter(class(self).GetShadowFilter())
 }
 
-// SetShadowFilter sets the property returned by [GetShadowFilter].
-func (self Instance) SetShadowFilter(value ShadowFilter) {
+// SetShadowFilter sets the property returned by [GetShadowFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowFilter(value ShadowFilter) Instance {
 	class(self).SetShadowFilter(value)
+	return self
 }
 
 /*
@@ -385,9 +401,10 @@ func (self Instance) ShadowFilterSmooth() Float.X {
 	return Float.X(Float.X(class(self).GetShadowSmooth()))
 }
 
-// SetShadowFilterSmooth sets the property returned by [GetShadowSmooth].
-func (self Instance) SetShadowFilterSmooth(value Float.X) {
+// SetShadowFilterSmooth sets the property returned by [GetShadowSmooth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowFilterSmooth(value Float.X) Instance {
 	class(self).SetShadowSmooth(float64(value))
+	return self
 }
 
 /*
@@ -401,9 +418,10 @@ func (self Instance) ShadowItemCullMask() int {
 	return int(int(class(self).GetItemShadowCullMask()))
 }
 
-// SetShadowItemCullMask sets the property returned by [GetItemShadowCullMask].
-func (self Instance) SetShadowItemCullMask(value int) {
+// SetShadowItemCullMask sets the property returned by [GetItemShadowCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowItemCullMask(value int) Instance {
 	class(self).SetItemShadowCullMask(int64(value))
+	return self
 }
 
 //go:nosplit

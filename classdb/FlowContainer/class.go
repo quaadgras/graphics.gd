@@ -179,9 +179,10 @@ func (self Instance) Alignment() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignment())
 }
 
-// SetAlignment sets the property returned by [GetAlignment].
-func (self Instance) SetAlignment(value AlignmentMode) {
+// SetAlignment sets the property returned by [GetAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value AlignmentMode) Instance {
 	class(self).SetAlignment(value)
+	return self
 }
 
 /*
@@ -191,9 +192,10 @@ func (self Instance) LastWrapAlignment() LastWrapAlignmentMode {
 	return LastWrapAlignmentMode(class(self).GetLastWrapAlignment())
 }
 
-// SetLastWrapAlignment sets the property returned by [GetLastWrapAlignment].
-func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) {
+// SetLastWrapAlignment sets the property returned by [GetLastWrapAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) Instance {
 	class(self).SetLastWrapAlignment(value)
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
-// SetVertical sets the property returned by [IsVertical].
-func (self Instance) SetVertical(value bool) {
+// SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertical(value bool) Instance {
 	class(self).SetVertical(value)
+	return self
 }
 
 /*
@@ -226,9 +229,10 @@ func (self Instance) ReverseFill() bool {
 	return bool(class(self).IsReverseFill())
 }
 
-// SetReverseFill sets the property returned by [IsReverseFill].
-func (self Instance) SetReverseFill(value bool) {
+// SetReverseFill sets the property returned by [IsReverseFill]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReverseFill(value bool) Instance {
 	class(self).SetReverseFill(value)
+	return self
 }
 
 /*

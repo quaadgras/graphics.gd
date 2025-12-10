@@ -192,9 +192,10 @@ func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
-// SetTransform sets the property returned by [GetTransform].
-func (self Instance) SetTransform(value Transform2D.OriginXY) {
+// SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -206,9 +207,10 @@ func (self Instance) Range() Vector2i.XY {
 	return Vector2i.XY(class(self).GetRange())
 }
 
-// SetRange sets the property returned by [GetRange].
-func (self Instance) SetRange(value Vector2i.XY) {
+// SetRange sets the property returned by [GetRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRange(value Vector2i.XY) Instance {
 	class(self).SetRange(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -223,9 +225,10 @@ func (self Instance) ElapsedTime() Float.X {
 	return Float.X(Float.X(class(self).GetElapsedTime()))
 }
 
-// SetElapsedTime sets the property returned by [GetElapsedTime].
-func (self Instance) SetElapsedTime(value Float.X) {
+// SetElapsedTime sets the property returned by [GetElapsedTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetElapsedTime(value Float.X) Instance {
 	class(self).SetElapsedTime(float64(value))
+	return self
 }
 
 /*
@@ -237,9 +240,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisibility(value)
+	return self
 }
 
 /*
@@ -251,9 +255,10 @@ func (self Instance) Outline() bool {
 	return bool(class(self).IsOutline())
 }
 
-// SetOutline sets the property returned by [IsOutline].
-func (self Instance) SetOutline(value bool) {
+// SetOutline sets the property returned by [IsOutline]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOutline(value bool) Instance {
 	class(self).SetOutline(value)
+	return self
 }
 
 /*
@@ -263,9 +268,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -275,9 +281,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -292,9 +299,10 @@ func (self Instance) Env() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetEnvironment()))
 }
 
-// SetEnv sets the property returned by [GetEnvironment].
-func (self Instance) SetEnv(value map[any]any) {
+// SetEnv sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnv(value map[any]any) Instance {
 	class(self).SetEnvironment(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -307,9 +315,10 @@ func (self Instance) GlyphIndex() int {
 	return int(int(class(self).GetGlyphIndex()))
 }
 
-// SetGlyphIndex sets the property returned by [GetGlyphIndex].
-func (self Instance) SetGlyphIndex(value int) {
+// SetGlyphIndex sets the property returned by [GetGlyphIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlyphIndex(value int) Instance {
 	class(self).SetGlyphIndex(int64(value))
+	return self
 }
 
 /*
@@ -321,9 +330,10 @@ func (self Instance) GlyphCount() int {
 	return int(int(class(self).GetGlyphCount()))
 }
 
-// SetGlyphCount sets the property returned by [GetGlyphCount].
-func (self Instance) SetGlyphCount(value int) {
+// SetGlyphCount sets the property returned by [GetGlyphCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlyphCount(value int) Instance {
 	class(self).SetGlyphCount(int64(value))
+	return self
 }
 
 /*
@@ -335,9 +345,10 @@ func (self Instance) GlyphFlags() int {
 	return int(int(class(self).GetGlyphFlags()))
 }
 
-// SetGlyphFlags sets the property returned by [GetGlyphFlags].
-func (self Instance) SetGlyphFlags(value int) {
+// SetGlyphFlags sets the property returned by [GetGlyphFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlyphFlags(value int) Instance {
 	class(self).SetGlyphFlags(int64(value))
+	return self
 }
 
 /*
@@ -351,9 +362,10 @@ func (self Instance) RelativeIndex() int {
 	return int(int(class(self).GetRelativeIndex()))
 }
 
-// SetRelativeIndex sets the property returned by [GetRelativeIndex].
-func (self Instance) SetRelativeIndex(value int) {
+// SetRelativeIndex sets the property returned by [GetRelativeIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRelativeIndex(value int) Instance {
 	class(self).SetRelativeIndex(int64(value))
+	return self
 }
 
 /*
@@ -367,9 +379,10 @@ func (self Instance) Font() RID.Font {
 	return RID.Font(RID.Font(class(self).GetFont()))
 }
 
-// SetFont sets the property returned by [GetFont].
-func (self Instance) SetFont(value RID.Font) {
+// SetFont sets the property returned by [GetFont]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFont(value RID.Font) Instance {
 	class(self).SetFont(RID.Any(value))
+	return self
 }
 
 //go:nosplit

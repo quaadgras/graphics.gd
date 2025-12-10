@@ -172,19 +172,25 @@ func (self MoreArgs) PlayStream(stream AudioStream.Instance, from_offset Float.X
 /*
 Change the stream volume (in db). The 'stream' argument is an integer ID returned by [PlayStream].
 
+Returns 'self' to enable method chaining.
+
 [PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
 */
-func (self Instance) SetStreamVolume(stream Stream, volume_db Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
+func (self Instance) SetStreamVolume(stream Stream, volume_db Float.X) Instance { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
 	Advanced(self).SetStreamVolume(int64(stream), float64(volume_db))
+	return self
 }
 
 /*
 Change the stream pitch scale. The 'stream' argument is an integer ID returned by [PlayStream].
 
+Returns 'self' to enable method chaining.
+
 [PlayStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlaybackPolyphonic#Instance.PlayStream
 */
-func (self Instance) SetStreamPitchScale(stream Stream, pitch_scale Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
+func (self Instance) SetStreamPitchScale(stream Stream, pitch_scale Float.X) Instance { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
 	Advanced(self).SetStreamPitchScale(int64(stream), float64(pitch_scale))
+	return self
 }
 
 /*

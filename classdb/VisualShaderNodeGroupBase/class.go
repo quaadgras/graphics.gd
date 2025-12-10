@@ -137,10 +137,13 @@ type Any interface {
 /*
 Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [AddInputPort]).
 
+Returns 'self' to enable method chaining.
+
 [AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
-func (self Instance) SetInputs(inputs string) { //gd:VisualShaderNodeGroupBase.set_inputs
+func (self Instance) SetInputs(inputs string) Instance { //gd:VisualShaderNodeGroupBase.set_inputs
 	Advanced(self).SetInputs(String.New(inputs))
+	return self
 }
 
 /*
@@ -155,10 +158,13 @@ func (self Instance) GetInputs() string { //gd:VisualShaderNodeGroupBase.get_inp
 /*
 Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [AddOutputPort]).
 
+Returns 'self' to enable method chaining.
+
 [AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
-func (self Instance) SetOutputs(outputs string) { //gd:VisualShaderNodeGroupBase.set_outputs
+func (self Instance) SetOutputs(outputs string) Instance { //gd:VisualShaderNodeGroupBase.set_outputs
 	Advanced(self).SetOutputs(String.New(outputs))
+	return self
 }
 
 /*
@@ -253,30 +259,42 @@ func (self Instance) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_o
 
 /*
 Renames the specified input port.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_input_port_name
+func (self Instance) SetInputPortName(id int, name string) Instance { //gd:VisualShaderNodeGroupBase.set_input_port_name
 	Advanced(self).SetInputPortName(int64(id), String.New(name))
+	return self
 }
 
 /*
 Sets the specified input port's type (see [VisualShaderNode.PortType]).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputPortType(id int, atype int) { //gd:VisualShaderNodeGroupBase.set_input_port_type
+func (self Instance) SetInputPortType(id int, atype int) Instance { //gd:VisualShaderNodeGroupBase.set_input_port_type
 	Advanced(self).SetInputPortType(int64(id), int64(atype))
+	return self
 }
 
 /*
 Renames the specified output port.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOutputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_output_port_name
+func (self Instance) SetOutputPortName(id int, name string) Instance { //gd:VisualShaderNodeGroupBase.set_output_port_name
 	Advanced(self).SetOutputPortName(int64(id), String.New(name))
+	return self
 }
 
 /*
 Sets the specified output port's type (see [VisualShaderNode.PortType]).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOutputPortType(id int, atype int) { //gd:VisualShaderNodeGroupBase.set_output_port_type
+func (self Instance) SetOutputPortType(id int, atype int) Instance { //gd:VisualShaderNodeGroupBase.set_output_port_type
 	Advanced(self).SetOutputPortType(int64(id), int64(atype))
+	return self
 }
 
 /*

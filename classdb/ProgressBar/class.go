@@ -173,9 +173,10 @@ func (self Instance) FillMode() int {
 	return int(int(class(self).GetFillMode()))
 }
 
-// SetFillMode sets the property returned by [GetFillMode].
-func (self Instance) SetFillMode(value int) {
+// SetFillMode sets the property returned by [GetFillMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFillMode(value int) Instance {
 	class(self).SetFillMode(int64(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) ShowPercentage() bool {
 	return bool(class(self).IsPercentageShown())
 }
 
-// SetShowPercentage sets the property returned by [IsPercentageShown].
-func (self Instance) SetShowPercentage(value bool) {
+// SetShowPercentage sets the property returned by [IsPercentageShown]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowPercentage(value bool) Instance {
 	class(self).SetShowPercentage(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) Indeterminate() bool {
 	return bool(class(self).IsIndeterminate())
 }
 
-// SetIndeterminate sets the property returned by [IsIndeterminate].
-func (self Instance) SetIndeterminate(value bool) {
+// SetIndeterminate sets the property returned by [IsIndeterminate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndeterminate(value bool) Instance {
 	class(self).SetIndeterminate(value)
+	return self
 }
 
 /*
@@ -211,9 +214,10 @@ func (self Instance) EditorPreviewIndeterminate() bool {
 	return bool(class(self).IsEditorPreviewIndeterminateEnabled())
 }
 
-// SetEditorPreviewIndeterminate sets the property returned by [IsEditorPreviewIndeterminateEnabled].
-func (self Instance) SetEditorPreviewIndeterminate(value bool) {
+// SetEditorPreviewIndeterminate sets the property returned by [IsEditorPreviewIndeterminateEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorPreviewIndeterminate(value bool) Instance {
 	class(self).SetEditorPreviewIndeterminate(value)
+	return self
 }
 
 //go:nosplit

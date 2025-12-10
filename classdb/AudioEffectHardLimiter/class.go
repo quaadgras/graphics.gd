@@ -168,9 +168,10 @@ func (self Instance) PreGainDb() Float.X {
 	return Float.X(Float.X(class(self).GetPreGainDb()))
 }
 
-// SetPreGainDb sets the property returned by [GetPreGainDb].
-func (self Instance) SetPreGainDb(value Float.X) {
+// SetPreGainDb sets the property returned by [GetPreGainDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreGainDb(value Float.X) Instance {
 	class(self).SetPreGainDb(float64(value))
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) CeilingDb() Float.X {
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
-// SetCeilingDb sets the property returned by [GetCeilingDb].
-func (self Instance) SetCeilingDb(value Float.X) {
+// SetCeilingDb sets the property returned by [GetCeilingDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCeilingDb(value Float.X) Instance {
 	class(self).SetCeilingDb(float64(value))
+	return self
 }
 
 /*
@@ -194,9 +196,10 @@ func (self Instance) Release() Float.X {
 	return Float.X(Float.X(class(self).GetRelease()))
 }
 
-// SetRelease sets the property returned by [GetRelease].
-func (self Instance) SetRelease(value Float.X) {
+// SetRelease sets the property returned by [GetRelease]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRelease(value Float.X) Instance {
 	class(self).SetRelease(float64(value))
+	return self
 }
 
 //go:nosplit

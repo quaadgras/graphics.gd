@@ -172,9 +172,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -184,9 +185,10 @@ func (self Instance) AspectRatio() Float.X {
 	return Float.X(Float.X(class(self).GetAspectRatio()))
 }
 
-// SetAspectRatio sets the property returned by [GetAspectRatio].
-func (self Instance) SetAspectRatio(value Float.X) {
+// SetAspectRatio sets the property returned by [GetAspectRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAspectRatio(value Float.X) Instance {
 	class(self).SetAspectRatio(float64(value))
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) CentralAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetCentralAngle()))
 }
 
-// SetCentralAngle sets the property returned by [GetCentralAngle].
-func (self Instance) SetCentralAngle(value Angle.Radians) {
+// SetCentralAngle sets the property returned by [GetCentralAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCentralAngle(value Angle.Radians) Instance {
 	class(self).SetCentralAngle(float64(value))
+	return self
 }
 
 /*
@@ -208,9 +211,10 @@ func (self Instance) FallbackSegments() int {
 	return int(int(class(self).GetFallbackSegments()))
 }
 
-// SetFallbackSegments sets the property returned by [GetFallbackSegments].
-func (self Instance) SetFallbackSegments(value int) {
+// SetFallbackSegments sets the property returned by [GetFallbackSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbackSegments(value int) Instance {
 	class(self).SetFallbackSegments(int64(value))
+	return self
 }
 
 //go:nosplit

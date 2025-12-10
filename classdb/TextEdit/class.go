@@ -523,10 +523,13 @@ func (self Instance) ApplyIme() { //gd:TextEdit.apply_ime
 /*
 Sets the tab size for the [TextEdit] to use.
 
+Returns 'self' to enable method chaining.
+
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) SetTabSize(size int) { //gd:TextEdit.set_tab_size
+func (self Instance) SetTabSize(size int) Instance { //gd:TextEdit.set_tab_size
 	Advanced(self).SetTabSize(int64(size))
+	return self
 }
 
 /*
@@ -541,11 +544,14 @@ func (self Instance) GetTabSize() int { //gd:TextEdit.get_tab_size
 /*
 If true, enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The [ProjectSettings] "input/ui_text_toggle_insert_mode" action toggles overtype mode. See [IsOvertypeModeEnabled].
 
+Returns 'self' to enable method chaining.
+
 [IsOvertypeModeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsOvertypeModeEnabled
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overtype_mode_enabled
+func (self Instance) SetOvertypeModeEnabled(enabled bool) Instance { //gd:TextEdit.set_overtype_mode_enabled
 	Advanced(self).SetOvertypeModeEnabled(enabled)
+	return self
 }
 
 /*
@@ -577,9 +583,12 @@ func (self Instance) GetLineCount() int { //gd:TextEdit.get_line_count
 Sets the text for a specific 'line'.
 
 Carets on the line will attempt to keep their visual x position.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLine(line int, new_text string) { //gd:TextEdit.set_line
+func (self Instance) SetLine(line int, new_text string) Instance { //gd:TextEdit.set_line
 	Advanced(self).SetLine(int64(line), String.New(new_text))
+	return self
 }
 
 /*
@@ -926,19 +935,25 @@ func (self Instance) GetSavedVersion() int { //gd:TextEdit.get_saved_version
 /*
 Sets the search text. See [SetSearchFlags].
 
+Returns 'self' to enable method chaining.
+
 [SetSearchFlags]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSearchFlags
 */
-func (self Instance) SetSearchText(search_text string) { //gd:TextEdit.set_search_text
+func (self Instance) SetSearchText(search_text string) Instance { //gd:TextEdit.set_search_text
 	Advanced(self).SetSearchText(String.New(search_text))
+	return self
 }
 
 /*
 Sets the search 'flags'. This is used with [SetSearchText] to highlight occurrences of the searched text. Search flags can be specified from the [SearchFlags] enum.
 
+Returns 'self' to enable method chaining.
+
 [SetSearchText]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSearchText
 */
-func (self Instance) SetSearchFlags(flags SearchFlags) { //gd:TextEdit.set_search_flags
+func (self Instance) SetSearchFlags(flags SearchFlags) Instance { //gd:TextEdit.set_search_flags
 	Advanced(self).SetSearchFlags(int64(flags))
+	return self
 }
 
 /*
@@ -955,9 +970,12 @@ func (self Instance) Search(text string, flags SearchFlags, from_line int, from_
 
 /*
 Provide custom tooltip text. The callback method must take the following args: hovered_word: String.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTooltipRequestFunc(callback func(hovered_word string) string) { //gd:TextEdit.set_tooltip_request_func
+func (self Instance) SetTooltipRequestFunc(callback func(hovered_word string) string) Instance { //gd:TextEdit.set_tooltip_request_func
 	Advanced(self).SetTooltipRequestFunc(Callable.New(callback))
+	return self
 }
 
 /*
@@ -1263,11 +1281,14 @@ If 'wrap_index' is -1, the caret column will be clamped to the 'line”s length.
 
 Note: If supporting multiple carets this will not check for any overlap. See [MergeOverlappingCarets].
 
+Returns 'self' to enable method chaining.
+
 [MergeOverlappingCarets]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.MergeOverlappingCarets
 [SetCaretColumn]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetCaretColumn
 */
-func (self Instance) SetCaretLine(line int) { //gd:TextEdit.set_caret_line
+func (self Instance) SetCaretLine(line int) Instance { //gd:TextEdit.set_caret_line
 	Advanced(self).SetCaretLine(int64(line), true, true, int64(0), int64(0))
+	return self
 }
 
 /*
@@ -1281,11 +1302,14 @@ If 'wrap_index' is -1, the caret column will be clamped to the 'line”s length.
 
 Note: If supporting multiple carets this will not check for any overlap. See [MergeOverlappingCarets].
 
+Returns 'self' to enable method chaining.
+
 [MergeOverlappingCarets]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.MergeOverlappingCarets
 [SetCaretColumn]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetCaretColumn
 */
-func (self MoreArgs) SetCaretLine(line int, adjust_viewport bool, can_be_hidden bool, wrap_index int, caret_index int) { //gd:TextEdit.set_caret_line
+func (self MoreArgs) SetCaretLine(line int, adjust_viewport bool, can_be_hidden bool, wrap_index int, caret_index int) MoreArgs { //gd:TextEdit.set_caret_line
 	Advanced(self).SetCaretLine(int64(line), adjust_viewport, can_be_hidden, int64(wrap_index), int64(caret_index))
+	return self
 }
 
 /*
@@ -1309,10 +1333,13 @@ If 'adjust_viewport' is true, the viewport will center at the caret position aft
 
 Note: If supporting multiple carets this will not check for any overlap. See [MergeOverlappingCarets].
 
+Returns 'self' to enable method chaining.
+
 [MergeOverlappingCarets]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.MergeOverlappingCarets
 */
-func (self Instance) SetCaretColumn(column int) { //gd:TextEdit.set_caret_column
+func (self Instance) SetCaretColumn(column int) Instance { //gd:TextEdit.set_caret_column
 	Advanced(self).SetCaretColumn(int64(column), true, int64(0))
+	return self
 }
 
 /*
@@ -1322,10 +1349,13 @@ If 'adjust_viewport' is true, the viewport will center at the caret position aft
 
 Note: If supporting multiple carets this will not check for any overlap. See [MergeOverlappingCarets].
 
+Returns 'self' to enable method chaining.
+
 [MergeOverlappingCarets]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.MergeOverlappingCarets
 */
-func (self MoreArgs) SetCaretColumn(column int, adjust_viewport bool, caret_index int) { //gd:TextEdit.set_caret_column
+func (self MoreArgs) SetCaretColumn(column int, adjust_viewport bool, caret_index int) MoreArgs { //gd:TextEdit.set_caret_column
 	Advanced(self).SetCaretColumn(int64(column), adjust_viewport, int64(caret_index))
+	return self
 }
 
 /*
@@ -1390,9 +1420,12 @@ func (self MoreArgs) GetWordUnderCaret(caret_index int) string { //gd:TextEdit.g
 
 /*
 Sets the current selection mode.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSelectionMode(mode SelectionMode) { //gd:TextEdit.set_selection_mode
+func (self Instance) SetSelectionMode(mode SelectionMode) Instance { //gd:TextEdit.set_selection_mode
 	Advanced(self).SetSelectionMode(mode)
+	return self
 }
 
 /*
@@ -1572,11 +1605,14 @@ If 'can_be_hidden' is false, The line will be set to the nearest unhidden line b
 
 If 'wrap_index' is -1, the selection origin column will be clamped to the 'line”s length. If 'wrap_index' is greater than -1, the column will be moved to attempt to match the visual x position on the line's 'wrap_index' to the position from the last time [SetSelectionOriginColumn] or [Select] was called.
 
+Returns 'self' to enable method chaining.
+
 [Select]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Select
 [SetSelectionOriginColumn]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSelectionOriginColumn
 */
-func (self Instance) SetSelectionOriginLine(line int) { //gd:TextEdit.set_selection_origin_line
+func (self Instance) SetSelectionOriginLine(line int) Instance { //gd:TextEdit.set_selection_origin_line
 	Advanced(self).SetSelectionOriginLine(int64(line), true, int64(-1), int64(0))
+	return self
 }
 
 /*
@@ -1586,25 +1622,34 @@ If 'can_be_hidden' is false, The line will be set to the nearest unhidden line b
 
 If 'wrap_index' is -1, the selection origin column will be clamped to the 'line”s length. If 'wrap_index' is greater than -1, the column will be moved to attempt to match the visual x position on the line's 'wrap_index' to the position from the last time [SetSelectionOriginColumn] or [Select] was called.
 
+Returns 'self' to enable method chaining.
+
 [Select]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Select
 [SetSelectionOriginColumn]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetSelectionOriginColumn
 */
-func (self MoreArgs) SetSelectionOriginLine(line int, can_be_hidden bool, wrap_index int, caret_index int) { //gd:TextEdit.set_selection_origin_line
+func (self MoreArgs) SetSelectionOriginLine(line int, can_be_hidden bool, wrap_index int, caret_index int) MoreArgs { //gd:TextEdit.set_selection_origin_line
 	Advanced(self).SetSelectionOriginLine(int64(line), can_be_hidden, int64(wrap_index), int64(caret_index))
+	return self
 }
 
 /*
 Sets the selection origin column to the 'column' for the given 'caret_index'. If the selection origin is moved to the caret position, the selection will deselect.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSelectionOriginColumn(column int) { //gd:TextEdit.set_selection_origin_column
+func (self Instance) SetSelectionOriginColumn(column int) Instance { //gd:TextEdit.set_selection_origin_column
 	Advanced(self).SetSelectionOriginColumn(int64(column), int64(0))
+	return self
 }
 
 /*
 Sets the selection origin column to the 'column' for the given 'caret_index'. If the selection origin is moved to the caret position, the selection will deselect.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetSelectionOriginColumn(column int, caret_index int) { //gd:TextEdit.set_selection_origin_column
+func (self MoreArgs) SetSelectionOriginColumn(column int, caret_index int) MoreArgs { //gd:TextEdit.set_selection_origin_column
 	Advanced(self).SetSelectionOriginColumn(int64(column), int64(caret_index))
+	return self
 }
 
 /*
@@ -1771,16 +1816,22 @@ func (self MoreArgs) GetScrollPosForLine(line int, wrap_index int) Float.X { //g
 
 /*
 Positions the 'wrap_index' of 'line' at the top of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineAsFirstVisible(line int) { //gd:TextEdit.set_line_as_first_visible
+func (self Instance) SetLineAsFirstVisible(line int) Instance { //gd:TextEdit.set_line_as_first_visible
 	Advanced(self).SetLineAsFirstVisible(int64(line), int64(0))
+	return self
 }
 
 /*
 Positions the 'wrap_index' of 'line' at the top of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetLineAsFirstVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_first_visible
+func (self MoreArgs) SetLineAsFirstVisible(line int, wrap_index int) MoreArgs { //gd:TextEdit.set_line_as_first_visible
 	Advanced(self).SetLineAsFirstVisible(int64(line), int64(wrap_index))
+	return self
 }
 
 /*
@@ -1792,30 +1843,42 @@ func (self Instance) GetFirstVisibleLine() int { //gd:TextEdit.get_first_visible
 
 /*
 Positions the 'wrap_index' of 'line' at the center of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineAsCenterVisible(line int) { //gd:TextEdit.set_line_as_center_visible
+func (self Instance) SetLineAsCenterVisible(line int) Instance { //gd:TextEdit.set_line_as_center_visible
 	Advanced(self).SetLineAsCenterVisible(int64(line), int64(0))
+	return self
 }
 
 /*
 Positions the 'wrap_index' of 'line' at the center of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetLineAsCenterVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_center_visible
+func (self MoreArgs) SetLineAsCenterVisible(line int, wrap_index int) MoreArgs { //gd:TextEdit.set_line_as_center_visible
 	Advanced(self).SetLineAsCenterVisible(int64(line), int64(wrap_index))
+	return self
 }
 
 /*
 Positions the 'wrap_index' of 'line' at the bottom of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineAsLastVisible(line int) { //gd:TextEdit.set_line_as_last_visible
+func (self Instance) SetLineAsLastVisible(line int) Instance { //gd:TextEdit.set_line_as_last_visible
 	Advanced(self).SetLineAsLastVisible(int64(line), int64(0))
+	return self
 }
 
 /*
 Positions the 'wrap_index' of 'line' at the bottom of the viewport.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetLineAsLastVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_last_visible
+func (self MoreArgs) SetLineAsLastVisible(line int, wrap_index int) MoreArgs { //gd:TextEdit.set_line_as_last_visible
 	Advanced(self).SetLineAsLastVisible(int64(line), int64(wrap_index))
+	return self
 }
 
 /*
@@ -1935,9 +1998,12 @@ func (self Instance) GetGutterCount() int { //gd:TextEdit.get_gutter_count
 
 /*
 Sets the name of the gutter at the given index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGutterName(gutter int, name string) { //gd:TextEdit.set_gutter_name
+func (self Instance) SetGutterName(gutter int, name string) Instance { //gd:TextEdit.set_gutter_name
 	Advanced(self).SetGutterName(int64(gutter), String.New(name))
+	return self
 }
 
 /*
@@ -1949,9 +2015,12 @@ func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter
 
 /*
 Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGutterType(gutter int, atype GutterType) { //gd:TextEdit.set_gutter_type
+func (self Instance) SetGutterType(gutter int, atype GutterType) Instance { //gd:TextEdit.set_gutter_type
 	Advanced(self).SetGutterType(int64(gutter), atype)
+	return self
 }
 
 /*
@@ -1963,9 +2032,12 @@ func (self Instance) GetGutterType(gutter int) GutterType { //gd:TextEdit.get_gu
 
 /*
 Set the width of the gutter at the given index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGutterWidth(gutter int, width int) { //gd:TextEdit.set_gutter_width
+func (self Instance) SetGutterWidth(gutter int, width int) Instance { //gd:TextEdit.set_gutter_width
 	Advanced(self).SetGutterWidth(int64(gutter), int64(width))
+	return self
 }
 
 /*
@@ -1978,11 +2050,14 @@ func (self Instance) GetGutterWidth(gutter int) int { //gd:TextEdit.get_gutter_w
 /*
 If true, the gutter at the given index is drawn. The gutter type ([SetGutterType]) determines how it is drawn. See [IsGutterDrawn].
 
+Returns 'self' to enable method chaining.
+
 [IsGutterDrawn]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsGutterDrawn
 [SetGutterType]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterType
 */
-func (self Instance) SetGutterDraw(gutter int, draw bool) { //gd:TextEdit.set_gutter_draw
+func (self Instance) SetGutterDraw(gutter int, draw bool) Instance { //gd:TextEdit.set_gutter_draw
 	Advanced(self).SetGutterDraw(int64(gutter), draw)
+	return self
 }
 
 /*
@@ -1997,11 +2072,14 @@ func (self Instance) IsGutterDrawn(gutter int) bool { //gd:TextEdit.is_gutter_dr
 /*
 If true, the mouse cursor will change to a pointing hand ([Control.CursorPointingHand]) when hovering over the gutter at the given index. See [IsGutterClickable] and [SetLineGutterClickable].
 
+Returns 'self' to enable method chaining.
+
 [IsGutterClickable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsGutterClickable
 [SetLineGutterClickable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetLineGutterClickable
 */
-func (self Instance) SetGutterClickable(gutter int, clickable bool) { //gd:TextEdit.set_gutter_clickable
+func (self Instance) SetGutterClickable(gutter int, clickable bool) Instance { //gd:TextEdit.set_gutter_clickable
 	Advanced(self).SetGutterClickable(int64(gutter), clickable)
+	return self
 }
 
 /*
@@ -2016,11 +2094,14 @@ func (self Instance) IsGutterClickable(gutter int) bool { //gd:TextEdit.is_gutte
 /*
 If true, the line data of the gutter at the given index can be overridden when using [MergeGutters]. See [IsGutterOverwritable].
 
+Returns 'self' to enable method chaining.
+
 [IsGutterOverwritable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsGutterOverwritable
 [MergeGutters]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.MergeGutters
 */
-func (self Instance) SetGutterOverwritable(gutter int, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
+func (self Instance) SetGutterOverwritable(gutter int, overwritable bool) Instance { //gd:TextEdit.set_gutter_overwritable
 	Advanced(self).SetGutterOverwritable(int64(gutter), overwritable)
+	return self
 }
 
 /*
@@ -2044,11 +2125,14 @@ func (self Instance) MergeGutters(from_line int, to_line int) { //gd:TextEdit.me
 /*
 Set a custom draw callback for the gutter at the given index. 'draw_callback' must take the following arguments: A line index int, a gutter index int, and an area [Rect2.PositionSize]. This callback only works when the gutter type is [GutterTypeCustom] (see [SetGutterType]).
 
+Returns 'self' to enable method chaining.
+
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 [SetGutterType]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterType
 */
-func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) { //gd:TextEdit.set_gutter_custom_draw
+func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) Instance { //gd:TextEdit.set_gutter_custom_draw
 	Advanced(self).SetGutterCustomDraw(int64(column), Callable.New(draw_callback))
+	return self
 }
 
 /*
@@ -2060,9 +2144,12 @@ func (self Instance) GetTotalGutterWidth() int { //gd:TextEdit.get_total_gutter_
 
 /*
 Sets the metadata for 'gutter' on 'line' to 'metadata'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata any) { //gd:TextEdit.set_line_gutter_metadata
+func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata any) Instance { //gd:TextEdit.set_line_gutter_metadata
 	Advanced(self).SetLineGutterMetadata(int64(line), int64(gutter), variant.New(metadata))
+	return self
 }
 
 /*
@@ -2075,10 +2162,13 @@ func (self Instance) GetLineGutterMetadata(line int, gutter int) any { //gd:Text
 /*
 Sets the text for 'gutter' on 'line' to 'text'. This only works when the gutter type is [GutterTypeString] (see [SetGutterType]).
 
+Returns 'self' to enable method chaining.
+
 [SetGutterType]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterType
 */
-func (self Instance) SetLineGutterText(line int, gutter int, text string) { //gd:TextEdit.set_line_gutter_text
+func (self Instance) SetLineGutterText(line int, gutter int, text string) Instance { //gd:TextEdit.set_line_gutter_text
 	Advanced(self).SetLineGutterText(int64(line), int64(gutter), String.New(text))
+	return self
 }
 
 /*
@@ -2093,10 +2183,13 @@ func (self Instance) GetLineGutterText(line int, gutter int) string { //gd:TextE
 /*
 Sets the icon for 'gutter' on 'line' to 'icon'. This only works when the gutter type is [GutterTypeIcon] (see [SetGutterType]).
 
+Returns 'self' to enable method chaining.
+
 [SetGutterType]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterType
 */
-func (self Instance) SetLineGutterIcon(line int, gutter int, icon Texture2D.Instance) { //gd:TextEdit.set_line_gutter_icon
+func (self Instance) SetLineGutterIcon(line int, gutter int, icon Texture2D.Instance) Instance { //gd:TextEdit.set_line_gutter_icon
 	Advanced(self).SetLineGutterIcon(int64(line), int64(gutter), icon)
+	return self
 }
 
 /*
@@ -2110,9 +2203,12 @@ func (self Instance) GetLineGutterIcon(line int, gutter int) Texture2D.Instance 
 
 /*
 Sets the color for 'gutter' on 'line' to 'color'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineGutterItemColor(line int, gutter int, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
+func (self Instance) SetLineGutterItemColor(line int, gutter int, color Color.RGBA) Instance { //gd:TextEdit.set_line_gutter_item_color
 	Advanced(self).SetLineGutterItemColor(int64(line), int64(gutter), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -2125,13 +2221,16 @@ func (self Instance) GetLineGutterItemColor(line int, gutter int) Color.RGBA { /
 /*
 If 'clickable' is true, makes the 'gutter' on the given 'line' clickable. This is like [SetGutterClickable], but for a single line. If [IsGutterClickable] is true, this will not have any effect. See [IsLineGutterClickable] and [OnGutterClicked].
 
+Returns 'self' to enable method chaining.
+
 [IsGutterClickable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsGutterClickable
 [IsLineGutterClickable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsLineGutterClickable
 [OnGutterClicked]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.OnGutterClicked
 [SetGutterClickable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SetGutterClickable
 */
-func (self Instance) SetLineGutterClickable(line int, gutter int, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
+func (self Instance) SetLineGutterClickable(line int, gutter int, clickable bool) Instance { //gd:TextEdit.set_line_gutter_clickable
 	Advanced(self).SetLineGutterClickable(int64(line), int64(gutter), clickable)
+	return self
 }
 
 /*
@@ -2145,9 +2244,12 @@ func (self Instance) IsLineGutterClickable(line int, gutter int) bool { //gd:Tex
 
 /*
 Sets the custom background color of the given line. If transparent, this color is applied on top of the default background color (See theme's 'background_color'). If set to Color(0, 0, 0, 0), no additional color is applied.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) { //gd:TextEdit.set_line_background_color
+func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) Instance { //gd:TextEdit.set_line_background_color
 	Advanced(self).SetLineBackgroundColor(int64(line), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -2296,9 +2398,10 @@ func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
-// SetText sets the property returned by [GetText].
-func (self Instance) SetText(value string) {
+// SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetText(value string) Instance {
 	class(self).SetText(String.New(value))
+	return self
 }
 
 /*
@@ -2311,9 +2414,10 @@ func (self Instance) PlaceholderText() string {
 	return string(class(self).GetPlaceholder().String())
 }
 
-// SetPlaceholderText sets the property returned by [GetPlaceholder].
-func (self Instance) SetPlaceholderText(value string) {
+// SetPlaceholderText sets the property returned by [GetPlaceholder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaceholderText(value string) Instance {
 	class(self).SetPlaceholder(String.New(value))
+	return self
 }
 
 /*
@@ -2323,9 +2427,10 @@ func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
-// SetEditable sets the property returned by [IsEditable].
-func (self Instance) SetEditable(value bool) {
+// SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditable(value bool) Instance {
 	class(self).SetEditable(value)
+	return self
 }
 
 /*
@@ -2335,9 +2440,10 @@ func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
-// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
-func (self Instance) SetContextMenuEnabled(value bool) {
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContextMenuEnabled(value bool) Instance {
 	class(self).SetContextMenuEnabled(value)
+	return self
 }
 
 /*
@@ -2347,9 +2453,10 @@ func (self Instance) EmojiMenuEnabled() bool {
 	return bool(class(self).IsEmojiMenuEnabled())
 }
 
-// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled].
-func (self Instance) SetEmojiMenuEnabled(value bool) {
+// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmojiMenuEnabled(value bool) Instance {
 	class(self).SetEmojiMenuEnabled(value)
+	return self
 }
 
 /*
@@ -2361,9 +2468,10 @@ func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
 	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
 }
 
-// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled].
-func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
+// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) Instance {
 	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
+	return self
 }
 
 /*
@@ -2373,9 +2481,10 @@ func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
-// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
-func (self Instance) SetShortcutKeysEnabled(value bool) {
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
 	class(self).SetShortcutKeysEnabled(value)
+	return self
 }
 
 /*
@@ -2390,9 +2499,10 @@ func (self Instance) SelectingEnabled() bool {
 	return bool(class(self).IsSelectingEnabled())
 }
 
-// SetSelectingEnabled sets the property returned by [IsSelectingEnabled].
-func (self Instance) SetSelectingEnabled(value bool) {
+// SetSelectingEnabled sets the property returned by [IsSelectingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectingEnabled(value bool) Instance {
 	class(self).SetSelectingEnabled(value)
+	return self
 }
 
 /*
@@ -2402,9 +2512,10 @@ func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
-// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
-func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
 	class(self).SetDeselectOnFocusLossEnabled(value)
+	return self
 }
 
 /*
@@ -2414,9 +2525,10 @@ func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
-// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
-func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
 	class(self).SetDragAndDropSelectionEnabled(value)
+	return self
 }
 
 /*
@@ -2426,9 +2538,10 @@ func (self Instance) VirtualKeyboardEnabled() bool {
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
-// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled].
-func (self Instance) SetVirtualKeyboardEnabled(value bool) {
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance {
 	class(self).SetVirtualKeyboardEnabled(value)
+	return self
 }
 
 /*
@@ -2438,9 +2551,10 @@ func (self Instance) VirtualKeyboardShowOnFocus() bool {
 	return bool(class(self).GetVirtualKeyboardShowOnFocus())
 }
 
-// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus].
-func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance {
 	class(self).SetVirtualKeyboardShowOnFocus(value)
+	return self
 }
 
 /*
@@ -2452,9 +2566,10 @@ func (self Instance) MiddleMousePasteEnabled() bool {
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
-// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled].
-func (self Instance) SetMiddleMousePasteEnabled(value bool) {
+// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMiddleMousePasteEnabled(value bool) Instance {
 	class(self).SetMiddleMousePasteEnabled(value)
+	return self
 }
 
 /*
@@ -2464,9 +2579,10 @@ func (self Instance) EmptySelectionClipboardEnabled() bool {
 	return bool(class(self).IsEmptySelectionClipboardEnabled())
 }
 
-// SetEmptySelectionClipboardEnabled sets the property returned by [IsEmptySelectionClipboardEnabled].
-func (self Instance) SetEmptySelectionClipboardEnabled(value bool) {
+// SetEmptySelectionClipboardEnabled sets the property returned by [IsEmptySelectionClipboardEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmptySelectionClipboardEnabled(value bool) Instance {
 	class(self).SetEmptySelectionClipboardEnabled(value)
+	return self
 }
 
 /*
@@ -2476,9 +2592,10 @@ func (self Instance) WrapMode() LineWrappingMode {
 	return LineWrappingMode(class(self).GetLineWrappingMode())
 }
 
-// SetWrapMode sets the property returned by [GetLineWrappingMode].
-func (self Instance) SetWrapMode(value LineWrappingMode) {
+// SetWrapMode sets the property returned by [GetLineWrappingMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWrapMode(value LineWrappingMode) Instance {
 	class(self).SetLineWrappingMode(value)
+	return self
 }
 
 /*
@@ -2490,9 +2607,10 @@ func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-// SetAutowrapMode sets the property returned by [GetAutowrapMode].
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
+// SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 	class(self).SetAutowrapMode(value)
+	return self
 }
 
 /*
@@ -2502,9 +2620,10 @@ func (self Instance) IndentWrappedLines() bool {
 	return bool(class(self).IsIndentWrappedLines())
 }
 
-// SetIndentWrappedLines sets the property returned by [IsIndentWrappedLines].
-func (self Instance) SetIndentWrappedLines(value bool) {
+// SetIndentWrappedLines sets the property returned by [IsIndentWrappedLines]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndentWrappedLines(value bool) Instance {
 	class(self).SetIndentWrappedLines(value)
+	return self
 }
 
 /*
@@ -2517,9 +2636,10 @@ func (self Instance) TabInputMode() bool {
 	return bool(class(self).GetTabInputMode())
 }
 
-// SetTabInputMode sets the property returned by [GetTabInputMode].
-func (self Instance) SetTabInputMode(value bool) {
+// SetTabInputMode sets the property returned by [GetTabInputMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTabInputMode(value bool) Instance {
 	class(self).SetTabInputMode(value)
+	return self
 }
 
 /*
@@ -2529,9 +2649,10 @@ func (self Instance) ScrollSmooth() bool {
 	return bool(class(self).IsSmoothScrollEnabled())
 }
 
-// SetScrollSmooth sets the property returned by [IsSmoothScrollEnabled].
-func (self Instance) SetScrollSmooth(value bool) {
+// SetScrollSmooth sets the property returned by [IsSmoothScrollEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollSmooth(value bool) Instance {
 	class(self).SetSmoothScrollEnabled(value)
+	return self
 }
 
 /*
@@ -2543,9 +2664,10 @@ func (self Instance) ScrollVScrollSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetVScrollSpeed()))
 }
 
-// SetScrollVScrollSpeed sets the property returned by [GetVScrollSpeed].
-func (self Instance) SetScrollVScrollSpeed(value Float.X) {
+// SetScrollVScrollSpeed sets the property returned by [GetVScrollSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollVScrollSpeed(value Float.X) Instance {
 	class(self).SetVScrollSpeed(float64(value))
+	return self
 }
 
 /*
@@ -2555,9 +2677,10 @@ func (self Instance) ScrollPastEndOfFile() bool {
 	return bool(class(self).IsScrollPastEndOfFileEnabled())
 }
 
-// SetScrollPastEndOfFile sets the property returned by [IsScrollPastEndOfFileEnabled].
-func (self Instance) SetScrollPastEndOfFile(value bool) {
+// SetScrollPastEndOfFile sets the property returned by [IsScrollPastEndOfFileEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollPastEndOfFile(value bool) Instance {
 	class(self).SetScrollPastEndOfFileEnabled(value)
+	return self
 }
 
 /*
@@ -2567,9 +2690,10 @@ func (self Instance) ScrollVertical() Float.X {
 	return Float.X(Float.X(class(self).GetVScroll()))
 }
 
-// SetScrollVertical sets the property returned by [GetVScroll].
-func (self Instance) SetScrollVertical(value Float.X) {
+// SetScrollVertical sets the property returned by [GetVScroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollVertical(value Float.X) Instance {
 	class(self).SetVScroll(float64(value))
+	return self
 }
 
 /*
@@ -2579,9 +2703,10 @@ func (self Instance) ScrollHorizontal() int {
 	return int(int(class(self).GetHScroll()))
 }
 
-// SetScrollHorizontal sets the property returned by [GetHScroll].
-func (self Instance) SetScrollHorizontal(value int) {
+// SetScrollHorizontal sets the property returned by [GetHScroll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHorizontal(value int) Instance {
 	class(self).SetHScroll(int64(value))
+	return self
 }
 
 /*
@@ -2594,9 +2719,10 @@ func (self Instance) ScrollFitContentHeight() bool {
 	return bool(class(self).IsFitContentHeightEnabled())
 }
 
-// SetScrollFitContentHeight sets the property returned by [IsFitContentHeightEnabled].
-func (self Instance) SetScrollFitContentHeight(value bool) {
+// SetScrollFitContentHeight sets the property returned by [IsFitContentHeightEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollFitContentHeight(value bool) Instance {
 	class(self).SetFitContentHeightEnabled(value)
+	return self
 }
 
 /*
@@ -2609,9 +2735,10 @@ func (self Instance) ScrollFitContentWidth() bool {
 	return bool(class(self).IsFitContentWidthEnabled())
 }
 
-// SetScrollFitContentWidth sets the property returned by [IsFitContentWidthEnabled].
-func (self Instance) SetScrollFitContentWidth(value bool) {
+// SetScrollFitContentWidth sets the property returned by [IsFitContentWidthEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollFitContentWidth(value bool) Instance {
 	class(self).SetFitContentWidthEnabled(value)
+	return self
 }
 
 /*
@@ -2621,9 +2748,10 @@ func (self Instance) MinimapDraw() bool {
 	return bool(class(self).IsDrawingMinimap())
 }
 
-// SetMinimapDraw sets the property returned by [IsDrawingMinimap].
-func (self Instance) SetMinimapDraw(value bool) {
+// SetMinimapDraw sets the property returned by [IsDrawingMinimap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimapDraw(value bool) Instance {
 	class(self).SetDrawMinimap(value)
+	return self
 }
 
 /*
@@ -2633,9 +2761,10 @@ func (self Instance) MinimapWidth() int {
 	return int(int(class(self).GetMinimapWidth()))
 }
 
-// SetMinimapWidth sets the property returned by [GetMinimapWidth].
-func (self Instance) SetMinimapWidth(value int) {
+// SetMinimapWidth sets the property returned by [GetMinimapWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinimapWidth(value int) Instance {
 	class(self).SetMinimapWidth(int64(value))
+	return self
 }
 
 /*
@@ -2645,9 +2774,10 @@ func (self Instance) CaretType() CaretType {
 	return CaretType(class(self).GetCaretType())
 }
 
-// SetCaretType sets the property returned by [GetCaretType].
-func (self Instance) SetCaretType(value CaretType) {
+// SetCaretType sets the property returned by [GetCaretType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretType(value CaretType) Instance {
 	class(self).SetCaretType(value)
+	return self
 }
 
 /*
@@ -2657,9 +2787,10 @@ func (self Instance) CaretBlink() bool {
 	return bool(class(self).IsCaretBlinkEnabled())
 }
 
-// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled].
-func (self Instance) SetCaretBlink(value bool) {
+// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretBlink(value bool) Instance {
 	class(self).SetCaretBlinkEnabled(value)
+	return self
 }
 
 /*
@@ -2669,9 +2800,10 @@ func (self Instance) CaretBlinkInterval() Float.X {
 	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
-// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval].
-func (self Instance) SetCaretBlinkInterval(value Float.X) {
+// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretBlinkInterval(value Float.X) Instance {
 	class(self).SetCaretBlinkInterval(float64(value))
+	return self
 }
 
 /*
@@ -2683,9 +2815,10 @@ func (self Instance) CaretDrawWhenEditableDisabled() bool {
 	return bool(class(self).IsDrawingCaretWhenEditableDisabled())
 }
 
-// SetCaretDrawWhenEditableDisabled sets the property returned by [IsDrawingCaretWhenEditableDisabled].
-func (self Instance) SetCaretDrawWhenEditableDisabled(value bool) {
+// SetCaretDrawWhenEditableDisabled sets the property returned by [IsDrawingCaretWhenEditableDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretDrawWhenEditableDisabled(value bool) Instance {
 	class(self).SetDrawCaretWhenEditableDisabled(value)
+	return self
 }
 
 /*
@@ -2697,9 +2830,10 @@ func (self Instance) CaretMoveOnRightClick() bool {
 	return bool(class(self).IsMoveCaretOnRightClickEnabled())
 }
 
-// SetCaretMoveOnRightClick sets the property returned by [IsMoveCaretOnRightClickEnabled].
-func (self Instance) SetCaretMoveOnRightClick(value bool) {
+// SetCaretMoveOnRightClick sets the property returned by [IsMoveCaretOnRightClickEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretMoveOnRightClick(value bool) Instance {
 	class(self).SetMoveCaretOnRightClickEnabled(value)
+	return self
 }
 
 /*
@@ -2711,9 +2845,10 @@ func (self Instance) CaretMidGrapheme() bool {
 	return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
-// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled].
-func (self Instance) SetCaretMidGrapheme(value bool) {
+// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretMidGrapheme(value bool) Instance {
 	class(self).SetCaretMidGraphemeEnabled(value)
+	return self
 }
 
 /*
@@ -2726,9 +2861,10 @@ func (self Instance) CaretMultiple() bool {
 	return bool(class(self).IsMultipleCaretsEnabled())
 }
 
-// SetCaretMultiple sets the property returned by [IsMultipleCaretsEnabled].
-func (self Instance) SetCaretMultiple(value bool) {
+// SetCaretMultiple sets the property returned by [IsMultipleCaretsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretMultiple(value bool) Instance {
 	class(self).SetMultipleCaretsEnabled(value)
+	return self
 }
 
 /*
@@ -2738,9 +2874,10 @@ func (self Instance) UseDefaultWordSeparators() bool {
 	return bool(class(self).IsDefaultWordSeparatorsEnabled())
 }
 
-// SetUseDefaultWordSeparators sets the property returned by [IsDefaultWordSeparatorsEnabled].
-func (self Instance) SetUseDefaultWordSeparators(value bool) {
+// SetUseDefaultWordSeparators sets the property returned by [IsDefaultWordSeparatorsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseDefaultWordSeparators(value bool) Instance {
 	class(self).SetUseDefaultWordSeparators(value)
+	return self
 }
 
 /*
@@ -2753,9 +2890,10 @@ func (self Instance) UseCustomWordSeparators() bool {
 	return bool(class(self).IsCustomWordSeparatorsEnabled())
 }
 
-// SetUseCustomWordSeparators sets the property returned by [IsCustomWordSeparatorsEnabled].
-func (self Instance) SetUseCustomWordSeparators(value bool) {
+// SetUseCustomWordSeparators sets the property returned by [IsCustomWordSeparatorsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseCustomWordSeparators(value bool) Instance {
 	class(self).SetUseCustomWordSeparators(value)
+	return self
 }
 
 /*
@@ -2767,9 +2905,10 @@ func (self Instance) CustomWordSeparators() string {
 	return string(class(self).GetCustomWordSeparators().String())
 }
 
-// SetCustomWordSeparators sets the property returned by [GetCustomWordSeparators].
-func (self Instance) SetCustomWordSeparators(value string) {
+// SetCustomWordSeparators sets the property returned by [GetCustomWordSeparators]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomWordSeparators(value string) Instance {
 	class(self).SetCustomWordSeparators(String.New(value))
+	return self
 }
 
 /*
@@ -2779,9 +2918,10 @@ func (self Instance) HighlightAllOccurrences() bool {
 	return bool(class(self).IsHighlightAllOccurrencesEnabled())
 }
 
-// SetHighlightAllOccurrences sets the property returned by [IsHighlightAllOccurrencesEnabled].
-func (self Instance) SetHighlightAllOccurrences(value bool) {
+// SetHighlightAllOccurrences sets the property returned by [IsHighlightAllOccurrencesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHighlightAllOccurrences(value bool) Instance {
 	class(self).SetHighlightAllOccurrences(value)
+	return self
 }
 
 /*
@@ -2791,9 +2931,10 @@ func (self Instance) HighlightCurrentLine() bool {
 	return bool(class(self).IsHighlightCurrentLineEnabled())
 }
 
-// SetHighlightCurrentLine sets the property returned by [IsHighlightCurrentLineEnabled].
-func (self Instance) SetHighlightCurrentLine(value bool) {
+// SetHighlightCurrentLine sets the property returned by [IsHighlightCurrentLineEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHighlightCurrentLine(value bool) Instance {
 	class(self).SetHighlightCurrentLine(value)
+	return self
 }
 
 /*
@@ -2803,9 +2944,10 @@ func (self Instance) DrawControlChars() bool {
 	return bool(class(self).GetDrawControlChars())
 }
 
-// SetDrawControlChars sets the property returned by [GetDrawControlChars].
-func (self Instance) SetDrawControlChars(value bool) {
+// SetDrawControlChars sets the property returned by [GetDrawControlChars]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawControlChars(value bool) Instance {
 	class(self).SetDrawControlChars(value)
+	return self
 }
 
 /*
@@ -2815,9 +2957,10 @@ func (self Instance) DrawTabs() bool {
 	return bool(class(self).IsDrawingTabs())
 }
 
-// SetDrawTabs sets the property returned by [IsDrawingTabs].
-func (self Instance) SetDrawTabs(value bool) {
+// SetDrawTabs sets the property returned by [IsDrawingTabs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawTabs(value bool) Instance {
 	class(self).SetDrawTabs(value)
+	return self
 }
 
 /*
@@ -2827,9 +2970,10 @@ func (self Instance) DrawSpaces() bool {
 	return bool(class(self).IsDrawingSpaces())
 }
 
-// SetDrawSpaces sets the property returned by [IsDrawingSpaces].
-func (self Instance) SetDrawSpaces(value bool) {
+// SetDrawSpaces sets the property returned by [IsDrawingSpaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawSpaces(value bool) Instance {
 	class(self).SetDrawSpaces(value)
+	return self
 }
 
 /*
@@ -2839,9 +2983,10 @@ func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-// SetTextDirection sets the property returned by [GetTextDirection].
-func (self Instance) SetTextDirection(value Control.TextDirection) {
+// SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTextDirection(value)
+	return self
 }
 
 /*
@@ -2851,9 +2996,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 /*
@@ -2863,9 +3009,10 @@ func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParse
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
 	class(self).SetStructuredTextBidiOverride(value)
+	return self
 }
 
 /*
@@ -2875,9 +3022,10 @@ func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
-// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -5378,12 +5526,13 @@ Emitted when [Clear] is called or [Text] is set.
 [Clear]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Clear
 [Text]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Text
 */
-func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextSet() Signal.Any {
@@ -5393,12 +5542,13 @@ func (self class) TextSet() Signal.Any {
 /*
 Emitted when the text changes.
 */
-func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextChanged() Signal.Any {
@@ -5410,12 +5560,13 @@ Emitted immediately when the text changes.
 
 When text is added 'from_line' will be less than 'to_line'. On a remove 'to_line' will be less than 'from_line'.
 */
-func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flags ...Signal.Flags) {
+func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) LinesEditedFrom() Signal.Any {
@@ -5425,12 +5576,13 @@ func (self class) LinesEditedFrom() Signal.Any {
 /*
 Emitted when any caret changes position.
 */
-func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CaretChanged() Signal.Any {
@@ -5440,12 +5592,13 @@ func (self class) CaretChanged() Signal.Any {
 /*
 Emitted when a gutter is clicked.
 */
-func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Signal.Flags) {
+func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GutterClicked() Signal.Any {
@@ -5455,12 +5608,13 @@ func (self class) GutterClicked() Signal.Any {
 /*
 Emitted when a gutter is added.
 */
-func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GutterAdded() Signal.Any {
@@ -5470,12 +5624,13 @@ func (self class) GutterAdded() Signal.Any {
 /*
 Emitted when a gutter is removed.
 */
-func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GutterRemoved() Signal.Any {

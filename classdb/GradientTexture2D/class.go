@@ -192,27 +192,32 @@ func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
-// SetGradient sets the property returned by [GetGradient].
-func (self Instance) SetGradient(value Gradient.Instance) {
+// SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGradient(value Gradient.Instance) Instance {
 	class(self).SetGradient(value)
+	return self
 }
 
 /*
 The number of horizontal color samples that will be obtained from the [Gradient], which also represents the texture's width.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) {
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
 The number of vertical color samples that will be obtained from the [Gradient], which also represents the texture's height.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetHeight(value int) {
+func (self Instance) SetHeight(value int) Instance {
 	class(self).SetHeight(int64(value))
+	return self
 }
 
 /*
@@ -224,9 +229,10 @@ func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }
 
-// SetUseHdr sets the property returned by [IsUsingHdr].
-func (self Instance) SetUseHdr(value bool) {
+// SetUseHdr sets the property returned by [IsUsingHdr]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseHdr(value bool) Instance {
 	class(self).SetUseHdr(value)
+	return self
 }
 
 /*
@@ -236,9 +242,10 @@ func (self Instance) Fill() Fill {
 	return Fill(class(self).GetFill())
 }
 
-// SetFill sets the property returned by [GetFill].
-func (self Instance) SetFill(value Fill) {
+// SetFill sets the property returned by [GetFill]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFill(value Fill) Instance {
 	class(self).SetFill(value)
+	return self
 }
 
 /*
@@ -248,9 +255,10 @@ func (self Instance) FillFrom() Vector2.XY {
 	return Vector2.XY(class(self).GetFillFrom())
 }
 
-// SetFillFrom sets the property returned by [GetFillFrom].
-func (self Instance) SetFillFrom(value Vector2.XY) {
+// SetFillFrom sets the property returned by [GetFillFrom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFillFrom(value Vector2.XY) Instance {
 	class(self).SetFillFrom(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -260,9 +268,10 @@ func (self Instance) FillTo() Vector2.XY {
 	return Vector2.XY(class(self).GetFillTo())
 }
 
-// SetFillTo sets the property returned by [GetFillTo].
-func (self Instance) SetFillTo(value Vector2.XY) {
+// SetFillTo sets the property returned by [GetFillTo]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFillTo(value Vector2.XY) Instance {
 	class(self).SetFillTo(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -272,9 +281,10 @@ func (self Instance) Repeat() Repeat {
 	return Repeat(class(self).GetRepeat())
 }
 
-// SetRepeat sets the property returned by [GetRepeat].
-func (self Instance) SetRepeat(value Repeat) {
+// SetRepeat sets the property returned by [GetRepeat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRepeat(value Repeat) Instance {
 	class(self).SetRepeat(value)
+	return self
 }
 
 //go:nosplit

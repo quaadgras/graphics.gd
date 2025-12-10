@@ -175,9 +175,10 @@ func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2.XY) Instance {
 	class(self).SetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -191,9 +192,10 @@ func (self Instance) CanvasInstanceId() int {
 	return int(int(class(self).GetCanvasInstanceId()))
 }
 
-// SetCanvasInstanceId sets the property returned by [GetCanvasInstanceId].
-func (self Instance) SetCanvasInstanceId(value int) {
+// SetCanvasInstanceId sets the property returned by [GetCanvasInstanceId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanvasInstanceId(value int) Instance {
 	class(self).SetCanvasInstanceId(int64(value))
+	return self
 }
 
 /*
@@ -205,9 +207,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -223,9 +226,10 @@ func (self Instance) Exclude() []RID.Body2D {
 	return []RID.Body2D(gd.ArrayAs[[]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
-// SetExclude sets the property returned by [GetExclude].
-func (self Instance) SetExclude(value []RID.Body2D) {
+// SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExclude(value []RID.Body2D) Instance {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -237,9 +241,10 @@ func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
-// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
-func (self Instance) SetCollideWithBodies(value bool) {
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithBodies(value bool) Instance {
 	class(self).SetCollideWithBodies(value)
+	return self
 }
 
 /*
@@ -251,9 +256,10 @@ func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
-// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
-func (self Instance) SetCollideWithAreas(value bool) {
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithAreas(value bool) Instance {
 	class(self).SetCollideWithAreas(value)
+	return self
 }
 
 //go:nosplit

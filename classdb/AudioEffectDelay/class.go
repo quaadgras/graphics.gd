@@ -188,9 +188,10 @@ func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
-// SetDry sets the property returned by [GetDry].
-func (self Instance) SetDry(value Float.X) {
+// SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDry(value Float.X) Instance {
 	class(self).SetDry(float64(value))
+	return self
 }
 
 /*
@@ -200,9 +201,10 @@ func (self Instance) Tap1Active() bool {
 	return bool(class(self).IsTap1Active())
 }
 
-// SetTap1Active sets the property returned by [IsTap1Active].
-func (self Instance) SetTap1Active(value bool) {
+// SetTap1Active sets the property returned by [IsTap1Active]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap1Active(value bool) Instance {
 	class(self).SetTap1Active(value)
+	return self
 }
 
 /*
@@ -212,9 +214,10 @@ func (self Instance) Tap1DelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetTap1DelayMs()))
 }
 
-// SetTap1DelayMs sets the property returned by [GetTap1DelayMs].
-func (self Instance) SetTap1DelayMs(value Float.X) {
+// SetTap1DelayMs sets the property returned by [GetTap1DelayMs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap1DelayMs(value Float.X) Instance {
 	class(self).SetTap1DelayMs(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +227,10 @@ func (self Instance) Tap1LevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetTap1LevelDb()))
 }
 
-// SetTap1LevelDb sets the property returned by [GetTap1LevelDb].
-func (self Instance) SetTap1LevelDb(value Float.X) {
+// SetTap1LevelDb sets the property returned by [GetTap1LevelDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap1LevelDb(value Float.X) Instance {
 	class(self).SetTap1LevelDb(float64(value))
+	return self
 }
 
 /*
@@ -236,9 +240,10 @@ func (self Instance) Tap1Pan() Float.X {
 	return Float.X(Float.X(class(self).GetTap1Pan()))
 }
 
-// SetTap1Pan sets the property returned by [GetTap1Pan].
-func (self Instance) SetTap1Pan(value Float.X) {
+// SetTap1Pan sets the property returned by [GetTap1Pan]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap1Pan(value Float.X) Instance {
 	class(self).SetTap1Pan(float64(value))
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) Tap2Active() bool {
 	return bool(class(self).IsTap2Active())
 }
 
-// SetTap2Active sets the property returned by [IsTap2Active].
-func (self Instance) SetTap2Active(value bool) {
+// SetTap2Active sets the property returned by [IsTap2Active]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap2Active(value bool) Instance {
 	class(self).SetTap2Active(value)
+	return self
 }
 
 /*
@@ -260,9 +266,10 @@ func (self Instance) Tap2DelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetTap2DelayMs()))
 }
 
-// SetTap2DelayMs sets the property returned by [GetTap2DelayMs].
-func (self Instance) SetTap2DelayMs(value Float.X) {
+// SetTap2DelayMs sets the property returned by [GetTap2DelayMs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap2DelayMs(value Float.X) Instance {
 	class(self).SetTap2DelayMs(float64(value))
+	return self
 }
 
 /*
@@ -272,9 +279,10 @@ func (self Instance) Tap2LevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetTap2LevelDb()))
 }
 
-// SetTap2LevelDb sets the property returned by [GetTap2LevelDb].
-func (self Instance) SetTap2LevelDb(value Float.X) {
+// SetTap2LevelDb sets the property returned by [GetTap2LevelDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap2LevelDb(value Float.X) Instance {
 	class(self).SetTap2LevelDb(float64(value))
+	return self
 }
 
 /*
@@ -284,9 +292,10 @@ func (self Instance) Tap2Pan() Float.X {
 	return Float.X(Float.X(class(self).GetTap2Pan()))
 }
 
-// SetTap2Pan sets the property returned by [GetTap2Pan].
-func (self Instance) SetTap2Pan(value Float.X) {
+// SetTap2Pan sets the property returned by [GetTap2Pan]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTap2Pan(value Float.X) Instance {
 	class(self).SetTap2Pan(float64(value))
+	return self
 }
 
 /*
@@ -296,9 +305,10 @@ func (self Instance) FeedbackActive() bool {
 	return bool(class(self).IsFeedbackActive())
 }
 
-// SetFeedbackActive sets the property returned by [IsFeedbackActive].
-func (self Instance) SetFeedbackActive(value bool) {
+// SetFeedbackActive sets the property returned by [IsFeedbackActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedbackActive(value bool) Instance {
 	class(self).SetFeedbackActive(value)
+	return self
 }
 
 /*
@@ -308,9 +318,10 @@ func (self Instance) FeedbackDelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackDelayMs()))
 }
 
-// SetFeedbackDelayMs sets the property returned by [GetFeedbackDelayMs].
-func (self Instance) SetFeedbackDelayMs(value Float.X) {
+// SetFeedbackDelayMs sets the property returned by [GetFeedbackDelayMs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedbackDelayMs(value Float.X) Instance {
 	class(self).SetFeedbackDelayMs(float64(value))
+	return self
 }
 
 /*
@@ -320,9 +331,10 @@ func (self Instance) FeedbackLevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackLevelDb()))
 }
 
-// SetFeedbackLevelDb sets the property returned by [GetFeedbackLevelDb].
-func (self Instance) SetFeedbackLevelDb(value Float.X) {
+// SetFeedbackLevelDb sets the property returned by [GetFeedbackLevelDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedbackLevelDb(value Float.X) Instance {
 	class(self).SetFeedbackLevelDb(float64(value))
+	return self
 }
 
 /*
@@ -332,9 +344,10 @@ func (self Instance) FeedbackLowpass() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackLowpass()))
 }
 
-// SetFeedbackLowpass sets the property returned by [GetFeedbackLowpass].
-func (self Instance) SetFeedbackLowpass(value Float.X) {
+// SetFeedbackLowpass sets the property returned by [GetFeedbackLowpass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFeedbackLowpass(value Float.X) Instance {
 	class(self).SetFeedbackLowpass(float64(value))
+	return self
 }
 
 //go:nosplit

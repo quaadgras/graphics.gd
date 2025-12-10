@@ -183,9 +183,10 @@ func (self Instance) Size() Vector2.XY {
 	return Vector2.XY(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector2.XY) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector2.XY) Instance {
 	class(self).SetSize(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) SubdivideWidth() int {
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
-// SetSubdivideWidth sets the property returned by [GetSubdivideWidth].
-func (self Instance) SetSubdivideWidth(value int) {
+// SetSubdivideWidth sets the property returned by [GetSubdivideWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubdivideWidth(value int) Instance {
 	class(self).SetSubdivideWidth(int64(value))
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) SubdivideDepth() int {
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
-// SetSubdivideDepth sets the property returned by [GetSubdivideDepth].
-func (self Instance) SetSubdivideDepth(value int) {
+// SetSubdivideDepth sets the property returned by [GetSubdivideDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubdivideDepth(value int) Instance {
 	class(self).SetSubdivideDepth(int64(value))
+	return self
 }
 
 /*
@@ -219,9 +222,10 @@ func (self Instance) CenterOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCenterOffset())
 }
 
-// SetCenterOffset sets the property returned by [GetCenterOffset].
-func (self Instance) SetCenterOffset(value Vector3.XYZ) {
+// SetCenterOffset sets the property returned by [GetCenterOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCenterOffset(value Vector3.XYZ) Instance {
 	class(self).SetCenterOffset(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) Orientation() Orientation {
 	return Orientation(class(self).GetOrientation())
 }
 
-// SetOrientation sets the property returned by [GetOrientation].
-func (self Instance) SetOrientation(value Orientation) {
+// SetOrientation sets the property returned by [GetOrientation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOrientation(value Orientation) Instance {
 	class(self).SetOrientation(value)
+	return self
 }
 
 //go:nosplit

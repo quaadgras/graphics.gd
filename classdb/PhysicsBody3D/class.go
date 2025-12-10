@@ -307,9 +307,10 @@ func (self Instance) AxisLockLinearX() bool {
 	return bool(class(self).GetAxisLock(1))
 }
 
-// SetAxisLockLinearX sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockLinearX(value bool) {
+// SetAxisLockLinearX sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockLinearX(value bool) Instance {
 	class(self).SetAxisLock(1, value)
+	return self
 }
 
 /*
@@ -319,9 +320,10 @@ func (self Instance) AxisLockLinearY() bool {
 	return bool(class(self).GetAxisLock(2))
 }
 
-// SetAxisLockLinearY sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockLinearY(value bool) {
+// SetAxisLockLinearY sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockLinearY(value bool) Instance {
 	class(self).SetAxisLock(2, value)
+	return self
 }
 
 /*
@@ -331,9 +333,10 @@ func (self Instance) AxisLockLinearZ() bool {
 	return bool(class(self).GetAxisLock(4))
 }
 
-// SetAxisLockLinearZ sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockLinearZ(value bool) {
+// SetAxisLockLinearZ sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockLinearZ(value bool) Instance {
 	class(self).SetAxisLock(4, value)
+	return self
 }
 
 /*
@@ -343,9 +346,10 @@ func (self Instance) AxisLockAngularX() bool {
 	return bool(class(self).GetAxisLock(8))
 }
 
-// SetAxisLockAngularX sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockAngularX(value bool) {
+// SetAxisLockAngularX sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockAngularX(value bool) Instance {
 	class(self).SetAxisLock(8, value)
+	return self
 }
 
 /*
@@ -355,9 +359,10 @@ func (self Instance) AxisLockAngularY() bool {
 	return bool(class(self).GetAxisLock(16))
 }
 
-// SetAxisLockAngularY sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockAngularY(value bool) {
+// SetAxisLockAngularY sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockAngularY(value bool) Instance {
 	class(self).SetAxisLock(16, value)
+	return self
 }
 
 /*
@@ -367,9 +372,10 @@ func (self Instance) AxisLockAngularZ() bool {
 	return bool(class(self).GetAxisLock(32))
 }
 
-// SetAxisLockAngularZ sets the property returned by [GetAxisLock].
-func (self Instance) SetAxisLockAngularZ(value bool) {
+// SetAxisLockAngularZ sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisLockAngularZ(value bool) Instance {
 	class(self).SetAxisLock(32, value)
+	return self
 }
 
 /*

@@ -319,9 +319,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -331,9 +332,10 @@ func (self Instance) AnchorMode() AnchorMode {
 	return AnchorMode(class(self).GetAnchorMode())
 }
 
-// SetAnchorMode sets the property returned by [GetAnchorMode].
-func (self Instance) SetAnchorMode(value AnchorMode) {
+// SetAnchorMode sets the property returned by [GetAnchorMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnchorMode(value AnchorMode) Instance {
 	class(self).SetAnchorMode(value)
+	return self
 }
 
 /*
@@ -346,9 +348,10 @@ func (self Instance) IgnoreRotation() bool {
 	return bool(class(self).IsIgnoringRotation())
 }
 
-// SetIgnoreRotation sets the property returned by [IsIgnoringRotation].
-func (self Instance) SetIgnoreRotation(value bool) {
+// SetIgnoreRotation sets the property returned by [IsIgnoringRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreRotation(value bool) Instance {
 	class(self).SetIgnoreRotation(value)
+	return self
 }
 
 /*
@@ -364,9 +367,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -384,9 +388,10 @@ func (self Instance) Zoom() Vector2.XY {
 	return Vector2.XY(class(self).GetZoom())
 }
 
-// SetZoom sets the property returned by [GetZoom].
-func (self Instance) SetZoom(value Vector2.XY) {
+// SetZoom sets the property returned by [GetZoom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZoom(value Vector2.XY) Instance {
 	class(self).SetZoom(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -399,9 +404,10 @@ func (self Instance) CustomViewport() Node.Instance {
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
-// SetCustomViewport sets the property returned by [GetCustomViewport].
-func (self Instance) SetCustomViewport(value Node.Instance) {
+// SetCustomViewport sets the property returned by [GetCustomViewport]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomViewport(value Node.Instance) Instance {
 	class(self).SetCustomViewport(value)
+	return self
 }
 
 /*
@@ -411,9 +417,10 @@ func (self Instance) ProcessCallback() Camera2DProcessCallback {
 	return Camera2DProcessCallback(class(self).GetProcessCallback())
 }
 
-// SetProcessCallback sets the property returned by [GetProcessCallback].
-func (self Instance) SetProcessCallback(value Camera2DProcessCallback) {
+// SetProcessCallback sets the property returned by [GetProcessCallback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessCallback(value Camera2DProcessCallback) Instance {
 	class(self).SetProcessCallback(value)
+	return self
 }
 
 /*
@@ -423,9 +430,10 @@ func (self Instance) LimitEnabled() bool {
 	return bool(class(self).IsLimitEnabled())
 }
 
-// SetLimitEnabled sets the property returned by [IsLimitEnabled].
-func (self Instance) SetLimitEnabled(value bool) {
+// SetLimitEnabled sets the property returned by [IsLimitEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitEnabled(value bool) Instance {
 	class(self).SetLimitEnabled(value)
+	return self
 }
 
 /*
@@ -437,9 +445,10 @@ func (self Instance) LimitLeft() int {
 	return int(int(class(self).GetLimit(0)))
 }
 
-// SetLimitLeft sets the property returned by [GetLimit].
-func (self Instance) SetLimitLeft(value int) {
+// SetLimitLeft sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitLeft(value int) Instance {
 	class(self).SetLimit(0, int64(value))
+	return self
 }
 
 /*
@@ -451,9 +460,10 @@ func (self Instance) LimitTop() int {
 	return int(int(class(self).GetLimit(1)))
 }
 
-// SetLimitTop sets the property returned by [GetLimit].
-func (self Instance) SetLimitTop(value int) {
+// SetLimitTop sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitTop(value int) Instance {
 	class(self).SetLimit(1, int64(value))
+	return self
 }
 
 /*
@@ -465,9 +475,10 @@ func (self Instance) LimitRight() int {
 	return int(int(class(self).GetLimit(2)))
 }
 
-// SetLimitRight sets the property returned by [GetLimit].
-func (self Instance) SetLimitRight(value int) {
+// SetLimitRight sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitRight(value int) Instance {
 	class(self).SetLimit(2, int64(value))
+	return self
 }
 
 /*
@@ -479,9 +490,10 @@ func (self Instance) LimitBottom() int {
 	return int(int(class(self).GetLimit(3)))
 }
 
-// SetLimitBottom sets the property returned by [GetLimit].
-func (self Instance) SetLimitBottom(value int) {
+// SetLimitBottom sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitBottom(value int) Instance {
 	class(self).SetLimit(3, int64(value))
+	return self
 }
 
 /*
@@ -498,9 +510,10 @@ func (self Instance) LimitSmoothed() bool {
 	return bool(class(self).IsLimitSmoothingEnabled())
 }
 
-// SetLimitSmoothed sets the property returned by [IsLimitSmoothingEnabled].
-func (self Instance) SetLimitSmoothed(value bool) {
+// SetLimitSmoothed sets the property returned by [IsLimitSmoothingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLimitSmoothed(value bool) Instance {
 	class(self).SetLimitSmoothingEnabled(value)
+	return self
 }
 
 /*
@@ -512,9 +525,10 @@ func (self Instance) PositionSmoothingEnabled() bool {
 	return bool(class(self).IsPositionSmoothingEnabled())
 }
 
-// SetPositionSmoothingEnabled sets the property returned by [IsPositionSmoothingEnabled].
-func (self Instance) SetPositionSmoothingEnabled(value bool) {
+// SetPositionSmoothingEnabled sets the property returned by [IsPositionSmoothingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionSmoothingEnabled(value bool) Instance {
 	class(self).SetPositionSmoothingEnabled(value)
+	return self
 }
 
 /*
@@ -526,9 +540,10 @@ func (self Instance) PositionSmoothingSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetPositionSmoothingSpeed()))
 }
 
-// SetPositionSmoothingSpeed sets the property returned by [GetPositionSmoothingSpeed].
-func (self Instance) SetPositionSmoothingSpeed(value Float.X) {
+// SetPositionSmoothingSpeed sets the property returned by [GetPositionSmoothingSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionSmoothingSpeed(value Float.X) Instance {
 	class(self).SetPositionSmoothingSpeed(float64(value))
+	return self
 }
 
 /*
@@ -543,9 +558,10 @@ func (self Instance) RotationSmoothingEnabled() bool {
 	return bool(class(self).IsRotationSmoothingEnabled())
 }
 
-// SetRotationSmoothingEnabled sets the property returned by [IsRotationSmoothingEnabled].
-func (self Instance) SetRotationSmoothingEnabled(value bool) {
+// SetRotationSmoothingEnabled sets the property returned by [IsRotationSmoothingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationSmoothingEnabled(value bool) Instance {
 	class(self).SetRotationSmoothingEnabled(value)
+	return self
 }
 
 /*
@@ -557,9 +573,10 @@ func (self Instance) RotationSmoothingSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetRotationSmoothingSpeed()))
 }
 
-// SetRotationSmoothingSpeed sets the property returned by [GetRotationSmoothingSpeed].
-func (self Instance) SetRotationSmoothingSpeed(value Float.X) {
+// SetRotationSmoothingSpeed sets the property returned by [GetRotationSmoothingSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationSmoothingSpeed(value Float.X) Instance {
 	class(self).SetRotationSmoothingSpeed(float64(value))
+	return self
 }
 
 /*
@@ -569,9 +586,10 @@ func (self Instance) DragHorizontalEnabled() bool {
 	return bool(class(self).IsDragHorizontalEnabled())
 }
 
-// SetDragHorizontalEnabled sets the property returned by [IsDragHorizontalEnabled].
-func (self Instance) SetDragHorizontalEnabled(value bool) {
+// SetDragHorizontalEnabled sets the property returned by [IsDragHorizontalEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragHorizontalEnabled(value bool) Instance {
 	class(self).SetDragHorizontalEnabled(value)
+	return self
 }
 
 /*
@@ -581,9 +599,10 @@ func (self Instance) DragVerticalEnabled() bool {
 	return bool(class(self).IsDragVerticalEnabled())
 }
 
-// SetDragVerticalEnabled sets the property returned by [IsDragVerticalEnabled].
-func (self Instance) SetDragVerticalEnabled(value bool) {
+// SetDragVerticalEnabled sets the property returned by [IsDragVerticalEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragVerticalEnabled(value bool) Instance {
 	class(self).SetDragVerticalEnabled(value)
+	return self
 }
 
 /*
@@ -597,9 +616,10 @@ func (self Instance) DragHorizontalOffset() Float.X {
 	return Float.X(Float.X(class(self).GetDragHorizontalOffset()))
 }
 
-// SetDragHorizontalOffset sets the property returned by [GetDragHorizontalOffset].
-func (self Instance) SetDragHorizontalOffset(value Float.X) {
+// SetDragHorizontalOffset sets the property returned by [GetDragHorizontalOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragHorizontalOffset(value Float.X) Instance {
 	class(self).SetDragHorizontalOffset(float64(value))
+	return self
 }
 
 /*
@@ -613,9 +633,10 @@ func (self Instance) DragVerticalOffset() Float.X {
 	return Float.X(Float.X(class(self).GetDragVerticalOffset()))
 }
 
-// SetDragVerticalOffset sets the property returned by [GetDragVerticalOffset].
-func (self Instance) SetDragVerticalOffset(value Float.X) {
+// SetDragVerticalOffset sets the property returned by [GetDragVerticalOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragVerticalOffset(value Float.X) Instance {
 	class(self).SetDragVerticalOffset(float64(value))
+	return self
 }
 
 /*
@@ -625,9 +646,10 @@ func (self Instance) DragLeftMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(0)))
 }
 
-// SetDragLeftMargin sets the property returned by [GetDragMargin].
-func (self Instance) SetDragLeftMargin(value Float.X) {
+// SetDragLeftMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragLeftMargin(value Float.X) Instance {
 	class(self).SetDragMargin(0, float64(value))
+	return self
 }
 
 /*
@@ -637,9 +659,10 @@ func (self Instance) DragTopMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(1)))
 }
 
-// SetDragTopMargin sets the property returned by [GetDragMargin].
-func (self Instance) SetDragTopMargin(value Float.X) {
+// SetDragTopMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragTopMargin(value Float.X) Instance {
 	class(self).SetDragMargin(1, float64(value))
+	return self
 }
 
 /*
@@ -649,9 +672,10 @@ func (self Instance) DragRightMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(2)))
 }
 
-// SetDragRightMargin sets the property returned by [GetDragMargin].
-func (self Instance) SetDragRightMargin(value Float.X) {
+// SetDragRightMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragRightMargin(value Float.X) Instance {
 	class(self).SetDragMargin(2, float64(value))
+	return self
 }
 
 /*
@@ -661,9 +685,10 @@ func (self Instance) DragBottomMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(3)))
 }
 
-// SetDragBottomMargin sets the property returned by [GetDragMargin].
-func (self Instance) SetDragBottomMargin(value Float.X) {
+// SetDragBottomMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragBottomMargin(value Float.X) Instance {
 	class(self).SetDragMargin(3, float64(value))
+	return self
 }
 
 /*
@@ -673,9 +698,10 @@ func (self Instance) EditorDrawScreen() bool {
 	return bool(class(self).IsScreenDrawingEnabled())
 }
 
-// SetEditorDrawScreen sets the property returned by [IsScreenDrawingEnabled].
-func (self Instance) SetEditorDrawScreen(value bool) {
+// SetEditorDrawScreen sets the property returned by [IsScreenDrawingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorDrawScreen(value bool) Instance {
 	class(self).SetScreenDrawingEnabled(value)
+	return self
 }
 
 /*
@@ -685,9 +711,10 @@ func (self Instance) EditorDrawLimits() bool {
 	return bool(class(self).IsLimitDrawingEnabled())
 }
 
-// SetEditorDrawLimits sets the property returned by [IsLimitDrawingEnabled].
-func (self Instance) SetEditorDrawLimits(value bool) {
+// SetEditorDrawLimits sets the property returned by [IsLimitDrawingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorDrawLimits(value bool) Instance {
 	class(self).SetLimitDrawingEnabled(value)
+	return self
 }
 
 /*
@@ -697,9 +724,10 @@ func (self Instance) EditorDrawDragMargin() bool {
 	return bool(class(self).IsMarginDrawingEnabled())
 }
 
-// SetEditorDrawDragMargin sets the property returned by [IsMarginDrawingEnabled].
-func (self Instance) SetEditorDrawDragMargin(value bool) {
+// SetEditorDrawDragMargin sets the property returned by [IsMarginDrawingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorDrawDragMargin(value bool) Instance {
 	class(self).SetMarginDrawingEnabled(value)
+	return self
 }
 
 //go:nosplit

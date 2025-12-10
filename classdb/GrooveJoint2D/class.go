@@ -172,9 +172,10 @@ func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
-// SetLength sets the property returned by [GetLength].
-func (self Instance) SetLength(value Float.X) {
+// SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLength(value Float.X) Instance {
 	class(self).SetLength(float64(value))
+	return self
 }
 
 /*
@@ -186,9 +187,10 @@ func (self Instance) InitialOffset() Float.X {
 	return Float.X(Float.X(class(self).GetInitialOffset()))
 }
 
-// SetInitialOffset sets the property returned by [GetInitialOffset].
-func (self Instance) SetInitialOffset(value Float.X) {
+// SetInitialOffset sets the property returned by [GetInitialOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInitialOffset(value Float.X) Instance {
 	class(self).SetInitialOffset(float64(value))
+	return self
 }
 
 //go:nosplit

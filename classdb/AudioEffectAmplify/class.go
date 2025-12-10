@@ -166,9 +166,10 @@ func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-// SetVolumeDb sets the property returned by [GetVolumeDb].
-func (self Instance) SetVolumeDb(value Float.X) {
+// SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolumeDb(value Float.X) Instance {
 	class(self).SetVolumeDb(float64(value))
+	return self
 }
 
 /*
@@ -184,9 +185,10 @@ func (self Instance) VolumeLinear() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
-// SetVolumeLinear sets the property returned by [GetVolumeLinear].
-func (self Instance) SetVolumeLinear(value Float.X) {
+// SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolumeLinear(value Float.X) Instance {
 	class(self).SetVolumeLinear(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -177,90 +177,100 @@ func (self Instance) SkinRoot() int {
 	return int(int(class(self).GetSkinRoot()))
 }
 
-// SetSkinRoot sets the property returned by [GetSkinRoot].
-func (self Instance) SetSkinRoot(value int) {
+// SetSkinRoot sets the property returned by [GetSkinRoot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkinRoot(value int) Instance {
 	class(self).SetSkinRoot(int64(value))
+	return self
 }
 
 func (self Instance) JointsOriginal() []int32 {
 	return []int32(slices.Collect(class(self).GetJointsOriginal().Values()))
 }
 
-// SetJointsOriginal sets the property returned by [GetJointsOriginal].
-func (self Instance) SetJointsOriginal(value []int32) {
+// SetJointsOriginal sets the property returned by [GetJointsOriginal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointsOriginal(value []int32) Instance {
 	class(self).SetJointsOriginal(Packed.New(value...))
+	return self
 }
 
 func (self Instance) InverseBinds() []Transform3D.BasisOrigin {
 	return []Transform3D.BasisOrigin(gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(class(self).GetInverseBinds())))
 }
 
-// SetInverseBinds sets the property returned by [GetInverseBinds].
-func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) {
+// SetInverseBinds sets the property returned by [GetInverseBinds]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) Instance {
 	class(self).SetInverseBinds(gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](value))
+	return self
 }
 
 func (self Instance) Joints() []int32 {
 	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
-// SetJoints sets the property returned by [GetJoints].
-func (self Instance) SetJoints(value []int32) {
+// SetJoints sets the property returned by [GetJoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJoints(value []int32) Instance {
 	class(self).SetJoints(Packed.New(value...))
+	return self
 }
 
 func (self Instance) NonJoints() []int32 {
 	return []int32(slices.Collect(class(self).GetNonJoints().Values()))
 }
 
-// SetNonJoints sets the property returned by [GetNonJoints].
-func (self Instance) SetNonJoints(value []int32) {
+// SetNonJoints sets the property returned by [GetNonJoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNonJoints(value []int32) Instance {
 	class(self).SetNonJoints(Packed.New(value...))
+	return self
 }
 
 func (self Instance) Roots() []int32 {
 	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
-// SetRoots sets the property returned by [GetRoots].
-func (self Instance) SetRoots(value []int32) {
+// SetRoots sets the property returned by [GetRoots]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRoots(value []int32) Instance {
 	class(self).SetRoots(Packed.New(value...))
+	return self
 }
 
 func (self Instance) Skeleton() int {
 	return int(int(class(self).GetSkeleton()))
 }
 
-// SetSkeleton sets the property returned by [GetSkeleton].
-func (self Instance) SetSkeleton(value int) {
+// SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkeleton(value int) Instance {
 	class(self).SetSkeleton(int64(value))
+	return self
 }
 
 func (self Instance) JointIToBoneI() map[int]int {
 	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetJointIToBoneI()))
 }
 
-// SetJointIToBoneI sets the property returned by [GetJointIToBoneI].
-func (self Instance) SetJointIToBoneI(value map[int]int) {
+// SetJointIToBoneI sets the property returned by [GetJointIToBoneI]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointIToBoneI(value map[int]int) Instance {
 	class(self).SetJointIToBoneI(gd.DictionaryFromMap(value))
+	return self
 }
 
 func (self Instance) JointIToName() map[int]string {
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetJointIToName()))
 }
 
-// SetJointIToName sets the property returned by [GetJointIToName].
-func (self Instance) SetJointIToName(value map[int]string) {
+// SetJointIToName sets the property returned by [GetJointIToName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointIToName(value map[int]string) Instance {
 	class(self).SetJointIToName(gd.DictionaryFromMap(value))
+	return self
 }
 
 func (self Instance) GodotSkin() Skin.Instance {
 	return Skin.Instance(class(self).GetGodotSkin())
 }
 
-// SetGodotSkin sets the property returned by [GetGodotSkin].
-func (self Instance) SetGodotSkin(value Skin.Instance) {
+// SetGodotSkin sets the property returned by [GetGodotSkin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGodotSkin(value Skin.Instance) Instance {
 	class(self).SetGodotSkin(value)
+	return self
 }
 
 //go:nosplit

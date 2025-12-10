@@ -169,9 +169,10 @@ func (self Instance) CustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetCustomStep()))
 }
 
-// SetCustomStep sets the property returned by [GetCustomStep].
-func (self Instance) SetCustomStep(value Float.X) {
+// SetCustomStep sets the property returned by [GetCustomStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomStep(value Float.X) Instance {
 	class(self).SetCustomStep(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -189,12 +190,13 @@ func (self class) GetCustomStep() float64 { //gd:ScrollBar.get_custom_step
 /*
 Emitted when the scrollbar is being scrolled.
 */
-func (self Instance) OnScrolling(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnScrolling(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("scrolling"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Scrolling() Signal.Any {

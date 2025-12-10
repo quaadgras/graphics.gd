@@ -288,9 +288,10 @@ func (self Instance) Active() bool {
 	return bool(class(self).IsActive())
 }
 
-// SetActive sets the property returned by [IsActive].
-func (self Instance) SetActive(value bool) {
+// SetActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActive(value bool) Instance {
 	class(self).SetActive(value)
+	return self
 }
 
 /*
@@ -305,9 +306,10 @@ func (self Instance) Influence() Float.X {
 	return Float.X(Float.X(class(self).GetInfluence()))
 }
 
-// SetInfluence sets the property returned by [GetInfluence].
-func (self Instance) SetInfluence(value Float.X) {
+// SetInfluence sets the property returned by [GetInfluence]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInfluence(value Float.X) Instance {
 	class(self).SetInfluence(float64(value))
+	return self
 }
 
 /*
@@ -416,12 +418,13 @@ Note: If you want to get the modified bone pose by the modifier, you must use [S
 [Skeleton3D.GetBoneGlobalPose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneGlobalPose
 [Skeleton3D.GetBonePose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBonePose
 */
-func (self Instance) OnModificationProcessed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnModificationProcessed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("modification_processed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ModificationProcessed() Signal.Any {

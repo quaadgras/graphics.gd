@@ -161,10 +161,13 @@ func (self Instance) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionMask
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_mask_value
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) Instance { //gd:CSGShape3D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -179,10 +182,13 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CSGShap
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionLayer
 */
-func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_layer_value
+func (self Instance) SetCollisionLayerValue(layer_number int, value bool) Instance { //gd:CSGShape3D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -289,9 +295,10 @@ func (self Instance) Operation() Operation {
 	return Operation(class(self).GetOperation())
 }
 
-// SetOperation sets the property returned by [GetOperation].
-func (self Instance) SetOperation(value Operation) {
+// SetOperation sets the property returned by [GetOperation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOperation(value Operation) Instance {
 	class(self).SetOperation(value)
+	return self
 }
 
 /*
@@ -301,9 +308,10 @@ func (self Instance) Snap() Float.X {
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
-// SetSnap sets the property returned by [GetSnap].
-func (self Instance) SetSnap(value Float.X) {
+// SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnap(value Float.X) Instance {
 	class(self).SetSnap(float64(value))
+	return self
 }
 
 /*
@@ -313,9 +321,10 @@ func (self Instance) CalculateTangents() bool {
 	return bool(class(self).IsCalculatingTangents())
 }
 
-// SetCalculateTangents sets the property returned by [IsCalculatingTangents].
-func (self Instance) SetCalculateTangents(value bool) {
+// SetCalculateTangents sets the property returned by [IsCalculatingTangents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCalculateTangents(value bool) Instance {
 	class(self).SetCalculateTangents(value)
+	return self
 }
 
 /*
@@ -328,9 +337,10 @@ func (self Instance) UseCollision() bool {
 	return bool(class(self).IsUsingCollision())
 }
 
-// SetUseCollision sets the property returned by [IsUsingCollision].
-func (self Instance) SetUseCollision(value bool) {
+// SetUseCollision sets the property returned by [IsUsingCollision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseCollision(value bool) Instance {
 	class(self).SetUseCollision(value)
+	return self
 }
 
 /*
@@ -346,9 +356,10 @@ func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
-// SetCollisionLayer sets the property returned by [GetCollisionLayer].
-func (self Instance) SetCollisionLayer(value int) {
+// SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionLayer(value int) Instance {
 	class(self).SetCollisionLayer(int64(value))
+	return self
 }
 
 /*
@@ -361,9 +372,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -375,9 +387,10 @@ func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
-// SetCollisionPriority sets the property returned by [GetCollisionPriority].
-func (self Instance) SetCollisionPriority(value Float.X) {
+// SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionPriority(value Float.X) Instance {
 	class(self).SetCollisionPriority(float64(value))
+	return self
 }
 
 /*

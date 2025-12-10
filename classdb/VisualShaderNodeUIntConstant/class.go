@@ -165,9 +165,10 @@ func (self Instance) Constant() int {
 	return int(int(class(self).GetConstant()))
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value int) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value int) Instance {
 	class(self).SetConstant(int64(value))
+	return self
 }
 
 //go:nosplit

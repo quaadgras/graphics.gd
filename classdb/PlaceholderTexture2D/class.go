@@ -168,9 +168,11 @@ func New() Instance {
 
 /*
 The texture's size (in pixels).
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSize(value Vector2.XY) {
+func (self Instance) SetSize(value Vector2.XY) Instance {
 	class(self).SetSize(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

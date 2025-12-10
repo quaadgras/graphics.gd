@@ -177,9 +177,10 @@ func (self Instance) Alignment() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignment())
 }
 
-// SetAlignment sets the property returned by [GetAlignment].
-func (self Instance) SetAlignment(value AlignmentMode) {
+// SetAlignment sets the property returned by [GetAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value AlignmentMode) Instance {
 	class(self).SetAlignment(value)
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
-// SetVertical sets the property returned by [IsVertical].
-func (self Instance) SetVertical(value bool) {
+// SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertical(value bool) Instance {
 	class(self).SetVertical(value)
+	return self
 }
 
 /*

@@ -211,9 +211,10 @@ func (self Instance) MixMode() MixMode {
 	return MixMode(class(self).GetMixMode())
 }
 
-// SetMixMode sets the property returned by [GetMixMode].
-func (self Instance) SetMixMode(value MixMode) {
+// SetMixMode sets the property returned by [GetMixMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMixMode(value MixMode) Instance {
 	class(self).SetMixMode(value)
+	return self
 }
 
 /*
@@ -227,9 +228,10 @@ func (self Instance) FadeinTime() Float.X {
 	return Float.X(Float.X(class(self).GetFadeinTime()))
 }
 
-// SetFadeinTime sets the property returned by [GetFadeinTime].
-func (self Instance) SetFadeinTime(value Float.X) {
+// SetFadeinTime sets the property returned by [GetFadeinTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFadeinTime(value Float.X) Instance {
 	class(self).SetFadeinTime(float64(value))
+	return self
 }
 
 /*
@@ -241,9 +243,10 @@ func (self Instance) FadeinCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetFadeinCurve())
 }
 
-// SetFadeinCurve sets the property returned by [GetFadeinCurve].
-func (self Instance) SetFadeinCurve(value Curve.Instance) {
+// SetFadeinCurve sets the property returned by [GetFadeinCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFadeinCurve(value Curve.Instance) Instance {
 	class(self).SetFadeinCurve(value)
+	return self
 }
 
 /*
@@ -257,9 +260,10 @@ func (self Instance) FadeoutTime() Float.X {
 	return Float.X(Float.X(class(self).GetFadeoutTime()))
 }
 
-// SetFadeoutTime sets the property returned by [GetFadeoutTime].
-func (self Instance) SetFadeoutTime(value Float.X) {
+// SetFadeoutTime sets the property returned by [GetFadeoutTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFadeoutTime(value Float.X) Instance {
 	class(self).SetFadeoutTime(float64(value))
+	return self
 }
 
 /*
@@ -271,9 +275,10 @@ func (self Instance) FadeoutCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetFadeoutCurve())
 }
 
-// SetFadeoutCurve sets the property returned by [GetFadeoutCurve].
-func (self Instance) SetFadeoutCurve(value Curve.Instance) {
+// SetFadeoutCurve sets the property returned by [GetFadeoutCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFadeoutCurve(value Curve.Instance) Instance {
 	class(self).SetFadeoutCurve(value)
+	return self
 }
 
 /*
@@ -283,9 +288,10 @@ func (self Instance) BreakLoopAtEnd() bool {
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
-// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd].
-func (self Instance) SetBreakLoopAtEnd(value bool) {
+// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBreakLoopAtEnd(value bool) Instance {
 	class(self).SetBreakLoopAtEnd(value)
+	return self
 }
 
 /*
@@ -299,9 +305,10 @@ func (self Instance) Autorestart() bool {
 	return bool(class(self).HasAutorestart())
 }
 
-// SetAutorestart sets the property returned by [HasAutorestart].
-func (self Instance) SetAutorestart(value bool) {
+// SetAutorestart sets the property returned by [HasAutorestart]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutorestart(value bool) Instance {
 	class(self).SetAutorestart(value)
+	return self
 }
 
 /*
@@ -311,9 +318,10 @@ func (self Instance) AutorestartDelay() Float.X {
 	return Float.X(Float.X(class(self).GetAutorestartDelay()))
 }
 
-// SetAutorestartDelay sets the property returned by [GetAutorestartDelay].
-func (self Instance) SetAutorestartDelay(value Float.X) {
+// SetAutorestartDelay sets the property returned by [GetAutorestartDelay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutorestartDelay(value Float.X) Instance {
 	class(self).SetAutorestartDelay(float64(value))
+	return self
 }
 
 /*
@@ -326,9 +334,10 @@ func (self Instance) AutorestartRandomDelay() Float.X {
 	return Float.X(Float.X(class(self).GetAutorestartRandomDelay()))
 }
 
-// SetAutorestartRandomDelay sets the property returned by [GetAutorestartRandomDelay].
-func (self Instance) SetAutorestartRandomDelay(value Float.X) {
+// SetAutorestartRandomDelay sets the property returned by [GetAutorestartRandomDelay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutorestartRandomDelay(value Float.X) Instance {
 	class(self).SetAutorestartRandomDelay(float64(value))
+	return self
 }
 
 //go:nosplit

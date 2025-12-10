@@ -263,9 +263,10 @@ func (self Instance) ShapeType() string {
 	return string(class(self).GetShapeType().String())
 }
 
-// SetShapeType sets the property returned by [GetShapeType].
-func (self Instance) SetShapeType(value string) {
+// SetShapeType sets the property returned by [GetShapeType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShapeType(value string) Instance {
 	class(self).SetShapeType(String.New(value))
+	return self
 }
 
 /*
@@ -275,9 +276,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -287,9 +289,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -299,9 +302,10 @@ func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value Float.X) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value Float.X) Instance {
 	class(self).SetHeight(float64(value))
+	return self
 }
 
 /*
@@ -316,9 +320,10 @@ func (self Instance) IsTrigger() bool {
 	return bool(class(self).GetIsTrigger())
 }
 
-// SetIsTrigger sets the property returned by [GetIsTrigger].
-func (self Instance) SetIsTrigger(value bool) {
+// SetIsTrigger sets the property returned by [GetIsTrigger]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIsTrigger(value bool) Instance {
 	class(self).SetIsTrigger(value)
+	return self
 }
 
 /*
@@ -328,9 +333,10 @@ func (self Instance) MeshIndex() int {
 	return int(int(class(self).GetMeshIndex()))
 }
 
-// SetMeshIndex sets the property returned by [GetMeshIndex].
-func (self Instance) SetMeshIndex(value int) {
+// SetMeshIndex sets the property returned by [GetMeshIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMeshIndex(value int) Instance {
 	class(self).SetMeshIndex(int64(value))
+	return self
 }
 
 /*
@@ -342,9 +348,10 @@ func (self Instance) ImporterMesh() ImporterMesh.Instance {
 	return ImporterMesh.Instance(class(self).GetImporterMesh())
 }
 
-// SetImporterMesh sets the property returned by [GetImporterMesh].
-func (self Instance) SetImporterMesh(value ImporterMesh.Instance) {
+// SetImporterMesh sets the property returned by [GetImporterMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetImporterMesh(value ImporterMesh.Instance) Instance {
 	class(self).SetImporterMesh(value)
+	return self
 }
 
 /*

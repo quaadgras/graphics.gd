@@ -164,10 +164,13 @@ func (self Instance) GetGroupName(group_idx int) string { //gd:SkeletonProfile.g
 /*
 Sets the name of the group at 'group_idx' that will be the drawing group in the [BoneMap] editor.
 
+Returns 'self' to enable method chaining.
+
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) SetGroupName(group_idx int, group_name string) { //gd:SkeletonProfile.set_group_name
+func (self Instance) SetGroupName(group_idx int, group_name string) Instance { //gd:SkeletonProfile.set_group_name
 	Advanced(self).SetGroupName(int64(group_idx), String.Name(String.New(group_name)))
+	return self
 }
 
 /*
@@ -182,10 +185,13 @@ func (self Instance) GetTexture(group_idx int) Texture2D.Instance { //gd:Skeleto
 /*
 Sets the texture of the group at 'group_idx' that will be the drawing group background image in the [BoneMap] editor.
 
+Returns 'self' to enable method chaining.
+
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) SetTexture(group_idx int, texture Texture2D.Instance) { //gd:SkeletonProfile.set_texture
+func (self Instance) SetTexture(group_idx int, texture Texture2D.Instance) Instance { //gd:SkeletonProfile.set_texture
 	Advanced(self).SetTexture(int64(group_idx), texture)
+	return self
 }
 
 /*
@@ -211,10 +217,13 @@ Sets the name of the bone at 'bone_idx' that will be the key name in the [BoneMa
 
 In the retargeting process, the setting bone name is the bone name of the target skeleton.
 
+Returns 'self' to enable method chaining.
+
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) SetBoneName(bone_idx int, bone_name string) { //gd:SkeletonProfile.set_bone_name
+func (self Instance) SetBoneName(bone_idx int, bone_name string) Instance { //gd:SkeletonProfile.set_bone_name
 	Advanced(self).SetBoneName(int64(bone_idx), String.Name(String.New(bone_name)))
+	return self
 }
 
 /*
@@ -226,9 +235,12 @@ func (self Instance) GetBoneParent(bone_idx int) string { //gd:SkeletonProfile.g
 
 /*
 Sets the bone with name 'bone_parent' as the parent of the bone at 'bone_idx'. If an empty string is passed, then the bone has no parent.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneParent(bone_idx int, bone_parent string) { //gd:SkeletonProfile.set_bone_parent
+func (self Instance) SetBoneParent(bone_idx int, bone_parent string) Instance { //gd:SkeletonProfile.set_bone_parent
 	Advanced(self).SetBoneParent(int64(bone_idx), String.Name(String.New(bone_parent)))
+	return self
 }
 
 /*
@@ -242,9 +254,12 @@ func (self Instance) GetTailDirection(bone_idx int) TailDirection { //gd:Skeleto
 Sets the tail direction of the bone at 'bone_idx'.
 
 Note: This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTailDirection(bone_idx int, tail_direction TailDirection) { //gd:SkeletonProfile.set_tail_direction
+func (self Instance) SetTailDirection(bone_idx int, tail_direction TailDirection) Instance { //gd:SkeletonProfile.set_tail_direction
 	Advanced(self).SetTailDirection(int64(bone_idx), tail_direction)
+	return self
 }
 
 /*
@@ -256,9 +271,12 @@ func (self Instance) GetBoneTail(bone_idx int) string { //gd:SkeletonProfile.get
 
 /*
 Sets the bone with name 'bone_tail' as the tail of the bone at 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneTail(bone_idx int, bone_tail string) { //gd:SkeletonProfile.set_bone_tail
+func (self Instance) SetBoneTail(bone_idx int, bone_tail string) Instance { //gd:SkeletonProfile.set_bone_tail
 	Advanced(self).SetBoneTail(int64(bone_idx), String.Name(String.New(bone_tail)))
+	return self
 }
 
 /*
@@ -270,9 +288,12 @@ func (self Instance) GetReferencePose(bone_idx int) Transform3D.BasisOrigin { //
 
 /*
 Sets the reference pose transform for bone 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) { //gd:SkeletonProfile.set_reference_pose
+func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) Instance { //gd:SkeletonProfile.set_reference_pose
 	Advanced(self).SetReferencePose(int64(bone_idx), Transform3D.BasisOrigin(bone_name))
+	return self
 }
 
 /*
@@ -291,10 +312,13 @@ Sets the offset of the bone at 'bone_idx' that will be the button position in th
 
 This is the offset with origin at the top left corner of the square.
 
+Returns 'self' to enable method chaining.
+
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) { //gd:SkeletonProfile.set_handle_offset
+func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) Instance { //gd:SkeletonProfile.set_handle_offset
 	Advanced(self).SetHandleOffset(int64(bone_idx), Vector2.XY(handle_offset))
+	return self
 }
 
 /*
@@ -306,9 +330,12 @@ func (self Instance) GetGroup(bone_idx int) string { //gd:SkeletonProfile.get_gr
 
 /*
 Sets the group of the bone at 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGroup(bone_idx int, group string) { //gd:SkeletonProfile.set_group
+func (self Instance) SetGroup(bone_idx int, group string) Instance { //gd:SkeletonProfile.set_group
 	Advanced(self).SetGroup(int64(bone_idx), String.Name(String.New(group)))
+	return self
 }
 
 /*
@@ -322,9 +349,12 @@ func (self Instance) IsRequired(bone_idx int) bool { //gd:SkeletonProfile.is_req
 
 /*
 Sets the required status for bone 'bone_idx' to 'required'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRequired(bone_idx int, required bool) { //gd:SkeletonProfile.set_required
+func (self Instance) SetRequired(bone_idx int, required bool) Instance { //gd:SkeletonProfile.set_required
 	Advanced(self).SetRequired(int64(bone_idx), required)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -379,9 +409,10 @@ func (self Instance) RootBone() string {
 	return string(class(self).GetRootBone().String())
 }
 
-// SetRootBone sets the property returned by [GetRootBone].
-func (self Instance) SetRootBone(value string) {
+// SetRootBone sets the property returned by [GetRootBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootBone(value string) Instance {
 	class(self).SetRootBone(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -393,9 +424,10 @@ func (self Instance) ScaleBaseBone() string {
 	return string(class(self).GetScaleBaseBone().String())
 }
 
-// SetScaleBaseBone sets the property returned by [GetScaleBaseBone].
-func (self Instance) SetScaleBaseBone(value string) {
+// SetScaleBaseBone sets the property returned by [GetScaleBaseBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleBaseBone(value string) Instance {
 	class(self).SetScaleBaseBone(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -410,9 +442,10 @@ func (self Instance) GroupSize() int {
 	return int(int(class(self).GetGroupSize()))
 }
 
-// SetGroupSize sets the property returned by [GetGroupSize].
-func (self Instance) SetGroupSize(value int) {
+// SetGroupSize sets the property returned by [GetGroupSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGroupSize(value int) Instance {
 	class(self).SetGroupSize(int64(value))
+	return self
 }
 
 /*
@@ -428,9 +461,10 @@ func (self Instance) BoneSize() int {
 	return int(int(class(self).GetBoneSize()))
 }
 
-// SetBoneSize sets the property returned by [GetBoneSize].
-func (self Instance) SetBoneSize(value int) {
+// SetBoneSize sets the property returned by [GetBoneSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneSize(value int) Instance {
 	class(self).SetBoneSize(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -736,12 +770,13 @@ Note: This signal is not connected directly to editor to simplify the reference,
 
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 */
-func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProfileUpdated() Signal.Any {

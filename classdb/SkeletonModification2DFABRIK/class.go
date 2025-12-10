@@ -140,10 +140,13 @@ type Any interface {
 /*
 Sets the [Bone2D] node assigned to the FABRIK joint at 'joint_idx'.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
+func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) Instance { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
 	Advanced(self).SetFabrikJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
+	return self
 }
 
 /*
@@ -157,9 +160,12 @@ func (self Instance) GetFabrikJointBone2dNode(joint_idx int) string { //gd:Skele
 
 /*
 Sets the bone index, 'bone_idx', of the FABRIK joint at 'joint_idx'. When possible, this will also update the bone2d_node of the FABRIK joint based on data provided by the linked skeleton.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFabrikJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
+func (self Instance) SetFabrikJointBoneIndex(joint_idx int, bone_idx int) Instance { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
 	Advanced(self).SetFabrikJointBoneIndex(int64(joint_idx), int64(bone_idx))
+	return self
 }
 
 /*
@@ -173,9 +179,12 @@ func (self Instance) GetFabrikJointBoneIndex(joint_idx int) int { //gd:SkeletonM
 
 /*
 Sets the magnet position vector for the joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position Vector2.XY) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
+func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position Vector2.XY) Instance { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
 	Advanced(self).SetFabrikJointMagnetPosition(int64(joint_idx), Vector2.XY(magnet_position))
+	return self
 }
 
 /*
@@ -189,9 +198,12 @@ func (self Instance) GetFabrikJointMagnetPosition(joint_idx int) Vector2.XY { //
 Sets whether the joint at 'joint_idx' will use the target node's rotation rather than letting FABRIK rotate the node.
 
 Note: This option only works for the tip/final joint in the chain. For all other nodes, this option will be ignored.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFabrikJointUseTargetRotation(joint_idx int, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
+func (self Instance) SetFabrikJointUseTargetRotation(joint_idx int, use_target_rotation bool) Instance { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
 	Advanced(self).SetFabrikJointUseTargetRotation(int64(joint_idx), use_target_rotation)
+	return self
 }
 
 /*
@@ -251,9 +263,10 @@ func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNodepath sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNodepath(value string) {
+// SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNodepath(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -263,9 +276,10 @@ func (self Instance) FabrikDataChainLength() int {
 	return int(int(class(self).GetFabrikDataChainLength()))
 }
 
-// SetFabrikDataChainLength sets the property returned by [GetFabrikDataChainLength].
-func (self Instance) SetFabrikDataChainLength(value int) {
+// SetFabrikDataChainLength sets the property returned by [GetFabrikDataChainLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFabrikDataChainLength(value int) Instance {
 	class(self).SetFabrikDataChainLength(int64(value))
+	return self
 }
 
 //go:nosplit

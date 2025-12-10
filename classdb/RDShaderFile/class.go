@@ -133,16 +133,22 @@ type Any interface {
 
 /*
 Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBytecode(bytecode RDShaderSPIRV.Instance) { //gd:RDShaderFile.set_bytecode
+func (self Instance) SetBytecode(bytecode RDShaderSPIRV.Instance) Instance { //gd:RDShaderFile.set_bytecode
 	Advanced(self).SetBytecode(bytecode, String.Name(String.New("")))
+	return self
 }
 
 /*
 Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) { //gd:RDShaderFile.set_bytecode
+func (self MoreArgs) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) MoreArgs { //gd:RDShaderFile.set_bytecode
 	Advanced(self).SetBytecode(bytecode, String.Name(String.New(version)))
+	return self
 }
 
 /*
@@ -218,9 +224,10 @@ func (self Instance) BaseError() string {
 	return string(class(self).GetBaseError().String())
 }
 
-// SetBaseError sets the property returned by [GetBaseError].
-func (self Instance) SetBaseError(value string) {
+// SetBaseError sets the property returned by [GetBaseError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaseError(value string) Instance {
 	class(self).SetBaseError(String.New(value))
+	return self
 }
 
 /*

@@ -198,9 +198,10 @@ func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
-// SetTitle sets the property returned by [GetTitle].
-func (self Instance) SetTitle(value string) {
+// SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitle(value string) Instance {
 	class(self).SetTitle(String.New(value))
+	return self
 }
 
 /*
@@ -212,9 +213,10 @@ func (self Instance) TintColorEnabled() bool {
 	return bool(class(self).IsTintColorEnabled())
 }
 
-// SetTintColorEnabled sets the property returned by [IsTintColorEnabled].
-func (self Instance) SetTintColorEnabled(value bool) {
+// SetTintColorEnabled sets the property returned by [IsTintColorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintColorEnabled(value bool) Instance {
 	class(self).SetTintColorEnabled(value)
+	return self
 }
 
 /*
@@ -226,9 +228,10 @@ func (self Instance) TintColor() Color.RGBA {
 	return Color.RGBA(class(self).GetTintColor())
 }
 
-// SetTintColor sets the property returned by [GetTintColor].
-func (self Instance) SetTintColor(value Color.RGBA) {
+// SetTintColor sets the property returned by [GetTintColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTintColor(value Color.RGBA) Instance {
 	class(self).SetTintColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -238,9 +241,10 @@ func (self Instance) Autoshrink() bool {
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
-// SetAutoshrink sets the property returned by [IsAutoshrinkEnabled].
-func (self Instance) SetAutoshrink(value bool) {
+// SetAutoshrink sets the property returned by [IsAutoshrinkEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoshrink(value bool) Instance {
 	class(self).SetAutoshrinkEnabled(value)
+	return self
 }
 
 /*
@@ -250,9 +254,10 @@ func (self Instance) AttachedNodes() []int32 {
 	return []int32(slices.Collect(class(self).GetAttachedNodes().Values()))
 }
 
-// SetAttachedNodes sets the property returned by [GetAttachedNodes].
-func (self Instance) SetAttachedNodes(value []int32) {
+// SetAttachedNodes sets the property returned by [GetAttachedNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAttachedNodes(value []int32) Instance {
 	class(self).SetAttachedNodes(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

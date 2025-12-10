@@ -178,9 +178,10 @@ func (self Instance) OnThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetOnThreshold()))
 }
 
-// SetOnThreshold sets the property returned by [GetOnThreshold].
-func (self Instance) SetOnThreshold(value Float.X) {
+// SetOnThreshold sets the property returned by [GetOnThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOnThreshold(value Float.X) Instance {
 	class(self).SetOnThreshold(float64(value))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) OffThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetOffThreshold()))
 }
 
-// SetOffThreshold sets the property returned by [GetOffThreshold].
-func (self Instance) SetOffThreshold(value Float.X) {
+// SetOffThreshold sets the property returned by [GetOffThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffThreshold(value Float.X) Instance {
 	class(self).SetOffThreshold(float64(value))
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
-// SetOnHaptic sets the property returned by [GetOnHaptic].
-func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) {
+// SetOnHaptic sets the property returned by [GetOnHaptic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
 	class(self).SetOnHaptic(value)
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
-// SetOffHaptic sets the property returned by [GetOffHaptic].
-func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
+// SetOffHaptic sets the property returned by [GetOffHaptic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance {
 	class(self).SetOffHaptic(value)
+	return self
 }
 
 //go:nosplit

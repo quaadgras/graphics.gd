@@ -178,9 +178,10 @@ func (self Instance) Softness() Float.X {
 	return Float.X(Float.X(class(self).GetSoftness()))
 }
 
-// SetSoftness sets the property returned by [GetSoftness].
-func (self Instance) SetSoftness(value Float.X) {
+// SetSoftness sets the property returned by [GetSoftness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSoftness(value Float.X) Instance {
 	class(self).SetSoftness(float64(value))
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) AngularLimitEnabled() bool {
 	return bool(class(self).IsAngularLimitEnabled())
 }
 
-// SetAngularLimitEnabled sets the property returned by [IsAngularLimitEnabled].
-func (self Instance) SetAngularLimitEnabled(value bool) {
+// SetAngularLimitEnabled sets the property returned by [IsAngularLimitEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularLimitEnabled(value bool) Instance {
 	class(self).SetAngularLimitEnabled(value)
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) AngularLimitLower() Float.X {
 	return Float.X(Float.X(class(self).GetAngularLimitLower()))
 }
 
-// SetAngularLimitLower sets the property returned by [GetAngularLimitLower].
-func (self Instance) SetAngularLimitLower(value Float.X) {
+// SetAngularLimitLower sets the property returned by [GetAngularLimitLower]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularLimitLower(value Float.X) Instance {
 	class(self).SetAngularLimitLower(float64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) AngularLimitUpper() Float.X {
 	return Float.X(Float.X(class(self).GetAngularLimitUpper()))
 }
 
-// SetAngularLimitUpper sets the property returned by [GetAngularLimitUpper].
-func (self Instance) SetAngularLimitUpper(value Float.X) {
+// SetAngularLimitUpper sets the property returned by [GetAngularLimitUpper]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularLimitUpper(value Float.X) Instance {
 	class(self).SetAngularLimitUpper(float64(value))
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) MotorEnabled() bool {
 	return bool(class(self).IsMotorEnabled())
 }
 
-// SetMotorEnabled sets the property returned by [IsMotorEnabled].
-func (self Instance) SetMotorEnabled(value bool) {
+// SetMotorEnabled sets the property returned by [IsMotorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotorEnabled(value bool) Instance {
 	class(self).SetMotorEnabled(value)
+	return self
 }
 
 /*
@@ -245,9 +250,10 @@ func (self Instance) MotorTargetVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetMotorTargetVelocity()))
 }
 
-// SetMotorTargetVelocity sets the property returned by [GetMotorTargetVelocity].
-func (self Instance) SetMotorTargetVelocity(value Float.X) {
+// SetMotorTargetVelocity sets the property returned by [GetMotorTargetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotorTargetVelocity(value Float.X) Instance {
 	class(self).SetMotorTargetVelocity(float64(value))
+	return self
 }
 
 //go:nosplit

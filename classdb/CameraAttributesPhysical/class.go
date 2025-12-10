@@ -207,9 +207,10 @@ func (self Instance) FrustumFocusDistance() Float.X {
 	return Float.X(Float.X(class(self).GetFocusDistance()))
 }
 
-// SetFrustumFocusDistance sets the property returned by [GetFocusDistance].
-func (self Instance) SetFrustumFocusDistance(value Float.X) {
+// SetFrustumFocusDistance sets the property returned by [GetFocusDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrustumFocusDistance(value Float.X) Instance {
 	class(self).SetFocusDistance(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +225,10 @@ func (self Instance) FrustumFocalLength() Float.X {
 	return Float.X(Float.X(class(self).GetFocalLength()))
 }
 
-// SetFrustumFocalLength sets the property returned by [GetFocalLength].
-func (self Instance) SetFrustumFocalLength(value Float.X) {
+// SetFrustumFocalLength sets the property returned by [GetFocalLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrustumFocalLength(value Float.X) Instance {
 	class(self).SetFocalLength(float64(value))
+	return self
 }
 
 /*
@@ -240,9 +242,10 @@ func (self Instance) FrustumNear() Float.X {
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
-// SetFrustumNear sets the property returned by [GetNear].
-func (self Instance) SetFrustumNear(value Float.X) {
+// SetFrustumNear sets the property returned by [GetNear]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrustumNear(value Float.X) Instance {
 	class(self).SetNear(float64(value))
+	return self
 }
 
 /*
@@ -256,9 +259,10 @@ func (self Instance) FrustumFar() Float.X {
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
-// SetFrustumFar sets the property returned by [GetFar].
-func (self Instance) SetFrustumFar(value Float.X) {
+// SetFrustumFar sets the property returned by [GetFar]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrustumFar(value Float.X) Instance {
 	class(self).SetFar(float64(value))
+	return self
 }
 
 /*
@@ -273,9 +277,10 @@ func (self Instance) ExposureAperture() Float.X {
 	return Float.X(Float.X(class(self).GetAperture()))
 }
 
-// SetExposureAperture sets the property returned by [GetAperture].
-func (self Instance) SetExposureAperture(value Float.X) {
+// SetExposureAperture sets the property returned by [GetAperture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExposureAperture(value Float.X) Instance {
 	class(self).SetAperture(float64(value))
+	return self
 }
 
 /*
@@ -289,9 +294,10 @@ func (self Instance) ExposureShutterSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetShutterSpeed()))
 }
 
-// SetExposureShutterSpeed sets the property returned by [GetShutterSpeed].
-func (self Instance) SetExposureShutterSpeed(value Float.X) {
+// SetExposureShutterSpeed sets the property returned by [GetShutterSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExposureShutterSpeed(value Float.X) Instance {
 	class(self).SetShutterSpeed(float64(value))
+	return self
 }
 
 /*
@@ -301,9 +307,10 @@ func (self Instance) AutoExposureMinExposureValue() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMinExposureValue()))
 }
 
-// SetAutoExposureMinExposureValue sets the property returned by [GetAutoExposureMinExposureValue].
-func (self Instance) SetAutoExposureMinExposureValue(value Float.X) {
+// SetAutoExposureMinExposureValue sets the property returned by [GetAutoExposureMinExposureValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureMinExposureValue(value Float.X) Instance {
 	class(self).SetAutoExposureMinExposureValue(float64(value))
+	return self
 }
 
 /*
@@ -313,9 +320,10 @@ func (self Instance) AutoExposureMaxExposureValue() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMaxExposureValue()))
 }
 
-// SetAutoExposureMaxExposureValue sets the property returned by [GetAutoExposureMaxExposureValue].
-func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
+// SetAutoExposureMaxExposureValue sets the property returned by [GetAutoExposureMaxExposureValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) Instance {
 	class(self).SetAutoExposureMaxExposureValue(float64(value))
+	return self
 }
 
 //go:nosplit

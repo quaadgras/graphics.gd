@@ -184,9 +184,10 @@ func (self Instance) RenderTarget() RID.Framebuffer {
 	return RID.Framebuffer(RID.Framebuffer(class(self).GetRenderTarget()))
 }
 
-// SetRenderTarget sets the property returned by [GetRenderTarget].
-func (self Instance) SetRenderTarget(value RID.Framebuffer) {
+// SetRenderTarget sets the property returned by [GetRenderTarget]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderTarget(value RID.Framebuffer) Instance {
 	class(self).SetRenderTarget(RID.Any(value))
+	return self
 }
 
 /*
@@ -196,9 +197,10 @@ func (self Instance) InternalSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetInternalSize())
 }
 
-// SetInternalSize sets the property returned by [GetInternalSize].
-func (self Instance) SetInternalSize(value Vector2i.XY) {
+// SetInternalSize sets the property returned by [GetInternalSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInternalSize(value Vector2i.XY) Instance {
 	class(self).SetInternalSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -208,9 +210,10 @@ func (self Instance) TargetSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTargetSize())
 }
 
-// SetTargetSize sets the property returned by [GetTargetSize].
-func (self Instance) SetTargetSize(value Vector2i.XY) {
+// SetTargetSize sets the property returned by [GetTargetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetSize(value Vector2i.XY) Instance {
 	class(self).SetTargetSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -220,9 +223,10 @@ func (self Instance) ViewCount() int {
 	return int(int(class(self).GetViewCount()))
 }
 
-// SetViewCount sets the property returned by [GetViewCount].
-func (self Instance) SetViewCount(value int) {
+// SetViewCount sets the property returned by [GetViewCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetViewCount(value int) Instance {
 	class(self).SetViewCount(int64(value))
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) Scaling3dMode() RenderingServer.ViewportScaling3DMode {
 	return RenderingServer.ViewportScaling3DMode(class(self).GetScaling3dMode())
 }
 
-// SetScaling3dMode sets the property returned by [GetScaling3dMode].
-func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) {
+// SetScaling3dMode sets the property returned by [GetScaling3dMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) Instance {
 	class(self).SetScaling3dMode(value)
+	return self
 }
 
 /*
@@ -247,9 +252,10 @@ func (self Instance) Msaa3d() RenderingServer.ViewportMSAA {
 	return RenderingServer.ViewportMSAA(class(self).GetMsaa3d())
 }
 
-// SetMsaa3d sets the property returned by [GetMsaa3d].
-func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) {
+// SetMsaa3d sets the property returned by [GetMsaa3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) Instance {
 	class(self).SetMsaa3d(value)
+	return self
 }
 
 /*
@@ -259,9 +265,10 @@ func (self Instance) ScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA {
 	return RenderingServer.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
-// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa].
-func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) {
+// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) Instance {
 	class(self).SetScreenSpaceAa(value)
+	return self
 }
 
 /*
@@ -271,9 +278,10 @@ func (self Instance) FsrSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
-// SetFsrSharpness sets the property returned by [GetFsrSharpness].
-func (self Instance) SetFsrSharpness(value Float.X) {
+// SetFsrSharpness sets the property returned by [GetFsrSharpness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFsrSharpness(value Float.X) Instance {
 	class(self).SetFsrSharpness(float64(value))
+	return self
 }
 
 /*
@@ -283,9 +291,10 @@ func (self Instance) TextureMipmapBias() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
-// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias].
-func (self Instance) SetTextureMipmapBias(value Float.X) {
+// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMipmapBias(value Float.X) Instance {
 	class(self).SetTextureMipmapBias(float64(value))
+	return self
 }
 
 /*
@@ -295,9 +304,10 @@ func (self Instance) AnisotropicFilteringLevel() RenderingServer.ViewportAnisotr
 	return RenderingServer.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
-// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel].
-func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) {
+// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) Instance {
 	class(self).SetAnisotropicFilteringLevel(value)
+	return self
 }
 
 //go:nosplit

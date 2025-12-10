@@ -222,9 +222,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -238,9 +239,10 @@ func (self Instance) Centered() bool {
 	return bool(class(self).IsCentered())
 }
 
-// SetCentered sets the property returned by [IsCentered].
-func (self Instance) SetCentered(value bool) {
+// SetCentered sets the property returned by [IsCentered]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCentered(value bool) Instance {
 	class(self).SetCentered(value)
+	return self
 }
 
 /*
@@ -254,9 +256,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -266,9 +269,10 @@ func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
-// SetFlipH sets the property returned by [IsFlippedH].
-func (self Instance) SetFlipH(value bool) {
+// SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipH(value bool) Instance {
 	class(self).SetFlipH(value)
+	return self
 }
 
 /*
@@ -278,9 +282,10 @@ func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
-// SetFlipV sets the property returned by [IsFlippedV].
-func (self Instance) SetFlipV(value bool) {
+// SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipV(value bool) Instance {
 	class(self).SetFlipV(value)
+	return self
 }
 
 /*
@@ -292,9 +297,10 @@ func (self Instance) Hframes() int {
 	return int(int(class(self).GetHframes()))
 }
 
-// SetHframes sets the property returned by [GetHframes].
-func (self Instance) SetHframes(value int) {
+// SetHframes sets the property returned by [GetHframes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHframes(value int) Instance {
 	class(self).SetHframes(int64(value))
+	return self
 }
 
 /*
@@ -306,9 +312,10 @@ func (self Instance) Vframes() int {
 	return int(int(class(self).GetVframes()))
 }
 
-// SetVframes sets the property returned by [GetVframes].
-func (self Instance) SetVframes(value int) {
+// SetVframes sets the property returned by [GetVframes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVframes(value int) Instance {
 	class(self).SetVframes(int64(value))
+	return self
 }
 
 /*
@@ -321,9 +328,10 @@ func (self Instance) Frame() int {
 	return int(int(class(self).GetFrame()))
 }
 
-// SetFrame sets the property returned by [GetFrame].
-func (self Instance) SetFrame(value int) {
+// SetFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrame(value int) Instance {
 	class(self).SetFrame(int64(value))
+	return self
 }
 
 /*
@@ -337,9 +345,10 @@ func (self Instance) FrameCoords() Vector2i.XY {
 	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
-// SetFrameCoords sets the property returned by [GetFrameCoords].
-func (self Instance) SetFrameCoords(value Vector2i.XY) {
+// SetFrameCoords sets the property returned by [GetFrameCoords]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrameCoords(value Vector2i.XY) Instance {
 	class(self).SetFrameCoords(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -356,9 +365,10 @@ func (self Instance) RegionEnabled() bool {
 	return bool(class(self).IsRegionEnabled())
 }
 
-// SetRegionEnabled sets the property returned by [IsRegionEnabled].
-func (self Instance) SetRegionEnabled(value bool) {
+// SetRegionEnabled sets the property returned by [IsRegionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegionEnabled(value bool) Instance {
 	class(self).SetRegionEnabled(value)
+	return self
 }
 
 /*
@@ -370,9 +380,10 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-// SetRegionRect sets the property returned by [GetRegionRect].
-func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+// SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -385,9 +396,10 @@ func (self Instance) RegionFilterClipEnabled() bool {
 	return bool(class(self).IsRegionFilterClipEnabled())
 }
 
-// SetRegionFilterClipEnabled sets the property returned by [IsRegionFilterClipEnabled].
-func (self Instance) SetRegionFilterClipEnabled(value bool) {
+// SetRegionFilterClipEnabled sets the property returned by [IsRegionFilterClipEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegionFilterClipEnabled(value bool) Instance {
 	class(self).SetRegionFilterClipEnabled(value)
+	return self
 }
 
 //go:nosplit
@@ -575,12 +587,13 @@ Emitted when the [Frame] changes.
 
 [Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
 */
-func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FrameChanged() Signal.Any {
@@ -592,12 +605,13 @@ Emitted when the [Texture] changes.
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
-func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("texture_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextureChanged() Signal.Any {

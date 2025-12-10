@@ -167,8 +167,9 @@ func (self Instance) ToDictionary() Structure { //gd:GLTFLight.to_dictionary
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
 	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFLight.set_additional_data
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFLight.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -226,9 +227,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -238,9 +240,10 @@ func (self Instance) Intensity() Float.X {
 	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
-// SetIntensity sets the property returned by [GetIntensity].
-func (self Instance) SetIntensity(value Float.X) {
+// SetIntensity sets the property returned by [GetIntensity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIntensity(value Float.X) Instance {
 	class(self).SetIntensity(float64(value))
+	return self
 }
 
 /*
@@ -254,9 +257,10 @@ func (self Instance) LightType() string {
 	return string(class(self).GetLightType().String())
 }
 
-// SetLightType sets the property returned by [GetLightType].
-func (self Instance) SetLightType(value string) {
+// SetLightType sets the property returned by [GetLightType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightType(value string) Instance {
 	class(self).SetLightType(String.New(value))
+	return self
 }
 
 /*
@@ -266,9 +270,10 @@ func (self Instance) Range() Float.X {
 	return Float.X(Float.X(class(self).GetRange()))
 }
 
-// SetRange sets the property returned by [GetRange].
-func (self Instance) SetRange(value Float.X) {
+// SetRange sets the property returned by [GetRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRange(value Float.X) Instance {
 	class(self).SetRange(float64(value))
+	return self
 }
 
 /*
@@ -282,9 +287,10 @@ func (self Instance) InnerConeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetInnerConeAngle()))
 }
 
-// SetInnerConeAngle sets the property returned by [GetInnerConeAngle].
-func (self Instance) SetInnerConeAngle(value Angle.Radians) {
+// SetInnerConeAngle sets the property returned by [GetInnerConeAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInnerConeAngle(value Angle.Radians) Instance {
 	class(self).SetInnerConeAngle(float64(value))
+	return self
 }
 
 /*
@@ -298,9 +304,10 @@ func (self Instance) OuterConeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetOuterConeAngle()))
 }
 
-// SetOuterConeAngle sets the property returned by [GetOuterConeAngle].
-func (self Instance) SetOuterConeAngle(value Angle.Radians) {
+// SetOuterConeAngle sets the property returned by [GetOuterConeAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOuterConeAngle(value Angle.Radians) Instance {
 	class(self).SetOuterConeAngle(float64(value))
+	return self
 }
 
 /*

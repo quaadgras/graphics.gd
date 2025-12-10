@@ -243,30 +243,39 @@ func (self Instance) GetOptionDefault(option int) int { //gd:FileDialog.get_opti
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionName(option int, name string) { //gd:FileDialog.set_option_name
+func (self Instance) SetOptionName(option int, name string) Instance { //gd:FileDialog.set_option_name
 	Advanced(self).SetOptionName(int64(option), String.New(name))
+	return self
 }
 
 /*
 Sets the option values of the [OptionButton] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionValues(option int, values []string) { //gd:FileDialog.set_option_values
+func (self Instance) SetOptionValues(option int, values []string) Instance { //gd:FileDialog.set_option_values
 	Advanced(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
+	return self
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index 'option'.
 
+Returns 'self' to enable method chaining.
+
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:FileDialog.set_option_default
+func (self Instance) SetOptionDefault(option int, default_value_index int) Instance { //gd:FileDialog.set_option_default
 	Advanced(self).SetOptionDefault(int64(option), int64(default_value_index))
+	return self
 }
 
 /*
@@ -383,9 +392,10 @@ func (self Instance) ModeOverridesTitle() bool {
 	return bool(class(self).IsModeOverridingTitle())
 }
 
-// SetModeOverridesTitle sets the property returned by [IsModeOverridingTitle].
-func (self Instance) SetModeOverridesTitle(value bool) {
+// SetModeOverridesTitle sets the property returned by [IsModeOverridingTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModeOverridesTitle(value bool) Instance {
 	class(self).SetModeOverridesTitle(value)
+	return self
 }
 
 /*
@@ -395,9 +405,10 @@ func (self Instance) FileMode() FileMode {
 	return FileMode(class(self).GetFileMode())
 }
 
-// SetFileMode sets the property returned by [GetFileMode].
-func (self Instance) SetFileMode(value FileMode) {
+// SetFileMode sets the property returned by [GetFileMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFileMode(value FileMode) Instance {
 	class(self).SetFileMode(value)
+	return self
 }
 
 /*
@@ -407,9 +418,10 @@ func (self Instance) DisplayMode() DisplayMode {
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
-// SetDisplayMode sets the property returned by [GetDisplayMode].
-func (self Instance) SetDisplayMode(value DisplayMode) {
+// SetDisplayMode sets the property returned by [GetDisplayMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisplayMode(value DisplayMode) Instance {
 	class(self).SetDisplayMode(value)
+	return self
 }
 
 /*
@@ -423,9 +435,10 @@ func (self Instance) Access() Access {
 	return Access(class(self).GetAccess())
 }
 
-// SetAccess sets the property returned by [GetAccess].
-func (self Instance) SetAccess(value Access) {
+// SetAccess sets the property returned by [GetAccess]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccess(value Access) Instance {
 	class(self).SetAccess(value)
+	return self
 }
 
 /*
@@ -439,9 +452,10 @@ func (self Instance) RootSubfolder() string {
 	return string(class(self).GetRootSubfolder().String())
 }
 
-// SetRootSubfolder sets the property returned by [GetRootSubfolder].
-func (self Instance) SetRootSubfolder(value string) {
+// SetRootSubfolder sets the property returned by [GetRootSubfolder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootSubfolder(value string) Instance {
 	class(self).SetRootSubfolder(String.New(value))
+	return self
 }
 
 /*
@@ -453,9 +467,10 @@ func (self Instance) Filters() []string {
 	return []string(class(self).GetFilters().Strings())
 }
 
-// SetFilters sets the property returned by [GetFilters].
-func (self Instance) SetFilters(value []string) {
+// SetFilters sets the property returned by [GetFilters]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilters(value []string) Instance {
 	class(self).SetFilters(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -470,9 +485,10 @@ func (self Instance) FilenameFilter() string {
 	return string(class(self).GetFilenameFilter().String())
 }
 
-// SetFilenameFilter sets the property returned by [GetFilenameFilter].
-func (self Instance) SetFilenameFilter(value string) {
+// SetFilenameFilter sets the property returned by [GetFilenameFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFilenameFilter(value string) Instance {
 	class(self).SetFilenameFilter(String.New(value))
+	return self
 }
 
 /*
@@ -484,9 +500,10 @@ func (self Instance) ShowHiddenFiles() bool {
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
-// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles].
-func (self Instance) SetShowHiddenFiles(value bool) {
+// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowHiddenFiles(value bool) Instance {
 	class(self).SetShowHiddenFiles(value)
+	return self
 }
 
 /*
@@ -507,9 +524,10 @@ func (self Instance) UseNativeDialog() bool {
 	return bool(class(self).GetUseNativeDialog())
 }
 
-// SetUseNativeDialog sets the property returned by [GetUseNativeDialog].
-func (self Instance) SetUseNativeDialog(value bool) {
+// SetUseNativeDialog sets the property returned by [GetUseNativeDialog]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseNativeDialog(value bool) Instance {
 	class(self).SetUseNativeDialog(value)
+	return self
 }
 
 /*
@@ -522,9 +540,10 @@ func (self Instance) OptionCount() int {
 	return int(int(class(self).GetOptionCount()))
 }
 
-// SetOptionCount sets the property returned by [GetOptionCount].
-func (self Instance) SetOptionCount(value int) {
+// SetOptionCount sets the property returned by [GetOptionCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOptionCount(value int) Instance {
 	class(self).SetOptionCount(int64(value))
+	return self
 }
 
 /*
@@ -534,9 +553,10 @@ func (self Instance) HiddenFilesToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(0))
 }
 
-// SetHiddenFilesToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetHiddenFilesToggleEnabled(value bool) {
+// SetHiddenFilesToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHiddenFilesToggleEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(0, value)
+	return self
 }
 
 /*
@@ -546,9 +566,10 @@ func (self Instance) FileFilterToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(2))
 }
 
-// SetFileFilterToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetFileFilterToggleEnabled(value bool) {
+// SetFileFilterToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFileFilterToggleEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(2, value)
+	return self
 }
 
 /*
@@ -558,9 +579,10 @@ func (self Instance) FileSortOptionsEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(3))
 }
 
-// SetFileSortOptionsEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetFileSortOptionsEnabled(value bool) {
+// SetFileSortOptionsEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFileSortOptionsEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(3, value)
+	return self
 }
 
 /*
@@ -570,9 +592,10 @@ func (self Instance) FolderCreationEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(1))
 }
 
-// SetFolderCreationEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetFolderCreationEnabled(value bool) {
+// SetFolderCreationEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFolderCreationEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(1, value)
+	return self
 }
 
 /*
@@ -582,9 +605,10 @@ func (self Instance) FavoritesEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(4))
 }
 
-// SetFavoritesEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetFavoritesEnabled(value bool) {
+// SetFavoritesEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFavoritesEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(4, value)
+	return self
 }
 
 /*
@@ -594,9 +618,10 @@ func (self Instance) RecentListEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(5))
 }
 
-// SetRecentListEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetRecentListEnabled(value bool) {
+// SetRecentListEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRecentListEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(5, value)
+	return self
 }
 
 /*
@@ -606,9 +631,10 @@ func (self Instance) LayoutToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(6))
 }
 
-// SetLayoutToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
-func (self Instance) SetLayoutToggleEnabled(value bool) {
+// SetLayoutToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayoutToggleEnabled(value bool) Instance {
 	class(self).SetCustomizationFlagEnabled(6, value)
+	return self
 }
 
 /*
@@ -620,9 +646,10 @@ func (self Instance) CurrentDir() string {
 	return string(class(self).GetCurrentDir().String())
 }
 
-// SetCurrentDir sets the property returned by [GetCurrentDir].
-func (self Instance) SetCurrentDir(value string) {
+// SetCurrentDir sets the property returned by [GetCurrentDir]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentDir(value string) Instance {
 	class(self).SetCurrentDir(String.New(value))
+	return self
 }
 
 /*
@@ -632,9 +659,10 @@ func (self Instance) CurrentFile() string {
 	return string(class(self).GetCurrentFile().String())
 }
 
-// SetCurrentFile sets the property returned by [GetCurrentFile].
-func (self Instance) SetCurrentFile(value string) {
+// SetCurrentFile sets the property returned by [GetCurrentFile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentFile(value string) Instance {
 	class(self).SetCurrentFile(String.New(value))
+	return self
 }
 
 /*
@@ -644,9 +672,10 @@ func (self Instance) CurrentPath() string {
 	return string(class(self).GetCurrentPath().String())
 }
 
-// SetCurrentPath sets the property returned by [GetCurrentPath].
-func (self Instance) SetCurrentPath(value string) {
+// SetCurrentPath sets the property returned by [GetCurrentPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentPath(value string) Instance {
 	class(self).SetCurrentPath(String.New(value))
+	return self
 }
 
 /*
@@ -1024,12 +1053,13 @@ func (self class) Invalidate() { //gd:FileDialog.invalidate
 /*
 Emitted when the user selects a file by double-clicking it or pressing the OK button.
 */
-func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) {
+func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FileSelected() Signal.Any {
@@ -1039,12 +1069,13 @@ func (self class) FileSelected() Signal.Any {
 /*
 Emitted when the user selects multiple files.
 */
-func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) {
+func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilesSelected() Signal.Any {
@@ -1054,12 +1085,13 @@ func (self class) FilesSelected() Signal.Any {
 /*
 Emitted when the user selects a directory.
 */
-func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
+func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DirSelected() Signal.Any {
@@ -1069,12 +1101,13 @@ func (self class) DirSelected() Signal.Any {
 /*
 Emitted when the filter for file names changes.
 */
-func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) {
+func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilenameFilterChanged() Signal.Any {

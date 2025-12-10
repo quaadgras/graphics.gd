@@ -160,19 +160,25 @@ type Any interface {
 /*
 Sets the [Transform3D.BasisOrigin] for a specific instance.
 
+Returns 'self' to enable method chaining.
+
 [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
-func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
+func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) Instance { //gd:MultiMesh.set_instance_transform
 	Advanced(self).SetInstanceTransform(int64(instance), Transform3D.BasisOrigin(transform))
+	return self
 }
 
 /*
 Sets the [Transform2D.OriginXY] for a specific instance.
 
+Returns 'self' to enable method chaining.
+
 [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
-func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) { //gd:MultiMesh.set_instance_transform_2d
+func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) Instance { //gd:MultiMesh.set_instance_transform_2d
 	Advanced(self).SetInstanceTransform2d(int64(instance), Transform2D.OriginXY(transform))
+	return self
 }
 
 /*
@@ -200,12 +206,15 @@ Note: Each component is stored in 32 bits in the Forward+ and Mobile rendering m
 
 For the color to take effect, ensure that [UseColors] is true on the [MultiMesh] and [BaseMaterial3D.VertexColorUseAsAlbedo] is true on the material. If you intend to set an absolute color instead of tinting, make sure the material's albedo color is set to pure white (Color(1, 1, 1)).
 
+Returns 'self' to enable method chaining.
+
 [BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [UseColors]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.UseColors
 */
-func (self Instance) SetInstanceColor(instance int, color Color.RGBA) { //gd:MultiMesh.set_instance_color
+func (self Instance) SetInstanceColor(instance int, color Color.RGBA) Instance { //gd:MultiMesh.set_instance_color
 	Advanced(self).SetInstanceColor(int64(instance), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -224,11 +233,14 @@ For the custom data to be used, ensure that [UseCustomData] is true.
 
 This custom instance data has to be manually accessed in your custom shader using INSTANCE_CUSTOM.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [UseCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.UseCustomData
 */
-func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) { //gd:MultiMesh.set_instance_custom_data
+func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) Instance { //gd:MultiMesh.set_instance_custom_data
 	Advanced(self).SetInstanceCustomData(int64(instance), Color.RGBA(custom_data))
+	return self
 }
 
 /*
@@ -261,10 +273,13 @@ This is useful for situations where the order of instances may change from physi
 
 When the order of instances is coherent, the simpler alternative of setting [Buffer] can still be used with interpolation.
 
+Returns 'self' to enable method chaining.
+
 [Buffer]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.Buffer
 */
-func (self Instance) SetBufferInterpolated(buffer_curr []float32, buffer_prev []float32) { //gd:MultiMesh.set_buffer_interpolated
+func (self Instance) SetBufferInterpolated(buffer_curr []float32, buffer_prev []float32) Instance { //gd:MultiMesh.set_buffer_interpolated
 	Advanced(self).SetBufferInterpolated(Packed.New(buffer_curr...), Packed.New(buffer_prev...))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -317,9 +332,10 @@ func (self Instance) TransformFormat() TransformFormat {
 	return TransformFormat(class(self).GetTransformFormat())
 }
 
-// SetTransformFormat sets the property returned by [GetTransformFormat].
-func (self Instance) SetTransformFormat(value TransformFormat) {
+// SetTransformFormat sets the property returned by [GetTransformFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransformFormat(value TransformFormat) Instance {
 	class(self).SetTransformFormat(value)
+	return self
 }
 
 /*
@@ -333,9 +349,10 @@ func (self Instance) UseColors() bool {
 	return bool(class(self).IsUsingColors())
 }
 
-// SetUseColors sets the property returned by [IsUsingColors].
-func (self Instance) SetUseColors(value bool) {
+// SetUseColors sets the property returned by [IsUsingColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseColors(value bool) Instance {
 	class(self).SetUseColors(value)
+	return self
 }
 
 /*
@@ -349,9 +366,10 @@ func (self Instance) UseCustomData() bool {
 	return bool(class(self).IsUsingCustomData())
 }
 
-// SetUseCustomData sets the property returned by [IsUsingCustomData].
-func (self Instance) SetUseCustomData(value bool) {
+// SetUseCustomData sets the property returned by [IsUsingCustomData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseCustomData(value bool) Instance {
 	class(self).SetUseCustomData(value)
+	return self
 }
 
 /*
@@ -361,9 +379,10 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-// SetCustomAabb sets the property returned by [GetCustomAabb].
-func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+// SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
+	return self
 }
 
 /*
@@ -377,9 +396,10 @@ func (self Instance) InstanceCount() int {
 	return int(int(class(self).GetInstanceCount()))
 }
 
-// SetInstanceCount sets the property returned by [GetInstanceCount].
-func (self Instance) SetInstanceCount(value int) {
+// SetInstanceCount sets the property returned by [GetInstanceCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInstanceCount(value int) Instance {
 	class(self).SetInstanceCount(int64(value))
+	return self
 }
 
 /*
@@ -389,9 +409,10 @@ func (self Instance) VisibleInstanceCount() int {
 	return int(int(class(self).GetVisibleInstanceCount()))
 }
 
-// SetVisibleInstanceCount sets the property returned by [GetVisibleInstanceCount].
-func (self Instance) SetVisibleInstanceCount(value int) {
+// SetVisibleInstanceCount sets the property returned by [GetVisibleInstanceCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibleInstanceCount(value int) Instance {
 	class(self).SetVisibleInstanceCount(int64(value))
+	return self
 }
 
 /*
@@ -407,18 +428,20 @@ func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value Mesh.Instance) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value Mesh.Instance) Instance {
 	class(self).SetMesh(value)
+	return self
 }
 
 func (self Instance) Buffer() []float32 {
 	return []float32(slices.Collect(class(self).GetBuffer().Values()))
 }
 
-// SetBuffer sets the property returned by [GetBuffer].
-func (self Instance) SetBuffer(value []float32) {
+// SetBuffer sets the property returned by [GetBuffer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBuffer(value []float32) Instance {
 	class(self).SetBuffer(Packed.New(value...))
+	return self
 }
 
 /*
@@ -432,9 +455,10 @@ func (self Instance) PhysicsInterpolationQuality() PhysicsInterpolationQuality {
 	return PhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
 }
 
-// SetPhysicsInterpolationQuality sets the property returned by [GetPhysicsInterpolationQuality].
-func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) {
+// SetPhysicsInterpolationQuality sets the property returned by [GetPhysicsInterpolationQuality]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) Instance {
 	class(self).SetPhysicsInterpolationQuality(value)
+	return self
 }
 
 //go:nosplit

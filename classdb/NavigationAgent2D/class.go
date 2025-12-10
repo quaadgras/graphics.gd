@@ -219,10 +219,13 @@ func (self Instance) GetRid() RID.NavigationAgent2D { //gd:NavigationAgent2D.get
 /*
 Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.NavigationLayers
 */
-func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationAgent2D.set_navigation_layer_value
+func (self Instance) SetNavigationLayerValue(layer_number int, value bool) Instance { //gd:NavigationAgent2D.set_navigation_layer_value
 	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -237,10 +240,13 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 /*
 Sets the [Resource.ID] of the navigation map this NavigationAgent node should use and also updates the agent on the NavigationServer.
 
+Returns 'self' to enable method chaining.
+
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationAgent2D.set_navigation_map
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) Instance { //gd:NavigationAgent2D.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
+	return self
 }
 
 /*
@@ -269,9 +275,12 @@ func (self Instance) GetNextPathPosition() Vector2.XY { //gd:NavigationAgent2D.g
 
 /*
 Replaces the internal velocity in the collision avoidance simulation with 'velocity'. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetVelocityForced(velocity Vector2.XY) { //gd:NavigationAgent2D.set_velocity_forced
+func (self Instance) SetVelocityForced(velocity Vector2.XY) Instance { //gd:NavigationAgent2D.set_velocity_forced
 	Advanced(self).SetVelocityForced(Vector2.XY(velocity))
+	return self
 }
 
 /*
@@ -353,10 +362,13 @@ func (self Instance) GetFinalPosition() Vector2.XY { //gd:NavigationAgent2D.get_
 /*
 Based on 'value', enables or disables the specified layer in the [AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceLayers
 */
-func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationAgent2D.set_avoidance_layer_value
+func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) Instance { //gd:NavigationAgent2D.set_avoidance_layer_value
 	Advanced(self).SetAvoidanceLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -371,10 +383,13 @@ func (self Instance) GetAvoidanceLayerValue(layer_number int) bool { //gd:Naviga
 /*
 Based on 'value', enables or disables the specified mask in the [AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceMask
 */
-func (self Instance) SetAvoidanceMaskValue(mask_number int, value bool) { //gd:NavigationAgent2D.set_avoidance_mask_value
+func (self Instance) SetAvoidanceMaskValue(mask_number int, value bool) Instance { //gd:NavigationAgent2D.set_avoidance_mask_value
 	Advanced(self).SetAvoidanceMaskValue(int64(mask_number), value)
+	return self
 }
 
 /*
@@ -437,9 +452,10 @@ func (self Instance) TargetPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
-// SetTargetPosition sets the property returned by [GetTargetPosition].
-func (self Instance) SetTargetPosition(value Vector2.XY) {
+// SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
 	class(self).SetTargetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -449,9 +465,10 @@ func (self Instance) PathDesiredDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathDesiredDistance()))
 }
 
-// SetPathDesiredDistance sets the property returned by [GetPathDesiredDistance].
-func (self Instance) SetPathDesiredDistance(value Float.X) {
+// SetPathDesiredDistance sets the property returned by [GetPathDesiredDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathDesiredDistance(value Float.X) Instance {
 	class(self).SetPathDesiredDistance(float64(value))
+	return self
 }
 
 /*
@@ -470,9 +487,10 @@ func (self Instance) TargetDesiredDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetDesiredDistance()))
 }
 
-// SetTargetDesiredDistance sets the property returned by [GetTargetDesiredDistance].
-func (self Instance) SetTargetDesiredDistance(value Float.X) {
+// SetTargetDesiredDistance sets the property returned by [GetTargetDesiredDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetDesiredDistance(value Float.X) Instance {
 	class(self).SetTargetDesiredDistance(float64(value))
+	return self
 }
 
 /*
@@ -482,9 +500,10 @@ func (self Instance) PathMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathMaxDistance()))
 }
 
-// SetPathMaxDistance sets the property returned by [GetPathMaxDistance].
-func (self Instance) SetPathMaxDistance(value Float.X) {
+// SetPathMaxDistance sets the property returned by [GetPathMaxDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathMaxDistance(value Float.X) Instance {
 	class(self).SetPathMaxDistance(float64(value))
+	return self
 }
 
 /*
@@ -494,9 +513,10 @@ func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
-// SetNavigationLayers sets the property returned by [GetNavigationLayers].
-func (self Instance) SetNavigationLayers(value int) {
+// SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationLayers(value int) Instance {
 	class(self).SetNavigationLayers(int64(value))
+	return self
 }
 
 /*
@@ -506,9 +526,10 @@ func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters2D.Path
 	return NavigationPathQueryParameters2D.PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
-// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm].
-func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) {
+// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) Instance {
 	class(self).SetPathfindingAlgorithm(value)
+	return self
 }
 
 /*
@@ -520,9 +541,10 @@ func (self Instance) PathPostprocessing() NavigationPathQueryParameters2D.PathPo
 	return NavigationPathQueryParameters2D.PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
-// SetPathPostprocessing sets the property returned by [GetPathPostprocessing].
-func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) {
+// SetPathPostprocessing sets the property returned by [GetPathPostprocessing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) Instance {
 	class(self).SetPathPostprocessing(value)
+	return self
 }
 
 /*
@@ -532,9 +554,10 @@ func (self Instance) PathMetadataFlags() NavigationPathQueryParameters2D.PathMet
 	return NavigationPathQueryParameters2D.PathMetadataFlags(class(self).GetPathMetadataFlags())
 }
 
-// SetPathMetadataFlags sets the property returned by [GetPathMetadataFlags].
-func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) {
+// SetPathMetadataFlags sets the property returned by [GetPathMetadataFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) Instance {
 	class(self).SetPathMetadataFlags(value)
+	return self
 }
 
 /*
@@ -548,9 +571,10 @@ func (self Instance) SimplifyPath() bool {
 	return bool(class(self).GetSimplifyPath())
 }
 
-// SetSimplifyPath sets the property returned by [GetSimplifyPath].
-func (self Instance) SetSimplifyPath(value bool) {
+// SetSimplifyPath sets the property returned by [GetSimplifyPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimplifyPath(value bool) Instance {
 	class(self).SetSimplifyPath(value)
+	return self
 }
 
 /*
@@ -560,9 +584,10 @@ func (self Instance) SimplifyEpsilon() Float.X {
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
-// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon].
-func (self Instance) SetSimplifyEpsilon(value Float.X) {
+// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSimplifyEpsilon(value Float.X) Instance {
 	class(self).SetSimplifyEpsilon(float64(value))
+	return self
 }
 
 /*
@@ -572,9 +597,10 @@ func (self Instance) PathReturnMaxLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
-// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength].
-func (self Instance) SetPathReturnMaxLength(value Float.X) {
+// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathReturnMaxLength(value Float.X) Instance {
 	class(self).SetPathReturnMaxLength(float64(value))
+	return self
 }
 
 /*
@@ -588,9 +614,10 @@ func (self Instance) PathReturnMaxRadius() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
-// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius].
-func (self Instance) SetPathReturnMaxRadius(value Float.X) {
+// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
 	class(self).SetPathReturnMaxRadius(float64(value))
+	return self
 }
 
 /*
@@ -600,9 +627,10 @@ func (self Instance) PathSearchMaxPolygons() int {
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
-// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons].
-func (self Instance) SetPathSearchMaxPolygons(value int) {
+// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
 	class(self).SetPathSearchMaxPolygons(int64(value))
+	return self
 }
 
 /*
@@ -612,9 +640,10 @@ func (self Instance) PathSearchMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
-// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance].
-func (self Instance) SetPathSearchMaxDistance(value Float.X) {
+// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance {
 	class(self).SetPathSearchMaxDistance(float64(value))
+	return self
 }
 
 /*
@@ -628,9 +657,10 @@ func (self Instance) AvoidanceEnabled() bool {
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
-// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled].
-func (self Instance) SetAvoidanceEnabled(value bool) {
+// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidanceEnabled(value bool) Instance {
 	class(self).SetAvoidanceEnabled(value)
+	return self
 }
 
 /*
@@ -642,9 +672,10 @@ func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
-// SetVelocity sets the property returned by [GetVelocity].
-func (self Instance) SetVelocity(value Vector2.XY) {
+// SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVelocity(value Vector2.XY) Instance {
 	class(self).SetVelocity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -660,9 +691,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -672,9 +704,10 @@ func (self Instance) NeighborDistance() Float.X {
 	return Float.X(Float.X(class(self).GetNeighborDistance()))
 }
 
-// SetNeighborDistance sets the property returned by [GetNeighborDistance].
-func (self Instance) SetNeighborDistance(value Float.X) {
+// SetNeighborDistance sets the property returned by [GetNeighborDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNeighborDistance(value Float.X) Instance {
 	class(self).SetNeighborDistance(float64(value))
+	return self
 }
 
 /*
@@ -684,9 +717,10 @@ func (self Instance) MaxNeighbors() int {
 	return int(int(class(self).GetMaxNeighbors()))
 }
 
-// SetMaxNeighbors sets the property returned by [GetMaxNeighbors].
-func (self Instance) SetMaxNeighbors(value int) {
+// SetMaxNeighbors sets the property returned by [GetMaxNeighbors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxNeighbors(value int) Instance {
 	class(self).SetMaxNeighbors(int64(value))
+	return self
 }
 
 /*
@@ -696,9 +730,10 @@ func (self Instance) TimeHorizonAgents() Float.X {
 	return Float.X(Float.X(class(self).GetTimeHorizonAgents()))
 }
 
-// SetTimeHorizonAgents sets the property returned by [GetTimeHorizonAgents].
-func (self Instance) SetTimeHorizonAgents(value Float.X) {
+// SetTimeHorizonAgents sets the property returned by [GetTimeHorizonAgents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimeHorizonAgents(value Float.X) Instance {
 	class(self).SetTimeHorizonAgents(float64(value))
+	return self
 }
 
 /*
@@ -708,9 +743,10 @@ func (self Instance) TimeHorizonObstacles() Float.X {
 	return Float.X(Float.X(class(self).GetTimeHorizonObstacles()))
 }
 
-// SetTimeHorizonObstacles sets the property returned by [GetTimeHorizonObstacles].
-func (self Instance) SetTimeHorizonObstacles(value Float.X) {
+// SetTimeHorizonObstacles sets the property returned by [GetTimeHorizonObstacles]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTimeHorizonObstacles(value Float.X) Instance {
 	class(self).SetTimeHorizonObstacles(float64(value))
+	return self
 }
 
 /*
@@ -720,9 +756,10 @@ func (self Instance) MaxSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetMaxSpeed()))
 }
 
-// SetMaxSpeed sets the property returned by [GetMaxSpeed].
-func (self Instance) SetMaxSpeed(value Float.X) {
+// SetMaxSpeed sets the property returned by [GetMaxSpeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxSpeed(value Float.X) Instance {
 	class(self).SetMaxSpeed(float64(value))
+	return self
 }
 
 /*
@@ -734,9 +771,10 @@ func (self Instance) AvoidanceLayers() int {
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
-// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers].
-func (self Instance) SetAvoidanceLayers(value int) {
+// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidanceLayers(value int) Instance {
 	class(self).SetAvoidanceLayers(int64(value))
+	return self
 }
 
 /*
@@ -748,9 +786,10 @@ func (self Instance) AvoidanceMask() int {
 	return int(int(class(self).GetAvoidanceMask()))
 }
 
-// SetAvoidanceMask sets the property returned by [GetAvoidanceMask].
-func (self Instance) SetAvoidanceMask(value int) {
+// SetAvoidanceMask sets the property returned by [GetAvoidanceMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidanceMask(value int) Instance {
 	class(self).SetAvoidanceMask(int64(value))
+	return self
 }
 
 /*
@@ -763,9 +802,10 @@ func (self Instance) AvoidancePriority() Float.X {
 	return Float.X(Float.X(class(self).GetAvoidancePriority()))
 }
 
-// SetAvoidancePriority sets the property returned by [GetAvoidancePriority].
-func (self Instance) SetAvoidancePriority(value Float.X) {
+// SetAvoidancePriority sets the property returned by [GetAvoidancePriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidancePriority(value Float.X) Instance {
 	class(self).SetAvoidancePriority(float64(value))
+	return self
 }
 
 /*
@@ -775,9 +815,10 @@ func (self Instance) DebugEnabled() bool {
 	return bool(class(self).GetDebugEnabled())
 }
 
-// SetDebugEnabled sets the property returned by [GetDebugEnabled].
-func (self Instance) SetDebugEnabled(value bool) {
+// SetDebugEnabled sets the property returned by [GetDebugEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugEnabled(value bool) Instance {
 	class(self).SetDebugEnabled(value)
+	return self
 }
 
 /*
@@ -789,9 +830,10 @@ func (self Instance) DebugUseCustom() bool {
 	return bool(class(self).GetDebugUseCustom())
 }
 
-// SetDebugUseCustom sets the property returned by [GetDebugUseCustom].
-func (self Instance) SetDebugUseCustom(value bool) {
+// SetDebugUseCustom sets the property returned by [GetDebugUseCustom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugUseCustom(value bool) Instance {
 	class(self).SetDebugUseCustom(value)
+	return self
 }
 
 /*
@@ -803,9 +845,10 @@ func (self Instance) DebugPathCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugPathCustomColor())
 }
 
-// SetDebugPathCustomColor sets the property returned by [GetDebugPathCustomColor].
-func (self Instance) SetDebugPathCustomColor(value Color.RGBA) {
+// SetDebugPathCustomColor sets the property returned by [GetDebugPathCustomColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugPathCustomColor(value Color.RGBA) Instance {
 	class(self).SetDebugPathCustomColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -817,9 +860,10 @@ func (self Instance) DebugPathCustomPointSize() Float.X {
 	return Float.X(Float.X(class(self).GetDebugPathCustomPointSize()))
 }
 
-// SetDebugPathCustomPointSize sets the property returned by [GetDebugPathCustomPointSize].
-func (self Instance) SetDebugPathCustomPointSize(value Float.X) {
+// SetDebugPathCustomPointSize sets the property returned by [GetDebugPathCustomPointSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugPathCustomPointSize(value Float.X) Instance {
 	class(self).SetDebugPathCustomPointSize(float64(value))
+	return self
 }
 
 /*
@@ -831,9 +875,10 @@ func (self Instance) DebugPathCustomLineWidth() Float.X {
 	return Float.X(Float.X(class(self).GetDebugPathCustomLineWidth()))
 }
 
-// SetDebugPathCustomLineWidth sets the property returned by [GetDebugPathCustomLineWidth].
-func (self Instance) SetDebugPathCustomLineWidth(value Float.X) {
+// SetDebugPathCustomLineWidth sets the property returned by [GetDebugPathCustomLineWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugPathCustomLineWidth(value Float.X) Instance {
 	class(self).SetDebugPathCustomLineWidth(float64(value))
+	return self
 }
 
 /*
@@ -1452,12 +1497,13 @@ Emitted when the agent had to update the loaded path:
 
 [PathMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMaxDistance
 */
-func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PathChanged() Signal.Any {
@@ -1476,12 +1522,13 @@ It may not always be possible to reach the target but it should always be possib
 [TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetDesiredDistance
 [TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetPosition
 */
-func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TargetReached() Signal.Any {
@@ -1505,12 +1552,13 @@ The details dictionary may contain the following keys depending on the value of 
 [PathMetadataFlags]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMetadataFlags
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Signal.Flags) {
+func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) WaypointReached() Signal.Any {
@@ -1539,12 +1587,13 @@ The details dictionary may contain the following keys depending on the value of 
 [PathMetadataFlags]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMetadataFlags
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal.Flags) {
+func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) LinkReached() Signal.Any {
@@ -1558,12 +1607,13 @@ This signal will be emitted just after [OnTargetReached] when the target is reac
 
 [OnTargetReached]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnTargetReached
 */
-func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NavigationFinished() Signal.Any {
@@ -1575,12 +1625,13 @@ Notifies when the collision avoidance velocity is calculated. Emitted every upda
 
 [AvoidanceEnabled]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceEnabled
 */
-func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VelocityComputed() Signal.Any {

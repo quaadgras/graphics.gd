@@ -172,9 +172,10 @@ func (self Instance) Curve() Curve2D.Instance {
 	return Curve2D.Instance(class(self).GetCurve())
 }
 
-// SetCurve sets the property returned by [GetCurve].
-func (self Instance) SetCurve(value Curve2D.Instance) {
+// SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurve(value Curve2D.Instance) Instance {
 	class(self).SetCurve(value)
+	return self
 }
 
 //go:nosplit

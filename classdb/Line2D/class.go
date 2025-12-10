@@ -167,9 +167,12 @@ type Any interface {
 
 /*
 Overwrites the position of the point at the given 'index' with the supplied 'position'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointPosition(index int, position Vector2.XY) { //gd:Line2D.set_point_position
+func (self Instance) SetPointPosition(index int, position Vector2.XY) Instance { //gd:Line2D.set_point_position
 	Advanced(self).SetPointPosition(int64(index), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -271,9 +274,10 @@ func (self Instance) Points() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
-// SetPoints sets the property returned by [GetPoints].
-func (self Instance) SetPoints(value []Vector2.XY) {
+// SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPoints(value []Vector2.XY) Instance {
 	class(self).SetPoints(Packed.New(value...))
+	return self
 }
 
 /*
@@ -290,9 +294,10 @@ func (self Instance) Closed() bool {
 	return bool(class(self).IsClosed())
 }
 
-// SetClosed sets the property returned by [IsClosed].
-func (self Instance) SetClosed(value bool) {
+// SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClosed(value bool) Instance {
 	class(self).SetClosed(value)
+	return self
 }
 
 /*
@@ -302,9 +307,10 @@ func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
-// SetWidth sets the property returned by [GetWidth].
-func (self Instance) SetWidth(value Float.X) {
+// SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWidth(value Float.X) Instance {
 	class(self).SetWidth(float64(value))
+	return self
 }
 
 /*
@@ -316,9 +322,10 @@ func (self Instance) WidthCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
-// SetWidthCurve sets the property returned by [GetCurve].
-func (self Instance) SetWidthCurve(value Curve.Instance) {
+// SetWidthCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWidthCurve(value Curve.Instance) Instance {
 	class(self).SetCurve(value)
+	return self
 }
 
 /*
@@ -328,9 +335,10 @@ func (self Instance) DefaultColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDefaultColor())
 }
 
-// SetDefaultColor sets the property returned by [GetDefaultColor].
-func (self Instance) SetDefaultColor(value Color.RGBA) {
+// SetDefaultColor sets the property returned by [GetDefaultColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultColor(value Color.RGBA) Instance {
 	class(self).SetDefaultColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -342,9 +350,10 @@ func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
-// SetGradient sets the property returned by [GetGradient].
-func (self Instance) SetGradient(value Gradient.Instance) {
+// SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGradient(value Gradient.Instance) Instance {
 	class(self).SetGradient(value)
+	return self
 }
 
 /*
@@ -356,9 +365,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -370,9 +380,10 @@ func (self Instance) TextureMode() LineTextureMode {
 	return LineTextureMode(class(self).GetTextureMode())
 }
 
-// SetTextureMode sets the property returned by [GetTextureMode].
-func (self Instance) SetTextureMode(value LineTextureMode) {
+// SetTextureMode sets the property returned by [GetTextureMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMode(value LineTextureMode) Instance {
 	class(self).SetTextureMode(value)
+	return self
 }
 
 /*
@@ -382,9 +393,10 @@ func (self Instance) JointMode() LineJointMode {
 	return LineJointMode(class(self).GetJointMode())
 }
 
-// SetJointMode sets the property returned by [GetJointMode].
-func (self Instance) SetJointMode(value LineJointMode) {
+// SetJointMode sets the property returned by [GetJointMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointMode(value LineJointMode) Instance {
 	class(self).SetJointMode(value)
+	return self
 }
 
 /*
@@ -396,9 +408,10 @@ func (self Instance) BeginCapMode() LineCapMode {
 	return LineCapMode(class(self).GetBeginCapMode())
 }
 
-// SetBeginCapMode sets the property returned by [GetBeginCapMode].
-func (self Instance) SetBeginCapMode(value LineCapMode) {
+// SetBeginCapMode sets the property returned by [GetBeginCapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBeginCapMode(value LineCapMode) Instance {
 	class(self).SetBeginCapMode(value)
+	return self
 }
 
 /*
@@ -410,9 +423,10 @@ func (self Instance) EndCapMode() LineCapMode {
 	return LineCapMode(class(self).GetEndCapMode())
 }
 
-// SetEndCapMode sets the property returned by [GetEndCapMode].
-func (self Instance) SetEndCapMode(value LineCapMode) {
+// SetEndCapMode sets the property returned by [GetEndCapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEndCapMode(value LineCapMode) Instance {
 	class(self).SetEndCapMode(value)
+	return self
 }
 
 /*
@@ -424,9 +438,10 @@ func (self Instance) SharpLimit() Float.X {
 	return Float.X(Float.X(class(self).GetSharpLimit()))
 }
 
-// SetSharpLimit sets the property returned by [GetSharpLimit].
-func (self Instance) SetSharpLimit(value Float.X) {
+// SetSharpLimit sets the property returned by [GetSharpLimit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSharpLimit(value Float.X) Instance {
 	class(self).SetSharpLimit(float64(value))
+	return self
 }
 
 /*
@@ -436,9 +451,10 @@ func (self Instance) RoundPrecision() int {
 	return int(int(class(self).GetRoundPrecision()))
 }
 
-// SetRoundPrecision sets the property returned by [GetRoundPrecision].
-func (self Instance) SetRoundPrecision(value int) {
+// SetRoundPrecision sets the property returned by [GetRoundPrecision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRoundPrecision(value int) Instance {
 	class(self).SetRoundPrecision(int64(value))
+	return self
 }
 
 /*
@@ -452,9 +468,10 @@ func (self Instance) Antialiased() bool {
 	return bool(class(self).GetAntialiased())
 }
 
-// SetAntialiased sets the property returned by [GetAntialiased].
-func (self Instance) SetAntialiased(value bool) {
+// SetAntialiased sets the property returned by [GetAntialiased]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntialiased(value bool) Instance {
 	class(self).SetAntialiased(value)
+	return self
 }
 
 //go:nosplit

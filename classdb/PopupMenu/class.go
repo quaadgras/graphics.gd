@@ -693,23 +693,32 @@ func (self MoreArgs) AddSubmenuNodeItem(label string, submenu Instance, id int) 
 
 /*
 Sets the text of the item at the given 'index'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemText(index int, text string) { //gd:PopupMenu.set_item_text
+func (self Instance) SetItemText(index int, text string) Instance { //gd:PopupMenu.set_item_text
 	Advanced(self).SetItemText(int64(index), String.New(text))
+	return self
 }
 
 /*
 Sets item's text base writing direction.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTextDirection(index int, direction Control.TextDirection) { //gd:PopupMenu.set_item_text_direction
+func (self Instance) SetItemTextDirection(index int, direction Control.TextDirection) Instance { //gd:PopupMenu.set_item_text_direction
 	Advanced(self).SetItemTextDirection(int64(index), direction)
+	return self
 }
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemLanguage(index int, language string) { //gd:PopupMenu.set_item_language
+func (self Instance) SetItemLanguage(index int, language string) Instance { //gd:PopupMenu.set_item_language
 	Advanced(self).SetItemLanguage(int64(index), String.New(language))
+	return self
 }
 
 /*
@@ -717,42 +726,57 @@ Sets the auto translate mode of the item at the given 'index'.
 
 Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [PopupMenu] itself.
 
+Returns 'self' to enable method chaining.
+
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) SetItemAutoTranslateMode(index int, mode Node.AutoTranslateMode) { //gd:PopupMenu.set_item_auto_translate_mode
+func (self Instance) SetItemAutoTranslateMode(index int, mode Node.AutoTranslateMode) Instance { //gd:PopupMenu.set_item_auto_translate_mode
 	Advanced(self).SetItemAutoTranslateMode(int64(index), mode)
+	return self
 }
 
 /*
 Replaces the [Texture2D] icon of the item at the given 'index'.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetItemIcon(index int, icon Texture2D.Instance) { //gd:PopupMenu.set_item_icon
+func (self Instance) SetItemIcon(index int, icon Texture2D.Instance) Instance { //gd:PopupMenu.set_item_icon
 	Advanced(self).SetItemIcon(int64(index), icon)
+	return self
 }
 
 /*
 Sets the maximum allowed width of the icon for the item at the given 'index'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemIconMaxWidth(index int, width int) { //gd:PopupMenu.set_item_icon_max_width
+func (self Instance) SetItemIconMaxWidth(index int, width int) Instance { //gd:PopupMenu.set_item_icon_max_width
 	Advanced(self).SetItemIconMaxWidth(int64(index), int64(width))
+	return self
 }
 
 /*
 Sets a modulating [Color.RGBA] of the item's icon at the given 'index'.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetItemIconModulate(index int, modulate Color.RGBA) { //gd:PopupMenu.set_item_icon_modulate
+func (self Instance) SetItemIconModulate(index int, modulate Color.RGBA) Instance { //gd:PopupMenu.set_item_icon_modulate
 	Advanced(self).SetItemIconModulate(int64(index), Color.RGBA(modulate))
+	return self
 }
 
 /*
 Sets the checkstate status of the item at the given 'index'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemChecked(index int, checked bool) { //gd:PopupMenu.set_item_checked
+func (self Instance) SetItemChecked(index int, checked bool) Instance { //gd:PopupMenu.set_item_checked
 	Advanced(self).SetItemChecked(int64(index), checked)
+	return self
 }
 
 /*
@@ -760,134 +784,182 @@ Sets the 'id' of the item at the given 'index'.
 
 The 'id' is used in [OnIdPressed] and [OnIdFocused] signals.
 
+Returns 'self' to enable method chaining.
+
 [OnIdFocused]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdFocused
 [OnIdPressed]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.OnIdPressed
 */
-func (self Instance) SetItemId(index int, id int) { //gd:PopupMenu.set_item_id
+func (self Instance) SetItemId(index int, id int) Instance { //gd:PopupMenu.set_item_id
 	Advanced(self).SetItemId(int64(index), int64(id))
+	return self
 }
 
 /*
 Sets the accelerator of the item at the given 'index'. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. 'accel' is generally a combination of [KeyModifierMask]s and [Key]s using bitwise OR such as KEY_MASK_CTRL | KEY_A (Ctrl + A).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemAccelerator(index int, accel Input.Key) { //gd:PopupMenu.set_item_accelerator
+func (self Instance) SetItemAccelerator(index int, accel Input.Key) Instance { //gd:PopupMenu.set_item_accelerator
 	Advanced(self).SetItemAccelerator(int64(index), accel)
+	return self
 }
 
 /*
 Sets the metadata of an item, which may be of any type. You can later get it with [GetItemMetadata], which provides a simple way of assigning context data to items.
 
+Returns 'self' to enable method chaining.
+
 [GetItemMetadata]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemMetadata
 */
-func (self Instance) SetItemMetadata(index int, metadata any) { //gd:PopupMenu.set_item_metadata
+func (self Instance) SetItemMetadata(index int, metadata any) Instance { //gd:PopupMenu.set_item_metadata
 	Advanced(self).SetItemMetadata(int64(index), variant.New(metadata))
+	return self
 }
 
 /*
 Enables/disables the item at the given 'index'. When it is disabled, it can't be selected and its action can't be invoked.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemDisabled(index int, disabled bool) { //gd:PopupMenu.set_item_disabled
+func (self Instance) SetItemDisabled(index int, disabled bool) Instance { //gd:PopupMenu.set_item_disabled
 	Advanced(self).SetItemDisabled(int64(index), disabled)
+	return self
 }
 
 /*
 Sets the submenu of the item at the given 'index'. The submenu is the name of a child [PopupMenu] node that would be shown when the item is clicked.
 
+Returns 'self' to enable method chaining.
+
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) SetItemSubmenu(index int, submenu string) { //gd:PopupMenu.set_item_submenu
+func (self Instance) SetItemSubmenu(index int, submenu string) Instance { //gd:PopupMenu.set_item_submenu
 	Advanced(self).SetItemSubmenu(int64(index), String.New(submenu))
+	return self
 }
 
 /*
 Sets the submenu of the item at the given 'index'. The submenu is a [PopupMenu] node that would be shown when the item is clicked. It must either be a child of this [PopupMenu] or has no parent (in which case it will be automatically added as a child). If the 'submenu' popup has another parent, this method will fail.
 
+Returns 'self' to enable method chaining.
+
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) SetItemSubmenuNode(index int, submenu Instance) { //gd:PopupMenu.set_item_submenu_node
+func (self Instance) SetItemSubmenuNode(index int, submenu Instance) Instance { //gd:PopupMenu.set_item_submenu_node
 	Advanced(self).SetItemSubmenuNode(int64(index), submenu)
+	return self
 }
 
 /*
 Mark the item at the given 'index' as a separator, which means that it would be displayed as a line. If false, sets the type of the item to plain text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemAsSeparator(index int, enable bool) { //gd:PopupMenu.set_item_as_separator
+func (self Instance) SetItemAsSeparator(index int, enable bool) Instance { //gd:PopupMenu.set_item_as_separator
 	Advanced(self).SetItemAsSeparator(int64(index), enable)
+	return self
 }
 
 /*
 Sets whether the item at the given 'index' has a checkbox. If false, sets the type of the item to plain text.
 
 Note: Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemAsCheckable(index int, enable bool) { //gd:PopupMenu.set_item_as_checkable
+func (self Instance) SetItemAsCheckable(index int, enable bool) Instance { //gd:PopupMenu.set_item_as_checkable
 	Advanced(self).SetItemAsCheckable(int64(index), enable)
+	return self
 }
 
 /*
 Sets the type of the item at the given 'index' to radio button. If false, sets the type of the item to plain text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemAsRadioCheckable(index int, enable bool) { //gd:PopupMenu.set_item_as_radio_checkable
+func (self Instance) SetItemAsRadioCheckable(index int, enable bool) Instance { //gd:PopupMenu.set_item_as_radio_checkable
 	Advanced(self).SetItemAsRadioCheckable(int64(index), enable)
+	return self
 }
 
 /*
 Sets the string tooltip of the item at the given 'index'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTooltip(index int, tooltip string) { //gd:PopupMenu.set_item_tooltip
+func (self Instance) SetItemTooltip(index int, tooltip string) Instance { //gd:PopupMenu.set_item_tooltip
 	Advanced(self).SetItemTooltip(int64(index), String.New(tooltip))
+	return self
 }
 
 /*
 Sets a [Shortcut] for the item at the given 'index'.
 
+Returns 'self' to enable method chaining.
+
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
 */
-func (self Instance) SetItemShortcut(index int, shortcut Shortcut.Instance) { //gd:PopupMenu.set_item_shortcut
+func (self Instance) SetItemShortcut(index int, shortcut Shortcut.Instance) Instance { //gd:PopupMenu.set_item_shortcut
 	Advanced(self).SetItemShortcut(int64(index), shortcut, false)
+	return self
 }
 
 /*
 Sets a [Shortcut] for the item at the given 'index'.
 
+Returns 'self' to enable method chaining.
+
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
 */
-func (self MoreArgs) SetItemShortcut(index int, shortcut Shortcut.Instance, global bool) { //gd:PopupMenu.set_item_shortcut
+func (self MoreArgs) SetItemShortcut(index int, shortcut Shortcut.Instance, global bool) MoreArgs { //gd:PopupMenu.set_item_shortcut
 	Advanced(self).SetItemShortcut(int64(index), shortcut, global)
+	return self
 }
 
 /*
 Sets the horizontal offset of the item at the given 'index'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemIndent(index int, indent int) { //gd:PopupMenu.set_item_indent
+func (self Instance) SetItemIndent(index int, indent int) Instance { //gd:PopupMenu.set_item_indent
 	Advanced(self).SetItemIndent(int64(index), int64(indent))
+	return self
 }
 
 /*
 Sets the state of a multistate item. See [AddMultistateItem] for details.
 
+Returns 'self' to enable method chaining.
+
 [AddMultistateItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddMultistateItem
 */
-func (self Instance) SetItemMultistate(index int, state int) { //gd:PopupMenu.set_item_multistate
+func (self Instance) SetItemMultistate(index int, state int) Instance { //gd:PopupMenu.set_item_multistate
 	Advanced(self).SetItemMultistate(int64(index), int64(state))
+	return self
 }
 
 /*
 Sets the max states of a multistate item. See [AddMultistateItem] for details.
 
+Returns 'self' to enable method chaining.
+
 [AddMultistateItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddMultistateItem
 */
-func (self Instance) SetItemMultistateMax(index int, max_states int) { //gd:PopupMenu.set_item_multistate_max
+func (self Instance) SetItemMultistateMax(index int, max_states int) Instance { //gd:PopupMenu.set_item_multistate_max
 	Advanced(self).SetItemMultistateMax(int64(index), int64(max_states))
+	return self
 }
 
 /*
 Disables the [Shortcut] of the item at the given 'index'.
 
+Returns 'self' to enable method chaining.
+
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
 */
-func (self Instance) SetItemShortcutDisabled(index int, disabled bool) { //gd:PopupMenu.set_item_shortcut_disabled
+func (self Instance) SetItemShortcutDisabled(index int, disabled bool) Instance { //gd:PopupMenu.set_item_shortcut_disabled
 	Advanced(self).SetItemShortcutDisabled(int64(index), disabled)
+	return self
 }
 
 /*
@@ -1100,9 +1172,12 @@ func (self Instance) GetItemMultistate(index int) int { //gd:PopupMenu.get_item_
 Sets the currently focused item as the given 'index'.
 
 Passing -1 as the index makes so that no item is focused.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFocusedItem(index int) { //gd:PopupMenu.set_focused_item
+func (self Instance) SetFocusedItem(index int) Instance { //gd:PopupMenu.set_focused_item
 	Advanced(self).SetFocusedItem(int64(index))
+	return self
 }
 
 /*
@@ -1222,9 +1297,10 @@ func (self Instance) HideOnItemSelection() bool {
 	return bool(class(self).IsHideOnItemSelection())
 }
 
-// SetHideOnItemSelection sets the property returned by [IsHideOnItemSelection].
-func (self Instance) SetHideOnItemSelection(value bool) {
+// SetHideOnItemSelection sets the property returned by [IsHideOnItemSelection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideOnItemSelection(value bool) Instance {
 	class(self).SetHideOnItemSelection(value)
+	return self
 }
 
 /*
@@ -1236,9 +1312,10 @@ func (self Instance) HideOnCheckableItemSelection() bool {
 	return bool(class(self).IsHideOnCheckableItemSelection())
 }
 
-// SetHideOnCheckableItemSelection sets the property returned by [IsHideOnCheckableItemSelection].
-func (self Instance) SetHideOnCheckableItemSelection(value bool) {
+// SetHideOnCheckableItemSelection sets the property returned by [IsHideOnCheckableItemSelection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideOnCheckableItemSelection(value bool) Instance {
 	class(self).SetHideOnCheckableItemSelection(value)
+	return self
 }
 
 /*
@@ -1250,9 +1327,10 @@ func (self Instance) HideOnStateItemSelection() bool {
 	return bool(class(self).IsHideOnStateItemSelection())
 }
 
-// SetHideOnStateItemSelection sets the property returned by [IsHideOnStateItemSelection].
-func (self Instance) SetHideOnStateItemSelection(value bool) {
+// SetHideOnStateItemSelection sets the property returned by [IsHideOnStateItemSelection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHideOnStateItemSelection(value bool) Instance {
 	class(self).SetHideOnStateItemSelection(value)
+	return self
 }
 
 /*
@@ -1262,9 +1340,10 @@ func (self Instance) SubmenuPopupDelay() Float.X {
 	return Float.X(Float.X(class(self).GetSubmenuPopupDelay()))
 }
 
-// SetSubmenuPopupDelay sets the property returned by [GetSubmenuPopupDelay].
-func (self Instance) SetSubmenuPopupDelay(value Float.X) {
+// SetSubmenuPopupDelay sets the property returned by [GetSubmenuPopupDelay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubmenuPopupDelay(value Float.X) Instance {
 	class(self).SetSubmenuPopupDelay(float64(value))
+	return self
 }
 
 /*
@@ -1276,9 +1355,10 @@ func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
-// SetAllowSearch sets the property returned by [GetAllowSearch].
-func (self Instance) SetAllowSearch(value bool) {
+// SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowSearch(value bool) Instance {
 	class(self).SetAllowSearch(value)
+	return self
 }
 
 /*
@@ -1290,9 +1370,10 @@ func (self Instance) SystemMenuId() NativeMenu.SystemMenus {
 	return NativeMenu.SystemMenus(class(self).GetSystemMenu())
 }
 
-// SetSystemMenuId sets the property returned by [GetSystemMenu].
-func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) {
+// SetSystemMenuId sets the property returned by [GetSystemMenu]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) Instance {
 	class(self).SetSystemMenu(value)
+	return self
 }
 
 /*
@@ -1309,9 +1390,10 @@ func (self Instance) PreferNativeMenu() bool {
 	return bool(class(self).IsPreferNativeMenu())
 }
 
-// SetPreferNativeMenu sets the property returned by [IsPreferNativeMenu].
-func (self Instance) SetPreferNativeMenu(value bool) {
+// SetPreferNativeMenu sets the property returned by [IsPreferNativeMenu]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreferNativeMenu(value bool) Instance {
 	class(self).SetPreferNativeMenu(value)
+	return self
 }
 
 /*
@@ -1321,9 +1403,10 @@ func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
-// SetItemCount sets the property returned by [GetItemCount].
-func (self Instance) SetItemCount(value int) {
+// SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetItemCount(value int) Instance {
 	class(self).SetItemCount(int64(value))
+	return self
 }
 
 /*
@@ -2391,12 +2474,13 @@ Emitted when an item of some 'id' is pressed or its accelerator is activated.
 
 Note: If 'id' is negative (either explicitly or due to overflow), this will return the corresponding index instead.
 */
-func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) IdPressed() Signal.Any {
@@ -2408,12 +2492,13 @@ Emitted when the user navigated to an item of some 'id' using the [ProjectSettin
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) IdFocused() Signal.Any {
@@ -2423,12 +2508,13 @@ func (self class) IdFocused() Signal.Any {
 /*
 Emitted when an item of some 'index' is pressed or its accelerator is activated.
 */
-func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) {
+func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) IndexPressed() Signal.Any {
@@ -2438,12 +2524,13 @@ func (self class) IndexPressed() Signal.Any {
 /*
 Emitted when any item is added, modified or removed.
 */
-func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MenuChanged() Signal.Any {

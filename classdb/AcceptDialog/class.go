@@ -283,9 +283,10 @@ func (self Instance) OkButtonText() string {
 	return string(class(self).GetOkButtonText().String())
 }
 
-// SetOkButtonText sets the property returned by [GetOkButtonText].
-func (self Instance) SetOkButtonText(value string) {
+// SetOkButtonText sets the property returned by [GetOkButtonText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOkButtonText(value string) Instance {
 	class(self).SetOkButtonText(String.New(value))
+	return self
 }
 
 /*
@@ -295,9 +296,10 @@ func (self Instance) DialogText() string {
 	return string(class(self).GetText().String())
 }
 
-// SetDialogText sets the property returned by [GetText].
-func (self Instance) SetDialogText(value string) {
+// SetDialogText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDialogText(value string) Instance {
 	class(self).SetText(String.New(value))
+	return self
 }
 
 /*
@@ -312,9 +314,10 @@ func (self Instance) DialogHideOnOk() bool {
 	return bool(class(self).GetHideOnOk())
 }
 
-// SetDialogHideOnOk sets the property returned by [GetHideOnOk].
-func (self Instance) SetDialogHideOnOk(value bool) {
+// SetDialogHideOnOk sets the property returned by [GetHideOnOk]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDialogHideOnOk(value bool) Instance {
 	class(self).SetHideOnOk(value)
+	return self
 }
 
 /*
@@ -324,9 +327,10 @@ func (self Instance) DialogCloseOnEscape() bool {
 	return bool(class(self).GetCloseOnEscape())
 }
 
-// SetDialogCloseOnEscape sets the property returned by [GetCloseOnEscape].
-func (self Instance) SetDialogCloseOnEscape(value bool) {
+// SetDialogCloseOnEscape sets the property returned by [GetCloseOnEscape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDialogCloseOnEscape(value bool) Instance {
 	class(self).SetCloseOnEscape(value)
+	return self
 }
 
 /*
@@ -336,9 +340,10 @@ func (self Instance) DialogAutowrap() bool {
 	return bool(class(self).HasAutowrap())
 }
 
-// SetDialogAutowrap sets the property returned by [HasAutowrap].
-func (self Instance) SetDialogAutowrap(value bool) {
+// SetDialogAutowrap sets the property returned by [HasAutowrap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDialogAutowrap(value bool) Instance {
 	class(self).SetAutowrap(value)
+	return self
 }
 
 /*
@@ -494,12 +499,13 @@ func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_b
 /*
 Emitted when the dialog is accepted, i.e. the OK button is pressed.
 */
-func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Confirmed() Signal.Any {
@@ -511,12 +517,13 @@ Emitted when the dialog is closed or the button created with [AddCancelButton] i
 
 [AddCancelButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddCancelButton
 */
-func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Canceled() Signal.Any {
@@ -528,12 +535,13 @@ Emitted when a custom button with an action is pressed. See [AddButton].
 
 [AddButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.AddButton
 */
-func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flags) {
+func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CustomAction() Signal.Any {

@@ -1153,12 +1153,15 @@ Note: For a shader uniform to be assignable on a per-instance basis, it must be 
 
 Note: 'name' is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 
+Returns 'self' to enable method chaining.
+
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
-func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:CanvasItem.set_instance_shader_parameter
+func (self Instance) SetInstanceShaderParameter(name string, value any) Instance { //gd:CanvasItem.set_instance_shader_parameter
 	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	return self
 }
 
 /*
@@ -1173,11 +1176,14 @@ If true, the node will receive [NotificationLocalTransformChanged] whenever its 
 
 Note: Many canvas items such as [Bone2D] or [CollisionShape2D] automatically enable this in order to function correctly.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 [CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
 */
-func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
+func (self Instance) SetNotifyLocalTransform(enable bool) Instance { //gd:CanvasItem.set_notify_local_transform
 	Advanced(self).SetNotifyLocalTransform(enable)
+	return self
 }
 
 /*
@@ -1194,11 +1200,14 @@ If true, the node will receive [NotificationTransformChanged] whenever global tr
 
 Note: Many canvas items such as [Camera2D] or [Light2D] automatically enable this in order to function correctly.
 
+Returns 'self' to enable method chaining.
+
 [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 [Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
-func (self Instance) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
+func (self Instance) SetNotifyTransform(enable bool) Instance { //gd:CanvasItem.set_notify_transform
 	Advanced(self).SetNotifyTransform(enable)
+	return self
 }
 
 /*
@@ -1248,10 +1257,13 @@ func (self Instance) MakeInputLocal(event InputEvent.Instance) InputEvent.Instan
 /*
 Set/clear individual bits on the rendering visibility layer. This simplifies editing this [CanvasItem]'s visibility layer.
 
+Returns 'self' to enable method chaining.
+
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) SetVisibilityLayerBit(layer int, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
+func (self Instance) SetVisibilityLayerBit(layer int, enabled bool) Instance { //gd:CanvasItem.set_visibility_layer_bit
 	Advanced(self).SetVisibilityLayerBit(int64(layer), enabled)
+	return self
 }
 
 /*
@@ -1319,9 +1331,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 /*
@@ -1334,9 +1347,10 @@ func (self Instance) Modulate() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
-// SetModulate sets the property returned by [GetModulate].
-func (self Instance) SetModulate(value Color.RGBA) {
+// SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulate(value Color.RGBA) Instance {
 	class(self).SetModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -1354,9 +1368,10 @@ func (self Instance) SelfModulate() Color.RGBA {
 	return Color.RGBA(class(self).GetSelfModulate())
 }
 
-// SetSelfModulate sets the property returned by [GetSelfModulate].
-func (self Instance) SetSelfModulate(value Color.RGBA) {
+// SetSelfModulate sets the property returned by [GetSelfModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelfModulate(value Color.RGBA) Instance {
 	class(self).SetSelfModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -1366,9 +1381,10 @@ func (self Instance) ShowBehindParent() bool {
 	return bool(class(self).IsDrawBehindParentEnabled())
 }
 
-// SetShowBehindParent sets the property returned by [IsDrawBehindParentEnabled].
-func (self Instance) SetShowBehindParent(value bool) {
+// SetShowBehindParent sets the property returned by [IsDrawBehindParentEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowBehindParent(value bool) Instance {
 	class(self).SetDrawBehindParent(value)
+	return self
 }
 
 /*
@@ -1382,9 +1398,10 @@ func (self Instance) TopLevel() bool {
 	return bool(class(self).IsSetAsTopLevel())
 }
 
-// SetTopLevel sets the property returned by [IsSetAsTopLevel].
-func (self Instance) SetTopLevel(value bool) {
+// SetTopLevel sets the property returned by [IsSetAsTopLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTopLevel(value bool) Instance {
 	class(self).SetAsTopLevel(value)
+	return self
 }
 
 /*
@@ -1398,9 +1415,10 @@ func (self Instance) ClipChildren() ClipChildrenMode {
 	return ClipChildrenMode(class(self).GetClipChildrenMode())
 }
 
-// SetClipChildren sets the property returned by [GetClipChildrenMode].
-func (self Instance) SetClipChildren(value ClipChildrenMode) {
+// SetClipChildren sets the property returned by [GetClipChildrenMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipChildren(value ClipChildrenMode) Instance {
 	class(self).SetClipChildrenMode(value)
+	return self
 }
 
 /*
@@ -1413,9 +1431,10 @@ func (self Instance) LightMask() int {
 	return int(int(class(self).GetLightMask()))
 }
 
-// SetLightMask sets the property returned by [GetLightMask].
-func (self Instance) SetLightMask(value int) {
+// SetLightMask sets the property returned by [GetLightMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightMask(value int) Instance {
 	class(self).SetLightMask(int64(value))
+	return self
 }
 
 /*
@@ -1428,9 +1447,10 @@ func (self Instance) VisibilityLayer() int {
 	return int(int(class(self).GetVisibilityLayer()))
 }
 
-// SetVisibilityLayer sets the property returned by [GetVisibilityLayer].
-func (self Instance) SetVisibilityLayer(value int) {
+// SetVisibilityLayer sets the property returned by [GetVisibilityLayer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityLayer(value int) Instance {
 	class(self).SetVisibilityLayer(int64(value))
+	return self
 }
 
 /*
@@ -1445,9 +1465,10 @@ func (self Instance) ZIndex() int {
 	return int(int(class(self).GetZIndex()))
 }
 
-// SetZIndex sets the property returned by [GetZIndex].
-func (self Instance) SetZIndex(value int) {
+// SetZIndex sets the property returned by [GetZIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZIndex(value int) Instance {
 	class(self).SetZIndex(int64(value))
+	return self
 }
 
 /*
@@ -1461,9 +1482,10 @@ func (self Instance) ZAsRelative() bool {
 	return bool(class(self).IsZRelative())
 }
 
-// SetZAsRelative sets the property returned by [IsZRelative].
-func (self Instance) SetZAsRelative(value bool) {
+// SetZAsRelative sets the property returned by [IsZRelative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetZAsRelative(value bool) Instance {
 	class(self).SetZAsRelative(value)
+	return self
 }
 
 /*
@@ -1480,9 +1502,10 @@ func (self Instance) YSortEnabled() bool {
 	return bool(class(self).IsYSortEnabled())
 }
 
-// SetYSortEnabled sets the property returned by [IsYSortEnabled].
-func (self Instance) SetYSortEnabled(value bool) {
+// SetYSortEnabled sets the property returned by [IsYSortEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetYSortEnabled(value bool) Instance {
 	class(self).SetYSortEnabled(value)
+	return self
 }
 
 /*
@@ -1494,9 +1517,10 @@ func (self Instance) TextureFilter() TextureFilter {
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
-// SetTextureFilter sets the property returned by [GetTextureFilter].
-func (self Instance) SetTextureFilter(value TextureFilter) {
+// SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureFilter(value TextureFilter) Instance {
 	class(self).SetTextureFilter(value)
+	return self
 }
 
 /*
@@ -1514,9 +1538,10 @@ func (self Instance) TextureRepeat() TextureRepeat {
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
-// SetTextureRepeat sets the property returned by [GetTextureRepeat].
-func (self Instance) SetTextureRepeat(value TextureRepeat) {
+// SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRepeat(value TextureRepeat) Instance {
 	class(self).SetTextureRepeat(value)
+	return self
 }
 
 /*
@@ -1528,9 +1553,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 /*
@@ -1543,9 +1569,10 @@ func (self Instance) UseParentMaterial() bool {
 	return bool(class(self).GetUseParentMaterial())
 }
 
-// SetUseParentMaterial sets the property returned by [GetUseParentMaterial].
-func (self Instance) SetUseParentMaterial(value bool) {
+// SetUseParentMaterial sets the property returned by [GetUseParentMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseParentMaterial(value bool) Instance {
 	class(self).SetUseParentMaterial(value)
+	return self
 }
 
 /*
@@ -2724,12 +2751,13 @@ Note: Deferred connections do not allow drawing through the draw_* methods.
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Draw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Interface
 */
-func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Draw() Signal.Any {
@@ -2745,12 +2773,13 @@ This signal is emitted after the related [NotificationVisibilityChanged] notific
 [IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.IsVisibleInTree
 [Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
 */
-func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityChanged() Signal.Any {
@@ -2762,12 +2791,13 @@ Emitted when this node becomes hidden, i.e. it's no longer visible in the tree (
 
 [IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.IsVisibleInTree
 */
-func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Hidden() Signal.Any {
@@ -2780,12 +2810,13 @@ Emitted when the [CanvasItem]'s boundaries (position or size) change, or when an
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
-func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemRectChanged() Signal.Any {

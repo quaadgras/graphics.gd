@@ -164,9 +164,10 @@ func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
-// SetMode sets the property returned by [GetMode].
-func (self Instance) SetMode(value Mode) {
+// SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode(value Mode) Instance {
 	class(self).SetMode(value)
+	return self
 }
 
 //go:nosplit

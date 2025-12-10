@@ -160,10 +160,13 @@ func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.inva
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by an [XRInterface] implementation and should not be used directly.
 
+Returns 'self' to enable method chaining.
+
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
-func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
+func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) Instance { //gd:XRPositionalTracker.set_pose
 	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
+	return self
 }
 
 /*
@@ -178,10 +181,13 @@ func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_in
 /*
 Changes the value for the given input. This method is called by an [XRInterface] implementation and should not be used directly.
 
+Returns 'self' to enable method chaining.
+
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
-func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
+func (self Instance) SetInput(name string, value any) Instance { //gd:XRPositionalTracker.set_input
 	Advanced(self).SetInput(String.Name(String.New(name)), variant.New(value))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -234,9 +240,10 @@ func (self Instance) Profile() string {
 	return string(class(self).GetTrackerProfile().String())
 }
 
-// SetProfile sets the property returned by [GetTrackerProfile].
-func (self Instance) SetProfile(value string) {
+// SetProfile sets the property returned by [GetTrackerProfile]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProfile(value string) Instance {
 	class(self).SetTrackerProfile(String.New(value))
+	return self
 }
 
 /*
@@ -246,9 +253,10 @@ func (self Instance) Hand() TrackerHand {
 	return TrackerHand(class(self).GetTrackerHand())
 }
 
-// SetHand sets the property returned by [GetTrackerHand].
-func (self Instance) SetHand(value TrackerHand) {
+// SetHand sets the property returned by [GetTrackerHand]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHand(value TrackerHand) Instance {
 	class(self).SetTrackerHand(value)
+	return self
 }
 
 //go:nosplit
@@ -349,12 +357,13 @@ func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositio
 /*
 Emitted when the state of a pose tracked by this tracker changes.
 */
-func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance), flags ...Signal.Flags) {
+func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PoseChanged() Signal.Any {
@@ -364,12 +373,13 @@ func (self class) PoseChanged() Signal.Any {
 /*
 Emitted when a pose tracked by this tracker stops getting updated tracking data.
 */
-func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance), flags ...Signal.Flags) {
+func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_lost_tracking"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PoseLostTracking() Signal.Any {
@@ -379,12 +389,13 @@ func (self class) PoseLostTracking() Signal.Any {
 /*
 Emitted when a button on this tracker is pressed. Note that many XR runtimes allow other inputs to be mapped to buttons.
 */
-func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonPressed() Signal.Any {
@@ -394,12 +405,13 @@ func (self class) ButtonPressed() Signal.Any {
 /*
 Emitted when a button on this tracker is released.
 */
-func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) {
+func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ButtonReleased() Signal.Any {
@@ -409,12 +421,13 @@ func (self class) ButtonReleased() Signal.Any {
 /*
 Emitted when a trigger or similar input on this tracker changes value.
 */
-func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) {
+func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputFloatChanged() Signal.Any {
@@ -424,12 +437,13 @@ func (self class) InputFloatChanged() Signal.Any {
 /*
 Emitted when a thumbstick or thumbpad on this tracker moves.
 */
-func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputVector2Changed() Signal.Any {
@@ -439,12 +453,13 @@ func (self class) InputVector2Changed() Signal.Any {
 /*
 Emitted when the profile of our tracker changes.
 */
-func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) {
+func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ProfileChanged() Signal.Any {

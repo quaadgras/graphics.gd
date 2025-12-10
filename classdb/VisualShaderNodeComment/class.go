@@ -169,9 +169,10 @@ func (self Instance) Description() string {
 	return string(class(self).GetDescription().String())
 }
 
-// SetDescription sets the property returned by [GetDescription].
-func (self Instance) SetDescription(value string) {
+// SetDescription sets the property returned by [GetDescription]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDescription(value string) Instance {
 	class(self).SetDescription(String.New(value))
+	return self
 }
 
 //go:nosplit

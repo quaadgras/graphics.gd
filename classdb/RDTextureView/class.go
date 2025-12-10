@@ -175,9 +175,10 @@ func (self Instance) FormatOverride() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormatOverride())
 }
 
-// SetFormatOverride sets the property returned by [GetFormatOverride].
-func (self Instance) SetFormatOverride(value Rendering.DataFormat) {
+// SetFormatOverride sets the property returned by [GetFormatOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormatOverride(value Rendering.DataFormat) Instance {
 	class(self).SetFormatOverride(value)
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) SwizzleR() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleR())
 }
 
-// SetSwizzleR sets the property returned by [GetSwizzleR].
-func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) {
+// SetSwizzleR sets the property returned by [GetSwizzleR]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) Instance {
 	class(self).SetSwizzleR(value)
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) SwizzleG() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleG())
 }
 
-// SetSwizzleG sets the property returned by [GetSwizzleG].
-func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) {
+// SetSwizzleG sets the property returned by [GetSwizzleG]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) Instance {
 	class(self).SetSwizzleG(value)
+	return self
 }
 
 /*
@@ -211,9 +214,10 @@ func (self Instance) SwizzleB() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleB())
 }
 
-// SetSwizzleB sets the property returned by [GetSwizzleB].
-func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) {
+// SetSwizzleB sets the property returned by [GetSwizzleB]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) Instance {
 	class(self).SetSwizzleB(value)
+	return self
 }
 
 /*
@@ -223,9 +227,10 @@ func (self Instance) SwizzleA() Rendering.TextureSwizzle {
 	return Rendering.TextureSwizzle(class(self).GetSwizzleA())
 }
 
-// SetSwizzleA sets the property returned by [GetSwizzleA].
-func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) {
+// SetSwizzleA sets the property returned by [GetSwizzleA]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) Instance {
 	class(self).SetSwizzleA(value)
+	return self
 }
 
 //go:nosplit

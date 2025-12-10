@@ -183,9 +183,10 @@ func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
-// SetStrength sets the property returned by [GetStrength].
-func (self Instance) SetStrength(value Float.X) {
+// SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStrength(value Float.X) Instance {
 	class(self).SetStrength(float64(value))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) Attenuation() Float.X {
 	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
-// SetAttenuation sets the property returned by [GetAttenuation].
-func (self Instance) SetAttenuation(value Float.X) {
+// SetAttenuation sets the property returned by [GetAttenuation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAttenuation(value Float.X) Instance {
 	class(self).SetAttenuation(float64(value))
+	return self
 }
 
 /*
@@ -213,9 +215,10 @@ func (self Instance) Directionality() Float.X {
 	return Float.X(Float.X(class(self).GetDirectionality()))
 }
 
-// SetDirectionality sets the property returned by [GetDirectionality].
-func (self Instance) SetDirectionality(value Float.X) {
+// SetDirectionality sets the property returned by [GetDirectionality]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirectionality(value Float.X) Instance {
 	class(self).SetDirectionality(float64(value))
+	return self
 }
 
 /*
@@ -233,9 +236,10 @@ func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
-// SetCullMask sets the property returned by [GetCullMask].
-func (self Instance) SetCullMask(value int) {
+// SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMask(value int) Instance {
 	class(self).SetCullMask(int64(value))
+	return self
 }
 
 //go:nosplit

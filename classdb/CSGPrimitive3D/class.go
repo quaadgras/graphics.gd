@@ -171,9 +171,10 @@ func (self Instance) FlipFaces() bool {
 	return bool(class(self).GetFlipFaces())
 }
 
-// SetFlipFaces sets the property returned by [GetFlipFaces].
-func (self Instance) SetFlipFaces(value bool) {
+// SetFlipFaces sets the property returned by [GetFlipFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlipFaces(value bool) Instance {
 	class(self).SetFlipFaces(value)
+	return self
 }
 
 //go:nosplit

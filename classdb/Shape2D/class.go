@@ -246,9 +246,10 @@ func (self Instance) CustomSolverBias() Float.X {
 	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
-// SetCustomSolverBias sets the property returned by [GetCustomSolverBias].
-func (self Instance) SetCustomSolverBias(value Float.X) {
+// SetCustomSolverBias sets the property returned by [GetCustomSolverBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomSolverBias(value Float.X) Instance {
 	class(self).SetCustomSolverBias(float64(value))
+	return self
 }
 
 //go:nosplit

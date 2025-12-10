@@ -225,12 +225,13 @@ func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTo
 /*
 Emitted when a new scene is created that inherits the scene at 'file' path.
 */
-func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) {
+func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Inherit() Signal.Any {
@@ -240,12 +241,13 @@ func (self class) Inherit() Signal.Any {
 /*
 Emitted when the given scenes are being instantiated in the editor.
 */
-func (self Instance) OnInstantiate(cb func(files []string), flags ...Signal.Flags) {
+func (self Instance) OnInstantiate(cb func(files []string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Instantiate() Signal.Any {
@@ -255,12 +257,13 @@ func (self class) Instantiate() Signal.Any {
 /*
 Emitted when an external 'resource' had its file removed.
 */
-func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
+func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceRemoved() Signal.Any {
@@ -270,12 +273,13 @@ func (self class) ResourceRemoved() Signal.Any {
 /*
 Emitted when the given 'file' was removed.
 */
-func (self Instance) OnFileRemoved(cb func(file string), flags ...Signal.Flags) {
+func (self Instance) OnFileRemoved(cb func(file string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FileRemoved() Signal.Any {
@@ -285,12 +289,13 @@ func (self class) FileRemoved() Signal.Any {
 /*
 Emitted when the given 'folder' was removed.
 */
-func (self Instance) OnFolderRemoved(cb func(folder string), flags ...Signal.Flags) {
+func (self Instance) OnFolderRemoved(cb func(folder string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FolderRemoved() Signal.Any {
@@ -300,12 +305,13 @@ func (self class) FolderRemoved() Signal.Any {
 /*
 Emitted when a file is moved from 'old_file' path to 'new_file' path.
 */
-func (self Instance) OnFilesMoved(cb func(old_file string, new_file string), flags ...Signal.Flags) {
+func (self Instance) OnFilesMoved(cb func(old_file string, new_file string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FilesMoved() Signal.Any {
@@ -315,12 +321,13 @@ func (self class) FilesMoved() Signal.Any {
 /*
 Emitted when a folder is moved from 'old_folder' path to 'new_folder' path.
 */
-func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string), flags ...Signal.Flags) {
+func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FolderMoved() Signal.Any {
@@ -330,12 +337,13 @@ func (self class) FolderMoved() Signal.Any {
 /*
 Emitted when folders change color.
 */
-func (self Instance) OnFolderColorChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFolderColorChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FolderColorChanged() Signal.Any {
@@ -345,12 +353,13 @@ func (self class) FolderColorChanged() Signal.Any {
 /*
 Emitted when the user switches file display mode or split mode.
 */
-func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DisplayModeChanged() Signal.Any {

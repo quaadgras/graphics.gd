@@ -165,9 +165,10 @@ func (self Instance) Constant() Float.X {
 	return Float.X(Float.X(class(self).GetConstant()))
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value Float.X) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value Float.X) Instance {
 	class(self).SetConstant(float64(value))
+	return self
 }
 
 //go:nosplit

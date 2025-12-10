@@ -173,9 +173,10 @@ func (self Instance) Occluder() OccluderPolygon2D.Instance {
 	return OccluderPolygon2D.Instance(class(self).GetOccluderPolygon())
 }
 
-// SetOccluder sets the property returned by [GetOccluderPolygon].
-func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) {
+// SetOccluder sets the property returned by [GetOccluderPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) Instance {
 	class(self).SetOccluderPolygon(value)
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) SdfCollision() bool {
 	return bool(class(self).IsSetAsSdfCollision())
 }
 
-// SetSdfCollision sets the property returned by [IsSetAsSdfCollision].
-func (self Instance) SetSdfCollision(value bool) {
+// SetSdfCollision sets the property returned by [IsSetAsSdfCollision]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSdfCollision(value bool) Instance {
 	class(self).SetAsSdfCollision(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) OccluderLightMask() int {
 	return int(int(class(self).GetOccluderLightMask()))
 }
 
-// SetOccluderLightMask sets the property returned by [GetOccluderLightMask].
-func (self Instance) SetOccluderLightMask(value int) {
+// SetOccluderLightMask sets the property returned by [GetOccluderLightMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOccluderLightMask(value int) Instance {
 	class(self).SetOccluderLightMask(int64(value))
+	return self
 }
 
 //go:nosplit

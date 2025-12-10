@@ -170,9 +170,10 @@ func (self Instance) Constant() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetConstant())
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value Vector3.XYZ) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value Vector3.XYZ) Instance {
 	class(self).SetConstant(Vector3.XYZ(value))
+	return self
 }
 
 //go:nosplit

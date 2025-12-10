@@ -172,9 +172,10 @@ func (self Instance) CutoffHz() Float.X {
 	return Float.X(Float.X(class(self).GetCutoff()))
 }
 
-// SetCutoffHz sets the property returned by [GetCutoff].
-func (self Instance) SetCutoffHz(value Float.X) {
+// SetCutoffHz sets the property returned by [GetCutoff]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCutoffHz(value Float.X) Instance {
 	class(self).SetCutoff(float64(value))
+	return self
 }
 
 /*
@@ -184,9 +185,10 @@ func (self Instance) Resonance() Float.X {
 	return Float.X(Float.X(class(self).GetResonance()))
 }
 
-// SetResonance sets the property returned by [GetResonance].
-func (self Instance) SetResonance(value Float.X) {
+// SetResonance sets the property returned by [GetResonance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResonance(value Float.X) Instance {
 	class(self).SetResonance(float64(value))
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) Gain() Float.X {
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
-// SetGain sets the property returned by [GetGain].
-func (self Instance) SetGain(value Float.X) {
+// SetGain sets the property returned by [GetGain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGain(value Float.X) Instance {
 	class(self).SetGain(float64(value))
+	return self
 }
 
 /*
@@ -208,9 +211,10 @@ func (self Instance) Db() FilterDB {
 	return FilterDB(class(self).GetDb())
 }
 
-// SetDb sets the property returned by [GetDb].
-func (self Instance) SetDb(value FilterDB) {
+// SetDb sets the property returned by [GetDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDb(value FilterDB) Instance {
 	class(self).SetDb(value)
+	return self
 }
 
 //go:nosplit

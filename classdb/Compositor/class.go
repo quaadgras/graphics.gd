@@ -168,9 +168,10 @@ func (self Instance) CompositorEffects() []CompositorEffect.Instance {
 	return []CompositorEffect.Instance(gd.ArrayAs[[]CompositorEffect.Instance](gd.InternalArray(class(self).GetCompositorEffects())))
 }
 
-// SetCompositorEffects sets the property returned by [GetCompositorEffects].
-func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
+// SetCompositorEffects sets the property returned by [GetCompositorEffects]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) Instance {
 	class(self).SetCompositorEffects(gd.ArrayFromSlice[Array.Contains[[1]gdclass.CompositorEffect]](value))
+	return self
 }
 
 //go:nosplit

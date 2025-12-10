@@ -188,9 +188,10 @@ func (self Instance) Density() Float.X {
 	return Float.X(Float.X(class(self).GetDensity()))
 }
 
-// SetDensity sets the property returned by [GetDensity].
-func (self Instance) SetDensity(value Float.X) {
+// SetDensity sets the property returned by [GetDensity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDensity(value Float.X) Instance {
 	class(self).SetDensity(float64(value))
+	return self
 }
 
 /*
@@ -205,9 +206,10 @@ func (self Instance) Albedo() Color.RGBA {
 	return Color.RGBA(class(self).GetAlbedo())
 }
 
-// SetAlbedo sets the property returned by [GetAlbedo].
-func (self Instance) SetAlbedo(value Color.RGBA) {
+// SetAlbedo sets the property returned by [GetAlbedo]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlbedo(value Color.RGBA) Instance {
 	class(self).SetAlbedo(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -220,9 +222,10 @@ func (self Instance) Emission() Color.RGBA {
 	return Color.RGBA(class(self).GetEmission())
 }
 
-// SetEmission sets the property returned by [GetEmission].
-func (self Instance) SetEmission(value Color.RGBA) {
+// SetEmission sets the property returned by [GetEmission]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmission(value Color.RGBA) Instance {
 	class(self).SetEmission(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -234,9 +237,10 @@ func (self Instance) HeightFalloff() Float.X {
 	return Float.X(Float.X(class(self).GetHeightFalloff()))
 }
 
-// SetHeightFalloff sets the property returned by [GetHeightFalloff].
-func (self Instance) SetHeightFalloff(value Float.X) {
+// SetHeightFalloff sets the property returned by [GetHeightFalloff]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeightFalloff(value Float.X) Instance {
 	class(self).SetHeightFalloff(float64(value))
+	return self
 }
 
 /*
@@ -248,9 +252,10 @@ func (self Instance) EdgeFade() Float.X {
 	return Float.X(Float.X(class(self).GetEdgeFade()))
 }
 
-// SetEdgeFade sets the property returned by [GetEdgeFade].
-func (self Instance) SetEdgeFade(value Float.X) {
+// SetEdgeFade sets the property returned by [GetEdgeFade]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEdgeFade(value Float.X) Instance {
 	class(self).SetEdgeFade(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +269,10 @@ func (self Instance) DensityTexture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetDensityTexture())
 }
 
-// SetDensityTexture sets the property returned by [GetDensityTexture].
-func (self Instance) SetDensityTexture(value Texture3D.Instance) {
+// SetDensityTexture sets the property returned by [GetDensityTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDensityTexture(value Texture3D.Instance) Instance {
 	class(self).SetDensityTexture(value)
+	return self
 }
 
 //go:nosplit

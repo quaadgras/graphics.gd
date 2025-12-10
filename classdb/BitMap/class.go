@@ -158,16 +158,22 @@ func (self MoreArgs) CreateFromImageAlpha(image Image.Instance, threshold Float.
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
+func (self Instance) SetBitv(position Vector2i.XY, bit bool) Instance { //gd:BitMap.set_bitv
 	Advanced(self).SetBitv(Vector2i.XY(position), bit)
+	return self
 }
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBit(x int, y int, bit bool) { //gd:BitMap.set_bit
+func (self Instance) SetBit(x int, y int, bit bool) Instance { //gd:BitMap.set_bit
 	Advanced(self).SetBit(int64(x), int64(y), bit)
+	return self
 }
 
 /*
@@ -186,9 +192,12 @@ func (self Instance) GetBit(x int, y int) bool { //gd:BitMap.get_bit
 
 /*
 Sets a rectangular portion of the bitmap to the specified value.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
+func (self Instance) SetBitRect(rect Rect2i.PositionSize, bit bool) Instance { //gd:BitMap.set_bit_rect
 	Advanced(self).SetBitRect(Rect2i.PositionSize(rect), bit)
+	return self
 }
 
 /*

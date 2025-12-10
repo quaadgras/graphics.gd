@@ -366,9 +366,10 @@ func (self Instance) Data() any {
 	return any(class(self).GetData().Interface())
 }
 
-// SetData sets the property returned by [GetData].
-func (self Instance) SetData(value any) {
+// SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetData(value any) Instance {
 	class(self).SetData(variant.New(value))
+	return self
 }
 
 /*

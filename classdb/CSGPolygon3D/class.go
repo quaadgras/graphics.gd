@@ -211,9 +211,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 /*
@@ -226,9 +227,10 @@ func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
-// SetMode sets the property returned by [GetMode].
-func (self Instance) SetMode(value Mode) {
+// SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode(value Mode) Instance {
 	class(self).SetMode(value)
+	return self
 }
 
 /*
@@ -240,9 +242,10 @@ func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-// SetDepth sets the property returned by [GetDepth].
-func (self Instance) SetDepth(value Float.X) {
+// SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepth(value Float.X) Instance {
 	class(self).SetDepth(float64(value))
+	return self
 }
 
 /*
@@ -255,9 +258,10 @@ func (self Instance) SpinDegrees() Float.X {
 	return Float.X(Float.X(class(self).GetSpinDegrees()))
 }
 
-// SetSpinDegrees sets the property returned by [GetSpinDegrees].
-func (self Instance) SetSpinDegrees(value Float.X) {
+// SetSpinDegrees sets the property returned by [GetSpinDegrees]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpinDegrees(value Float.X) Instance {
 	class(self).SetSpinDegrees(float64(value))
+	return self
 }
 
 /*
@@ -269,9 +273,10 @@ func (self Instance) SpinSides() int {
 	return int(int(class(self).GetSpinSides()))
 }
 
-// SetSpinSides sets the property returned by [GetSpinSides].
-func (self Instance) SetSpinSides(value int) {
+// SetSpinSides sets the property returned by [GetSpinSides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpinSides(value int) Instance {
 	class(self).SetSpinSides(int64(value))
+	return self
 }
 
 /*
@@ -285,9 +290,10 @@ func (self Instance) PathNode() string {
 	return string(class(self).GetPathNode().String())
 }
 
-// SetPathNode sets the property returned by [GetPathNode].
-func (self Instance) SetPathNode(value string) {
+// SetPathNode sets the property returned by [GetPathNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathNode(value string) Instance {
 	class(self).SetPathNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -299,9 +305,10 @@ func (self Instance) PathIntervalType() PathIntervalType {
 	return PathIntervalType(class(self).GetPathIntervalType())
 }
 
-// SetPathIntervalType sets the property returned by [GetPathIntervalType].
-func (self Instance) SetPathIntervalType(value PathIntervalType) {
+// SetPathIntervalType sets the property returned by [GetPathIntervalType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathIntervalType(value PathIntervalType) Instance {
 	class(self).SetPathIntervalType(value)
+	return self
 }
 
 /*
@@ -313,9 +320,10 @@ func (self Instance) PathInterval() Float.X {
 	return Float.X(Float.X(class(self).GetPathInterval()))
 }
 
-// SetPathInterval sets the property returned by [GetPathInterval].
-func (self Instance) SetPathInterval(value Float.X) {
+// SetPathInterval sets the property returned by [GetPathInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathInterval(value Float.X) Instance {
 	class(self).SetPathInterval(float64(value))
+	return self
 }
 
 /*
@@ -327,9 +335,10 @@ func (self Instance) PathSimplifyAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetPathSimplifyAngle()))
 }
 
-// SetPathSimplifyAngle sets the property returned by [GetPathSimplifyAngle].
-func (self Instance) SetPathSimplifyAngle(value Angle.Radians) {
+// SetPathSimplifyAngle sets the property returned by [GetPathSimplifyAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathSimplifyAngle(value Angle.Radians) Instance {
 	class(self).SetPathSimplifyAngle(float64(value))
+	return self
 }
 
 /*
@@ -342,9 +351,10 @@ func (self Instance) PathRotation() PathRotation {
 	return PathRotation(class(self).GetPathRotation())
 }
 
-// SetPathRotation sets the property returned by [GetPathRotation].
-func (self Instance) SetPathRotation(value PathRotation) {
+// SetPathRotation sets the property returned by [GetPathRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathRotation(value PathRotation) Instance {
 	class(self).SetPathRotation(value)
+	return self
 }
 
 /*
@@ -356,9 +366,10 @@ func (self Instance) PathRotationAccurate() bool {
 	return bool(class(self).GetPathRotationAccurate())
 }
 
-// SetPathRotationAccurate sets the property returned by [GetPathRotationAccurate].
-func (self Instance) SetPathRotationAccurate(value bool) {
+// SetPathRotationAccurate sets the property returned by [GetPathRotationAccurate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathRotationAccurate(value bool) Instance {
 	class(self).SetPathRotationAccurate(value)
+	return self
 }
 
 /*
@@ -373,9 +384,10 @@ func (self Instance) PathLocal() bool {
 	return bool(class(self).IsPathLocal())
 }
 
-// SetPathLocal sets the property returned by [IsPathLocal].
-func (self Instance) SetPathLocal(value bool) {
+// SetPathLocal sets the property returned by [IsPathLocal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathLocal(value bool) Instance {
 	class(self).SetPathLocal(value)
+	return self
 }
 
 /*
@@ -388,9 +400,10 @@ func (self Instance) PathContinuousU() bool {
 	return bool(class(self).IsPathContinuousU())
 }
 
-// SetPathContinuousU sets the property returned by [IsPathContinuousU].
-func (self Instance) SetPathContinuousU(value bool) {
+// SetPathContinuousU sets the property returned by [IsPathContinuousU]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathContinuousU(value bool) Instance {
 	class(self).SetPathContinuousU(value)
+	return self
 }
 
 /*
@@ -402,9 +415,10 @@ func (self Instance) PathUDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathUDistance()))
 }
 
-// SetPathUDistance sets the property returned by [GetPathUDistance].
-func (self Instance) SetPathUDistance(value Float.X) {
+// SetPathUDistance sets the property returned by [GetPathUDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathUDistance(value Float.X) Instance {
 	class(self).SetPathUDistance(float64(value))
+	return self
 }
 
 /*
@@ -416,9 +430,10 @@ func (self Instance) PathJoined() bool {
 	return bool(class(self).IsPathJoined())
 }
 
-// SetPathJoined sets the property returned by [IsPathJoined].
-func (self Instance) SetPathJoined(value bool) {
+// SetPathJoined sets the property returned by [IsPathJoined]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathJoined(value bool) Instance {
 	class(self).SetPathJoined(value)
+	return self
 }
 
 /*
@@ -428,9 +443,10 @@ func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
-// SetSmoothFaces sets the property returned by [GetSmoothFaces].
-func (self Instance) SetSmoothFaces(value bool) {
+// SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSmoothFaces(value bool) Instance {
 	class(self).SetSmoothFaces(value)
+	return self
 }
 
 /*
@@ -442,9 +458,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 //go:nosplit

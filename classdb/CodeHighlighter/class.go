@@ -315,9 +315,10 @@ func (self Instance) NumberColor() Color.RGBA {
 	return Color.RGBA(class(self).GetNumberColor())
 }
 
-// SetNumberColor sets the property returned by [GetNumberColor].
-func (self Instance) SetNumberColor(value Color.RGBA) {
+// SetNumberColor sets the property returned by [GetNumberColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNumberColor(value Color.RGBA) Instance {
 	class(self).SetNumberColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -327,9 +328,10 @@ func (self Instance) SymbolColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSymbolColor())
 }
 
-// SetSymbolColor sets the property returned by [GetSymbolColor].
-func (self Instance) SetSymbolColor(value Color.RGBA) {
+// SetSymbolColor sets the property returned by [GetSymbolColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSymbolColor(value Color.RGBA) Instance {
 	class(self).SetSymbolColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -339,9 +341,10 @@ func (self Instance) FunctionColor() Color.RGBA {
 	return Color.RGBA(class(self).GetFunctionColor())
 }
 
-// SetFunctionColor sets the property returned by [GetFunctionColor].
-func (self Instance) SetFunctionColor(value Color.RGBA) {
+// SetFunctionColor sets the property returned by [GetFunctionColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFunctionColor(value Color.RGBA) Instance {
 	class(self).SetFunctionColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -351,9 +354,10 @@ func (self Instance) MemberVariableColor() Color.RGBA {
 	return Color.RGBA(class(self).GetMemberVariableColor())
 }
 
-// SetMemberVariableColor sets the property returned by [GetMemberVariableColor].
-func (self Instance) SetMemberVariableColor(value Color.RGBA) {
+// SetMemberVariableColor sets the property returned by [GetMemberVariableColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMemberVariableColor(value Color.RGBA) Instance {
 	class(self).SetMemberVariableColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -363,9 +367,10 @@ func (self Instance) KeywordColors() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetKeywordColors()))
 }
 
-// SetKeywordColors sets the property returned by [GetKeywordColors].
-func (self Instance) SetKeywordColors(value map[any]any) {
+// SetKeywordColors sets the property returned by [GetKeywordColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeywordColors(value map[any]any) Instance {
 	class(self).SetKeywordColors(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -375,9 +380,10 @@ func (self Instance) MemberKeywordColors() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemberKeywordColors()))
 }
 
-// SetMemberKeywordColors sets the property returned by [GetMemberKeywordColors].
-func (self Instance) SetMemberKeywordColors(value map[any]any) {
+// SetMemberKeywordColors sets the property returned by [GetMemberKeywordColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMemberKeywordColors(value map[any]any) Instance {
 	class(self).SetMemberKeywordColors(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -402,14 +408,15 @@ func (self Instance) ColorRegions() map[string]struct {
 	}](class(self).GetColorRegions()))
 }
 
-// SetColorRegions sets the property returned by [GetColorRegions].
+// SetColorRegions sets the property returned by [GetColorRegions]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetColorRegions(value map[string]struct {
 	R float32
 	G float32
 	B float32
 	A float32
-}) {
+}) Instance {
 	class(self).SetColorRegions(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*

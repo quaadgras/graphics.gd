@@ -174,9 +174,10 @@ func (self Instance) Index() int {
 	return int(int(class(self).GetIndex()))
 }
 
-// SetIndex sets the property returned by [GetIndex].
-func (self Instance) SetIndex(value int) {
+// SetIndex sets the property returned by [GetIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIndex(value int) Instance {
 	class(self).SetIndex(int64(value))
+	return self
 }
 
 /*
@@ -186,23 +187,28 @@ func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2.XY) Instance {
 	class(self).SetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
 If true, the touch event has been canceled.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetCanceled(value bool) {
+func (self Instance) SetCanceled(value bool) Instance {
 	class(self).SetCanceled(value)
+	return self
 }
 
 /*
 If true, the touch's state is pressed. If false, the touch's state is released.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) {
+func (self Instance) SetPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 /*
@@ -212,9 +218,10 @@ func (self Instance) DoubleTap() bool {
 	return bool(class(self).IsDoubleTap())
 }
 
-// SetDoubleTap sets the property returned by [IsDoubleTap].
-func (self Instance) SetDoubleTap(value bool) {
+// SetDoubleTap sets the property returned by [IsDoubleTap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDoubleTap(value bool) Instance {
 	class(self).SetDoubleTap(value)
+	return self
 }
 
 //go:nosplit

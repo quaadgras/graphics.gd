@@ -174,9 +174,10 @@ func (self Instance) SwingSpan() Float.X {
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
-// SetSwingSpan sets the property returned by [GetParam].
-func (self Instance) SetSwingSpan(value Float.X) {
+// SetSwingSpan sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwingSpan(value Float.X) Instance {
 	class(self).SetParam(0, float64(value))
+	return self
 }
 
 /*
@@ -188,9 +189,10 @@ func (self Instance) TwistSpan() Float.X {
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
-// SetTwistSpan sets the property returned by [GetParam].
-func (self Instance) SetTwistSpan(value Float.X) {
+// SetTwistSpan sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTwistSpan(value Float.X) Instance {
 	class(self).SetParam(1, float64(value))
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
-// SetBias sets the property returned by [GetParam].
-func (self Instance) SetBias(value Float.X) {
+// SetBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBias(value Float.X) Instance {
 	class(self).SetParam(2, float64(value))
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) Softness() Float.X {
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
-// SetSoftness sets the property returned by [GetParam].
-func (self Instance) SetSoftness(value Float.X) {
+// SetSoftness sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSoftness(value Float.X) Instance {
 	class(self).SetParam(3, float64(value))
+	return self
 }
 
 /*
@@ -226,9 +230,10 @@ func (self Instance) Relaxation() Float.X {
 	return Float.X(Float.X(class(self).GetParam(4)))
 }
 
-// SetRelaxation sets the property returned by [GetParam].
-func (self Instance) SetRelaxation(value Float.X) {
+// SetRelaxation sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRelaxation(value Float.X) Instance {
 	class(self).SetParam(4, float64(value))
+	return self
 }
 
 /*

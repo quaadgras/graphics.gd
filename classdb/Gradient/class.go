@@ -149,9 +149,12 @@ func (self Instance) RemovePoint(point int) { //gd:Gradient.remove_point
 
 /*
 Sets the offset for the gradient color at index 'point'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOffset(point int, offset Float.X) { //gd:Gradient.set_offset
+func (self Instance) SetOffset(point int, offset Float.X) Instance { //gd:Gradient.set_offset
 	Advanced(self).SetOffset(int64(point), float64(offset))
+	return self
 }
 
 /*
@@ -174,9 +177,12 @@ func (self Instance) Reverse() { //gd:Gradient.reverse
 
 /*
 Sets the color of the gradient color at index 'point'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetColor(point int, color Color.RGBA) { //gd:Gradient.set_color
+func (self Instance) SetColor(point int, color Color.RGBA) Instance { //gd:Gradient.set_color
 	Advanced(self).SetColor(int64(point), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -252,9 +258,10 @@ func (self Instance) InterpolationMode() InterpolationMode {
 	return InterpolationMode(class(self).GetInterpolationMode())
 }
 
-// SetInterpolationMode sets the property returned by [GetInterpolationMode].
-func (self Instance) SetInterpolationMode(value InterpolationMode) {
+// SetInterpolationMode sets the property returned by [GetInterpolationMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterpolationMode(value InterpolationMode) Instance {
 	class(self).SetInterpolationMode(value)
+	return self
 }
 
 /*
@@ -268,9 +275,10 @@ func (self Instance) InterpolationColorSpace() ColorSpace {
 	return ColorSpace(class(self).GetInterpolationColorSpace())
 }
 
-// SetInterpolationColorSpace sets the property returned by [GetInterpolationColorSpace].
-func (self Instance) SetInterpolationColorSpace(value ColorSpace) {
+// SetInterpolationColorSpace sets the property returned by [GetInterpolationColorSpace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInterpolationColorSpace(value ColorSpace) Instance {
 	class(self).SetInterpolationColorSpace(value)
+	return self
 }
 
 /*
@@ -284,9 +292,10 @@ func (self Instance) Offsets() []float32 {
 	return []float32(slices.Collect(class(self).GetOffsets().Values()))
 }
 
-// SetOffsets sets the property returned by [GetOffsets].
-func (self Instance) SetOffsets(value []float32) {
+// SetOffsets sets the property returned by [GetOffsets]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsets(value []float32) Instance {
 	class(self).SetOffsets(Packed.New(value...))
+	return self
 }
 
 /*
@@ -301,9 +310,10 @@ func (self Instance) Colors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
-// SetColors sets the property returned by [GetColors].
-func (self Instance) SetColors(value []Color.RGBA) {
+// SetColors sets the property returned by [GetColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColors(value []Color.RGBA) Instance {
 	class(self).SetColors(Packed.New(value...))
+	return self
 }
 
 /*

@@ -129,38 +129,44 @@ type Any interface {
 	AsGeneric6DOFJoint3D() Instance
 }
 
-func (self Instance) SetParamX(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_x
+func (self Instance) SetParamX(param Param, value Float.X) Instance { //gd:Generic6DOFJoint3D.set_param_x
 	Advanced(self).SetParamX(param, float64(value))
+	return self
 }
 func (self Instance) GetParamX(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_x
 	return Float.X(Float.X(Advanced(self).GetParamX(param)))
 }
-func (self Instance) SetParamY(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_y
+func (self Instance) SetParamY(param Param, value Float.X) Instance { //gd:Generic6DOFJoint3D.set_param_y
 	Advanced(self).SetParamY(param, float64(value))
+	return self
 }
 func (self Instance) GetParamY(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_y
 	return Float.X(Float.X(Advanced(self).GetParamY(param)))
 }
-func (self Instance) SetParamZ(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_z
+func (self Instance) SetParamZ(param Param, value Float.X) Instance { //gd:Generic6DOFJoint3D.set_param_z
 	Advanced(self).SetParamZ(param, float64(value))
+	return self
 }
 func (self Instance) GetParamZ(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_z
 	return Float.X(Float.X(Advanced(self).GetParamZ(param)))
 }
-func (self Instance) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
+func (self Instance) SetFlagX(flag Flag, value bool) Instance { //gd:Generic6DOFJoint3D.set_flag_x
 	Advanced(self).SetFlagX(flag, value)
+	return self
 }
 func (self Instance) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
 	return bool(Advanced(self).GetFlagX(flag))
 }
-func (self Instance) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
+func (self Instance) SetFlagY(flag Flag, value bool) Instance { //gd:Generic6DOFJoint3D.set_flag_y
 	Advanced(self).SetFlagY(flag, value)
+	return self
 }
 func (self Instance) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
 	return bool(Advanced(self).GetFlagY(flag))
 }
-func (self Instance) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
+func (self Instance) SetFlagZ(flag Flag, value bool) Instance { //gd:Generic6DOFJoint3D.set_flag_z
 	Advanced(self).SetFlagZ(flag, value)
+	return self
 }
 func (self Instance) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
 	return bool(Advanced(self).GetFlagZ(flag))

@@ -264,9 +264,10 @@ func (self Instance) WriteMode() WriteMode {
 	return WriteMode(class(self).GetWriteMode())
 }
 
-// SetWriteMode sets the property returned by [GetWriteMode].
-func (self Instance) SetWriteMode(value WriteMode) {
+// SetWriteMode sets the property returned by [GetWriteMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWriteMode(value WriteMode) Instance {
 	class(self).SetWriteMode(value)
+	return self
 }
 
 /*

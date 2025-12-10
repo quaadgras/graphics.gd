@@ -122,9 +122,12 @@ type Any interface {
 
 /*
 Sets the value of the specified parameter.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetParam(param Param, value Float.X) { //gd:HingeJoint3D.set_param
+func (self Instance) SetParam(param Param, value Float.X) Instance { //gd:HingeJoint3D.set_param
 	Advanced(self).SetParam(param, float64(value))
+	return self
 }
 
 /*
@@ -136,9 +139,12 @@ func (self Instance) GetParam(param Param) Float.X { //gd:HingeJoint3D.get_param
 
 /*
 If true, enables the specified flag.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
+func (self Instance) SetFlag(flag Flag, enabled bool) Instance { //gd:HingeJoint3D.set_flag
 	Advanced(self).SetFlag(flag, enabled)
+	return self
 }
 
 /*

@@ -167,9 +167,10 @@ func (self Instance) QuadSize() Vector2.XY {
 	return Vector2.XY(class(self).GetQuadSize())
 }
 
-// SetQuadSize sets the property returned by [GetQuadSize].
-func (self Instance) SetQuadSize(value Vector2.XY) {
+// SetQuadSize sets the property returned by [GetQuadSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetQuadSize(value Vector2.XY) Instance {
 	class(self).SetQuadSize(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

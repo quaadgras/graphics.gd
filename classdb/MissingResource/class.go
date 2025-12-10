@@ -169,9 +169,10 @@ func (self Instance) OriginalClass() string {
 	return string(class(self).GetOriginalClass().String())
 }
 
-// SetOriginalClass sets the property returned by [GetOriginalClass].
-func (self Instance) SetOriginalClass(value string) {
+// SetOriginalClass sets the property returned by [GetOriginalClass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginalClass(value string) Instance {
 	class(self).SetOriginalClass(String.New(value))
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) RecordingProperties() bool {
 	return bool(class(self).IsRecordingProperties())
 }
 
-// SetRecordingProperties sets the property returned by [IsRecordingProperties].
-func (self Instance) SetRecordingProperties(value bool) {
+// SetRecordingProperties sets the property returned by [IsRecordingProperties]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRecordingProperties(value bool) Instance {
 	class(self).SetRecordingProperties(value)
+	return self
 }
 
 //go:nosplit

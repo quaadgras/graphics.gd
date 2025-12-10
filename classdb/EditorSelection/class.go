@@ -278,12 +278,13 @@ func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node
 /*
 Emitted when the selection changes.
 */
-func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("selection_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SelectionChanged() Signal.Any {

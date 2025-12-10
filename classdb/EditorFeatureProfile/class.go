@@ -125,9 +125,12 @@ type Any interface {
 
 /*
 If 'disable' is true, disables the class specified by 'class_name'. When disabled, the class won't appear in the Create New Node dialog.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableClass(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class
+func (self Instance) SetDisableClass(class_name string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class
 	Advanced(self).SetDisableClass(String.Name(String.New(class_name)), disable)
+	return self
 }
 
 /*
@@ -139,9 +142,12 @@ func (self Instance) IsClassDisabled(class_name string) bool { //gd:EditorFeatur
 
 /*
 If 'disable' is true, disables editing for the class specified by 'class_name'. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableClassEditor(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
+func (self Instance) SetDisableClassEditor(class_name string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class_editor
 	Advanced(self).SetDisableClassEditor(String.Name(String.New(class_name)), disable)
+	return self
 }
 
 /*
@@ -153,9 +159,12 @@ func (self Instance) IsClassEditorDisabled(class_name string) bool { //gd:Editor
 
 /*
 If 'disable' is true, disables editing for 'property' in the class specified by 'class_name'. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by 'class_name'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableClassProperty(class_name string, property string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
+func (self Instance) SetDisableClassProperty(class_name string, property string, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_class_property
 	Advanced(self).SetDisableClassProperty(String.Name(String.New(class_name)), String.Name(String.New(property)), disable)
+	return self
 }
 
 /*
@@ -167,9 +176,12 @@ func (self Instance) IsClassPropertyDisabled(class_name string, property string)
 
 /*
 If 'disable' is true, disables the editor feature specified in 'feature'. When a feature is disabled, it will disappear from the editor entirely.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
+func (self Instance) SetDisableFeature(feature Feature, disable bool) Instance { //gd:EditorFeatureProfile.set_disable_feature
 	Advanced(self).SetDisableFeature(feature, disable)
+	return self
 }
 
 /*

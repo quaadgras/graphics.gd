@@ -385,12 +385,13 @@ func (class) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCal
 /*
 Emitted when a user responds to a permission request.
 */
-func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, granted bool), flags ...Signal.Flags) {
+func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, granted bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("on_request_permissions_result"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) OnRequestPermissionsResult() Signal.Any {

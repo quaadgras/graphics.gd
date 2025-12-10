@@ -289,10 +289,13 @@ Disables or enables the specified point for pathfinding. Useful for making an ob
 
 Note: Calling [Update] is not needed after the call of this function.
 
+Returns 'self' to enable method chaining.
+
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) SetPointSolid(id Point) { //gd:AStarGrid2D.set_point_solid
+func (self Instance) SetPointSolid(id Point) Instance { //gd:AStarGrid2D.set_point_solid
 	Advanced(self).SetPointSolid(Vector2i.XY(id), true)
+	return self
 }
 
 /*
@@ -300,10 +303,13 @@ Disables or enables the specified point for pathfinding. Useful for making an ob
 
 Note: Calling [Update] is not needed after the call of this function.
 
+Returns 'self' to enable method chaining.
+
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self MoreArgs) SetPointSolid(id Point, solid bool) { //gd:AStarGrid2D.set_point_solid
+func (self MoreArgs) SetPointSolid(id Point, solid bool) MoreArgs { //gd:AStarGrid2D.set_point_solid
 	Advanced(self).SetPointSolid(Vector2i.XY(id), solid)
+	return self
 }
 
 /*
@@ -318,11 +324,14 @@ Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is
 
 Note: Calling [Update] is not needed after the call of this function.
 
+Returns 'self' to enable method chaining.
+
 [ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStarGrid2D.set_point_weight_scale
+func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) Instance { //gd:AStarGrid2D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(Vector2i.XY(id), float64(weight_scale))
+	return self
 }
 
 /*
@@ -500,9 +509,10 @@ func (self Instance) Region() Rect2i.PositionSize {
 	return Rect2i.PositionSize(class(self).GetRegion())
 }
 
-// SetRegion sets the property returned by [GetRegion].
-func (self Instance) SetRegion(value Rect2i.PositionSize) {
+// SetRegion sets the property returned by [GetRegion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegion(value Rect2i.PositionSize) Instance {
 	class(self).SetRegion(Rect2i.PositionSize(value))
+	return self
 }
 
 /*
@@ -515,9 +525,10 @@ func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector2i.XY) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector2i.XY) Instance {
 	class(self).SetSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -530,9 +541,10 @@ func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
-// SetOffset sets the property returned by [GetOffset].
-func (self Instance) SetOffset(value Vector2.XY) {
+// SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffset(value Vector2.XY) Instance {
 	class(self).SetOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -545,9 +557,10 @@ func (self Instance) CellSize() Vector2.XY {
 	return Vector2.XY(class(self).GetCellSize())
 }
 
-// SetCellSize sets the property returned by [GetCellSize].
-func (self Instance) SetCellSize(value Vector2.XY) {
+// SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellSize(value Vector2.XY) Instance {
 	class(self).SetCellSize(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -559,9 +572,10 @@ func (self Instance) CellShape() CellShape {
 	return CellShape(class(self).GetCellShape())
 }
 
-// SetCellShape sets the property returned by [GetCellShape].
-func (self Instance) SetCellShape(value CellShape) {
+// SetCellShape sets the property returned by [GetCellShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellShape(value CellShape) Instance {
 	class(self).SetCellShape(value)
+	return self
 }
 
 /*
@@ -573,9 +587,10 @@ func (self Instance) JumpingEnabled() bool {
 	return bool(class(self).IsJumpingEnabled())
 }
 
-// SetJumpingEnabled sets the property returned by [IsJumpingEnabled].
-func (self Instance) SetJumpingEnabled(value bool) {
+// SetJumpingEnabled sets the property returned by [IsJumpingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJumpingEnabled(value bool) Instance {
 	class(self).SetJumpingEnabled(value)
+	return self
 }
 
 /*
@@ -587,9 +602,10 @@ func (self Instance) DefaultComputeHeuristic() Heuristic {
 	return Heuristic(class(self).GetDefaultComputeHeuristic())
 }
 
-// SetDefaultComputeHeuristic sets the property returned by [GetDefaultComputeHeuristic].
-func (self Instance) SetDefaultComputeHeuristic(value Heuristic) {
+// SetDefaultComputeHeuristic sets the property returned by [GetDefaultComputeHeuristic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultComputeHeuristic(value Heuristic) Instance {
 	class(self).SetDefaultComputeHeuristic(value)
+	return self
 }
 
 /*
@@ -601,9 +617,10 @@ func (self Instance) DefaultEstimateHeuristic() Heuristic {
 	return Heuristic(class(self).GetDefaultEstimateHeuristic())
 }
 
-// SetDefaultEstimateHeuristic sets the property returned by [GetDefaultEstimateHeuristic].
-func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) {
+// SetDefaultEstimateHeuristic sets the property returned by [GetDefaultEstimateHeuristic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) Instance {
 	class(self).SetDefaultEstimateHeuristic(value)
+	return self
 }
 
 /*
@@ -613,9 +630,10 @@ func (self Instance) DiagonalMode() DiagonalMode {
 	return DiagonalMode(class(self).GetDiagonalMode())
 }
 
-// SetDiagonalMode sets the property returned by [GetDiagonalMode].
-func (self Instance) SetDiagonalMode(value DiagonalMode) {
+// SetDiagonalMode sets the property returned by [GetDiagonalMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiagonalMode(value DiagonalMode) Instance {
 	class(self).SetDiagonalMode(value)
+	return self
 }
 
 /*

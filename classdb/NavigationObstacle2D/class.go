@@ -155,10 +155,13 @@ func (self Instance) GetRid() RID.NavigationObstacle2D { //gd:NavigationObstacle
 /*
 Sets the [Resource.ID] of the navigation map this NavigationObstacle node should use and also updates the obstacle on the NavigationServer.
 
+Returns 'self' to enable method chaining.
+
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationObstacle2D.set_navigation_map
+func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) Instance { //gd:NavigationObstacle2D.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
+	return self
 }
 
 /*
@@ -174,10 +177,13 @@ func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationObs
 /*
 Based on 'value', enables or disables the specified layer in the [AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.AvoidanceLayers
 */
-func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationObstacle2D.set_avoidance_layer_value
+func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) Instance { //gd:NavigationObstacle2D.set_avoidance_layer_value
 	Advanced(self).SetAvoidanceLayerValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -238,9 +244,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -250,9 +257,10 @@ func (self Instance) Vertices() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
-// SetVertices sets the property returned by [GetVertices].
-func (self Instance) SetVertices(value []Vector2.XY) {
+// SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertices(value []Vector2.XY) Instance {
 	class(self).SetVertices(Packed.New(value...))
+	return self
 }
 
 /*
@@ -264,9 +272,10 @@ func (self Instance) AffectNavigationMesh() bool {
 	return bool(class(self).GetAffectNavigationMesh())
 }
 
-// SetAffectNavigationMesh sets the property returned by [GetAffectNavigationMesh].
-func (self Instance) SetAffectNavigationMesh(value bool) {
+// SetAffectNavigationMesh sets the property returned by [GetAffectNavigationMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAffectNavigationMesh(value bool) Instance {
 	class(self).SetAffectNavigationMesh(value)
+	return self
 }
 
 /*
@@ -282,9 +291,10 @@ func (self Instance) CarveNavigationMesh() bool {
 	return bool(class(self).GetCarveNavigationMesh())
 }
 
-// SetCarveNavigationMesh sets the property returned by [GetCarveNavigationMesh].
-func (self Instance) SetCarveNavigationMesh(value bool) {
+// SetCarveNavigationMesh sets the property returned by [GetCarveNavigationMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCarveNavigationMesh(value bool) Instance {
 	class(self).SetCarveNavigationMesh(value)
+	return self
 }
 
 /*
@@ -294,9 +304,10 @@ func (self Instance) AvoidanceEnabled() bool {
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
-// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled].
-func (self Instance) SetAvoidanceEnabled(value bool) {
+// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidanceEnabled(value bool) Instance {
 	class(self).SetAvoidanceEnabled(value)
+	return self
 }
 
 /*
@@ -308,9 +319,10 @@ func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
-// SetVelocity sets the property returned by [GetVelocity].
-func (self Instance) SetVelocity(value Vector2.XY) {
+// SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVelocity(value Vector2.XY) Instance {
 	class(self).SetVelocity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -320,9 +332,10 @@ func (self Instance) AvoidanceLayers() int {
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
-// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers].
-func (self Instance) SetAvoidanceLayers(value int) {
+// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAvoidanceLayers(value int) Instance {
 	class(self).SetAvoidanceLayers(int64(value))
+	return self
 }
 
 /*

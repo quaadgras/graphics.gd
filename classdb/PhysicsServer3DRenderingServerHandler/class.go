@@ -196,28 +196,37 @@ func (Instance) _set_aabb(impl func(ptr gdclass.Receiver, aabb AABB.PositionSize
 /*
 Sets the position for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
 
+Returns 'self' to enable method chaining.
+
 [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
-func (self Instance) SetVertex(vertex_id int, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
+func (self Instance) SetVertex(vertex_id int, vertex Vector3.XYZ) Instance { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
 	Advanced(self).SetVertex(int64(vertex_id), Vector3.XYZ(vertex))
+	return self
 }
 
 /*
 Sets the normal for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
 
+Returns 'self' to enable method chaining.
+
 [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
-func (self Instance) SetNormal(vertex_id int, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
+func (self Instance) SetNormal(vertex_id int, normal Vector3.XYZ) Instance { //gd:PhysicsServer3DRenderingServerHandler.set_normal
 	Advanced(self).SetNormal(int64(vertex_id), Vector3.XYZ(normal))
+	return self
 }
 
 /*
 Sets the bounding box for the [SoftBody3D].
 
+Returns 'self' to enable method chaining.
+
 [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
-func (self Instance) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
+func (self Instance) SetAabb(aabb AABB.PositionSize) Instance { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
 	Advanced(self).SetAabb(AABB.PositionSize(aabb))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

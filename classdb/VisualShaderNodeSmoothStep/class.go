@@ -166,9 +166,10 @@ func (self Instance) OpType() OpType {
 	return OpType(class(self).GetOpType())
 }
 
-// SetOpType sets the property returned by [GetOpType].
-func (self Instance) SetOpType(value OpType) {
+// SetOpType sets the property returned by [GetOpType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOpType(value OpType) Instance {
 	class(self).SetOpType(value)
+	return self
 }
 
 //go:nosplit

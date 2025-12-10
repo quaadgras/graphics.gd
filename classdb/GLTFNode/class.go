@@ -185,11 +185,14 @@ Sets additional arbitrary data in this [GLTFNode] instance. This can be used to 
 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 
+Returns 'self' to enable method chaining.
+
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
 [GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFNode.set_additional_data
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFNode.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -242,9 +245,10 @@ func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
-// SetOriginalName sets the property returned by [GetOriginalName].
-func (self Instance) SetOriginalName(value string) {
+// SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginalName(value string) Instance {
 	class(self).SetOriginalName(String.New(value))
+	return self
 }
 
 /*
@@ -256,9 +260,10 @@ func (self Instance) Parent() int {
 	return int(int(class(self).GetParent()))
 }
 
-// SetParent sets the property returned by [GetParent].
-func (self Instance) SetParent(value int) {
+// SetParent sets the property returned by [GetParent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParent(value int) Instance {
 	class(self).SetParent(int64(value))
+	return self
 }
 
 /*
@@ -268,9 +273,10 @@ func (self Instance) Height() int {
 	return int(int(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value int) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value int) Instance {
 	class(self).SetHeight(int64(value))
+	return self
 }
 
 /*
@@ -280,9 +286,10 @@ func (self Instance) Xform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetXform())
 }
 
-// SetXform sets the property returned by [GetXform].
-func (self Instance) SetXform(value Transform3D.BasisOrigin) {
+// SetXform sets the property returned by [GetXform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXform(value Transform3D.BasisOrigin) Instance {
 	class(self).SetXform(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -295,9 +302,10 @@ func (self Instance) Mesh() int {
 	return int(int(class(self).GetMesh()))
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value int) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value int) Instance {
 	class(self).SetMesh(int64(value))
+	return self
 }
 
 /*
@@ -310,9 +318,10 @@ func (self Instance) Camera() int {
 	return int(int(class(self).GetCamera()))
 }
 
-// SetCamera sets the property returned by [GetCamera].
-func (self Instance) SetCamera(value int) {
+// SetCamera sets the property returned by [GetCamera]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCamera(value int) Instance {
 	class(self).SetCamera(int64(value))
+	return self
 }
 
 /*
@@ -325,9 +334,10 @@ func (self Instance) Skin() int {
 	return int(int(class(self).GetSkin()))
 }
 
-// SetSkin sets the property returned by [GetSkin].
-func (self Instance) SetSkin(value int) {
+// SetSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkin(value int) Instance {
 	class(self).SetSkin(int64(value))
+	return self
 }
 
 /*
@@ -340,9 +350,10 @@ func (self Instance) Skeleton() int {
 	return int(int(class(self).GetSkeleton()))
 }
 
-// SetSkeleton sets the property returned by [GetSkeleton].
-func (self Instance) SetSkeleton(value int) {
+// SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkeleton(value int) Instance {
 	class(self).SetSkeleton(int64(value))
+	return self
 }
 
 /*
@@ -352,9 +363,10 @@ func (self Instance) Position() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector3.XYZ) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector3.XYZ) Instance {
 	class(self).SetPosition(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -364,9 +376,10 @@ func (self Instance) Rotation() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetRotation())
 }
 
-// SetRotation sets the property returned by [GetRotation].
-func (self Instance) SetRotation(value Quaternion.IJKX) {
+// SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation(value Quaternion.IJKX) Instance {
 	class(self).SetRotation(value)
+	return self
 }
 
 /*
@@ -376,9 +389,10 @@ func (self Instance) Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetScale())
 }
 
-// SetScale sets the property returned by [GetScale].
-func (self Instance) SetScale(value Vector3.XYZ) {
+// SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale(value Vector3.XYZ) Instance {
 	class(self).SetScale(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -390,9 +404,10 @@ func (self Instance) Children() []int32 {
 	return []int32(slices.Collect(class(self).GetChildren().Values()))
 }
 
-// SetChildren sets the property returned by [GetChildren].
-func (self Instance) SetChildren(value []int32) {
+// SetChildren sets the property returned by [GetChildren]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetChildren(value []int32) Instance {
 	class(self).SetChildren(Packed.New(value...))
+	return self
 }
 
 /*
@@ -405,9 +420,10 @@ func (self Instance) Light() int {
 	return int(int(class(self).GetLight()))
 }
 
-// SetLight sets the property returned by [GetLight].
-func (self Instance) SetLight(value int) {
+// SetLight sets the property returned by [GetLight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLight(value int) Instance {
 	class(self).SetLight(int64(value))
+	return self
 }
 
 /*
@@ -419,9 +435,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).GetVisible())
 }
 
-// SetVisible sets the property returned by [GetVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [GetVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 //go:nosplit

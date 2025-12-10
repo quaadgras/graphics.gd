@@ -166,9 +166,10 @@ func (self Instance) WindowId() int {
 	return int(int(class(self).GetWindowId()))
 }
 
-// SetWindowId sets the property returned by [GetWindowId].
-func (self Instance) SetWindowId(value int) {
+// SetWindowId sets the property returned by [GetWindowId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWindowId(value int) Instance {
 	class(self).SetWindowId(int64(value))
+	return self
 }
 
 //go:nosplit

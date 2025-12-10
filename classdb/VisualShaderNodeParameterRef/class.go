@@ -166,9 +166,10 @@ func (self Instance) ParameterName() string {
 	return string(class(self).GetParameterName().String())
 }
 
-// SetParameterName sets the property returned by [GetParameterName].
-func (self Instance) SetParameterName(value string) {
+// SetParameterName sets the property returned by [GetParameterName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParameterName(value string) Instance {
 	class(self).SetParameterName(String.New(value))
+	return self
 }
 
 //go:nosplit

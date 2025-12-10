@@ -205,9 +205,10 @@ func (self Instance) BaseFont() Font.Instance {
 	return Font.Instance(class(self).GetBaseFont())
 }
 
-// SetBaseFont sets the property returned by [GetBaseFont].
-func (self Instance) SetBaseFont(value Font.Instance) {
+// SetBaseFont sets the property returned by [GetBaseFont]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaseFont(value Font.Instance) Instance {
 	class(self).SetBaseFont(value)
+	return self
 }
 
 /*
@@ -226,9 +227,10 @@ func (self Instance) VariationOpentype() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVariationOpentype()))
 }
 
-// SetVariationOpentype sets the property returned by [GetVariationOpentype].
-func (self Instance) SetVariationOpentype(value map[any]any) {
+// SetVariationOpentype sets the property returned by [GetVariationOpentype]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVariationOpentype(value map[any]any) Instance {
 	class(self).SetVariationOpentype(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -238,9 +240,10 @@ func (self Instance) VariationFaceIndex() int {
 	return int(int(class(self).GetVariationFaceIndex()))
 }
 
-// SetVariationFaceIndex sets the property returned by [GetVariationFaceIndex].
-func (self Instance) SetVariationFaceIndex(value int) {
+// SetVariationFaceIndex sets the property returned by [GetVariationFaceIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVariationFaceIndex(value int) Instance {
 	class(self).SetVariationFaceIndex(int64(value))
+	return self
 }
 
 /*
@@ -254,9 +257,10 @@ func (self Instance) VariationEmbolden() Float.X {
 	return Float.X(Float.X(class(self).GetVariationEmbolden()))
 }
 
-// SetVariationEmbolden sets the property returned by [GetVariationEmbolden].
-func (self Instance) SetVariationEmbolden(value Float.X) {
+// SetVariationEmbolden sets the property returned by [GetVariationEmbolden]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVariationEmbolden(value Float.X) Instance {
 	class(self).SetVariationEmbolden(float64(value))
+	return self
 }
 
 /*
@@ -268,46 +272,57 @@ func (self Instance) VariationTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetVariationTransform())
 }
 
-// SetVariationTransform sets the property returned by [GetVariationTransform].
-func (self Instance) SetVariationTransform(value Transform2D.OriginXY) {
+// SetVariationTransform sets the property returned by [GetVariationTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVariationTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetVariationTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
 A set of OpenType feature tags. More info: [OpenType feature tags].
 
 [OpenType feature tags]: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetOpentypeFeatures(value map[any]any) {
+func (self Instance) SetOpentypeFeatures(value map[any]any) Instance {
 	class(self).SetOpentypeFeatures(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
 Extra spacing between graphical glyphs.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingGlyph(value int) {
+func (self Instance) SetSpacingGlyph(value int) Instance {
 	class(self).SetSpacing(0, int64(value))
+	return self
 }
 
 /*
 Extra width of the space glyphs.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingSpace(value int) {
+func (self Instance) SetSpacingSpace(value int) Instance {
 	class(self).SetSpacing(1, int64(value))
+	return self
 }
 
 /*
 Extra spacing at the top of the line in pixels.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingTop(value int) {
+func (self Instance) SetSpacingTop(value int) Instance {
 	class(self).SetSpacing(2, int64(value))
+	return self
 }
 
 /*
 Extra spacing at the bottom of the line in pixels.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingBottom(value int) {
+func (self Instance) SetSpacingBottom(value int) Instance {
 	class(self).SetSpacing(3, int64(value))
+	return self
 }
 
 /*
@@ -317,9 +332,10 @@ func (self Instance) BaselineOffset() Float.X {
 	return Float.X(Float.X(class(self).GetBaselineOffset()))
 }
 
-// SetBaselineOffset sets the property returned by [GetBaselineOffset].
-func (self Instance) SetBaselineOffset(value Float.X) {
+// SetBaselineOffset sets the property returned by [GetBaselineOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaselineOffset(value Float.X) Instance {
 	class(self).SetBaselineOffset(float64(value))
+	return self
 }
 
 //go:nosplit

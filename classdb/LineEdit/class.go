@@ -591,9 +591,10 @@ func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
-// SetText sets the property returned by [GetText].
-func (self Instance) SetText(value string) {
+// SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetText(value string) Instance {
 	class(self).SetText(String.New(value))
+	return self
 }
 
 /*
@@ -606,9 +607,10 @@ func (self Instance) PlaceholderText() string {
 	return string(class(self).GetPlaceholder().String())
 }
 
-// SetPlaceholderText sets the property returned by [GetPlaceholder].
-func (self Instance) SetPlaceholderText(value string) {
+// SetPlaceholderText sets the property returned by [GetPlaceholder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPlaceholderText(value string) Instance {
 	class(self).SetPlaceholder(String.New(value))
+	return self
 }
 
 /*
@@ -618,9 +620,10 @@ func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-// SetAlignment sets the property returned by [GetHorizontalAlignment].
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
+// SetAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetHorizontalAlignment(value)
+	return self
 }
 
 /*
@@ -639,9 +642,10 @@ func (self Instance) MaxLength() int {
 	return int(int(class(self).GetMaxLength()))
 }
 
-// SetMaxLength sets the property returned by [GetMaxLength].
-func (self Instance) SetMaxLength(value int) {
+// SetMaxLength sets the property returned by [GetMaxLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxLength(value int) Instance {
 	class(self).SetMaxLength(int64(value))
+	return self
 }
 
 /*
@@ -651,9 +655,10 @@ func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
-// SetEditable sets the property returned by [IsEditable].
-func (self Instance) SetEditable(value bool) {
+// SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditable(value bool) Instance {
 	class(self).SetEditable(value)
+	return self
 }
 
 /*
@@ -665,9 +670,10 @@ func (self Instance) KeepEditingOnTextSubmit() bool {
 	return bool(class(self).IsEditingKeptOnTextSubmit())
 }
 
-// SetKeepEditingOnTextSubmit sets the property returned by [IsEditingKeptOnTextSubmit].
-func (self Instance) SetKeepEditingOnTextSubmit(value bool) {
+// SetKeepEditingOnTextSubmit sets the property returned by [IsEditingKeptOnTextSubmit]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepEditingOnTextSubmit(value bool) Instance {
 	class(self).SetKeepEditingOnTextSubmit(value)
+	return self
 }
 
 /*
@@ -680,9 +686,10 @@ func (self Instance) ExpandToTextLength() bool {
 	return bool(class(self).IsExpandToTextLengthEnabled())
 }
 
-// SetExpandToTextLength sets the property returned by [IsExpandToTextLengthEnabled].
-func (self Instance) SetExpandToTextLength(value bool) {
+// SetExpandToTextLength sets the property returned by [IsExpandToTextLengthEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandToTextLength(value bool) Instance {
 	class(self).SetExpandToTextLengthEnabled(value)
+	return self
 }
 
 /*
@@ -692,9 +699,10 @@ func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
-// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
-func (self Instance) SetContextMenuEnabled(value bool) {
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetContextMenuEnabled(value bool) Instance {
 	class(self).SetContextMenuEnabled(value)
+	return self
 }
 
 /*
@@ -704,9 +712,10 @@ func (self Instance) EmojiMenuEnabled() bool {
 	return bool(class(self).IsEmojiMenuEnabled())
 }
 
-// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled].
-func (self Instance) SetEmojiMenuEnabled(value bool) {
+// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmojiMenuEnabled(value bool) Instance {
 	class(self).SetEmojiMenuEnabled(value)
+	return self
 }
 
 /*
@@ -718,9 +727,10 @@ func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
 	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
 }
 
-// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled].
-func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
+// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) Instance {
 	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
+	return self
 }
 
 /*
@@ -730,9 +740,10 @@ func (self Instance) VirtualKeyboardEnabled() bool {
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
-// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled].
-func (self Instance) SetVirtualKeyboardEnabled(value bool) {
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance {
 	class(self).SetVirtualKeyboardEnabled(value)
+	return self
 }
 
 /*
@@ -742,9 +753,10 @@ func (self Instance) VirtualKeyboardShowOnFocus() bool {
 	return bool(class(self).GetVirtualKeyboardShowOnFocus())
 }
 
-// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus].
-func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance {
 	class(self).SetVirtualKeyboardShowOnFocus(value)
+	return self
 }
 
 /*
@@ -754,9 +766,10 @@ func (self Instance) VirtualKeyboardType() VirtualKeyboardType {
 	return VirtualKeyboardType(class(self).GetVirtualKeyboardType())
 }
 
-// SetVirtualKeyboardType sets the property returned by [GetVirtualKeyboardType].
-func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) {
+// SetVirtualKeyboardType sets the property returned by [GetVirtualKeyboardType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) Instance {
 	class(self).SetVirtualKeyboardType(value)
+	return self
 }
 
 /*
@@ -769,9 +782,10 @@ func (self Instance) ClearButtonEnabled() bool {
 	return bool(class(self).IsClearButtonEnabled())
 }
 
-// SetClearButtonEnabled sets the property returned by [IsClearButtonEnabled].
-func (self Instance) SetClearButtonEnabled(value bool) {
+// SetClearButtonEnabled sets the property returned by [IsClearButtonEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClearButtonEnabled(value bool) Instance {
 	class(self).SetClearButtonEnabled(value)
+	return self
 }
 
 /*
@@ -781,9 +795,10 @@ func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
-// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
-func (self Instance) SetShortcutKeysEnabled(value bool) {
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
 	class(self).SetShortcutKeysEnabled(value)
+	return self
 }
 
 /*
@@ -795,9 +810,10 @@ func (self Instance) MiddleMousePasteEnabled() bool {
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
-// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled].
-func (self Instance) SetMiddleMousePasteEnabled(value bool) {
+// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMiddleMousePasteEnabled(value bool) Instance {
 	class(self).SetMiddleMousePasteEnabled(value)
+	return self
 }
 
 /*
@@ -807,9 +823,10 @@ func (self Instance) SelectingEnabled() bool {
 	return bool(class(self).IsSelectingEnabled())
 }
 
-// SetSelectingEnabled sets the property returned by [IsSelectingEnabled].
-func (self Instance) SetSelectingEnabled(value bool) {
+// SetSelectingEnabled sets the property returned by [IsSelectingEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectingEnabled(value bool) Instance {
 	class(self).SetSelectingEnabled(value)
+	return self
 }
 
 /*
@@ -819,9 +836,10 @@ func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
-// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
-func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
 	class(self).SetDeselectOnFocusLossEnabled(value)
+	return self
 }
 
 /*
@@ -831,9 +849,10 @@ func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
-// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
-func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
 	class(self).SetDragAndDropSelectionEnabled(value)
+	return self
 }
 
 /*
@@ -847,9 +866,10 @@ func (self Instance) RightIcon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetRightIcon())
 }
 
-// SetRightIcon sets the property returned by [GetRightIcon].
-func (self Instance) SetRightIcon(value Texture2D.Instance) {
+// SetRightIcon sets the property returned by [GetRightIcon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRightIcon(value Texture2D.Instance) Instance {
 	class(self).SetRightIcon(value)
+	return self
 }
 
 /*
@@ -861,9 +881,10 @@ func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
-// SetFlat sets the property returned by [IsFlat].
-func (self Instance) SetFlat(value bool) {
+// SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlat(value bool) Instance {
 	class(self).SetFlat(value)
+	return self
 }
 
 /*
@@ -873,9 +894,10 @@ func (self Instance) DrawControlChars() bool {
 	return bool(class(self).GetDrawControlChars())
 }
 
-// SetDrawControlChars sets the property returned by [GetDrawControlChars].
-func (self Instance) SetDrawControlChars(value bool) {
+// SetDrawControlChars sets the property returned by [GetDrawControlChars]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawControlChars(value bool) Instance {
 	class(self).SetDrawControlChars(value)
+	return self
 }
 
 /*
@@ -887,9 +909,10 @@ func (self Instance) SelectAllOnFocus() bool {
 	return bool(class(self).IsSelectAllOnFocus())
 }
 
-// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus].
-func (self Instance) SetSelectAllOnFocus(value bool) {
+// SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectAllOnFocus(value bool) Instance {
 	class(self).SetSelectAllOnFocus(value)
+	return self
 }
 
 /*
@@ -899,9 +922,10 @@ func (self Instance) CaretBlink() bool {
 	return bool(class(self).IsCaretBlinkEnabled())
 }
 
-// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled].
-func (self Instance) SetCaretBlink(value bool) {
+// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretBlink(value bool) Instance {
 	class(self).SetCaretBlinkEnabled(value)
+	return self
 }
 
 /*
@@ -911,9 +935,10 @@ func (self Instance) CaretBlinkInterval() Float.X {
 	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
-// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval].
-func (self Instance) SetCaretBlinkInterval(value Float.X) {
+// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretBlinkInterval(value Float.X) Instance {
 	class(self).SetCaretBlinkInterval(float64(value))
+	return self
 }
 
 /*
@@ -925,9 +950,10 @@ func (self Instance) CaretColumn() int {
 	return int(int(class(self).GetCaretColumn()))
 }
 
-// SetCaretColumn sets the property returned by [GetCaretColumn].
-func (self Instance) SetCaretColumn(value int) {
+// SetCaretColumn sets the property returned by [GetCaretColumn]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretColumn(value int) Instance {
 	class(self).SetCaretColumn(int64(value))
+	return self
 }
 
 /*
@@ -939,9 +965,10 @@ func (self Instance) CaretForceDisplayed() bool {
 	return bool(class(self).IsCaretForceDisplayed())
 }
 
-// SetCaretForceDisplayed sets the property returned by [IsCaretForceDisplayed].
-func (self Instance) SetCaretForceDisplayed(value bool) {
+// SetCaretForceDisplayed sets the property returned by [IsCaretForceDisplayed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretForceDisplayed(value bool) Instance {
 	class(self).SetCaretForceDisplayed(value)
+	return self
 }
 
 /*
@@ -953,9 +980,10 @@ func (self Instance) CaretMidGrapheme() bool {
 	return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
-// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled].
-func (self Instance) SetCaretMidGrapheme(value bool) {
+// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCaretMidGrapheme(value bool) Instance {
 	class(self).SetCaretMidGraphemeEnabled(value)
+	return self
 }
 
 /*
@@ -967,9 +995,10 @@ func (self Instance) Secret() bool {
 	return bool(class(self).IsSecret())
 }
 
-// SetSecret sets the property returned by [IsSecret].
-func (self Instance) SetSecret(value bool) {
+// SetSecret sets the property returned by [IsSecret]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecret(value bool) Instance {
 	class(self).SetSecret(value)
+	return self
 }
 
 /*
@@ -979,9 +1008,10 @@ func (self Instance) SecretCharacter() string {
 	return string(class(self).GetSecretCharacter().String())
 }
 
-// SetSecretCharacter sets the property returned by [GetSecretCharacter].
-func (self Instance) SetSecretCharacter(value string) {
+// SetSecretCharacter sets the property returned by [GetSecretCharacter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSecretCharacter(value string) Instance {
 	class(self).SetSecretCharacter(String.New(value))
+	return self
 }
 
 /*
@@ -991,9 +1021,10 @@ func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-// SetTextDirection sets the property returned by [GetTextDirection].
-func (self Instance) SetTextDirection(value Control.TextDirection) {
+// SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTextDirection(value)
+	return self
 }
 
 /*
@@ -1003,9 +1034,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 /*
@@ -1015,9 +1047,10 @@ func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParse
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
 	class(self).SetStructuredTextBidiOverride(value)
+	return self
 }
 
 /*
@@ -1027,9 +1060,10 @@ func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
-// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -1737,12 +1771,13 @@ func (self class) IsSelectAllOnFocus() bool { //gd:LineEdit.is_select_all_on_foc
 /*
 Emitted when the text changes.
 */
-func (self Instance) OnTextChanged(cb func(new_text string), flags ...Signal.Flags) {
+func (self Instance) OnTextChanged(cb func(new_text string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextChanged() Signal.Any {
@@ -1754,12 +1789,13 @@ Emitted when appending text that overflows the [MaxLength]. The appended text is
 
 [MaxLength]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.MaxLength
 */
-func (self Instance) OnTextChangeRejected(cb func(rejected_substring string), flags ...Signal.Flags) {
+func (self Instance) OnTextChangeRejected(cb func(rejected_substring string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_change_rejected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextChangeRejected() Signal.Any {
@@ -1771,12 +1807,13 @@ Emitted when the user presses the ui_text_submit action (by default: Enter or Kp
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
-func (self Instance) OnTextSubmitted(cb func(new_text string), flags ...Signal.Flags) {
+func (self Instance) OnTextSubmitted(cb func(new_text string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("text_submitted"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) TextSubmitted() Signal.Any {
@@ -1788,12 +1825,13 @@ Emitted when the [LineEdit] switches in or out of edit mode.
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
-func (self Instance) OnEditingToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
+func (self Instance) OnEditingToggled(cb func(toggled_on bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("editing_toggled"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EditingToggled() Signal.Any {

@@ -168,9 +168,10 @@ func (self Instance) Texture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture3D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture3D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 //go:nosplit

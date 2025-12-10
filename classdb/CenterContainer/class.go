@@ -169,9 +169,10 @@ func (self Instance) UseTopLeft() bool {
 	return bool(class(self).IsUsingTopLeft())
 }
 
-// SetUseTopLeft sets the property returned by [IsUsingTopLeft].
-func (self Instance) SetUseTopLeft(value bool) {
+// SetUseTopLeft sets the property returned by [IsUsingTopLeft]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseTopLeft(value bool) Instance {
 	class(self).SetUseTopLeft(value)
+	return self
 }
 
 //go:nosplit

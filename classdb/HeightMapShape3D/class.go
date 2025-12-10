@@ -239,9 +239,10 @@ func (self Instance) MapWidth() int {
 	return int(int(class(self).GetMapWidth()))
 }
 
-// SetMapWidth sets the property returned by [GetMapWidth].
-func (self Instance) SetMapWidth(value int) {
+// SetMapWidth sets the property returned by [GetMapWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMapWidth(value int) Instance {
 	class(self).SetMapWidth(int64(value))
+	return self
 }
 
 /*
@@ -253,9 +254,10 @@ func (self Instance) MapDepth() int {
 	return int(int(class(self).GetMapDepth()))
 }
 
-// SetMapDepth sets the property returned by [GetMapDepth].
-func (self Instance) SetMapDepth(value int) {
+// SetMapDepth sets the property returned by [GetMapDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMapDepth(value int) Instance {
 	class(self).SetMapDepth(int64(value))
+	return self
 }
 
 /*
@@ -268,9 +270,10 @@ func (self Instance) MapData() []float32 {
 	return []float32(slices.Collect(class(self).GetMapData().Values()))
 }
 
-// SetMapData sets the property returned by [GetMapData].
-func (self Instance) SetMapData(value []float32) {
+// SetMapData sets the property returned by [GetMapData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMapData(value []float32) Instance {
 	class(self).SetMapData(Packed.New(value...))
+	return self
 }
 
 //go:nosplit

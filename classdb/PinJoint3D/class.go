@@ -120,9 +120,12 @@ type Any interface {
 
 /*
 Sets the value of the specified parameter.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetParam(param Param, value Float.X) { //gd:PinJoint3D.set_param
+func (self Instance) SetParam(param Param, value Float.X) Instance { //gd:PinJoint3D.set_param
 	Advanced(self).SetParam(param, float64(value))
+	return self
 }
 
 /*

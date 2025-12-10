@@ -161,10 +161,13 @@ func (self Instance) GetSkeleton() RID.Skeleton { //gd:Skeleton2D.get_skeleton
 /*
 Sets the [SkeletonModificationStack2D] attached to this skeleton.
 
+Returns 'self' to enable method chaining.
+
 [SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
 */
-func (self Instance) SetModificationStack(modification_stack SkeletonModificationStack2D.Instance) { //gd:Skeleton2D.set_modification_stack
+func (self Instance) SetModificationStack(modification_stack SkeletonModificationStack2D.Instance) Instance { //gd:Skeleton2D.set_modification_stack
 	Advanced(self).SetModificationStack(modification_stack)
+	return self
 }
 
 /*
@@ -192,10 +195,13 @@ Sets the local pose transform, 'override_pose', for the bone at 'bone_idx'.
 
 Note: The pose transform needs to be a local transform relative to the [Bone2D] node at 'bone_idx'!
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose Transform2D.OriginXY, strength Float.X, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
+func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose Transform2D.OriginXY, strength Float.X, persistent bool) Instance { //gd:Skeleton2D.set_bone_local_pose_override
 	Advanced(self).SetBoneLocalPoseOverride(int64(bone_idx), Transform2D.OriginXY(override_pose), float64(strength), persistent)
+	return self
 }
 
 /*
@@ -359,12 +365,13 @@ Emitted when the [Bone2D] setup attached to this skeletons changes. This is prim
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) OnBoneSetupChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnBoneSetupChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("bone_setup_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BoneSetupChanged() Signal.Any {

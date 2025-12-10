@@ -169,9 +169,10 @@ func (self Instance) Source() Source {
 	return Source(class(self).GetSource())
 }
 
-// SetSource sets the property returned by [GetSource].
-func (self Instance) SetSource(value Source) {
+// SetSource sets the property returned by [GetSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSource(value Source) Instance {
 	class(self).SetSource(value)
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) TextureType() TextureType {
 	return TextureType(class(self).GetTextureType())
 }
 
-// SetTextureType sets the property returned by [GetTextureType].
-func (self Instance) SetTextureType(value TextureType) {
+// SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureType(value TextureType) Instance {
 	class(self).SetTextureType(value)
+	return self
 }
 
 //go:nosplit

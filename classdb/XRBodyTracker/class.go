@@ -129,9 +129,12 @@ type Any interface {
 
 /*
 Sets flags about the validity of the tracking data for the given body joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJointFlags(joint Joint, flags JointFlags) { //gd:XRBodyTracker.set_joint_flags
+func (self Instance) SetJointFlags(joint Joint, flags JointFlags) Instance { //gd:XRBodyTracker.set_joint_flags
 	Advanced(self).SetJointFlags(joint, flags)
+	return self
 }
 
 /*
@@ -143,9 +146,12 @@ func (self Instance) GetJointFlags(joint Joint) JointFlags { //gd:XRBodyTracker.
 
 /*
 Sets the transform for the given body joint.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJointTransform(joint Joint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
+func (self Instance) SetJointTransform(joint Joint, transform Transform3D.BasisOrigin) Instance { //gd:XRBodyTracker.set_joint_transform
 	Advanced(self).SetJointTransform(joint, Transform3D.BasisOrigin(transform))
+	return self
 }
 
 /*
@@ -205,9 +211,10 @@ func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
-// SetHasTrackingData sets the property returned by [GetHasTrackingData].
-func (self Instance) SetHasTrackingData(value bool) {
+// SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHasTrackingData(value bool) Instance {
 	class(self).SetHasTrackingData(value)
+	return self
 }
 
 /*
@@ -217,9 +224,10 @@ func (self Instance) BodyFlags() BodyFlags {
 	return BodyFlags(class(self).GetBodyFlags())
 }
 
-// SetBodyFlags sets the property returned by [GetBodyFlags].
-func (self Instance) SetBodyFlags(value BodyFlags) {
+// SetBodyFlags sets the property returned by [GetBodyFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodyFlags(value BodyFlags) Instance {
 	class(self).SetBodyFlags(value)
+	return self
 }
 
 //go:nosplit

@@ -214,9 +214,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -230,9 +231,10 @@ func (self Instance) Shape() Shape3D.Instance {
 	return Shape3D.Instance(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Shape3D.Instance) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Shape3D.Instance) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -246,9 +248,10 @@ func (self Instance) SpringLength() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
-// SetSpringLength sets the property returned by [GetLength].
-func (self Instance) SetSpringLength(value Float.X) {
+// SetSpringLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpringLength(value Float.X) Instance {
 	class(self).SetLength(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +267,10 @@ func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-// SetMargin sets the property returned by [GetMargin].
-func (self Instance) SetMargin(value Float.X) {
+// SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargin(value Float.X) Instance {
 	class(self).SetMargin(float64(value))
+	return self
 }
 
 /*

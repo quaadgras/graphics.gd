@@ -257,9 +257,12 @@ type Any interface {
 
 /*
 Sets the given column's cell mode to 'mode'. This determines how the cell is displayed and edited.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellMode(column int, mode TreeCellMode) { //gd:TreeItem.set_cell_mode
+func (self Instance) SetCellMode(column int, mode TreeCellMode) Instance { //gd:TreeItem.set_cell_mode
 	Advanced(self).SetCellMode(int64(column), mode)
+	return self
 }
 
 /*
@@ -274,10 +277,13 @@ Sets the given column's auto translate mode to 'mode'.
 
 All columns use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [Tree] itself.
 
+Returns 'self' to enable method chaining.
+
 [Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
 */
-func (self Instance) SetAutoTranslateMode(column int, mode Node.AutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
+func (self Instance) SetAutoTranslateMode(column int, mode Node.AutoTranslateMode) Instance { //gd:TreeItem.set_auto_translate_mode
 	Advanced(self).SetAutoTranslateMode(int64(column), mode)
+	return self
 }
 
 /*
@@ -292,12 +298,15 @@ If 'multiline' is true, the given 'column' is multiline editable.
 
 Note: This option only affects the type of control ([LineEdit] or [TextEdit]) that appears when editing the column. You can set multiline values with [SetText] even if the column is not multiline editable.
 
+Returns 'self' to enable method chaining.
+
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 [SetText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.SetText
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) SetEditMultiline(column int, multiline bool) { //gd:TreeItem.set_edit_multiline
+func (self Instance) SetEditMultiline(column int, multiline bool) Instance { //gd:TreeItem.set_edit_multiline
 	Advanced(self).SetEditMultiline(int64(column), multiline)
+	return self
 }
 
 /*
@@ -309,18 +318,24 @@ func (self Instance) IsEditMultiline(column int) bool { //gd:TreeItem.is_edit_mu
 
 /*
 If 'checked' is true, the given 'column' is checked. Clears column's indeterminate status.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetChecked(column int, checked bool) { //gd:TreeItem.set_checked
+func (self Instance) SetChecked(column int, checked bool) Instance { //gd:TreeItem.set_checked
 	Advanced(self).SetChecked(int64(column), checked)
+	return self
 }
 
 /*
 If 'indeterminate' is true, the given 'column' is marked indeterminate.
 
 Note: If set true from false, then column is cleared of checked status.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIndeterminate(column int, indeterminate bool) { //gd:TreeItem.set_indeterminate
+func (self Instance) SetIndeterminate(column int, indeterminate bool) Instance { //gd:TreeItem.set_indeterminate
 	Advanced(self).SetIndeterminate(int64(column), indeterminate)
+	return self
 }
 
 /*
@@ -357,9 +372,12 @@ func (self MoreArgs) PropagateCheck(column int, emit_signal bool) { //gd:TreeIte
 
 /*
 Sets the given column's text value.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetText(column int, text string) { //gd:TreeItem.set_text
+func (self Instance) SetText(column int, text string) Instance { //gd:TreeItem.set_text
 	Advanced(self).SetText(int64(column), String.New(text))
+	return self
 }
 
 /*
@@ -371,9 +389,12 @@ func (self Instance) GetText(column int) string { //gd:TreeItem.get_text
 
 /*
 Sets the given column's description for assistive apps.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDescription(column int, description string) { //gd:TreeItem.set_description
+func (self Instance) SetDescription(column int, description string) Instance { //gd:TreeItem.set_description
 	Advanced(self).SetDescription(int64(column), String.New(description))
+	return self
 }
 
 /*
@@ -385,9 +406,12 @@ func (self Instance) GetDescription(column int) string { //gd:TreeItem.get_descr
 
 /*
 Sets item's text base writing direction.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextDirection(column int, direction Control.TextDirection) { //gd:TreeItem.set_text_direction
+func (self Instance) SetTextDirection(column int, direction Control.TextDirection) Instance { //gd:TreeItem.set_text_direction
 	Advanced(self).SetTextDirection(int64(column), direction)
+	return self
 }
 
 /*
@@ -399,9 +423,12 @@ func (self Instance) GetTextDirection(column int) Control.TextDirection { //gd:T
 
 /*
 Sets the autowrap mode in the given 'column'. If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the cell's bounding rectangle.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAutowrapMode(column int, autowrap_mode TextServer.AutowrapMode) { //gd:TreeItem.set_autowrap_mode
+func (self Instance) SetAutowrapMode(column int, autowrap_mode TextServer.AutowrapMode) Instance { //gd:TreeItem.set_autowrap_mode
 	Advanced(self).SetAutowrapMode(int64(column), autowrap_mode)
+	return self
 }
 
 /*
@@ -413,9 +440,12 @@ func (self Instance) GetAutowrapMode(column int) TextServer.AutowrapMode { //gd:
 
 /*
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given 'column'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior TextServer.OverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
+func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior TextServer.OverrunBehavior) Instance { //gd:TreeItem.set_text_overrun_behavior
 	Advanced(self).SetTextOverrunBehavior(int64(column), overrun_behavior)
+	return self
 }
 
 /*
@@ -427,9 +457,12 @@ func (self Instance) GetTextOverrunBehavior(column int) TextServer.OverrunBehavi
 
 /*
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStructuredTextBidiOverride(column int, parser TextServer.StructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
+func (self Instance) SetStructuredTextBidiOverride(column int, parser TextServer.StructuredTextParser) Instance { //gd:TreeItem.set_structured_text_bidi_override
 	Advanced(self).SetStructuredTextBidiOverride(int64(column), parser)
+	return self
 }
 
 /*
@@ -441,9 +474,12 @@ func (self Instance) GetStructuredTextBidiOverride(column int) TextServer.Struct
 
 /*
 Set additional options for BiDi override. Has effect for cells that display text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) { //gd:TreeItem.set_structured_text_bidi_override_options
+func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) Instance { //gd:TreeItem.set_structured_text_bidi_override_options
 	Advanced(self).SetStructuredTextBidiOverrideOptions(int64(column), gd.EngineArrayFromSlice(args))
+	return self
 }
 
 /*
@@ -455,9 +491,12 @@ func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any { //
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLanguage(column int, language string) { //gd:TreeItem.set_language
+func (self Instance) SetLanguage(column int, language string) Instance { //gd:TreeItem.set_language
 	Advanced(self).SetLanguage(int64(column), String.New(language))
+	return self
 }
 
 /*
@@ -469,9 +508,12 @@ func (self Instance) GetLanguage(column int) string { //gd:TreeItem.get_language
 
 /*
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSuffix(column int, text string) { //gd:TreeItem.set_suffix
+func (self Instance) SetSuffix(column int, text string) Instance { //gd:TreeItem.set_suffix
 	Advanced(self).SetSuffix(int64(column), String.New(text))
+	return self
 }
 
 /*
@@ -484,10 +526,13 @@ func (self Instance) GetSuffix(column int) string { //gd:TreeItem.get_suffix
 /*
 Sets the given cell's icon [Texture2D]. If the cell is in [CellModeIcon] mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. [CellModeRange] does not display an icon.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetIcon(column int, texture Texture2D.Instance) { //gd:TreeItem.set_icon
+func (self Instance) SetIcon(column int, texture Texture2D.Instance) Instance { //gd:TreeItem.set_icon
 	Advanced(self).SetIcon(int64(column), texture)
+	return self
 }
 
 /*
@@ -502,10 +547,13 @@ func (self Instance) GetIcon(column int) Texture2D.Instance { //gd:TreeItem.get_
 /*
 Sets the given cell's icon overlay [Texture2D]. The cell has to be in [CellModeIcon] mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetIconOverlay(column int, texture Texture2D.Instance) { //gd:TreeItem.set_icon_overlay
+func (self Instance) SetIconOverlay(column int, texture Texture2D.Instance) Instance { //gd:TreeItem.set_icon_overlay
 	Advanced(self).SetIconOverlay(int64(column), texture)
+	return self
 }
 
 /*
@@ -519,9 +567,12 @@ func (self Instance) GetIconOverlay(column int) Texture2D.Instance { //gd:TreeIt
 
 /*
 Sets the given column's icon's texture region.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIconRegion(column int, region Rect2.PositionSize) { //gd:TreeItem.set_icon_region
+func (self Instance) SetIconRegion(column int, region Rect2.PositionSize) Instance { //gd:TreeItem.set_icon_region
 	Advanced(self).SetIconRegion(int64(column), Rect2.PositionSize(region))
+	return self
 }
 
 /*
@@ -536,9 +587,12 @@ func (self Instance) GetIconRegion(column int) Rect2.PositionSize { //gd:TreeIte
 
 /*
 Sets the maximum allowed width of the icon in the given 'column'. This limit is applied on top of the default size of the icon and on top of theme's 'Tree.icon_max_width'. The height is adjusted according to the icon's ratio.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIconMaxWidth(column int, width int) { //gd:TreeItem.set_icon_max_width
+func (self Instance) SetIconMaxWidth(column int, width int) Instance { //gd:TreeItem.set_icon_max_width
 	Advanced(self).SetIconMaxWidth(int64(column), int64(width))
+	return self
 }
 
 /*
@@ -550,9 +604,12 @@ func (self Instance) GetIconMaxWidth(column int) int { //gd:TreeItem.get_icon_ma
 
 /*
 Modulates the given column's icon with 'modulate'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetIconModulate(column int, modulate Color.RGBA) { //gd:TreeItem.set_icon_modulate
+func (self Instance) SetIconModulate(column int, modulate Color.RGBA) Instance { //gd:TreeItem.set_icon_modulate
 	Advanced(self).SetIconModulate(int64(column), Color.RGBA(modulate))
+	return self
 }
 
 /*
@@ -566,9 +623,12 @@ func (self Instance) GetIconModulate(column int) Color.RGBA { //gd:TreeItem.get_
 
 /*
 Sets the value of a [CellModeRange] column.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetRange(column int, value Float.X) { //gd:TreeItem.set_range
+func (self Instance) SetRange(column int, value Float.X) Instance { //gd:TreeItem.set_range
 	Advanced(self).SetRange(int64(column), float64(value))
+	return self
 }
 
 /*
@@ -583,10 +643,13 @@ Sets the range of accepted values for a column. The column must be in the [CellM
 
 If 'expr' is true, the edit mode slider will use an exponential scale as with [Range.ExpEdit].
 
+Returns 'self' to enable method chaining.
+
 [Range.ExpEdit]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.ExpEdit
 */
-func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X) { //gd:TreeItem.set_range_config
+func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X) Instance { //gd:TreeItem.set_range_config
 	Advanced(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), false)
+	return self
 }
 
 /*
@@ -594,10 +657,13 @@ Sets the range of accepted values for a column. The column must be in the [CellM
 
 If 'expr' is true, the edit mode slider will use an exponential scale as with [Range.ExpEdit].
 
+Returns 'self' to enable method chaining.
+
 [Range.ExpEdit]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.ExpEdit
 */
-func (self MoreArgs) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X, expr bool) { //gd:TreeItem.set_range_config
+func (self MoreArgs) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X, expr bool) MoreArgs { //gd:TreeItem.set_range_config
 	Advanced(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), expr)
+	return self
 }
 
 /*
@@ -610,10 +676,13 @@ func (self Instance) GetRangeConfig(column int) RangeConfig { //gd:TreeItem.get_
 /*
 Sets the metadata value for the given column, which can be retrieved later using [GetMetadata]. This can be used, for example, to store a reference to the original data.
 
+Returns 'self' to enable method chaining.
+
 [GetMetadata]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetMetadata
 */
-func (self Instance) SetMetadata(column int, meta any) { //gd:TreeItem.set_metadata
+func (self Instance) SetMetadata(column int, meta any) Instance { //gd:TreeItem.set_metadata
 	Advanced(self).SetMetadata(int64(column), variant.New(meta))
+	return self
 }
 
 /*
@@ -630,11 +699,14 @@ Sets the given column's custom draw callback to the 'callback' method on 'object
 
 The method named 'callback' should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2.PositionSize].
 
+Returns 'self' to enable method chaining.
+
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) { //gd:TreeItem.set_custom_draw
+func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) Instance { //gd:TreeItem.set_custom_draw
 	Advanced(self).SetCustomDraw(int64(column), obj, String.Name(String.New(callback)))
+	return self
 }
 
 /*
@@ -642,11 +714,14 @@ Sets the given column's custom draw callback. Use an empty func (Callable()) to 
 
 The 'callback' should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2.PositionSize].
 
+Returns 'self' to enable method chaining.
+
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) SetCustomDrawCallback(column int, callback func(item Instance, rect Rect2.PositionSize)) { //gd:TreeItem.set_custom_draw_callback
+func (self Instance) SetCustomDrawCallback(column int, callback func(item Instance, rect Rect2.PositionSize)) Instance { //gd:TreeItem.set_custom_draw_callback
 	Advanced(self).SetCustomDrawCallback(int64(column), Callable.New(callback))
+	return self
 }
 
 /*
@@ -659,10 +734,13 @@ func (self Instance) GetCustomDrawCallback(column int) Callable.Function { //gd:
 /*
 Collapses or uncollapses this [TreeItem] and all the descendants of this item.
 
+Returns 'self' to enable method chaining.
+
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) SetCollapsedRecursive(enable bool) { //gd:TreeItem.set_collapsed_recursive
+func (self Instance) SetCollapsedRecursive(enable bool) Instance { //gd:TreeItem.set_collapsed_recursive
 	Advanced(self).SetCollapsedRecursive(enable)
+	return self
 }
 
 /*
@@ -707,9 +785,12 @@ func (self Instance) UncollapseTree() { //gd:TreeItem.uncollapse_tree
 
 /*
 If 'selectable' is true, the given 'column' is selectable.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSelectable(column int, selectable bool) { //gd:TreeItem.set_selectable
+func (self Instance) SetSelectable(column int, selectable bool) Instance { //gd:TreeItem.set_selectable
 	Advanced(self).SetSelectable(int64(column), selectable)
+	return self
 }
 
 /*
@@ -742,9 +823,12 @@ func (self Instance) Deselect(column int) { //gd:TreeItem.deselect
 
 /*
 If 'enabled' is true, the given 'column' is editable.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEditable(column int, enabled bool) { //gd:TreeItem.set_editable
+func (self Instance) SetEditable(column int, enabled bool) Instance { //gd:TreeItem.set_editable
 	Advanced(self).SetEditable(int64(column), enabled)
+	return self
 }
 
 /*
@@ -756,9 +840,12 @@ func (self Instance) IsEditable(column int) bool { //gd:TreeItem.is_editable
 
 /*
 Sets the given column's custom color.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_color
+func (self Instance) SetCustomColor(column int, color Color.RGBA) Instance { //gd:TreeItem.set_custom_color
 	Advanced(self).SetCustomColor(int64(column), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -777,9 +864,12 @@ func (self Instance) ClearCustomColor(column int) { //gd:TreeItem.clear_custom_c
 
 /*
 Sets custom font used to draw text in the given 'column'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomFont(column int, font Font.Instance) { //gd:TreeItem.set_custom_font
+func (self Instance) SetCustomFont(column int, font Font.Instance) Instance { //gd:TreeItem.set_custom_font
 	Advanced(self).SetCustomFont(int64(column), font)
+	return self
 }
 
 /*
@@ -791,9 +881,12 @@ func (self Instance) GetCustomFont(column int) Font.Instance { //gd:TreeItem.get
 
 /*
 Sets custom font size used to draw text in the given 'column'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomFontSize(column int, font_size int) { //gd:TreeItem.set_custom_font_size
+func (self Instance) SetCustomFontSize(column int, font_size int) Instance { //gd:TreeItem.set_custom_font_size
 	Advanced(self).SetCustomFontSize(int64(column), int64(font_size))
+	return self
 }
 
 /*
@@ -805,16 +898,22 @@ func (self Instance) GetCustomFontSize(column int) int { //gd:TreeItem.get_custo
 
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomBgColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_bg_color
+func (self Instance) SetCustomBgColor(column int, color Color.RGBA) Instance { //gd:TreeItem.set_custom_bg_color
 	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), false)
+	return self
 }
 
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetCustomBgColor(column int, color Color.RGBA, just_outline bool) { //gd:TreeItem.set_custom_bg_color
+func (self MoreArgs) SetCustomBgColor(column int, color Color.RGBA, just_outline bool) MoreArgs { //gd:TreeItem.set_custom_bg_color
 	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), just_outline)
+	return self
 }
 
 /*
@@ -834,10 +933,13 @@ func (self Instance) GetCustomBgColor(column int) Color.RGBA { //gd:TreeItem.get
 /*
 Makes a cell with [CellModeCustom] display as a non-flat button with a [StyleBox].
 
+Returns 'self' to enable method chaining.
+
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
-func (self Instance) SetCustomAsButton(column int, enable bool) { //gd:TreeItem.set_custom_as_button
+func (self Instance) SetCustomAsButton(column int, enable bool) Instance { //gd:TreeItem.set_custom_as_button
 	Advanced(self).SetCustomAsButton(int64(column), enable)
+	return self
 }
 
 /*
@@ -924,18 +1026,24 @@ func (self Instance) GetButton(column int, button_index int) Texture2D.Instance 
 
 /*
 Sets the tooltip text for the button at index 'button_index' in the given 'column'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) { //gd:TreeItem.set_button_tooltip_text
+func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) Instance { //gd:TreeItem.set_button_tooltip_text
 	Advanced(self).SetButtonTooltipText(int64(column), int64(button_index), String.New(tooltip))
+	return self
 }
 
 /*
 Sets the given column's button [Texture2D] at index 'button_index' to 'button'.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetButton(column int, button_index int, button Texture2D.Instance) { //gd:TreeItem.set_button
+func (self Instance) SetButton(column int, button_index int, button Texture2D.Instance) Instance { //gd:TreeItem.set_button
 	Advanced(self).SetButton(int64(column), int64(button_index), button)
+	return self
 }
 
 /*
@@ -947,23 +1055,32 @@ func (self Instance) EraseButton(column int, button_index int) { //gd:TreeItem.e
 
 /*
 Sets the given column's button description at index 'button_index' for assistive apps.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetButtonDescription(column int, button_index int, description string) { //gd:TreeItem.set_button_description
+func (self Instance) SetButtonDescription(column int, button_index int, description string) Instance { //gd:TreeItem.set_button_description
 	Advanced(self).SetButtonDescription(int64(column), int64(button_index), String.New(description))
+	return self
 }
 
 /*
 If true, disables the button at index 'button_index' in the given 'column'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetButtonDisabled(column int, button_index int, disabled bool) { //gd:TreeItem.set_button_disabled
+func (self Instance) SetButtonDisabled(column int, button_index int, disabled bool) Instance { //gd:TreeItem.set_button_disabled
 	Advanced(self).SetButtonDisabled(int64(column), int64(button_index), disabled)
+	return self
 }
 
 /*
 Sets the given column's button color at index 'button_index' to 'color'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetButtonColor(column int, button_index int, color Color.RGBA) { //gd:TreeItem.set_button_color
+func (self Instance) SetButtonColor(column int, button_index int, color Color.RGBA) Instance { //gd:TreeItem.set_button_color
 	Advanced(self).SetButtonColor(int64(column), int64(button_index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -975,9 +1092,12 @@ func (self Instance) IsButtonDisabled(column int, button_index int) bool { //gd:
 
 /*
 Sets the given column's tooltip text.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTooltipText(column int, tooltip string) { //gd:TreeItem.set_tooltip_text
+func (self Instance) SetTooltipText(column int, tooltip string) Instance { //gd:TreeItem.set_tooltip_text
 	Advanced(self).SetTooltipText(int64(column), String.New(tooltip))
+	return self
 }
 
 /*
@@ -989,9 +1109,12 @@ func (self Instance) GetTooltipText(column int) string { //gd:TreeItem.get_toolt
 
 /*
 Sets the given column's text alignment to 'text_alignment'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextAlignment(column int, text_alignment GUI.HorizontalAlignment) { //gd:TreeItem.set_text_alignment
+func (self Instance) SetTextAlignment(column int, text_alignment GUI.HorizontalAlignment) Instance { //gd:TreeItem.set_text_alignment
 	Advanced(self).SetTextAlignment(int64(column), text_alignment)
+	return self
 }
 
 /*
@@ -1003,9 +1126,12 @@ func (self Instance) GetTextAlignment(column int) GUI.HorizontalAlignment { //gd
 
 /*
 If 'enable' is true, the given 'column' is expanded to the right.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExpandRight(column int, enable bool) { //gd:TreeItem.set_expand_right
+func (self Instance) SetExpandRight(column int, enable bool) Instance { //gd:TreeItem.set_expand_right
 	Advanced(self).SetExpandRight(int64(column), enable)
+	return self
 }
 
 /*
@@ -1036,12 +1162,15 @@ func (self MoreArgs) CreateChild(index int) Instance { //gd:TreeItem.create_chil
 /*
 Adds a previously unparented [TreeItem] as a direct child of this one. The 'child' item must not be a part of any [Tree] or parented to any [TreeItem]. See also [RemoveChild].
 
+Returns 'self' to enable method chaining.
+
 [RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.RemoveChild
 [Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) AddChild(child Instance) { //gd:TreeItem.add_child
+func (self Instance) AddChild(child Instance) Instance { //gd:TreeItem.add_child
 	Advanced(self).AddChild(child)
+	return self
 }
 
 /*
@@ -1270,9 +1399,10 @@ func (self Instance) Collapsed() bool {
 	return bool(class(self).IsCollapsed())
 }
 
-// SetCollapsed sets the property returned by [IsCollapsed].
-func (self Instance) SetCollapsed(value bool) {
+// SetCollapsed sets the property returned by [IsCollapsed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollapsed(value bool) Instance {
 	class(self).SetCollapsed(value)
+	return self
 }
 
 /*
@@ -1286,9 +1416,10 @@ func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
-// SetVisible sets the property returned by [IsVisible].
-func (self Instance) SetVisible(value bool) {
+// SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisible(value bool) Instance {
 	class(self).SetVisible(value)
+	return self
 }
 
 /*
@@ -1298,9 +1429,10 @@ func (self Instance) DisableFolding() bool {
 	return bool(class(self).IsFoldingDisabled())
 }
 
-// SetDisableFolding sets the property returned by [IsFoldingDisabled].
-func (self Instance) SetDisableFolding(value bool) {
+// SetDisableFolding sets the property returned by [IsFoldingDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableFolding(value bool) Instance {
 	class(self).SetDisableFolding(value)
+	return self
 }
 
 /*
@@ -1310,9 +1442,10 @@ func (self Instance) CustomMinimumHeight() int {
 	return int(int(class(self).GetCustomMinimumHeight()))
 }
 
-// SetCustomMinimumHeight sets the property returned by [GetCustomMinimumHeight].
-func (self Instance) SetCustomMinimumHeight(value int) {
+// SetCustomMinimumHeight sets the property returned by [GetCustomMinimumHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomMinimumHeight(value int) Instance {
 	class(self).SetCustomMinimumHeight(int64(value))
+	return self
 }
 
 /*

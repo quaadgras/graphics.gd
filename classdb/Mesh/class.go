@@ -631,9 +631,10 @@ func (self Instance) LightmapSizeHint() Vector2i.XY {
 	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
-// SetLightmapSizeHint sets the property returned by [GetLightmapSizeHint].
-func (self Instance) SetLightmapSizeHint(value Vector2i.XY) {
+// SetLightmapSizeHint sets the property returned by [GetLightmapSizeHint]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightmapSizeHint(value Vector2i.XY) Instance {
 	class(self).SetLightmapSizeHint(Vector2i.XY(value))
+	return self
 }
 
 /*

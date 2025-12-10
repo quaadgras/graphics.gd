@@ -175,9 +175,12 @@ func (self Instance) IsActionSetActive(name string) bool { //gd:OpenXRInterface.
 
 /*
 Sets the given action set as active or inactive.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetActionSetActive(name string, active bool) { //gd:OpenXRInterface.set_action_set_active
+func (self Instance) SetActionSetActive(name string, active bool) Instance { //gd:OpenXRInterface.set_action_set_active
 	Advanced(self).SetActionSetActive(String.New(name), active)
+	return self
 }
 
 /*
@@ -196,9 +199,12 @@ func (self Instance) GetAvailableDisplayRefreshRates() []float32 { //gd:OpenXRIn
 
 /*
 If handtracking is enabled and motion range is supported, sets the currently configured motion range for 'hand' to 'motion_range'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMotionRange(hand Hand, motion_range HandMotionRange) { //gd:OpenXRInterface.set_motion_range
+func (self Instance) SetMotionRange(hand Hand, motion_range HandMotionRange) Instance { //gd:OpenXRInterface.set_motion_range
 	Advanced(self).SetMotionRange(hand, motion_range)
+	return self
 }
 
 /*
@@ -292,16 +298,22 @@ func (self Instance) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface
 
 /*
 Sets the CPU performance level of the OpenXR device.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_cpu_level
+func (self Instance) SetCpuLevel(level PerfSettingsLevel) Instance { //gd:OpenXRInterface.set_cpu_level
 	Advanced(self).SetCpuLevel(level)
+	return self
 }
 
 /*
 Sets the GPU performance level of the OpenXR device.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_gpu_level
+func (self Instance) SetGpuLevel(level PerfSettingsLevel) Instance { //gd:OpenXRInterface.set_gpu_level
 	Advanced(self).SetGpuLevel(level)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -354,9 +366,10 @@ func (self Instance) DisplayRefreshRate() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
-// SetDisplayRefreshRate sets the property returned by [GetDisplayRefreshRate].
-func (self Instance) SetDisplayRefreshRate(value Float.X) {
+// SetDisplayRefreshRate sets the property returned by [GetDisplayRefreshRate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisplayRefreshRate(value Float.X) Instance {
 	class(self).SetDisplayRefreshRate(float64(value))
+	return self
 }
 
 /*
@@ -366,9 +379,10 @@ func (self Instance) RenderTargetSizeMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetRenderTargetSizeMultiplier()))
 }
 
-// SetRenderTargetSizeMultiplier sets the property returned by [GetRenderTargetSizeMultiplier].
-func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) {
+// SetRenderTargetSizeMultiplier sets the property returned by [GetRenderTargetSizeMultiplier]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) Instance {
 	class(self).SetRenderTargetSizeMultiplier(float64(value))
+	return self
 }
 
 /*
@@ -380,9 +394,10 @@ func (self Instance) FoveationLevel() int {
 	return int(int(class(self).GetFoveationLevel()))
 }
 
-// SetFoveationLevel sets the property returned by [GetFoveationLevel].
-func (self Instance) SetFoveationLevel(value int) {
+// SetFoveationLevel sets the property returned by [GetFoveationLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFoveationLevel(value int) Instance {
 	class(self).SetFoveationLevel(int64(value))
+	return self
 }
 
 /*
@@ -396,9 +411,10 @@ func (self Instance) FoveationDynamic() bool {
 	return bool(class(self).GetFoveationDynamic())
 }
 
-// SetFoveationDynamic sets the property returned by [GetFoveationDynamic].
-func (self Instance) SetFoveationDynamic(value bool) {
+// SetFoveationDynamic sets the property returned by [GetFoveationDynamic]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFoveationDynamic(value bool) Instance {
 	class(self).SetFoveationDynamic(value)
+	return self
 }
 
 /*
@@ -412,9 +428,10 @@ func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
-func (self Instance) SetVrsMinRadius(value Float.X) {
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsMinRadius(value Float.X) Instance {
 	class(self).SetVrsMinRadius(float64(value))
+	return self
 }
 
 /*
@@ -428,9 +445,10 @@ func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-// SetVrsStrength sets the property returned by [GetVrsStrength].
-func (self Instance) SetVrsStrength(value Float.X) {
+// SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsStrength(value Float.X) Instance {
 	class(self).SetVrsStrength(float64(value))
+	return self
 }
 
 /*
@@ -740,12 +758,13 @@ func (self class) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.se
 /*
 Informs our OpenXR session has been started.
 */
-func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_begun"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionBegun() Signal.Any {
@@ -755,12 +774,13 @@ func (self class) SessionBegun() Signal.Any {
 /*
 Informs our OpenXR session is stopping.
 */
-func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_stopping"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionStopping() Signal.Any {
@@ -770,12 +790,13 @@ func (self class) SessionStopping() Signal.Any {
 /*
 Informs our OpenXR session has been synchronized.
 */
-func (self Instance) OnSessionSynchronized(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionSynchronized(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_synchronized"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionSynchronized() Signal.Any {
@@ -785,12 +806,13 @@ func (self class) SessionSynchronized() Signal.Any {
 /*
 Informs our OpenXR session now has focus, for example output is sent to the HMD and we're receiving XR input.
 */
-func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_focussed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionFocussed() Signal.Any {
@@ -800,12 +822,13 @@ func (self class) SessionFocussed() Signal.Any {
 /*
 Informs our OpenXR session is now visible, for example output is sent to the HMD but we don't receive XR input.
 */
-func (self Instance) OnSessionVisible(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionVisible(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_visible"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionVisible() Signal.Any {
@@ -815,12 +838,13 @@ func (self class) SessionVisible() Signal.Any {
 /*
 Informs our OpenXR session is in the process of being lost.
 */
-func (self Instance) OnSessionLossPending(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionLossPending(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_loss_pending"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionLossPending() Signal.Any {
@@ -830,12 +854,13 @@ func (self class) SessionLossPending() Signal.Any {
 /*
 Informs our OpenXR instance is exiting.
 */
-func (self Instance) OnInstanceExiting(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnInstanceExiting(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("instance_exiting"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InstanceExiting() Signal.Any {
@@ -845,12 +870,13 @@ func (self class) InstanceExiting() Signal.Any {
 /*
 Informs the user queued a recenter of the player position.
 */
-func (self Instance) OnPoseRecentered(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPoseRecentered(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PoseRecentered() Signal.Any {
@@ -862,12 +888,13 @@ Informs the user the HMD refresh rate has changed.
 
 Note: Only emitted if XR runtime supports the refresh rate extension.
 */
-func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X), flags ...Signal.Flags) {
+func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RefreshRateChanged() Signal.Any {
@@ -877,12 +904,13 @@ func (self class) RefreshRateChanged() Signal.Any {
 /*
 Informs the device CPU performance level has changed in the specified subdomain.
 */
-func (self Instance) OnCpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
+func (self Instance) OnCpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("cpu_level_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) CpuLevelChanged() Signal.Any {
@@ -892,12 +920,13 @@ func (self class) CpuLevelChanged() Signal.Any {
 /*
 Informs the device GPU performance level has changed in the specified subdomain.
 */
-func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
+func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gpu_level_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GpuLevelChanged() Signal.Any {

@@ -165,9 +165,10 @@ func (self Instance) Code() string {
 	return string(class(self).GetCode().String())
 }
 
-// SetCode sets the property returned by [GetCode].
-func (self Instance) SetCode(value string) {
+// SetCode sets the property returned by [GetCode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCode(value string) Instance {
 	class(self).SetCode(String.New(value))
+	return self
 }
 
 //go:nosplit

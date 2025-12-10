@@ -171,9 +171,10 @@ func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
-// SetLength sets the property returned by [GetLength].
-func (self Instance) SetLength(value Float.X) {
+// SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLength(value Float.X) Instance {
 	class(self).SetLength(float64(value))
+	return self
 }
 
 /*
@@ -183,9 +184,10 @@ func (self Instance) RestLength() Float.X {
 	return Float.X(Float.X(class(self).GetRestLength()))
 }
 
-// SetRestLength sets the property returned by [GetRestLength].
-func (self Instance) SetRestLength(value Float.X) {
+// SetRestLength sets the property returned by [GetRestLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRestLength(value Float.X) Instance {
 	class(self).SetRestLength(float64(value))
+	return self
 }
 
 /*
@@ -195,9 +197,10 @@ func (self Instance) Stiffness() Float.X {
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
-// SetStiffness sets the property returned by [GetStiffness].
-func (self Instance) SetStiffness(value Float.X) {
+// SetStiffness sets the property returned by [GetStiffness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStiffness(value Float.X) Instance {
 	class(self).SetStiffness(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-// SetDamping sets the property returned by [GetDamping].
-func (self Instance) SetDamping(value Float.X) {
+// SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDamping(value Float.X) Instance {
 	class(self).SetDamping(float64(value))
+	return self
 }
 
 //go:nosplit

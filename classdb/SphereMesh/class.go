@@ -175,9 +175,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value Float.X) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value Float.X) Instance {
 	class(self).SetHeight(float64(value))
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
-// SetRadialSegments sets the property returned by [GetRadialSegments].
-func (self Instance) SetRadialSegments(value int) {
+// SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialSegments(value int) Instance {
 	class(self).SetRadialSegments(int64(value))
+	return self
 }
 
 /*
@@ -211,9 +214,10 @@ func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
-// SetRings sets the property returned by [GetRings].
-func (self Instance) SetRings(value int) {
+// SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRings(value int) Instance {
 	class(self).SetRings(int64(value))
+	return self
 }
 
 /*
@@ -225,9 +229,10 @@ func (self Instance) IsHemisphere() bool {
 	return bool(class(self).GetIsHemisphere())
 }
 
-// SetIsHemisphere sets the property returned by [GetIsHemisphere].
-func (self Instance) SetIsHemisphere(value bool) {
+// SetIsHemisphere sets the property returned by [GetIsHemisphere]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIsHemisphere(value bool) Instance {
 	class(self).SetIsHemisphere(value)
+	return self
 }
 
 //go:nosplit

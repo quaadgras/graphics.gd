@@ -150,11 +150,14 @@ Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first fra
 
 You can define any number of textures up to [MaxFrames], but keep in mind that only frames from 0 to [Frames] - 1 will be part of the animation.
 
+Returns 'self' to enable method chaining.
+
 [Frames]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.Frames
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetFrameTexture(frame_ int, texture Texture2D.Instance) { //gd:AnimatedTexture.set_frame_texture
+func (self Instance) SetFrameTexture(frame_ int, texture Texture2D.Instance) Instance { //gd:AnimatedTexture.set_frame_texture
 	Advanced(self).SetFrameTexture(int64(frame_), texture)
+	return self
 }
 
 /*
@@ -169,10 +172,13 @@ func (self Instance) GetFrameTexture(frame_ int) Texture2D.Instance { //gd:Anima
 /*
 Sets the duration of any given 'frame'. The final duration is affected by the [SpeedScale]. If set to 0, the frame is skipped during playback.
 
+Returns 'self' to enable method chaining.
+
 [SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.SpeedScale
 */
-func (self Instance) SetFrameDuration(frame_ int, duration Float.X) { //gd:AnimatedTexture.set_frame_duration
+func (self Instance) SetFrameDuration(frame_ int, duration Float.X) Instance { //gd:AnimatedTexture.set_frame_duration
 	Advanced(self).SetFrameDuration(int64(frame_), float64(duration))
+	return self
 }
 
 /*
@@ -234,9 +240,10 @@ func (self Instance) Frames() int {
 	return int(int(class(self).GetFrames()))
 }
 
-// SetFrames sets the property returned by [GetFrames].
-func (self Instance) SetFrames(value int) {
+// SetFrames sets the property returned by [GetFrames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrames(value int) Instance {
 	class(self).SetFrames(int64(value))
+	return self
 }
 
 /*
@@ -246,9 +253,10 @@ func (self Instance) CurrentFrame() int {
 	return int(int(class(self).GetCurrentFrame()))
 }
 
-// SetCurrentFrame sets the property returned by [GetCurrentFrame].
-func (self Instance) SetCurrentFrame(value int) {
+// SetCurrentFrame sets the property returned by [GetCurrentFrame]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrentFrame(value int) Instance {
 	class(self).SetCurrentFrame(int64(value))
+	return self
 }
 
 /*
@@ -260,9 +268,10 @@ func (self Instance) Pause() bool {
 	return bool(class(self).GetPause())
 }
 
-// SetPause sets the property returned by [GetPause].
-func (self Instance) SetPause(value bool) {
+// SetPause sets the property returned by [GetPause]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPause(value bool) Instance {
 	class(self).SetPause(value)
+	return self
 }
 
 /*
@@ -274,9 +283,10 @@ func (self Instance) OneShot() bool {
 	return bool(class(self).GetOneShot())
 }
 
-// SetOneShot sets the property returned by [GetOneShot].
-func (self Instance) SetOneShot(value bool) {
+// SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneShot(value bool) Instance {
 	class(self).SetOneShot(value)
+	return self
 }
 
 /*
@@ -286,9 +296,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 //go:nosplit

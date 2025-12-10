@@ -200,9 +200,10 @@ func (self Instance) TextureNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
-// SetTextureNormal sets the property returned by [GetTextureNormal].
-func (self Instance) SetTextureNormal(value Texture2D.Instance) {
+// SetTextureNormal sets the property returned by [GetTextureNormal]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
 	class(self).SetTextureNormal(value)
+	return self
 }
 
 /*
@@ -212,9 +213,10 @@ func (self Instance) TexturePressed() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
-// SetTexturePressed sets the property returned by [GetTexturePressed].
-func (self Instance) SetTexturePressed(value Texture2D.Instance) {
+// SetTexturePressed sets the property returned by [GetTexturePressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance {
 	class(self).SetTexturePressed(value)
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) Bitmask() BitMap.Instance {
 	return BitMap.Instance(class(self).GetBitmask())
 }
 
-// SetBitmask sets the property returned by [GetBitmask].
-func (self Instance) SetBitmask(value BitMap.Instance) {
+// SetBitmask sets the property returned by [GetBitmask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBitmask(value BitMap.Instance) Instance {
 	class(self).SetBitmask(value)
+	return self
 }
 
 /*
@@ -236,9 +239,10 @@ func (self Instance) Shape() Shape2D.Instance {
 	return Shape2D.Instance(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Shape2D.Instance) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Shape2D.Instance) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -248,9 +252,10 @@ func (self Instance) ShapeCentered() bool {
 	return bool(class(self).IsShapeCentered())
 }
 
-// SetShapeCentered sets the property returned by [IsShapeCentered].
-func (self Instance) SetShapeCentered(value bool) {
+// SetShapeCentered sets the property returned by [IsShapeCentered]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShapeCentered(value bool) Instance {
 	class(self).SetShapeCentered(value)
+	return self
 }
 
 /*
@@ -260,9 +265,10 @@ func (self Instance) ShapeVisible() bool {
 	return bool(class(self).IsShapeVisible())
 }
 
-// SetShapeVisible sets the property returned by [IsShapeVisible].
-func (self Instance) SetShapeVisible(value bool) {
+// SetShapeVisible sets the property returned by [IsShapeVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShapeVisible(value bool) Instance {
 	class(self).SetShapeVisible(value)
+	return self
 }
 
 /*
@@ -277,9 +283,10 @@ func (self Instance) PassbyPress() bool {
 	return bool(class(self).IsPassbyPressEnabled())
 }
 
-// SetPassbyPress sets the property returned by [IsPassbyPressEnabled].
-func (self Instance) SetPassbyPress(value bool) {
+// SetPassbyPress sets the property returned by [IsPassbyPressEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPassbyPress(value bool) Instance {
 	class(self).SetPassbyPress(value)
+	return self
 }
 
 /*
@@ -291,9 +298,10 @@ func (self Instance) Action() string {
 	return string(class(self).GetAction().String())
 }
 
-// SetAction sets the property returned by [GetAction].
-func (self Instance) SetAction(value string) {
+// SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAction(value string) Instance {
 	class(self).SetAction(String.New(value))
+	return self
 }
 
 /*
@@ -303,9 +311,10 @@ func (self Instance) VisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
-// SetVisibilityMode sets the property returned by [GetVisibilityMode].
-func (self Instance) SetVisibilityMode(value VisibilityMode) {
+// SetVisibilityMode sets the property returned by [GetVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityMode(value VisibilityMode) Instance {
 	class(self).SetVisibilityMode(value)
+	return self
 }
 
 //go:nosplit
@@ -429,12 +438,13 @@ func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 /*
 Emitted when the button is pressed (down).
 */
-func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Pressed() Signal.Any {
@@ -444,12 +454,13 @@ func (self class) Pressed() Signal.Any {
 /*
 Emitted when the button is released (up).
 */
-func (self Instance) OnReleased(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnReleased(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("released"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Released() Signal.Any {

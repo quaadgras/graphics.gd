@@ -158,12 +158,15 @@ Note: 'name' is case-sensitive and must match the name of the uniform in the cod
 
 Note: Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 
+Returns 'self' to enable method chaining.
+
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
-func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
+func (self Instance) SetInstanceShaderParameter(name string, value any) Instance { //gd:GeometryInstance3D.set_instance_shader_parameter
 	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	return self
 }
 
 /*
@@ -224,9 +227,10 @@ func (self Instance) MaterialOverride() Material.Instance {
 	return Material.Instance(class(self).GetMaterialOverride())
 }
 
-// SetMaterialOverride sets the property returned by [GetMaterialOverride].
-func (self Instance) SetMaterialOverride(value Material.Instance) {
+// SetMaterialOverride sets the property returned by [GetMaterialOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterialOverride(value Material.Instance) Instance {
 	class(self).SetMaterialOverride(value)
+	return self
 }
 
 /*
@@ -238,9 +242,10 @@ func (self Instance) MaterialOverlay() Material.Instance {
 	return Material.Instance(class(self).GetMaterialOverlay())
 }
 
-// SetMaterialOverlay sets the property returned by [GetMaterialOverlay].
-func (self Instance) SetMaterialOverlay(value Material.Instance) {
+// SetMaterialOverlay sets the property returned by [GetMaterialOverlay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterialOverlay(value Material.Instance) Instance {
 	class(self).SetMaterialOverlay(value)
+	return self
 }
 
 /*
@@ -258,9 +263,10 @@ func (self Instance) Transparency() Float.X {
 	return Float.X(Float.X(class(self).GetTransparency()))
 }
 
-// SetTransparency sets the property returned by [GetTransparency].
-func (self Instance) SetTransparency(value Float.X) {
+// SetTransparency sets the property returned by [GetTransparency]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransparency(value Float.X) Instance {
 	class(self).SetTransparency(float64(value))
+	return self
 }
 
 /*
@@ -270,9 +276,10 @@ func (self Instance) CastShadow() ShadowCastingSetting {
 	return ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
-// SetCastShadow sets the property returned by [GetCastShadowsSetting].
-func (self Instance) SetCastShadow(value ShadowCastingSetting) {
+// SetCastShadow sets the property returned by [GetCastShadowsSetting]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCastShadow(value ShadowCastingSetting) Instance {
 	class(self).SetCastShadowsSetting(value)
+	return self
 }
 
 /*
@@ -284,9 +291,10 @@ func (self Instance) ExtraCullMargin() Float.X {
 	return Float.X(Float.X(class(self).GetExtraCullMargin()))
 }
 
-// SetExtraCullMargin sets the property returned by [GetExtraCullMargin].
-func (self Instance) SetExtraCullMargin(value Float.X) {
+// SetExtraCullMargin sets the property returned by [GetExtraCullMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExtraCullMargin(value Float.X) Instance {
 	class(self).SetExtraCullMargin(float64(value))
+	return self
 }
 
 /*
@@ -303,9 +311,10 @@ func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
-// SetCustomAabb sets the property returned by [GetCustomAabb].
-func (self Instance) SetCustomAabb(value AABB.PositionSize) {
+// SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
+	return self
 }
 
 /*
@@ -317,9 +326,10 @@ func (self Instance) LodBias() Float.X {
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
-// SetLodBias sets the property returned by [GetLodBias].
-func (self Instance) SetLodBias(value Float.X) {
+// SetLodBias sets the property returned by [GetLodBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLodBias(value Float.X) Instance {
 	class(self).SetLodBias(float64(value))
+	return self
 }
 
 /*
@@ -334,9 +344,10 @@ func (self Instance) IgnoreOcclusionCulling() bool {
 	return bool(class(self).IsIgnoringOcclusionCulling())
 }
 
-// SetIgnoreOcclusionCulling sets the property returned by [IsIgnoringOcclusionCulling].
-func (self Instance) SetIgnoreOcclusionCulling(value bool) {
+// SetIgnoreOcclusionCulling sets the property returned by [IsIgnoringOcclusionCulling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreOcclusionCulling(value bool) Instance {
 	class(self).SetIgnoreOcclusionCulling(value)
+	return self
 }
 
 /*
@@ -350,9 +361,10 @@ func (self Instance) GiMode() GIMode {
 	return GIMode(class(self).GetGiMode())
 }
 
-// SetGiMode sets the property returned by [GetGiMode].
-func (self Instance) SetGiMode(value GIMode) {
+// SetGiMode sets the property returned by [GetGiMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGiMode(value GIMode) Instance {
 	class(self).SetGiMode(value)
+	return self
 }
 
 /*
@@ -367,9 +379,10 @@ func (self Instance) GiLightmapTexelScale() Float.X {
 	return Float.X(Float.X(class(self).GetLightmapTexelScale()))
 }
 
-// SetGiLightmapTexelScale sets the property returned by [GetLightmapTexelScale].
-func (self Instance) SetGiLightmapTexelScale(value Float.X) {
+// SetGiLightmapTexelScale sets the property returned by [GetLightmapTexelScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGiLightmapTexelScale(value Float.X) Instance {
 	class(self).SetLightmapTexelScale(float64(value))
+	return self
 }
 
 /*
@@ -381,9 +394,10 @@ func (self Instance) GiLightmapScale() LightmapScale {
 	return LightmapScale(class(self).GetLightmapScale())
 }
 
-// SetGiLightmapScale sets the property returned by [GetLightmapScale].
-func (self Instance) SetGiLightmapScale(value LightmapScale) {
+// SetGiLightmapScale sets the property returned by [GetLightmapScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGiLightmapScale(value LightmapScale) Instance {
 	class(self).SetLightmapScale(value)
+	return self
 }
 
 /*
@@ -395,9 +409,10 @@ func (self Instance) VisibilityRangeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
-// SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin].
-func (self Instance) SetVisibilityRangeBegin(value Float.X) {
+// SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityRangeBegin(value Float.X) Instance {
 	class(self).SetVisibilityRangeBegin(float64(value))
+	return self
 }
 
 /*
@@ -412,9 +427,10 @@ func (self Instance) VisibilityRangeBeginMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
-// SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin].
-func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
+// SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) Instance {
 	class(self).SetVisibilityRangeBeginMargin(float64(value))
+	return self
 }
 
 /*
@@ -426,9 +442,10 @@ func (self Instance) VisibilityRangeEnd() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
-// SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd].
-func (self Instance) SetVisibilityRangeEnd(value Float.X) {
+// SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityRangeEnd(value Float.X) Instance {
 	class(self).SetVisibilityRangeEnd(float64(value))
+	return self
 }
 
 /*
@@ -443,9 +460,10 @@ func (self Instance) VisibilityRangeEndMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
-// SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin].
-func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
+// SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance {
 	class(self).SetVisibilityRangeEndMargin(float64(value))
+	return self
 }
 
 /*
@@ -455,9 +473,10 @@ func (self Instance) VisibilityRangeFadeMode() VisibilityRangeFadeMode {
 	return VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
-// SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode].
-func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) {
+// SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) Instance {
 	class(self).SetVisibilityRangeFadeMode(value)
+	return self
 }
 
 //go:nosplit

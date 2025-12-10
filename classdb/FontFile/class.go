@@ -327,10 +327,13 @@ func (self Instance) RemoveSizeCache(cache_index int, size Vector2i.XY) { //gd:F
 /*
 Sets variation coordinates for the specified font cache entry. See [Font.GetSupportedVariationList] for more info.
 
+Returns 'self' to enable method chaining.
+
 [Font.GetSupportedVariationList]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetSupportedVariationList
 */
-func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates map[string]float32) { //gd:FontFile.set_variation_coordinates
+func (self Instance) SetVariationCoordinates(cache_index int, variation_coordinates map[string]float32) Instance { //gd:FontFile.set_variation_coordinates
 	Advanced(self).SetVariationCoordinates(int64(cache_index), gd.DictionaryFromMap(variation_coordinates))
+	return self
 }
 
 /*
@@ -344,9 +347,12 @@ func (self Instance) GetVariationCoordinates(cache_index int) map[string]float32
 
 /*
 Sets embolden strength, if is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEmbolden(cache_index int, strength Float.X) { //gd:FontFile.set_embolden
+func (self Instance) SetEmbolden(cache_index int, strength Float.X) Instance { //gd:FontFile.set_embolden
 	Advanced(self).SetEmbolden(int64(cache_index), float64(strength))
+	return self
 }
 
 /*
@@ -358,9 +364,12 @@ func (self Instance) GetEmbolden(cache_index int) Float.X { //gd:FontFile.get_em
 
 /*
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTransform(cache_index int, transform Transform2D.OriginXY) { //gd:FontFile.set_transform
+func (self Instance) SetTransform(cache_index int, transform Transform2D.OriginXY) Instance { //gd:FontFile.set_transform
 	Advanced(self).SetTransform(int64(cache_index), Transform2D.OriginXY(transform))
+	return self
 }
 
 /*
@@ -372,9 +381,12 @@ func (self Instance) GetTransform(cache_index int) Transform2D.OriginXY { //gd:F
 
 /*
 Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExtraSpacing(cache_index int, spacing TextServer.SpacingType, value int) { //gd:FontFile.set_extra_spacing
+func (self Instance) SetExtraSpacing(cache_index int, spacing TextServer.SpacingType, value int) Instance { //gd:FontFile.set_extra_spacing
 	Advanced(self).SetExtraSpacing(int64(cache_index), spacing, int64(value))
+	return self
 }
 
 /*
@@ -386,9 +398,12 @@ func (self Instance) GetExtraSpacing(cache_index int, spacing TextServer.Spacing
 
 /*
 Sets extra baseline offset (as a fraction of font height).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExtraBaselineOffset(cache_index int, baseline_offset Float.X) { //gd:FontFile.set_extra_baseline_offset
+func (self Instance) SetExtraBaselineOffset(cache_index int, baseline_offset Float.X) Instance { //gd:FontFile.set_extra_baseline_offset
 	Advanced(self).SetExtraBaselineOffset(int64(cache_index), float64(baseline_offset))
+	return self
 }
 
 /*
@@ -400,9 +415,12 @@ func (self Instance) GetExtraBaselineOffset(cache_index int) Float.X { //gd:Font
 
 /*
 Sets an active face index in the TrueType / OpenType collection.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetFaceIndex(cache_index int, face_index int) { //gd:FontFile.set_face_index
+func (self Instance) SetFaceIndex(cache_index int, face_index int) Instance { //gd:FontFile.set_face_index
 	Advanced(self).SetFaceIndex(int64(cache_index), int64(face_index))
+	return self
 }
 
 /*
@@ -414,9 +432,12 @@ func (self Instance) GetFaceIndex(cache_index int) int { //gd:FontFile.get_face_
 
 /*
 Sets the font ascent (number of pixels above the baseline).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheAscent(cache_index int, size int, ascent Float.X) { //gd:FontFile.set_cache_ascent
+func (self Instance) SetCacheAscent(cache_index int, size int, ascent Float.X) Instance { //gd:FontFile.set_cache_ascent
 	Advanced(self).SetCacheAscent(int64(cache_index), int64(size), float64(ascent))
+	return self
 }
 
 /*
@@ -428,9 +449,12 @@ func (self Instance) GetCacheAscent(cache_index int, size int) Float.X { //gd:Fo
 
 /*
 Sets the font descent (number of pixels below the baseline).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheDescent(cache_index int, size int, descent Float.X) { //gd:FontFile.set_cache_descent
+func (self Instance) SetCacheDescent(cache_index int, size int, descent Float.X) Instance { //gd:FontFile.set_cache_descent
 	Advanced(self).SetCacheDescent(int64(cache_index), int64(size), float64(descent))
+	return self
 }
 
 /*
@@ -442,9 +466,12 @@ func (self Instance) GetCacheDescent(cache_index int, size int) Float.X { //gd:F
 
 /*
 Sets pixel offset of the underline below the baseline.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheUnderlinePosition(cache_index int, size int, underline_position Float.X) { //gd:FontFile.set_cache_underline_position
+func (self Instance) SetCacheUnderlinePosition(cache_index int, size int, underline_position Float.X) Instance { //gd:FontFile.set_cache_underline_position
 	Advanced(self).SetCacheUnderlinePosition(int64(cache_index), int64(size), float64(underline_position))
+	return self
 }
 
 /*
@@ -456,9 +483,12 @@ func (self Instance) GetCacheUnderlinePosition(cache_index int, size int) Float.
 
 /*
 Sets thickness of the underline in pixels.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheUnderlineThickness(cache_index int, size int, underline_thickness Float.X) { //gd:FontFile.set_cache_underline_thickness
+func (self Instance) SetCacheUnderlineThickness(cache_index int, size int, underline_thickness Float.X) Instance { //gd:FontFile.set_cache_underline_thickness
 	Advanced(self).SetCacheUnderlineThickness(int64(cache_index), int64(size), float64(underline_thickness))
+	return self
 }
 
 /*
@@ -470,9 +500,12 @@ func (self Instance) GetCacheUnderlineThickness(cache_index int, size int) Float
 
 /*
 Sets scaling factor of the color bitmap font.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCacheScale(cache_index int, size int, scale Float.X) { //gd:FontFile.set_cache_scale
+func (self Instance) SetCacheScale(cache_index int, size int, scale Float.X) Instance { //gd:FontFile.set_cache_scale
 	Advanced(self).SetCacheScale(int64(cache_index), int64(size), float64(scale))
+	return self
 }
 
 /*
@@ -513,9 +546,12 @@ func (self Instance) RemoveTexture(cache_index int, size Vector2i.XY, texture_in
 
 /*
 Sets font cache texture image.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextureImage(cache_index int, size Vector2i.XY, texture_index int, image Image.Instance) { //gd:FontFile.set_texture_image
+func (self Instance) SetTextureImage(cache_index int, size Vector2i.XY, texture_index int, image Image.Instance) Instance { //gd:FontFile.set_texture_image
 	Advanced(self).SetTextureImage(int64(cache_index), Vector2i.XY(size), int64(texture_index), image)
+	return self
 }
 
 /*
@@ -527,9 +563,12 @@ func (self Instance) GetTextureImage(cache_index int, size Vector2i.XY, texture_
 
 /*
 Sets array containing glyph packing data.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int, offset []int32) { //gd:FontFile.set_texture_offsets
+func (self Instance) SetTextureOffsets(cache_index int, size Vector2i.XY, texture_index int, offset []int32) Instance { //gd:FontFile.set_texture_offsets
 	Advanced(self).SetTextureOffsets(int64(cache_index), Vector2i.XY(size), int64(texture_index), Packed.New(offset...))
+	return self
 }
 
 /*
@@ -572,9 +611,12 @@ func (self Instance) RemoveGlyph(cache_index int, size Vector2i.XY, glyph int) {
 Sets glyph advance (offset of the next glyph).
 
 Note: Advance for glyphs outlines is the same as the base glyph advance and is not saved.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGlyphAdvance(cache_index int, size int, glyph int, advance Vector2.XY) { //gd:FontFile.set_glyph_advance
+func (self Instance) SetGlyphAdvance(cache_index int, size int, glyph int, advance Vector2.XY) Instance { //gd:FontFile.set_glyph_advance
 	Advanced(self).SetGlyphAdvance(int64(cache_index), int64(size), int64(glyph), Vector2.XY(advance))
+	return self
 }
 
 /*
@@ -588,9 +630,12 @@ func (self Instance) GetGlyphAdvance(cache_index int, size int, glyph int) Vecto
 
 /*
 Sets glyph offset from the baseline.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGlyphOffset(cache_index int, size Vector2i.XY, glyph int, offset Vector2.XY) { //gd:FontFile.set_glyph_offset
+func (self Instance) SetGlyphOffset(cache_index int, size Vector2i.XY, glyph int, offset Vector2.XY) Instance { //gd:FontFile.set_glyph_offset
 	Advanced(self).SetGlyphOffset(int64(cache_index), Vector2i.XY(size), int64(glyph), Vector2.XY(offset))
+	return self
 }
 
 /*
@@ -602,9 +647,12 @@ func (self Instance) GetGlyphOffset(cache_index int, size Vector2i.XY, glyph int
 
 /*
 Sets glyph size.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGlyphSize(cache_index int, size Vector2i.XY, glyph int, gl_size Vector2.XY) { //gd:FontFile.set_glyph_size
+func (self Instance) SetGlyphSize(cache_index int, size Vector2i.XY, glyph int, gl_size Vector2.XY) Instance { //gd:FontFile.set_glyph_size
 	Advanced(self).SetGlyphSize(int64(cache_index), Vector2i.XY(size), int64(glyph), Vector2.XY(gl_size))
+	return self
 }
 
 /*
@@ -616,9 +664,12 @@ func (self Instance) GetGlyphSize(cache_index int, size Vector2i.XY, glyph int) 
 
 /*
 Sets rectangle in the cache texture containing the glyph.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGlyphUvRect(cache_index int, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) { //gd:FontFile.set_glyph_uv_rect
+func (self Instance) SetGlyphUvRect(cache_index int, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize) Instance { //gd:FontFile.set_glyph_uv_rect
 	Advanced(self).SetGlyphUvRect(int64(cache_index), Vector2i.XY(size), int64(glyph), Rect2.PositionSize(uv_rect))
+	return self
 }
 
 /*
@@ -630,9 +681,12 @@ func (self Instance) GetGlyphUvRect(cache_index int, size Vector2i.XY, glyph int
 
 /*
 Sets index of the cache texture containing the glyph.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph int, texture_idx int) { //gd:FontFile.set_glyph_texture_idx
+func (self Instance) SetGlyphTextureIdx(cache_index int, size Vector2i.XY, glyph int, texture_idx int) Instance { //gd:FontFile.set_glyph_texture_idx
 	Advanced(self).SetGlyphTextureIdx(int64(cache_index), Vector2i.XY(size), int64(glyph), int64(texture_idx))
+	return self
 }
 
 /*
@@ -665,9 +719,12 @@ func (self Instance) RemoveKerning(cache_index int, size int, glyph_pair Vector2
 
 /*
 Sets kerning for the pair of glyphs.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetKerning(cache_index int, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) { //gd:FontFile.set_kerning
+func (self Instance) SetKerning(cache_index int, size int, glyph_pair Vector2i.XY, kerning Vector2.XY) Instance { //gd:FontFile.set_kerning
 	Advanced(self).SetKerning(int64(cache_index), int64(size), Vector2i.XY(glyph_pair), Vector2.XY(kerning))
+	return self
 }
 
 /*
@@ -694,10 +751,13 @@ func (self Instance) RenderGlyph(cache_index int, size Vector2i.XY, index int) {
 /*
 Adds override for [Font.IsLanguageSupported].
 
+Returns 'self' to enable method chaining.
+
 [Font.IsLanguageSupported]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.IsLanguageSupported
 */
-func (self Instance) SetLanguageSupportOverride(language string, supported bool) { //gd:FontFile.set_language_support_override
+func (self Instance) SetLanguageSupportOverride(language string, supported bool) Instance { //gd:FontFile.set_language_support_override
 	Advanced(self).SetLanguageSupportOverride(String.New(language), supported)
+	return self
 }
 
 /*
@@ -724,10 +784,13 @@ func (self Instance) GetLanguageSupportOverrides() []string { //gd:FontFile.get_
 /*
 Adds override for [Font.IsScriptSupported].
 
+Returns 'self' to enable method chaining.
+
 [Font.IsScriptSupported]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.IsScriptSupported
 */
-func (self Instance) SetScriptSupportOverride(script string, supported bool) { //gd:FontFile.set_script_support_override
+func (self Instance) SetScriptSupportOverride(script string, supported bool) Instance { //gd:FontFile.set_script_support_override
 	Advanced(self).SetScriptSupportOverride(String.New(script), supported)
+	return self
 }
 
 /*
@@ -817,9 +880,10 @@ func (self Instance) Data() []byte {
 	return []byte(class(self).GetData().Bytes())
 }
 
-// SetData sets the property returned by [GetData].
-func (self Instance) SetData(value []byte) {
+// SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetData(value []byte) Instance {
 	class(self).SetData(Packed.BytesFrom(value...))
+	return self
 }
 
 /*
@@ -829,9 +893,10 @@ func (self Instance) GenerateMipmaps() bool {
 	return bool(class(self).GetGenerateMipmaps())
 }
 
-// SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps].
-func (self Instance) SetGenerateMipmaps(value bool) {
+// SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGenerateMipmaps(value bool) Instance {
 	class(self).SetGenerateMipmaps(value)
+	return self
 }
 
 /*
@@ -841,9 +906,10 @@ func (self Instance) DisableEmbeddedBitmaps() bool {
 	return bool(class(self).GetDisableEmbeddedBitmaps())
 }
 
-// SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps].
-func (self Instance) SetDisableEmbeddedBitmaps(value bool) {
+// SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisableEmbeddedBitmaps(value bool) Instance {
 	class(self).SetDisableEmbeddedBitmaps(value)
+	return self
 }
 
 /*
@@ -853,44 +919,55 @@ func (self Instance) Antialiasing() TextServer.FontAntialiasing {
 	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
-// SetAntialiasing sets the property returned by [GetAntialiasing].
-func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) {
+// SetAntialiasing sets the property returned by [GetAntialiasing]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) Instance {
 	class(self).SetAntialiasing(value)
+	return self
 }
 
 /*
 Font family name.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontName(value string) {
+func (self Instance) SetFontName(value string) Instance {
 	class(self).SetFontName(String.New(value))
+	return self
 }
 
 /*
 Font style name.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetStyleName(value string) {
+func (self Instance) SetStyleName(value string) Instance {
 	class(self).SetFontStyleName(String.New(value))
+	return self
 }
 
 /*
 Font style flags.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontStyle(value TextServer.FontStyle) {
+func (self Instance) SetFontStyle(value TextServer.FontStyle) Instance {
 	class(self).SetFontStyle(value)
+	return self
 }
 
 /*
 Weight (boldness) of the font. A value in the 100...999 range, normal font weight is 400, bold font weight is 700.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontWeight(value int) {
+func (self Instance) SetFontWeight(value int) Instance {
 	class(self).SetFontWeight(int64(value))
+	return self
 }
 
 /*
 Font stretch amount, compared to a normal width. A percentage value between 50% and 200%.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontStretch(value int) {
+func (self Instance) SetFontStretch(value int) Instance {
 	class(self).SetFontStretch(int64(value))
+	return self
 }
 
 /*
@@ -900,9 +977,10 @@ func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
 	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
-// SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning].
-func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) {
+// SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) Instance {
 	class(self).SetSubpixelPositioning(value)
+	return self
 }
 
 /*
@@ -912,9 +990,10 @@ func (self Instance) KeepRoundingRemainders() bool {
 	return bool(class(self).GetKeepRoundingRemainders())
 }
 
-// SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders].
-func (self Instance) SetKeepRoundingRemainders(value bool) {
+// SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepRoundingRemainders(value bool) Instance {
 	class(self).SetKeepRoundingRemainders(value)
+	return self
 }
 
 /*
@@ -932,9 +1011,10 @@ func (self Instance) MultichannelSignedDistanceField() bool {
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
 
-// SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField].
-func (self Instance) SetMultichannelSignedDistanceField(value bool) {
+// SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMultichannelSignedDistanceField(value bool) Instance {
 	class(self).SetMultichannelSignedDistanceField(value)
+	return self
 }
 
 /*
@@ -946,9 +1026,10 @@ func (self Instance) MsdfPixelRange() int {
 	return int(int(class(self).GetMsdfPixelRange()))
 }
 
-// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange].
-func (self Instance) SetMsdfPixelRange(value int) {
+// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsdfPixelRange(value int) Instance {
 	class(self).SetMsdfPixelRange(int64(value))
+	return self
 }
 
 /*
@@ -958,9 +1039,10 @@ func (self Instance) MsdfSize() int {
 	return int(int(class(self).GetMsdfSize()))
 }
 
-// SetMsdfSize sets the property returned by [GetMsdfSize].
-func (self Instance) SetMsdfSize(value int) {
+// SetMsdfSize sets the property returned by [GetMsdfSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsdfSize(value int) Instance {
 	class(self).SetMsdfSize(int64(value))
+	return self
 }
 
 /*
@@ -970,9 +1052,10 @@ func (self Instance) AllowSystemFallback() bool {
 	return bool(class(self).IsAllowSystemFallback())
 }
 
-// SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback].
-func (self Instance) SetAllowSystemFallback(value bool) {
+// SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowSystemFallback(value bool) Instance {
 	class(self).SetAllowSystemFallback(value)
+	return self
 }
 
 /*
@@ -982,9 +1065,10 @@ func (self Instance) ForceAutohinter() bool {
 	return bool(class(self).IsForceAutohinter())
 }
 
-// SetForceAutohinter sets the property returned by [IsForceAutohinter].
-func (self Instance) SetForceAutohinter(value bool) {
+// SetForceAutohinter sets the property returned by [IsForceAutohinter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetForceAutohinter(value bool) Instance {
 	class(self).SetForceAutohinter(value)
+	return self
 }
 
 /*
@@ -994,9 +1078,10 @@ func (self Instance) ModulateColorGlyphs() bool {
 	return bool(class(self).IsModulateColorGlyphs())
 }
 
-// SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs].
-func (self Instance) SetModulateColorGlyphs(value bool) {
+// SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulateColorGlyphs(value bool) Instance {
 	class(self).SetModulateColorGlyphs(value)
+	return self
 }
 
 /*
@@ -1006,9 +1091,10 @@ func (self Instance) Hinting() TextServer.Hinting {
 	return TextServer.Hinting(class(self).GetHinting())
 }
 
-// SetHinting sets the property returned by [GetHinting].
-func (self Instance) SetHinting(value TextServer.Hinting) {
+// SetHinting sets the property returned by [GetHinting]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHinting(value TextServer.Hinting) Instance {
 	class(self).SetHinting(value)
+	return self
 }
 
 /*
@@ -1018,9 +1104,10 @@ func (self Instance) FixedSize() int {
 	return int(int(class(self).GetFixedSize()))
 }
 
-// SetFixedSize sets the property returned by [GetFixedSize].
-func (self Instance) SetFixedSize(value int) {
+// SetFixedSize sets the property returned by [GetFixedSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedSize(value int) Instance {
 	class(self).SetFixedSize(int64(value))
+	return self
 }
 
 /*
@@ -1032,9 +1119,10 @@ func (self Instance) FixedSizeScaleMode() TextServer.FixedSizeScaleMode {
 	return TextServer.FixedSizeScaleMode(class(self).GetFixedSizeScaleMode())
 }
 
-// SetFixedSizeScaleMode sets the property returned by [GetFixedSizeScaleMode].
-func (self Instance) SetFixedSizeScaleMode(value TextServer.FixedSizeScaleMode) {
+// SetFixedSizeScaleMode sets the property returned by [GetFixedSizeScaleMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedSizeScaleMode(value TextServer.FixedSizeScaleMode) Instance {
 	class(self).SetFixedSizeScaleMode(value)
+	return self
 }
 
 /*
@@ -1044,9 +1132,10 @@ func (self Instance) OpentypeFeatureOverrides() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetOpentypeFeatureOverrides()))
 }
 
-// SetOpentypeFeatureOverrides sets the property returned by [GetOpentypeFeatureOverrides].
-func (self Instance) SetOpentypeFeatureOverrides(value map[any]any) {
+// SetOpentypeFeatureOverrides sets the property returned by [GetOpentypeFeatureOverrides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOpentypeFeatureOverrides(value map[any]any) Instance {
 	class(self).SetOpentypeFeatureOverrides(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*
@@ -1058,9 +1147,10 @@ func (self Instance) Oversampling() Float.X {
 	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
-// SetOversampling sets the property returned by [GetOversampling].
-func (self Instance) SetOversampling(value Float.X) {
+// SetOversampling sets the property returned by [GetOversampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversampling(value Float.X) Instance {
 	class(self).SetOversampling(float64(value))
+	return self
 }
 
 /*

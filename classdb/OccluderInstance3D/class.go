@@ -141,10 +141,13 @@ type Any interface {
 /*
 Based on 'value', enables or disables the specified layer in the [BakeMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [BakeMask]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D#Instance.BakeMask
 */
-func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
+func (self Instance) SetBakeMaskValue(layer_number int, value bool) Instance { //gd:OccluderInstance3D.set_bake_mask_value
 	Advanced(self).SetBakeMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -216,9 +219,10 @@ func (self Instance) Occluder() Occluder3D.Instance {
 	return Occluder3D.Instance(class(self).GetOccluder())
 }
 
-// SetOccluder sets the property returned by [GetOccluder].
-func (self Instance) SetOccluder(value Occluder3D.Instance) {
+// SetOccluder sets the property returned by [GetOccluder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOccluder(value Occluder3D.Instance) Instance {
 	class(self).SetOccluder(value)
+	return self
 }
 
 /*
@@ -234,9 +238,10 @@ func (self Instance) BakeMask() int {
 	return int(int(class(self).GetBakeMask()))
 }
 
-// SetBakeMask sets the property returned by [GetBakeMask].
-func (self Instance) SetBakeMask(value int) {
+// SetBakeMask sets the property returned by [GetBakeMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeMask(value int) Instance {
 	class(self).SetBakeMask(int64(value))
+	return self
 }
 
 /*
@@ -254,9 +259,10 @@ func (self Instance) BakeSimplificationDistance() Float.X {
 	return Float.X(Float.X(class(self).GetBakeSimplificationDistance()))
 }
 
-// SetBakeSimplificationDistance sets the property returned by [GetBakeSimplificationDistance].
-func (self Instance) SetBakeSimplificationDistance(value Float.X) {
+// SetBakeSimplificationDistance sets the property returned by [GetBakeSimplificationDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeSimplificationDistance(value Float.X) Instance {
 	class(self).SetBakeSimplificationDistance(float64(value))
+	return self
 }
 
 //go:nosplit

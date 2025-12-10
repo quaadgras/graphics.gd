@@ -192,9 +192,10 @@ func (self Instance) XfadeTime() Float.X {
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
-// SetXfadeTime sets the property returned by [GetXfadeTime].
-func (self Instance) SetXfadeTime(value Float.X) {
+// SetXfadeTime sets the property returned by [GetXfadeTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXfadeTime(value Float.X) Instance {
 	class(self).SetXfadeTime(float64(value))
+	return self
 }
 
 /*
@@ -206,9 +207,10 @@ func (self Instance) XfadeCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
-// SetXfadeCurve sets the property returned by [GetXfadeCurve].
-func (self Instance) SetXfadeCurve(value Curve.Instance) {
+// SetXfadeCurve sets the property returned by [GetXfadeCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
 	class(self).SetXfadeCurve(value)
+	return self
 }
 
 /*
@@ -218,9 +220,10 @@ func (self Instance) BreakLoopAtEnd() bool {
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
-// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd].
-func (self Instance) SetBreakLoopAtEnd(value bool) {
+// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBreakLoopAtEnd(value bool) Instance {
 	class(self).SetBreakLoopAtEnd(value)
+	return self
 }
 
 /*
@@ -230,9 +233,10 @@ func (self Instance) Reset() bool {
 	return bool(class(self).IsReset())
 }
 
-// SetReset sets the property returned by [IsReset].
-func (self Instance) SetReset(value bool) {
+// SetReset sets the property returned by [IsReset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetReset(value bool) Instance {
 	class(self).SetReset(value)
+	return self
 }
 
 /*
@@ -245,9 +249,10 @@ func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
-// SetPriority sets the property returned by [GetPriority].
-func (self Instance) SetPriority(value int) {
+// SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPriority(value int) Instance {
 	class(self).SetPriority(int64(value))
+	return self
 }
 
 /*
@@ -257,9 +262,10 @@ func (self Instance) SwitchMode() SwitchMode {
 	return SwitchMode(class(self).GetSwitchMode())
 }
 
-// SetSwitchMode sets the property returned by [GetSwitchMode].
-func (self Instance) SetSwitchMode(value SwitchMode) {
+// SetSwitchMode sets the property returned by [GetSwitchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSwitchMode(value SwitchMode) Instance {
 	class(self).SetSwitchMode(value)
+	return self
 }
 
 /*
@@ -273,9 +279,10 @@ func (self Instance) AdvanceMode() AdvanceMode {
 	return AdvanceMode(class(self).GetAdvanceMode())
 }
 
-// SetAdvanceMode sets the property returned by [GetAdvanceMode].
-func (self Instance) SetAdvanceMode(value AdvanceMode) {
+// SetAdvanceMode sets the property returned by [GetAdvanceMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAdvanceMode(value AdvanceMode) Instance {
 	class(self).SetAdvanceMode(value)
+	return self
 }
 
 /*
@@ -291,9 +298,10 @@ func (self Instance) AdvanceCondition() string {
 	return string(class(self).GetAdvanceCondition().String())
 }
 
-// SetAdvanceCondition sets the property returned by [GetAdvanceCondition].
-func (self Instance) SetAdvanceCondition(value string) {
+// SetAdvanceCondition sets the property returned by [GetAdvanceCondition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAdvanceCondition(value string) Instance {
 	class(self).SetAdvanceCondition(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -303,9 +311,10 @@ func (self Instance) AdvanceExpression() string {
 	return string(class(self).GetAdvanceExpression().String())
 }
 
-// SetAdvanceExpression sets the property returned by [GetAdvanceExpression].
-func (self Instance) SetAdvanceExpression(value string) {
+// SetAdvanceExpression sets the property returned by [GetAdvanceExpression]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAdvanceExpression(value string) Instance {
 	class(self).SetAdvanceExpression(String.New(value))
+	return self
 }
 
 //go:nosplit
@@ -421,12 +430,13 @@ Emitted when [AdvanceCondition] is changed.
 
 [AdvanceCondition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceCondition
 */
-func (self Instance) OnAdvanceConditionChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAdvanceConditionChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("advance_condition_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AdvanceConditionChanged() Signal.Any {

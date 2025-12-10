@@ -209,9 +209,10 @@ func (self Instance) EyeHeight() Float.X {
 	return Float.X(Float.X(class(self).GetEyeHeight()))
 }
 
-// SetEyeHeight sets the property returned by [GetEyeHeight].
-func (self Instance) SetEyeHeight(value Float.X) {
+// SetEyeHeight sets the property returned by [GetEyeHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEyeHeight(value Float.X) Instance {
 	class(self).SetEyeHeight(float64(value))
+	return self
 }
 
 /*
@@ -221,9 +222,10 @@ func (self Instance) Iod() Float.X {
 	return Float.X(Float.X(class(self).GetIod()))
 }
 
-// SetIod sets the property returned by [GetIod].
-func (self Instance) SetIod(value Float.X) {
+// SetIod sets the property returned by [GetIod]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIod(value Float.X) Instance {
 	class(self).SetIod(float64(value))
+	return self
 }
 
 /*
@@ -233,9 +235,10 @@ func (self Instance) DisplayWidth() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayWidth()))
 }
 
-// SetDisplayWidth sets the property returned by [GetDisplayWidth].
-func (self Instance) SetDisplayWidth(value Float.X) {
+// SetDisplayWidth sets the property returned by [GetDisplayWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisplayWidth(value Float.X) Instance {
 	class(self).SetDisplayWidth(float64(value))
+	return self
 }
 
 /*
@@ -245,9 +248,10 @@ func (self Instance) DisplayToLens() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayToLens()))
 }
 
-// SetDisplayToLens sets the property returned by [GetDisplayToLens].
-func (self Instance) SetDisplayToLens(value Float.X) {
+// SetDisplayToLens sets the property returned by [GetDisplayToLens]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisplayToLens(value Float.X) Instance {
 	class(self).SetDisplayToLens(float64(value))
+	return self
 }
 
 /*
@@ -257,9 +261,10 @@ func (self Instance) OffsetRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetOffsetRect())
 }
 
-// SetOffsetRect sets the property returned by [GetOffsetRect].
-func (self Instance) SetOffsetRect(value Rect2.PositionSize) {
+// SetOffsetRect sets the property returned by [GetOffsetRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetRect(value Rect2.PositionSize) Instance {
 	class(self).SetOffsetRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -269,9 +274,10 @@ func (self Instance) Oversample() Float.X {
 	return Float.X(Float.X(class(self).GetOversample()))
 }
 
-// SetOversample sets the property returned by [GetOversample].
-func (self Instance) SetOversample(value Float.X) {
+// SetOversample sets the property returned by [GetOversample]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversample(value Float.X) Instance {
 	class(self).SetOversample(float64(value))
+	return self
 }
 
 /*
@@ -281,9 +287,10 @@ func (self Instance) K1() Float.X {
 	return Float.X(Float.X(class(self).GetK1()))
 }
 
-// SetK1 sets the property returned by [GetK1].
-func (self Instance) SetK1(value Float.X) {
+// SetK1 sets the property returned by [GetK1]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetK1(value Float.X) Instance {
 	class(self).SetK1(float64(value))
+	return self
 }
 
 /*
@@ -293,9 +300,10 @@ func (self Instance) K2() Float.X {
 	return Float.X(Float.X(class(self).GetK2()))
 }
 
-// SetK2 sets the property returned by [GetK2].
-func (self Instance) SetK2(value Float.X) {
+// SetK2 sets the property returned by [GetK2]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetK2(value Float.X) Instance {
 	class(self).SetK2(float64(value))
+	return self
 }
 
 /*
@@ -309,9 +317,10 @@ func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
-// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
-func (self Instance) SetVrsMinRadius(value Float.X) {
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsMinRadius(value Float.X) Instance {
 	class(self).SetVrsMinRadius(float64(value))
+	return self
 }
 
 /*
@@ -325,9 +334,10 @@ func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
-// SetVrsStrength sets the property returned by [GetVrsStrength].
-func (self Instance) SetVrsStrength(value Float.X) {
+// SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsStrength(value Float.X) Instance {
 	class(self).SetVrsStrength(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -351,10 +351,13 @@ Disable Nagle's algorithm on the underlying TCP socket (default). See [StreamPee
 
 Note: Not available in the Web export.
 
+Returns 'self' to enable method chaining.
+
 [StreamPeerTCP.SetNoDelay]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.SetNoDelay
 */
-func (self Instance) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
+func (self Instance) SetNoDelay(enabled bool) Instance { //gd:WebSocketPeer.set_no_delay
 	Advanced(self).SetNoDelay(enabled)
+	return self
 }
 
 /*
@@ -439,9 +442,10 @@ func (self Instance) SupportedProtocols() []string {
 	return []string(class(self).GetSupportedProtocols().Strings())
 }
 
-// SetSupportedProtocols sets the property returned by [GetSupportedProtocols].
-func (self Instance) SetSupportedProtocols(value []string) {
+// SetSupportedProtocols sets the property returned by [GetSupportedProtocols]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSupportedProtocols(value []string) Instance {
 	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -453,9 +457,10 @@ func (self Instance) HandshakeHeaders() []string {
 	return []string(class(self).GetHandshakeHeaders().Strings())
 }
 
-// SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders].
-func (self Instance) SetHandshakeHeaders(value []string) {
+// SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandshakeHeaders(value []string) Instance {
 	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
+	return self
 }
 
 /*
@@ -465,9 +470,10 @@ func (self Instance) InboundBufferSize() int {
 	return int(int(class(self).GetInboundBufferSize()))
 }
 
-// SetInboundBufferSize sets the property returned by [GetInboundBufferSize].
-func (self Instance) SetInboundBufferSize(value int) {
+// SetInboundBufferSize sets the property returned by [GetInboundBufferSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInboundBufferSize(value int) Instance {
 	class(self).SetInboundBufferSize(int64(value))
+	return self
 }
 
 /*
@@ -477,9 +483,10 @@ func (self Instance) OutboundBufferSize() int {
 	return int(int(class(self).GetOutboundBufferSize()))
 }
 
-// SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize].
-func (self Instance) SetOutboundBufferSize(value int) {
+// SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOutboundBufferSize(value int) Instance {
 	class(self).SetOutboundBufferSize(int64(value))
+	return self
 }
 
 /*
@@ -489,9 +496,10 @@ func (self Instance) MaxQueuedPackets() int {
 	return int(int(class(self).GetMaxQueuedPackets()))
 }
 
-// SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets].
-func (self Instance) SetMaxQueuedPackets(value int) {
+// SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxQueuedPackets(value int) Instance {
 	class(self).SetMaxQueuedPackets(int64(value))
+	return self
 }
 
 /*
@@ -503,9 +511,10 @@ func (self Instance) HeartbeatInterval() Float.X {
 	return Float.X(Float.X(class(self).GetHeartbeatInterval()))
 }
 
-// SetHeartbeatInterval sets the property returned by [GetHeartbeatInterval].
-func (self Instance) SetHeartbeatInterval(value Float.X) {
+// SetHeartbeatInterval sets the property returned by [GetHeartbeatInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeartbeatInterval(value Float.X) Instance {
 	class(self).SetHeartbeatInterval(float64(value))
+	return self
 }
 
 /*

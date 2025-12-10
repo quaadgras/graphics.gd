@@ -155,9 +155,12 @@ type Any interface {
 
 /*
 If true, the Jiggle modifier will take colliders into account, keeping them from entering into these collision objects.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetUseColliders(use_colliders bool) { //gd:SkeletonModification2DJiggle.set_use_colliders
+func (self Instance) SetUseColliders(use_colliders bool) Instance { //gd:SkeletonModification2DJiggle.set_use_colliders
 	Advanced(self).SetUseColliders(use_colliders)
+	return self
 }
 
 /*
@@ -169,9 +172,12 @@ func (self Instance) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.
 
 /*
 Sets the collision mask that the Jiggle modifier will use when reacting to colliders, if the Jiggle modifier is set to take colliders into account.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCollisionMask(collision_mask int) { //gd:SkeletonModification2DJiggle.set_collision_mask
+func (self Instance) SetCollisionMask(collision_mask int) Instance { //gd:SkeletonModification2DJiggle.set_collision_mask
 	Advanced(self).SetCollisionMask(int64(collision_mask))
+	return self
 }
 
 /*
@@ -184,10 +190,13 @@ func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.
 /*
 Sets the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
+func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
 	Advanced(self).SetJiggleJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_node)))
+	return self
 }
 
 /*
@@ -201,9 +210,12 @@ func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string { //gd:Skele
 
 /*
 Sets the bone index, 'bone_idx', of the Jiggle joint at 'joint_idx'. When possible, this will also update the bone2d_node of the Jiggle joint based on data provided by the linked skeleton.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
+func (self Instance) SetJiggleJointBoneIndex(joint_idx int, bone_idx int) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
 	Advanced(self).SetJiggleJointBoneIndex(int64(joint_idx), int64(bone_idx))
+	return self
 }
 
 /*
@@ -217,9 +229,12 @@ func (self Instance) GetJiggleJointBoneIndex(joint_idx int) int { //gd:SkeletonM
 
 /*
 Sets whether the Jiggle joint at 'joint_idx' should override the default Jiggle joint settings. Setting this to true will make the joint use its own settings rather than the default ones attached to the modification.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointOverride(joint_idx int, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
+func (self Instance) SetJiggleJointOverride(joint_idx int, override bool) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
 	Advanced(self).SetJiggleJointOverride(int64(joint_idx), override)
+	return self
 }
 
 /*
@@ -231,9 +246,12 @@ func (self Instance) GetJiggleJointOverride(joint_idx int) bool { //gd:SkeletonM
 
 /*
 Sets the of stiffness of the Jiggle joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
+func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness Float.X) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
 	Advanced(self).SetJiggleJointStiffness(int64(joint_idx), float64(stiffness))
+	return self
 }
 
 /*
@@ -245,9 +263,12 @@ func (self Instance) GetJiggleJointStiffness(joint_idx int) Float.X { //gd:Skele
 
 /*
 Sets the of mass of the Jiggle joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointMass(joint_idx int, mass Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
+func (self Instance) SetJiggleJointMass(joint_idx int, mass Float.X) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
 	Advanced(self).SetJiggleJointMass(int64(joint_idx), float64(mass))
+	return self
 }
 
 /*
@@ -259,9 +280,12 @@ func (self Instance) GetJiggleJointMass(joint_idx int) Float.X { //gd:SkeletonMo
 
 /*
 Sets the amount of damping of the Jiggle joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointDamping(joint_idx int, damping Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
+func (self Instance) SetJiggleJointDamping(joint_idx int, damping Float.X) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
 	Advanced(self).SetJiggleJointDamping(int64(joint_idx), float64(damping))
+	return self
 }
 
 /*
@@ -273,9 +297,12 @@ func (self Instance) GetJiggleJointDamping(joint_idx int) Float.X { //gd:Skeleto
 
 /*
 Sets whether the Jiggle joint at 'joint_idx' should use gravity.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointUseGravity(joint_idx int, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
+func (self Instance) SetJiggleJointUseGravity(joint_idx int, use_gravity bool) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
 	Advanced(self).SetJiggleJointUseGravity(int64(joint_idx), use_gravity)
+	return self
 }
 
 /*
@@ -287,9 +314,12 @@ func (self Instance) GetJiggleJointUseGravity(joint_idx int) bool { //gd:Skeleto
 
 /*
 Sets the gravity vector of the Jiggle joint at 'joint_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
+func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) Instance { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
 	Advanced(self).SetJiggleJointGravity(int64(joint_idx), Vector2.XY(gravity))
+	return self
 }
 
 /*
@@ -351,9 +381,10 @@ func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNodepath sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNodepath(value string) {
+// SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNodepath(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -363,9 +394,10 @@ func (self Instance) JiggleDataChainLength() int {
 	return int(int(class(self).GetJiggleDataChainLength()))
 }
 
-// SetJiggleDataChainLength sets the property returned by [GetJiggleDataChainLength].
-func (self Instance) SetJiggleDataChainLength(value int) {
+// SetJiggleDataChainLength sets the property returned by [GetJiggleDataChainLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJiggleDataChainLength(value int) Instance {
 	class(self).SetJiggleDataChainLength(int64(value))
+	return self
 }
 
 /*
@@ -375,9 +407,10 @@ func (self Instance) Stiffness() Float.X {
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
-// SetStiffness sets the property returned by [GetStiffness].
-func (self Instance) SetStiffness(value Float.X) {
+// SetStiffness sets the property returned by [GetStiffness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStiffness(value Float.X) Instance {
 	class(self).SetStiffness(float64(value))
+	return self
 }
 
 /*
@@ -387,9 +420,10 @@ func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
-// SetMass sets the property returned by [GetMass].
-func (self Instance) SetMass(value Float.X) {
+// SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMass(value Float.X) Instance {
 	class(self).SetMass(float64(value))
+	return self
 }
 
 /*
@@ -399,9 +433,10 @@ func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-// SetDamping sets the property returned by [GetDamping].
-func (self Instance) SetDamping(value Float.X) {
+// SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDamping(value Float.X) Instance {
 	class(self).SetDamping(float64(value))
+	return self
 }
 
 /*
@@ -413,9 +448,10 @@ func (self Instance) UseGravity() bool {
 	return bool(class(self).GetUseGravity())
 }
 
-// SetUseGravity sets the property returned by [GetUseGravity].
-func (self Instance) SetUseGravity(value bool) {
+// SetUseGravity sets the property returned by [GetUseGravity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseGravity(value bool) Instance {
 	class(self).SetUseGravity(value)
+	return self
 }
 
 /*
@@ -425,9 +461,10 @@ func (self Instance) Gravity() Vector2.XY {
 	return Vector2.XY(class(self).GetGravity())
 }
 
-// SetGravity sets the property returned by [GetGravity].
-func (self Instance) SetGravity(value Vector2.XY) {
+// SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravity(value Vector2.XY) Instance {
 	class(self).SetGravity(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

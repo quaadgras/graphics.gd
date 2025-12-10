@@ -178,9 +178,10 @@ func (self Instance) WorldScale() Float.X {
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
-// SetWorldScale sets the property returned by [GetWorldScale].
-func (self Instance) SetWorldScale(value Float.X) {
+// SetWorldScale sets the property returned by [GetWorldScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWorldScale(value Float.X) Instance {
 	class(self).SetWorldScale(float64(value))
+	return self
 }
 
 /*
@@ -192,9 +193,10 @@ func (self Instance) Current() bool {
 	return bool(class(self).IsCurrent())
 }
 
-// SetCurrent sets the property returned by [IsCurrent].
-func (self Instance) SetCurrent(value bool) {
+// SetCurrent sets the property returned by [IsCurrent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurrent(value bool) Instance {
 	class(self).SetCurrent(value)
+	return self
 }
 
 //go:nosplit

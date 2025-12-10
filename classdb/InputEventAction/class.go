@@ -180,16 +180,19 @@ func (self Instance) Action() string {
 	return string(class(self).GetAction().String())
 }
 
-// SetAction sets the property returned by [GetAction].
-func (self Instance) SetAction(value string) {
+// SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAction(value string) Instance {
 	class(self).SetAction(String.Name(String.New(value)))
+	return self
 }
 
 /*
 If true, the action's state is pressed. If false, the action's state is released.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) {
+func (self Instance) SetPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 /*
@@ -199,9 +202,10 @@ func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
-// SetStrength sets the property returned by [GetStrength].
-func (self Instance) SetStrength(value Float.X) {
+// SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStrength(value Float.X) Instance {
 	class(self).SetStrength(float64(value))
+	return self
 }
 
 /*
@@ -214,9 +218,10 @@ func (self Instance) EventIndex() int {
 	return int(int(class(self).GetEventIndex()))
 }
 
-// SetEventIndex sets the property returned by [GetEventIndex].
-func (self Instance) SetEventIndex(value int) {
+// SetEventIndex sets the property returned by [GetEventIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEventIndex(value int) Instance {
 	class(self).SetEventIndex(int64(value))
+	return self
 }
 
 //go:nosplit

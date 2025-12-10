@@ -169,9 +169,10 @@ func (self Instance) Friction() Float.X {
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
-// SetFriction sets the property returned by [GetFriction].
-func (self Instance) SetFriction(value Float.X) {
+// SetFriction sets the property returned by [GetFriction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFriction(value Float.X) Instance {
 	class(self).SetFriction(float64(value))
+	return self
 }
 
 /*
@@ -181,9 +182,10 @@ func (self Instance) Rough() bool {
 	return bool(class(self).IsRough())
 }
 
-// SetRough sets the property returned by [IsRough].
-func (self Instance) SetRough(value bool) {
+// SetRough sets the property returned by [IsRough]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRough(value bool) Instance {
 	class(self).SetRough(value)
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) Bounce() Float.X {
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
-// SetBounce sets the property returned by [GetBounce].
-func (self Instance) SetBounce(value Float.X) {
+// SetBounce sets the property returned by [GetBounce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBounce(value Float.X) Instance {
 	class(self).SetBounce(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) Absorbent() bool {
 	return bool(class(self).IsAbsorbent())
 }
 
-// SetAbsorbent sets the property returned by [IsAbsorbent].
-func (self Instance) SetAbsorbent(value bool) {
+// SetAbsorbent sets the property returned by [IsAbsorbent]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAbsorbent(value bool) Instance {
 	class(self).SetAbsorbent(value)
+	return self
 }
 
 //go:nosplit

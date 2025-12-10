@@ -198,9 +198,12 @@ func (self Instance) AddMeshPeer(peer_id int, host ENetConnection.Instance) erro
 
 /*
 The IP used when creating a server. This is set to the wildcard "*" by default, which binds to all available interfaces. The given IP needs to be in IPv4 or IPv6 address format, for example: "192.168.1.1".
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBindIp(ip string) { //gd:ENetMultiplayerPeer.set_bind_ip
+func (self Instance) SetBindIp(ip string) Instance { //gd:ENetMultiplayerPeer.set_bind_ip
 	Advanced(self).SetBindIp(String.New(ip))
+	return self
 }
 
 /*

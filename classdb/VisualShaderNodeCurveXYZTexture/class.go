@@ -166,9 +166,10 @@ func (self Instance) Texture() CurveXYZTexture.Instance {
 	return CurveXYZTexture.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value CurveXYZTexture.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value CurveXYZTexture.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 //go:nosplit

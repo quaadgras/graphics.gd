@@ -152,10 +152,13 @@ type Any interface {
 /*
 Based on 'value', enables or disables the specified layer in the [BakeMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [BakeMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.BakeMask
 */
-func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
+func (self Instance) SetBakeMaskValue(layer_number int, value bool) Instance { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
 	Advanced(self).SetBakeMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -218,9 +221,10 @@ func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector3.XYZ) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector3.XYZ) Instance {
 	class(self).SetSize(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) Resolution() Resolution {
 	return Resolution(class(self).GetResolution())
 }
 
-// SetResolution sets the property returned by [GetResolution].
-func (self Instance) SetResolution(value Resolution) {
+// SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResolution(value Resolution) Instance {
 	class(self).SetResolution(value)
+	return self
 }
 
 /*
@@ -248,9 +253,10 @@ func (self Instance) Thickness() Float.X {
 	return Float.X(Float.X(class(self).GetThickness()))
 }
 
-// SetThickness sets the property returned by [GetThickness].
-func (self Instance) SetThickness(value Float.X) {
+// SetThickness sets the property returned by [GetThickness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThickness(value Float.X) Instance {
 	class(self).SetThickness(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +270,10 @@ func (self Instance) BakeMask() int {
 	return int(int(class(self).GetBakeMask()))
 }
 
-// SetBakeMask sets the property returned by [GetBakeMask].
-func (self Instance) SetBakeMask(value int) {
+// SetBakeMask sets the property returned by [GetBakeMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeMask(value int) Instance {
 	class(self).SetBakeMask(int64(value))
+	return self
 }
 
 /*
@@ -276,9 +283,10 @@ func (self Instance) Texture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture3D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture3D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 //go:nosplit

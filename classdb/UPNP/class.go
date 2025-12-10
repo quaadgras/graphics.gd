@@ -259,9 +259,12 @@ func (self Instance) AddDevice(device UPNPDevice.Instance) { //gd:UPNP.add_devic
 
 /*
 Sets the device at 'index' from the list of discovered devices to 'device'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetDevice(index int, device UPNPDevice.Instance) { //gd:UPNP.set_device
+func (self Instance) SetDevice(index int, device UPNPDevice.Instance) Instance { //gd:UPNP.set_device
 	Advanced(self).SetDevice(int64(index), device)
+	return self
 }
 
 /*
@@ -431,9 +434,10 @@ func (self Instance) DiscoverMulticastIf() string {
 	return string(class(self).GetDiscoverMulticastIf().String())
 }
 
-// SetDiscoverMulticastIf sets the property returned by [GetDiscoverMulticastIf].
-func (self Instance) SetDiscoverMulticastIf(value string) {
+// SetDiscoverMulticastIf sets the property returned by [GetDiscoverMulticastIf]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiscoverMulticastIf(value string) Instance {
 	class(self).SetDiscoverMulticastIf(String.New(value))
+	return self
 }
 
 /*
@@ -443,9 +447,10 @@ func (self Instance) DiscoverLocalPort() int {
 	return int(int(class(self).GetDiscoverLocalPort()))
 }
 
-// SetDiscoverLocalPort sets the property returned by [GetDiscoverLocalPort].
-func (self Instance) SetDiscoverLocalPort(value int) {
+// SetDiscoverLocalPort sets the property returned by [GetDiscoverLocalPort]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiscoverLocalPort(value int) Instance {
 	class(self).SetDiscoverLocalPort(int64(value))
+	return self
 }
 
 /*
@@ -457,9 +462,10 @@ func (self Instance) DiscoverIpv6() bool {
 	return bool(class(self).IsDiscoverIpv6())
 }
 
-// SetDiscoverIpv6 sets the property returned by [IsDiscoverIpv6].
-func (self Instance) SetDiscoverIpv6(value bool) {
+// SetDiscoverIpv6 sets the property returned by [IsDiscoverIpv6]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDiscoverIpv6(value bool) Instance {
 	class(self).SetDiscoverIpv6(value)
+	return self
 }
 
 /*

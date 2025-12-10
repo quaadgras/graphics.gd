@@ -175,9 +175,10 @@ func (self Instance) PacketData() [][][]interface{} {
 	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(class(self).GetPacketData())))
 }
 
-// SetPacketData sets the property returned by [GetPacketData].
-func (self Instance) SetPacketData(value [][][]interface{}) {
+// SetPacketData sets the property returned by [GetPacketData]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPacketData(value [][][]interface{}) Instance {
 	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) GranulePositions() []int64 {
 	return []int64(slices.Collect(class(self).GetPacketGranulePositions().Values()))
 }
 
-// SetGranulePositions sets the property returned by [GetPacketGranulePositions].
-func (self Instance) SetGranulePositions(value []int64) {
+// SetGranulePositions sets the property returned by [GetPacketGranulePositions]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGranulePositions(value []int64) Instance {
 	class(self).SetPacketGranulePositions(Packed.New(value...))
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) SamplingRate() Float.X {
 	return Float.X(Float.X(class(self).GetSamplingRate()))
 }
 
-// SetSamplingRate sets the property returned by [GetSamplingRate].
-func (self Instance) SetSamplingRate(value Float.X) {
+// SetSamplingRate sets the property returned by [GetSamplingRate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSamplingRate(value Float.X) Instance {
 	class(self).SetSamplingRate(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -179,9 +179,10 @@ func (self Instance) BodyTracker() string {
 	return string(class(self).GetBodyTracker().String())
 }
 
-// SetBodyTracker sets the property returned by [GetBodyTracker].
-func (self Instance) SetBodyTracker(value string) {
+// SetBodyTracker sets the property returned by [GetBodyTracker]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodyTracker(value string) Instance {
 	class(self).SetBodyTracker(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -191,9 +192,10 @@ func (self Instance) BodyUpdate() BodyUpdate {
 	return BodyUpdate(class(self).GetBodyUpdate())
 }
 
-// SetBodyUpdate sets the property returned by [GetBodyUpdate].
-func (self Instance) SetBodyUpdate(value BodyUpdate) {
+// SetBodyUpdate sets the property returned by [GetBodyUpdate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodyUpdate(value BodyUpdate) Instance {
 	class(self).SetBodyUpdate(value)
+	return self
 }
 
 /*
@@ -203,9 +205,10 @@ func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-// SetBoneUpdate sets the property returned by [GetBoneUpdate].
-func (self Instance) SetBoneUpdate(value BoneUpdate) {
+// SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
 	class(self).SetBoneUpdate(value)
+	return self
 }
 
 //go:nosplit

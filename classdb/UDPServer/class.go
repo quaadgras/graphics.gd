@@ -331,9 +331,10 @@ func (self Instance) MaxPendingConnections() int {
 	return int(int(class(self).GetMaxPendingConnections()))
 }
 
-// SetMaxPendingConnections sets the property returned by [GetMaxPendingConnections].
-func (self Instance) SetMaxPendingConnections(value int) {
+// SetMaxPendingConnections sets the property returned by [GetMaxPendingConnections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxPendingConnections(value int) Instance {
 	class(self).SetMaxPendingConnections(int64(value))
+	return self
 }
 
 /*

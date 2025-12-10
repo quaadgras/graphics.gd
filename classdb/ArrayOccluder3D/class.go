@@ -125,11 +125,14 @@ type Any interface {
 /*
 Sets [Indices] and [Vertices], while updating the final occluder only once after both values are set.
 
+Returns 'self' to enable method chaining.
+
 [Indices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Indices
 [Vertices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Vertices
 */
-func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) { //gd:ArrayOccluder3D.set_arrays
+func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) Instance { //gd:ArrayOccluder3D.set_arrays
 	Advanced(self).SetArrays(Packed.New(vertices...), Packed.New(indices...))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -181,9 +184,11 @@ The occluder's vertex positions in local 3D coordinates.
 Note: The occluder is always updated after setting this value. If creating occluders procedurally, consider using [SetArrays] instead to avoid updating the occluder twice when it's created.
 
 [SetArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.SetArrays
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetVertices(value []Vector3.XYZ) {
+func (self Instance) SetVertices(value []Vector3.XYZ) Instance {
 	class(self).SetVertices(Packed.New(value...))
+	return self
 }
 
 /*
@@ -193,9 +198,11 @@ Note: The occluder is always updated after setting this value. If creating occlu
 
 [SetArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.SetArrays
 [Vertices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Vertices
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetIndices(value []int32) {
+func (self Instance) SetIndices(value []int32) Instance {
 	class(self).SetIndices(Packed.New(value...))
+	return self
 }
 
 /*

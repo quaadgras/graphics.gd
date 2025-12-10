@@ -192,9 +192,10 @@ func (self Instance) AllowFoldingAll() bool {
 	return bool(class(self).IsAllowFoldingAll())
 }
 
-// SetAllowFoldingAll sets the property returned by [IsAllowFoldingAll].
-func (self Instance) SetAllowFoldingAll(value bool) {
+// SetAllowFoldingAll sets the property returned by [IsAllowFoldingAll]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowFoldingAll(value bool) Instance {
 	class(self).SetAllowFoldingAll(value)
+	return self
 }
 
 /*
@@ -236,12 +237,13 @@ func (self class) IsAllowFoldingAll() bool { //gd:FoldableGroup.is_allow_folding
 /*
 Emitted when one of the containers of the group is expanded.
 */
-func (self Instance) OnExpanded(cb func(container FoldableContainer.Instance), flags ...Signal.Flags) {
+func (self Instance) OnExpanded(cb func(container FoldableContainer.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("expanded"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Expanded() Signal.Any {

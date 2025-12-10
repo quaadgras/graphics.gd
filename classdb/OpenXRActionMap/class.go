@@ -261,9 +261,10 @@ func (self Instance) ActionSets() []OpenXRActionSet.Instance {
 	return []OpenXRActionSet.Instance(gd.ArrayAs[[]OpenXRActionSet.Instance](gd.InternalArray(class(self).GetActionSets())))
 }
 
-// SetActionSets sets the property returned by [GetActionSets].
-func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) {
+// SetActionSets sets the property returned by [GetActionSets]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) Instance {
 	class(self).SetActionSets(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 /*
@@ -275,9 +276,10 @@ func (self Instance) InteractionProfiles() []OpenXRInteractionProfile.Instance {
 	return []OpenXRInteractionProfile.Instance(gd.ArrayAs[[]OpenXRInteractionProfile.Instance](gd.InternalArray(class(self).GetInteractionProfiles())))
 }
 
-// SetInteractionProfiles sets the property returned by [GetInteractionProfiles].
-func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) {
+// SetInteractionProfiles sets the property returned by [GetInteractionProfiles]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) Instance {
 	class(self).SetInteractionProfiles(gd.EngineArrayFromSlice(value))
+	return self
 }
 
 //go:nosplit

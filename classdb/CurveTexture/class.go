@@ -171,9 +171,11 @@ func New() Instance {
 
 /*
 The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) {
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
@@ -185,9 +187,10 @@ func (self Instance) TextureMode() TextureMode {
 	return TextureMode(class(self).GetTextureMode())
 }
 
-// SetTextureMode sets the property returned by [GetTextureMode].
-func (self Instance) SetTextureMode(value TextureMode) {
+// SetTextureMode sets the property returned by [GetTextureMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMode(value TextureMode) Instance {
 	class(self).SetTextureMode(value)
+	return self
 }
 
 /*
@@ -199,9 +202,10 @@ func (self Instance) Curve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
-// SetCurve sets the property returned by [GetCurve].
-func (self Instance) SetCurve(value Curve.Instance) {
+// SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCurve(value Curve.Instance) Instance {
 	class(self).SetCurve(value)
+	return self
 }
 
 //go:nosplit

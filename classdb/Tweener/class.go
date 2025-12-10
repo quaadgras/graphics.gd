@@ -161,12 +161,13 @@ Emitted when the [Tweener] has just finished its job or became invalid (e.g. due
 
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

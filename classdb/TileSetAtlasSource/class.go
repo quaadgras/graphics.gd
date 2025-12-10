@@ -278,9 +278,12 @@ func (self Instance) ClearTilesOutsideTexture() { //gd:TileSetAtlasSource.clear_
 
 /*
 Sets the number of columns in the animation layout of the tile at coordinates 'atlas_coords'. If set to 0, then the different frames of the animation are laid out as a single horizontal line in the atlas.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int) { //gd:TileSetAtlasSource.set_tile_animation_columns
+func (self Instance) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int) Instance { //gd:TileSetAtlasSource.set_tile_animation_columns
 	Advanced(self).SetTileAnimationColumns(Vector2i.XY(atlas_coords), int64(frame_columns))
+	return self
 }
 
 /*
@@ -292,9 +295,12 @@ func (self Instance) GetTileAnimationColumns(atlas_coords Vector2i.XY) int { //g
 
 /*
 Sets the margin (in grid tiles) between each tile in the animation layout of the tile at coordinates 'atlas_coords' has.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) { //gd:TileSetAtlasSource.set_tile_animation_separation
+func (self Instance) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) Instance { //gd:TileSetAtlasSource.set_tile_animation_separation
 	Advanced(self).SetTileAnimationSeparation(Vector2i.XY(atlas_coords), Vector2i.XY(separation))
+	return self
 }
 
 /*
@@ -306,9 +312,12 @@ func (self Instance) GetTileAnimationSeparation(atlas_coords Vector2i.XY) Vector
 
 /*
 Sets the animation speed of the tile at coordinates 'atlas_coords' has.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed Float.X) { //gd:TileSetAtlasSource.set_tile_animation_speed
+func (self Instance) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed Float.X) Instance { //gd:TileSetAtlasSource.set_tile_animation_speed
 	Advanced(self).SetTileAnimationSpeed(Vector2i.XY(atlas_coords), float64(speed))
+	return self
 }
 
 /*
@@ -321,10 +330,13 @@ func (self Instance) GetTileAnimationSpeed(atlas_coords Vector2i.XY) Float.X { /
 /*
 Sets the tile animation mode of the tile at 'atlas_coords' to 'mode'. See also [GetTileAnimationMode].
 
+Returns 'self' to enable method chaining.
+
 [GetTileAnimationMode]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource#Instance.GetTileAnimationMode
 */
-func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode TileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
+func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode TileAnimationMode) Instance { //gd:TileSetAtlasSource.set_tile_animation_mode
 	Advanced(self).SetTileAnimationMode(Vector2i.XY(atlas_coords), mode)
+	return self
 }
 
 /*
@@ -338,9 +350,12 @@ func (self Instance) GetTileAnimationMode(atlas_coords Vector2i.XY) TileAnimatio
 
 /*
 Sets how many animation frames the tile at coordinates 'atlas_coords' has.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
+func (self Instance) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int) Instance { //gd:TileSetAtlasSource.set_tile_animation_frames_count
 	Advanced(self).SetTileAnimationFramesCount(Vector2i.XY(atlas_coords), int64(frames_count))
+	return self
 }
 
 /*
@@ -352,9 +367,12 @@ func (self Instance) GetTileAnimationFramesCount(atlas_coords Vector2i.XY) int {
 
 /*
 Sets the animation frame 'duration' of frame 'frame_index' for the tile at coordinates 'atlas_coords'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int, duration Float.X) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
+func (self Instance) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int, duration Float.X) Instance { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
 	Advanced(self).SetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index), float64(duration))
+	return self
 }
 
 /*
@@ -402,9 +420,12 @@ func (self Instance) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative
 Change a tile's alternative ID from 'alternative_tile' to 'new_id'.
 
 Calling this function with 'new_id' of 0 will fail, as the base tile alternative cannot be moved.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int, new_id int) { //gd:TileSetAtlasSource.set_alternative_tile_id
+func (self Instance) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int, new_id int) Instance { //gd:TileSetAtlasSource.set_alternative_tile_id
 	Advanced(self).SetAlternativeTileId(Vector2i.XY(atlas_coords), int64(alternative_tile), int64(new_id))
+	return self
 }
 
 /*
@@ -524,9 +545,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -536,9 +558,10 @@ func (self Instance) Margins() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMargins())
 }
 
-// SetMargins sets the property returned by [GetMargins].
-func (self Instance) SetMargins(value Vector2i.XY) {
+// SetMargins sets the property returned by [GetMargins]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargins(value Vector2i.XY) Instance {
 	class(self).SetMargins(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -548,9 +571,10 @@ func (self Instance) Separation() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSeparation())
 }
 
-// SetSeparation sets the property returned by [GetSeparation].
-func (self Instance) SetSeparation(value Vector2i.XY) {
+// SetSeparation sets the property returned by [GetSeparation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeparation(value Vector2i.XY) Instance {
 	class(self).SetSeparation(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -560,9 +584,10 @@ func (self Instance) TextureRegionSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTextureRegionSize())
 }
 
-// SetTextureRegionSize sets the property returned by [GetTextureRegionSize].
-func (self Instance) SetTextureRegionSize(value Vector2i.XY) {
+// SetTextureRegionSize sets the property returned by [GetTextureRegionSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureRegionSize(value Vector2i.XY) Instance {
 	class(self).SetTextureRegionSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -574,9 +599,10 @@ func (self Instance) UseTexturePadding() bool {
 	return bool(class(self).GetUseTexturePadding())
 }
 
-// SetUseTexturePadding sets the property returned by [GetUseTexturePadding].
-func (self Instance) SetUseTexturePadding(value bool) {
+// SetUseTexturePadding sets the property returned by [GetUseTexturePadding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseTexturePadding(value bool) Instance {
 	class(self).SetUseTexturePadding(value)
+	return self
 }
 
 //go:nosplit

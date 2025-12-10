@@ -170,9 +170,10 @@ func (self Instance) Constant() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetConstant())
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value Transform3D.BasisOrigin) Instance {
 	class(self).SetConstant(Transform3D.BasisOrigin(value))
+	return self
 }
 
 //go:nosplit

@@ -233,11 +233,14 @@ Example: Change the animation while keeping the same [Frame] and [FrameProgress]
 	animated_sprite3D.PlayNamed("walk_another_skin")
 	animated_sprite3D.SetFrameAndProgress(current_frame, current_progress)
 
+Returns 'self' to enable method chaining.
+
 [Frame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.Frame
 [FrameProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.FrameProgress
 */
-func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) { //gd:AnimatedSprite3D.set_frame_and_progress
+func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) Instance { //gd:AnimatedSprite3D.set_frame_and_progress
 	Advanced(self).SetFrameAndProgress(int64(frame_), float64(progress))
+	return self
 }
 
 /*
@@ -303,9 +306,10 @@ func (self Instance) SpriteFrames() SpriteFrames.Instance {
 	return SpriteFrames.Instance(class(self).GetSpriteFrames())
 }
 
-// SetSpriteFrames sets the property returned by [GetSpriteFrames].
-func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) {
+// SetSpriteFrames sets the property returned by [GetSpriteFrames]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) Instance {
 	class(self).SetSpriteFrames(value)
+	return self
 }
 
 /*
@@ -319,9 +323,10 @@ func (self Instance) Animation() string {
 	return string(class(self).GetAnimation().String())
 }
 
-// SetAnimation sets the property returned by [GetAnimation].
-func (self Instance) SetAnimation(value string) {
+// SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimation(value string) Instance {
 	class(self).SetAnimation(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -331,9 +336,10 @@ func (self Instance) Autoplay() string {
 	return string(class(self).GetAutoplay().String())
 }
 
-// SetAutoplay sets the property returned by [GetAutoplay].
-func (self Instance) SetAutoplay(value string) {
+// SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoplay(value string) Instance {
 	class(self).SetAutoplay(String.New(value))
+	return self
 }
 
 /*
@@ -346,9 +352,10 @@ func (self Instance) Frame() int {
 	return int(int(class(self).GetFrame()))
 }
 
-// SetFrame sets the property returned by [GetFrame].
-func (self Instance) SetFrame(value int) {
+// SetFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrame(value int) Instance {
 	class(self).SetFrame(int64(value))
+	return self
 }
 
 /*
@@ -358,9 +365,10 @@ func (self Instance) FrameProgress() Float.X {
 	return Float.X(Float.X(class(self).GetFrameProgress()))
 }
 
-// SetFrameProgress sets the property returned by [GetFrameProgress].
-func (self Instance) SetFrameProgress(value Float.X) {
+// SetFrameProgress sets the property returned by [GetFrameProgress]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrameProgress(value Float.X) Instance {
 	class(self).SetFrameProgress(float64(value))
+	return self
 }
 
 /*
@@ -372,9 +380,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -558,12 +567,13 @@ Emitted when [SpriteFrames] changes.
 
 [SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.SpriteFrames
 */
-func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SpriteFramesChanged() Signal.Any {
@@ -575,12 +585,13 @@ Emitted when [Animation] changes.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.Animation
 */
-func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationChanged() Signal.Any {
@@ -592,12 +603,13 @@ Emitted when [Frame] changes.
 
 [Frame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.Frame
 */
-func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) FrameChanged() Signal.Any {
@@ -607,12 +619,13 @@ func (self class) FrameChanged() Signal.Any {
 /*
 Emitted when the animation loops.
 */
-func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationLooped() Signal.Any {
@@ -624,12 +637,13 @@ Emitted when the animation reaches the end, or the start if it is played in reve
 
 Note: This signal is not emitted if an animation is looping.
 */
-func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) AnimationFinished() Signal.Any {

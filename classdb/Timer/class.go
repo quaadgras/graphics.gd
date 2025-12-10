@@ -254,9 +254,10 @@ func (self Instance) ProcessCallback() TimerProcessCallback {
 	return TimerProcessCallback(class(self).GetTimerProcessCallback())
 }
 
-// SetProcessCallback sets the property returned by [GetTimerProcessCallback].
-func (self Instance) SetProcessCallback(value TimerProcessCallback) {
+// SetProcessCallback sets the property returned by [GetTimerProcessCallback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetProcessCallback(value TimerProcessCallback) Instance {
 	class(self).SetTimerProcessCallback(value)
+	return self
 }
 
 /*
@@ -273,9 +274,10 @@ func (self Instance) WaitTime() Float.X {
 	return Float.X(Float.X(class(self).GetWaitTime()))
 }
 
-// SetWaitTime sets the property returned by [GetWaitTime].
-func (self Instance) SetWaitTime(value Float.X) {
+// SetWaitTime sets the property returned by [GetWaitTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWaitTime(value Float.X) Instance {
 	class(self).SetWaitTime(float64(value))
+	return self
 }
 
 /*
@@ -285,9 +287,10 @@ func (self Instance) OneShot() bool {
 	return bool(class(self).IsOneShot())
 }
 
-// SetOneShot sets the property returned by [IsOneShot].
-func (self Instance) SetOneShot(value bool) {
+// SetOneShot sets the property returned by [IsOneShot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneShot(value bool) Instance {
 	class(self).SetOneShot(value)
+	return self
 }
 
 /*
@@ -301,9 +304,10 @@ func (self Instance) Autostart() bool {
 	return bool(class(self).HasAutostart())
 }
 
-// SetAutostart sets the property returned by [HasAutostart].
-func (self Instance) SetAutostart(value bool) {
+// SetAutostart sets the property returned by [HasAutostart]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutostart(value bool) Instance {
 	class(self).SetAutostart(value)
+	return self
 }
 
 /*
@@ -316,9 +320,10 @@ func (self Instance) Paused() bool {
 	return bool(class(self).IsPaused())
 }
 
-// SetPaused sets the property returned by [IsPaused].
-func (self Instance) SetPaused(value bool) {
+// SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaused(value bool) Instance {
 	class(self).SetPaused(value)
+	return self
 }
 
 /*
@@ -330,9 +335,10 @@ func (self Instance) IgnoreTimeScale() bool {
 	return bool(class(self).IsIgnoringTimeScale())
 }
 
-// SetIgnoreTimeScale sets the property returned by [IsIgnoringTimeScale].
-func (self Instance) SetIgnoreTimeScale(value bool) {
+// SetIgnoreTimeScale sets the property returned by [IsIgnoringTimeScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreTimeScale(value bool) Instance {
 	class(self).SetIgnoreTimeScale(value)
+	return self
 }
 
 /*
@@ -466,12 +472,13 @@ func (self class) GetTimerProcessCallback() TimerProcessCallback { //gd:Timer.ge
 /*
 Emitted when the timer reaches the end.
 */
-func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnTimeout(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("timeout"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Timeout() Signal.Any {

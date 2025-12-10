@@ -180,9 +180,12 @@ func (self MoreArgs) AddPoint(position Vector3.XYZ, in Vector3.XYZ, out Vector3.
 
 /*
 Sets the position for the vertex 'idx'. If the index is out of bounds, the function sends an error to the console.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointPosition(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_position
+func (self Instance) SetPointPosition(idx int, position Vector3.XYZ) Instance { //gd:Curve3D.set_point_position
 	Advanced(self).SetPointPosition(int64(idx), Vector3.XYZ(position))
+	return self
 }
 
 /*
@@ -197,10 +200,13 @@ Sets the tilt angle in radians for the point 'idx'. If the index is out of bound
 
 The tilt controls the rotation along the look-at axis an object traveling the path would have. In the case of a curve controlling a [PathFollow3D], this tilt is an offset over the natural tilt the [PathFollow3D] calculates.
 
+Returns 'self' to enable method chaining.
+
 [PathFollow3D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow3D
 */
-func (self Instance) SetPointTilt(idx int, tilt Float.X) { //gd:Curve3D.set_point_tilt
+func (self Instance) SetPointTilt(idx int, tilt Float.X) Instance { //gd:Curve3D.set_point_tilt
 	Advanced(self).SetPointTilt(int64(idx), float64(tilt))
+	return self
 }
 
 /*
@@ -212,9 +218,12 @@ func (self Instance) GetPointTilt(idx int) Float.X { //gd:Curve3D.get_point_tilt
 
 /*
 Sets the position of the control point leading to the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointIn(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_in
+func (self Instance) SetPointIn(idx int, position Vector3.XYZ) Instance { //gd:Curve3D.set_point_in
 	Advanced(self).SetPointIn(int64(idx), Vector3.XYZ(position))
+	return self
 }
 
 /*
@@ -226,9 +235,12 @@ func (self Instance) GetPointIn(idx int) Vector3.XYZ { //gd:Curve3D.get_point_in
 
 /*
 Sets the position of the control point leading out of the vertex 'idx'. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointOut(idx int, position Vector3.XYZ) { //gd:Curve3D.set_point_out
+func (self Instance) SetPointOut(idx int, position Vector3.XYZ) Instance { //gd:Curve3D.set_point_out
 	Advanced(self).SetPointOut(int64(idx), Vector3.XYZ(position))
+	return self
 }
 
 /*
@@ -478,9 +490,10 @@ func (self Instance) Closed() bool {
 	return bool(class(self).IsClosed())
 }
 
-// SetClosed sets the property returned by [IsClosed].
-func (self Instance) SetClosed(value bool) {
+// SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClosed(value bool) Instance {
 	class(self).SetClosed(value)
+	return self
 }
 
 /*
@@ -493,9 +506,10 @@ func (self Instance) BakeInterval() Float.X {
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
 
-// SetBakeInterval sets the property returned by [GetBakeInterval].
-func (self Instance) SetBakeInterval(value Float.X) {
+// SetBakeInterval sets the property returned by [GetBakeInterval]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeInterval(value Float.X) Instance {
 	class(self).SetBakeInterval(float64(value))
+	return self
 }
 
 /*
@@ -505,9 +519,10 @@ func (self Instance) PointCount() int {
 	return int(int(class(self).GetPointCount()))
 }
 
-// SetPointCount sets the property returned by [GetPointCount].
-func (self Instance) SetPointCount(value int) {
+// SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPointCount(value int) Instance {
 	class(self).SetPointCount(int64(value))
+	return self
 }
 
 /*
@@ -519,9 +534,10 @@ func (self Instance) UpVectorEnabled() bool {
 	return bool(class(self).IsUpVectorEnabled())
 }
 
-// SetUpVectorEnabled sets the property returned by [IsUpVectorEnabled].
-func (self Instance) SetUpVectorEnabled(value bool) {
+// SetUpVectorEnabled sets the property returned by [IsUpVectorEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUpVectorEnabled(value bool) Instance {
 	class(self).SetUpVectorEnabled(value)
+	return self
 }
 
 //go:nosplit

@@ -295,9 +295,10 @@ func (self Instance) Emitting() bool {
 	return bool(class(self).IsEmitting())
 }
 
-// SetEmitting sets the property returned by [IsEmitting].
-func (self Instance) SetEmitting(value bool) {
+// SetEmitting sets the property returned by [IsEmitting]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmitting(value bool) Instance {
 	class(self).SetEmitting(value)
+	return self
 }
 
 /*
@@ -307,9 +308,10 @@ func (self Instance) Amount() int {
 	return int(int(class(self).GetAmount()))
 }
 
-// SetAmount sets the property returned by [GetAmount].
-func (self Instance) SetAmount(value int) {
+// SetAmount sets the property returned by [GetAmount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAmount(value int) Instance {
 	class(self).SetAmount(int64(value))
+	return self
 }
 
 /*
@@ -319,9 +321,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -331,9 +334,10 @@ func (self Instance) Lifetime() Float.X {
 	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
-// SetLifetime sets the property returned by [GetLifetime].
-func (self Instance) SetLifetime(value Float.X) {
+// SetLifetime sets the property returned by [GetLifetime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLifetime(value Float.X) Instance {
 	class(self).SetLifetime(float64(value))
+	return self
 }
 
 /*
@@ -343,9 +347,10 @@ func (self Instance) OneShot() bool {
 	return bool(class(self).GetOneShot())
 }
 
-// SetOneShot sets the property returned by [GetOneShot].
-func (self Instance) SetOneShot(value bool) {
+// SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneShot(value bool) Instance {
 	class(self).SetOneShot(value)
+	return self
 }
 
 /*
@@ -355,9 +360,10 @@ func (self Instance) Preprocess() Float.X {
 	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
-// SetPreprocess sets the property returned by [GetPreProcessTime].
-func (self Instance) SetPreprocess(value Float.X) {
+// SetPreprocess sets the property returned by [GetPreProcessTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPreprocess(value Float.X) Instance {
 	class(self).SetPreProcessTime(float64(value))
+	return self
 }
 
 /*
@@ -367,9 +373,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 /*
@@ -379,9 +386,10 @@ func (self Instance) Explosiveness() Float.X {
 	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
-// SetExplosiveness sets the property returned by [GetExplosivenessRatio].
-func (self Instance) SetExplosiveness(value Float.X) {
+// SetExplosiveness sets the property returned by [GetExplosivenessRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExplosiveness(value Float.X) Instance {
 	class(self).SetExplosivenessRatio(float64(value))
+	return self
 }
 
 /*
@@ -391,9 +399,10 @@ func (self Instance) Randomness() Float.X {
 	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
-// SetRandomness sets the property returned by [GetRandomnessRatio].
-func (self Instance) SetRandomness(value Float.X) {
+// SetRandomness sets the property returned by [GetRandomnessRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRandomness(value Float.X) Instance {
 	class(self).SetRandomnessRatio(float64(value))
+	return self
 }
 
 /*
@@ -405,9 +414,10 @@ func (self Instance) UseFixedSeed() bool {
 	return bool(class(self).GetUseFixedSeed())
 }
 
-// SetUseFixedSeed sets the property returned by [GetUseFixedSeed].
-func (self Instance) SetUseFixedSeed(value bool) {
+// SetUseFixedSeed sets the property returned by [GetUseFixedSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseFixedSeed(value bool) Instance {
 	class(self).SetUseFixedSeed(value)
+	return self
 }
 
 /*
@@ -419,9 +429,10 @@ func (self Instance) Seed() int {
 	return int(int(class(self).GetSeed()))
 }
 
-// SetSeed sets the property returned by [GetSeed].
-func (self Instance) SetSeed(value int) {
+// SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSeed(value int) Instance {
 	class(self).SetSeed(int64(value))
+	return self
 }
 
 /*
@@ -431,9 +442,10 @@ func (self Instance) LifetimeRandomness() Float.X {
 	return Float.X(Float.X(class(self).GetLifetimeRandomness()))
 }
 
-// SetLifetimeRandomness sets the property returned by [GetLifetimeRandomness].
-func (self Instance) SetLifetimeRandomness(value Float.X) {
+// SetLifetimeRandomness sets the property returned by [GetLifetimeRandomness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLifetimeRandomness(value Float.X) Instance {
 	class(self).SetLifetimeRandomness(float64(value))
+	return self
 }
 
 /*
@@ -443,9 +455,10 @@ func (self Instance) FixedFps() int {
 	return int(int(class(self).GetFixedFps()))
 }
 
-// SetFixedFps sets the property returned by [GetFixedFps].
-func (self Instance) SetFixedFps(value int) {
+// SetFixedFps sets the property returned by [GetFixedFps]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedFps(value int) Instance {
 	class(self).SetFixedFps(int64(value))
+	return self
 }
 
 /*
@@ -455,9 +468,10 @@ func (self Instance) FractDelta() bool {
 	return bool(class(self).GetFractionalDelta())
 }
 
-// SetFractDelta sets the property returned by [GetFractionalDelta].
-func (self Instance) SetFractDelta(value bool) {
+// SetFractDelta sets the property returned by [GetFractionalDelta]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFractDelta(value bool) Instance {
 	class(self).SetFractionalDelta(value)
+	return self
 }
 
 /*
@@ -469,9 +483,10 @@ func (self Instance) LocalCoords() bool {
 	return bool(class(self).GetUseLocalCoordinates())
 }
 
-// SetLocalCoords sets the property returned by [GetUseLocalCoordinates].
-func (self Instance) SetLocalCoords(value bool) {
+// SetLocalCoords sets the property returned by [GetUseLocalCoordinates]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocalCoords(value bool) Instance {
 	class(self).SetUseLocalCoordinates(value)
+	return self
 }
 
 /*
@@ -481,9 +496,10 @@ func (self Instance) DrawOrder() DrawOrder {
 	return DrawOrder(class(self).GetDrawOrder())
 }
 
-// SetDrawOrder sets the property returned by [GetDrawOrder].
-func (self Instance) SetDrawOrder(value DrawOrder) {
+// SetDrawOrder sets the property returned by [GetDrawOrder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawOrder(value DrawOrder) Instance {
 	class(self).SetDrawOrder(value)
+	return self
 }
 
 /*
@@ -493,9 +509,10 @@ func (self Instance) EmissionShape() EmissionShape {
 	return EmissionShape(class(self).GetEmissionShape())
 }
 
-// SetEmissionShape sets the property returned by [GetEmissionShape].
-func (self Instance) SetEmissionShape(value EmissionShape) {
+// SetEmissionShape sets the property returned by [GetEmissionShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionShape(value EmissionShape) Instance {
 	class(self).SetEmissionShape(value)
+	return self
 }
 
 /*
@@ -507,9 +524,10 @@ func (self Instance) EmissionSphereRadius() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionSphereRadius()))
 }
 
-// SetEmissionSphereRadius sets the property returned by [GetEmissionSphereRadius].
-func (self Instance) SetEmissionSphereRadius(value Float.X) {
+// SetEmissionSphereRadius sets the property returned by [GetEmissionSphereRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionSphereRadius(value Float.X) Instance {
 	class(self).SetEmissionSphereRadius(float64(value))
+	return self
 }
 
 /*
@@ -521,9 +539,10 @@ func (self Instance) EmissionRectExtents() Vector2.XY {
 	return Vector2.XY(class(self).GetEmissionRectExtents())
 }
 
-// SetEmissionRectExtents sets the property returned by [GetEmissionRectExtents].
-func (self Instance) SetEmissionRectExtents(value Vector2.XY) {
+// SetEmissionRectExtents sets the property returned by [GetEmissionRectExtents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionRectExtents(value Vector2.XY) Instance {
 	class(self).SetEmissionRectExtents(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -533,9 +552,10 @@ func (self Instance) EmissionPoints() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetEmissionPoints().Values()))
 }
 
-// SetEmissionPoints sets the property returned by [GetEmissionPoints].
-func (self Instance) SetEmissionPoints(value []Vector2.XY) {
+// SetEmissionPoints sets the property returned by [GetEmissionPoints]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionPoints(value []Vector2.XY) Instance {
 	class(self).SetEmissionPoints(Packed.New(value...))
+	return self
 }
 
 /*
@@ -545,9 +565,10 @@ func (self Instance) EmissionNormals() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetEmissionNormals().Values()))
 }
 
-// SetEmissionNormals sets the property returned by [GetEmissionNormals].
-func (self Instance) SetEmissionNormals(value []Vector2.XY) {
+// SetEmissionNormals sets the property returned by [GetEmissionNormals]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionNormals(value []Vector2.XY) Instance {
 	class(self).SetEmissionNormals(Packed.New(value...))
+	return self
 }
 
 /*
@@ -559,9 +580,10 @@ func (self Instance) EmissionColors() []Color.RGBA {
 	return []Color.RGBA(slices.Collect(class(self).GetEmissionColors().Values()))
 }
 
-// SetEmissionColors sets the property returned by [GetEmissionColors].
-func (self Instance) SetEmissionColors(value []Color.RGBA) {
+// SetEmissionColors sets the property returned by [GetEmissionColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEmissionColors(value []Color.RGBA) Instance {
 	class(self).SetEmissionColors(Packed.New(value...))
+	return self
 }
 
 /*
@@ -571,9 +593,10 @@ func (self Instance) ParticleFlagAlignY() bool {
 	return bool(class(self).GetParticleFlag(0))
 }
 
-// SetParticleFlagAlignY sets the property returned by [GetParticleFlag].
-func (self Instance) SetParticleFlagAlignY(value bool) {
+// SetParticleFlagAlignY sets the property returned by [GetParticleFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticleFlagAlignY(value bool) Instance {
 	class(self).SetParticleFlag(0, value)
+	return self
 }
 
 /*
@@ -583,9 +606,10 @@ func (self Instance) Direction() Vector2.XY {
 	return Vector2.XY(class(self).GetDirection())
 }
 
-// SetDirection sets the property returned by [GetDirection].
-func (self Instance) SetDirection(value Vector2.XY) {
+// SetDirection sets the property returned by [GetDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirection(value Vector2.XY) Instance {
 	class(self).SetDirection(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -595,9 +619,10 @@ func (self Instance) Spread() Float.X {
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
-// SetSpread sets the property returned by [GetSpread].
-func (self Instance) SetSpread(value Float.X) {
+// SetSpread sets the property returned by [GetSpread]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpread(value Float.X) Instance {
 	class(self).SetSpread(float64(value))
+	return self
 }
 
 /*
@@ -607,9 +632,10 @@ func (self Instance) Gravity() Vector2.XY {
 	return Vector2.XY(class(self).GetGravity())
 }
 
-// SetGravity sets the property returned by [GetGravity].
-func (self Instance) SetGravity(value Vector2.XY) {
+// SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravity(value Vector2.XY) Instance {
 	class(self).SetGravity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -621,9 +647,10 @@ func (self Instance) InitialVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(0)))
 }
 
-// SetInitialVelocityMin sets the property returned by [GetParamMin].
-func (self Instance) SetInitialVelocityMin(value Float.X) {
+// SetInitialVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInitialVelocityMin(value Float.X) Instance {
 	class(self).SetParamMin(0, float64(value))
+	return self
 }
 
 /*
@@ -636,9 +663,10 @@ func (self Instance) InitialVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(0)))
 }
 
-// SetInitialVelocityMax sets the property returned by [GetParamMax].
-func (self Instance) SetInitialVelocityMax(value Float.X) {
+// SetInitialVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInitialVelocityMax(value Float.X) Instance {
 	class(self).SetParamMax(0, float64(value))
+	return self
 }
 
 /*
@@ -650,9 +678,10 @@ func (self Instance) AngularVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(1)))
 }
 
-// SetAngularVelocityMin sets the property returned by [GetParamMin].
-func (self Instance) SetAngularVelocityMin(value Float.X) {
+// SetAngularVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocityMin(value Float.X) Instance {
 	class(self).SetParamMin(1, float64(value))
+	return self
 }
 
 /*
@@ -662,9 +691,10 @@ func (self Instance) AngularVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(1)))
 }
 
-// SetAngularVelocityMax sets the property returned by [GetParamMax].
-func (self Instance) SetAngularVelocityMax(value Float.X) {
+// SetAngularVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocityMax(value Float.X) Instance {
 	class(self).SetParamMax(1, float64(value))
+	return self
 }
 
 /*
@@ -676,9 +706,10 @@ func (self Instance) AngularVelocityCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(1))
 }
 
-// SetAngularVelocityCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetAngularVelocityCurve(value Curve.Instance) {
+// SetAngularVelocityCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocityCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(1, value)
+	return self
 }
 
 /*
@@ -690,9 +721,10 @@ func (self Instance) OrbitVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(2)))
 }
 
-// SetOrbitVelocityMin sets the property returned by [GetParamMin].
-func (self Instance) SetOrbitVelocityMin(value Float.X) {
+// SetOrbitVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOrbitVelocityMin(value Float.X) Instance {
 	class(self).SetParamMin(2, float64(value))
+	return self
 }
 
 /*
@@ -702,9 +734,10 @@ func (self Instance) OrbitVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(2)))
 }
 
-// SetOrbitVelocityMax sets the property returned by [GetParamMax].
-func (self Instance) SetOrbitVelocityMax(value Float.X) {
+// SetOrbitVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOrbitVelocityMax(value Float.X) Instance {
 	class(self).SetParamMax(2, float64(value))
+	return self
 }
 
 /*
@@ -716,9 +749,10 @@ func (self Instance) OrbitVelocityCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(2))
 }
 
-// SetOrbitVelocityCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetOrbitVelocityCurve(value Curve.Instance) {
+// SetOrbitVelocityCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOrbitVelocityCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(2, value)
+	return self
 }
 
 /*
@@ -730,9 +764,10 @@ func (self Instance) LinearAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(3)))
 }
 
-// SetLinearAccelMin sets the property returned by [GetParamMin].
-func (self Instance) SetLinearAccelMin(value Float.X) {
+// SetLinearAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearAccelMin(value Float.X) Instance {
 	class(self).SetParamMin(3, float64(value))
+	return self
 }
 
 /*
@@ -742,9 +777,10 @@ func (self Instance) LinearAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(3)))
 }
 
-// SetLinearAccelMax sets the property returned by [GetParamMax].
-func (self Instance) SetLinearAccelMax(value Float.X) {
+// SetLinearAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearAccelMax(value Float.X) Instance {
 	class(self).SetParamMax(3, float64(value))
+	return self
 }
 
 /*
@@ -756,9 +792,10 @@ func (self Instance) LinearAccelCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(3))
 }
 
-// SetLinearAccelCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetLinearAccelCurve(value Curve.Instance) {
+// SetLinearAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearAccelCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(3, value)
+	return self
 }
 
 /*
@@ -770,9 +807,10 @@ func (self Instance) RadialAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(4)))
 }
 
-// SetRadialAccelMin sets the property returned by [GetParamMin].
-func (self Instance) SetRadialAccelMin(value Float.X) {
+// SetRadialAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialAccelMin(value Float.X) Instance {
 	class(self).SetParamMin(4, float64(value))
+	return self
 }
 
 /*
@@ -782,9 +820,10 @@ func (self Instance) RadialAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(4)))
 }
 
-// SetRadialAccelMax sets the property returned by [GetParamMax].
-func (self Instance) SetRadialAccelMax(value Float.X) {
+// SetRadialAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialAccelMax(value Float.X) Instance {
 	class(self).SetParamMax(4, float64(value))
+	return self
 }
 
 /*
@@ -796,9 +835,10 @@ func (self Instance) RadialAccelCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(4))
 }
 
-// SetRadialAccelCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetRadialAccelCurve(value Curve.Instance) {
+// SetRadialAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialAccelCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(4, value)
+	return self
 }
 
 /*
@@ -810,9 +850,10 @@ func (self Instance) TangentialAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(5)))
 }
 
-// SetTangentialAccelMin sets the property returned by [GetParamMin].
-func (self Instance) SetTangentialAccelMin(value Float.X) {
+// SetTangentialAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTangentialAccelMin(value Float.X) Instance {
 	class(self).SetParamMin(5, float64(value))
+	return self
 }
 
 /*
@@ -822,9 +863,10 @@ func (self Instance) TangentialAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(5)))
 }
 
-// SetTangentialAccelMax sets the property returned by [GetParamMax].
-func (self Instance) SetTangentialAccelMax(value Float.X) {
+// SetTangentialAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTangentialAccelMax(value Float.X) Instance {
 	class(self).SetParamMax(5, float64(value))
+	return self
 }
 
 /*
@@ -836,9 +878,10 @@ func (self Instance) TangentialAccelCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(5))
 }
 
-// SetTangentialAccelCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetTangentialAccelCurve(value Curve.Instance) {
+// SetTangentialAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTangentialAccelCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(5, value)
+	return self
 }
 
 /*
@@ -850,9 +893,10 @@ func (self Instance) DampingMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(6)))
 }
 
-// SetDampingMin sets the property returned by [GetParamMin].
-func (self Instance) SetDampingMin(value Float.X) {
+// SetDampingMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingMin(value Float.X) Instance {
 	class(self).SetParamMin(6, float64(value))
+	return self
 }
 
 /*
@@ -862,9 +906,10 @@ func (self Instance) DampingMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(6)))
 }
 
-// SetDampingMax sets the property returned by [GetParamMax].
-func (self Instance) SetDampingMax(value Float.X) {
+// SetDampingMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingMax(value Float.X) Instance {
 	class(self).SetParamMax(6, float64(value))
+	return self
 }
 
 /*
@@ -876,9 +921,10 @@ func (self Instance) DampingCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(6))
 }
 
-// SetDampingCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetDampingCurve(value Curve.Instance) {
+// SetDampingCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDampingCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(6, value)
+	return self
 }
 
 /*
@@ -890,9 +936,10 @@ func (self Instance) AngleMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(7)))
 }
 
-// SetAngleMin sets the property returned by [GetParamMin].
-func (self Instance) SetAngleMin(value Float.X) {
+// SetAngleMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngleMin(value Float.X) Instance {
 	class(self).SetParamMin(7, float64(value))
+	return self
 }
 
 /*
@@ -902,9 +949,10 @@ func (self Instance) AngleMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(7)))
 }
 
-// SetAngleMax sets the property returned by [GetParamMax].
-func (self Instance) SetAngleMax(value Float.X) {
+// SetAngleMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngleMax(value Float.X) Instance {
 	class(self).SetParamMax(7, float64(value))
+	return self
 }
 
 /*
@@ -916,9 +964,10 @@ func (self Instance) AngleCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(7))
 }
 
-// SetAngleCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetAngleCurve(value Curve.Instance) {
+// SetAngleCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngleCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(7, value)
+	return self
 }
 
 /*
@@ -930,9 +979,10 @@ func (self Instance) ScaleAmountMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(8)))
 }
 
-// SetScaleAmountMin sets the property returned by [GetParamMin].
-func (self Instance) SetScaleAmountMin(value Float.X) {
+// SetScaleAmountMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleAmountMin(value Float.X) Instance {
 	class(self).SetParamMin(8, float64(value))
+	return self
 }
 
 /*
@@ -942,9 +992,10 @@ func (self Instance) ScaleAmountMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(8)))
 }
 
-// SetScaleAmountMax sets the property returned by [GetParamMax].
-func (self Instance) SetScaleAmountMax(value Float.X) {
+// SetScaleAmountMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleAmountMax(value Float.X) Instance {
 	class(self).SetParamMax(8, float64(value))
+	return self
 }
 
 /*
@@ -956,9 +1007,10 @@ func (self Instance) ScaleAmountCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(8))
 }
 
-// SetScaleAmountCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetScaleAmountCurve(value Curve.Instance) {
+// SetScaleAmountCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleAmountCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(8, value)
+	return self
 }
 
 /*
@@ -971,9 +1023,10 @@ func (self Instance) SplitScale() bool {
 	return bool(class(self).GetSplitScale())
 }
 
-// SetSplitScale sets the property returned by [GetSplitScale].
-func (self Instance) SetSplitScale(value bool) {
+// SetSplitScale sets the property returned by [GetSplitScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSplitScale(value bool) Instance {
 	class(self).SetSplitScale(value)
+	return self
 }
 
 /*
@@ -988,9 +1041,10 @@ func (self Instance) ScaleCurveX() Curve.Instance {
 	return Curve.Instance(class(self).GetScaleCurveX())
 }
 
-// SetScaleCurveX sets the property returned by [GetScaleCurveX].
-func (self Instance) SetScaleCurveX(value Curve.Instance) {
+// SetScaleCurveX sets the property returned by [GetScaleCurveX]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleCurveX(value Curve.Instance) Instance {
 	class(self).SetScaleCurveX(value)
+	return self
 }
 
 /*
@@ -1005,9 +1059,10 @@ func (self Instance) ScaleCurveY() Curve.Instance {
 	return Curve.Instance(class(self).GetScaleCurveY())
 }
 
-// SetScaleCurveY sets the property returned by [GetScaleCurveY].
-func (self Instance) SetScaleCurveY(value Curve.Instance) {
+// SetScaleCurveY sets the property returned by [GetScaleCurveY]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaleCurveY(value Curve.Instance) Instance {
 	class(self).SetScaleCurveY(value)
+	return self
 }
 
 /*
@@ -1019,9 +1074,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetColor sets the property returned by [GetColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -1034,9 +1090,10 @@ func (self Instance) ColorRamp() Gradient.Instance {
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
-// SetColorRamp sets the property returned by [GetColorRamp].
-func (self Instance) SetColorRamp(value Gradient.Instance) {
+// SetColorRamp sets the property returned by [GetColorRamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorRamp(value Gradient.Instance) Instance {
 	class(self).SetColorRamp(value)
+	return self
 }
 
 /*
@@ -1049,9 +1106,10 @@ func (self Instance) ColorInitialRamp() Gradient.Instance {
 	return Gradient.Instance(class(self).GetColorInitialRamp())
 }
 
-// SetColorInitialRamp sets the property returned by [GetColorInitialRamp].
-func (self Instance) SetColorInitialRamp(value Gradient.Instance) {
+// SetColorInitialRamp sets the property returned by [GetColorInitialRamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorInitialRamp(value Gradient.Instance) Instance {
 	class(self).SetColorInitialRamp(value)
+	return self
 }
 
 /*
@@ -1063,9 +1121,10 @@ func (self Instance) HueVariationMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(9)))
 }
 
-// SetHueVariationMin sets the property returned by [GetParamMin].
-func (self Instance) SetHueVariationMin(value Float.X) {
+// SetHueVariationMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHueVariationMin(value Float.X) Instance {
 	class(self).SetParamMin(9, float64(value))
+	return self
 }
 
 /*
@@ -1075,9 +1134,10 @@ func (self Instance) HueVariationMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(9)))
 }
 
-// SetHueVariationMax sets the property returned by [GetParamMax].
-func (self Instance) SetHueVariationMax(value Float.X) {
+// SetHueVariationMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHueVariationMax(value Float.X) Instance {
 	class(self).SetParamMax(9, float64(value))
+	return self
 }
 
 /*
@@ -1089,9 +1149,10 @@ func (self Instance) HueVariationCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(9))
 }
 
-// SetHueVariationCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetHueVariationCurve(value Curve.Instance) {
+// SetHueVariationCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHueVariationCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(9, value)
+	return self
 }
 
 /*
@@ -1103,9 +1164,10 @@ func (self Instance) AnimSpeedMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(10)))
 }
 
-// SetAnimSpeedMin sets the property returned by [GetParamMin].
-func (self Instance) SetAnimSpeedMin(value Float.X) {
+// SetAnimSpeedMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimSpeedMin(value Float.X) Instance {
 	class(self).SetParamMin(10, float64(value))
+	return self
 }
 
 /*
@@ -1119,9 +1181,10 @@ func (self Instance) AnimSpeedMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(10)))
 }
 
-// SetAnimSpeedMax sets the property returned by [GetParamMax].
-func (self Instance) SetAnimSpeedMax(value Float.X) {
+// SetAnimSpeedMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimSpeedMax(value Float.X) Instance {
 	class(self).SetParamMax(10, float64(value))
+	return self
 }
 
 /*
@@ -1133,9 +1196,10 @@ func (self Instance) AnimSpeedCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(10))
 }
 
-// SetAnimSpeedCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetAnimSpeedCurve(value Curve.Instance) {
+// SetAnimSpeedCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimSpeedCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(10, value)
+	return self
 }
 
 /*
@@ -1147,9 +1211,10 @@ func (self Instance) AnimOffsetMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(11)))
 }
 
-// SetAnimOffsetMin sets the property returned by [GetParamMin].
-func (self Instance) SetAnimOffsetMin(value Float.X) {
+// SetAnimOffsetMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimOffsetMin(value Float.X) Instance {
 	class(self).SetParamMin(11, float64(value))
+	return self
 }
 
 /*
@@ -1161,9 +1226,10 @@ func (self Instance) AnimOffsetMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(11)))
 }
 
-// SetAnimOffsetMax sets the property returned by [GetParamMax].
-func (self Instance) SetAnimOffsetMax(value Float.X) {
+// SetAnimOffsetMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimOffsetMax(value Float.X) Instance {
 	class(self).SetParamMax(11, float64(value))
+	return self
 }
 
 /*
@@ -1175,9 +1241,10 @@ func (self Instance) AnimOffsetCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetParamCurve(11))
 }
 
-// SetAnimOffsetCurve sets the property returned by [GetParamCurve].
-func (self Instance) SetAnimOffsetCurve(value Curve.Instance) {
+// SetAnimOffsetCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimOffsetCurve(value Curve.Instance) Instance {
 	class(self).SetParamCurve(11, value)
+	return self
 }
 
 //go:nosplit
@@ -1685,12 +1752,13 @@ Emitted when all active particles have finished processing. When [OneShot] is di
 
 [OneShot]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.OneShot
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

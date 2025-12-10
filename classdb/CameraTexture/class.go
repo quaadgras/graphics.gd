@@ -176,9 +176,10 @@ func (self Instance) CameraFeedId() int {
 	return int(int(class(self).GetCameraFeedId()))
 }
 
-// SetCameraFeedId sets the property returned by [GetCameraFeedId].
-func (self Instance) SetCameraFeedId(value int) {
+// SetCameraFeedId sets the property returned by [GetCameraFeedId]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraFeedId(value int) Instance {
 	class(self).SetCameraFeedId(int64(value))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) WhichFeed() CameraFeed.ImageType {
 	return CameraFeed.ImageType(class(self).GetWhichFeed())
 }
 
-// SetWhichFeed sets the property returned by [GetWhichFeed].
-func (self Instance) SetWhichFeed(value CameraFeed.ImageType) {
+// SetWhichFeed sets the property returned by [GetWhichFeed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWhichFeed(value CameraFeed.ImageType) Instance {
 	class(self).SetWhichFeed(value)
+	return self
 }
 
 /*
@@ -204,9 +206,10 @@ func (self Instance) CameraIsActive() bool {
 	return bool(class(self).GetCameraActive())
 }
 
-// SetCameraIsActive sets the property returned by [GetCameraActive].
-func (self Instance) SetCameraIsActive(value bool) {
+// SetCameraIsActive sets the property returned by [GetCameraActive]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCameraIsActive(value bool) Instance {
 	class(self).SetCameraActive(value)
+	return self
 }
 
 //go:nosplit

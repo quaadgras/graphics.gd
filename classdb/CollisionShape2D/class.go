@@ -179,9 +179,10 @@ func (self Instance) Shape() Shape2D.Instance {
 	return Shape2D.Instance(class(self).GetShape())
 }
 
-// SetShape sets the property returned by [GetShape].
-func (self Instance) SetShape(value Shape2D.Instance) {
+// SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShape(value Shape2D.Instance) Instance {
 	class(self).SetShape(value)
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
-// SetDisabled sets the property returned by [IsDisabled].
-func (self Instance) SetDisabled(value bool) {
+// SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisabled(value bool) Instance {
 	class(self).SetDisabled(value)
+	return self
 }
 
 /*
@@ -210,9 +212,10 @@ func (self Instance) OneWayCollision() bool {
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
-// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled].
-func (self Instance) SetOneWayCollision(value bool) {
+// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneWayCollision(value bool) Instance {
 	class(self).SetOneWayCollision(value)
+	return self
 }
 
 /*
@@ -222,9 +225,10 @@ func (self Instance) OneWayCollisionMargin() Float.X {
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
-// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin].
-func (self Instance) SetOneWayCollisionMargin(value Float.X) {
+// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance {
 	class(self).SetOneWayCollisionMargin(float64(value))
+	return self
 }
 
 /*
@@ -238,9 +242,10 @@ func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
-// SetDebugColor sets the property returned by [GetDebugColor].
-func (self Instance) SetDebugColor(value Color.RGBA) {
+// SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugColor(value Color.RGBA) Instance {
 	class(self).SetDebugColor(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit

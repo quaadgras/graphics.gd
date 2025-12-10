@@ -180,9 +180,10 @@ func (self Instance) Hand() Hands {
 	return Hands(class(self).GetHand())
 }
 
-// SetHand sets the property returned by [GetHand].
-func (self Instance) SetHand(value Hands) {
+// SetHand sets the property returned by [GetHand]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHand(value Hands) Instance {
 	class(self).SetHand(value)
+	return self
 }
 
 /*
@@ -192,9 +193,10 @@ func (self Instance) MotionRange() MotionRange {
 	return MotionRange(class(self).GetMotionRange())
 }
 
-// SetMotionRange sets the property returned by [GetMotionRange].
-func (self Instance) SetMotionRange(value MotionRange) {
+// SetMotionRange sets the property returned by [GetMotionRange]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionRange(value MotionRange) Instance {
 	class(self).SetMotionRange(value)
+	return self
 }
 
 /*
@@ -206,9 +208,10 @@ func (self Instance) HandSkeleton() string {
 	return string(class(self).GetHandSkeleton().String())
 }
 
-// SetHandSkeleton sets the property returned by [GetHandSkeleton].
-func (self Instance) SetHandSkeleton(value string) {
+// SetHandSkeleton sets the property returned by [GetHandSkeleton]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandSkeleton(value string) Instance {
 	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -220,9 +223,10 @@ func (self Instance) SkeletonRig() SkeletonRig {
 	return SkeletonRig(class(self).GetSkeletonRig())
 }
 
-// SetSkeletonRig sets the property returned by [GetSkeletonRig].
-func (self Instance) SetSkeletonRig(value SkeletonRig) {
+// SetSkeletonRig sets the property returned by [GetSkeletonRig]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkeletonRig(value SkeletonRig) Instance {
 	class(self).SetSkeletonRig(value)
+	return self
 }
 
 /*
@@ -232,9 +236,10 @@ func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-// SetBoneUpdate sets the property returned by [GetBoneUpdate].
-func (self Instance) SetBoneUpdate(value BoneUpdate) {
+// SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
 	class(self).SetBoneUpdate(value)
+	return self
 }
 
 //go:nosplit

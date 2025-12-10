@@ -117,9 +117,12 @@ type Any interface {
 
 /*
 Sets band's gain at the specified index, in dB.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) { //gd:AudioEffectEQ.set_band_gain_db
+func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) Instance { //gd:AudioEffectEQ.set_band_gain_db
 	Advanced(self).SetBandGainDb(int64(band_idx), float64(volume_db))
+	return self
 }
 
 /*

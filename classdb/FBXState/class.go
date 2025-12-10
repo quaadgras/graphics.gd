@@ -164,9 +164,10 @@ func (self Instance) AllowGeometryHelperNodes() bool {
 	return bool(class(self).GetAllowGeometryHelperNodes())
 }
 
-// SetAllowGeometryHelperNodes sets the property returned by [GetAllowGeometryHelperNodes].
-func (self Instance) SetAllowGeometryHelperNodes(value bool) {
+// SetAllowGeometryHelperNodes sets the property returned by [GetAllowGeometryHelperNodes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowGeometryHelperNodes(value bool) Instance {
 	class(self).SetAllowGeometryHelperNodes(value)
+	return self
 }
 
 //go:nosplit

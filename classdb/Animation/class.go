@@ -873,9 +873,12 @@ func (self Instance) GetMarkerColor(name string) Color.RGBA { //gd:Animation.get
 
 /*
 Sets the given marker's color.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMarkerColor(name string, color Color.RGBA) { //gd:Animation.set_marker_color
+func (self Instance) SetMarkerColor(name string, color Color.RGBA) Instance { //gd:Animation.set_marker_color
 	Advanced(self).SetMarkerColor(String.Name(String.New(name)), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -982,9 +985,10 @@ func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
-// SetLength sets the property returned by [GetLength].
-func (self Instance) SetLength(value Float.X) {
+// SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLength(value Float.X) Instance {
 	class(self).SetLength(float64(value))
+	return self
 }
 
 /*
@@ -994,9 +998,10 @@ func (self Instance) LoopMode() LoopMode {
 	return LoopMode(class(self).GetLoopMode())
 }
 
-// SetLoopMode sets the property returned by [GetLoopMode].
-func (self Instance) SetLoopMode(value LoopMode) {
+// SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoopMode(value LoopMode) Instance {
 	class(self).SetLoopMode(value)
+	return self
 }
 
 /*
@@ -1006,9 +1011,10 @@ func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
-// SetStep sets the property returned by [GetStep].
-func (self Instance) SetStep(value Float.X) {
+// SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStep(value Float.X) Instance {
 	class(self).SetStep(float64(value))
+	return self
 }
 
 /*

@@ -168,9 +168,10 @@ func (self Instance) BillboardType() BillboardType {
 	return BillboardType(class(self).GetBillboardType())
 }
 
-// SetBillboardType sets the property returned by [GetBillboardType].
-func (self Instance) SetBillboardType(value BillboardType) {
+// SetBillboardType sets the property returned by [GetBillboardType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBillboardType(value BillboardType) Instance {
 	class(self).SetBillboardType(value)
+	return self
 }
 
 /*
@@ -180,9 +181,10 @@ func (self Instance) KeepScale() bool {
 	return bool(class(self).IsKeepScaleEnabled())
 }
 
-// SetKeepScale sets the property returned by [IsKeepScaleEnabled].
-func (self Instance) SetKeepScale(value bool) {
+// SetKeepScale sets the property returned by [IsKeepScaleEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeepScale(value bool) Instance {
 	class(self).SetKeepScaleEnabled(value)
+	return self
 }
 
 //go:nosplit

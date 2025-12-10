@@ -172,9 +172,10 @@ func (self Instance) ButtonMask() Input.MouseButtonMask {
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
-// SetButtonMask sets the property returned by [GetButtonMask].
-func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
+// SetButtonMask sets the property returned by [GetButtonMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance {
 	class(self).SetButtonMask(value)
+	return self
 }
 
 /*
@@ -193,9 +194,10 @@ func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
-// SetPosition sets the property returned by [GetPosition].
-func (self Instance) SetPosition(value Vector2.XY) {
+// SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPosition(value Vector2.XY) Instance {
 	class(self).SetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -214,9 +216,10 @@ func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-// SetGlobalPosition sets the property returned by [GetGlobalPosition].
-func (self Instance) SetGlobalPosition(value Vector2.XY) {
+// SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalPosition(value Vector2.XY) Instance {
 	class(self).SetGlobalPosition(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

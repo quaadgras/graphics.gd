@@ -260,9 +260,12 @@ func (self MoreArgs) AddIconItem(icon Texture2D.Instance, selectable bool) int {
 
 /*
 Sets text of the item associated with the specified index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemText(idx int, text string) { //gd:ItemList.set_item_text
+func (self Instance) SetItemText(idx int, text string) Instance { //gd:ItemList.set_item_text
 	Advanced(self).SetItemText(int64(idx), String.New(text))
+	return self
 }
 
 /*
@@ -275,10 +278,13 @@ func (self Instance) GetItemText(idx int) string { //gd:ItemList.get_item_text
 /*
 Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetItemIcon(idx int, icon Texture2D.Instance) { //gd:ItemList.set_item_icon
+func (self Instance) SetItemIcon(idx int, icon Texture2D.Instance) Instance { //gd:ItemList.set_item_icon
 	Advanced(self).SetItemIcon(int64(idx), icon)
+	return self
 }
 
 /*
@@ -290,9 +296,12 @@ func (self Instance) GetItemIcon(idx int) Texture2D.Instance { //gd:ItemList.get
 
 /*
 Sets item's text base writing direction.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTextDirection(idx int, direction Control.TextDirection) { //gd:ItemList.set_item_text_direction
+func (self Instance) SetItemTextDirection(idx int, direction Control.TextDirection) Instance { //gd:ItemList.set_item_text_direction
 	Advanced(self).SetItemTextDirection(int64(idx), direction)
+	return self
 }
 
 /*
@@ -304,9 +313,12 @@ func (self Instance) GetItemTextDirection(idx int) Control.TextDirection { //gd:
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemLanguage(idx int, language string) { //gd:ItemList.set_item_language
+func (self Instance) SetItemLanguage(idx int, language string) Instance { //gd:ItemList.set_item_language
 	Advanced(self).SetItemLanguage(int64(idx), String.New(language))
+	return self
 }
 
 /*
@@ -321,10 +333,13 @@ Sets the auto translate mode of the item associated with the specified index.
 
 Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [ItemList] itself.
 
+Returns 'self' to enable method chaining.
+
 [ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
 */
-func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
+func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) Instance { //gd:ItemList.set_item_auto_translate_mode
 	Advanced(self).SetItemAutoTranslateMode(int64(idx), mode)
+	return self
 }
 
 /*
@@ -336,9 +351,12 @@ func (self Instance) GetItemAutoTranslateMode(idx int) Node.AutoTranslateMode { 
 
 /*
 Sets whether the item icon will be drawn transposed.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemIconTransposed(idx int, transposed bool) { //gd:ItemList.set_item_icon_transposed
+func (self Instance) SetItemIconTransposed(idx int, transposed bool) Instance { //gd:ItemList.set_item_icon_transposed
 	Advanced(self).SetItemIconTransposed(int64(idx), transposed)
+	return self
 }
 
 /*
@@ -350,9 +368,12 @@ func (self Instance) IsItemIconTransposed(idx int) bool { //gd:ItemList.is_item_
 
 /*
 Sets the region of item's icon used. The whole icon will be used if the region has no area.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemIconRegion(idx int, rect Rect2.PositionSize) { //gd:ItemList.set_item_icon_region
+func (self Instance) SetItemIconRegion(idx int, rect Rect2.PositionSize) Instance { //gd:ItemList.set_item_icon_region
 	Advanced(self).SetItemIconRegion(int64(idx), Rect2.PositionSize(rect))
+	return self
 }
 
 /*
@@ -365,10 +386,13 @@ func (self Instance) GetItemIconRegion(idx int) Rect2.PositionSize { //gd:ItemLi
 /*
 Sets a modulating [Color.RGBA] of the item associated with the specified index.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetItemIconModulate(idx int, modulate Color.RGBA) { //gd:ItemList.set_item_icon_modulate
+func (self Instance) SetItemIconModulate(idx int, modulate Color.RGBA) Instance { //gd:ItemList.set_item_icon_modulate
 	Advanced(self).SetItemIconModulate(int64(idx), Color.RGBA(modulate))
+	return self
 }
 
 /*
@@ -382,9 +406,12 @@ func (self Instance) GetItemIconModulate(idx int) Color.RGBA { //gd:ItemList.get
 
 /*
 Allows or disallows selection of the item associated with the specified index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemSelectable(idx int, selectable bool) { //gd:ItemList.set_item_selectable
+func (self Instance) SetItemSelectable(idx int, selectable bool) Instance { //gd:ItemList.set_item_selectable
 	Advanced(self).SetItemSelectable(int64(idx), selectable)
+	return self
 }
 
 /*
@@ -398,9 +425,12 @@ func (self Instance) IsItemSelectable(idx int) bool { //gd:ItemList.is_item_sele
 Disables (or enables) the item at the specified index.
 
 Disabled items cannot be selected and do not trigger activation signals (when double-clicking or pressing Enter).
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:ItemList.set_item_disabled
+func (self Instance) SetItemDisabled(idx int, disabled bool) Instance { //gd:ItemList.set_item_disabled
 	Advanced(self).SetItemDisabled(int64(idx), disabled)
+	return self
 }
 
 /*
@@ -412,9 +442,12 @@ func (self Instance) IsItemDisabled(idx int) bool { //gd:ItemList.is_item_disabl
 
 /*
 Sets a value (of any type) to be stored with the item associated with the specified index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:ItemList.set_item_metadata
+func (self Instance) SetItemMetadata(idx int, metadata any) Instance { //gd:ItemList.set_item_metadata
 	Advanced(self).SetItemMetadata(int64(idx), variant.New(metadata))
+	return self
 }
 
 /*
@@ -427,10 +460,13 @@ func (self Instance) GetItemMetadata(idx int) any { //gd:ItemList.get_item_metad
 /*
 Sets the background color of the item specified by 'idx' index to the specified [Color.RGBA].
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color Color.RGBA) { //gd:ItemList.set_item_custom_bg_color
+func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color Color.RGBA) Instance { //gd:ItemList.set_item_custom_bg_color
 	Advanced(self).SetItemCustomBgColor(int64(idx), Color.RGBA(custom_bg_color))
+	return self
 }
 
 /*
@@ -443,10 +479,13 @@ func (self Instance) GetItemCustomBgColor(idx int) Color.RGBA { //gd:ItemList.ge
 /*
 Sets the foreground color of the item specified by 'idx' index to the specified [Color.RGBA].
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color Color.RGBA) { //gd:ItemList.set_item_custom_fg_color
+func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color Color.RGBA) Instance { //gd:ItemList.set_item_custom_fg_color
 	Advanced(self).SetItemCustomFgColor(int64(idx), Color.RGBA(custom_fg_color))
+	return self
 }
 
 /*
@@ -480,9 +519,12 @@ func (self MoreArgs) GetItemRect(idx int, expand bool) Rect2.PositionSize { //gd
 
 /*
 Sets whether the tooltip hint is enabled for specified item index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTooltipEnabled(idx int, enable bool) { //gd:ItemList.set_item_tooltip_enabled
+func (self Instance) SetItemTooltipEnabled(idx int, enable bool) Instance { //gd:ItemList.set_item_tooltip_enabled
 	Advanced(self).SetItemTooltipEnabled(int64(idx), enable)
+	return self
 }
 
 /*
@@ -494,9 +536,12 @@ func (self Instance) IsItemTooltipEnabled(idx int) bool { //gd:ItemList.is_item_
 
 /*
 Sets the tooltip hint for the item associated with the specified index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:ItemList.set_item_tooltip
+func (self Instance) SetItemTooltip(idx int, tooltip string) Instance { //gd:ItemList.set_item_tooltip
 	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	return self
 }
 
 /*
@@ -700,9 +745,10 @@ func (self Instance) SelectMode() SelectMode {
 	return SelectMode(class(self).GetSelectMode())
 }
 
-// SetSelectMode sets the property returned by [GetSelectMode].
-func (self Instance) SetSelectMode(value SelectMode) {
+// SetSelectMode sets the property returned by [GetSelectMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectMode(value SelectMode) Instance {
 	class(self).SetSelectMode(value)
+	return self
 }
 
 /*
@@ -712,9 +758,10 @@ func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
-// SetAllowReselect sets the property returned by [GetAllowReselect].
-func (self Instance) SetAllowReselect(value bool) {
+// SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowReselect(value bool) Instance {
 	class(self).SetAllowReselect(value)
+	return self
 }
 
 /*
@@ -724,9 +771,10 @@ func (self Instance) AllowRmbSelect() bool {
 	return bool(class(self).GetAllowRmbSelect())
 }
 
-// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect].
-func (self Instance) SetAllowRmbSelect(value bool) {
+// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowRmbSelect(value bool) Instance {
 	class(self).SetAllowRmbSelect(value)
+	return self
 }
 
 /*
@@ -738,9 +786,10 @@ func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
-// SetAllowSearch sets the property returned by [GetAllowSearch].
-func (self Instance) SetAllowSearch(value bool) {
+// SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowSearch(value bool) Instance {
 	class(self).SetAllowSearch(value)
+	return self
 }
 
 /*
@@ -755,9 +804,10 @@ func (self Instance) MaxTextLines() int {
 	return int(int(class(self).GetMaxTextLines()))
 }
 
-// SetMaxTextLines sets the property returned by [GetMaxTextLines].
-func (self Instance) SetMaxTextLines(value int) {
+// SetMaxTextLines sets the property returned by [GetMaxTextLines]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxTextLines(value int) Instance {
 	class(self).SetMaxTextLines(int64(value))
+	return self
 }
 
 /*
@@ -767,9 +817,10 @@ func (self Instance) AutoWidth() bool {
 	return bool(class(self).HasAutoWidth())
 }
 
-// SetAutoWidth sets the property returned by [HasAutoWidth].
-func (self Instance) SetAutoWidth(value bool) {
+// SetAutoWidth sets the property returned by [HasAutoWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoWidth(value bool) Instance {
 	class(self).SetAutoWidth(value)
+	return self
 }
 
 /*
@@ -779,9 +830,10 @@ func (self Instance) AutoHeight() bool {
 	return bool(class(self).HasAutoHeight())
 }
 
-// SetAutoHeight sets the property returned by [HasAutoHeight].
-func (self Instance) SetAutoHeight(value bool) {
+// SetAutoHeight sets the property returned by [HasAutoHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoHeight(value bool) Instance {
 	class(self).SetAutoHeight(value)
+	return self
 }
 
 /*
@@ -791,9 +843,10 @@ func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
 	class(self).SetTextOverrunBehavior(value)
+	return self
 }
 
 /*
@@ -807,9 +860,10 @@ func (self Instance) WraparoundItems() bool {
 	return bool(class(self).HasWraparoundItems())
 }
 
-// SetWraparoundItems sets the property returned by [HasWraparoundItems].
-func (self Instance) SetWraparoundItems(value bool) {
+// SetWraparoundItems sets the property returned by [HasWraparoundItems]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWraparoundItems(value bool) Instance {
 	class(self).SetWraparoundItems(value)
+	return self
 }
 
 /*
@@ -819,9 +873,10 @@ func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
-// SetItemCount sets the property returned by [GetItemCount].
-func (self Instance) SetItemCount(value int) {
+// SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetItemCount(value int) Instance {
 	class(self).SetItemCount(int64(value))
+	return self
 }
 
 /*
@@ -835,9 +890,10 @@ func (self Instance) MaxColumns() int {
 	return int(int(class(self).GetMaxColumns()))
 }
 
-// SetMaxColumns sets the property returned by [GetMaxColumns].
-func (self Instance) SetMaxColumns(value int) {
+// SetMaxColumns sets the property returned by [GetMaxColumns]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxColumns(value int) Instance {
 	class(self).SetMaxColumns(int64(value))
+	return self
 }
 
 /*
@@ -849,9 +905,10 @@ func (self Instance) SameColumnWidth() bool {
 	return bool(class(self).IsSameColumnWidth())
 }
 
-// SetSameColumnWidth sets the property returned by [IsSameColumnWidth].
-func (self Instance) SetSameColumnWidth(value bool) {
+// SetSameColumnWidth sets the property returned by [IsSameColumnWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSameColumnWidth(value bool) Instance {
 	class(self).SetSameColumnWidth(value)
+	return self
 }
 
 /*
@@ -863,9 +920,10 @@ func (self Instance) FixedColumnWidth() int {
 	return int(int(class(self).GetFixedColumnWidth()))
 }
 
-// SetFixedColumnWidth sets the property returned by [GetFixedColumnWidth].
-func (self Instance) SetFixedColumnWidth(value int) {
+// SetFixedColumnWidth sets the property returned by [GetFixedColumnWidth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedColumnWidth(value int) Instance {
 	class(self).SetFixedColumnWidth(int64(value))
+	return self
 }
 
 /*
@@ -875,9 +933,10 @@ func (self Instance) IconMode() IconMode {
 	return IconMode(class(self).GetIconMode())
 }
 
-// SetIconMode sets the property returned by [GetIconMode].
-func (self Instance) SetIconMode(value IconMode) {
+// SetIconMode sets the property returned by [GetIconMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIconMode(value IconMode) Instance {
 	class(self).SetIconMode(value)
+	return self
 }
 
 /*
@@ -889,9 +948,10 @@ func (self Instance) IconScale() Float.X {
 	return Float.X(Float.X(class(self).GetIconScale()))
 }
 
-// SetIconScale sets the property returned by [GetIconScale].
-func (self Instance) SetIconScale(value Float.X) {
+// SetIconScale sets the property returned by [GetIconScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIconScale(value Float.X) Instance {
 	class(self).SetIconScale(float64(value))
+	return self
 }
 
 /*
@@ -903,9 +963,10 @@ func (self Instance) FixedIconSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetFixedIconSize())
 }
 
-// SetFixedIconSize sets the property returned by [GetFixedIconSize].
-func (self Instance) SetFixedIconSize(value Vector2i.XY) {
+// SetFixedIconSize sets the property returned by [GetFixedIconSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixedIconSize(value Vector2i.XY) Instance {
 	class(self).SetFixedIconSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1645,12 +1706,13 @@ Emitted when specified item has been selected. Only applicable in single selecti
 
 [AllowReselect]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.AllowReselect
 */
-func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
+func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemSelected() Signal.Any {
@@ -1662,12 +1724,13 @@ Emitted when any mouse click is issued within the rect of the list but on empty 
 
 'at_position' is the click position in this control's local coordinate system.
 */
-func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) EmptyClicked() Signal.Any {
@@ -1679,12 +1742,13 @@ Emitted when specified list item has been clicked with any mouse button.
 
 'at_position' is the click position in this control's local coordinate system.
 */
-func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemClicked() Signal.Any {
@@ -1694,12 +1758,13 @@ func (self class) ItemClicked() Signal.Any {
 /*
 Emitted when a multiple selection is altered on a list allowing multiple selection.
 */
-func (self Instance) OnMultiSelected(cb func(index int, selected bool), flags ...Signal.Flags) {
+func (self Instance) OnMultiSelected(cb func(index int, selected bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MultiSelected() Signal.Any {
@@ -1709,12 +1774,13 @@ func (self class) MultiSelected() Signal.Any {
 /*
 Emitted when specified list item is activated via double-clicking or by pressing Enter.
 */
-func (self Instance) OnItemActivated(cb func(index int), flags ...Signal.Flags) {
+func (self Instance) OnItemActivated(cb func(index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ItemActivated() Signal.Any {

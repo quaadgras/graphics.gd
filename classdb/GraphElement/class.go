@@ -180,9 +180,10 @@ func (self Instance) PositionOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetPositionOffset())
 }
 
-// SetPositionOffset sets the property returned by [GetPositionOffset].
-func (self Instance) SetPositionOffset(value Vector2.XY) {
+// SetPositionOffset sets the property returned by [GetPositionOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionOffset(value Vector2.XY) Instance {
 	class(self).SetPositionOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -197,9 +198,10 @@ func (self Instance) Resizable() bool {
 	return bool(class(self).IsResizable())
 }
 
-// SetResizable sets the property returned by [IsResizable].
-func (self Instance) SetResizable(value bool) {
+// SetResizable sets the property returned by [IsResizable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetResizable(value bool) Instance {
 	class(self).SetResizable(value)
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) Draggable() bool {
 	return bool(class(self).IsDraggable())
 }
 
-// SetDraggable sets the property returned by [IsDraggable].
-func (self Instance) SetDraggable(value bool) {
+// SetDraggable sets the property returned by [IsDraggable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDraggable(value bool) Instance {
 	class(self).SetDraggable(value)
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) Selectable() bool {
 	return bool(class(self).IsSelectable())
 }
 
-// SetSelectable sets the property returned by [IsSelectable].
-func (self Instance) SetSelectable(value bool) {
+// SetSelectable sets the property returned by [IsSelectable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectable(value bool) Instance {
 	class(self).SetSelectable(value)
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) Selected() bool {
 	return bool(class(self).IsSelected())
 }
 
-// SetSelected sets the property returned by [IsSelected].
-func (self Instance) SetSelected(value bool) {
+// SetSelected sets the property returned by [IsSelected]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelected(value bool) Instance {
 	class(self).SetSelected(value)
+	return self
 }
 
 //go:nosplit
@@ -301,12 +306,13 @@ func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_positio
 /*
 Emitted when the GraphElement is selected.
 */
-func (self Instance) OnNodeSelected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNodeSelected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeSelected() Signal.Any {
@@ -316,12 +322,13 @@ func (self class) NodeSelected() Signal.Any {
 /*
 Emitted when the GraphElement is deselected.
 */
-func (self Instance) OnNodeDeselected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnNodeDeselected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) NodeDeselected() Signal.Any {
@@ -331,12 +338,13 @@ func (self class) NodeDeselected() Signal.Any {
 /*
 Emitted when displaying the GraphElement over other ones is requested. Happens on focusing (clicking into) the GraphElement.
 */
-func (self Instance) OnRaiseRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRaiseRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("raise_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RaiseRequest() Signal.Any {
@@ -346,12 +354,13 @@ func (self class) RaiseRequest() Signal.Any {
 /*
 Emitted when removing the GraphElement is requested.
 */
-func (self Instance) OnDeleteRequest(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDeleteRequest(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DeleteRequest() Signal.Any {
@@ -363,12 +372,13 @@ Emitted when resizing the GraphElement is requested. Happens on dragging the res
 
 [Resizable]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.Resizable
 */
-func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResizeRequest() Signal.Any {
@@ -380,12 +390,13 @@ Emitted when releasing the mouse button after dragging the resizer handle (see [
 
 [Resizable]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.Resizable
 */
-func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResizeEnd() Signal.Any {
@@ -395,12 +406,13 @@ func (self class) ResizeEnd() Signal.Any {
 /*
 Emitted when the GraphElement is dragged.
 */
-func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY), flags ...Signal.Flags) {
+func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Dragged() Signal.Any {
@@ -410,12 +422,13 @@ func (self class) Dragged() Signal.Any {
 /*
 Emitted when the GraphElement is moved.
 */
-func (self Instance) OnPositionOffsetChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPositionOffsetChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("position_offset_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PositionOffsetChanged() Signal.Any {

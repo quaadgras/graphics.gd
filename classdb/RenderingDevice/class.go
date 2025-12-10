@@ -1660,11 +1660,14 @@ The following types of resources can be named: texture, sampler, vertex buffer, 
 
 Note: Resource names are only set when the engine runs in verbose mode ([OS.IsStdoutVerbose] = true), or when using an engine build compiled with the dev_mode=yes SCons option. The graphics driver must also support the VK_EXT_DEBUG_UTILS_EXTENSION_NAME Vulkan extension for named resources to work.
 
+Returns 'self' to enable method chaining.
+
 [OS.IsStdoutVerbose]: https://pkg.go.dev/graphics.gd/classdb/OS#IsStdoutVerbose
 [RenderDoc]: https://renderdoc.org/
 */
-func (self Instance) SetResourceName(id RID.Any, name string) { //gd:RenderingDevice.set_resource_name
+func (self Instance) SetResourceName(id RID.Any, name string) Instance { //gd:RenderingDevice.set_resource_name
 	Advanced(self).SetResourceName(RID.Any(id), String.New(name))
+	return self
 }
 
 /*

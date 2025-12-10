@@ -178,9 +178,10 @@ func (self Instance) PredelayMsec() Float.X {
 	return Float.X(Float.X(class(self).GetPredelayMsec()))
 }
 
-// SetPredelayMsec sets the property returned by [GetPredelayMsec].
-func (self Instance) SetPredelayMsec(value Float.X) {
+// SetPredelayMsec sets the property returned by [GetPredelayMsec]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPredelayMsec(value Float.X) Instance {
 	class(self).SetPredelayMsec(float64(value))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) PredelayFeedback() Float.X {
 	return Float.X(Float.X(class(self).GetPredelayFeedback()))
 }
 
-// SetPredelayFeedback sets the property returned by [GetPredelayFeedback].
-func (self Instance) SetPredelayFeedback(value Float.X) {
+// SetPredelayFeedback sets the property returned by [GetPredelayFeedback]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPredelayFeedback(value Float.X) Instance {
 	class(self).SetPredelayFeedback(float64(value))
+	return self
 }
 
 /*
@@ -202,9 +204,10 @@ func (self Instance) RoomSize() Float.X {
 	return Float.X(Float.X(class(self).GetRoomSize()))
 }
 
-// SetRoomSize sets the property returned by [GetRoomSize].
-func (self Instance) SetRoomSize(value Float.X) {
+// SetRoomSize sets the property returned by [GetRoomSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRoomSize(value Float.X) Instance {
 	class(self).SetRoomSize(float64(value))
+	return self
 }
 
 /*
@@ -214,9 +217,10 @@ func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
-// SetDamping sets the property returned by [GetDamping].
-func (self Instance) SetDamping(value Float.X) {
+// SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDamping(value Float.X) Instance {
 	class(self).SetDamping(float64(value))
+	return self
 }
 
 /*
@@ -226,9 +230,10 @@ func (self Instance) Spread() Float.X {
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
-// SetSpread sets the property returned by [GetSpread].
-func (self Instance) SetSpread(value Float.X) {
+// SetSpread sets the property returned by [GetSpread]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpread(value Float.X) Instance {
 	class(self).SetSpread(float64(value))
+	return self
 }
 
 /*
@@ -238,9 +243,10 @@ func (self Instance) Hipass() Float.X {
 	return Float.X(Float.X(class(self).GetHpf()))
 }
 
-// SetHipass sets the property returned by [GetHpf].
-func (self Instance) SetHipass(value Float.X) {
+// SetHipass sets the property returned by [GetHpf]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHipass(value Float.X) Instance {
 	class(self).SetHpf(float64(value))
+	return self
 }
 
 /*
@@ -250,9 +256,10 @@ func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
-// SetDry sets the property returned by [GetDry].
-func (self Instance) SetDry(value Float.X) {
+// SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDry(value Float.X) Instance {
 	class(self).SetDry(float64(value))
+	return self
 }
 
 /*
@@ -262,9 +269,10 @@ func (self Instance) Wet() Float.X {
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
-// SetWet sets the property returned by [GetWet].
-func (self Instance) SetWet(value Float.X) {
+// SetWet sets the property returned by [GetWet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWet(value Float.X) Instance {
 	class(self).SetWet(float64(value))
+	return self
 }
 
 //go:nosplit

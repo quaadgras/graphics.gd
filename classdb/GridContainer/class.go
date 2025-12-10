@@ -174,9 +174,10 @@ func (self Instance) Columns() int {
 	return int(int(class(self).GetColumns()))
 }
 
-// SetColumns sets the property returned by [GetColumns].
-func (self Instance) SetColumns(value int) {
+// SetColumns sets the property returned by [GetColumns]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColumns(value int) Instance {
 	class(self).SetColumns(int64(value))
+	return self
 }
 
 //go:nosplit

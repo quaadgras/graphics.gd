@@ -169,9 +169,10 @@ func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
-// SetFormat sets the property returned by [GetFormat].
-func (self Instance) SetFormat(value Rendering.DataFormat) {
+// SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
 	class(self).SetFormat(value)
+	return self
 }
 
 /*
@@ -181,9 +182,10 @@ func (self Instance) Samples() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSamples())
 }
 
-// SetSamples sets the property returned by [GetSamples].
-func (self Instance) SetSamples(value Rendering.TextureSamples) {
+// SetSamples sets the property returned by [GetSamples]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSamples(value Rendering.TextureSamples) Instance {
 	class(self).SetSamples(value)
+	return self
 }
 
 /*
@@ -193,9 +195,10 @@ func (self Instance) UsageFlags() int {
 	return int(int(class(self).GetUsageFlags()))
 }
 
-// SetUsageFlags sets the property returned by [GetUsageFlags].
-func (self Instance) SetUsageFlags(value int) {
+// SetUsageFlags sets the property returned by [GetUsageFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUsageFlags(value int) Instance {
 	class(self).SetUsageFlags(int64(value))
+	return self
 }
 
 //go:nosplit

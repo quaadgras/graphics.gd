@@ -207,9 +207,12 @@ func (self Instance) RemoveSessionTab(control Control.Instance) { //gd:EditorDeb
 
 /*
 Enables or disables a specific breakpoint based on 'enabled', updating the Editor Breakpoint Panel accordingly.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBreakpoint(path string, line int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
+func (self Instance) SetBreakpoint(path string, line int, enabled bool) Instance { //gd:EditorDebuggerSession.set_breakpoint
 	Advanced(self).SetBreakpoint(String.New(path), int64(line), enabled)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -343,12 +346,13 @@ func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) 
 /*
 Emitted when a remote instance is attached to this session (i.e. the session becomes active).
 */
-func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Started() Signal.Any {
@@ -358,12 +362,13 @@ func (self class) Started() Signal.Any {
 /*
 Emitted when a remote instance is detached from this session (i.e. the session becomes inactive).
 */
-func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("stopped"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Stopped() Signal.Any {
@@ -373,12 +378,13 @@ func (self class) Stopped() Signal.Any {
 /*
 Emitted when the attached remote instance enters a break state. If 'can_debug' is true, the remote instance will enter the debug loop.
 */
-func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) {
+func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("breaked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Breaked() Signal.Any {
@@ -388,12 +394,13 @@ func (self class) Breaked() Signal.Any {
 /*
 Emitted when the attached remote instance exits a break state.
 */
-func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("continued"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Continued() Signal.Any {

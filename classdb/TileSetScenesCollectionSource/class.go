@@ -204,20 +204,26 @@ func (self MoreArgs) CreateSceneTile(packed_scene PackedScene.Instance, id_overr
 
 /*
 Changes a scene tile's ID from 'id' to 'new_id'. This will fail if there is already a tile with an ID equal to 'new_id'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSceneTileId(id int, new_id int) { //gd:TileSetScenesCollectionSource.set_scene_tile_id
+func (self Instance) SetSceneTileId(id int, new_id int) Instance { //gd:TileSetScenesCollectionSource.set_scene_tile_id
 	Advanced(self).SetSceneTileId(int64(id), int64(new_id))
+	return self
 }
 
 /*
 Assigns a [PackedScene] resource to the scene tile with 'id'. This will fail if the scene does not extend [CanvasItem], as positioning properties are needed to place the scene on the [TileMapLayer].
 
+Returns 'self' to enable method chaining.
+
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) SetSceneTileScene(id int, packed_scene PackedScene.Instance) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
+func (self Instance) SetSceneTileScene(id int, packed_scene PackedScene.Instance) Instance { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
 	Advanced(self).SetSceneTileScene(int64(id), packed_scene)
+	return self
 }
 
 /*
@@ -231,9 +237,12 @@ func (self Instance) GetSceneTileScene(id int) PackedScene.Instance { //gd:TileS
 
 /*
 Sets whether or not the scene tile with 'id' should display a placeholder in the editor. This might be useful for scenes that are not visible.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSceneTileDisplayPlaceholder(id int, display_placeholder bool) { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
+func (self Instance) SetSceneTileDisplayPlaceholder(id int, display_placeholder bool) Instance { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
 	Advanced(self).SetSceneTileDisplayPlaceholder(int64(id), display_placeholder)
+	return self
 }
 
 /*

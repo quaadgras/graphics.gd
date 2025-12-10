@@ -164,9 +164,10 @@ func (self Instance) Mode2d() bool {
 	return bool(class(self).IsMode2d())
 }
 
-// SetMode2d sets the property returned by [IsMode2d].
-func (self Instance) SetMode2d(value bool) {
+// SetMode2d sets the property returned by [IsMode2d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMode2d(value bool) Instance {
 	class(self).SetMode2d(value)
+	return self
 }
 
 //go:nosplit

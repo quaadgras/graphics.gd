@@ -247,9 +247,10 @@ func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetPickColor())
 }
 
-// SetColor sets the property returned by [GetPickColor].
-func (self Instance) SetColor(value Color.RGBA) {
+// SetColor sets the property returned by [GetPickColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColor(value Color.RGBA) Instance {
 	class(self).SetPickColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -259,9 +260,10 @@ func (self Instance) EditAlpha() bool {
 	return bool(class(self).IsEditingAlpha())
 }
 
-// SetEditAlpha sets the property returned by [IsEditingAlpha].
-func (self Instance) SetEditAlpha(value bool) {
+// SetEditAlpha sets the property returned by [IsEditingAlpha]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditAlpha(value bool) Instance {
 	class(self).SetEditAlpha(value)
+	return self
 }
 
 /*
@@ -271,9 +273,10 @@ func (self Instance) EditIntensity() bool {
 	return bool(class(self).IsEditingIntensity())
 }
 
-// SetEditIntensity sets the property returned by [IsEditingIntensity].
-func (self Instance) SetEditIntensity(value bool) {
+// SetEditIntensity sets the property returned by [IsEditingIntensity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditIntensity(value bool) Instance {
 	class(self).SetEditIntensity(value)
+	return self
 }
 
 /*
@@ -283,9 +286,10 @@ func (self Instance) ColorMode() ColorModeType {
 	return ColorModeType(class(self).GetColorMode())
 }
 
-// SetColorMode sets the property returned by [GetColorMode].
-func (self Instance) SetColorMode(value ColorModeType) {
+// SetColorMode sets the property returned by [GetColorMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorMode(value ColorModeType) Instance {
 	class(self).SetColorMode(value)
+	return self
 }
 
 /*
@@ -295,9 +299,10 @@ func (self Instance) DeferredMode() bool {
 	return bool(class(self).IsDeferredMode())
 }
 
-// SetDeferredMode sets the property returned by [IsDeferredMode].
-func (self Instance) SetDeferredMode(value bool) {
+// SetDeferredMode sets the property returned by [IsDeferredMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeferredMode(value bool) Instance {
 	class(self).SetDeferredMode(value)
+	return self
 }
 
 /*
@@ -307,9 +312,10 @@ func (self Instance) PickerShape() PickerShapeType {
 	return PickerShapeType(class(self).GetPickerShape())
 }
 
-// SetPickerShape sets the property returned by [GetPickerShape].
-func (self Instance) SetPickerShape(value PickerShapeType) {
+// SetPickerShape sets the property returned by [GetPickerShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPickerShape(value PickerShapeType) Instance {
 	class(self).SetPickerShape(value)
+	return self
 }
 
 /*
@@ -319,9 +325,10 @@ func (self Instance) CanAddSwatches() bool {
 	return bool(class(self).AreSwatchesEnabled())
 }
 
-// SetCanAddSwatches sets the property returned by [AreSwatchesEnabled].
-func (self Instance) SetCanAddSwatches(value bool) {
+// SetCanAddSwatches sets the property returned by [AreSwatchesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanAddSwatches(value bool) Instance {
 	class(self).SetCanAddSwatches(value)
+	return self
 }
 
 /*
@@ -331,9 +338,10 @@ func (self Instance) SamplerVisible() bool {
 	return bool(class(self).IsSamplerVisible())
 }
 
-// SetSamplerVisible sets the property returned by [IsSamplerVisible].
-func (self Instance) SetSamplerVisible(value bool) {
+// SetSamplerVisible sets the property returned by [IsSamplerVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSamplerVisible(value bool) Instance {
 	class(self).SetSamplerVisible(value)
+	return self
 }
 
 /*
@@ -343,9 +351,10 @@ func (self Instance) ColorModesVisible() bool {
 	return bool(class(self).AreModesVisible())
 }
 
-// SetColorModesVisible sets the property returned by [AreModesVisible].
-func (self Instance) SetColorModesVisible(value bool) {
+// SetColorModesVisible sets the property returned by [AreModesVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetColorModesVisible(value bool) Instance {
 	class(self).SetModesVisible(value)
+	return self
 }
 
 /*
@@ -355,9 +364,10 @@ func (self Instance) SlidersVisible() bool {
 	return bool(class(self).AreSlidersVisible())
 }
 
-// SetSlidersVisible sets the property returned by [AreSlidersVisible].
-func (self Instance) SetSlidersVisible(value bool) {
+// SetSlidersVisible sets the property returned by [AreSlidersVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSlidersVisible(value bool) Instance {
 	class(self).SetSlidersVisible(value)
+	return self
 }
 
 /*
@@ -367,9 +377,10 @@ func (self Instance) HexVisible() bool {
 	return bool(class(self).IsHexVisible())
 }
 
-// SetHexVisible sets the property returned by [IsHexVisible].
-func (self Instance) SetHexVisible(value bool) {
+// SetHexVisible sets the property returned by [IsHexVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHexVisible(value bool) Instance {
 	class(self).SetHexVisible(value)
+	return self
 }
 
 /*
@@ -379,9 +390,10 @@ func (self Instance) PresetsVisible() bool {
 	return bool(class(self).ArePresetsVisible())
 }
 
-// SetPresetsVisible sets the property returned by [ArePresetsVisible].
-func (self Instance) SetPresetsVisible(value bool) {
+// SetPresetsVisible sets the property returned by [ArePresetsVisible]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPresetsVisible(value bool) Instance {
 	class(self).SetPresetsVisible(value)
+	return self
 }
 
 //go:nosplit
@@ -587,12 +599,13 @@ func (self class) GetPickerShape() PickerShapeType { //gd:ColorPicker.get_picker
 /*
 Emitted when the color is changed.
 */
-func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) {
+func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ColorChanged() Signal.Any {
@@ -602,12 +615,13 @@ func (self class) ColorChanged() Signal.Any {
 /*
 Emitted when a preset is added.
 */
-func (self Instance) OnPresetAdded(cb func(color Color.RGBA), flags ...Signal.Flags) {
+func (self Instance) OnPresetAdded(cb func(color Color.RGBA), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("preset_added"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PresetAdded() Signal.Any {
@@ -617,12 +631,13 @@ func (self class) PresetAdded() Signal.Any {
 /*
 Emitted when a preset is removed.
 */
-func (self Instance) OnPresetRemoved(cb func(color Color.RGBA), flags ...Signal.Flags) {
+func (self Instance) OnPresetRemoved(cb func(color Color.RGBA), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("preset_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PresetRemoved() Signal.Any {

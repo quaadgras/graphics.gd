@@ -172,9 +172,10 @@ func (self Instance) CeilingDb() Float.X {
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
-// SetCeilingDb sets the property returned by [GetCeilingDb].
-func (self Instance) SetCeilingDb(value Float.X) {
+// SetCeilingDb sets the property returned by [GetCeilingDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCeilingDb(value Float.X) Instance {
 	class(self).SetCeilingDb(float64(value))
+	return self
 }
 
 /*
@@ -184,9 +185,10 @@ func (self Instance) ThresholdDb() Float.X {
 	return Float.X(Float.X(class(self).GetThresholdDb()))
 }
 
-// SetThresholdDb sets the property returned by [GetThresholdDb].
-func (self Instance) SetThresholdDb(value Float.X) {
+// SetThresholdDb sets the property returned by [GetThresholdDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetThresholdDb(value Float.X) Instance {
 	class(self).SetThresholdDb(float64(value))
+	return self
 }
 
 /*
@@ -196,18 +198,20 @@ func (self Instance) SoftClipDb() Float.X {
 	return Float.X(Float.X(class(self).GetSoftClipDb()))
 }
 
-// SetSoftClipDb sets the property returned by [GetSoftClipDb].
-func (self Instance) SetSoftClipDb(value Float.X) {
+// SetSoftClipDb sets the property returned by [GetSoftClipDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSoftClipDb(value Float.X) Instance {
 	class(self).SetSoftClipDb(float64(value))
+	return self
 }
 
 func (self Instance) SoftClipRatio() Float.X {
 	return Float.X(Float.X(class(self).GetSoftClipRatio()))
 }
 
-// SetSoftClipRatio sets the property returned by [GetSoftClipRatio].
-func (self Instance) SetSoftClipRatio(value Float.X) {
+// SetSoftClipRatio sets the property returned by [GetSoftClipRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSoftClipRatio(value Float.X) Instance {
 	class(self).SetSoftClipRatio(float64(value))
+	return self
 }
 
 //go:nosplit

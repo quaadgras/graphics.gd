@@ -203,12 +203,13 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 /*
 Signal emitted when the user presses the delete binding modifier button for this modifier.
 */
-func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance), flags ...Signal.Flags) {
+func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BindingModifierRemoved() Signal.Any {

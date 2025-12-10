@@ -168,9 +168,10 @@ func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
-// SetSync sets the property returned by [IsUsingSync].
-func (self Instance) SetSync(value bool) {
+// SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSync(value bool) Instance {
 	class(self).SetUseSync(value)
+	return self
 }
 
 //go:nosplit

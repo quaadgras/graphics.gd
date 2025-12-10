@@ -183,9 +183,10 @@ func (self Instance) Path() []Vector3.XYZ {
 	return []Vector3.XYZ(slices.Collect(class(self).GetPath().Values()))
 }
 
-// SetPath sets the property returned by [GetPath].
-func (self Instance) SetPath(value []Vector3.XYZ) {
+// SetPath sets the property returned by [GetPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPath(value []Vector3.XYZ) Instance {
 	class(self).SetPath(Packed.New(value...))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) PathTypes() []int32 {
 	return []int32(slices.Collect(class(self).GetPathTypes().Values()))
 }
 
-// SetPathTypes sets the property returned by [GetPathTypes].
-func (self Instance) SetPathTypes(value []int32) {
+// SetPathTypes sets the property returned by [GetPathTypes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathTypes(value []int32) Instance {
 	class(self).SetPathTypes(Packed.New(value...))
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) PathRids() []RID.Either[RID.NavigationLink3D, RID.Navigatio
 	return []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D](gd.ArrayAs[[]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]](gd.InternalArray(class(self).GetPathRids())))
 }
 
-// SetPathRids sets the property returned by [GetPathRids].
-func (self Instance) SetPathRids(value []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]) {
+// SetPathRids sets the property returned by [GetPathRids]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathRids(value []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]) Instance {
 	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -223,9 +226,10 @@ func (self Instance) PathOwnerIds() []int64 {
 	return []int64(slices.Collect(class(self).GetPathOwnerIds().Values()))
 }
 
-// SetPathOwnerIds sets the property returned by [GetPathOwnerIds].
-func (self Instance) SetPathOwnerIds(value []int64) {
+// SetPathOwnerIds sets the property returned by [GetPathOwnerIds]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathOwnerIds(value []int64) Instance {
 	class(self).SetPathOwnerIds(Packed.New(value...))
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) PathLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathLength()))
 }
 
-// SetPathLength sets the property returned by [GetPathLength].
-func (self Instance) SetPathLength(value Float.X) {
+// SetPathLength sets the property returned by [GetPathLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPathLength(value Float.X) Instance {
 	class(self).SetPathLength(float64(value))
+	return self
 }
 
 //go:nosplit

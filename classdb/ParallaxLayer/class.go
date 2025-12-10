@@ -176,9 +176,10 @@ func (self Instance) MotionScale() Vector2.XY {
 	return Vector2.XY(class(self).GetMotionScale())
 }
 
-// SetMotionScale sets the property returned by [GetMotionScale].
-func (self Instance) SetMotionScale(value Vector2.XY) {
+// SetMotionScale sets the property returned by [GetMotionScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionScale(value Vector2.XY) Instance {
 	class(self).SetMotionScale(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -190,9 +191,10 @@ func (self Instance) MotionOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetMotionOffset())
 }
 
-// SetMotionOffset sets the property returned by [GetMotionOffset].
-func (self Instance) SetMotionOffset(value Vector2.XY) {
+// SetMotionOffset sets the property returned by [GetMotionOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionOffset(value Vector2.XY) Instance {
 	class(self).SetMotionOffset(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -214,9 +216,10 @@ func (self Instance) MotionMirroring() Vector2.XY {
 	return Vector2.XY(class(self).GetMirroring())
 }
 
-// SetMotionMirroring sets the property returned by [GetMirroring].
-func (self Instance) SetMotionMirroring(value Vector2.XY) {
+// SetMotionMirroring sets the property returned by [GetMirroring]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionMirroring(value Vector2.XY) Instance {
 	class(self).SetMirroring(Vector2.XY(value))
+	return self
 }
 
 //go:nosplit

@@ -169,9 +169,10 @@ func (self Instance) LoadPath() string {
 	return string(class(self).GetLoadPath().String())
 }
 
-// SetLoadPath sets the property returned by [GetLoadPath].
-func (self Instance) SetLoadPath(value string) {
+// SetLoadPath sets the property returned by [GetLoadPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoadPath(value string) Instance {
 	class(self).Load(String.New(value))
+	return self
 }
 
 /*

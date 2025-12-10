@@ -172,9 +172,10 @@ func (self Instance) Constant() Color.RGBA {
 	return Color.RGBA(class(self).GetConstant())
 }
 
-// SetConstant sets the property returned by [GetConstant].
-func (self Instance) SetConstant(value Color.RGBA) {
+// SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstant(value Color.RGBA) Instance {
 	class(self).SetConstant(Color.RGBA(value))
+	return self
 }
 
 //go:nosplit

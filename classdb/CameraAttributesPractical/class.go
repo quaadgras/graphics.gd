@@ -194,9 +194,10 @@ func (self Instance) DofBlurFarEnabled() bool {
 	return bool(class(self).IsDofBlurFarEnabled())
 }
 
-// SetDofBlurFarEnabled sets the property returned by [IsDofBlurFarEnabled].
-func (self Instance) SetDofBlurFarEnabled(value bool) {
+// SetDofBlurFarEnabled sets the property returned by [IsDofBlurFarEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurFarEnabled(value bool) Instance {
 	class(self).SetDofBlurFarEnabled(value)
+	return self
 }
 
 /*
@@ -208,9 +209,10 @@ func (self Instance) DofBlurFarDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurFarDistance()))
 }
 
-// SetDofBlurFarDistance sets the property returned by [GetDofBlurFarDistance].
-func (self Instance) SetDofBlurFarDistance(value Float.X) {
+// SetDofBlurFarDistance sets the property returned by [GetDofBlurFarDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurFarDistance(value Float.X) Instance {
 	class(self).SetDofBlurFarDistance(float64(value))
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) DofBlurFarTransition() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurFarTransition()))
 }
 
-// SetDofBlurFarTransition sets the property returned by [GetDofBlurFarTransition].
-func (self Instance) SetDofBlurFarTransition(value Float.X) {
+// SetDofBlurFarTransition sets the property returned by [GetDofBlurFarTransition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurFarTransition(value Float.X) Instance {
 	class(self).SetDofBlurFarTransition(float64(value))
+	return self
 }
 
 /*
@@ -242,9 +245,10 @@ func (self Instance) DofBlurNearEnabled() bool {
 	return bool(class(self).IsDofBlurNearEnabled())
 }
 
-// SetDofBlurNearEnabled sets the property returned by [IsDofBlurNearEnabled].
-func (self Instance) SetDofBlurNearEnabled(value bool) {
+// SetDofBlurNearEnabled sets the property returned by [IsDofBlurNearEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurNearEnabled(value bool) Instance {
 	class(self).SetDofBlurNearEnabled(value)
+	return self
 }
 
 /*
@@ -256,9 +260,10 @@ func (self Instance) DofBlurNearDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurNearDistance()))
 }
 
-// SetDofBlurNearDistance sets the property returned by [GetDofBlurNearDistance].
-func (self Instance) SetDofBlurNearDistance(value Float.X) {
+// SetDofBlurNearDistance sets the property returned by [GetDofBlurNearDistance]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurNearDistance(value Float.X) Instance {
 	class(self).SetDofBlurNearDistance(float64(value))
+	return self
 }
 
 /*
@@ -272,9 +277,10 @@ func (self Instance) DofBlurNearTransition() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurNearTransition()))
 }
 
-// SetDofBlurNearTransition sets the property returned by [GetDofBlurNearTransition].
-func (self Instance) SetDofBlurNearTransition(value Float.X) {
+// SetDofBlurNearTransition sets the property returned by [GetDofBlurNearTransition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurNearTransition(value Float.X) Instance {
 	class(self).SetDofBlurNearTransition(float64(value))
+	return self
 }
 
 /*
@@ -284,9 +290,10 @@ func (self Instance) DofBlurAmount() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurAmount()))
 }
 
-// SetDofBlurAmount sets the property returned by [GetDofBlurAmount].
-func (self Instance) SetDofBlurAmount(value Float.X) {
+// SetDofBlurAmount sets the property returned by [GetDofBlurAmount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDofBlurAmount(value Float.X) Instance {
 	class(self).SetDofBlurAmount(float64(value))
+	return self
 }
 
 /*
@@ -296,9 +303,10 @@ func (self Instance) AutoExposureMinSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMinSensitivity()))
 }
 
-// SetAutoExposureMinSensitivity sets the property returned by [GetAutoExposureMinSensitivity].
-func (self Instance) SetAutoExposureMinSensitivity(value Float.X) {
+// SetAutoExposureMinSensitivity sets the property returned by [GetAutoExposureMinSensitivity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureMinSensitivity(value Float.X) Instance {
 	class(self).SetAutoExposureMinSensitivity(float64(value))
+	return self
 }
 
 /*
@@ -308,9 +316,10 @@ func (self Instance) AutoExposureMaxSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMaxSensitivity()))
 }
 
-// SetAutoExposureMaxSensitivity sets the property returned by [GetAutoExposureMaxSensitivity].
-func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
+// SetAutoExposureMaxSensitivity sets the property returned by [GetAutoExposureMaxSensitivity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) Instance {
 	class(self).SetAutoExposureMaxSensitivity(float64(value))
+	return self
 }
 
 //go:nosplit

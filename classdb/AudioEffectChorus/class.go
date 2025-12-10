@@ -130,38 +130,44 @@ type Any interface {
 	AsAudioEffectChorus() Instance
 }
 
-func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) { //gd:AudioEffectChorus.set_voice_delay_ms
+func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) Instance { //gd:AudioEffectChorus.set_voice_delay_ms
 	Advanced(self).SetVoiceDelayMs(int64(voice_idx), float64(delay_ms))
+	return self
 }
 func (self Instance) GetVoiceDelayMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_delay_ms
 	return Float.X(Float.X(Advanced(self).GetVoiceDelayMs(int64(voice_idx))))
 }
-func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz Float.X) { //gd:AudioEffectChorus.set_voice_rate_hz
+func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz Float.X) Instance { //gd:AudioEffectChorus.set_voice_rate_hz
 	Advanced(self).SetVoiceRateHz(int64(voice_idx), float64(rate_hz))
+	return self
 }
 func (self Instance) GetVoiceRateHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_rate_hz
 	return Float.X(Float.X(Advanced(self).GetVoiceRateHz(int64(voice_idx))))
 }
-func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms Float.X) { //gd:AudioEffectChorus.set_voice_depth_ms
+func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms Float.X) Instance { //gd:AudioEffectChorus.set_voice_depth_ms
 	Advanced(self).SetVoiceDepthMs(int64(voice_idx), float64(depth_ms))
+	return self
 }
 func (self Instance) GetVoiceDepthMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_depth_ms
 	return Float.X(Float.X(Advanced(self).GetVoiceDepthMs(int64(voice_idx))))
 }
-func (self Instance) SetVoiceLevelDb(voice_idx int, level_db Float.X) { //gd:AudioEffectChorus.set_voice_level_db
+func (self Instance) SetVoiceLevelDb(voice_idx int, level_db Float.X) Instance { //gd:AudioEffectChorus.set_voice_level_db
 	Advanced(self).SetVoiceLevelDb(int64(voice_idx), float64(level_db))
+	return self
 }
 func (self Instance) GetVoiceLevelDb(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_level_db
 	return Float.X(Float.X(Advanced(self).GetVoiceLevelDb(int64(voice_idx))))
 }
-func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz Float.X) { //gd:AudioEffectChorus.set_voice_cutoff_hz
+func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz Float.X) Instance { //gd:AudioEffectChorus.set_voice_cutoff_hz
 	Advanced(self).SetVoiceCutoffHz(int64(voice_idx), float64(cutoff_hz))
+	return self
 }
 func (self Instance) GetVoiceCutoffHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_cutoff_hz
 	return Float.X(Float.X(Advanced(self).GetVoiceCutoffHz(int64(voice_idx))))
 }
-func (self Instance) SetVoicePan(voice_idx int, pan Float.X) { //gd:AudioEffectChorus.set_voice_pan
+func (self Instance) SetVoicePan(voice_idx int, pan Float.X) Instance { //gd:AudioEffectChorus.set_voice_pan
 	Advanced(self).SetVoicePan(int64(voice_idx), float64(pan))
+	return self
 }
 func (self Instance) GetVoicePan(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_pan
 	return Float.X(Float.X(Advanced(self).GetVoicePan(int64(voice_idx))))
@@ -217,9 +223,10 @@ func (self Instance) VoiceCount() int {
 	return int(int(class(self).GetVoiceCount()))
 }
 
-// SetVoiceCount sets the property returned by [GetVoiceCount].
-func (self Instance) SetVoiceCount(value int) {
+// SetVoiceCount sets the property returned by [GetVoiceCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVoiceCount(value int) Instance {
 	class(self).SetVoiceCount(int64(value))
+	return self
 }
 
 /*
@@ -229,9 +236,10 @@ func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
-// SetDry sets the property returned by [GetDry].
-func (self Instance) SetDry(value Float.X) {
+// SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDry(value Float.X) Instance {
 	class(self).SetDry(float64(value))
+	return self
 }
 
 /*
@@ -241,9 +249,10 @@ func (self Instance) Wet() Float.X {
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
-// SetWet sets the property returned by [GetWet].
-func (self Instance) SetWet(value Float.X) {
+// SetWet sets the property returned by [GetWet]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWet(value Float.X) Instance {
 	class(self).SetWet(float64(value))
+	return self
 }
 
 //go:nosplit

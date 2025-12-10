@@ -252,9 +252,10 @@ func (self Instance) CompressionLevel() int {
 	return int(int(class(self).GetCompressionLevel()))
 }
 
-// SetCompressionLevel sets the property returned by [GetCompressionLevel].
-func (self Instance) SetCompressionLevel(value int) {
+// SetCompressionLevel sets the property returned by [GetCompressionLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompressionLevel(value int) Instance {
 	class(self).SetCompressionLevel(int64(value))
+	return self
 }
 
 /*

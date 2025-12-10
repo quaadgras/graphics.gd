@@ -138,16 +138,22 @@ type Any interface {
 
 /*
 Sets the margin to 'size' pixels for all sides.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTextureMarginAll(size Float.X) { //gd:StyleBoxTexture.set_texture_margin_all
+func (self Instance) SetTextureMarginAll(size Float.X) Instance { //gd:StyleBoxTexture.set_texture_margin_all
 	Advanced(self).SetTextureMarginAll(float64(size))
+	return self
 }
 
 /*
 Sets the expand margin to 'size' pixels for all sides.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxTexture.set_expand_margin_all
+func (self Instance) SetExpandMarginAll(size Float.X) Instance { //gd:StyleBoxTexture.set_expand_margin_all
 	Advanced(self).SetExpandMarginAll(float64(size))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -200,9 +206,10 @@ func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
-// SetTexture sets the property returned by [GetTexture].
-func (self Instance) SetTexture(value Texture2D.Instance) {
+// SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 	class(self).SetTexture(value)
+	return self
 }
 
 /*
@@ -218,9 +225,10 @@ func (self Instance) TextureMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(0)))
 }
 
-// SetTextureMarginLeft sets the property returned by [GetTextureMargin].
-func (self Instance) SetTextureMarginLeft(value Float.X) {
+// SetTextureMarginLeft sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMarginLeft(value Float.X) Instance {
 	class(self).SetTextureMargin(0, float64(value))
+	return self
 }
 
 /*
@@ -236,9 +244,10 @@ func (self Instance) TextureMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(1)))
 }
 
-// SetTextureMarginTop sets the property returned by [GetTextureMargin].
-func (self Instance) SetTextureMarginTop(value Float.X) {
+// SetTextureMarginTop sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMarginTop(value Float.X) Instance {
 	class(self).SetTextureMargin(1, float64(value))
+	return self
 }
 
 /*
@@ -254,9 +263,10 @@ func (self Instance) TextureMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(2)))
 }
 
-// SetTextureMarginRight sets the property returned by [GetTextureMargin].
-func (self Instance) SetTextureMarginRight(value Float.X) {
+// SetTextureMarginRight sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMarginRight(value Float.X) Instance {
 	class(self).SetTextureMargin(2, float64(value))
+	return self
 }
 
 /*
@@ -272,9 +282,10 @@ func (self Instance) TextureMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(3)))
 }
 
-// SetTextureMarginBottom sets the property returned by [GetTextureMargin].
-func (self Instance) SetTextureMarginBottom(value Float.X) {
+// SetTextureMarginBottom sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMarginBottom(value Float.X) Instance {
 	class(self).SetTextureMargin(3, float64(value))
+	return self
 }
 
 /*
@@ -284,9 +295,10 @@ func (self Instance) ExpandMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
-// SetExpandMarginLeft sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginLeft(value Float.X) {
+// SetExpandMarginLeft sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginLeft(value Float.X) Instance {
 	class(self).SetExpandMargin(0, float64(value))
+	return self
 }
 
 /*
@@ -296,9 +308,10 @@ func (self Instance) ExpandMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
-// SetExpandMarginTop sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginTop(value Float.X) {
+// SetExpandMarginTop sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginTop(value Float.X) Instance {
 	class(self).SetExpandMargin(1, float64(value))
+	return self
 }
 
 /*
@@ -308,9 +321,10 @@ func (self Instance) ExpandMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
-// SetExpandMarginRight sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginRight(value Float.X) {
+// SetExpandMarginRight sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginRight(value Float.X) Instance {
 	class(self).SetExpandMargin(2, float64(value))
+	return self
 }
 
 /*
@@ -320,9 +334,10 @@ func (self Instance) ExpandMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
-// SetExpandMarginBottom sets the property returned by [GetExpandMargin].
-func (self Instance) SetExpandMarginBottom(value Float.X) {
+// SetExpandMarginBottom sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandMarginBottom(value Float.X) Instance {
 	class(self).SetExpandMargin(3, float64(value))
+	return self
 }
 
 /*
@@ -332,9 +347,10 @@ func (self Instance) AxisStretchHorizontal() AxisStretchMode {
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
-// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode].
-func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
+// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
 	class(self).SetHAxisStretchMode(value)
+	return self
 }
 
 /*
@@ -344,9 +360,10 @@ func (self Instance) AxisStretchVertical() AxisStretchMode {
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
-// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode].
-func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
+// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance {
 	class(self).SetVAxisStretchMode(value)
+	return self
 }
 
 /*
@@ -363,9 +380,10 @@ func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
-// SetRegionRect sets the property returned by [GetRegionRect].
-func (self Instance) SetRegionRect(value Rect2.PositionSize) {
+// SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -375,9 +393,10 @@ func (self Instance) ModulateColor() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
-// SetModulateColor sets the property returned by [GetModulate].
-func (self Instance) SetModulateColor(value Color.RGBA) {
+// SetModulateColor sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModulateColor(value Color.RGBA) Instance {
 	class(self).SetModulate(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -387,9 +406,10 @@ func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
-// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
-func (self Instance) SetDrawCenter(value bool) {
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawCenter(value bool) Instance {
 	class(self).SetDrawCenter(value)
+	return self
 }
 
 //go:nosplit

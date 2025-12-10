@@ -223,9 +223,10 @@ func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
-// SetText sets the property returned by [GetText].
-func (self Instance) SetText(value string) {
+// SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetText(value string) Instance {
 	class(self).SetText(String.New(value))
+	return self
 }
 
 /*
@@ -239,9 +240,10 @@ func (self Instance) Icon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetButtonIcon())
 }
 
-// SetIcon sets the property returned by [GetButtonIcon].
-func (self Instance) SetIcon(value Texture2D.Instance) {
+// SetIcon sets the property returned by [GetButtonIcon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIcon(value Texture2D.Instance) Instance {
 	class(self).SetButtonIcon(value)
+	return self
 }
 
 /*
@@ -251,9 +253,10 @@ func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
-// SetFlat sets the property returned by [IsFlat].
-func (self Instance) SetFlat(value bool) {
+// SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlat(value bool) Instance {
 	class(self).SetFlat(value)
+	return self
 }
 
 /*
@@ -263,9 +266,10 @@ func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetTextAlignment())
 }
 
-// SetAlignment sets the property returned by [GetTextAlignment].
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
+// SetAlignment sets the property returned by [GetTextAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetTextAlignment(value)
+	return self
 }
 
 /*
@@ -275,9 +279,10 @@ func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
 	class(self).SetTextOverrunBehavior(value)
+	return self
 }
 
 /*
@@ -287,9 +292,10 @@ func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-// SetAutowrapMode sets the property returned by [GetAutowrapMode].
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
+// SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 	class(self).SetAutowrapMode(value)
+	return self
 }
 
 /*
@@ -299,9 +305,10 @@ func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
-// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
-func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance {
 	class(self).SetAutowrapTrimFlags(value)
+	return self
 }
 
 /*
@@ -311,9 +318,10 @@ func (self Instance) ClipText() bool {
 	return bool(class(self).GetClipText())
 }
 
-// SetClipText sets the property returned by [GetClipText].
-func (self Instance) SetClipText(value bool) {
+// SetClipText sets the property returned by [GetClipText]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipText(value bool) Instance {
 	class(self).SetClipText(value)
+	return self
 }
 
 /*
@@ -323,9 +331,10 @@ func (self Instance) IconAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetIconAlignment())
 }
 
-// SetIconAlignment sets the property returned by [GetIconAlignment].
-func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) {
+// SetIconAlignment sets the property returned by [GetIconAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) Instance {
 	class(self).SetIconAlignment(value)
+	return self
 }
 
 /*
@@ -335,9 +344,10 @@ func (self Instance) VerticalIconAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalIconAlignment())
 }
 
-// SetVerticalIconAlignment sets the property returned by [GetVerticalIconAlignment].
-func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) {
+// SetVerticalIconAlignment sets the property returned by [GetVerticalIconAlignment]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) Instance {
 	class(self).SetVerticalIconAlignment(value)
+	return self
 }
 
 /*
@@ -347,9 +357,10 @@ func (self Instance) ExpandIcon() bool {
 	return bool(class(self).IsExpandIcon())
 }
 
-// SetExpandIcon sets the property returned by [IsExpandIcon].
-func (self Instance) SetExpandIcon(value bool) {
+// SetExpandIcon sets the property returned by [IsExpandIcon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpandIcon(value bool) Instance {
 	class(self).SetExpandIcon(value)
+	return self
 }
 
 /*
@@ -359,9 +370,10 @@ func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-// SetTextDirection sets the property returned by [GetTextDirection].
-func (self Instance) SetTextDirection(value Control.TextDirection) {
+// SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 	class(self).SetTextDirection(value)
+	return self
 }
 
 /*
@@ -371,9 +383,10 @@ func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
-// SetLanguage sets the property returned by [GetLanguage].
-func (self Instance) SetLanguage(value string) {
+// SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLanguage(value string) Instance {
 	class(self).SetLanguage(String.New(value))
+	return self
 }
 
 //go:nosplit

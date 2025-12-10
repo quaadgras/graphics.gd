@@ -181,9 +181,10 @@ func (self Instance) BuildMode() BuildMode {
 	return BuildMode(class(self).GetBuildMode())
 }
 
-// SetBuildMode sets the property returned by [GetBuildMode].
-func (self Instance) SetBuildMode(value BuildMode) {
+// SetBuildMode sets the property returned by [GetBuildMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBuildMode(value BuildMode) Instance {
 	class(self).SetBuildMode(value)
+	return self
 }
 
 /*
@@ -197,9 +198,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 /*
@@ -211,9 +213,10 @@ func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
-// SetDisabled sets the property returned by [IsDisabled].
-func (self Instance) SetDisabled(value bool) {
+// SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisabled(value bool) Instance {
 	class(self).SetDisabled(value)
+	return self
 }
 
 /*
@@ -228,9 +231,10 @@ func (self Instance) OneWayCollision() bool {
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
-// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled].
-func (self Instance) SetOneWayCollision(value bool) {
+// SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneWayCollision(value bool) Instance {
 	class(self).SetOneWayCollision(value)
+	return self
 }
 
 /*
@@ -240,9 +244,10 @@ func (self Instance) OneWayCollisionMargin() Float.X {
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
-// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin].
-func (self Instance) SetOneWayCollisionMargin(value Float.X) {
+// SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance {
 	class(self).SetOneWayCollisionMargin(float64(value))
+	return self
 }
 
 //go:nosplit

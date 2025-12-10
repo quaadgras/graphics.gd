@@ -215,9 +215,10 @@ func (self Instance) LightIntensityLumens() Float.X {
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
-// SetLightIntensityLumens sets the property returned by [GetParam].
-func (self Instance) SetLightIntensityLumens(value Float.X) {
+// SetLightIntensityLumens sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightIntensityLumens(value Float.X) Instance {
 	class(self).SetParam(20, float64(value))
+	return self
 }
 
 /*
@@ -232,9 +233,10 @@ func (self Instance) LightIntensityLux() Float.X {
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
-// SetLightIntensityLux sets the property returned by [GetParam].
-func (self Instance) SetLightIntensityLux(value Float.X) {
+// SetLightIntensityLux sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightIntensityLux(value Float.X) Instance {
 	class(self).SetParam(20, float64(value))
+	return self
 }
 
 /*
@@ -248,9 +250,10 @@ func (self Instance) LightTemperature() Float.X {
 	return Float.X(Float.X(class(self).GetTemperature()))
 }
 
-// SetLightTemperature sets the property returned by [GetTemperature].
-func (self Instance) SetLightTemperature(value Float.X) {
+// SetLightTemperature sets the property returned by [GetTemperature]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightTemperature(value Float.X) Instance {
 	class(self).SetTemperature(float64(value))
+	return self
 }
 
 /*
@@ -262,9 +265,10 @@ func (self Instance) LightColor() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
-// SetLightColor sets the property returned by [GetColor].
-func (self Instance) SetLightColor(value Color.RGBA) {
+// SetLightColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightColor(value Color.RGBA) Instance {
 	class(self).SetColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -277,9 +281,10 @@ func (self Instance) LightEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
-// SetLightEnergy sets the property returned by [GetParam].
-func (self Instance) SetLightEnergy(value Float.X) {
+// SetLightEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightEnergy(value Float.X) Instance {
 	class(self).SetParam(0, float64(value))
+	return self
 }
 
 /*
@@ -295,9 +300,10 @@ func (self Instance) LightIndirectEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
-// SetLightIndirectEnergy sets the property returned by [GetParam].
-func (self Instance) SetLightIndirectEnergy(value Float.X) {
+// SetLightIndirectEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightIndirectEnergy(value Float.X) Instance {
 	class(self).SetParam(1, float64(value))
+	return self
 }
 
 /*
@@ -314,9 +320,10 @@ func (self Instance) LightVolumetricFogEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
-// SetLightVolumetricFogEnergy sets the property returned by [GetParam].
-func (self Instance) SetLightVolumetricFogEnergy(value Float.X) {
+// SetLightVolumetricFogEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightVolumetricFogEnergy(value Float.X) Instance {
 	class(self).SetParam(2, float64(value))
+	return self
 }
 
 /*
@@ -335,9 +342,10 @@ func (self Instance) LightProjector() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetProjector())
 }
 
-// SetLightProjector sets the property returned by [GetProjector].
-func (self Instance) SetLightProjector(value Texture2D.Instance) {
+// SetLightProjector sets the property returned by [GetProjector]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightProjector(value Texture2D.Instance) Instance {
 	class(self).SetProjector(value)
+	return self
 }
 
 /*
@@ -356,9 +364,10 @@ func (self Instance) LightSize() Float.X {
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
-// SetLightSize sets the property returned by [GetParam].
-func (self Instance) SetLightSize(value Float.X) {
+// SetLightSize sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightSize(value Float.X) Instance {
 	class(self).SetParam(5, float64(value))
+	return self
 }
 
 /*
@@ -376,9 +385,10 @@ func (self Instance) LightAngularDistance() Float.X {
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
-// SetLightAngularDistance sets the property returned by [GetParam].
-func (self Instance) SetLightAngularDistance(value Float.X) {
+// SetLightAngularDistance sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightAngularDistance(value Float.X) Instance {
 	class(self).SetParam(5, float64(value))
+	return self
 }
 
 /*
@@ -388,9 +398,10 @@ func (self Instance) LightNegative() bool {
 	return bool(class(self).IsNegative())
 }
 
-// SetLightNegative sets the property returned by [IsNegative].
-func (self Instance) SetLightNegative(value bool) {
+// SetLightNegative sets the property returned by [IsNegative]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightNegative(value bool) Instance {
 	class(self).SetNegative(value)
+	return self
 }
 
 /*
@@ -400,9 +411,10 @@ func (self Instance) LightSpecular() Float.X {
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
-// SetLightSpecular sets the property returned by [GetParam].
-func (self Instance) SetLightSpecular(value Float.X) {
+// SetLightSpecular sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightSpecular(value Float.X) Instance {
 	class(self).SetParam(3, float64(value))
+	return self
 }
 
 /*
@@ -416,9 +428,10 @@ func (self Instance) LightBakeMode() BakeMode {
 	return BakeMode(class(self).GetBakeMode())
 }
 
-// SetLightBakeMode sets the property returned by [GetBakeMode].
-func (self Instance) SetLightBakeMode(value BakeMode) {
+// SetLightBakeMode sets the property returned by [GetBakeMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightBakeMode(value BakeMode) Instance {
 	class(self).SetBakeMode(value)
+	return self
 }
 
 /*
@@ -428,9 +441,10 @@ func (self Instance) LightCullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
-// SetLightCullMask sets the property returned by [GetCullMask].
-func (self Instance) SetLightCullMask(value int) {
+// SetLightCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLightCullMask(value int) Instance {
 	class(self).SetCullMask(int64(value))
+	return self
 }
 
 /*
@@ -443,9 +457,10 @@ func (self Instance) ShadowEnabled() bool {
 	return bool(class(self).HasShadow())
 }
 
-// SetShadowEnabled sets the property returned by [HasShadow].
-func (self Instance) SetShadowEnabled(value bool) {
+// SetShadowEnabled sets the property returned by [HasShadow]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowEnabled(value bool) Instance {
 	class(self).SetShadow(value)
+	return self
 }
 
 /*
@@ -455,9 +470,10 @@ func (self Instance) ShadowBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(15)))
 }
 
-// SetShadowBias sets the property returned by [GetParam].
-func (self Instance) SetShadowBias(value Float.X) {
+// SetShadowBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowBias(value Float.X) Instance {
 	class(self).SetParam(15, float64(value))
+	return self
 }
 
 /*
@@ -469,9 +485,10 @@ func (self Instance) ShadowNormalBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(14)))
 }
 
-// SetShadowNormalBias sets the property returned by [GetParam].
-func (self Instance) SetShadowNormalBias(value Float.X) {
+// SetShadowNormalBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowNormalBias(value Float.X) Instance {
 	class(self).SetParam(14, float64(value))
+	return self
 }
 
 /*
@@ -481,18 +498,20 @@ func (self Instance) ShadowReverseCullFace() bool {
 	return bool(class(self).GetShadowReverseCullFace())
 }
 
-// SetShadowReverseCullFace sets the property returned by [GetShadowReverseCullFace].
-func (self Instance) SetShadowReverseCullFace(value bool) {
+// SetShadowReverseCullFace sets the property returned by [GetShadowReverseCullFace]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowReverseCullFace(value bool) Instance {
 	class(self).SetShadowReverseCullFace(value)
+	return self
 }
 
 func (self Instance) ShadowTransmittanceBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(19)))
 }
 
-// SetShadowTransmittanceBias sets the property returned by [GetParam].
-func (self Instance) SetShadowTransmittanceBias(value Float.X) {
+// SetShadowTransmittanceBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowTransmittanceBias(value Float.X) Instance {
 	class(self).SetParam(19, float64(value))
+	return self
 }
 
 /*
@@ -502,9 +521,10 @@ func (self Instance) ShadowOpacity() Float.X {
 	return Float.X(Float.X(class(self).GetParam(17)))
 }
 
-// SetShadowOpacity sets the property returned by [GetParam].
-func (self Instance) SetShadowOpacity(value Float.X) {
+// SetShadowOpacity sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowOpacity(value Float.X) Instance {
 	class(self).SetParam(17, float64(value))
+	return self
 }
 
 /*
@@ -514,9 +534,10 @@ func (self Instance) ShadowBlur() Float.X {
 	return Float.X(Float.X(class(self).GetParam(18)))
 }
 
-// SetShadowBlur sets the property returned by [GetParam].
-func (self Instance) SetShadowBlur(value Float.X) {
+// SetShadowBlur sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowBlur(value Float.X) Instance {
 	class(self).SetParam(18, float64(value))
+	return self
 }
 
 /*
@@ -526,9 +547,10 @@ func (self Instance) ShadowCasterMask() int {
 	return int(int(class(self).GetShadowCasterMask()))
 }
 
-// SetShadowCasterMask sets the property returned by [GetShadowCasterMask].
-func (self Instance) SetShadowCasterMask(value int) {
+// SetShadowCasterMask sets the property returned by [GetShadowCasterMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShadowCasterMask(value int) Instance {
 	class(self).SetShadowCasterMask(int64(value))
+	return self
 }
 
 /*
@@ -546,9 +568,10 @@ func (self Instance) DistanceFadeEnabled() bool {
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
-// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled].
-func (self Instance) SetDistanceFadeEnabled(value bool) {
+// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeEnabled(value bool) Instance {
 	class(self).SetEnableDistanceFade(value)
+	return self
 }
 
 /*
@@ -563,9 +586,10 @@ func (self Instance) DistanceFadeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
-// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin].
-func (self Instance) SetDistanceFadeBegin(value Float.X) {
+// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeBegin(value Float.X) Instance {
 	class(self).SetDistanceFadeBegin(float64(value))
+	return self
 }
 
 /*
@@ -583,9 +607,10 @@ func (self Instance) DistanceFadeShadow() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeShadow()))
 }
 
-// SetDistanceFadeShadow sets the property returned by [GetDistanceFadeShadow].
-func (self Instance) SetDistanceFadeShadow(value Float.X) {
+// SetDistanceFadeShadow sets the property returned by [GetDistanceFadeShadow]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeShadow(value Float.X) Instance {
 	class(self).SetDistanceFadeShadow(float64(value))
+	return self
 }
 
 /*
@@ -600,9 +625,10 @@ func (self Instance) DistanceFadeLength() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
-// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength].
-func (self Instance) SetDistanceFadeLength(value Float.X) {
+// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDistanceFadeLength(value Float.X) Instance {
 	class(self).SetDistanceFadeLength(float64(value))
+	return self
 }
 
 /*
@@ -615,9 +641,10 @@ func (self Instance) EditorOnly() bool {
 	return bool(class(self).IsEditorOnly())
 }
 
-// SetEditorOnly sets the property returned by [IsEditorOnly].
-func (self Instance) SetEditorOnly(value bool) {
+// SetEditorOnly sets the property returned by [IsEditorOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEditorOnly(value bool) Instance {
 	class(self).SetEditorOnly(value)
+	return self
 }
 
 //go:nosplit

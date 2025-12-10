@@ -180,13 +180,16 @@ Sets the override 'material' for the specified 'surface' of the [Mesh] resource.
 
 Note: This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [Mesh.SurfaceSetMaterial] instead.
 
+Returns 'self' to enable method chaining.
+
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 [Mesh.SurfaceSetMaterial]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.SurfaceSetMaterial
 [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 */
-func (self Instance) SetSurfaceOverrideMaterial(surface int, material Material.Instance) { //gd:MeshInstance3D.set_surface_override_material
+func (self Instance) SetSurfaceOverrideMaterial(surface int, material Material.Instance) Instance { //gd:MeshInstance3D.set_surface_override_material
 	Advanced(self).SetSurfaceOverrideMaterial(int64(surface), material)
+	return self
 }
 
 /*
@@ -306,10 +309,13 @@ func (self Instance) GetBlendShapeValue(blend_shape_idx int) Float.X { //gd:Mesh
 /*
 Sets the value of the blend shape at 'blend_shape_idx' to 'value'. Produces an error if [Mesh] is null or doesn't have a blend shape at that index.
 
+Returns 'self' to enable method chaining.
+
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.Mesh
 */
-func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) { //gd:MeshInstance3D.set_blend_shape_value
+func (self Instance) SetBlendShapeValue(blend_shape_idx int, value Float.X) Instance { //gd:MeshInstance3D.set_blend_shape_value
 	Advanced(self).SetBlendShapeValue(int64(blend_shape_idx), float64(value))
+	return self
 }
 
 /*
@@ -424,9 +430,10 @@ func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
-// SetMesh sets the property returned by [GetMesh].
-func (self Instance) SetMesh(value Mesh.Instance) {
+// SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMesh(value Mesh.Instance) Instance {
 	class(self).SetMesh(value)
+	return self
 }
 
 /*
@@ -438,9 +445,10 @@ func (self Instance) Skin() Skin.Instance {
 	return Skin.Instance(class(self).GetSkin())
 }
 
-// SetSkin sets the property returned by [GetSkin].
-func (self Instance) SetSkin(value Skin.Instance) {
+// SetSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkin(value Skin.Instance) Instance {
 	class(self).SetSkin(value)
+	return self
 }
 
 /*
@@ -452,9 +460,10 @@ func (self Instance) Skeleton() string {
 	return string(class(self).GetSkeletonPath().String())
 }
 
-// SetSkeleton sets the property returned by [GetSkeletonPath].
-func (self Instance) SetSkeleton(value string) {
+// SetSkeleton sets the property returned by [GetSkeletonPath]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkeleton(value string) Instance {
 	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit

@@ -132,9 +132,12 @@ type Any interface {
 
 /*
 Sets the apply amount of the setting at 'index' to 'amount'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAmount(index int, amount Float.X) { //gd:BoneConstraint3D.set_amount
+func (self Instance) SetAmount(index int, amount Float.X) Instance { //gd:BoneConstraint3D.set_amount
 	Advanced(self).SetAmount(int64(index), float64(amount))
+	return self
 }
 
 /*
@@ -146,9 +149,12 @@ func (self Instance) GetAmount(index int) Float.X { //gd:BoneConstraint3D.get_am
 
 /*
 Sets the apply bone of the setting at 'index' to 'bone_name'. This bone will be modified.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyBoneName(index int, bone_name string) { //gd:BoneConstraint3D.set_apply_bone_name
+func (self Instance) SetApplyBoneName(index int, bone_name string) Instance { //gd:BoneConstraint3D.set_apply_bone_name
 	Advanced(self).SetApplyBoneName(int64(index), String.New(bone_name))
+	return self
 }
 
 /*
@@ -160,9 +166,12 @@ func (self Instance) GetApplyBoneName(index int) string { //gd:BoneConstraint3D.
 
 /*
 Sets the apply bone of the setting at 'index' to 'bone'. This bone will be modified.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetApplyBone(index int, bone int) { //gd:BoneConstraint3D.set_apply_bone
+func (self Instance) SetApplyBone(index int, bone int) Instance { //gd:BoneConstraint3D.set_apply_bone
 	Advanced(self).SetApplyBone(int64(index), int64(bone))
+	return self
 }
 
 /*
@@ -176,9 +185,12 @@ func (self Instance) GetApplyBone(index int) int { //gd:BoneConstraint3D.get_app
 Sets the reference bone of the setting at 'index' to 'bone_name'.
 
 This bone will be only referenced and not modified by this modifier.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceBoneName(index int, bone_name string) { //gd:BoneConstraint3D.set_reference_bone_name
+func (self Instance) SetReferenceBoneName(index int, bone_name string) Instance { //gd:BoneConstraint3D.set_reference_bone_name
 	Advanced(self).SetReferenceBoneName(int64(index), String.New(bone_name))
+	return self
 }
 
 /*
@@ -194,9 +206,12 @@ func (self Instance) GetReferenceBoneName(index int) string { //gd:BoneConstrain
 Sets the reference bone of the setting at 'index' to 'bone'.
 
 This bone will be only referenced and not modified by this modifier.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetReferenceBone(index int, bone int) { //gd:BoneConstraint3D.set_reference_bone
+func (self Instance) SetReferenceBone(index int, bone int) Instance { //gd:BoneConstraint3D.set_reference_bone
 	Advanced(self).SetReferenceBone(int64(index), int64(bone))
+	return self
 }
 
 /*
@@ -210,9 +225,12 @@ func (self Instance) GetReferenceBone(index int) int { //gd:BoneConstraint3D.get
 
 /*
 Sets the number of settings in the modifier.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSettingCount(count int) { //gd:BoneConstraint3D.set_setting_count
+func (self Instance) SetSettingCount(count int) Instance { //gd:BoneConstraint3D.set_setting_count
 	Advanced(self).SetSettingCount(int64(count))
+	return self
 }
 
 /*

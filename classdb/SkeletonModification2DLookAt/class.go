@@ -132,9 +132,12 @@ type Any interface {
 
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAdditionalRotation(rotation Angle.Radians) { //gd:SkeletonModification2DLookAt.set_additional_rotation
+func (self Instance) SetAdditionalRotation(rotation Angle.Radians) Instance { //gd:SkeletonModification2DLookAt.set_additional_rotation
 	Advanced(self).SetAdditionalRotation(float64(rotation))
+	return self
 }
 
 /*
@@ -146,9 +149,12 @@ func (self Instance) GetAdditionalRotation() Angle.Radians { //gd:SkeletonModifi
 
 /*
 Sets whether this modification will use constraints or not. When true, constraints will be applied when solving the LookAt modification.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonModification2DLookAt.set_enable_constraint
+func (self Instance) SetEnableConstraint(enable_constraint bool) Instance { //gd:SkeletonModification2DLookAt.set_enable_constraint
 	Advanced(self).SetEnableConstraint(enable_constraint)
+	return self
 }
 
 /*
@@ -160,9 +166,12 @@ func (self Instance) GetEnableConstraint() bool { //gd:SkeletonModification2DLoo
 
 /*
 Sets the constraint's minimum allowed angle.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetConstraintAngleMin(angle_min Angle.Radians) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
+func (self Instance) SetConstraintAngleMin(angle_min Angle.Radians) Instance { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
 	Advanced(self).SetConstraintAngleMin(float64(angle_min))
+	return self
 }
 
 /*
@@ -174,9 +183,12 @@ func (self Instance) GetConstraintAngleMin() Angle.Radians { //gd:SkeletonModifi
 
 /*
 Sets the constraint's maximum allowed angle.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetConstraintAngleMax(angle_max Angle.Radians) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
+func (self Instance) SetConstraintAngleMax(angle_max Angle.Radians) Instance { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
 	Advanced(self).SetConstraintAngleMax(float64(angle_max))
+	return self
 }
 
 /*
@@ -191,10 +203,13 @@ When true, the modification will use an inverted joint constraint.
 
 An inverted joint constraint only constraints the [Bone2D] to the angles outside of the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 
+Returns 'self' to enable method chaining.
+
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
+func (self Instance) SetConstraintAngleInvert(invert bool) Instance { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
 	Advanced(self).SetConstraintAngleInvert(invert)
+	return self
 }
 
 /*
@@ -256,9 +271,10 @@ func (self Instance) BoneIndex() int {
 	return int(int(class(self).GetBoneIndex()))
 }
 
-// SetBoneIndex sets the property returned by [GetBoneIndex].
-func (self Instance) SetBoneIndex(value int) {
+// SetBoneIndex sets the property returned by [GetBoneIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneIndex(value int) Instance {
 	class(self).SetBoneIndex(int64(value))
+	return self
 }
 
 /*
@@ -270,9 +286,10 @@ func (self Instance) Bone2dNode() string {
 	return string(class(self).GetBone2dNode().String())
 }
 
-// SetBone2dNode sets the property returned by [GetBone2dNode].
-func (self Instance) SetBone2dNode(value string) {
+// SetBone2dNode sets the property returned by [GetBone2dNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone2dNode(value string) Instance {
 	class(self).SetBone2dNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 /*
@@ -284,9 +301,10 @@ func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
-// SetTargetNodepath sets the property returned by [GetTargetNode].
-func (self Instance) SetTargetNodepath(value string) {
+// SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetNodepath(value string) Instance {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
+	return self
 }
 
 //go:nosplit

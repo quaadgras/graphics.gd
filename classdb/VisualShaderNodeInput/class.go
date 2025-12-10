@@ -174,9 +174,10 @@ func (self Instance) InputName() string {
 	return string(class(self).GetInputName().String())
 }
 
-// SetInputName sets the property returned by [GetInputName].
-func (self Instance) SetInputName(value string) {
+// SetInputName sets the property returned by [GetInputName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInputName(value string) Instance {
 	class(self).SetInputName(String.New(value))
+	return self
 }
 
 //go:nosplit
@@ -208,12 +209,13 @@ Emitted when input is changed via [InputName].
 
 [InputName]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeInput#Instance.InputName
 */
-func (self Instance) OnInputTypeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnInputTypeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_type_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) InputTypeChanged() Signal.Any {

@@ -229,13 +229,16 @@ Individual properties can also be set using one of the set_slot_* methods.
 
 Note: This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphEdit.AddValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidConnectionType
 [OnGraphedit.ConnectionRequest]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.OnGraphedit.ConnectionRequest
 */
-func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) { //gd:GraphNode.set_slot
+func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) Instance { //gd:GraphNode.set_slot
 	Advanced(self).SetSlot(int64(slot_index), enable_left_port, int64(type_left), Color.RGBA(color_left), enable_right_port, int64(type_right), Color.RGBA(color_right), [1]Texture2D.Instance{}[0], [1]Texture2D.Instance{}[0], true)
+	return self
 }
 
 /*
@@ -253,13 +256,16 @@ Individual properties can also be set using one of the set_slot_* methods.
 
 Note: This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 
+Returns 'self' to enable method chaining.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 [GraphEdit.AddValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidConnectionType
 [OnGraphedit.ConnectionRequest]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.OnGraphedit.ConnectionRequest
 */
-func (self MoreArgs) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA, custom_icon_left Texture2D.Instance, custom_icon_right Texture2D.Instance, draw_stylebox bool) { //gd:GraphNode.set_slot
+func (self MoreArgs) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA, custom_icon_left Texture2D.Instance, custom_icon_right Texture2D.Instance, draw_stylebox bool) MoreArgs { //gd:GraphNode.set_slot
 	Advanced(self).SetSlot(int64(slot_index), enable_left_port, int64(type_left), Color.RGBA(color_left), enable_right_port, int64(type_right), Color.RGBA(color_right), custom_icon_left, custom_icon_right, draw_stylebox)
+	return self
 }
 
 /*
@@ -285,16 +291,22 @@ func (self Instance) IsSlotEnabledLeft(slot_index int) bool { //gd:GraphNode.is_
 
 /*
 Toggles the left (input) side of the slot with the given 'slot_index'. If 'enable' is true, a port will appear on the left side and the slot will be able to be connected from this side.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSlotEnabledLeft(slot_index int, enable bool) { //gd:GraphNode.set_slot_enabled_left
+func (self Instance) SetSlotEnabledLeft(slot_index int, enable bool) Instance { //gd:GraphNode.set_slot_enabled_left
 	Advanced(self).SetSlotEnabledLeft(int64(slot_index), enable)
+	return self
 }
 
 /*
 Sets the left (input) type of the slot with the given 'slot_index' to 'type'. If the value is negative, all connections will be disallowed to be created via user inputs.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSlotTypeLeft(slot_index int, atype int) { //gd:GraphNode.set_slot_type_left
+func (self Instance) SetSlotTypeLeft(slot_index int, atype int) Instance { //gd:GraphNode.set_slot_type_left
 	Advanced(self).SetSlotTypeLeft(int64(slot_index), int64(atype))
+	return self
 }
 
 /*
@@ -307,10 +319,13 @@ func (self Instance) GetSlotTypeLeft(slot_index int) int { //gd:GraphNode.get_sl
 /*
 Sets the [Color.RGBA] of the left (input) side of the slot with the given 'slot_index' to 'color'.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetSlotColorLeft(slot_index int, color Color.RGBA) { //gd:GraphNode.set_slot_color_left
+func (self Instance) SetSlotColorLeft(slot_index int, color Color.RGBA) Instance { //gd:GraphNode.set_slot_color_left
 	Advanced(self).SetSlotColorLeft(int64(slot_index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -325,10 +340,13 @@ func (self Instance) GetSlotColorLeft(slot_index int) Color.RGBA { //gd:GraphNod
 /*
 Sets the custom [Texture2D] of the left (input) side of the slot with the given 'slot_index' to 'custom_icon'.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon Texture2D.Instance) { //gd:GraphNode.set_slot_custom_icon_left
+func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon Texture2D.Instance) Instance { //gd:GraphNode.set_slot_custom_icon_left
 	Advanced(self).SetSlotCustomIconLeft(int64(slot_index), custom_icon)
+	return self
 }
 
 /*
@@ -349,16 +367,22 @@ func (self Instance) IsSlotEnabledRight(slot_index int) bool { //gd:GraphNode.is
 
 /*
 Toggles the right (output) side of the slot with the given 'slot_index'. If 'enable' is true, a port will appear on the right side and the slot will be able to be connected from this side.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSlotEnabledRight(slot_index int, enable bool) { //gd:GraphNode.set_slot_enabled_right
+func (self Instance) SetSlotEnabledRight(slot_index int, enable bool) Instance { //gd:GraphNode.set_slot_enabled_right
 	Advanced(self).SetSlotEnabledRight(int64(slot_index), enable)
+	return self
 }
 
 /*
 Sets the right (output) type of the slot with the given 'slot_index' to 'type'. If the value is negative, all connections will be disallowed to be created via user inputs.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSlotTypeRight(slot_index int, atype int) { //gd:GraphNode.set_slot_type_right
+func (self Instance) SetSlotTypeRight(slot_index int, atype int) Instance { //gd:GraphNode.set_slot_type_right
 	Advanced(self).SetSlotTypeRight(int64(slot_index), int64(atype))
+	return self
 }
 
 /*
@@ -371,10 +395,13 @@ func (self Instance) GetSlotTypeRight(slot_index int) int { //gd:GraphNode.get_s
 /*
 Sets the [Color.RGBA] of the right (output) side of the slot with the given 'slot_index' to 'color'.
 
+Returns 'self' to enable method chaining.
+
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) SetSlotColorRight(slot_index int, color Color.RGBA) { //gd:GraphNode.set_slot_color_right
+func (self Instance) SetSlotColorRight(slot_index int, color Color.RGBA) Instance { //gd:GraphNode.set_slot_color_right
 	Advanced(self).SetSlotColorRight(int64(slot_index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -389,10 +416,13 @@ func (self Instance) GetSlotColorRight(slot_index int) Color.RGBA { //gd:GraphNo
 /*
 Sets the custom [Texture2D] of the right (output) side of the slot with the given 'slot_index' to 'custom_icon'.
 
+Returns 'self' to enable method chaining.
+
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon Texture2D.Instance) { //gd:GraphNode.set_slot_custom_icon_right
+func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon Texture2D.Instance) Instance { //gd:GraphNode.set_slot_custom_icon_right
 	Advanced(self).SetSlotCustomIconRight(int64(slot_index), custom_icon)
+	return self
 }
 
 /*
@@ -416,10 +446,13 @@ func (self Instance) IsSlotDrawStylebox(slot_index int) bool { //gd:GraphNode.is
 /*
 Toggles the background [StyleBox] of the slot with the given 'slot_index'.
 
+Returns 'self' to enable method chaining.
+
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
-func (self Instance) SetSlotDrawStylebox(slot_index int, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
+func (self Instance) SetSlotDrawStylebox(slot_index int, enable bool) Instance { //gd:GraphNode.set_slot_draw_stylebox
 	Advanced(self).SetSlotDrawStylebox(int64(slot_index), enable)
+	return self
 }
 
 /*
@@ -545,9 +578,10 @@ func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
-// SetTitle sets the property returned by [GetTitle].
-func (self Instance) SetTitle(value string) {
+// SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTitle(value string) Instance {
 	class(self).SetTitle(String.New(value))
+	return self
 }
 
 /*
@@ -559,9 +593,10 @@ func (self Instance) IgnoreInvalidConnectionType() bool {
 	return bool(class(self).IsIgnoringValidConnectionType())
 }
 
-// SetIgnoreInvalidConnectionType sets the property returned by [IsIgnoringValidConnectionType].
-func (self Instance) SetIgnoreInvalidConnectionType(value bool) {
+// SetIgnoreInvalidConnectionType sets the property returned by [IsIgnoringValidConnectionType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetIgnoreInvalidConnectionType(value bool) Instance {
 	class(self).SetIgnoreInvalidConnectionType(value)
+	return self
 }
 
 /*
@@ -579,9 +614,10 @@ func (self Instance) SlotsFocusMode() Control.FocusMode {
 	return Control.FocusMode(class(self).GetSlotsFocusMode())
 }
 
-// SetSlotsFocusMode sets the property returned by [GetSlotsFocusMode].
-func (self Instance) SetSlotsFocusMode(value Control.FocusMode) {
+// SetSlotsFocusMode sets the property returned by [GetSlotsFocusMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSlotsFocusMode(value Control.FocusMode) Instance {
 	class(self).SetSlotsFocusMode(value)
+	return self
 }
 
 func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1012,12 +1048,13 @@ func (self class) GetOutputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_o
 /*
 Emitted when any GraphNode's slot is updated.
 */
-func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flags) {
+func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("slot_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SlotUpdated() Signal.Any {
@@ -1027,12 +1064,13 @@ func (self class) SlotUpdated() Signal.Any {
 /*
 Emitted when any slot's size might have changed.
 */
-func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("slot_sizes_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SlotSizesChanged() Signal.Any {

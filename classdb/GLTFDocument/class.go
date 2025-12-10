@@ -372,9 +372,10 @@ func (self Instance) ImageFormat() string {
 	return string(class(self).GetImageFormat().String())
 }
 
-// SetImageFormat sets the property returned by [GetImageFormat].
-func (self Instance) SetImageFormat(value string) {
+// SetImageFormat sets the property returned by [GetImageFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetImageFormat(value string) Instance {
 	class(self).SetImageFormat(String.New(value))
+	return self
 }
 
 /*
@@ -386,9 +387,10 @@ func (self Instance) LossyQuality() Float.X {
 	return Float.X(Float.X(class(self).GetLossyQuality()))
 }
 
-// SetLossyQuality sets the property returned by [GetLossyQuality].
-func (self Instance) SetLossyQuality(value Float.X) {
+// SetLossyQuality sets the property returned by [GetLossyQuality]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLossyQuality(value Float.X) Instance {
 	class(self).SetLossyQuality(float64(value))
+	return self
 }
 
 /*
@@ -403,9 +405,10 @@ func (self Instance) FallbackImageFormat() string {
 	return string(class(self).GetFallbackImageFormat().String())
 }
 
-// SetFallbackImageFormat sets the property returned by [GetFallbackImageFormat].
-func (self Instance) SetFallbackImageFormat(value string) {
+// SetFallbackImageFormat sets the property returned by [GetFallbackImageFormat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbackImageFormat(value string) Instance {
 	class(self).SetFallbackImageFormat(String.New(value))
+	return self
 }
 
 /*
@@ -415,9 +418,10 @@ func (self Instance) FallbackImageQuality() Float.X {
 	return Float.X(Float.X(class(self).GetFallbackImageQuality()))
 }
 
-// SetFallbackImageQuality sets the property returned by [GetFallbackImageQuality].
-func (self Instance) SetFallbackImageQuality(value Float.X) {
+// SetFallbackImageQuality sets the property returned by [GetFallbackImageQuality]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFallbackImageQuality(value Float.X) Instance {
 	class(self).SetFallbackImageQuality(float64(value))
+	return self
 }
 
 /*
@@ -429,9 +433,10 @@ func (self Instance) RootNodeMode() RootNodeMode {
 	return RootNodeMode(class(self).GetRootNodeMode())
 }
 
-// SetRootNodeMode sets the property returned by [GetRootNodeMode].
-func (self Instance) SetRootNodeMode(value RootNodeMode) {
+// SetRootNodeMode sets the property returned by [GetRootNodeMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRootNodeMode(value RootNodeMode) Instance {
 	class(self).SetRootNodeMode(value)
+	return self
 }
 
 /*
@@ -441,9 +446,10 @@ func (self Instance) VisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
-// SetVisibilityMode sets the property returned by [GetVisibilityMode].
-func (self Instance) SetVisibilityMode(value VisibilityMode) {
+// SetVisibilityMode sets the property returned by [GetVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVisibilityMode(value VisibilityMode) Instance {
 	class(self).SetVisibilityMode(value)
+	return self
 }
 
 //go:nosplit

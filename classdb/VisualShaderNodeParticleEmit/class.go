@@ -164,9 +164,10 @@ func (self Instance) Flags() EmitFlags {
 	return EmitFlags(class(self).GetFlags())
 }
 
-// SetFlags sets the property returned by [GetFlags].
-func (self Instance) SetFlags(value EmitFlags) {
+// SetFlags sets the property returned by [GetFlags]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFlags(value EmitFlags) Instance {
 	class(self).SetFlags(value)
+	return self
 }
 
 //go:nosplit

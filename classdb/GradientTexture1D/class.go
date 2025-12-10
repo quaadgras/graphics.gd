@@ -176,18 +176,21 @@ func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
-// SetGradient sets the property returned by [GetGradient].
-func (self Instance) SetGradient(value Gradient.Instance) {
+// SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGradient(value Gradient.Instance) Instance {
 	class(self).SetGradient(value)
+	return self
 }
 
 /*
 The number of color samples that will be obtained from the [Gradient].
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) {
+func (self Instance) SetWidth(value int) Instance {
 	class(self).SetWidth(int64(value))
+	return self
 }
 
 /*
@@ -199,9 +202,10 @@ func (self Instance) UseHdr() bool {
 	return bool(class(self).IsUsingHdr())
 }
 
-// SetUseHdr sets the property returned by [IsUsingHdr].
-func (self Instance) SetUseHdr(value bool) {
+// SetUseHdr sets the property returned by [IsUsingHdr]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseHdr(value bool) Instance {
 	class(self).SetUseHdr(value)
+	return self
 }
 
 //go:nosplit

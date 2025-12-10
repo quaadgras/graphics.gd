@@ -120,9 +120,12 @@ type Any interface {
 
 /*
 Set one of the synchronized streams, by index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSyncStream(stream_index int, audio_stream AudioStream.Instance) { //gd:AudioStreamSynchronized.set_sync_stream
+func (self Instance) SetSyncStream(stream_index int, audio_stream AudioStream.Instance) Instance { //gd:AudioStreamSynchronized.set_sync_stream
 	Advanced(self).SetSyncStream(int64(stream_index), audio_stream)
+	return self
 }
 
 /*
@@ -134,9 +137,12 @@ func (self Instance) GetSyncStream(stream_index int) AudioStream.Instance { //gd
 
 /*
 Set the volume of one of the synchronized streams, by index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSyncStreamVolume(stream_index int, volume_db Float.X) { //gd:AudioStreamSynchronized.set_sync_stream_volume
+func (self Instance) SetSyncStreamVolume(stream_index int, volume_db Float.X) Instance { //gd:AudioStreamSynchronized.set_sync_stream_volume
 	Advanced(self).SetSyncStreamVolume(int64(stream_index), float64(volume_db))
+	return self
 }
 
 /*
@@ -196,9 +202,10 @@ func (self Instance) StreamCount() int {
 	return int(int(class(self).GetStreamCount()))
 }
 
-// SetStreamCount sets the property returned by [GetStreamCount].
-func (self Instance) SetStreamCount(value int) {
+// SetStreamCount sets the property returned by [GetStreamCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStreamCount(value int) Instance {
 	class(self).SetStreamCount(int64(value))
+	return self
 }
 
 //go:nosplit

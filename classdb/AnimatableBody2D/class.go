@@ -177,9 +177,10 @@ func (self Instance) SyncToPhysics() bool {
 	return bool(class(self).IsSyncToPhysicsEnabled())
 }
 
-// SetSyncToPhysics sets the property returned by [IsSyncToPhysicsEnabled].
-func (self Instance) SetSyncToPhysics(value bool) {
+// SetSyncToPhysics sets the property returned by [IsSyncToPhysicsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSyncToPhysics(value bool) Instance {
 	class(self).SetSyncToPhysics(value)
+	return self
 }
 
 //go:nosplit

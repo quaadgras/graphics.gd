@@ -282,10 +282,13 @@ func (self Instance) ClearExceptions() { //gd:RayCast2D.clear_exceptions
 /*
 Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.CollisionMask
 */
-func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:RayCast2D.set_collision_mask_value
+func (self Instance) SetCollisionMaskValue(layer_number int, value bool) Instance { //gd:RayCast2D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -346,9 +349,10 @@ func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
-// SetEnabled sets the property returned by [IsEnabled].
-func (self Instance) SetEnabled(value bool) {
+// SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEnabled(value bool) Instance {
 	class(self).SetEnabled(value)
+	return self
 }
 
 /*
@@ -362,9 +366,10 @@ func (self Instance) ExcludeParent() bool {
 	return bool(class(self).GetExcludeParentBody())
 }
 
-// SetExcludeParent sets the property returned by [GetExcludeParentBody].
-func (self Instance) SetExcludeParent(value bool) {
+// SetExcludeParent sets the property returned by [GetExcludeParentBody]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExcludeParent(value bool) Instance {
 	class(self).SetExcludeParentBody(value)
+	return self
 }
 
 /*
@@ -376,9 +381,10 @@ func (self Instance) TargetPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
-// SetTargetPosition sets the property returned by [GetTargetPosition].
-func (self Instance) SetTargetPosition(value Vector2.XY) {
+// SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
 	class(self).SetTargetPosition(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -390,9 +396,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -402,9 +409,10 @@ func (self Instance) HitFromInside() bool {
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
-// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled].
-func (self Instance) SetHitFromInside(value bool) {
+// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHitFromInside(value bool) Instance {
 	class(self).SetHitFromInside(value)
+	return self
 }
 
 /*
@@ -416,9 +424,10 @@ func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
-// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
-func (self Instance) SetCollideWithAreas(value bool) {
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithAreas(value bool) Instance {
 	class(self).SetCollideWithAreas(value)
+	return self
 }
 
 /*
@@ -430,9 +439,10 @@ func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
-// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
-func (self Instance) SetCollideWithBodies(value bool) {
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithBodies(value bool) Instance {
 	class(self).SetCollideWithBodies(value)
+	return self
 }
 
 //go:nosplit

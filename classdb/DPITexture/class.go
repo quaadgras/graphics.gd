@@ -172,9 +172,12 @@ func CreateFromStringOptions(source string, scale Float.X, saturation Float.X, c
 
 /*
 Sets SVG source code.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSource(source string) { //gd:DPITexture.set_source
+func (self Instance) SetSource(source string) Instance { //gd:DPITexture.set_source
 	Advanced(self).SetSource(String.New(source))
+	return self
 }
 
 /*
@@ -186,9 +189,12 @@ func (self Instance) GetSource() string { //gd:DPITexture.get_source
 
 /*
 Resizes the texture to the specified dimensions.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSizeOverride(size Vector2i.XY) { //gd:DPITexture.set_size_override
+func (self Instance) SetSizeOverride(size Vector2i.XY) Instance { //gd:DPITexture.set_size_override
 	Advanced(self).SetSizeOverride(Vector2i.XY(size))
+	return self
 }
 
 /*
@@ -250,9 +256,10 @@ func (self Instance) BaseScale() Float.X {
 	return Float.X(Float.X(class(self).GetBaseScale()))
 }
 
-// SetBaseScale sets the property returned by [GetBaseScale].
-func (self Instance) SetBaseScale(value Float.X) {
+// SetBaseScale sets the property returned by [GetBaseScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBaseScale(value Float.X) Instance {
 	class(self).SetBaseScale(float64(value))
+	return self
 }
 
 /*
@@ -262,9 +269,10 @@ func (self Instance) Saturation() Float.X {
 	return Float.X(Float.X(class(self).GetSaturation()))
 }
 
-// SetSaturation sets the property returned by [GetSaturation].
-func (self Instance) SetSaturation(value Float.X) {
+// SetSaturation sets the property returned by [GetSaturation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSaturation(value Float.X) Instance {
 	class(self).SetSaturation(float64(value))
+	return self
 }
 
 /*
@@ -306,7 +314,7 @@ func (self Instance) ColorMap() map[struct {
 	}](class(self).GetColorMap()))
 }
 
-// SetColorMap sets the property returned by [GetColorMap].
+// SetColorMap sets the property returned by [GetColorMap]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetColorMap(value map[struct {
 	R float32
 	G float32
@@ -317,8 +325,9 @@ func (self Instance) SetColorMap(value map[struct {
 	G float32
 	B float32
 	A float32
-}) {
+}) Instance {
 	class(self).SetColorMap(gd.DictionaryFromMap(value))
+	return self
 }
 
 /*

@@ -240,10 +240,13 @@ func (self Instance) AddFocusable(control Control.Instance) { //gd:EditorPropert
 /*
 Puts the 'editor' control below the property label. The control must be previously added using [Node.AddChild].
 
+Returns 'self' to enable method chaining.
+
 [Node.AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
-func (self Instance) SetBottomEditor(editor Control.Instance) { //gd:EditorProperty.set_bottom_editor
+func (self Instance) SetBottomEditor(editor Control.Instance) Instance { //gd:EditorProperty.set_bottom_editor
 	Advanced(self).SetBottomEditor(editor)
+	return self
 }
 
 /*
@@ -276,16 +279,22 @@ func (self MoreArgs) Select(focusable int) { //gd:EditorProperty.select
 
 /*
 Assigns object and property to edit.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) { //gd:EditorProperty.set_object_and_property
+func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) Instance { //gd:EditorProperty.set_object_and_property
 	Advanced(self).SetObjectAndProperty(obj, String.Name(String.New(property)))
+	return self
 }
 
 /*
 Used by the inspector, set to a control that will be used as a reference to calculate the size of the label.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLabelReference(control Control.Instance) { //gd:EditorProperty.set_label_reference
+func (self Instance) SetLabelReference(control Control.Instance) Instance { //gd:EditorProperty.set_label_reference
 	Advanced(self).SetLabelReference(control)
+	return self
 }
 
 /*
@@ -351,9 +360,10 @@ func (self Instance) Label() string {
 	return string(class(self).GetLabel().String())
 }
 
-// SetLabel sets the property returned by [GetLabel].
-func (self Instance) SetLabel(value string) {
+// SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLabel(value string) Instance {
 	class(self).SetLabel(String.New(value))
+	return self
 }
 
 /*
@@ -370,9 +380,10 @@ func (self Instance) DrawLabel() bool {
 	return bool(class(self).IsDrawLabel())
 }
 
-// SetDrawLabel sets the property returned by [IsDrawLabel].
-func (self Instance) SetDrawLabel(value bool) {
+// SetDrawLabel sets the property returned by [IsDrawLabel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawLabel(value bool) Instance {
 	class(self).SetDrawLabel(value)
+	return self
 }
 
 /*
@@ -382,9 +393,10 @@ func (self Instance) DrawBackground() bool {
 	return bool(class(self).IsDrawBackground())
 }
 
-// SetDrawBackground sets the property returned by [IsDrawBackground].
-func (self Instance) SetDrawBackground(value bool) {
+// SetDrawBackground sets the property returned by [IsDrawBackground]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawBackground(value bool) Instance {
 	class(self).SetDrawBackground(value)
+	return self
 }
 
 /*
@@ -394,9 +406,10 @@ func (self Instance) Checkable() bool {
 	return bool(class(self).IsCheckable())
 }
 
-// SetCheckable sets the property returned by [IsCheckable].
-func (self Instance) SetCheckable(value bool) {
+// SetCheckable sets the property returned by [IsCheckable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCheckable(value bool) Instance {
 	class(self).SetCheckable(value)
+	return self
 }
 
 /*
@@ -406,9 +419,10 @@ func (self Instance) Checked() bool {
 	return bool(class(self).IsChecked())
 }
 
-// SetChecked sets the property returned by [IsChecked].
-func (self Instance) SetChecked(value bool) {
+// SetChecked sets the property returned by [IsChecked]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetChecked(value bool) Instance {
 	class(self).SetChecked(value)
+	return self
 }
 
 /*
@@ -418,9 +432,10 @@ func (self Instance) DrawWarning() bool {
 	return bool(class(self).IsDrawWarning())
 }
 
-// SetDrawWarning sets the property returned by [IsDrawWarning].
-func (self Instance) SetDrawWarning(value bool) {
+// SetDrawWarning sets the property returned by [IsDrawWarning]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDrawWarning(value bool) Instance {
 	class(self).SetDrawWarning(value)
+	return self
 }
 
 /*
@@ -430,9 +445,10 @@ func (self Instance) Keying() bool {
 	return bool(class(self).IsKeying())
 }
 
-// SetKeying sets the property returned by [IsKeying].
-func (self Instance) SetKeying(value bool) {
+// SetKeying sets the property returned by [IsKeying]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetKeying(value bool) Instance {
 	class(self).SetKeying(value)
+	return self
 }
 
 /*
@@ -442,9 +458,10 @@ func (self Instance) Deletable() bool {
 	return bool(class(self).IsDeletable())
 }
 
-// SetDeletable sets the property returned by [IsDeletable].
-func (self Instance) SetDeletable(value bool) {
+// SetDeletable sets the property returned by [IsDeletable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeletable(value bool) Instance {
 	class(self).SetDeletable(value)
+	return self
 }
 
 /*
@@ -454,9 +471,10 @@ func (self Instance) Selectable() bool {
 	return bool(class(self).IsSelectable())
 }
 
-// SetSelectable sets the property returned by [IsSelectable].
-func (self Instance) SetSelectable(value bool) {
+// SetSelectable sets the property returned by [IsSelectable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSelectable(value bool) Instance {
 	class(self).SetSelectable(value)
+	return self
 }
 
 /*
@@ -466,9 +484,10 @@ func (self Instance) UseFolding() bool {
 	return bool(class(self).IsUsingFolding())
 }
 
-// SetUseFolding sets the property returned by [IsUsingFolding].
-func (self Instance) SetUseFolding(value bool) {
+// SetUseFolding sets the property returned by [IsUsingFolding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseFolding(value bool) Instance {
 	class(self).SetUseFolding(value)
+	return self
 }
 
 /*
@@ -478,9 +497,10 @@ func (self Instance) NameSplitRatio() Float.X {
 	return Float.X(Float.X(class(self).GetNameSplitRatio()))
 }
 
-// SetNameSplitRatio sets the property returned by [GetNameSplitRatio].
-func (self Instance) SetNameSplitRatio(value Float.X) {
+// SetNameSplitRatio sets the property returned by [GetNameSplitRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNameSplitRatio(value Float.X) Instance {
 	class(self).SetNameSplitRatio(float64(value))
+	return self
 }
 
 /*
@@ -768,12 +788,13 @@ Do not emit this manually, use the [EmitChanged] method instead.
 
 [EmitChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty#Instance.EmitChanged
 */
-func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyChanged() Signal.Any {
@@ -785,12 +806,13 @@ Emit it if you want multiple properties modified at the same time. Do not use if
 
 [EditorInspectorPlugin.ParseProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorInspectorPlugin#Instance.ParseProperty
 */
-func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any), flags ...Signal.Flags) {
+func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) MultiplePropertiesChanged() Signal.Any {
@@ -800,12 +822,13 @@ func (self class) MultiplePropertiesChanged() Signal.Any {
 /*
 Emit it if you want to add this value as an animation key (check for keying being enabled first).
 */
-func (self Instance) OnPropertyKeyed(cb func(property string), flags ...Signal.Flags) {
+func (self Instance) OnPropertyKeyed(cb func(property string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyKeyed() Signal.Any {
@@ -815,12 +838,13 @@ func (self class) PropertyKeyed() Signal.Any {
 /*
 Emitted when a property was deleted. Used internally.
 */
-func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) {
+func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyDeleted() Signal.Any {
@@ -830,12 +854,13 @@ func (self class) PropertyDeleted() Signal.Any {
 /*
 Emit it if you want to key a property with a single value.
 */
-func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any), flags ...Signal.Flags) {
+func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyKeyedWithValue() Signal.Any {
@@ -845,12 +870,13 @@ func (self class) PropertyKeyedWithValue() Signal.Any {
 /*
 Emitted when a property was checked. Used internally.
 */
-func (self Instance) OnPropertyChecked(cb func(property string, checked bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyChecked(cb func(property string, checked bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyChecked() Signal.Any {
@@ -860,12 +886,13 @@ func (self class) PropertyChecked() Signal.Any {
 /*
 Emitted when a setting override for the current project is requested.
 */
-func (self Instance) OnPropertyOverridden(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPropertyOverridden(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_overridden"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyOverridden() Signal.Any {
@@ -875,12 +902,13 @@ func (self class) PropertyOverridden() Signal.Any {
 /*
 Emit it if you want to mark a property as favorited, making it appear at the top of the inspector.
 */
-func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_favorited"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyFavorited() Signal.Any {
@@ -892,12 +920,13 @@ Emit it if you want to mark (or unmark) the value of a property for being saved 
 
 The default value is the one the property will get when the node is just instantiated and can come from an ancestor scene in the inheritance/instantiation chain, a script or a builtin class.
 */
-func (self Instance) OnPropertyPinned(cb func(property string, pinned bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyPinned(cb func(property string, pinned bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_pinned"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyPinned() Signal.Any {
@@ -907,12 +936,13 @@ func (self class) PropertyPinned() Signal.Any {
 /*
 Emitted when the revertability (i.e., whether it has a non-default value and thus is displayed with a revert icon) of a property has changed.
 */
-func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool), flags ...Signal.Flags) {
+func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PropertyCanRevertChanged() Signal.Any {
@@ -922,12 +952,13 @@ func (self class) PropertyCanRevertChanged() Signal.Any {
 /*
 If you want a sub-resource to be edited, emit this signal with the resource.
 */
-func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance), flags ...Signal.Flags) {
+func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ResourceSelected() Signal.Any {
@@ -937,12 +968,13 @@ func (self class) ResourceSelected() Signal.Any {
 /*
 Used by sub-inspectors. Emit it if what was selected was an Object ID.
 */
-func (self Instance) OnObjectIdSelected(cb func(property string, id int), flags ...Signal.Flags) {
+func (self Instance) OnObjectIdSelected(cb func(property string, id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ObjectIdSelected() Signal.Any {
@@ -952,12 +984,13 @@ func (self class) ObjectIdSelected() Signal.Any {
 /*
 Emitted when selected. Used internally.
 */
-func (self Instance) OnSelected(cb func(path string, focusable_idx int), flags ...Signal.Flags) {
+func (self Instance) OnSelected(cb func(path string, focusable_idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("selected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Selected() Signal.Any {

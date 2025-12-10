@@ -200,9 +200,10 @@ func (self Instance) CommandOrControlAutoremap() bool {
 	return bool(class(self).IsCommandOrControlAutoremap())
 }
 
-// SetCommandOrControlAutoremap sets the property returned by [IsCommandOrControlAutoremap].
-func (self Instance) SetCommandOrControlAutoremap(value bool) {
+// SetCommandOrControlAutoremap sets the property returned by [IsCommandOrControlAutoremap]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCommandOrControlAutoremap(value bool) Instance {
 	class(self).SetCommandOrControlAutoremap(value)
+	return self
 }
 
 /*
@@ -212,9 +213,10 @@ func (self Instance) AltPressed() bool {
 	return bool(class(self).IsAltPressed())
 }
 
-// SetAltPressed sets the property returned by [IsAltPressed].
-func (self Instance) SetAltPressed(value bool) {
+// SetAltPressed sets the property returned by [IsAltPressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAltPressed(value bool) Instance {
 	class(self).SetAltPressed(value)
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) ShiftPressed() bool {
 	return bool(class(self).IsShiftPressed())
 }
 
-// SetShiftPressed sets the property returned by [IsShiftPressed].
-func (self Instance) SetShiftPressed(value bool) {
+// SetShiftPressed sets the property returned by [IsShiftPressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShiftPressed(value bool) Instance {
 	class(self).SetShiftPressed(value)
+	return self
 }
 
 /*
@@ -236,9 +239,10 @@ func (self Instance) CtrlPressed() bool {
 	return bool(class(self).IsCtrlPressed())
 }
 
-// SetCtrlPressed sets the property returned by [IsCtrlPressed].
-func (self Instance) SetCtrlPressed(value bool) {
+// SetCtrlPressed sets the property returned by [IsCtrlPressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCtrlPressed(value bool) Instance {
 	class(self).SetCtrlPressed(value)
+	return self
 }
 
 /*
@@ -248,9 +252,10 @@ func (self Instance) MetaPressed() bool {
 	return bool(class(self).IsMetaPressed())
 }
 
-// SetMetaPressed sets the property returned by [IsMetaPressed].
-func (self Instance) SetMetaPressed(value bool) {
+// SetMetaPressed sets the property returned by [IsMetaPressed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMetaPressed(value bool) Instance {
 	class(self).SetMetaPressed(value)
+	return self
 }
 
 //go:nosplit

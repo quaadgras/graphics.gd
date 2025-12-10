@@ -227,9 +227,10 @@ func (self Instance) DataArray() []byte {
 	return []byte(class(self).GetDataArray().Bytes())
 }
 
-// SetDataArray sets the property returned by [GetDataArray].
-func (self Instance) SetDataArray(value []byte) {
+// SetDataArray sets the property returned by [GetDataArray]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDataArray(value []byte) Instance {
 	class(self).SetDataArray(Packed.BytesFrom(value...))
+	return self
 }
 
 /*

@@ -175,16 +175,19 @@ func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
-// SetSize sets the property returned by [GetSize].
-func (self Instance) SetSize(value Vector2i.XY) {
+// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSize(value Vector2i.XY) Instance {
 	class(self).SetSize(Vector2i.XY(value))
+	return self
 }
 
 /*
 The number of layers in the texture array.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetLayers(value int) {
+func (self Instance) SetLayers(value int) Instance {
 	class(self).SetLayers(int64(value))
+	return self
 }
 
 //go:nosplit

@@ -133,9 +133,12 @@ Registers a callback for the given method name.
 - 'name' The name that clients can use to access the callback.
 
 - 'callback' The callback which will handle the specific method.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMethod(name string, callback Callable.Function) { //gd:JSONRPC.set_method
+func (self Instance) SetMethod(name string, callback Callable.Function) Instance { //gd:JSONRPC.set_method
 	Advanced(self).SetMethod(String.New(name), Callable.New(callback))
+	return self
 }
 
 /*

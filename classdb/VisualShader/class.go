@@ -142,9 +142,12 @@ type Any interface {
 
 /*
 Sets the mode of this shader.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetMode(mode Shader.Mode) { //gd:VisualShader.set_mode
+func (self Instance) SetMode(mode Shader.Mode) Instance { //gd:VisualShader.set_mode
 	Advanced(self).SetMode(mode)
+	return self
 }
 
 /*
@@ -163,9 +166,12 @@ func (self Instance) GetNode(atype Type, id int) VisualShaderNode.Instance { //g
 
 /*
 Sets the position of the specified node.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNodePosition(atype Type, id int, position Vector2.XY) { //gd:VisualShader.set_node_position
+func (self Instance) SetNodePosition(atype Type, id int, position Vector2.XY) Instance { //gd:VisualShader.set_node_position
 	Advanced(self).SetNodePosition(atype, int64(id), Vector2.XY(position))
+	return self
 }
 
 /*
@@ -330,9 +336,10 @@ func (self Instance) GraphOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetGraphOffset())
 }
 
-// SetGraphOffset sets the property returned by [GetGraphOffset].
-func (self Instance) SetGraphOffset(value Vector2.XY) {
+// SetGraphOffset sets the property returned by [GetGraphOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGraphOffset(value Vector2.XY) Instance {
 	class(self).SetGraphOffset(Vector2.XY(value))
+	return self
 }
 
 /*

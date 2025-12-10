@@ -305,9 +305,10 @@ func (self Instance) JointType() JointType {
 	return JointType(class(self).GetJointType())
 }
 
-// SetJointType sets the property returned by [GetJointType].
-func (self Instance) SetJointType(value JointType) {
+// SetJointType sets the property returned by [GetJointType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointType(value JointType) Instance {
 	class(self).SetJointType(value)
+	return self
 }
 
 /*
@@ -317,9 +318,10 @@ func (self Instance) JointOffset() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetJointOffset())
 }
 
-// SetJointOffset sets the property returned by [GetJointOffset].
-func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) {
+// SetJointOffset sets the property returned by [GetJointOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) Instance {
 	class(self).SetJointOffset(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -329,9 +331,10 @@ func (self Instance) JointRotation() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetJointRotation())
 }
 
-// SetJointRotation sets the property returned by [GetJointRotation].
-func (self Instance) SetJointRotation(value Vector3.XYZ) {
+// SetJointRotation sets the property returned by [GetJointRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetJointRotation(value Vector3.XYZ) Instance {
 	class(self).SetJointRotation(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -341,9 +344,10 @@ func (self Instance) BodyOffset() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetBodyOffset())
 }
 
-// SetBodyOffset sets the property returned by [GetBodyOffset].
-func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) {
+// SetBodyOffset sets the property returned by [GetBodyOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) Instance {
 	class(self).SetBodyOffset(Transform3D.BasisOrigin(value))
+	return self
 }
 
 /*
@@ -353,9 +357,10 @@ func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
-// SetMass sets the property returned by [GetMass].
-func (self Instance) SetMass(value Float.X) {
+// SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMass(value Float.X) Instance {
 	class(self).SetMass(float64(value))
+	return self
 }
 
 /*
@@ -365,9 +370,10 @@ func (self Instance) Friction() Float.X {
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
-// SetFriction sets the property returned by [GetFriction].
-func (self Instance) SetFriction(value Float.X) {
+// SetFriction sets the property returned by [GetFriction]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFriction(value Float.X) Instance {
 	class(self).SetFriction(float64(value))
+	return self
 }
 
 /*
@@ -386,9 +392,10 @@ func (self Instance) Bounce() Float.X {
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
-// SetBounce sets the property returned by [GetBounce].
-func (self Instance) SetBounce(value Float.X) {
+// SetBounce sets the property returned by [GetBounce]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBounce(value Float.X) Instance {
 	class(self).SetBounce(float64(value))
+	return self
 }
 
 /*
@@ -400,9 +407,10 @@ func (self Instance) GravityScale() Float.X {
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
-// SetGravityScale sets the property returned by [GetGravityScale].
-func (self Instance) SetGravityScale(value Float.X) {
+// SetGravityScale sets the property returned by [GetGravityScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGravityScale(value Float.X) Instance {
 	class(self).SetGravityScale(float64(value))
+	return self
 }
 
 /*
@@ -417,9 +425,10 @@ func (self Instance) CustomIntegrator() bool {
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
-// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator].
-func (self Instance) SetCustomIntegrator(value bool) {
+// SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomIntegrator(value bool) Instance {
 	class(self).SetUseCustomIntegrator(value)
+	return self
 }
 
 /*
@@ -431,9 +440,10 @@ func (self Instance) LinearDampMode() DampMode {
 	return DampMode(class(self).GetLinearDampMode())
 }
 
-// SetLinearDampMode sets the property returned by [GetLinearDampMode].
-func (self Instance) SetLinearDampMode(value DampMode) {
+// SetLinearDampMode sets the property returned by [GetLinearDampMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDampMode(value DampMode) Instance {
 	class(self).SetLinearDampMode(value)
+	return self
 }
 
 /*
@@ -450,9 +460,10 @@ func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
-// SetLinearDamp sets the property returned by [GetLinearDamp].
-func (self Instance) SetLinearDamp(value Float.X) {
+// SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearDamp(value Float.X) Instance {
 	class(self).SetLinearDamp(float64(value))
+	return self
 }
 
 /*
@@ -464,9 +475,10 @@ func (self Instance) AngularDampMode() DampMode {
 	return DampMode(class(self).GetAngularDampMode())
 }
 
-// SetAngularDampMode sets the property returned by [GetAngularDampMode].
-func (self Instance) SetAngularDampMode(value DampMode) {
+// SetAngularDampMode sets the property returned by [GetAngularDampMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDampMode(value DampMode) Instance {
 	class(self).SetAngularDampMode(value)
+	return self
 }
 
 /*
@@ -483,9 +495,10 @@ func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
-// SetAngularDamp sets the property returned by [GetAngularDamp].
-func (self Instance) SetAngularDamp(value Float.X) {
+// SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularDamp(value Float.X) Instance {
 	class(self).SetAngularDamp(float64(value))
+	return self
 }
 
 /*
@@ -497,9 +510,10 @@ func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
-// SetLinearVelocity sets the property returned by [GetLinearVelocity].
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
+// SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -509,9 +523,10 @@ func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
-// SetAngularVelocity sets the property returned by [GetAngularVelocity].
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
+// SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -521,9 +536,10 @@ func (self Instance) CanSleep() bool {
 	return bool(class(self).IsAbleToSleep())
 }
 
-// SetCanSleep sets the property returned by [IsAbleToSleep].
-func (self Instance) SetCanSleep(value bool) {
+// SetCanSleep sets the property returned by [IsAbleToSleep]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanSleep(value bool) Instance {
 	class(self).SetCanSleep(value)
+	return self
 }
 
 /*

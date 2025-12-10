@@ -206,9 +206,10 @@ func (self Instance) From() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetFrom())
 }
 
-// SetFrom sets the property returned by [GetFrom].
-func (self Instance) SetFrom(value Vector3.XYZ) {
+// SetFrom sets the property returned by [GetFrom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFrom(value Vector3.XYZ) Instance {
 	class(self).SetFrom(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -218,9 +219,10 @@ func (self Instance) To() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetTo())
 }
 
-// SetTo sets the property returned by [GetTo].
-func (self Instance) SetTo(value Vector3.XYZ) {
+// SetTo sets the property returned by [GetTo]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTo(value Vector3.XYZ) Instance {
 	class(self).SetTo(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -232,9 +234,10 @@ func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
-// SetCollisionMask sets the property returned by [GetCollisionMask].
-func (self Instance) SetCollisionMask(value int) {
+// SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionMask(value int) Instance {
 	class(self).SetCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -250,9 +253,10 @@ func (self Instance) Exclude() []RID.Body3D {
 	return []RID.Body3D(gd.ArrayAs[[]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
 }
 
-// SetExclude sets the property returned by [GetExclude].
-func (self Instance) SetExclude(value []RID.Body3D) {
+// SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExclude(value []RID.Body3D) Instance {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+	return self
 }
 
 /*
@@ -264,9 +268,10 @@ func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
-// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
-func (self Instance) SetCollideWithBodies(value bool) {
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithBodies(value bool) Instance {
 	class(self).SetCollideWithBodies(value)
+	return self
 }
 
 /*
@@ -278,9 +283,10 @@ func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
-// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
-func (self Instance) SetCollideWithAreas(value bool) {
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollideWithAreas(value bool) Instance {
 	class(self).SetCollideWithAreas(value)
+	return self
 }
 
 /*
@@ -290,9 +296,10 @@ func (self Instance) HitFromInside() bool {
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
-// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled].
-func (self Instance) SetHitFromInside(value bool) {
+// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHitFromInside(value bool) Instance {
 	class(self).SetHitFromInside(value)
+	return self
 }
 
 /*
@@ -302,9 +309,10 @@ func (self Instance) HitBackFaces() bool {
 	return bool(class(self).IsHitBackFacesEnabled())
 }
 
-// SetHitBackFaces sets the property returned by [IsHitBackFacesEnabled].
-func (self Instance) SetHitBackFaces(value bool) {
+// SetHitBackFaces sets the property returned by [IsHitBackFacesEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHitBackFaces(value bool) Instance {
 	class(self).SetHitBackFaces(value)
+	return self
 }
 
 /*

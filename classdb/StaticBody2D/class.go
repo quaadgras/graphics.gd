@@ -186,9 +186,10 @@ func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
-// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride].
-func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
+// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance {
 	class(self).SetPhysicsMaterialOverride(value)
+	return self
 }
 
 /*
@@ -198,9 +199,10 @@ func (self Instance) ConstantLinearVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetConstantLinearVelocity())
 }
 
-// SetConstantLinearVelocity sets the property returned by [GetConstantLinearVelocity].
-func (self Instance) SetConstantLinearVelocity(value Vector2.XY) {
+// SetConstantLinearVelocity sets the property returned by [GetConstantLinearVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstantLinearVelocity(value Vector2.XY) Instance {
 	class(self).SetConstantLinearVelocity(Vector2.XY(value))
+	return self
 }
 
 /*
@@ -210,9 +212,10 @@ func (self Instance) ConstantAngularVelocity() Float.X {
 	return Float.X(Float.X(class(self).GetConstantAngularVelocity()))
 }
 
-// SetConstantAngularVelocity sets the property returned by [GetConstantAngularVelocity].
-func (self Instance) SetConstantAngularVelocity(value Float.X) {
+// SetConstantAngularVelocity sets the property returned by [GetConstantAngularVelocity]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetConstantAngularVelocity(value Float.X) Instance {
 	class(self).SetConstantAngularVelocity(float64(value))
+	return self
 }
 
 //go:nosplit

@@ -173,9 +173,10 @@ func (self Instance) InnerRadius() Float.X {
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
-// SetInnerRadius sets the property returned by [GetInnerRadius].
-func (self Instance) SetInnerRadius(value Float.X) {
+// SetInnerRadius sets the property returned by [GetInnerRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetInnerRadius(value Float.X) Instance {
 	class(self).SetInnerRadius(float64(value))
+	return self
 }
 
 /*
@@ -185,9 +186,10 @@ func (self Instance) OuterRadius() Float.X {
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
-// SetOuterRadius sets the property returned by [GetOuterRadius].
-func (self Instance) SetOuterRadius(value Float.X) {
+// SetOuterRadius sets the property returned by [GetOuterRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOuterRadius(value Float.X) Instance {
 	class(self).SetOuterRadius(float64(value))
+	return self
 }
 
 /*
@@ -197,9 +199,10 @@ func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
-// SetRings sets the property returned by [GetRings].
-func (self Instance) SetRings(value int) {
+// SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRings(value int) Instance {
 	class(self).SetRings(int64(value))
+	return self
 }
 
 /*
@@ -209,9 +212,10 @@ func (self Instance) RingSegments() int {
 	return int(int(class(self).GetRingSegments()))
 }
 
-// SetRingSegments sets the property returned by [GetRingSegments].
-func (self Instance) SetRingSegments(value int) {
+// SetRingSegments sets the property returned by [GetRingSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRingSegments(value int) Instance {
 	class(self).SetRingSegments(int64(value))
+	return self
 }
 
 //go:nosplit

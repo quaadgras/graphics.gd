@@ -207,10 +207,13 @@ If 'enabled' is true, packets will be sent immediately. If 'enabled' is false (t
 
 Note: It's recommended to leave this disabled for applications that send large packets or need to transfer a lot of data, as enabling this can decrease the total available bandwidth.
 
+Returns 'self' to enable method chaining.
+
 [Nagle's algorithm]: https://en.wikipedia.org/wiki/Nagle%27s_algorithm
 */
-func (self Instance) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
+func (self Instance) SetNoDelay(enabled bool) Instance { //gd:StreamPeerTCP.set_no_delay
 	Advanced(self).SetNoDelay(enabled)
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -183,9 +183,10 @@ func (self Instance) TopRadius() Float.X {
 	return Float.X(Float.X(class(self).GetTopRadius()))
 }
 
-// SetTopRadius sets the property returned by [GetTopRadius].
-func (self Instance) SetTopRadius(value Float.X) {
+// SetTopRadius sets the property returned by [GetTopRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTopRadius(value Float.X) Instance {
 	class(self).SetTopRadius(float64(value))
+	return self
 }
 
 /*
@@ -197,9 +198,10 @@ func (self Instance) BottomRadius() Float.X {
 	return Float.X(Float.X(class(self).GetBottomRadius()))
 }
 
-// SetBottomRadius sets the property returned by [GetBottomRadius].
-func (self Instance) SetBottomRadius(value Float.X) {
+// SetBottomRadius sets the property returned by [GetBottomRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBottomRadius(value Float.X) Instance {
 	class(self).SetBottomRadius(float64(value))
+	return self
 }
 
 /*
@@ -209,9 +211,10 @@ func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value Float.X) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value Float.X) Instance {
 	class(self).SetHeight(float64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
-// SetRadialSegments sets the property returned by [GetRadialSegments].
-func (self Instance) SetRadialSegments(value int) {
+// SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadialSegments(value int) Instance {
 	class(self).SetRadialSegments(int64(value))
+	return self
 }
 
 /*
@@ -235,9 +239,10 @@ func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
-// SetRings sets the property returned by [GetRings].
-func (self Instance) SetRings(value int) {
+// SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRings(value int) Instance {
 	class(self).SetRings(int64(value))
+	return self
 }
 
 /*
@@ -252,9 +257,10 @@ func (self Instance) CapTop() bool {
 	return bool(class(self).IsCapTop())
 }
 
-// SetCapTop sets the property returned by [IsCapTop].
-func (self Instance) SetCapTop(value bool) {
+// SetCapTop sets the property returned by [IsCapTop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCapTop(value bool) Instance {
 	class(self).SetCapTop(value)
+	return self
 }
 
 /*
@@ -269,9 +275,10 @@ func (self Instance) CapBottom() bool {
 	return bool(class(self).IsCapBottom())
 }
 
-// SetCapBottom sets the property returned by [IsCapBottom].
-func (self Instance) SetCapBottom(value bool) {
+// SetCapBottom sets the property returned by [IsCapBottom]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCapBottom(value bool) Instance {
 	class(self).SetCapBottom(value)
+	return self
 }
 
 //go:nosplit

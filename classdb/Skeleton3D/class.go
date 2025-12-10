@@ -212,9 +212,12 @@ func (self Instance) GetBoneName(bone_idx int) string { //gd:Skeleton3D.get_bone
 
 /*
 Sets the bone name, 'name', for the bone at 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneName(bone_idx int, name string) { //gd:Skeleton3D.set_bone_name
+func (self Instance) SetBoneName(bone_idx int, name string) Instance { //gd:Skeleton3D.set_bone_name
 	Advanced(self).SetBoneName(int64(bone_idx), String.New(name))
+	return self
 }
 
 /*
@@ -240,9 +243,12 @@ func (self Instance) HasBoneMeta(bone_idx int, key string) bool { //gd:Skeleton3
 
 /*
 Sets the metadata for the bone at index 'bone_idx', setting the 'key' meta to 'value'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneMeta(bone_idx int, key string, value any) { //gd:Skeleton3D.set_bone_meta
+func (self Instance) SetBoneMeta(bone_idx int, key string, value any) Instance { //gd:Skeleton3D.set_bone_meta
 	Advanced(self).SetBoneMeta(int64(bone_idx), String.Name(String.New(key)), variant.New(value))
+	return self
 }
 
 /*
@@ -267,9 +273,12 @@ func (self Instance) GetBoneParent(bone_idx int) int { //gd:Skeleton3D.get_bone_
 Sets the bone index 'parent_idx' as the parent of the bone at 'bone_idx'. If -1, then bone has no parent.
 
 Note: 'parent_idx' must be less than 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneParent(bone_idx int, parent_idx int) { //gd:Skeleton3D.set_bone_parent
+func (self Instance) SetBoneParent(bone_idx int, parent_idx int) Instance { //gd:Skeleton3D.set_bone_parent
 	Advanced(self).SetBoneParent(int64(bone_idx), int64(parent_idx))
+	return self
 }
 
 /*
@@ -320,9 +329,12 @@ func (self Instance) GetBoneRest(bone_idx int) Transform3D.BasisOrigin { //gd:Sk
 
 /*
 Sets the rest transform for bone 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneRest(bone_idx int, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
+func (self Instance) SetBoneRest(bone_idx int, rest Transform3D.BasisOrigin) Instance { //gd:Skeleton3D.set_bone_rest
 	Advanced(self).SetBoneRest(int64(bone_idx), Transform3D.BasisOrigin(rest))
+	return self
 }
 
 /*
@@ -369,35 +381,47 @@ func (self Instance) GetBonePose(bone_idx int) Transform3D.BasisOrigin { //gd:Sk
 
 /*
 Sets the pose transform, 'pose', for the bone at 'bone_idx'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBonePose(bone_idx int, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
+func (self Instance) SetBonePose(bone_idx int, pose Transform3D.BasisOrigin) Instance { //gd:Skeleton3D.set_bone_pose
 	Advanced(self).SetBonePose(int64(bone_idx), Transform3D.BasisOrigin(pose))
+	return self
 }
 
 /*
 Sets the pose position of the bone at 'bone_idx' to 'position'. 'position' is a [Vector3.XYZ] describing a position local to the [Skeleton3D] node.
 
+Returns 'self' to enable method chaining.
+
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
-func (self Instance) SetBonePosePosition(bone_idx int, position Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_position
+func (self Instance) SetBonePosePosition(bone_idx int, position Vector3.XYZ) Instance { //gd:Skeleton3D.set_bone_pose_position
 	Advanced(self).SetBonePosePosition(int64(bone_idx), Vector3.XYZ(position))
+	return self
 }
 
 /*
 Sets the pose rotation of the bone at 'bone_idx' to 'rotation'. 'rotation' is a [Quaternion.IJKX] describing a rotation in the bone's local coordinate space with respect to the rotation of any parent bones.
 
+Returns 'self' to enable method chaining.
+
 [Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
 */
-func (self Instance) SetBonePoseRotation(bone_idx int, rotation Quaternion.IJKX) { //gd:Skeleton3D.set_bone_pose_rotation
+func (self Instance) SetBonePoseRotation(bone_idx int, rotation Quaternion.IJKX) Instance { //gd:Skeleton3D.set_bone_pose_rotation
 	Advanced(self).SetBonePoseRotation(int64(bone_idx), rotation)
+	return self
 }
 
 /*
 Sets the pose scale of the bone at 'bone_idx' to 'scale'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBonePoseScale(bone_idx int, scale Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_scale
+func (self Instance) SetBonePoseScale(bone_idx int, scale Vector3.XYZ) Instance { //gd:Skeleton3D.set_bone_pose_scale
 	Advanced(self).SetBonePoseScale(int64(bone_idx), Vector3.XYZ(scale))
+	return self
 }
 
 /*
@@ -449,16 +473,22 @@ func (self Instance) IsBoneEnabled(bone_idx int) bool { //gd:Skeleton3D.is_bone_
 
 /*
 Disables the pose for the bone at 'bone_idx' if false, enables the bone pose if true.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetBoneEnabled(bone_idx int) { //gd:Skeleton3D.set_bone_enabled
+func (self Instance) SetBoneEnabled(bone_idx int) Instance { //gd:Skeleton3D.set_bone_enabled
 	Advanced(self).SetBoneEnabled(int64(bone_idx), true)
+	return self
 }
 
 /*
 Disables the pose for the bone at 'bone_idx' if false, enables the bone pose if true.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetBoneEnabled(bone_idx int, enabled bool) { //gd:Skeleton3D.set_bone_enabled
+func (self MoreArgs) SetBoneEnabled(bone_idx int, enabled bool) MoreArgs { //gd:Skeleton3D.set_bone_enabled
 	Advanced(self).SetBoneEnabled(int64(bone_idx), enabled)
+	return self
 }
 
 /*
@@ -477,10 +507,13 @@ Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
 
 Note: If other bone poses have been changed, this method executes a dirty poses recalculation and will cause performance to deteriorate. If you know that multiple global poses will be applied, consider using [SetBonePose] with precalculation.
 
+Returns 'self' to enable method chaining.
+
 [SetBonePose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBonePose
 */
-func (self Instance) SetBoneGlobalPose(bone_idx int, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
+func (self Instance) SetBoneGlobalPose(bone_idx int, pose Transform3D.BasisOrigin) Instance { //gd:Skeleton3D.set_bone_global_pose
 	Advanced(self).SetBoneGlobalPose(int64(bone_idx), Transform3D.BasisOrigin(pose))
+	return self
 }
 
 /*
@@ -523,12 +556,15 @@ Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
 
 Note: The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [Transform3D.AffineInverse] of the node's [Node3D.GlobalTransform] by the desired world transform.
 
+Returns 'self' to enable method chaining.
+
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 [Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [Transform3D.AffineInverse]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.AffineInverse
 */
-func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X) { //gd:Skeleton3D.set_bone_global_pose_override
+func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X) Instance { //gd:Skeleton3D.set_bone_global_pose_override
 	Advanced(self).SetBoneGlobalPoseOverride(int64(bone_idx), Transform3D.BasisOrigin(pose), float64(amount), false)
+	return self
 }
 
 /*
@@ -538,12 +574,15 @@ Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
 
 Note: The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [Transform3D.AffineInverse] of the node's [Node3D.GlobalTransform] by the desired world transform.
 
+Returns 'self' to enable method chaining.
+
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 [Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [Transform3D.AffineInverse]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.AffineInverse
 */
-func (self MoreArgs) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
+func (self MoreArgs) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X, persistent bool) MoreArgs { //gd:Skeleton3D.set_bone_global_pose_override
 	Advanced(self).SetBoneGlobalPoseOverride(int64(bone_idx), Transform3D.BasisOrigin(pose), float64(amount), persistent)
+	return self
 }
 
 /*
@@ -664,9 +703,10 @@ func (self Instance) MotionScale() Float.X {
 	return Float.X(Float.X(class(self).GetMotionScale()))
 }
 
-// SetMotionScale sets the property returned by [GetMotionScale].
-func (self Instance) SetMotionScale(value Float.X) {
+// SetMotionScale sets the property returned by [GetMotionScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMotionScale(value Float.X) Instance {
 	class(self).SetMotionScale(float64(value))
+	return self
 }
 
 /*
@@ -676,9 +716,10 @@ func (self Instance) ShowRestOnly() bool {
 	return bool(class(self).IsShowRestOnly())
 }
 
-// SetShowRestOnly sets the property returned by [IsShowRestOnly].
-func (self Instance) SetShowRestOnly(value bool) {
+// SetShowRestOnly sets the property returned by [IsShowRestOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetShowRestOnly(value bool) Instance {
 	class(self).SetShowRestOnly(value)
+	return self
 }
 
 /*
@@ -688,9 +729,10 @@ func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess {
 	return ModifierCallbackModeProcess(class(self).GetModifierCallbackModeProcess())
 }
 
-// SetModifierCallbackModeProcess sets the property returned by [GetModifierCallbackModeProcess].
-func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) {
+// SetModifierCallbackModeProcess sets the property returned by [GetModifierCallbackModeProcess]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) Instance {
 	class(self).SetModifierCallbackModeProcess(value)
+	return self
 }
 
 /*
@@ -707,9 +749,10 @@ func (self Instance) AnimatePhysicalBones() bool {
 	return bool(class(self).GetAnimatePhysicalBones())
 }
 
-// SetAnimatePhysicalBones sets the property returned by [GetAnimatePhysicalBones].
-func (self Instance) SetAnimatePhysicalBones(value bool) {
+// SetAnimatePhysicalBones sets the property returned by [GetAnimatePhysicalBones]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnimatePhysicalBones(value bool) Instance {
 	class(self).SetAnimatePhysicalBones(value)
+	return self
 }
 
 /*
@@ -1295,12 +1338,13 @@ func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //g
 /*
 Emitted when the rest is updated.
 */
-func (self Instance) OnRestUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRestUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("rest_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RestUpdated() Signal.Any {
@@ -1314,12 +1358,13 @@ Note: During the update process, this signal is not fired, so modification by [S
 
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) OnPoseUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnPoseUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PoseUpdated() Signal.Any {
@@ -1334,12 +1379,13 @@ This means that all [SkeletonModifier3D] processing is complete. In order to det
 [OnSkeletonmodifier3d.ModificationProcessed]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.OnSkeletonmodifier3d.ModificationProcessed
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) OnSkeletonUpdated(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSkeletonUpdated(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("skeleton_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SkeletonUpdated() Signal.Any {
@@ -1352,12 +1398,13 @@ Emitted when the bone at 'bone_idx' is toggled with [SetBoneEnabled]. Use [IsBon
 [IsBoneEnabled]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.IsBoneEnabled
 [SetBoneEnabled]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBoneEnabled
 */
-func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int), flags ...Signal.Flags) {
+func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("bone_enabled_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BoneEnabledChanged() Signal.Any {
@@ -1372,12 +1419,13 @@ Emitted when the list of bones changes, such as when calling [AddBone], [SetBone
 [SetBoneParent]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBoneParent
 [UnparentBoneAndRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.UnparentBoneAndRest
 */
-func (self Instance) OnBoneListChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnBoneListChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("bone_list_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) BoneListChanged() Signal.Any {
@@ -1389,12 +1437,13 @@ Emitted when the value of [ShowRestOnly] changes.
 
 [ShowRestOnly]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.ShowRestOnly
 */
-func (self Instance) OnShowRestOnlyChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnShowRestOnlyChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("show_rest_only_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ShowRestOnlyChanged() Signal.Any {

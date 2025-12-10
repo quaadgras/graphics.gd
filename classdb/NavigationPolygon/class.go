@@ -261,10 +261,13 @@ func (self Instance) GetOutlineCount() int { //gd:NavigationPolygon.get_outline_
 /*
 Changes an outline created in the editor or by script. You have to call [MakePolygonsFromOutlines] for the polygons to update.
 
+Returns 'self' to enable method chaining.
+
 [MakePolygonsFromOutlines]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.MakePolygonsFromOutlines
 */
-func (self Instance) SetOutline(idx int, outline []Vector2.XY) { //gd:NavigationPolygon.set_outline
+func (self Instance) SetOutline(idx int, outline []Vector2.XY) Instance { //gd:NavigationPolygon.set_outline
 	Advanced(self).SetOutline(int64(idx), Packed.New(outline...))
+	return self
 }
 
 /*
@@ -302,10 +305,13 @@ func (self Instance) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_po
 /*
 Based on 'value', enables or disables the specified layer in the [ParsedCollisionMask], given a 'layer_number' between 1 and 32.
 
+Returns 'self' to enable method chaining.
+
 [ParsedCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.ParsedCollisionMask
 */
-func (self Instance) SetParsedCollisionMaskValue(layer_number int, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
+func (self Instance) SetParsedCollisionMaskValue(layer_number int, value bool) Instance { //gd:NavigationPolygon.set_parsed_collision_mask_value
 	Advanced(self).SetParsedCollisionMaskValue(int64(layer_number), value)
+	return self
 }
 
 /*
@@ -371,9 +377,10 @@ func (self Instance) Vertices() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
-// SetVertices sets the property returned by [GetVertices].
-func (self Instance) SetVertices(value []Vector2.XY) {
+// SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVertices(value []Vector2.XY) Instance {
 	class(self).SetVertices(Packed.New(value...))
+	return self
 }
 
 /*
@@ -383,9 +390,10 @@ func (self Instance) SamplePartitionType() SamplePartitionType {
 	return SamplePartitionType(class(self).GetSamplePartitionType())
 }
 
-// SetSamplePartitionType sets the property returned by [GetSamplePartitionType].
-func (self Instance) SetSamplePartitionType(value SamplePartitionType) {
+// SetSamplePartitionType sets the property returned by [GetSamplePartitionType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance {
 	class(self).SetSamplePartitionType(value)
+	return self
 }
 
 /*
@@ -395,9 +403,10 @@ func (self Instance) ParsedGeometryType() ParsedGeometryType {
 	return ParsedGeometryType(class(self).GetParsedGeometryType())
 }
 
-// SetParsedGeometryType sets the property returned by [GetParsedGeometryType].
-func (self Instance) SetParsedGeometryType(value ParsedGeometryType) {
+// SetParsedGeometryType sets the property returned by [GetParsedGeometryType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParsedGeometryType(value ParsedGeometryType) Instance {
 	class(self).SetParsedGeometryType(value)
+	return self
 }
 
 /*
@@ -411,9 +420,10 @@ func (self Instance) ParsedCollisionMask() int {
 	return int(int(class(self).GetParsedCollisionMask()))
 }
 
-// SetParsedCollisionMask sets the property returned by [GetParsedCollisionMask].
-func (self Instance) SetParsedCollisionMask(value int) {
+// SetParsedCollisionMask sets the property returned by [GetParsedCollisionMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParsedCollisionMask(value int) Instance {
 	class(self).SetParsedCollisionMask(int64(value))
+	return self
 }
 
 /*
@@ -423,9 +433,10 @@ func (self Instance) SourceGeometryMode() SourceGeometryMode {
 	return SourceGeometryMode(class(self).GetSourceGeometryMode())
 }
 
-// SetSourceGeometryMode sets the property returned by [GetSourceGeometryMode].
-func (self Instance) SetSourceGeometryMode(value SourceGeometryMode) {
+// SetSourceGeometryMode sets the property returned by [GetSourceGeometryMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceGeometryMode(value SourceGeometryMode) Instance {
 	class(self).SetSourceGeometryMode(value)
+	return self
 }
 
 /*
@@ -439,9 +450,10 @@ func (self Instance) SourceGeometryGroupName() string {
 	return string(class(self).GetSourceGeometryGroupName().String())
 }
 
-// SetSourceGeometryGroupName sets the property returned by [GetSourceGeometryGroupName].
-func (self Instance) SetSourceGeometryGroupName(value string) {
+// SetSourceGeometryGroupName sets the property returned by [GetSourceGeometryGroupName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceGeometryGroupName(value string) Instance {
 	class(self).SetSourceGeometryGroupName(String.Name(String.New(value)))
+	return self
 }
 
 /*
@@ -451,9 +463,10 @@ func (self Instance) CellSize() Float.X {
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
-// SetCellSize sets the property returned by [GetCellSize].
-func (self Instance) SetCellSize(value Float.X) {
+// SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCellSize(value Float.X) Instance {
 	class(self).SetCellSize(float64(value))
+	return self
 }
 
 /*
@@ -469,9 +482,10 @@ func (self Instance) BorderSize() Float.X {
 	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
-// SetBorderSize sets the property returned by [GetBorderSize].
-func (self Instance) SetBorderSize(value Float.X) {
+// SetBorderSize sets the property returned by [GetBorderSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBorderSize(value Float.X) Instance {
 	class(self).SetBorderSize(float64(value))
+	return self
 }
 
 /*
@@ -483,9 +497,10 @@ func (self Instance) AgentRadius() Float.X {
 	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
-// SetAgentRadius sets the property returned by [GetAgentRadius].
-func (self Instance) SetAgentRadius(value Float.X) {
+// SetAgentRadius sets the property returned by [GetAgentRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAgentRadius(value Float.X) Instance {
 	class(self).SetAgentRadius(float64(value))
+	return self
 }
 
 /*
@@ -497,9 +512,10 @@ func (self Instance) BakingRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetBakingRect())
 }
 
-// SetBakingRect sets the property returned by [GetBakingRect].
-func (self Instance) SetBakingRect(value Rect2.PositionSize) {
+// SetBakingRect sets the property returned by [GetBakingRect]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakingRect(value Rect2.PositionSize) Instance {
 	class(self).SetBakingRect(Rect2.PositionSize(value))
+	return self
 }
 
 /*
@@ -512,9 +528,10 @@ func (self Instance) BakingRectOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetBakingRectOffset())
 }
 
-// SetBakingRectOffset sets the property returned by [GetBakingRectOffset].
-func (self Instance) SetBakingRectOffset(value Vector2.XY) {
+// SetBakingRectOffset sets the property returned by [GetBakingRectOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakingRectOffset(value Vector2.XY) Instance {
 	class(self).SetBakingRectOffset(Vector2.XY(value))
+	return self
 }
 
 /*

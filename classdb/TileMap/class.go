@@ -279,10 +279,13 @@ func (Instance) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, layer 
 /*
 Assigns 'map' as a [NavigationServer2D] navigation map for the specified TileMap layer 'layer'.
 
+Returns 'self' to enable method chaining.
+
 [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 */
-func (self Instance) SetNavigationMap(layer int, map_ RID.NavigationMap2D) { //gd:TileMap.set_navigation_map
+func (self Instance) SetNavigationMap(layer int, map_ RID.NavigationMap2D) Instance { //gd:TileMap.set_navigation_map
 	Advanced(self).SetNavigationMap(int64(layer), RID.Any(map_))
+	return self
 }
 
 /*
@@ -341,9 +344,12 @@ func (self Instance) RemoveLayer(layer int) { //gd:TileMap.remove_layer
 Sets a layer's name. This is mostly useful in the editor.
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerName(layer int, name string) { //gd:TileMap.set_layer_name
+func (self Instance) SetLayerName(layer int, name string) Instance { //gd:TileMap.set_layer_name
 	Advanced(self).SetLayerName(int64(layer), String.New(name))
+	return self
 }
 
 /*
@@ -359,9 +365,12 @@ func (self Instance) GetLayerName(layer int) string { //gd:TileMap.get_layer_nam
 Enables or disables the layer 'layer'. A disabled layer is not processed at all (no rendering, no physics, etc.).
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerEnabled(layer int, enabled bool) { //gd:TileMap.set_layer_enabled
+func (self Instance) SetLayerEnabled(layer int, enabled bool) Instance { //gd:TileMap.set_layer_enabled
 	Advanced(self).SetLayerEnabled(int64(layer), enabled)
+	return self
 }
 
 /*
@@ -377,9 +386,12 @@ func (self Instance) IsLayerEnabled(layer int) bool { //gd:TileMap.is_layer_enab
 Sets a layer's color. It will be multiplied by tile's color and TileMap's modulate.
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) { //gd:TileMap.set_layer_modulate
+func (self Instance) SetLayerModulate(layer int, modulate Color.RGBA) Instance { //gd:TileMap.set_layer_modulate
 	Advanced(self).SetLayerModulate(int64(layer), Color.RGBA(modulate))
+	return self
 }
 
 /*
@@ -397,9 +409,12 @@ Enables or disables a layer's Y-sorting. If a layer is Y-sorted, the layer will 
 Y-sorted layers should usually be on different Z-index values than not Y-sorted layers, otherwise, each of those layer will be Y-sorted as whole with the Y-sorted one. This is usually an undesired behavior.
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerYSortEnabled(layer int, y_sort_enabled bool) { //gd:TileMap.set_layer_y_sort_enabled
+func (self Instance) SetLayerYSortEnabled(layer int, y_sort_enabled bool) Instance { //gd:TileMap.set_layer_y_sort_enabled
 	Advanced(self).SetLayerYSortEnabled(int64(layer), y_sort_enabled)
+	return self
 }
 
 /*
@@ -417,9 +432,12 @@ Sets a layer's Y-sort origin value. This Y-sort origin value is added to each ti
 This allows, for example, to fake a different height level on each layer. This can be useful for top-down view games.
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerYSortOrigin(layer int, y_sort_origin int) { //gd:TileMap.set_layer_y_sort_origin
+func (self Instance) SetLayerYSortOrigin(layer int, y_sort_origin int) Instance { //gd:TileMap.set_layer_y_sort_origin
 	Advanced(self).SetLayerYSortOrigin(int64(layer), int64(y_sort_origin))
+	return self
 }
 
 /*
@@ -435,9 +453,12 @@ func (self Instance) GetLayerYSortOrigin(layer int) int { //gd:TileMap.get_layer
 Sets a layers Z-index value. This Z-index is added to each tile's Z-index value.
 
 If 'layer' is negative, the layers are accessed from the last one.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetLayerZIndex(layer int, z_index int) { //gd:TileMap.set_layer_z_index
+func (self Instance) SetLayerZIndex(layer int, z_index int) Instance { //gd:TileMap.set_layer_z_index
 	Advanced(self).SetLayerZIndex(int64(layer), int64(z_index))
+	return self
 }
 
 /*
@@ -452,10 +473,13 @@ func (self Instance) GetLayerZIndex(layer int) int { //gd:TileMap.get_layer_z_in
 /*
 Enables or disables a layer's built-in navigation regions generation. Disable this if you need to bake navigation regions from a TileMap using a [NavigationRegion2D] node.
 
+Returns 'self' to enable method chaining.
+
 [NavigationRegion2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D
 */
-func (self Instance) SetLayerNavigationEnabled(layer int, enabled bool) { //gd:TileMap.set_layer_navigation_enabled
+func (self Instance) SetLayerNavigationEnabled(layer int, enabled bool) Instance { //gd:TileMap.set_layer_navigation_enabled
 	Advanced(self).SetLayerNavigationEnabled(int64(layer), enabled)
+	return self
 }
 
 /*
@@ -474,14 +498,17 @@ In order to make [NavigationAgent2D] switch between TileMap layer navigation map
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+Returns 'self' to enable method chaining.
+
 [GetLayerNavigationMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.GetLayerNavigationMap
 [NavigationAgent2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D
 [NavigationAgent2D.SetNavigationMap]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.SetNavigationMap
 [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 */
-func (self Instance) SetLayerNavigationMap(layer int, map_ RID.NavigationMap2D) { //gd:TileMap.set_layer_navigation_map
+func (self Instance) SetLayerNavigationMap(layer int, map_ RID.NavigationMap2D) Instance { //gd:TileMap.set_layer_navigation_map
 	Advanced(self).SetLayerNavigationMap(int64(layer), RID.Any(map_))
+	return self
 }
 
 /*
@@ -517,14 +544,17 @@ If 'source_id' is set to -1, 'atlas_coords' to Vector2i(-1, -1) or 'alternative_
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+Returns 'self' to enable method chaining.
+
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 [TileSet.SetSourceId]: https://pkg.go.dev/graphics.gd/classdb/TileSet#Instance.SetSourceId
 [TileSetAtlasSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource
 [TileSetScenesCollectionSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetScenesCollectionSource
 [TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
 */
-func (self Instance) SetCell(layer int, coords Vector2i.XY) { //gd:TileMap.set_cell
+func (self Instance) SetCell(layer int, coords Vector2i.XY) Instance { //gd:TileMap.set_cell
 	Advanced(self).SetCell(int64(layer), Vector2i.XY(coords), int64(-1), Vector2i.XY(gd.Vector2i{-1, -1}), int64(0))
+	return self
 }
 
 /*
@@ -540,14 +570,17 @@ If 'source_id' is set to -1, 'atlas_coords' to Vector2i(-1, -1) or 'alternative_
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+Returns 'self' to enable method chaining.
+
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 [TileSet.SetSourceId]: https://pkg.go.dev/graphics.gd/classdb/TileSet#Instance.SetSourceId
 [TileSetAtlasSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource
 [TileSetScenesCollectionSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetScenesCollectionSource
 [TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
 */
-func (self MoreArgs) SetCell(layer int, coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileMap.set_cell
+func (self MoreArgs) SetCell(layer int, coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) MoreArgs { //gd:TileMap.set_cell
 	Advanced(self).SetCell(int64(layer), Vector2i.XY(coords), int64(source_id), Vector2i.XY(atlas_coords), int64(alternative_tile))
+	return self
 }
 
 /*
@@ -781,10 +814,13 @@ Paste the given [TileMapPattern] at the given 'position' and 'layer' in the tile
 
 If 'layer' is negative, the layers are accessed from the last one.
 
+Returns 'self' to enable method chaining.
+
 [TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
 */
-func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern TileMapPattern.Instance) { //gd:TileMap.set_pattern
+func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern TileMapPattern.Instance) Instance { //gd:TileMap.set_pattern
 	Advanced(self).SetPattern(int64(layer), Vector2i.XY(position), pattern)
+	return self
 }
 
 /*
@@ -795,9 +831,12 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 If 'layer' is negative, the layers are accessed from the last one.
 
 Note: To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMap.set_cells_terrain_connect
+func (self Instance) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int) Instance { //gd:TileMap.set_cells_terrain_connect
 	Advanced(self).SetCellsTerrainConnect(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](cells), int64(terrain_set), int64(terrain), true)
+	return self
 }
 
 /*
@@ -808,9 +847,12 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 If 'layer' is negative, the layers are accessed from the last one.
 
 Note: To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_connect
+func (self MoreArgs) SetCellsTerrainConnect(layer int, cells []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) MoreArgs { //gd:TileMap.set_cells_terrain_connect
 	Advanced(self).SetCellsTerrainConnect(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](cells), int64(terrain_set), int64(terrain), ignore_empty_terrains)
+	return self
 }
 
 /*
@@ -821,9 +863,12 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 If 'layer' is negative, the layers are accessed from the last one.
 
 Note: To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) { //gd:TileMap.set_cells_terrain_path
+func (self Instance) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int) Instance { //gd:TileMap.set_cells_terrain_path
 	Advanced(self).SetCellsTerrainPath(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](path), int64(terrain_set), int64(terrain), true)
+	return self
 }
 
 /*
@@ -834,9 +879,12 @@ If 'ignore_empty_terrains' is true, empty terrains will be ignored when trying t
 If 'layer' is negative, the layers are accessed from the last one.
 
 Note: To work correctly, this method requires the TileMap's TileSet to have terrains set up with all required terrain combinations. Otherwise, it may produce unexpected results.
+
+Returns 'self' to enable method chaining.
 */
-func (self MoreArgs) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_path
+func (self MoreArgs) SetCellsTerrainPath(layer int, path []Vector2i.XY, terrain_set int, terrain int, ignore_empty_terrains bool) MoreArgs { //gd:TileMap.set_cells_terrain_path
 	Advanced(self).SetCellsTerrainPath(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](path), int64(terrain_set), int64(terrain), ignore_empty_terrains)
+	return self
 }
 
 /*
@@ -1046,9 +1094,10 @@ func (self Instance) TileSet() TileSet.Instance {
 	return TileSet.Instance(class(self).GetTileset())
 }
 
-// SetTileSet sets the property returned by [GetTileset].
-func (self Instance) SetTileSet(value TileSet.Instance) {
+// SetTileSet sets the property returned by [GetTileset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileSet(value TileSet.Instance) Instance {
 	class(self).SetTileset(value)
+	return self
 }
 
 /*
@@ -1064,9 +1113,10 @@ func (self Instance) RenderingQuadrantSize() int {
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
-// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize].
-func (self Instance) SetRenderingQuadrantSize(value int) {
+// SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRenderingQuadrantSize(value int) Instance {
 	class(self).SetRenderingQuadrantSize(int64(value))
+	return self
 }
 
 /*
@@ -1080,9 +1130,10 @@ func (self Instance) CollisionAnimatable() bool {
 	return bool(class(self).IsCollisionAnimatable())
 }
 
-// SetCollisionAnimatable sets the property returned by [IsCollisionAnimatable].
-func (self Instance) SetCollisionAnimatable(value bool) {
+// SetCollisionAnimatable sets the property returned by [IsCollisionAnimatable]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionAnimatable(value bool) Instance {
 	class(self).SetCollisionAnimatable(value)
+	return self
 }
 
 /*
@@ -1092,9 +1143,10 @@ func (self Instance) CollisionVisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
-// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode].
-func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) {
+// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) Instance {
 	class(self).SetCollisionVisibilityMode(value)
+	return self
 }
 
 /*
@@ -1104,9 +1156,10 @@ func (self Instance) NavigationVisibilityMode() VisibilityMode {
 	return VisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
-// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode].
-func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) {
+// SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) Instance {
 	class(self).SetNavigationVisibilityMode(value)
+	return self
 }
 
 /*
@@ -1964,12 +2017,13 @@ Emitted when the [TileSet] of this TileMap changes.
 
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Changed() Signal.Any {

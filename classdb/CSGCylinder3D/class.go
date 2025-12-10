@@ -183,9 +183,10 @@ func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
-// SetRadius sets the property returned by [GetRadius].
-func (self Instance) SetRadius(value Float.X) {
+// SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRadius(value Float.X) Instance {
 	class(self).SetRadius(float64(value))
+	return self
 }
 
 /*
@@ -195,9 +196,10 @@ func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
-// SetHeight sets the property returned by [GetHeight].
-func (self Instance) SetHeight(value Float.X) {
+// SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHeight(value Float.X) Instance {
 	class(self).SetHeight(float64(value))
+	return self
 }
 
 /*
@@ -207,9 +209,10 @@ func (self Instance) Sides() int {
 	return int(int(class(self).GetSides()))
 }
 
-// SetSides sets the property returned by [GetSides].
-func (self Instance) SetSides(value int) {
+// SetSides sets the property returned by [GetSides]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSides(value int) Instance {
 	class(self).SetSides(int64(value))
+	return self
 }
 
 /*
@@ -221,9 +224,10 @@ func (self Instance) Cone() bool {
 	return bool(class(self).IsCone())
 }
 
-// SetCone sets the property returned by [IsCone].
-func (self Instance) SetCone(value bool) {
+// SetCone sets the property returned by [IsCone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCone(value bool) Instance {
 	class(self).SetCone(value)
+	return self
 }
 
 /*
@@ -233,9 +237,10 @@ func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
-// SetSmoothFaces sets the property returned by [GetSmoothFaces].
-func (self Instance) SetSmoothFaces(value bool) {
+// SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSmoothFaces(value bool) Instance {
 	class(self).SetSmoothFaces(value)
+	return self
 }
 
 /*
@@ -245,9 +250,10 @@ func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
-// SetMaterial sets the property returned by [GetMaterial].
-func (self Instance) SetMaterial(value Material.Instance) {
+// SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaterial(value Material.Instance) Instance {
 	class(self).SetMaterial(value)
+	return self
 }
 
 //go:nosplit

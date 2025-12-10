@@ -568,10 +568,13 @@ func (self MoreArgs) AddHandles(handles []Vector3.XYZ, material Material.Instanc
 /*
 Sets the reference [Node3D] node for the gizmo. 'node' must inherit from [Node3D].
 
+Returns 'self' to enable method chaining.
+
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
-func (self Instance) SetNode3d(node Node.Instance) { //gd:EditorNode3DGizmo.set_node_3d
+func (self Instance) SetNode3d(node Node.Instance) Instance { //gd:EditorNode3DGizmo.set_node_3d
 	Advanced(self).SetNode3d(node)
+	return self
 }
 
 /*
@@ -592,9 +595,12 @@ func (self Instance) Clear() { //gd:EditorNode3DGizmo.clear
 
 /*
 Sets the gizmo's hidden state. If true, the gizmo will be hidden. If false, it will be shown.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetHidden(hidden bool) { //gd:EditorNode3DGizmo.set_hidden
+func (self Instance) SetHidden(hidden bool) Instance { //gd:EditorNode3DGizmo.set_hidden
 	Advanced(self).SetHidden(hidden)
+	return self
 }
 
 /*

@@ -167,9 +167,11 @@ func New() Instance {
 The smallest [AABB.PositionSize] enclosing this mesh in local space.
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetAabb(value AABB.PositionSize) {
+func (self Instance) SetAabb(value AABB.PositionSize) Instance {
 	class(self).SetAabb(AABB.PositionSize(value))
+	return self
 }
 
 //go:nosplit

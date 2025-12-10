@@ -668,11 +668,14 @@ Stops the input from propagating further down the [SceneTree].
 
 Note: This does not affect the methods in [Input], only the way events are propagated.
 
+Returns 'self' to enable method chaining.
+
 [Input]: https://pkg.go.dev/graphics.gd/classdb/Input
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Instance) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
+func (self Instance) SetInputAsHandled() Instance { //gd:Viewport.set_input_as_handled
 	Advanced(self).SetInputAsHandled()
+	return self
 }
 
 /*
@@ -696,10 +699,13 @@ func (self Instance) IsInputHandled() bool { //gd:Viewport.is_input_handled
 /*
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 
+Returns 'self' to enable method chaining.
+
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
+func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) Instance { //gd:Viewport.set_canvas_cull_mask_bit
 	Advanced(self).SetCanvasCullMaskBit(int64(layer), enable)
+	return self
 }
 
 /*
@@ -803,9 +809,10 @@ func (self Instance) Disable3d() bool {
 	return bool(class(self).Is3dDisabled())
 }
 
-// SetDisable3d sets the property returned by [Is3dDisabled].
-func (self Instance) SetDisable3d(value bool) {
+// SetDisable3d sets the property returned by [Is3dDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisable3d(value bool) Instance {
 	class(self).SetDisable3d(value)
+	return self
 }
 
 /*
@@ -815,9 +822,10 @@ func (self Instance) UseXr() bool {
 	return bool(class(self).IsUsingXr())
 }
 
-// SetUseXr sets the property returned by [IsUsingXr].
-func (self Instance) SetUseXr(value bool) {
+// SetUseXr sets the property returned by [IsUsingXr]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseXr(value bool) Instance {
 	class(self).SetUseXr(value)
+	return self
 }
 
 /*
@@ -830,9 +838,10 @@ func (self Instance) OwnWorld3d() bool {
 	return bool(class(self).IsUsingOwnWorld3d())
 }
 
-// SetOwnWorld3d sets the property returned by [IsUsingOwnWorld3d].
-func (self Instance) SetOwnWorld3d(value bool) {
+// SetOwnWorld3d sets the property returned by [IsUsingOwnWorld3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOwnWorld3d(value bool) Instance {
 	class(self).SetUseOwnWorld3d(value)
+	return self
 }
 
 /*
@@ -844,9 +853,10 @@ func (self Instance) World3d() World3D.Instance {
 	return World3D.Instance(class(self).GetWorld3d())
 }
 
-// SetWorld3d sets the property returned by [GetWorld3d].
-func (self Instance) SetWorld3d(value World3D.Instance) {
+// SetWorld3d sets the property returned by [GetWorld3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWorld3d(value World3D.Instance) Instance {
 	class(self).SetWorld3d(value)
+	return self
 }
 
 /*
@@ -858,9 +868,10 @@ func (self Instance) World2d() World2D.Instance {
 	return World2D.Instance(class(self).GetWorld2d())
 }
 
-// SetWorld2d sets the property returned by [GetWorld2d].
-func (self Instance) SetWorld2d(value World2D.Instance) {
+// SetWorld2d sets the property returned by [GetWorld2d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetWorld2d(value World2D.Instance) Instance {
 	class(self).SetWorld2d(value)
+	return self
 }
 
 /*
@@ -870,9 +881,10 @@ func (self Instance) TransparentBg() bool {
 	return bool(class(self).HasTransparentBackground())
 }
 
-// SetTransparentBg sets the property returned by [HasTransparentBackground].
-func (self Instance) SetTransparentBg(value bool) {
+// SetTransparentBg sets the property returned by [HasTransparentBackground]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransparentBg(value bool) Instance {
 	class(self).SetTransparentBackground(value)
+	return self
 }
 
 /*
@@ -891,9 +903,10 @@ func (self Instance) HandleInputLocally() bool {
 	return bool(class(self).IsHandlingInputLocally())
 }
 
-// SetHandleInputLocally sets the property returned by [IsHandlingInputLocally].
-func (self Instance) SetHandleInputLocally(value bool) {
+// SetHandleInputLocally sets the property returned by [IsHandlingInputLocally]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHandleInputLocally(value bool) Instance {
 	class(self).SetHandleInputLocally(value)
+	return self
 }
 
 /*
@@ -906,9 +919,10 @@ func (self Instance) Snap2dTransformsToPixel() bool {
 	return bool(class(self).IsSnap2dTransformsToPixelEnabled())
 }
 
-// SetSnap2dTransformsToPixel sets the property returned by [IsSnap2dTransformsToPixelEnabled].
-func (self Instance) SetSnap2dTransformsToPixel(value bool) {
+// SetSnap2dTransformsToPixel sets the property returned by [IsSnap2dTransformsToPixelEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnap2dTransformsToPixel(value bool) Instance {
 	class(self).SetSnap2dTransformsToPixel(value)
+	return self
 }
 
 /*
@@ -921,9 +935,10 @@ func (self Instance) Snap2dVerticesToPixel() bool {
 	return bool(class(self).IsSnap2dVerticesToPixelEnabled())
 }
 
-// SetSnap2dVerticesToPixel sets the property returned by [IsSnap2dVerticesToPixelEnabled].
-func (self Instance) SetSnap2dVerticesToPixel(value bool) {
+// SetSnap2dVerticesToPixel sets the property returned by [IsSnap2dVerticesToPixelEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSnap2dVerticesToPixel(value bool) Instance {
 	class(self).SetSnap2dVerticesToPixel(value)
+	return self
 }
 
 /*
@@ -938,9 +953,10 @@ func (self Instance) Msaa2d() MSAA {
 	return MSAA(class(self).GetMsaa2d())
 }
 
-// SetMsaa2d sets the property returned by [GetMsaa2d].
-func (self Instance) SetMsaa2d(value MSAA) {
+// SetMsaa2d sets the property returned by [GetMsaa2d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsaa2d(value MSAA) Instance {
 	class(self).SetMsaa2d(value)
+	return self
 }
 
 /*
@@ -956,9 +972,10 @@ func (self Instance) Msaa3d() MSAA {
 	return MSAA(class(self).GetMsaa3d())
 }
 
-// SetMsaa3d sets the property returned by [GetMsaa3d].
-func (self Instance) SetMsaa3d(value MSAA) {
+// SetMsaa3d sets the property returned by [GetMsaa3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMsaa3d(value MSAA) Instance {
 	class(self).SetMsaa3d(value)
+	return self
 }
 
 /*
@@ -973,9 +990,10 @@ func (self Instance) ScreenSpaceAa() ScreenSpaceAA {
 	return ScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
-// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa].
-func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) {
+// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) Instance {
 	class(self).SetScreenSpaceAa(value)
+	return self
 }
 
 /*
@@ -992,9 +1010,10 @@ func (self Instance) UseTaa() bool {
 	return bool(class(self).IsUsingTaa())
 }
 
-// SetUseTaa sets the property returned by [IsUsingTaa].
-func (self Instance) SetUseTaa(value bool) {
+// SetUseTaa sets the property returned by [IsUsingTaa]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseTaa(value bool) Instance {
 	class(self).SetUseTaa(value)
+	return self
 }
 
 /*
@@ -1014,9 +1033,10 @@ func (self Instance) UseDebanding() bool {
 	return bool(class(self).IsUsingDebanding())
 }
 
-// SetUseDebanding sets the property returned by [IsUsingDebanding].
-func (self Instance) SetUseDebanding(value bool) {
+// SetUseDebanding sets the property returned by [IsUsingDebanding]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseDebanding(value bool) Instance {
 	class(self).SetUseDebanding(value)
+	return self
 }
 
 /*
@@ -1035,9 +1055,10 @@ func (self Instance) UseOcclusionCulling() bool {
 	return bool(class(self).IsUsingOcclusionCulling())
 }
 
-// SetUseOcclusionCulling sets the property returned by [IsUsingOcclusionCulling].
-func (self Instance) SetUseOcclusionCulling(value bool) {
+// SetUseOcclusionCulling sets the property returned by [IsUsingOcclusionCulling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseOcclusionCulling(value bool) Instance {
 	class(self).SetUseOcclusionCulling(value)
+	return self
 }
 
 /*
@@ -1057,9 +1078,10 @@ func (self Instance) MeshLodThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
-// SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold].
-func (self Instance) SetMeshLodThreshold(value Float.X) {
+// SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMeshLodThreshold(value Float.X) Instance {
 	class(self).SetMeshLodThreshold(float64(value))
+	return self
 }
 
 /*
@@ -1069,9 +1091,10 @@ func (self Instance) DebugDraw() DebugDraw {
 	return DebugDraw(class(self).GetDebugDraw())
 }
 
-// SetDebugDraw sets the property returned by [GetDebugDraw].
-func (self Instance) SetDebugDraw(value DebugDraw) {
+// SetDebugDraw sets the property returned by [GetDebugDraw]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugDraw(value DebugDraw) Instance {
 	class(self).SetDebugDraw(value)
+	return self
 }
 
 /*
@@ -1085,9 +1108,10 @@ func (self Instance) UseHdr2d() bool {
 	return bool(class(self).IsUsingHdr2d())
 }
 
-// SetUseHdr2d sets the property returned by [IsUsingHdr2d].
-func (self Instance) SetUseHdr2d(value bool) {
+// SetUseHdr2d sets the property returned by [IsUsingHdr2d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseHdr2d(value bool) Instance {
 	class(self).SetUseHdr2d(value)
+	return self
 }
 
 /*
@@ -1101,9 +1125,10 @@ func (self Instance) Scaling3dMode() Scaling3DMode {
 	return Scaling3DMode(class(self).GetScaling3dMode())
 }
 
-// SetScaling3dMode sets the property returned by [GetScaling3dMode].
-func (self Instance) SetScaling3dMode(value Scaling3DMode) {
+// SetScaling3dMode sets the property returned by [GetScaling3dMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaling3dMode(value Scaling3DMode) Instance {
 	class(self).SetScaling3dMode(value)
+	return self
 }
 
 /*
@@ -1119,9 +1144,10 @@ func (self Instance) Scaling3dScale() Float.X {
 	return Float.X(Float.X(class(self).GetScaling3dScale()))
 }
 
-// SetScaling3dScale sets the property returned by [GetScaling3dScale].
-func (self Instance) SetScaling3dScale(value Float.X) {
+// SetScaling3dScale sets the property returned by [GetScaling3dScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScaling3dScale(value Float.X) Instance {
 	class(self).SetScaling3dScale(float64(value))
+	return self
 }
 
 /*
@@ -1143,9 +1169,10 @@ func (self Instance) TextureMipmapBias() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
-// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias].
-func (self Instance) SetTextureMipmapBias(value Float.X) {
+// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMipmapBias(value Float.X) Instance {
 	class(self).SetTextureMipmapBias(float64(value))
+	return self
 }
 
 /*
@@ -1167,9 +1194,10 @@ func (self Instance) AnisotropicFilteringLevel() AnisotropicFiltering {
 	return AnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
-// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel].
-func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) {
+// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) Instance {
 	class(self).SetAnisotropicFilteringLevel(value)
+	return self
 }
 
 /*
@@ -1183,9 +1211,10 @@ func (self Instance) FsrSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
-// SetFsrSharpness sets the property returned by [GetFsrSharpness].
-func (self Instance) SetFsrSharpness(value Float.X) {
+// SetFsrSharpness sets the property returned by [GetFsrSharpness]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFsrSharpness(value Float.X) Instance {
 	class(self).SetFsrSharpness(float64(value))
+	return self
 }
 
 /*
@@ -1195,9 +1224,10 @@ func (self Instance) VrsMode() VRSMode {
 	return VRSMode(class(self).GetVrsMode())
 }
 
-// SetVrsMode sets the property returned by [GetVrsMode].
-func (self Instance) SetVrsMode(value VRSMode) {
+// SetVrsMode sets the property returned by [GetVrsMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsMode(value VRSMode) Instance {
 	class(self).SetVrsMode(value)
+	return self
 }
 
 /*
@@ -1207,9 +1237,10 @@ func (self Instance) VrsUpdateMode() VRSUpdateMode {
 	return VRSUpdateMode(class(self).GetVrsUpdateMode())
 }
 
-// SetVrsUpdateMode sets the property returned by [GetVrsUpdateMode].
-func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) {
+// SetVrsUpdateMode sets the property returned by [GetVrsUpdateMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) Instance {
 	class(self).SetVrsUpdateMode(value)
+	return self
 }
 
 /*
@@ -1223,9 +1254,10 @@ func (self Instance) VrsTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetVrsTexture())
 }
 
-// SetVrsTexture sets the property returned by [GetVrsTexture].
-func (self Instance) SetVrsTexture(value Texture2D.Instance) {
+// SetVrsTexture sets the property returned by [GetVrsTexture]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVrsTexture(value Texture2D.Instance) Instance {
 	class(self).SetVrsTexture(value)
+	return self
 }
 
 /*
@@ -1237,9 +1269,10 @@ func (self Instance) CanvasItemDefaultTextureFilter() DefaultCanvasItemTextureFi
 	return DefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
 }
 
-// SetCanvasItemDefaultTextureFilter sets the property returned by [GetDefaultCanvasItemTextureFilter].
-func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) {
+// SetCanvasItemDefaultTextureFilter sets the property returned by [GetDefaultCanvasItemTextureFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) Instance {
 	class(self).SetDefaultCanvasItemTextureFilter(value)
+	return self
 }
 
 /*
@@ -1251,9 +1284,10 @@ func (self Instance) CanvasItemDefaultTextureRepeat() DefaultCanvasItemTextureRe
 	return DefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
 }
 
-// SetCanvasItemDefaultTextureRepeat sets the property returned by [GetDefaultCanvasItemTextureRepeat].
-func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) {
+// SetCanvasItemDefaultTextureRepeat sets the property returned by [GetDefaultCanvasItemTextureRepeat]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) Instance {
 	class(self).SetDefaultCanvasItemTextureRepeat(value)
+	return self
 }
 
 /*
@@ -1263,9 +1297,10 @@ func (self Instance) AudioListenerEnable2d() bool {
 	return bool(class(self).IsAudioListener2d())
 }
 
-// SetAudioListenerEnable2d sets the property returned by [IsAudioListener2d].
-func (self Instance) SetAudioListenerEnable2d(value bool) {
+// SetAudioListenerEnable2d sets the property returned by [IsAudioListener2d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioListenerEnable2d(value bool) Instance {
 	class(self).SetAsAudioListener2d(value)
+	return self
 }
 
 /*
@@ -1275,9 +1310,10 @@ func (self Instance) AudioListenerEnable3d() bool {
 	return bool(class(self).IsAudioListener3d())
 }
 
-// SetAudioListenerEnable3d sets the property returned by [IsAudioListener3d].
-func (self Instance) SetAudioListenerEnable3d(value bool) {
+// SetAudioListenerEnable3d sets the property returned by [IsAudioListener3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioListenerEnable3d(value bool) Instance {
 	class(self).SetAsAudioListener3d(value)
+	return self
 }
 
 /*
@@ -1289,9 +1325,10 @@ func (self Instance) PhysicsObjectPicking() bool {
 	return bool(class(self).GetPhysicsObjectPicking())
 }
 
-// SetPhysicsObjectPicking sets the property returned by [GetPhysicsObjectPicking].
-func (self Instance) SetPhysicsObjectPicking(value bool) {
+// SetPhysicsObjectPicking sets the property returned by [GetPhysicsObjectPicking]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsObjectPicking(value bool) Instance {
 	class(self).SetPhysicsObjectPicking(value)
+	return self
 }
 
 /*
@@ -1307,9 +1344,10 @@ func (self Instance) PhysicsObjectPickingSort() bool {
 	return bool(class(self).GetPhysicsObjectPickingSort())
 }
 
-// SetPhysicsObjectPickingSort sets the property returned by [GetPhysicsObjectPickingSort].
-func (self Instance) SetPhysicsObjectPickingSort(value bool) {
+// SetPhysicsObjectPickingSort sets the property returned by [GetPhysicsObjectPickingSort]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsObjectPickingSort(value bool) Instance {
 	class(self).SetPhysicsObjectPickingSort(value)
+	return self
 }
 
 /*
@@ -1325,9 +1363,10 @@ func (self Instance) PhysicsObjectPickingFirstOnly() bool {
 	return bool(class(self).GetPhysicsObjectPickingFirstOnly())
 }
 
-// SetPhysicsObjectPickingFirstOnly sets the property returned by [GetPhysicsObjectPickingFirstOnly].
-func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) {
+// SetPhysicsObjectPickingFirstOnly sets the property returned by [GetPhysicsObjectPickingFirstOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) Instance {
 	class(self).SetPhysicsObjectPickingFirstOnly(value)
+	return self
 }
 
 /*
@@ -1337,9 +1376,10 @@ func (self Instance) GuiDisableInput() bool {
 	return bool(class(self).IsInputDisabled())
 }
 
-// SetGuiDisableInput sets the property returned by [IsInputDisabled].
-func (self Instance) SetGuiDisableInput(value bool) {
+// SetGuiDisableInput sets the property returned by [IsInputDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuiDisableInput(value bool) Instance {
 	class(self).SetDisableInput(value)
+	return self
 }
 
 /*
@@ -1349,9 +1389,10 @@ func (self Instance) GuiSnapControlsToPixels() bool {
 	return bool(class(self).IsSnapControlsToPixelsEnabled())
 }
 
-// SetGuiSnapControlsToPixels sets the property returned by [IsSnapControlsToPixelsEnabled].
-func (self Instance) SetGuiSnapControlsToPixels(value bool) {
+// SetGuiSnapControlsToPixels sets the property returned by [IsSnapControlsToPixelsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuiSnapControlsToPixels(value bool) Instance {
 	class(self).SetSnapControlsToPixels(value)
+	return self
 }
 
 /*
@@ -1361,9 +1402,10 @@ func (self Instance) GuiEmbedSubwindows() bool {
 	return bool(class(self).IsEmbeddingSubwindows())
 }
 
-// SetGuiEmbedSubwindows sets the property returned by [IsEmbeddingSubwindows].
-func (self Instance) SetGuiEmbedSubwindows(value bool) {
+// SetGuiEmbedSubwindows sets the property returned by [IsEmbeddingSubwindows]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGuiEmbedSubwindows(value bool) Instance {
 	class(self).SetEmbeddingSubwindows(value)
+	return self
 }
 
 /*
@@ -1379,9 +1421,10 @@ func (self Instance) SdfOversize() SDFOversize {
 	return SDFOversize(class(self).GetSdfOversize())
 }
 
-// SetSdfOversize sets the property returned by [GetSdfOversize].
-func (self Instance) SetSdfOversize(value SDFOversize) {
+// SetSdfOversize sets the property returned by [GetSdfOversize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSdfOversize(value SDFOversize) Instance {
 	class(self).SetSdfOversize(value)
+	return self
 }
 
 /*
@@ -1391,9 +1434,10 @@ func (self Instance) SdfScale() SDFScale {
 	return SDFScale(class(self).GetSdfScale())
 }
 
-// SetSdfScale sets the property returned by [GetSdfScale].
-func (self Instance) SetSdfScale(value SDFScale) {
+// SetSdfScale sets the property returned by [GetSdfScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSdfScale(value SDFScale) Instance {
 	class(self).SetSdfScale(value)
+	return self
 }
 
 /*
@@ -1405,9 +1449,10 @@ func (self Instance) PositionalShadowAtlasSize() int {
 	return int(int(class(self).GetPositionalShadowAtlasSize()))
 }
 
-// SetPositionalShadowAtlasSize sets the property returned by [GetPositionalShadowAtlasSize].
-func (self Instance) SetPositionalShadowAtlasSize(value int) {
+// SetPositionalShadowAtlasSize sets the property returned by [GetPositionalShadowAtlasSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlasSize(value int) Instance {
 	class(self).SetPositionalShadowAtlasSize(int64(value))
+	return self
 }
 
 /*
@@ -1417,9 +1462,10 @@ func (self Instance) PositionalShadowAtlas16Bits() bool {
 	return bool(class(self).GetPositionalShadowAtlas16Bits())
 }
 
-// SetPositionalShadowAtlas16Bits sets the property returned by [GetPositionalShadowAtlas16Bits].
-func (self Instance) SetPositionalShadowAtlas16Bits(value bool) {
+// SetPositionalShadowAtlas16Bits sets the property returned by [GetPositionalShadowAtlas16Bits]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlas16Bits(value bool) Instance {
 	class(self).SetPositionalShadowAtlas16Bits(value)
+	return self
 }
 
 /*
@@ -1429,9 +1475,10 @@ func (self Instance) PositionalShadowAtlasQuad0() PositionalShadowAtlasQuadrantS
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
 }
 
-// SetPositionalShadowAtlasQuad0 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
-func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) {
+// SetPositionalShadowAtlasQuad0 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) Instance {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(0, value)
+	return self
 }
 
 /*
@@ -1441,9 +1488,10 @@ func (self Instance) PositionalShadowAtlasQuad1() PositionalShadowAtlasQuadrantS
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
 }
 
-// SetPositionalShadowAtlasQuad1 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
-func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) {
+// SetPositionalShadowAtlasQuad1 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) Instance {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(1, value)
+	return self
 }
 
 /*
@@ -1453,9 +1501,10 @@ func (self Instance) PositionalShadowAtlasQuad2() PositionalShadowAtlasQuadrantS
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
 }
 
-// SetPositionalShadowAtlasQuad2 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
-func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) {
+// SetPositionalShadowAtlasQuad2 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) Instance {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(2, value)
+	return self
 }
 
 /*
@@ -1465,9 +1514,10 @@ func (self Instance) PositionalShadowAtlasQuad3() PositionalShadowAtlasQuadrantS
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
 }
 
-// SetPositionalShadowAtlasQuad3 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
-func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) {
+// SetPositionalShadowAtlasQuad3 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) Instance {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
+	return self
 }
 
 /*
@@ -1479,9 +1529,10 @@ func (self Instance) CanvasTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
-// SetCanvasTransform sets the property returned by [GetCanvasTransform].
-func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) {
+// SetCanvasTransform sets the property returned by [GetCanvasTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetCanvasTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -1491,9 +1542,10 @@ func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetGlobalCanvasTransform())
 }
 
-// SetGlobalCanvasTransform sets the property returned by [GetGlobalCanvasTransform].
-func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) {
+// SetGlobalCanvasTransform sets the property returned by [GetGlobalCanvasTransform]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) Instance {
 	class(self).SetGlobalCanvasTransform(Transform2D.OriginXY(value))
+	return self
 }
 
 /*
@@ -1506,9 +1558,10 @@ func (self Instance) CanvasCullMask() int {
 	return int(int(class(self).GetCanvasCullMask()))
 }
 
-// SetCanvasCullMask sets the property returned by [GetCanvasCullMask].
-func (self Instance) SetCanvasCullMask(value int) {
+// SetCanvasCullMask sets the property returned by [GetCanvasCullMask]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCanvasCullMask(value int) Instance {
 	class(self).SetCanvasCullMask(int64(value))
+	return self
 }
 
 /*
@@ -1524,9 +1577,10 @@ func (self Instance) Oversampling() bool {
 	return bool(class(self).IsUsingOversampling())
 }
 
-// SetOversampling sets the property returned by [IsUsingOversampling].
-func (self Instance) SetOversampling(value bool) {
+// SetOversampling sets the property returned by [IsUsingOversampling]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversampling(value bool) Instance {
 	class(self).SetUseOversampling(value)
+	return self
 }
 
 /*
@@ -1536,9 +1590,10 @@ func (self Instance) OversamplingOverride() Float.X {
 	return Float.X(Float.X(class(self).GetOversamplingOverride()))
 }
 
-// SetOversamplingOverride sets the property returned by [GetOversamplingOverride].
-func (self Instance) SetOversamplingOverride(value Float.X) {
+// SetOversamplingOverride sets the property returned by [GetOversamplingOverride]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversamplingOverride(value Float.X) Instance {
 	class(self).SetOversamplingOverride(float64(value))
+	return self
 }
 
 //go:nosplit
@@ -2623,12 +2678,13 @@ func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_t
 /*
 Emitted when the size of the viewport is changed, whether by resizing of window, or some other means.
 */
-func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SizeChanged() Signal.Any {
@@ -2640,12 +2696,13 @@ Emitted when a Control node grabs keyboard focus.
 
 Note: A Control node losing focus doesn't cause this signal to be emitted.
 */
-func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...Signal.Flags) {
+func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) GuiFocusChanged() Signal.Any {

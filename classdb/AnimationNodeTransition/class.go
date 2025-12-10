@@ -153,9 +153,12 @@ type Any interface {
 
 /*
 Enables or disables auto-advance for the given 'input' index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputAsAutoAdvance(input int, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
+func (self Instance) SetInputAsAutoAdvance(input int, enable bool) Instance { //gd:AnimationNodeTransition.set_input_as_auto_advance
 	Advanced(self).SetInputAsAutoAdvance(int64(input), enable)
+	return self
 }
 
 /*
@@ -167,9 +170,12 @@ func (self Instance) IsInputSetAsAutoAdvance(input int) bool { //gd:AnimationNod
 
 /*
 If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
+func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) Instance { //gd:AnimationNodeTransition.set_input_break_loop_at_end
 	Advanced(self).SetInputBreakLoopAtEnd(int64(input), enable)
+	return self
 }
 
 /*
@@ -181,9 +187,12 @@ func (self Instance) IsInputLoopBrokenAtEnd(input int) bool { //gd:AnimationNode
 
 /*
 If true, the destination animation is restarted when the animation transitions.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetInputReset(input int, enable bool) { //gd:AnimationNodeTransition.set_input_reset
+func (self Instance) SetInputReset(input int, enable bool) Instance { //gd:AnimationNodeTransition.set_input_reset
 	Advanced(self).SetInputReset(int64(input), enable)
+	return self
 }
 
 /*
@@ -250,9 +259,10 @@ func (self Instance) XfadeTime() Float.X {
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
-// SetXfadeTime sets the property returned by [GetXfadeTime].
-func (self Instance) SetXfadeTime(value Float.X) {
+// SetXfadeTime sets the property returned by [GetXfadeTime]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXfadeTime(value Float.X) Instance {
 	class(self).SetXfadeTime(float64(value))
+	return self
 }
 
 /*
@@ -264,9 +274,10 @@ func (self Instance) XfadeCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
-// SetXfadeCurve sets the property returned by [GetXfadeCurve].
-func (self Instance) SetXfadeCurve(value Curve.Instance) {
+// SetXfadeCurve sets the property returned by [GetXfadeCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
 	class(self).SetXfadeCurve(value)
+	return self
 }
 
 /*
@@ -276,16 +287,19 @@ func (self Instance) AllowTransitionToSelf() bool {
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
-// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf].
-func (self Instance) SetAllowTransitionToSelf(value bool) {
+// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAllowTransitionToSelf(value bool) Instance {
 	class(self).SetAllowTransitionToSelf(value)
+	return self
 }
 
 /*
 The number of enabled input ports for this animation node.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetInputCount(value int) {
+func (self Instance) SetInputCount(value int) Instance {
 	class(self).SetInputCount(int64(value))
+	return self
 }
 
 //go:nosplit

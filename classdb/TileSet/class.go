@@ -273,9 +273,12 @@ func (self Instance) RemoveSource(source_id int) { //gd:TileSet.remove_source
 
 /*
 Changes a source's ID.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSourceId(source_id int, new_source_id int) { //gd:TileSet.set_source_id
+func (self Instance) SetSourceId(source_id int, new_source_id int) Instance { //gd:TileSet.set_source_id
 	Advanced(self).SetSourceId(int64(source_id), int64(new_source_id))
+	return self
 }
 
 /*
@@ -351,9 +354,12 @@ func (self Instance) RemoveOcclusionLayer(layer_index int) { //gd:TileSet.remove
 
 /*
 Sets the occlusion layer (as in the rendering server) for occluders in the given TileSet occlusion layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOcclusionLayerLightMask(layer_index int, light_mask int) { //gd:TileSet.set_occlusion_layer_light_mask
+func (self Instance) SetOcclusionLayerLightMask(layer_index int, light_mask int) Instance { //gd:TileSet.set_occlusion_layer_light_mask
 	Advanced(self).SetOcclusionLayerLightMask(int64(layer_index), int64(light_mask))
+	return self
 }
 
 /*
@@ -365,9 +371,12 @@ func (self Instance) GetOcclusionLayerLightMask(layer_index int) int { //gd:Tile
 
 /*
 Enables or disables SDF collision for occluders in the given TileSet occlusion layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetOcclusionLayerSdfCollision(layer_index int, sdf_collision bool) { //gd:TileSet.set_occlusion_layer_sdf_collision
+func (self Instance) SetOcclusionLayerSdfCollision(layer_index int, sdf_collision bool) Instance { //gd:TileSet.set_occlusion_layer_sdf_collision
 	Advanced(self).SetOcclusionLayerSdfCollision(int64(layer_index), sdf_collision)
+	return self
 }
 
 /*
@@ -418,9 +427,12 @@ func (self Instance) RemovePhysicsLayer(layer_index int) { //gd:TileSet.remove_p
 
 /*
 Sets the collision layer (as in the physics server) for bodies in the given TileSet physics layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPhysicsLayerCollisionLayer(layer_index int, layer int) { //gd:TileSet.set_physics_layer_collision_layer
+func (self Instance) SetPhysicsLayerCollisionLayer(layer_index int, layer int) Instance { //gd:TileSet.set_physics_layer_collision_layer
 	Advanced(self).SetPhysicsLayerCollisionLayer(int64(layer_index), int64(layer))
+	return self
 }
 
 /*
@@ -432,9 +444,12 @@ func (self Instance) GetPhysicsLayerCollisionLayer(layer_index int) int { //gd:T
 
 /*
 Sets the collision mask for bodies in the given TileSet physics layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPhysicsLayerCollisionMask(layer_index int, mask int) { //gd:TileSet.set_physics_layer_collision_mask
+func (self Instance) SetPhysicsLayerCollisionMask(layer_index int, mask int) Instance { //gd:TileSet.set_physics_layer_collision_mask
 	Advanced(self).SetPhysicsLayerCollisionMask(int64(layer_index), int64(mask))
+	return self
 }
 
 /*
@@ -446,9 +461,12 @@ func (self Instance) GetPhysicsLayerCollisionMask(layer_index int) int { //gd:Ti
 
 /*
 Sets the collision priority for bodies in the given TileSet physics layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPhysicsLayerCollisionPriority(layer_index int, priority Float.X) { //gd:TileSet.set_physics_layer_collision_priority
+func (self Instance) SetPhysicsLayerCollisionPriority(layer_index int, priority Float.X) Instance { //gd:TileSet.set_physics_layer_collision_priority
 	Advanced(self).SetPhysicsLayerCollisionPriority(int64(layer_index), float64(priority))
+	return self
 }
 
 /*
@@ -460,9 +478,12 @@ func (self Instance) GetPhysicsLayerCollisionPriority(layer_index int) Float.X {
 
 /*
 Sets the physics material for bodies in the given TileSet physics layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material PhysicsMaterial.Instance) { //gd:TileSet.set_physics_layer_physics_material
+func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material PhysicsMaterial.Instance) Instance { //gd:TileSet.set_physics_layer_physics_material
 	Advanced(self).SetPhysicsLayerPhysicsMaterial(int64(layer_index), physics_material)
+	return self
 }
 
 /*
@@ -509,9 +530,12 @@ func (self Instance) RemoveTerrainSet(terrain_set int) { //gd:TileSet.remove_ter
 
 /*
 Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTerrainSetMode(terrain_set int, mode TerrainMode) { //gd:TileSet.set_terrain_set_mode
+func (self Instance) SetTerrainSetMode(terrain_set int, mode TerrainMode) Instance { //gd:TileSet.set_terrain_set_mode
 	Advanced(self).SetTerrainSetMode(int64(terrain_set), mode)
+	return self
 }
 
 /*
@@ -558,9 +582,12 @@ func (self Instance) RemoveTerrain(terrain_set int, terrain_index int) { //gd:Ti
 
 /*
 Sets a terrain's name.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) { //gd:TileSet.set_terrain_name
+func (self Instance) SetTerrainName(terrain_set int, terrain_index int, name string) Instance { //gd:TileSet.set_terrain_name
 	Advanced(self).SetTerrainName(int64(terrain_set), int64(terrain_index), String.New(name))
+	return self
 }
 
 /*
@@ -572,9 +599,12 @@ func (self Instance) GetTerrainName(terrain_set int, terrain_index int) string {
 
 /*
 Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color Color.RGBA) { //gd:TileSet.set_terrain_color
+func (self Instance) SetTerrainColor(terrain_set int, terrain_index int, color Color.RGBA) Instance { //gd:TileSet.set_terrain_color
 	Advanced(self).SetTerrainColor(int64(terrain_set), int64(terrain_index), Color.RGBA(color))
+	return self
 }
 
 /*
@@ -625,9 +655,12 @@ func (self Instance) RemoveNavigationLayer(layer_index int) { //gd:TileSet.remov
 
 /*
 Sets the navigation layers (as in the navigation server) for navigation regions in the given TileSet navigation layer.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNavigationLayerLayers(layer_index int, layers int) { //gd:TileSet.set_navigation_layer_layers
+func (self Instance) SetNavigationLayerLayers(layer_index int, layers int) Instance { //gd:TileSet.set_navigation_layer_layers
 	Advanced(self).SetNavigationLayerLayers(int64(layer_index), int64(layers))
+	return self
 }
 
 /*
@@ -639,9 +672,12 @@ func (self Instance) GetNavigationLayerLayers(layer_index int) int { //gd:TileSe
 
 /*
 Based on 'value', enables or disables the specified navigation layer of the TileSet navigation data layer identified by the given 'layer_index', given a navigation_layers 'layer_number' between 1 and 32.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetNavigationLayerLayerValue(layer_index int, layer_number int, value bool) { //gd:TileSet.set_navigation_layer_layer_value
+func (self Instance) SetNavigationLayerLayerValue(layer_index int, layer_number int, value bool) Instance { //gd:TileSet.set_navigation_layer_layer_value
 	Advanced(self).SetNavigationLayerLayerValue(int64(layer_index), int64(layer_number), value)
+	return self
 }
 
 /*
@@ -699,9 +735,12 @@ func (self Instance) GetCustomDataLayerByName(layer_name string) int { //gd:Tile
 
 /*
 Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) { //gd:TileSet.set_custom_data_layer_name
+func (self Instance) SetCustomDataLayerName(layer_index int, layer_name string) Instance { //gd:TileSet.set_custom_data_layer_name
 	Advanced(self).SetCustomDataLayerName(int64(layer_index), String.New(layer_name))
+	return self
 }
 
 /*
@@ -720,9 +759,12 @@ func (self Instance) GetCustomDataLayerName(layer_index int) string { //gd:TileS
 
 /*
 Sets the type of the custom data layer identified by the given index.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCustomDataLayerType(layer_index int, layer_type variant.Type) { //gd:TileSet.set_custom_data_layer_type
+func (self Instance) SetCustomDataLayerType(layer_index int, layer_type variant.Type) Instance { //gd:TileSet.set_custom_data_layer_type
 	Advanced(self).SetCustomDataLayerType(int64(layer_index), layer_type)
+	return self
 }
 
 /*
@@ -736,9 +778,12 @@ func (self Instance) GetCustomDataLayerType(layer_index int) variant.Type { //gd
 Creates a source-level proxy for the given source ID. A proxy will map set of tile identifiers to another set of identifiers. Both the atlas coordinates ID and the alternative tile ID are kept the same when using source-level proxies.
 
 Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) { //gd:TileSet.set_source_level_tile_proxy
+func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) Instance { //gd:TileSet.set_source_level_tile_proxy
 	Advanced(self).SetSourceLevelTileProxy(int64(source_from), int64(source_to))
+	return self
 }
 
 /*
@@ -768,9 +813,12 @@ func (self Instance) RemoveSourceLevelTileProxy(source_from int) { //gd:TileSet.
 Creates a coordinates-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers. The alternative tile ID is kept the same when using coordinates-level proxies.
 
 Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
+func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) Instance { //gd:TileSet.set_coords_level_tile_proxy
 	Advanced(self).SetCoordsLevelTileProxy(int64(p_source_from), Vector2i.XY(coords_from), int64(source_to), Vector2i.XY(coords_to))
+	return self
 }
 
 /*
@@ -801,9 +849,12 @@ func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from Vec
 Create an alternative-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers.
 
 Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) { //gd:TileSet.set_alternative_level_tile_proxy
+func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) Instance { //gd:TileSet.set_alternative_level_tile_proxy
 	Advanced(self).SetAlternativeLevelTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from), int64(source_to), Vector2i.XY(coords_to), int64(alternative_to))
+	return self
 }
 
 /*
@@ -960,9 +1011,10 @@ func (self Instance) TileShape() TileShape {
 	return TileShape(class(self).GetTileShape())
 }
 
-// SetTileShape sets the property returned by [GetTileShape].
-func (self Instance) SetTileShape(value TileShape) {
+// SetTileShape sets the property returned by [GetTileShape]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileShape(value TileShape) Instance {
 	class(self).SetTileShape(value)
+	return self
 }
 
 /*
@@ -974,9 +1026,10 @@ func (self Instance) TileLayout() TileLayout {
 	return TileLayout(class(self).GetTileLayout())
 }
 
-// SetTileLayout sets the property returned by [GetTileLayout].
-func (self Instance) SetTileLayout(value TileLayout) {
+// SetTileLayout sets the property returned by [GetTileLayout]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileLayout(value TileLayout) Instance {
 	class(self).SetTileLayout(value)
+	return self
 }
 
 /*
@@ -986,9 +1039,10 @@ func (self Instance) TileOffsetAxis() TileOffsetAxis {
 	return TileOffsetAxis(class(self).GetTileOffsetAxis())
 }
 
-// SetTileOffsetAxis sets the property returned by [GetTileOffsetAxis].
-func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) {
+// SetTileOffsetAxis sets the property returned by [GetTileOffsetAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) Instance {
 	class(self).SetTileOffsetAxis(value)
+	return self
 }
 
 /*
@@ -998,9 +1052,10 @@ func (self Instance) TileSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTileSize())
 }
 
-// SetTileSize sets the property returned by [GetTileSize].
-func (self Instance) SetTileSize(value Vector2i.XY) {
+// SetTileSize sets the property returned by [GetTileSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTileSize(value Vector2i.XY) Instance {
 	class(self).SetTileSize(Vector2i.XY(value))
+	return self
 }
 
 /*
@@ -1010,9 +1065,10 @@ func (self Instance) UvClipping() bool {
 	return bool(class(self).IsUvClipping())
 }
 
-// SetUvClipping sets the property returned by [IsUvClipping].
-func (self Instance) SetUvClipping(value bool) {
+// SetUvClipping sets the property returned by [IsUvClipping]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUvClipping(value bool) Instance {
 	class(self).SetUvClipping(value)
+	return self
 }
 
 /*

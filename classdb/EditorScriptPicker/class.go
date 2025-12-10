@@ -178,9 +178,10 @@ func (self Instance) ScriptOwner() Node.Instance {
 	return Node.Instance(class(self).GetScriptOwner())
 }
 
-// SetScriptOwner sets the property returned by [GetScriptOwner].
-func (self Instance) SetScriptOwner(value Node.Instance) {
+// SetScriptOwner sets the property returned by [GetScriptOwner]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScriptOwner(value Node.Instance) Instance {
 	class(self).SetScriptOwner(value)
+	return self
 }
 
 //go:nosplit

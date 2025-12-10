@@ -176,18 +176,20 @@ func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
-// SetBufferLength sets the property returned by [GetBufferLength].
-func (self Instance) SetBufferLength(value Float.X) {
+// SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBufferLength(value Float.X) Instance {
 	class(self).SetBufferLength(float64(value))
+	return self
 }
 
 func (self Instance) TapBackPos() Float.X {
 	return Float.X(Float.X(class(self).GetTapBackPos()))
 }
 
-// SetTapBackPos sets the property returned by [GetTapBackPos].
-func (self Instance) SetTapBackPos(value Float.X) {
+// SetTapBackPos sets the property returned by [GetTapBackPos]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTapBackPos(value Float.X) Instance {
 	class(self).SetTapBackPos(float64(value))
+	return self
 }
 
 /*
@@ -199,9 +201,10 @@ func (self Instance) FftSize() FFTSize {
 	return FFTSize(class(self).GetFftSize())
 }
 
-// SetFftSize sets the property returned by [GetFftSize].
-func (self Instance) SetFftSize(value FFTSize) {
+// SetFftSize sets the property returned by [GetFftSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFftSize(value FFTSize) Instance {
 	class(self).SetFftSize(value)
+	return self
 }
 
 //go:nosplit

@@ -250,9 +250,10 @@ func (self Instance) AudioTrack() int {
 	return int(int(class(self).GetAudioTrack()))
 }
 
-// SetAudioTrack sets the property returned by [GetAudioTrack].
-func (self Instance) SetAudioTrack(value int) {
+// SetAudioTrack sets the property returned by [GetAudioTrack]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAudioTrack(value int) Instance {
 	class(self).SetAudioTrack(int64(value))
+	return self
 }
 
 /*
@@ -262,9 +263,10 @@ func (self Instance) Stream() VideoStream.Instance {
 	return VideoStream.Instance(class(self).GetStream())
 }
 
-// SetStream sets the property returned by [GetStream].
-func (self Instance) SetStream(value VideoStream.Instance) {
+// SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStream(value VideoStream.Instance) Instance {
 	class(self).SetStream(value)
+	return self
 }
 
 /*
@@ -274,9 +276,10 @@ func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
-// SetVolumeDb sets the property returned by [GetVolumeDb].
-func (self Instance) SetVolumeDb(value Float.X) {
+// SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolumeDb(value Float.X) Instance {
 	class(self).SetVolumeDb(float64(value))
+	return self
 }
 
 /*
@@ -286,9 +289,10 @@ func (self Instance) Volume() Float.X {
 	return Float.X(Float.X(class(self).GetVolume()))
 }
 
-// SetVolume sets the property returned by [GetVolume].
-func (self Instance) SetVolume(value Float.X) {
+// SetVolume sets the property returned by [GetVolume]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetVolume(value Float.X) Instance {
 	class(self).SetVolume(float64(value))
+	return self
 }
 
 /*
@@ -300,9 +304,10 @@ func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
-// SetSpeedScale sets the property returned by [GetSpeedScale].
-func (self Instance) SetSpeedScale(value Float.X) {
+// SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSpeedScale(value Float.X) Instance {
 	class(self).SetSpeedScale(float64(value))
+	return self
 }
 
 /*
@@ -312,9 +317,10 @@ func (self Instance) Autoplay() bool {
 	return bool(class(self).HasAutoplay())
 }
 
-// SetAutoplay sets the property returned by [HasAutoplay].
-func (self Instance) SetAutoplay(value bool) {
+// SetAutoplay sets the property returned by [HasAutoplay]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutoplay(value bool) Instance {
 	class(self).SetAutoplay(value)
+	return self
 }
 
 /*
@@ -324,9 +330,10 @@ func (self Instance) Paused() bool {
 	return bool(class(self).IsPaused())
 }
 
-// SetPaused sets the property returned by [IsPaused].
-func (self Instance) SetPaused(value bool) {
+// SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaused(value bool) Instance {
 	class(self).SetPaused(value)
+	return self
 }
 
 /*
@@ -336,9 +343,10 @@ func (self Instance) Expand() bool {
 	return bool(class(self).HasExpand())
 }
 
-// SetExpand sets the property returned by [HasExpand].
-func (self Instance) SetExpand(value bool) {
+// SetExpand sets the property returned by [HasExpand]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetExpand(value bool) Instance {
 	class(self).SetExpand(value)
+	return self
 }
 
 /*
@@ -348,9 +356,10 @@ func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
-// SetLoop sets the property returned by [HasLoop].
-func (self Instance) SetLoop(value bool) {
+// SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoop(value bool) Instance {
 	class(self).SetLoop(value)
+	return self
 }
 
 /*
@@ -360,9 +369,10 @@ func (self Instance) BufferingMsec() int {
 	return int(int(class(self).GetBufferingMsec()))
 }
 
-// SetBufferingMsec sets the property returned by [GetBufferingMsec].
-func (self Instance) SetBufferingMsec(value int) {
+// SetBufferingMsec sets the property returned by [GetBufferingMsec]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBufferingMsec(value int) Instance {
 	class(self).SetBufferingMsec(int64(value))
+	return self
 }
 
 /*
@@ -372,9 +382,10 @@ func (self Instance) StreamPosition() Float.X {
 	return Float.X(Float.X(class(self).GetStreamPosition()))
 }
 
-// SetStreamPosition sets the property returned by [GetStreamPosition].
-func (self Instance) SetStreamPosition(value Float.X) {
+// SetStreamPosition sets the property returned by [GetStreamPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetStreamPosition(value Float.X) Instance {
 	class(self).SetStreamPosition(float64(value))
+	return self
 }
 
 /*
@@ -384,9 +395,10 @@ func (self Instance) Bus() string {
 	return string(class(self).GetBus().String())
 }
 
-// SetBus sets the property returned by [GetBus].
-func (self Instance) SetBus(value string) {
+// SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBus(value string) Instance {
 	class(self).SetBus(String.Name(String.New(value)))
+	return self
 }
 
 //go:nosplit
@@ -598,12 +610,13 @@ func (self class) GetVideoTexture() [1]gdclass.Texture2D { //gd:VideoStreamPlaye
 /*
 Emitted when playback is finished.
 */
-func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Finished() Signal.Any {

@@ -136,19 +136,25 @@ type Any interface {
 /*
 Sets the tile identifiers for the cell at coordinates 'coords'. See [TileMap.SetCell].
 
+Returns 'self' to enable method chaining.
+
 [TileMap.SetCell]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.SetCell
 */
-func (self Instance) SetCell(coords Vector2i.XY) { //gd:TileMapPattern.set_cell
+func (self Instance) SetCell(coords Vector2i.XY) Instance { //gd:TileMapPattern.set_cell
 	Advanced(self).SetCell(Vector2i.XY(coords), int64(-1), Vector2i.XY(gd.Vector2i{-1, -1}), int64(-1))
+	return self
 }
 
 /*
 Sets the tile identifiers for the cell at coordinates 'coords'. See [TileMap.SetCell].
 
+Returns 'self' to enable method chaining.
+
 [TileMap.SetCell]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.SetCell
 */
-func (self MoreArgs) SetCell(coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileMapPattern.set_cell
+func (self MoreArgs) SetCell(coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) MoreArgs { //gd:TileMapPattern.set_cell
 	Advanced(self).SetCell(Vector2i.XY(coords), int64(source_id), Vector2i.XY(atlas_coords), int64(alternative_tile))
+	return self
 }
 
 /*
@@ -202,9 +208,12 @@ func (self Instance) GetSize() Vector2i.XY { //gd:TileMapPattern.get_size
 
 /*
 Sets the size of the pattern.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetSize(size Vector2i.XY) { //gd:TileMapPattern.set_size
+func (self Instance) SetSize(size Vector2i.XY) Instance { //gd:TileMapPattern.set_size
 	Advanced(self).SetSize(Vector2i.XY(size))
+	return self
 }
 
 /*

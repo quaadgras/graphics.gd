@@ -182,9 +182,10 @@ func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
-// SetDepth sets the property returned by [GetDepth].
-func (self Instance) SetDepth(value Float.X) {
+// SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDepth(value Float.X) Instance {
 	class(self).SetDepth(float64(value))
+	return self
 }
 
 /*
@@ -196,9 +197,10 @@ func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
-// SetDisabled sets the property returned by [IsDisabled].
-func (self Instance) SetDisabled(value bool) {
+// SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDisabled(value bool) Instance {
 	class(self).SetDisabled(value)
+	return self
 }
 
 /*
@@ -208,9 +210,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 /*
@@ -223,9 +226,10 @@ func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
-// SetMargin sets the property returned by [GetMargin].
-func (self Instance) SetMargin(value Float.X) {
+// SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMargin(value Float.X) Instance {
 	class(self).SetMargin(float64(value))
+	return self
 }
 
 /*
@@ -239,9 +243,10 @@ func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
-// SetDebugColor sets the property returned by [GetDebugColor].
-func (self Instance) SetDebugColor(value Color.RGBA) {
+// SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugColor(value Color.RGBA) Instance {
 	class(self).SetDebugColor(Color.RGBA(value))
+	return self
 }
 
 /*
@@ -251,9 +256,10 @@ func (self Instance) DebugFill() bool {
 	return bool(class(self).GetEnableDebugFill())
 }
 
-// SetDebugFill sets the property returned by [GetEnableDebugFill].
-func (self Instance) SetDebugFill(value bool) {
+// SetDebugFill sets the property returned by [GetEnableDebugFill]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDebugFill(value bool) Instance {
 	class(self).SetEnableDebugFill(value)
+	return self
 }
 
 //go:nosplit

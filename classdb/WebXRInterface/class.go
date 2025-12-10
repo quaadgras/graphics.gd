@@ -314,10 +314,13 @@ func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_d
 /*
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [OnDisplayRefreshRateChanged] is emitted.
 
+Returns 'self' to enable method chaining.
+
 [OnDisplayRefreshRateChanged]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnDisplayRefreshRateChanged
 */
-func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
+func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) Instance { //gd:WebXRInterface.set_display_refresh_rate
 	Advanced(self).SetDisplayRefreshRate(float64(refresh_rate))
+	return self
 }
 
 /*
@@ -384,9 +387,10 @@ func (self Instance) SessionMode() string {
 	return string(class(self).GetSessionMode().String())
 }
 
-// SetSessionMode sets the property returned by [GetSessionMode].
-func (self Instance) SetSessionMode(value string) {
+// SetSessionMode sets the property returned by [GetSessionMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSessionMode(value string) Instance {
 	class(self).SetSessionMode(String.New(value))
+	return self
 }
 
 /*
@@ -406,9 +410,10 @@ func (self Instance) RequiredFeatures() string {
 	return string(class(self).GetRequiredFeatures().String())
 }
 
-// SetRequiredFeatures sets the property returned by [GetRequiredFeatures].
-func (self Instance) SetRequiredFeatures(value string) {
+// SetRequiredFeatures sets the property returned by [GetRequiredFeatures]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRequiredFeatures(value string) Instance {
 	class(self).SetRequiredFeatures(String.New(value))
+	return self
 }
 
 /*
@@ -427,9 +432,10 @@ func (self Instance) OptionalFeatures() string {
 	return string(class(self).GetOptionalFeatures().String())
 }
 
-// SetOptionalFeatures sets the property returned by [GetOptionalFeatures].
-func (self Instance) SetOptionalFeatures(value string) {
+// SetOptionalFeatures sets the property returned by [GetOptionalFeatures]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOptionalFeatures(value string) Instance {
 	class(self).SetOptionalFeatures(String.New(value))
+	return self
 }
 
 /*
@@ -451,9 +457,10 @@ func (self Instance) RequestedReferenceSpaceTypes() string {
 	return string(class(self).GetRequestedReferenceSpaceTypes().String())
 }
 
-// SetRequestedReferenceSpaceTypes sets the property returned by [GetRequestedReferenceSpaceTypes].
-func (self Instance) SetRequestedReferenceSpaceTypes(value string) {
+// SetRequestedReferenceSpaceTypes sets the property returned by [GetRequestedReferenceSpaceTypes]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRequestedReferenceSpaceTypes(value string) Instance {
 	class(self).SetRequestedReferenceSpaceTypes(String.New(value))
+	return self
 }
 
 /*
@@ -677,12 +684,13 @@ Emitted by [IsSessionSupported] to indicate if the given 'session_mode' is suppo
 
 [IsSessionSupported]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.IsSessionSupported
 */
-func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool), flags ...Signal.Flags) {
+func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionSupported() Signal.Any {
@@ -696,12 +704,13 @@ At this point, it's safe to do get_viewport().use_xr = true to instruct Godot to
 
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionStarted() Signal.Any {
@@ -713,12 +722,13 @@ Emitted when the user ends the WebXR session (which can be done using UI from th
 
 At this point, you should do get_viewport().use_xr = false to instruct Godot to resume rendering to the screen.
 */
-func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionEnded() Signal.Any {
@@ -732,12 +742,13 @@ Emitted by [XRInterface.Initialize] if the session fails to start.
 
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Flags) {
+func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) SessionFailed() Signal.Any {
@@ -752,12 +763,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Selectstart() Signal.Any {
@@ -772,12 +784,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Select() Signal.Any {
@@ -792,12 +805,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Selectend() Signal.Any {
@@ -812,12 +826,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Squeezestart() Signal.Any {
@@ -832,12 +847,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Squeeze() Signal.Any {
@@ -852,12 +868,13 @@ Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more inform
 [GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
 [GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
 */
-func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.Flags) {
+func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) Squeezeend() Signal.Any {
@@ -869,12 +886,13 @@ Emitted when [VisibilityState] has changed.
 
 [VisibilityState]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.VisibilityState
 */
-func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) VisibilityStateChanged() Signal.Any {
@@ -891,12 +909,13 @@ See [WebXR's XRReferenceSpace reset event] for more information.
 [WebXR's XRReferenceSpace reset event]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace/reset_event
 [XRInterface.GetPlayArea]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.GetPlayArea
 */
-func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ReferenceSpaceReset() Signal.Any {
@@ -906,12 +925,13 @@ func (self class) ReferenceSpaceReset() Signal.Any {
 /*
 Emitted after the display's refresh rate has changed.
 */
-func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DisplayRefreshRateChanged() Signal.Any {

@@ -145,9 +145,12 @@ type Any interface {
 Sets the peer to which packets will be sent.
 
 The 'id' can be one of: [TargetPeerBroadcast] to send to all connected peers, [TargetPeerServer] to send to the peer acting as server, a valid peer ID to send to that specific peer, a negative peer ID to send to all peers except that one. By default, the target peer is [TargetPeerBroadcast].
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetTargetPeer(id TargetPeer) { //gd:MultiplayerPeer.set_target_peer
+func (self Instance) SetTargetPeer(id TargetPeer) Instance { //gd:MultiplayerPeer.set_target_peer
 	Advanced(self).SetTargetPeer(int64(id))
+	return self
 }
 
 /*
@@ -296,9 +299,10 @@ func (self Instance) RefuseNewConnections() bool {
 	return bool(class(self).IsRefusingNewConnections())
 }
 
-// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections].
-func (self Instance) SetRefuseNewConnections(value bool) {
+// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRefuseNewConnections(value bool) Instance {
 	class(self).SetRefuseNewConnections(value)
+	return self
 }
 
 /*
@@ -310,9 +314,10 @@ func (self Instance) TransferMode() TransferMode {
 	return TransferMode(class(self).GetTransferMode())
 }
 
-// SetTransferMode sets the property returned by [GetTransferMode].
-func (self Instance) SetTransferMode(value TransferMode) {
+// SetTransferMode sets the property returned by [GetTransferMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransferMode(value TransferMode) Instance {
 	class(self).SetTransferMode(value)
+	return self
 }
 
 /*
@@ -324,9 +329,10 @@ func (self Instance) TransferChannel() int {
 	return int(int(class(self).GetTransferChannel()))
 }
 
-// SetTransferChannel sets the property returned by [GetTransferChannel].
-func (self Instance) SetTransferChannel(value int) {
+// SetTransferChannel sets the property returned by [GetTransferChannel]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransferChannel(value int) Instance {
 	class(self).SetTransferChannel(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -490,12 +496,13 @@ func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server
 /*
 Emitted when a remote peer connects.
 */
-func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerConnected() Signal.Any {
@@ -505,12 +512,13 @@ func (self class) PeerConnected() Signal.Any {
 /*
 Emitted when a remote peer has disconnected.
 */
-func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerDisconnected() Signal.Any {

@@ -170,25 +170,29 @@ func (self Instance) ButtonIndex() Input.JoyButton {
 	return Input.JoyButton(class(self).GetButtonIndex())
 }
 
-// SetButtonIndex sets the property returned by [GetButtonIndex].
-func (self Instance) SetButtonIndex(value Input.JoyButton) {
+// SetButtonIndex sets the property returned by [GetButtonIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetButtonIndex(value Input.JoyButton) Instance {
 	class(self).SetButtonIndex(value)
+	return self
 }
 
 func (self Instance) Pressure() Float.X {
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
-// SetPressure sets the property returned by [GetPressure].
-func (self Instance) SetPressure(value Float.X) {
+// SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPressure(value Float.X) Instance {
 	class(self).SetPressure(float64(value))
+	return self
 }
 
 /*
 If true, the button's state is pressed. If false, the button's state is released.
+Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) {
+func (self Instance) SetPressed(value bool) Instance {
 	class(self).SetPressed(value)
+	return self
 }
 
 //go:nosplit

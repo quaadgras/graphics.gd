@@ -336,9 +336,10 @@ func (self Instance) MultiplayerPeer() MultiplayerPeer.Instance {
 	return MultiplayerPeer.Instance(class(self).GetMultiplayerPeer())
 }
 
-// SetMultiplayerPeer sets the property returned by [GetMultiplayerPeer].
-func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) {
+// SetMultiplayerPeer sets the property returned by [GetMultiplayerPeer]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) Instance {
 	class(self).SetMultiplayerPeer(value)
+	return self
 }
 
 /*
@@ -526,12 +527,13 @@ Emitted when this MultiplayerAPI's [MultiplayerPeer] connects with a new peer. I
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerConnected() Signal.Any {
@@ -543,12 +545,13 @@ Emitted when this MultiplayerAPI's [MultiplayerPeer] disconnects from a peer. Cl
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
+func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) PeerDisconnected() Signal.Any {
@@ -560,12 +563,13 @@ Emitted when this MultiplayerAPI's [MultiplayerPeer] successfully connected to a
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectedToServer() Signal.Any {
@@ -577,12 +581,13 @@ Emitted when this MultiplayerAPI's [MultiplayerPeer] fails to establish a connec
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ConnectionFailed() Signal.Any {
@@ -594,12 +599,13 @@ Emitted when this MultiplayerAPI's [MultiplayerPeer] disconnects from server. On
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) ServerDisconnected() Signal.Any {

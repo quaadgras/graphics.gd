@@ -193,9 +193,12 @@ func (self Instance) GetPointPosition(index int) Vector2.XY { //gd:Curve.get_poi
 
 /*
 Assigns the vertical position 'y' to the point at 'index'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointValue(index int, y Float.X) { //gd:Curve.set_point_value
+func (self Instance) SetPointValue(index int, y Float.X) Instance { //gd:Curve.set_point_value
 	Advanced(self).SetPointValue(int64(index), float64(y))
+	return self
 }
 
 /*
@@ -249,30 +252,42 @@ func (self Instance) GetPointRightMode(index int) TangentMode { //gd:Curve.get_p
 
 /*
 Sets the left tangent angle for the point at 'index' to 'tangent'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointLeftTangent(index int, tangent Float.X) { //gd:Curve.set_point_left_tangent
+func (self Instance) SetPointLeftTangent(index int, tangent Float.X) Instance { //gd:Curve.set_point_left_tangent
 	Advanced(self).SetPointLeftTangent(int64(index), float64(tangent))
+	return self
 }
 
 /*
 Sets the right tangent angle for the point at 'index' to 'tangent'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointRightTangent(index int, tangent Float.X) { //gd:Curve.set_point_right_tangent
+func (self Instance) SetPointRightTangent(index int, tangent Float.X) Instance { //gd:Curve.set_point_right_tangent
 	Advanced(self).SetPointRightTangent(int64(index), float64(tangent))
+	return self
 }
 
 /*
 Sets the left [TangentMode] for the point at 'index' to 'mode'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointLeftMode(index int, mode TangentMode) { //gd:Curve.set_point_left_mode
+func (self Instance) SetPointLeftMode(index int, mode TangentMode) Instance { //gd:Curve.set_point_left_mode
 	Advanced(self).SetPointLeftMode(int64(index), mode)
+	return self
 }
 
 /*
 Sets the right [TangentMode] for the point at 'index' to 'mode'.
+
+Returns 'self' to enable method chaining.
 */
-func (self Instance) SetPointRightMode(index int, mode TangentMode) { //gd:Curve.set_point_right_mode
+func (self Instance) SetPointRightMode(index int, mode TangentMode) Instance { //gd:Curve.set_point_right_mode
 	Advanced(self).SetPointRightMode(int64(index), mode)
+	return self
 }
 
 /*
@@ -359,9 +374,10 @@ func (self Instance) MinDomain() Float.X {
 	return Float.X(Float.X(class(self).GetMinDomain()))
 }
 
-// SetMinDomain sets the property returned by [GetMinDomain].
-func (self Instance) SetMinDomain(value Float.X) {
+// SetMinDomain sets the property returned by [GetMinDomain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinDomain(value Float.X) Instance {
 	class(self).SetMinDomain(float64(value))
+	return self
 }
 
 /*
@@ -371,9 +387,10 @@ func (self Instance) MaxDomain() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDomain()))
 }
 
-// SetMaxDomain sets the property returned by [GetMaxDomain].
-func (self Instance) SetMaxDomain(value Float.X) {
+// SetMaxDomain sets the property returned by [GetMaxDomain]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxDomain(value Float.X) Instance {
 	class(self).SetMaxDomain(float64(value))
+	return self
 }
 
 /*
@@ -383,9 +400,10 @@ func (self Instance) MinValue() Float.X {
 	return Float.X(Float.X(class(self).GetMinValue()))
 }
 
-// SetMinValue sets the property returned by [GetMinValue].
-func (self Instance) SetMinValue(value Float.X) {
+// SetMinValue sets the property returned by [GetMinValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMinValue(value Float.X) Instance {
 	class(self).SetMinValue(float64(value))
+	return self
 }
 
 /*
@@ -395,9 +413,10 @@ func (self Instance) MaxValue() Float.X {
 	return Float.X(Float.X(class(self).GetMaxValue()))
 }
 
-// SetMaxValue sets the property returned by [GetMaxValue].
-func (self Instance) SetMaxValue(value Float.X) {
+// SetMaxValue sets the property returned by [GetMaxValue]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMaxValue(value Float.X) Instance {
 	class(self).SetMaxValue(float64(value))
+	return self
 }
 
 /*
@@ -407,9 +426,10 @@ func (self Instance) BakeResolution() int {
 	return int(int(class(self).GetBakeResolution()))
 }
 
-// SetBakeResolution sets the property returned by [GetBakeResolution].
-func (self Instance) SetBakeResolution(value int) {
+// SetBakeResolution sets the property returned by [GetBakeResolution]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBakeResolution(value int) Instance {
 	class(self).SetBakeResolution(int64(value))
+	return self
 }
 
 /*
@@ -419,9 +439,10 @@ func (self Instance) PointCount() int {
 	return int(int(class(self).GetPointCount()))
 }
 
-// SetPointCount sets the property returned by [GetPointCount].
-func (self Instance) SetPointCount(value int) {
+// SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPointCount(value int) Instance {
 	class(self).SetPointCount(int64(value))
+	return self
 }
 
 //go:nosplit
@@ -714,12 +735,13 @@ Emitted when [MaxValue] or [MinValue] is changed.
 [MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxValue
 [MinValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinValue
 */
-func (self Instance) OnRangeChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnRangeChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("range_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) RangeChanged() Signal.Any {
@@ -732,12 +754,13 @@ Emitted when [MaxDomain] or [MinDomain] is changed.
 [MaxDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxDomain
 [MinDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinDomain
 */
-func (self Instance) OnDomainChanged(cb func(), flags ...Signal.Flags) {
+func (self Instance) OnDomainChanged(cb func(), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
 	self[0].AsObject()[0].Connect(gd.NewStringName("domain_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
 }
 
 func (self class) DomainChanged() Signal.Any {

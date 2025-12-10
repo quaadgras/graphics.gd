@@ -369,9 +369,10 @@ func (self Instance) Locale() string {
 	return string(class(self).GetLocale().String())
 }
 
-// SetLocale sets the property returned by [GetLocale].
-func (self Instance) SetLocale(value string) {
+// SetLocale sets the property returned by [GetLocale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLocale(value string) Instance {
 	class(self).SetLocale(String.New(value))
+	return self
 }
 
 /*

@@ -197,9 +197,10 @@ func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
-// SetBoneName sets the property returned by [GetBoneName].
-func (self Instance) SetBoneName(value string) {
+// SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBoneName(value string) Instance {
 	class(self).SetBoneName(String.New(value))
+	return self
 }
 
 /*
@@ -209,9 +210,10 @@ func (self Instance) Bone() int {
 	return int(int(class(self).GetBone()))
 }
 
-// SetBone sets the property returned by [GetBone].
-func (self Instance) SetBone(value int) {
+// SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBone(value int) Instance {
 	class(self).SetBone(int64(value))
+	return self
 }
 
 /*
@@ -224,9 +226,10 @@ func (self Instance) PositionOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetPositionOffset())
 }
 
-// SetPositionOffset sets the property returned by [GetPositionOffset].
-func (self Instance) SetPositionOffset(value Vector3.XYZ) {
+// SetPositionOffset sets the property returned by [GetPositionOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPositionOffset(value Vector3.XYZ) Instance {
 	class(self).SetPositionOffset(Vector3.XYZ(value))
+	return self
 }
 
 /*
@@ -239,9 +242,10 @@ func (self Instance) RotationOffset() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetRotationOffset())
 }
 
-// SetRotationOffset sets the property returned by [GetRotationOffset].
-func (self Instance) SetRotationOffset(value Quaternion.IJKX) {
+// SetRotationOffset sets the property returned by [GetRotationOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationOffset(value Quaternion.IJKX) Instance {
 	class(self).SetRotationOffset(value)
+	return self
 }
 
 /*

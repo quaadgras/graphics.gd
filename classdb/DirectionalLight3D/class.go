@@ -173,9 +173,10 @@ func (self Instance) DirectionalShadowMode() ShadowMode {
 	return ShadowMode(class(self).GetShadowMode())
 }
 
-// SetDirectionalShadowMode sets the property returned by [GetShadowMode].
-func (self Instance) SetDirectionalShadowMode(value ShadowMode) {
+// SetDirectionalShadowMode sets the property returned by [GetShadowMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirectionalShadowMode(value ShadowMode) Instance {
 	class(self).SetShadowMode(value)
+	return self
 }
 
 /*
@@ -187,9 +188,10 @@ func (self Instance) DirectionalShadowBlendSplits() bool {
 	return bool(class(self).IsBlendSplitsEnabled())
 }
 
-// SetDirectionalShadowBlendSplits sets the property returned by [IsBlendSplitsEnabled].
-func (self Instance) SetDirectionalShadowBlendSplits(value bool) {
+// SetDirectionalShadowBlendSplits sets the property returned by [IsBlendSplitsEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDirectionalShadowBlendSplits(value bool) Instance {
 	class(self).SetBlendSplits(value)
+	return self
 }
 
 /*
@@ -201,9 +203,10 @@ func (self Instance) SkyMode() SkyMode {
 	return SkyMode(class(self).GetSkyMode())
 }
 
-// SetSkyMode sets the property returned by [GetSkyMode].
-func (self Instance) SetSkyMode(value SkyMode) {
+// SetSkyMode sets the property returned by [GetSkyMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSkyMode(value SkyMode) Instance {
 	class(self).SetSkyMode(value)
+	return self
 }
 
 //go:nosplit

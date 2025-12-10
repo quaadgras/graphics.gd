@@ -195,9 +195,10 @@ func (self Instance) BufferView() int {
 	return int(int(class(self).GetBufferView()))
 }
 
-// SetBufferView sets the property returned by [GetBufferView].
-func (self Instance) SetBufferView(value int) {
+// SetBufferView sets the property returned by [GetBufferView]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBufferView(value int) Instance {
 	class(self).SetBufferView(int64(value))
+	return self
 }
 
 /*
@@ -207,9 +208,10 @@ func (self Instance) ByteOffset() int {
 	return int(int(class(self).GetByteOffset()))
 }
 
-// SetByteOffset sets the property returned by [GetByteOffset].
-func (self Instance) SetByteOffset(value int) {
+// SetByteOffset sets the property returned by [GetByteOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetByteOffset(value int) Instance {
 	class(self).SetByteOffset(int64(value))
+	return self
 }
 
 /*
@@ -219,9 +221,10 @@ func (self Instance) ComponentType() GLTFComponentType {
 	return GLTFComponentType(class(self).GetComponentType())
 }
 
-// SetComponentType sets the property returned by [GetComponentType].
-func (self Instance) SetComponentType(value GLTFComponentType) {
+// SetComponentType sets the property returned by [GetComponentType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetComponentType(value GLTFComponentType) Instance {
 	class(self).SetComponentType(value)
+	return self
 }
 
 /*
@@ -231,9 +234,10 @@ func (self Instance) Normalized() bool {
 	return bool(class(self).GetNormalized())
 }
 
-// SetNormalized sets the property returned by [GetNormalized].
-func (self Instance) SetNormalized(value bool) {
+// SetNormalized sets the property returned by [GetNormalized]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetNormalized(value bool) Instance {
 	class(self).SetNormalized(value)
+	return self
 }
 
 /*
@@ -243,9 +247,10 @@ func (self Instance) Count() int {
 	return int(int(class(self).GetCount()))
 }
 
-// SetCount sets the property returned by [GetCount].
-func (self Instance) SetCount(value int) {
+// SetCount sets the property returned by [GetCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCount(value int) Instance {
 	class(self).SetCount(int64(value))
+	return self
 }
 
 /*
@@ -255,9 +260,10 @@ func (self Instance) AccessorType() GLTFAccessorType {
 	return GLTFAccessorType(class(self).GetAccessorType())
 }
 
-// SetAccessorType sets the property returned by [GetAccessorType].
-func (self Instance) SetAccessorType(value GLTFAccessorType) {
+// SetAccessorType sets the property returned by [GetAccessorType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessorType(value GLTFAccessorType) Instance {
 	class(self).SetAccessorType(value)
+	return self
 }
 
 /*
@@ -267,9 +273,10 @@ func (self Instance) Type() int {
 	return int(int(class(self).GetType()))
 }
 
-// SetType sets the property returned by [GetType].
-func (self Instance) SetType(value int) {
+// SetType sets the property returned by [GetType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetType(value int) Instance {
 	class(self).SetType(int64(value))
+	return self
 }
 
 /*
@@ -279,9 +286,10 @@ func (self Instance) Min() []float64 {
 	return []float64(slices.Collect(class(self).GetMin().Values()))
 }
 
-// SetMin sets the property returned by [GetMin].
-func (self Instance) SetMin(value []float64) {
+// SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMin(value []float64) Instance {
 	class(self).SetMin(Packed.New(value...))
+	return self
 }
 
 /*
@@ -291,9 +299,10 @@ func (self Instance) Max() []float64 {
 	return []float64(slices.Collect(class(self).GetMax().Values()))
 }
 
-// SetMax sets the property returned by [GetMax].
-func (self Instance) SetMax(value []float64) {
+// SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetMax(value []float64) Instance {
 	class(self).SetMax(Packed.New(value...))
+	return self
 }
 
 /*
@@ -303,9 +312,10 @@ func (self Instance) SparseCount() int {
 	return int(int(class(self).GetSparseCount()))
 }
 
-// SetSparseCount sets the property returned by [GetSparseCount].
-func (self Instance) SetSparseCount(value int) {
+// SetSparseCount sets the property returned by [GetSparseCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseCount(value int) Instance {
 	class(self).SetSparseCount(int64(value))
+	return self
 }
 
 /*
@@ -315,9 +325,10 @@ func (self Instance) SparseIndicesBufferView() int {
 	return int(int(class(self).GetSparseIndicesBufferView()))
 }
 
-// SetSparseIndicesBufferView sets the property returned by [GetSparseIndicesBufferView].
-func (self Instance) SetSparseIndicesBufferView(value int) {
+// SetSparseIndicesBufferView sets the property returned by [GetSparseIndicesBufferView]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseIndicesBufferView(value int) Instance {
 	class(self).SetSparseIndicesBufferView(int64(value))
+	return self
 }
 
 /*
@@ -327,9 +338,10 @@ func (self Instance) SparseIndicesByteOffset() int {
 	return int(int(class(self).GetSparseIndicesByteOffset()))
 }
 
-// SetSparseIndicesByteOffset sets the property returned by [GetSparseIndicesByteOffset].
-func (self Instance) SetSparseIndicesByteOffset(value int) {
+// SetSparseIndicesByteOffset sets the property returned by [GetSparseIndicesByteOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseIndicesByteOffset(value int) Instance {
 	class(self).SetSparseIndicesByteOffset(int64(value))
+	return self
 }
 
 /*
@@ -339,9 +351,10 @@ func (self Instance) SparseIndicesComponentType() GLTFComponentType {
 	return GLTFComponentType(class(self).GetSparseIndicesComponentType())
 }
 
-// SetSparseIndicesComponentType sets the property returned by [GetSparseIndicesComponentType].
-func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) {
+// SetSparseIndicesComponentType sets the property returned by [GetSparseIndicesComponentType]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) Instance {
 	class(self).SetSparseIndicesComponentType(value)
+	return self
 }
 
 /*
@@ -351,9 +364,10 @@ func (self Instance) SparseValuesBufferView() int {
 	return int(int(class(self).GetSparseValuesBufferView()))
 }
 
-// SetSparseValuesBufferView sets the property returned by [GetSparseValuesBufferView].
-func (self Instance) SetSparseValuesBufferView(value int) {
+// SetSparseValuesBufferView sets the property returned by [GetSparseValuesBufferView]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseValuesBufferView(value int) Instance {
 	class(self).SetSparseValuesBufferView(int64(value))
+	return self
 }
 
 /*
@@ -363,9 +377,10 @@ func (self Instance) SparseValuesByteOffset() int {
 	return int(int(class(self).GetSparseValuesByteOffset()))
 }
 
-// SetSparseValuesByteOffset sets the property returned by [GetSparseValuesByteOffset].
-func (self Instance) SetSparseValuesByteOffset(value int) {
+// SetSparseValuesByteOffset sets the property returned by [GetSparseValuesByteOffset]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSparseValuesByteOffset(value int) Instance {
 	class(self).SetSparseValuesByteOffset(int64(value))
+	return self
 }
 
 //go:nosplit

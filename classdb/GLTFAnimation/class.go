@@ -131,11 +131,14 @@ Sets additional arbitrary data in this [GLTFAnimation] instance. This can be use
 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 
+Returns 'self' to enable method chaining.
+
 [GLTFAnimation]: https://pkg.go.dev/graphics.gd/classdb/GLTFAnimation
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
 */
-func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFAnimation.set_additional_data
+func (self Instance) SetAdditionalData(extension_name string, additional_data any) Instance { //gd:GLTFAnimation.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	return self
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -188,18 +191,20 @@ func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
-// SetOriginalName sets the property returned by [GetOriginalName].
-func (self Instance) SetOriginalName(value string) {
+// SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOriginalName(value string) Instance {
 	class(self).SetOriginalName(String.New(value))
+	return self
 }
 
 func (self Instance) Loop() bool {
 	return bool(class(self).GetLoop())
 }
 
-// SetLoop sets the property returned by [GetLoop].
-func (self Instance) SetLoop(value bool) {
+// SetLoop sets the property returned by [GetLoop]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLoop(value bool) Instance {
 	class(self).SetLoop(value)
+	return self
 }
 
 //go:nosplit

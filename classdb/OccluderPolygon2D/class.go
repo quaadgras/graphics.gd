@@ -170,9 +170,10 @@ func (self Instance) Closed() bool {
 	return bool(class(self).IsClosed())
 }
 
-// SetClosed sets the property returned by [IsClosed].
-func (self Instance) SetClosed(value bool) {
+// SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClosed(value bool) Instance {
 	class(self).SetClosed(value)
+	return self
 }
 
 /*
@@ -182,9 +183,10 @@ func (self Instance) CullMode() CullMode {
 	return CullMode(class(self).GetCullMode())
 }
 
-// SetCullMode sets the property returned by [GetCullMode].
-func (self Instance) SetCullMode(value CullMode) {
+// SetCullMode sets the property returned by [GetCullMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCullMode(value CullMode) Instance {
 	class(self).SetCullMode(value)
+	return self
 }
 
 /*
@@ -196,9 +198,10 @@ func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
-// SetPolygon sets the property returned by [GetPolygon].
-func (self Instance) SetPolygon(value []Vector2.XY) {
+// SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 	class(self).SetPolygon(Packed.New(value...))
+	return self
 }
 
 //go:nosplit
