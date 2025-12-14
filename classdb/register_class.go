@@ -122,6 +122,7 @@ func Register[T Class](exports ...any) {
 		var classType = reflect.TypeFor[T]()
 		compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
+		var tags reflect.StructTag = base.Field(0).Tag
 		var embedded_name string
 		for base.Field(0).Anonymous {
 			if base.Field(0).Name == "Class" {
@@ -192,7 +193,11 @@ func Register[T Class](exports ...any) {
 		}
 		gdclass.Registered.Store(classType, impl)
 
-		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), gdextension.ExtensionClassID(cgoNewHandle(impl)), false, false, true, false, gdextension.String{})
+		var iconString gd.String
+		if icon, ok := tags.Lookup("icon"); ok {
+			iconString = gd.NewString(icon)
+		}
+		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), gdextension.ExtensionClassID(cgoNewHandle(impl)), false, false, true, false, pointers.Get(iconString))
 
 		gd.RegisterCleanup(func() {
 			gdextension.Host.ClassDB.Register.Removal(pointers.Get(className))
