@@ -25,7 +25,7 @@ func AssertExportTemplates(version string) error {
 	default:
 		return nil
 	}
-	var url = fmt.Sprintf("https://github.com/godotengine/godot/releases/download/" + version + "-stable/Godot_v" + version + "-stable_export_templates.tpz")
+	var url = "https://github.com/godotengine/godot/releases/download/" + version + "-stable/Godot_v" + version + "-stable_export_templates.tpz"
 	if _, err := os.Stat(location); err == nil {
 		return nil
 	}

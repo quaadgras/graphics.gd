@@ -80,19 +80,18 @@ func detectTopDirForZip(src string) (string, error) {
 		return "", fmt.Errorf("failed to open zip file: %w", err)
 	}
 	defer r.Close()
-
 	var topDir string
 	first := true
 	for _, f := range r.File {
 		name := f.Name
 		if first {
-			firstSlash := strings.Index(name, string(filepath.Separator))
+			firstSlash := strings.Index(name, "/")
 			if firstSlash > 0 {
 				topDir = name[:firstSlash]
 			}
 			first = false
 		} else if topDir != "" {
-			if !strings.HasPrefix(name, topDir+string(filepath.Separator)) && name != topDir {
+			if !strings.HasPrefix(name, topDir+string("/")) && name != topDir {
 				topDir = ""
 			}
 		}
