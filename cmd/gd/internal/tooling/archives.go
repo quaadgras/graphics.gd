@@ -117,7 +117,7 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		// Adjust path if stripping top-level directory
 		targetName := f.Name
 		if topDir != "" && targetName != topDir {
-			targetName = strings.TrimPrefix(targetName, topDir+string("/"))
+			targetName = strings.TrimPrefix(targetName, topDir+string(filepath.Separator))
 		}
 		if targetName == "" {
 			continue // Skip top-level directory itself
@@ -128,7 +128,7 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		if targetFile != "" {
 			if targetName == targetFile {
 				foundTarget = true
-			} else if !strings.HasPrefix(targetFile, targetName+string("/")) {
+			} else if !strings.HasPrefix(targetFile, targetName+string(filepath.Separator)) {
 				continue // Skip files that aren't the target or its parent directories
 			}
 		}
@@ -136,7 +136,7 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		target := filepath.Join(dest, targetName)
 
 		// Check for ZipSlip vulnerability
-		if !strings.HasPrefix(target, filepath.Clean(dest)+string("/")) {
+		if !strings.HasPrefix(target, filepath.Clean(dest)+string(filepath.Separator)) {
 			return fmt.Errorf("invalid file path: %s", target)
 		}
 
@@ -221,7 +221,7 @@ func extractTar(dest, targetFile, topDir string, tr *tar.Reader) error {
 		target := filepath.Join(dest, targetName)
 
 		// Check for path traversal vulnerability
-		if !strings.HasPrefix(target, filepath.Clean(dest)+string("/")) {
+		if !strings.HasPrefix(target, filepath.Clean(dest)+string(filepath.Separator)) {
 			return fmt.Errorf("invalid file path: %s", target)
 		}
 
