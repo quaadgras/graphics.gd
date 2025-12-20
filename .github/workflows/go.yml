@@ -20,11 +20,16 @@ jobs:
         with:
           go-version: "1.25"
 
+      - name: Compute week key
+        id: week
+        shell: bash
+        run: echo "week=$(date +%Y-%W)" >> $GITHUB_OUTPUT
+
       - name: Cache ~/gd directory
         uses: actions/cache@v4
         with:
           path: ~/gd
-          key: ${{ runner.os }}-gd-weekly-${{ (github.event.head_commit.timestamp / 604800000) | floor }}
+          key: ${{ runner.os }}-gd-weekly-${{ steps.week.outputs.week }}
           restore-keys: ${{ runner.os }}-gd-weekly-
 
       - name: Command Line Tooling
