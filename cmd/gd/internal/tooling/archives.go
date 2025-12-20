@@ -265,6 +265,9 @@ func extractTar(dest, targetFile, topDir string, tr *tar.Reader) error {
 
 // ExtractArchive is the main entry point for extracting archives
 func ExtractArchive(src, dest, archiveType, targetFile string, stripTopDir bool) error {
+	// Normalize targetFile to use forward slashes for consistent archive path matching
+	targetFile = filepath.ToSlash(targetFile)
+
 	var topDir string
 	var tz *tar.Reader
 	if stripTopDir {
@@ -319,7 +322,23 @@ func CreateZip(srcDir, destArchive string) error {
 			return err
 		}
 
+		if relPath == "." {
+			return nil
+		}
+
+		arcName := filepath.ToSlash(relPath)
+
 		if info.IsDir() {
+			fh, err := zip.FileInfoHeader(info)
+			if err != nil {
+				return fmt.Errorf("failed to get directory info header: %w", err)
+			}
+			fh.Name = arcName + "/"
+			fh.Method = zip.Store
+
+			if _, err := zipWriter.CreateHeader(fh); err != nil {
+				return fmt.Errorf("failed to create directory zip entry: %w", err)
+			}
 			return nil
 		}
 
@@ -333,7 +352,7 @@ func CreateZip(srcDir, destArchive string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get file info header: %w", err)
 		}
-		fh.Name = relPath
+		fh.Name = arcName
 		fh.Method = zip.Deflate
 
 		writer, err := zipWriter.CreateHeader(fh)
