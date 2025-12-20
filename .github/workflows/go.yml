@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +21,12 @@ jobs:
           go-version: "1.25"
 
       - name: Command Line Tooling
-        run: cd ./cmd/gd && go build
+        run: |
+          cd ./cmd/gd
+          go build -o gd.exe
 
       - name: Test
-        run: cd ./internal && ../cmd/gd/gd test
+        run: |
+          cd ./internal
+          ../cmd/gd/gd.exe test
+        shell: bash
