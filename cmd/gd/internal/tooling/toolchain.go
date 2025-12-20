@@ -16,6 +16,8 @@ import (
 	"runtime.link/api/xray"
 )
 
+var debug = os.Getenv("DEBUG_CMD") != ""
+
 // GOTOOLCHAIN=local will disable automatic toolchain downloads.
 
 type toolchain struct {
@@ -55,6 +57,10 @@ func (exe toolchain) PathToCommand() string {
 func (exe toolchain) Exec(args ...string) error {
 	for i, arg := range args {
 		if newarg, ok := exe.ConvertArguments[arg]; ok {
+			if newarg == "" {
+				args = append(args[:i], args[i+1:]...)
+				continue
+			}
 			args[i] = newarg
 		}
 	}
@@ -63,6 +69,9 @@ func (exe toolchain) Exec(args ...string) error {
 		return xray.New(err)
 	}
 	cmd := exec.Command(path, args...)
+	if debug {
+		fmt.Println(path, strings.Join(args, " "))
+	}
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
@@ -91,7 +100,11 @@ func (exe toolchain) Action(name string, suffix_args []string, args ...string) e
 	if err != nil {
 		return xray.New(err)
 	}
-	cmd := exec.Command(path, append(append([]string{name}, args...), suffix...)...)
+	args = append(append([]string{name}, args...), suffix...)
+	cmd := exec.Command(path, args...)
+	if debug {
+		fmt.Println(path, strings.Join(args, " "))
+	}
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
@@ -102,6 +115,9 @@ func (exe toolchain) Output(args ...string) (string, error) {
 	path, err := exe.Lookup()
 	if err != nil {
 		return "", err
+	}
+	if debug {
+		fmt.Println(path, strings.Join(args, " "))
 	}
 	out, err := exec.Command(path, args...).Output()
 	if err != nil {
