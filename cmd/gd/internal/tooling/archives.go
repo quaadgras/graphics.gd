@@ -117,7 +117,7 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		// Adjust path if stripping top-level directory
 		targetName := f.Name
 		if topDir != "" && targetName != topDir {
-			targetName = strings.TrimPrefix(targetName, topDir+string(filepath.Separator))
+			targetName = strings.TrimPrefix(targetName, topDir+"/")
 		}
 		if targetName == "" {
 			continue // Skip top-level directory itself
@@ -128,7 +128,7 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		if targetFile != "" {
 			if targetName == targetFile {
 				foundTarget = true
-			} else if !strings.HasPrefix(targetFile, targetName+string(filepath.Separator)) {
+			} else if !strings.HasPrefix(targetFile, targetName+"/") {
 				continue // Skip files that aren't the target or its parent directories
 			}
 		}
