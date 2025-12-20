@@ -15,6 +15,7 @@ var Godot = toolchain{
 
 	ConvertArguments: map[string]string{
 		"-v": "--verbose",
+		"-x": "",
 	},
 }
 
