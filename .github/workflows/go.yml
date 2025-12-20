@@ -20,6 +20,13 @@ jobs:
         with:
           go-version: "1.25"
 
+      - name: Cache ~/gd directory
+        uses: actions/cache@v4
+        with:
+          path: ~/gd
+          key: ${{ runner.os }}-gd-weekly-${{ (github.event.head_commit.timestamp / 604800000) | floor }}
+          restore-keys: ${{ runner.os }}-gd-weekly-
+
       - name: Command Line Tooling
         run: |
           cd ./cmd/gd
