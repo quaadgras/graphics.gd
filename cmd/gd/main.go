@@ -125,6 +125,9 @@ func gd(args ...string) error {
 	}
 	switch len(args) {
 	case 1:
+		if err := os.Chdir(project.Directory); err != nil {
+			return xray.New(err)
+		}
 		if err := platform.Build(); err != nil {
 			return xray.New(err)
 		}
@@ -135,6 +138,9 @@ func gd(args ...string) error {
 	default:
 		switch args[1] {
 		case "build":
+			if err := os.Chdir(project.Directory); err != nil {
+				return xray.New(err)
+			}
 			// we need to make sure export templates are installed before building.
 			if err := AssertExportTemplates(tooling.Godot.Version); err != nil {
 				return xray.New(err)
@@ -144,6 +150,9 @@ func gd(args ...string) error {
 			}
 			return platform.BuildMain(args[2:]...)
 		case "run":
+			if err := os.Chdir(project.Directory); err != nil {
+				return xray.New(err)
+			}
 			return platform.Run(args[2:]...)
 		case "test":
 			if !project.IncludesGo {

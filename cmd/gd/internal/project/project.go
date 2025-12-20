@@ -150,13 +150,17 @@ func Setup() error {
 		return xray.New(err)
 	}
 	if _, err := os.Stat(filepath.Join(GraphicsDirectory, ".godot")); os.IsNotExist(err) {
+		current, err := os.Getwd()
+		if err != nil {
+			return xray.New(err)
+		}
 		if err := os.Chdir(GraphicsDirectory); err != nil {
 			return xray.New(err)
 		}
 		if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
 			return xray.New(err)
 		}
-		if err := os.Chdir(Directory); err != nil {
+		if err := os.Chdir(current); err != nil {
 			return xray.New(err)
 		}
 	}
@@ -208,15 +212,9 @@ func findGoMod(wd string) (string, bool, error) {
 	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) { // look for a go.mod file
 		_, err := os.Stat(filepath.Join(wd, "go.mod"))
 		if err == nil {
-			if err := os.Chdir(wd); err != nil {
-				return wd, false, err
-			}
 			return wd, true, nil
 		} else if os.IsNotExist(err) {
 			if _, err := os.Stat(filepath.Join(wd, "graphics")); err == nil {
-				if err := os.Chdir(wd); err != nil {
-					return wd, false, err
-				}
 				return wd, true, nil
 			}
 			continue
@@ -228,9 +226,6 @@ func findGoMod(wd string) (string, bool, error) {
 	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) {
 		_, err := os.Stat(filepath.Join(wd, "project.godot"))
 		if err == nil {
-			if err := os.Chdir(wd); err != nil {
-				return wd, false, err
-			}
 			return wd, false, nil
 		}
 	}
