@@ -1,0 +1,24 @@
+name: Go
+
+on:
+  push:
+    branches: ["release"]
+  pull_request:
+    branches: ["release"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.25"
+
+      - name: Command Line Tooling
+        run: cd ./cmd/gd && go build
+
+      - name: Test
+        run: cd ./internal && ../cmd/gd/gd test
