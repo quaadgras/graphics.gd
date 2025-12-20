@@ -111,15 +111,19 @@ func gd(args ...string) error {
 		if _, err := tooling.Zig.Lookup(); err != nil {
 			return xray.New(err)
 		}
-	}
-	if zig, _ := exec.LookPath("zig"); zig != "" && os.Getenv("CC") == "" {
-		if runtime.GOOS == "darwin" {
-			if err := os.Setenv("CC", "clang"); err != nil {
-				return xray.New(err)
-			}
-		} else {
-			if err := os.Setenv("CC", "zig cc"); err != nil {
-				return xray.New(err)
+		if err := os.Setenv("CC", "zig cc"); err != nil {
+			return xray.New(err)
+		}
+	} else {
+		if zig, _ := exec.LookPath("zig"); zig != "" && os.Getenv("CC") == "" {
+			if runtime.GOOS == "darwin" {
+				if err := os.Setenv("CC", "clang"); err != nil {
+					return xray.New(err)
+				}
+			} else {
+				if err := os.Setenv("CC", "zig cc"); err != nil {
+					return xray.New(err)
+				}
 			}
 		}
 	}
