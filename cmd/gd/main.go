@@ -108,10 +108,11 @@ func gd(args ...string) error {
 		}
 	}
 	if GOOS == "windows" && os.Getenv("CC") == "" {
-		if _, err := tooling.Zig.Lookup(); err != nil {
+		zig, err := tooling.Zig.Lookup()
+		if err != nil {
 			return xray.New(err)
 		}
-		if err := os.Setenv("CC", "zig cc"); err != nil {
+		if err := os.Setenv("CC", zig+" cc"); err != nil {
 			return xray.New(err)
 		}
 	} else {
