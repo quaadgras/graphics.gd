@@ -58,10 +58,9 @@ a single  `main.go` file, to install it, make sure that your `$GOPATH/bin` is in
 
 $ `go install graphics.gd/cmd/gd@release`
 
-Now you can run `gd run`, `gd test` on the main package in your project's
-directory and things should work as expected. This tool will create a "graphics"
-subdirectory where you can manage your assets via the
-[Godot Engine](https://godotengine.org/) editor.
+Now you can run `gd run`, `gd test` anywhere in your project and things should work 
+as expected. For Go projects, `gd` will create a "graphics" subdirectory at the root of 
+your module where you can manage your assets via the [Godot Engine](https://godotengine.org/) editor.
 
 Running the command without any additional arguments will startup the editor.
 
