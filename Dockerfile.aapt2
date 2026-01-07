@@ -1,0 +1,211 @@
+# Build static aapt2 binary using Alpine Linux (musl)
+# Based on Termux build scripts adapted for musl
+FROM alpine:edge AS builder
+
+# Make all RUN commands fail on error
+SHELL ["/bin/sh", "-e", "-c"]
+
+# Install build dependencies
+RUN apk add --no-cache \
+    build-base \
+    clang \
+    clang-dev \
+    cmake \
+    git \
+    ninja \
+    python3 \
+    linux-headers \
+    zlib-dev zlib-static \
+    libpng-dev libpng-static \
+    expat-dev expat-static \
+    protobuf-dev \
+    abseil-cpp-dev \
+    re2-dev \
+    fmt-dev \
+    bison \
+    flex \
+    gtest-dev \
+    perl \
+    libc++-dev libc++-static
+
+# Use clang for better C++ compatibility with libc++
+ENV CC=clang
+ENV CXX="clang++ -stdlib=libc++"
+
+WORKDIR /src
+
+# AOSP version to build
+ARG AOSP_TAG=android-13.0.0_r6
+
+# Clone required AOSP repositories
+RUN git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/frameworks/base base && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/system/core core && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/system/libbase libbase && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/system/libziparchive libziparchive && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/system/logging logging && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/system/incremental_delivery incremental_delivery && \
+    git clone --depth 1 --single-branch --branch $AOSP_TAG \
+    https://android.googlesource.com/platform/build build_tools
+
+# Get zopfli for zipalign (if needed, though not used for aapt2)
+RUN git clone --depth 1 https://github.com/google/zopfli.git zopfli
+
+# Fix proto import paths
+RUN for f in base/tools/aapt2/*.proto; do \
+        sed -i 's:frameworks/base/tools/aapt2/::' "$f"; \
+    done
+
+RUN mkdir -p /src/shims/android /src/shims/log /src/shims/cutils /src/shims/sys /src/shims/backtrace
+COPY shims/* /src/shims/
+COPY shims/android/* /src/shims/android/
+COPY shims/log/* /src/shims/log/
+COPY shims/cutils/* /src/shims/cutils/
+COPY shims/sys/* /src/shims/sys/
+COPY shims/backtrace/* /src/shims/backtrace/
+
+# Patch for strerror
+RUN sed -i 's/strerror(/std::strerror(/g' /src/libbase/errors_unix.cpp
+RUN sed -i 's/strerror_r (/std::strerror_r (/g' /src/libbase/posix_strerror_r.cpp
+
+# Patch for typeof in TEMP_FAILURE_RETRY
+RUN sed -i 's/typeof/decltype/g' /src/core/include/cutils/fs.h
+
+# Patch for const discard in zip_writer.cc
+RUN sed -i 's/reinterpret_cast<const uint8_t\*>(data)/reinterpret_cast<uint8_t\*>(const_cast<void\*>(data))/g' /src/libziparchive/zip_writer.cc
+
+# Patch for const pair in vector
+RUN sed -i 's/std::vector<const std::pair<OverlayableInfo/std::vector<std::pair<OverlayableInfo/' /src/base/libs/androidfw/include/androidfw/LoadedArsc.h
+
+# Patch for Entry incomplete type
+RUN sed -i '/struct Entry;/a \ \ struct Entry {\n    uint32_t attr_res_id;\n    int cookie;\n    uint32_t type_spec_flags;\n    Res_value value;\n  };' /src/base/libs/androidfw/include/androidfw/AssetManager2.h
+
+# Remove redefinition in cpp
+RUN sed -i '/struct Theme::Entry/,/};/d' /src/base/libs/androidfw/AssetManager2.cpp
+
+# Patch for initializer order
+RUN sed -i 's/\.dynamic_ref_table = package_group\.dynamic_ref_table\.get(),\n    \.entry_string_ref = StringPoolRef(best_package->GetKeyStringPool(),\n        best_entry->key\.index)/\.entry_string_ref = StringPoolRef(best_package->GetKeyStringPool(),\n        best_entry->key\.index),\n    \.dynamic_ref_table = package_group\.dynamic_ref_table\.get()/' /src/base/libs/androidfw/AssetManager2.cpp
+
+# Build liblog stub
+RUN $CXX -c -fPIC -I/src/shims /src/shims/log_stub.cpp -o /src/shims/log_stub.o && \
+    ar rcs /src/shims/liblog.a /src/shims/log_stub.o
+
+# Set up include paths
+ENV CPPFLAGS="-I/src/shims \
+    -I/src/shims/log \
+    -I/src/shims/android \
+    -I/src/libbase/include \
+    -I/src/core/include \
+    -I/src/core/libcutils/include \
+    -I/src/core/libutils/include \
+    -I/src/libziparchive/include \
+    -I/src/libziparchive/incfs_support/include \
+    -I/src/incremental_delivery/incfs/util/include \
+    -I/src/base/libs/androidfw/include \
+    -I/src/base/cmds/idmap2/libidmap2_policies/include \
+    -I/src/base/tools/aapt2 \
+    -DNDEBUG \
+    -D_FILE_OFFSET_BITS=64 \
+    -D__ANDROID_API__=30 \
+    -D__ANDROID_SDK_VERSION__=30 \
+    -Doff64_t=off_t \
+    -Dlseek64=lseek \
+    -Dftruncate64=ftruncate \
+    -Dmmap64=mmap \
+    -Dpread64=pread \
+    -Dpwrite64=pwrite \
+    -include cstdint \
+    -include cerrno \
+    -include cstring"
+
+ENV CXXFLAGS="-std=c++20 -fPIC -O2 -Wno-reorder-init-list -Wno-deprecated-anon-enum-enum-conversion -Wno-c99-designator"
+ENV LDFLAGS="-static -L/src/lib -lc++abi"
+
+# Generate protobuf sources for aapt2
+RUN mkdir -p /src/base/tools/aapt2/generated && \
+    cd /src/base/tools/aapt2 && \
+    for proto in *.proto; do \
+        protoc --cpp_out=generated "$proto"; \
+    done
+
+# Create build directory
+RUN mkdir -p /src/build /src/lib /src/bin
+
+# Build libbase
+WORKDIR /src/libbase
+RUN $CXX $CXXFLAGS $CPPFLAGS -c abi_compatibility.cpp chrono_utils.cpp cmsg.cpp errors_unix.cpp file.cpp hex.cpp logging.cpp mapped_file.cpp parsebool.cpp parsenetaddress.cpp posix_strerror_r.cpp process.cpp properties.cpp stringprintf.cpp strings.cpp threads.cpp && \
+    ar rcs /src/lib/libandroid-base.a *.o
+
+# Build libcutils
+WORKDIR /src/core/libcutils
+RUN $CXX $CXXFLAGS $CPPFLAGS -c config_utils.cpp hashmap.cpp load_file.cpp native_handle.cpp threads.cpp canned_fs_config.cpp fs_config.cpp && \
+    ar rcs /src/lib/libandroid-cutils.a *.o
+
+# Build libutils
+WORKDIR /src/core/libutils
+RUN $CXX $CXXFLAGS $CPPFLAGS -c Errors.cpp FileMap.cpp JenkinsHash.cpp LightRefBase.cpp NativeHandle.cpp Printer.cpp RefBase.cpp SharedBuffer.cpp StopWatch.cpp String8.cpp String16.cpp StrongPointer.cpp SystemClock.cpp Threads.cpp Timers.cpp Tokenizer.cpp Unicode.cpp VectorImpl.cpp && \
+    ar rcs /src/lib/libandroid-utils.a *.o
+
+# Build libziparchive
+WORKDIR /src/libziparchive
+RUN $CXX $CXXFLAGS $CPPFLAGS -c zip_archive.cc zip_archive_stream_entry.cc zip_writer.cc zip_cd_entry_map.cc && \
+    ar rcs /src/lib/libandroid-ziparchive.a *.o
+
+# Build androidfw
+WORKDIR /src/base/libs/androidfw
+RUN $CXX $CXXFLAGS $CPPFLAGS -c ApkAssets.cpp Asset.cpp AssetDir.cpp AssetManager.cpp AssetManager2.cpp AssetsProvider.cpp AttributeResolution.cpp ChunkIterator.cpp ConfigDescription.cpp Idmap.cpp LoadedArsc.cpp Locale.cpp LocaleData.cpp misc.cpp ObbFile.cpp PosixUtils.cpp ResourceTypes.cpp ResourceUtils.cpp StreamingZipInflater.cpp TypeWrappers.cpp Util.cpp ZipFileRO.cpp ZipUtils.cpp && \
+    ar rcs /src/lib/libandroid-fw.a *.o
+
+# Build libidmap2_policies
+WORKDIR /src/base/cmds/idmap2/libidmap2_policies
+RUN $CXX $CXXFLAGS $CPPFLAGS -c policies.cpp -o policies.o && \
+    ar rcs /src/lib/libidmap2_policies.a policies.o
+
+# Build libbuildversion
+WORKDIR /src/build_tools/soong/cc/libbuildversion
+RUN $CXX $CXXFLAGS $CPPFLAGS -c libbuildversion.cpp -o libbuildversion.o -DBUILD_FINGERPRINT=\"unknown\" -DBUILD_DESCRIPTION=\"unknown\" && \
+    ar rcs /src/lib/libbuildversion.a libbuildversion.o
+
+# Build aapt2
+WORKDIR /src/base/tools/aapt2
+RUN find . -name "*.cpp" -not -path "./*test*" -not -name "*_test.cpp" -not -name "*Test.cpp" | \
+    while read f; do \
+        $CXX $CXXFLAGS $CPPFLAGS -I./generated -I. -c "$f" -o "${f%.cpp}.o"; \
+    done
+
+# Compile generated protobuf sources
+RUN cd /src/base/tools/aapt2/generated && \
+    for f in *.pb.cc; do \
+        if [ -f "$f" ]; then $CXX $CXXFLAGS $CPPFLAGS -c "$f" -o "${f%.cc}.o"; fi; \
+    done
+
+# Link aapt2
+RUN find /src/base/tools/aapt2 -name "*.o" > /tmp/objs.txt && \
+    $CXX $LDFLAGS $(cat /tmp/objs.txt) \
+    -L/src/lib \
+    /src/lib/libandroid-fw.a \
+    /src/lib/libidmap2_policies.a \
+    /src/lib/libbuildversion.a \
+    /src/lib/libandroid-utils.a \
+    /src/lib/libandroid-cutils.a \
+    /src/lib/libandroid-base.a \
+    /src/lib/libandroid-ziparchive.a \
+    /src/shims/liblog.a \
+    -lprotobuf \
+    -lpng \
+    -lexpat \
+    -lz \
+    -lpthread \
+    -o /src/bin/aapt2
+
+# Strip and verify
+RUN strip /src/bin/aapt2 && file /src/bin/aapt2
+
+# Final stage
+FROM scratch
+COPY --from=builder /src/bin/aapt2 /build/aapt2.linux.amd64
