@@ -1,0 +1,86 @@
+# Stage 1: Build apktool using JDK 21 (Gradle compatibility)
+FROM ghcr.io/graalvm/jdk-community:21 AS gradle-builder
+
+RUN microdnf install -y git findutils
+
+# Clone and build apktool-without-awt
+RUN git clone https://github.com/Splizard/apktool-without-awt /apktool-without-awt && \
+    cd /apktool-without-awt && \
+    git tag -f 2.12.1 && \
+    ./gradlew clean build shadowJar proguard -x test && \
+    cp /apktool-without-awt/brut.apktool/apktool-cli/build/libs/apktool-cli.jar /apktool.jar
+
+# Stage 2: Build native images using GraalVM 25 (supports reachability-metadata.json)
+FROM ghcr.io/graalvm/native-image-community:25-muslib AS builder
+
+RUN microdnf install -y wget unzip findutils
+
+# Download Android build-tools (version 34.0.0) for apksigner
+RUN wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip && \
+    unzip -q build-tools.zip -d /android-build-tools && \
+    find /android-build-tools -name apksigner.jar -exec cp {} /apksigner.jar \;
+
+# Copy apktool.jar from gradle-builder stage
+COPY --from=gradle-builder /apktool.jar /apktool.jar
+
+# Download bundletool
+RUN wget -q https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar -O /bundletool.jar
+
+RUN mkdir /build
+
+# Copy reachability metadata for apksigner
+COPY META-INF/apksigner/reachability-metadata.json /config/apksigner/reachability-metadata.json
+
+# Build the static musl native image from apksigner.jar
+RUN native-image \
+    --static \
+    --libc=musl \
+    --no-fallback \
+    -H:+UnlockExperimentalVMOptions \
+    -H:+ReportExceptionStackTraces \
+    -H:ConfigurationFileDirectories=/config/apksigner \
+    --enable-all-security-services \
+    --enable-url-protocols=https \
+    --enable-native-access=ALL-UNNAMED \
+    -jar /apksigner.jar \
+    -o /build/apksigner.linux.amd64
+
+# Copy reachability metadata for apktool
+COPY META-INF/apktool/reachability-metadata.json /config/apktool/reachability-metadata.json
+
+# Build the static musl native image from apktool.jar
+RUN native-image \
+    --static \
+    --libc=musl \
+    --no-fallback \
+    -H:+ReportExceptionStackTraces \
+    -H:+AddAllCharsets \
+    -H:ConfigurationFileDirectories=/config/apktool \
+    --enable-all-security-services \
+    --enable-native-access=ALL-UNNAMED \
+    --initialize-at-run-time=sun.awt.X11,sun.awt.dnd,java.awt.event,com.apple.eawt,sun.awt.X11GraphicsConfig \
+    -H:+AllowIncompleteClasspath \
+    -jar /apktool.jar \
+    -o /build/apktool.linux.amd64
+
+# Copy reachability metadata for bundletool
+COPY META-INF/bundletool/reachability-metadata.json /config/bundletool/reachability-metadata.json
+
+# Build the static musl native image from bundletool.jar
+RUN native-image \
+    --static \
+    --libc=musl \
+    --no-fallback \
+    -H:+ReportExceptionStackTraces \
+    -H:ConfigurationFileDirectories=/config/bundletool \
+    --enable-all-security-services \
+    --enable-native-access=ALL-UNNAMED \
+    -jar /bundletool.jar \
+    -o /build/bundletool.linux.amd64
+
+# Export only the binaries
+FROM scratch
+COPY --from=builder /build /build
+
+# Build and extract with:
+#   docker build -f Dockerfile.graalvm --output=. .

@@ -7,3 +7,4 @@ extension_api.json
 go.work
 go.work.sum
 package-lock.json
+build

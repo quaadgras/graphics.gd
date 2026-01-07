@@ -38,9 +38,7 @@
       "methods": [
         {
           "name": "<init>",
-          "parameterTypes": [
-            "java.security.SecureRandomParameters"
-          ]
+          "parameterTypes": ["java.security.SecureRandomParameters"]
         }
       ]
     },
@@ -129,15 +127,11 @@
   "bundles": [
     {
       "name": "com.sun.org.apache.xml.internal.serializer.XMLEntities",
-      "locales": [
-        "en-US"
-      ]
+      "locales": ["en-US"]
     },
     {
       "name": "sun.awt.resources.awt",
-      "locales": [
-        "en-US"
-      ]
+      "locales": ["en-US"]
     }
   ],
   "jni": [
@@ -234,27 +228,11 @@
       "methods": [
         {
           "name": "getRGB",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "int",
-            "int"
-          ]
+          "parameterTypes": ["int", "int", "int", "int", "int[]", "int", "int"]
         },
         {
           "name": "setRGB",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "int",
-            "int"
-          ]
+          "parameterTypes": ["int", "int", "int", "int", "int[]", "int", "int"]
         }
       ]
     },
@@ -405,9 +383,7 @@
       "methods": [
         {
           "name": "getBoolean",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
+          "parameterTypes": ["java.lang.String"]
         }
       ]
     },
@@ -416,9 +392,7 @@
       "methods": [
         {
           "name": "load",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
+          "parameterTypes": ["java.lang.String"]
         }
       ]
     },
@@ -440,9 +414,7 @@
       "methods": [
         {
           "name": "<init>",
-          "parameterTypes": [
-            "long"
-          ]
+          "parameterTypes": ["long"]
         }
       ]
     },
@@ -491,11 +463,7 @@
       "methods": [
         {
           "name": "addRecord",
-          "parameterTypes": [
-            "java.lang.Object",
-            "long",
-            "long"
-          ]
+          "parameterTypes": ["java.lang.Object", "long", "long"]
         }
       ]
     },
@@ -771,9 +739,7 @@
       "methods": [
         {
           "name": "register",
-          "parameterTypes": [
-            "sun.java2d.loops.GraphicsPrimitive[]"
-          ]
+          "parameterTypes": ["sun.java2d.loops.GraphicsPrimitive[]"]
         }
       ]
     },

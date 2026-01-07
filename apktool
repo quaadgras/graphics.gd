@@ -1,9 +1,0 @@
-native-image \
-    --no-fallback \
-    -jar ~/Downloads/apktool_2.12.1.jar \
-    -H:+ReportExceptionStackTraces \
-    -H:ConfigurationFileDirectories=META-INF/apktool \
-    -H:+AddAllCharsets \
-    --enable-all-security-services \
-    --enable-native-access=ALL-UNNAMED \
-    --initialize-at-run-time=sun.security.pkcs11.P11Util
