@@ -88,17 +88,18 @@ var UltimatePackerForExecutables = toolchain{
 }
 
 var AndroidPackageKitTool = toolchain{
-	Name:        "apktool",
-	Version:     "2.12.1",
-	VersionFlag: "v",
-	DownloadURL: "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)",
-	RequiredFor: "converting the exported .apk into an .aab",
+	Name:          "apktool",
+	Version:       "2.12.1",
+	VersionPrefix: "2.12.1-",
+	VersionFlag:   "v",
+	DownloadURL:   "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)",
+	RequiredFor:   "converting the exported .apk into an .aab",
 }
 
 var AndroidAssetPackagingTool = toolchain{
 	Name:          "aapt2",
-	Version:       "2.20-eng.202512",
-	VersionPrefix: "Android Asset Packaging Tool (aapt) 2.20-eng.202512",
+	Version:       "2.19-android-13.0.0_r6",
+	VersionPrefix: "Android Asset Packaging Tool (aapt) 2.19-android-13.0.0_r6",
 	VersionFlag:   "version",
 	DownloadURL:   "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
 	RequiredFor:   "converting the exported .apk into an .aab",
@@ -106,7 +107,7 @@ var AndroidAssetPackagingTool = toolchain{
 
 var BundleTool = toolchain{
 	Name:        "bundletool",
-	Version:     "1.18.2",
+	Version:     "1.18.3",
 	VersionFlag: "version",
 	DownloadURL: "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)",
 	RequiredFor: "converting the exported .apk into an .aab",

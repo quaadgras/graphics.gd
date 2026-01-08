@@ -256,6 +256,11 @@ func (android Android) BuildMain(...string) error {
 		[]byte(`android:name="`+originalPackageName+`"`),
 		1,
 	)
+	manifest = bytes.Replace(manifest,
+		[]byte(`android:version="\1"`),
+		[]byte(`android:version="1"`),
+		1,
+	)
 	if err := os.WriteFile(
 		filepath.Join(project.ReleasesDirectory, "android", "decompiled", "AndroidManifest.xml"),
 		manifest,
