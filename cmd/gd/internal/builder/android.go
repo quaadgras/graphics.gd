@@ -235,7 +235,7 @@ func (android Android) Run(args ...string) error {
 	if err := tooling.Godot.Exec("--headless", "--export-debug", "Android"); err != nil {
 		return xray.New(err)
 	}
-	apkPath := filepath.Join(project.ReleasesDirectory, "android", "arm64", path.Base(project.Directory)+".apk")
+	apkPath := filepath.Join(project.ReleasesDirectory, "android", "arm64", filepath.Base(project.Directory)+".apk")
 	if err := tooling.AndroidPackageSigner.Exec(
 		"sign", "--ks", debug_keystore,
 		"--ks-key-alias", "androiddebugkey", "--ks-pass", "pass:android",
