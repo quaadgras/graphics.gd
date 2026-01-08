@@ -60,14 +60,13 @@ func (Android) Build(args ...string) error {
 		return nil
 	}
 	if err := os.MkdirAll(filepath.Dir(debug_keystore), 0755); err != nil {
-		return err
+		return xray.New(err)
 	}
 	if _, err := os.Stat(debug_keystore); os.IsNotExist(err) {
 		// Generate RSA private key
 		privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 		if err != nil {
-			fmt.Printf("Error generating key: %v\n", err)
-			os.Exit(1)
+			return xray.New(err)
 		}
 
 		// Create self-signed certificate
@@ -94,15 +93,13 @@ func (Android) Build(args ...string) error {
 
 		certDER, err := x509.CreateCertificate(rand.Reader, &certTemplate, &certTemplate, &privateKey.PublicKey, privateKey)
 		if err != nil {
-			fmt.Printf("Error creating cert: %v\n", err)
-			os.Exit(1)
+			return xray.New(err)
 		}
 
 		// Encode private key to PKCS#8 (required for JKS)
 		privateKeyDER, err := x509.MarshalPKCS8PrivateKey(privateKey)
 		if err != nil {
-			fmt.Printf("Error marshaling private key: %v\n", err)
-			os.Exit(1)
+			return xray.New(err)
 		}
 
 		// Create keystore
@@ -119,17 +116,15 @@ func (Android) Build(args ...string) error {
 		}, []byte("android"))
 
 		// Write to file
-		f, err := os.Create(debug_keystore)
+		f, err := os.OpenFile(debug_keystore, os.O_CREATE|os.O_WRONLY, 0600)
 		if err != nil {
-			fmt.Printf("Error creating file: %v\n", err)
-			os.Exit(1)
+			return xray.New(err)
 		}
 		defer f.Close()
 
 		err = ks.Store(f, []byte("android")) // Store password: "android"
 		if err != nil {
-			fmt.Printf("Error storing keystore: %v\n", err)
-			os.Exit(1)
+			return xray.New(err)
 		}
 	}
 
