@@ -4,10 +4,15 @@ import (
 	"bytes"
 	"context"
 	"crypto"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"crypto/x509/pkix"
 	"embed"
 	"errors"
 	"fmt"
 	"io"
+	"math/big"
 	"os"
 	"os/exec"
 	"path"
@@ -17,6 +22,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/pavlo-v-chernykh/keystore-go/v4"
 	"golang.org/x/term"
 	"graphics.gd/cmd/gd/internal/cryptic"
 	"graphics.gd/cmd/gd/internal/cryptic/certloader"
@@ -42,9 +48,94 @@ func (Android) Build(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
+	var debug_keystore string
+	switch runtime.GOOS {
+	case "linux":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "keystores", "debug.keystore")
+	case "windows":
+		debug_keystore = filepath.Join(os.Getenv("APPDATA"), "Godot", "keystores", "debug.keystore")
+	case "darwin":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "keystores", "debug.keystore")
+	default:
+		return nil
+	}
+	if err := os.MkdirAll(filepath.Dir(debug_keystore), 0755); err != nil {
+		return err
+	}
+	if _, err := os.Stat(debug_keystore); os.IsNotExist(err) {
+		// Generate RSA private key
+		privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+		if err != nil {
+			fmt.Printf("Error generating key: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Create self-signed certificate
+		notBefore := time.Now()
+		notAfter := notBefore.Add(10000 * 24 * time.Hour) // 10,000 days
+		serialNumber, _ := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), 128))
+
+		certTemplate := x509.Certificate{
+			SerialNumber: serialNumber,
+			Subject: pkix.Name{
+				CommonName:   "Android Debug",
+				Organization: []string{"Android"},
+				Country:      []string{"US"},
+			},
+			NotBefore: notBefore,
+			NotAfter:  notAfter,
+			KeyUsage:  x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
+			ExtKeyUsage: []x509.ExtKeyUsage{
+				x509.ExtKeyUsageServerAuth,
+				x509.ExtKeyUsageClientAuth,
+			},
+			BasicConstraintsValid: true,
+		}
+
+		certDER, err := x509.CreateCertificate(rand.Reader, &certTemplate, &certTemplate, &privateKey.PublicKey, privateKey)
+		if err != nil {
+			fmt.Printf("Error creating cert: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Encode private key to PKCS#8 (required for JKS)
+		privateKeyDER, err := x509.MarshalPKCS8PrivateKey(privateKey)
+		if err != nil {
+			fmt.Printf("Error marshaling private key: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Create keystore
+		ks := keystore.New()
+		ks.SetPrivateKeyEntry("androiddebugkey", keystore.PrivateKeyEntry{
+			PrivateKey:   privateKeyDER,
+			CreationTime: time.Now(),
+			CertificateChain: []keystore.Certificate{
+				{
+					Type:    "X.509",
+					Content: certDER,
+				},
+			},
+		}, []byte("android"))
+
+		// Write to file
+		f, err := os.Create(debug_keystore)
+		if err != nil {
+			fmt.Printf("Error creating file: %v\n", err)
+			os.Exit(1)
+		}
+		defer f.Close()
+
+		err = ks.Store(f, []byte("android")) // Store password: "android"
+		if err != nil {
+			fmt.Printf("Error storing keystore: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	var GDPATH = os.Getenv("GDPATH")
 	if GDPATH == "" {
-		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+		GDPATH = filepath.Join(HOME, "gd")
 	}
 	var default_sdk_path string
 	switch runtime.GOOS {

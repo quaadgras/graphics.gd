@@ -7,6 +7,7 @@ require runtime.link v0.0.0-20250814043127-466c6970c4a5
 require (
 	github.com/konoui/lipo v0.10.0
 	github.com/mdp/qrterminal/v3 v3.2.1
+	github.com/pavlo-v-chernykh/keystore-go/v4 v4.5.0
 	github.com/schollz/progressbar/v3 v3.18.0
 	github.com/stretchr/testify v1.9.0
 	github.com/tetratelabs/wazero v1.8.2
