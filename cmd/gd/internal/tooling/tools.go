@@ -61,13 +61,14 @@ var AndroidPackageSigner = toolchain{
 }
 
 var AndroidDebugBridge = toolchain{
-	Name:          "adb",
-	Version:       "1.0.41",
-	VersionFlag:   "--version",
-	VersionPrefix: "Android Debug Bridge version 1.0.41",
-	DownloadURL:   "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)$(EXT)",
-	DownloadEXT:   map[string]string{"linux": "", "windows": ".zip", "darwin": ""},
-	RequiredFor:   "launching the project on a connected android device",
+	Name:            "adb",
+	Version:         "1.0.41",
+	VersionFlag:     "--version",
+	VersionPrefix:   "Android Debug Bridge version 1.0.41",
+	DownloadURL:     "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:     map[string]string{"linux": "", "windows": ".zip", "darwin": ""},
+	RequiredFor:     "launching the project on a connected android device",
+	DarwinUniversal: true,
 }
 
 var UltimatePackerForExecutables = toolchain{
@@ -97,12 +98,13 @@ var AndroidPackageKitTool = toolchain{
 }
 
 var AndroidAssetPackagingTool = toolchain{
-	Name:          "aapt2",
-	Version:       "2.19-android-13.0.0_r6",
-	VersionPrefix: "Android Asset Packaging Tool (aapt) 2.19-android-13.0.0_r6",
-	VersionFlag:   "version",
-	DownloadURL:   "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
-	RequiredFor:   "converting the exported .apk into an .aab",
+	Name:            "aapt2",
+	Version:         "2.19-android-13.0.0_r6",
+	VersionPrefix:   "Android Asset Packaging Tool (aapt) 2.19-android-13.0.0_r6",
+	VersionFlag:     "version",
+	DownloadURL:     "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
+	RequiredFor:     "converting the exported .apk into an .aab",
+	DarwinUniversal: true,
 }
 
 var BundleTool = toolchain{
