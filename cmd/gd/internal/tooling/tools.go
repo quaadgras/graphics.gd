@@ -93,7 +93,8 @@ var AndroidPackageKitTool = toolchain{
 	Version:       "2.12.1",
 	VersionPrefix: "2.12.1-",
 	VersionFlag:   "v",
-	DownloadURL:   "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)",
+	DownloadURL:   "https://release.graphics.gd/apktool.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:   map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor:   "converting the exported .apk into an .aab",
 }
 
@@ -102,7 +103,8 @@ var AndroidAssetPackagingTool = toolchain{
 	Version:         "2.19-android-13.0.0_r6",
 	VersionPrefix:   "Android Asset Packaging Tool (aapt) 2.",
 	VersionFlag:     "version",
-	DownloadURL:     "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
+	DownloadURL:     "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:     map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor:     "converting the exported .apk into an .aab",
 	DarwinUniversal: true,
 }
@@ -111,7 +113,8 @@ var BundleTool = toolchain{
 	Name:        "bundletool",
 	Version:     "1.18.3",
 	VersionFlag: "version",
-	DownloadURL: "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)",
+	DownloadURL: "https://release.graphics.gd/bundletool.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT: map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor: "converting the exported .apk into an .aab",
 }
 
