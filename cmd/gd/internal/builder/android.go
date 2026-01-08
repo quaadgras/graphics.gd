@@ -160,7 +160,7 @@ func (Android) Build(args ...string) error {
 				}
 			}
 			if runtime.GOOS == "windows" {
-				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "apksigner.exe"), filepath.Join(default_sdk_path, "platform-tools", "apksigner.bat")); err != nil {
+				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "apksigner.exe"), filepath.Join(default_sdk_path, "build-tools", "35", "apksigner.bat")); err != nil {
 					return xray.New(err)
 				}
 			} else {
