@@ -30,12 +30,12 @@ RUN apk add --no-cache \
 
 # Use clang for better C++ compatibility with libc++
 ENV CC=clang
-ENV CXX="clang++ -stdlib=libc++"
+ENV CXX="clang++"
 
 WORKDIR /src
 
 # AOSP version to build
-ARG AOSP_TAG=android-13.0.0_r6
+ARG AOSP_TAG=android-14.0.0_r1
 
 # Clone required AOSP repositories
 RUN git clone --depth 1 --single-branch --branch $AOSP_TAG \
@@ -55,6 +55,20 @@ RUN git clone --depth 1 --single-branch --branch $AOSP_TAG \
 
 # Get zopfli for zipalign (if needed, though not used for aapt2)
 RUN git clone --depth 1 https://github.com/google/zopfli.git zopfli
+
+# Build protobuf as static library from source (using bundled abseil)
+RUN git clone --depth 1 --branch v25.6 --recurse-submodules https://github.com/protocolbuffers/protobuf.git /protobuf && \
+    cd /protobuf && \
+    cmake . -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -Dprotobuf_ABSL_PROVIDER=module \
+        -DCMAKE_CXX_FLAGS="-fPIC" \
+        -DZLIB_LIBRARY=/usr/lib/libz.a \
+        -DZLIB_INCLUDE_DIR=/usr/include \
+        -DCMAKE_EXE_LINKER_FLAGS="-static" && \
+    make -j$(nproc) && make install
+
 
 # Fix proto import paths
 RUN for f in base/tools/aapt2/*.proto; do \
@@ -82,15 +96,6 @@ RUN sed -i 's/reinterpret_cast<const uint8_t\*>(data)/reinterpret_cast<uint8_t\*
 # Patch for const pair in vector
 RUN sed -i 's/std::vector<const std::pair<OverlayableInfo/std::vector<std::pair<OverlayableInfo/' /src/base/libs/androidfw/include/androidfw/LoadedArsc.h
 
-# Patch for Entry incomplete type
-RUN sed -i '/struct Entry;/a \ \ struct Entry {\n    uint32_t attr_res_id;\n    int cookie;\n    uint32_t type_spec_flags;\n    Res_value value;\n  };' /src/base/libs/androidfw/include/androidfw/AssetManager2.h
-
-# Remove redefinition in cpp
-RUN sed -i '/struct Theme::Entry/,/};/d' /src/base/libs/androidfw/AssetManager2.cpp
-
-# Patch for initializer order
-RUN sed -i 's/\.dynamic_ref_table = package_group\.dynamic_ref_table\.get(),\n    \.entry_string_ref = StringPoolRef(best_package->GetKeyStringPool(),\n        best_entry->key\.index)/\.entry_string_ref = StringPoolRef(best_package->GetKeyStringPool(),\n        best_entry->key\.index),\n    \.dynamic_ref_table = package_group\.dynamic_ref_table\.get()/' /src/base/libs/androidfw/AssetManager2.cpp
-
 # Build liblog stub
 RUN $CXX -c -fPIC -I/src/shims /src/shims/log_stub.cpp -o /src/shims/log_stub.o && \
     ar rcs /src/shims/liblog.a /src/shims/log_stub.o
@@ -107,6 +112,7 @@ ENV CPPFLAGS="-I/src/shims \
     -I/src/libziparchive/incfs_support/include \
     -I/src/incremental_delivery/incfs/util/include \
     -I/src/base/libs/androidfw/include \
+    -I/src/base/libs/androidfw/include_pathutils \
     -I/src/base/cmds/idmap2/libidmap2_policies/include \
     -I/src/base/tools/aapt2 \
     -DNDEBUG \
@@ -121,10 +127,12 @@ ENV CPPFLAGS="-I/src/shims \
     -Dpwrite64=pwrite \
     -include cstdint \
     -include cerrno \
-    -include cstring"
+    -include cstring \
+    -include limits \
+    -include memory"
 
 ENV CXXFLAGS="-std=c++20 -fPIC -O2 -Wno-reorder-init-list -Wno-deprecated-anon-enum-enum-conversion -Wno-c99-designator"
-ENV LDFLAGS="-static -L/src/lib -lc++abi"
+ENV LDFLAGS="-static -L/src/lib"
 
 # Generate protobuf sources for aapt2
 RUN mkdir -p /src/base/tools/aapt2/generated && \
@@ -141,42 +149,82 @@ WORKDIR /src/libbase
 RUN $CXX $CXXFLAGS $CPPFLAGS -c abi_compatibility.cpp chrono_utils.cpp cmsg.cpp errors_unix.cpp file.cpp hex.cpp logging.cpp mapped_file.cpp parsebool.cpp parsenetaddress.cpp posix_strerror_r.cpp process.cpp properties.cpp stringprintf.cpp strings.cpp threads.cpp && \
     ar rcs /src/lib/libandroid-base.a *.o
 
-# Build libcutils
+# Build libcutils - only Linux host files we need
 WORKDIR /src/core/libcutils
-RUN $CXX $CXXFLAGS $CPPFLAGS -c config_utils.cpp hashmap.cpp load_file.cpp native_handle.cpp threads.cpp canned_fs_config.cpp fs_config.cpp && \
-    ar rcs /src/lib/libandroid-cutils.a *.o
+RUN for f in config_utils.cpp hashmap.cpp load_file.cpp native_handle.cpp canned_fs_config.cpp fs_config.cpp; do \
+        if [ -f "$f" ]; then $CXX $CXXFLAGS $CPPFLAGS -c "$f" -o "${f%.cpp}.o"; fi; \
+    done && \
+    find . -maxdepth 1 -name "*.o" | xargs ar rcs /src/lib/libandroid-cutils.a
 
 # Build libutils
 WORKDIR /src/core/libutils
-RUN $CXX $CXXFLAGS $CPPFLAGS -c Errors.cpp FileMap.cpp JenkinsHash.cpp LightRefBase.cpp NativeHandle.cpp Printer.cpp RefBase.cpp SharedBuffer.cpp StopWatch.cpp String8.cpp String16.cpp StrongPointer.cpp SystemClock.cpp Threads.cpp Timers.cpp Tokenizer.cpp Unicode.cpp VectorImpl.cpp && \
+RUN find . -maxdepth 1 -name "*.cpp" \
+        -not -name "*test*" \
+        -not -name "*Test*" \
+        -not -name "*_test.cpp" \
+        -not -name "*fuzz*" \
+        -not -name "*benchmark*" \
+        -not -name "CallStack.cpp" \
+        -not -name "ProcessCallStack.cpp" \
+        -not -name "Trace.cpp" \
+        -not -name "Looper.cpp" \
+        -exec $CXX $CXXFLAGS $CPPFLAGS -c {} + && \
     ar rcs /src/lib/libandroid-utils.a *.o
+
+# Patch libziparchive const issues
+RUN sed -i 's/zstream.next_in = buf;/zstream.next_in = const_cast<Bytef*>(buf);/' /src/libziparchive/zip_archive.cc
+RUN sed -i 's/z_stream_.next_in = res;/z_stream_.next_in = const_cast<Bytef*>(res);/' /src/libziparchive/zip_archive_stream_entry.cc
+RUN sed -i 's/return {buf.first, ssize_t(buf.second)};/return {buf.first, static_cast<std::span<uint8_t>::size_type>(ssize_t(buf.second))};/' /src/libziparchive/zip_archive.cc
 
 # Build libziparchive
 WORKDIR /src/libziparchive
-RUN $CXX $CXXFLAGS $CPPFLAGS -c zip_archive.cc zip_archive_stream_entry.cc zip_writer.cc zip_cd_entry_map.cc && \
+RUN $CXX $CXXFLAGS $CPPFLAGS -c zip_archive.cc zip_archive_stream_entry.cc zip_writer.cc zip_cd_entry_map.cc zip_error.cpp && \
     ar rcs /src/lib/libandroid-ziparchive.a *.o
+
+# Patch LoadedArsc.cpp - replace lower_bound with linear search (AOSP 15 line numbers may differ)
+RUN grep -n "std::lower_bound(sparse_indices" /src/base/libs/androidfw/LoadedArsc.cpp || true
+RUN sed -i '/std::lower_bound(sparse_indices, sparse_indices_end, entry_index,/,/});/c\    auto result = sparse_indices; while (result != sparse_indices_end && dtohs((*result)->idx) < entry_index) { ++result; }' /src/base/libs/androidfw/LoadedArsc.cpp
+
+RUN sed -i '1i #include <unordered_set>\n#include <unordered_map>' /src/base/libs/androidfw/LocaleDataTables.cpp
+# Move Theme::Entry definition to header for complete type
+RUN sed -i '/struct Entry;/c\struct Entry {\n    ApkAssetsCookie cookie;\n    uint32_t type_spec_flags;\n    Res_value value;\n};' /src/base/libs/androidfw/include/androidfw/AssetManager2.h && \
+    sed -i '/struct Theme::Entry {/,/^};/d' /src/base/libs/androidfw/AssetManager2.cpp
 
 # Build androidfw
 WORKDIR /src/base/libs/androidfw
-RUN $CXX $CXXFLAGS $CPPFLAGS -c ApkAssets.cpp Asset.cpp AssetDir.cpp AssetManager.cpp AssetManager2.cpp AssetsProvider.cpp AttributeResolution.cpp ChunkIterator.cpp ConfigDescription.cpp Idmap.cpp LoadedArsc.cpp Locale.cpp LocaleData.cpp misc.cpp ObbFile.cpp PosixUtils.cpp ResourceTypes.cpp ResourceUtils.cpp StreamingZipInflater.cpp TypeWrappers.cpp Util.cpp ZipFileRO.cpp ZipUtils.cpp && \
+RUN $CXX $CXXFLAGS $CPPFLAGS -c ApkAssets.cpp ApkParsing.cpp Asset.cpp AssetDir.cpp AssetManager.cpp AssetManager2.cpp AssetsProvider.cpp AttributeResolution.cpp BigBuffer.cpp ChunkIterator.cpp ConfigDescription.cpp Idmap.cpp LoadedArsc.cpp Locale.cpp LocaleData.cpp LocaleDataTables.cpp misc.cpp ObbFile.cpp PosixUtils.cpp ResourceTimer.cpp ResourceTypes.cpp ResourceUtils.cpp StreamingZipInflater.cpp StringPool.cpp TypeWrappers.cpp Util.cpp ZipFileRO.cpp ZipUtils.cpp && \
     ar rcs /src/lib/libandroid-fw.a *.o
 
-# Build libidmap2_policies
-WORKDIR /src/base/cmds/idmap2/libidmap2_policies
-RUN $CXX $CXXFLAGS $CPPFLAGS -c policies.cpp -o policies.o && \
-    ar rcs /src/lib/libidmap2_policies.a policies.o
+# Patch for protobuf SetTotalBytesLimit
+RUN sed -i 's/SetTotalBytesLimit(std::numeric_limits<int32_t>::max(),/SetTotalBytesLimit(std::numeric_limits<int32_t>::max());/' /src/base/tools/aapt2/io/Util.h
+RUN sed -i 's/coded_stream.BytesUntilTotalBytesLimit());//' /src/base/tools/aapt2/io/Util.h
 
-# Build libbuildversion
-WORKDIR /src/build_tools/soong/cc/libbuildversion
-RUN $CXX $CXXFLAGS $CPPFLAGS -c libbuildversion.cpp -o libbuildversion.o -DBUILD_FINGERPRINT=\"unknown\" -DBUILD_DESCRIPTION=\"unknown\" && \
-    ar rcs /src/lib/libbuildversion.a libbuildversion.o
+# Patch for unary_function in LruCache.h
+RUN sed -i 's/: public std::unary_function<KeyedEntry\*, hash_t>//g' /src/core/include/utils/LruCache.h
+
+# Fix const vector issue - std::vector doesn't support const value types
+RUN sed -i 's/std::vector<const StringPiece>/std::vector<StringPiece>/g' /src/base/tools/aapt2/util/Files.h
+RUN sed -i 's/std::vector<const StringPiece>/std::vector<StringPiece>/g' /src/base/tools/aapt2/util/Files.cpp
+
+# Create build/version.h with GetBuildNumber function
+RUN mkdir -p /src/base/tools/aapt2/build && \
+    cat > /src/base/tools/aapt2/build/version.h << 'EOF'
+#pragma once
+#define AAPT_VERSION "android-13.0.0_r6"
+
+namespace android {
+namespace build {
+inline const char* GetBuildNumber() {
+    return AAPT_VERSION;
+}
+}
+}
+EOF
 
 # Build aapt2
 WORKDIR /src/base/tools/aapt2
-RUN find . -name "*.cpp" -not -path "./*test*" -not -name "*_test.cpp" -not -name "*Test.cpp" | \
-    while read f; do \
-        $CXX $CXXFLAGS $CPPFLAGS -I./generated -I. -c "$f" -o "${f%.cpp}.o"; \
-    done
+RUN find . -name "*.cpp" -not -path "./*test*" -not -name "*_test.cpp" -not -name "*Test.cpp" -not -name "Unicode_data.cpp" -print0 | \
+    xargs -0 -P$(nproc) -I{} $CXX $CXXFLAGS $CPPFLAGS -I./generated -I. -c {} -o {}.o
 
 # Compile generated protobuf sources
 RUN cd /src/base/tools/aapt2/generated && \
@@ -184,22 +232,41 @@ RUN cd /src/base/tools/aapt2/generated && \
         if [ -f "$f" ]; then $CXX $CXXFLAGS $CPPFLAGS -c "$f" -o "${f%.cc}.o"; fi; \
     done
 
-# Link aapt2
+# Build libincfs (from incremental_delivery)
+WORKDIR /src/incremental_delivery/incfs/util
+RUN $CXX $CXXFLAGS $CPPFLAGS -c map_ptr.cpp -o map_ptr.o && \
+    ar rcs /src/lib/libincfs.a *.o
+
+# Build libziparchive - include zip_error.cpp
+WORKDIR /src/libziparchive
+RUN $CXX $CXXFLAGS $CPPFLAGS -c zip_archive.cc zip_archive_stream_entry.cc zip_writer.cc zip_cd_entry_map.cc zip_error.cpp && \
+    ar rcs /src/lib/libandroid-ziparchive.a *.o
+
+# Also need to compile incfs filemap
+WORKDIR /src/libziparchive/incfs_support
+RUN $CXX $CXXFLAGS $CPPFLAGS -c *.cpp && \
+    ar rcs /src/lib/libincfs_support.a *.o
+
+
 RUN find /src/base/tools/aapt2 -name "*.o" > /tmp/objs.txt && \
-    $CXX $LDFLAGS $(cat /tmp/objs.txt) \
-    -L/src/lib \
+    find /usr/local/lib -name "libabsl_*.a" > /tmp/abseil.txt && \
+    $CXX -static $(cat /tmp/objs.txt) \
+    -Wl,--start-group \
     /src/lib/libandroid-fw.a \
-    /src/lib/libidmap2_policies.a \
-    /src/lib/libbuildversion.a \
     /src/lib/libandroid-utils.a \
     /src/lib/libandroid-cutils.a \
     /src/lib/libandroid-base.a \
     /src/lib/libandroid-ziparchive.a \
+    /src/lib/libincfs.a \
+    /src/lib/libincfs_support.a \
     /src/shims/liblog.a \
-    -lprotobuf \
-    -lpng \
-    -lexpat \
-    -lz \
+    /usr/local/lib/libprotobuf.a \
+    /usr/local/lib/libutf8_validity.a \
+    $(cat /tmp/abseil.txt) \
+    -Wl,--end-group \
+    /usr/lib/libpng.a \
+    /usr/lib/libexpat.a \
+    /usr/lib/libz.a \
     -lpthread \
     -o /src/bin/aapt2
 

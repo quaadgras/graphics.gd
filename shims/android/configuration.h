@@ -114,7 +114,13 @@ enum {
     ACONFIGURATION_LAYOUTDIR = 0x4000,
     ACONFIGURATION_SCREEN_ROUND = 0x8000,
     ACONFIGURATION_COLOR_MODE = 0x10000,
-    ACONFIGURATION_GRAMMATICAL_GENDER = 0x20000
+    ACONFIGURATION_GRAMMATICAL_GENDER = 0x20000,
+
+    // Add these inside the enum
+    ACONFIGURATION_GRAMMATICAL_GENDER_ANY = 0,
+    ACONFIGURATION_GRAMMATICAL_GENDER_NEUTER = 1,
+    ACONFIGURATION_GRAMMATICAL_GENDER_FEMININE = 2,
+    ACONFIGURATION_GRAMMATICAL_GENDER_MASCULINE = 3
 };
 
 #define ACONFIGURATION_MNC_ZERO 0xffff
@@ -180,6 +186,7 @@ int32_t AConfiguration_getHdr(AConfiguration* config) __INTRODUCED_IN(26);
 void AConfiguration_setHdr(AConfiguration* config, int32_t hdr) __INTRODUCED_IN(26);
 int32_t AConfiguration_getGrammaticalGender(AConfiguration* config) __INTRODUCED_IN(34);
 void AConfiguration_setGrammaticalGender(AConfiguration* config, int32_t grammaticalGender) __INTRODUCED_IN(34);
+
 
 #ifdef __cplusplus
 }
