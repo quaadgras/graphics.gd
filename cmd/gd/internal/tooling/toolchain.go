@@ -39,6 +39,8 @@ type toolchain struct {
 
 	ConvertArguments map[string]string
 
+	DarwinUniversal bool
+
 	IsResource bool
 
 	path string // cached by [toolchain.Lookup]
@@ -156,7 +158,7 @@ func (exe *toolchain) Lookup() (string, error) {
 		EXT = "$(MISSING)"
 	}
 	var MaybeUniversal = GOARCH
-	if GOOS == "darwin" {
+	if GOOS == "darwin" && exe.DarwinUniversal {
 		MaybeUniversal = "universal"
 	}
 	var variables = strings.NewReplacer(
