@@ -100,7 +100,7 @@ var AndroidPackageKitTool = toolchain{
 var AndroidAssetPackagingTool = toolchain{
 	Name:            "aapt2",
 	Version:         "2.19-android-13.0.0_r6",
-	VersionPrefix:   "Android Asset Packaging Tool (aapt) 2.19-android-13.0.0_r6",
+	VersionPrefix:   "Android Asset Packaging Tool (aapt) 2.",
 	VersionFlag:     "version",
 	DownloadURL:     "https://release.graphics.gd/aapt2.$(GOOS).$(GOARCH)",
 	RequiredFor:     "converting the exported .apk into an .aab",
