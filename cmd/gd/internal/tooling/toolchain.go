@@ -41,19 +41,19 @@ type toolchain struct {
 
 	DarwinUniversal bool
 
-	IsResource bool
+	IsLibrary bool
 
-	path string // cached by [toolchain.Lookup]
+	Path string // cached by [toolchain.Lookup]
 }
 
 func (exe toolchain) PathToCommand() string {
-	if exe.path == "" {
+	if exe.Path == "" {
 		panic("toolchain.PathToCommand: toolchain not yet looked up")
 	}
 	if exe.IsApp && runtime.GOOS == "darwin" {
-		return filepath.Join(exe.path, "Contents", "MacOS", exe.Name)
+		return filepath.Join(exe.Path, "Contents", "MacOS", exe.Name)
 	}
-	return exe.path
+	return exe.Path
 }
 
 func (exe toolchain) Exec(args ...string) error {
@@ -128,9 +128,28 @@ func (exe toolchain) Output(args ...string) (string, error) {
 	return strings.TrimSpace(string(out)), nil
 }
 
+func (exe toolchain) CombinedOutput(args ...string) (string, error) {
+	path, err := exe.Lookup()
+	if err != nil {
+		return "", err
+	}
+	if debug {
+		fmt.Println(path, strings.Join(args, " "))
+	}
+	out, err := exec.Command(path, args...).CombinedOutput()
+	if debug {
+		fmt.Println(string(out))
+	}
+	return strings.TrimSpace(string(out)), err
+}
+
 func (exe *toolchain) Lookup() (string, error) {
-	if exe.path != "" {
-		return exe.path, nil
+	return exe.LookupPlatform(runtime.GOOS, runtime.GOARCH)
+}
+
+func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
+	if exe.Path != "" {
+		return exe.Path, nil
 	}
 	my, err := user.Current()
 	if err != nil {
@@ -141,10 +160,6 @@ func (exe *toolchain) Lookup() (string, error) {
 	if GDPATH == "" && HOME != "" {
 		GDPATH = filepath.Join(HOME, "gd")
 	}
-	const (
-		GOARCH = runtime.GOARCH
-		GOOS   = runtime.GOOS
-	)
 	ARCH := exe.DownloadARCH[GOARCH]
 	if ARCH == "" {
 		ARCH = "$(MISSING)"
@@ -165,10 +180,14 @@ func (exe *toolchain) Lookup() (string, error) {
 		"$(VERSION)", exe.Version, "$(ARCH)", ARCH, "$(OS)", OS, "$(GOARCH)", MaybeUniversal, "$(GOOS)", GOOS, "$(HOME)", HOME, "$(GDPATH)", GDPATH, "$(EXT)", EXT,
 	)
 	var install_dir = filepath.Join(GDPATH, "bin")
+	if exe.IsLibrary {
+		install_dir = filepath.Join(GDPATH, "lib")
+	}
 	if dir, ok := exe.Installations[GOOS]; ok {
 		install_dir = variables.Replace(dir)
 	}
-	var install_path = filepath.Join(install_dir, exe.Name)
+	var name = variables.Replace(exe.Name)
+	var install_path = filepath.Join(install_dir, name)
 	if runtime.GOOS == "windows" {
 		install_path += ".exe"
 	}
@@ -177,18 +196,18 @@ func (exe *toolchain) Lookup() (string, error) {
 	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
 	if _, err := os.Stat(install_path); err == nil {
-		if exe.IsResource {
+		if exe.IsLibrary {
 			return install_path, nil
 		}
 		var exe_path = install_path
 		if exe.IsApp && runtime.GOOS == "darwin" {
-			exe_path = filepath.Join(install_path, "Contents", "MacOS", exe.Name)
+			exe_path = filepath.Join(install_path, "Contents", "MacOS", name)
 		}
 		version, err := exec.Command(exe_path, exe.VersionFlag).CombinedOutput()
 		version = bytes.TrimSpace(version)
 		if err == nil {
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
-				exe.path = install_path
+				exe.Path = install_path
 				return exe.PathToCommand(), nil
 			}
 		}
@@ -196,26 +215,28 @@ func (exe *toolchain) Lookup() (string, error) {
 	// some users (ie. NixOS) don't want things to be automatically installed, they
 	// can set their toolchain to local and download/install everything themselves.
 	if os.Getenv("GOTOOLCHAIN") == "local" || os.Getenv("GDTOOLCHAIN") == "local" || GDPATH == "" {
-		path, err := exec.LookPath(exe.Name)
+		path, err := exec.LookPath(name)
 		if err != nil {
 			return "", fmt.Errorf(
 				"'%v' %s not found in $PATH (required for %v) and automatic-downloads are disabled, please install it, ie. %v",
-				exe.Name, exe.Version, exe.RequiredFor, exe.DownloadHint,
+				name, exe.Version, exe.RequiredFor, exe.DownloadHint,
 			)
 		}
-		exe.path = path
+		exe.Path = path
 		return exe.PathToCommand(), nil
 	}
-	// if the expected version of the tool is already installed in $PATH, then we can
-	// just use it.
-	if path, err := exec.LookPath(exe.Name); err == nil {
-		version, _ := exec.Command(path, exe.VersionFlag).CombinedOutput()
-		if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
-			exe.path = path
-			if exe.IsApp {
-				exe.IsApp = false
+	if !exe.IsLibrary {
+		// if the expected version of the tool is already installed in $PATH, then we can
+		// just use it.
+		if path, err := exec.LookPath(name); err == nil {
+			version, _ := exec.Command(path, exe.VersionFlag).CombinedOutput()
+			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) || (exe.Version == "" && exe.VersionPrefix == "") {
+				exe.Path = path
+				if exe.IsApp {
+					exe.IsApp = false
+				}
+				return exe.PathToCommand(), nil
 			}
-			return exe.PathToCommand(), nil
 		}
 	}
 	// attempt to automatically download and install the toolchain.
@@ -226,7 +247,7 @@ func (exe *toolchain) Lookup() (string, error) {
 	if url == "" || strings.Contains(url, "$(MISSING)") {
 		return "", fmt.Errorf(
 			"'%v' %s not found in $PATH (required for %v) and no automatic-download is available, please install it, ie. %v",
-			exe.Name, exe.Version, exe.RequiredFor, exe.DownloadHint,
+			name, exe.Version, exe.RequiredFor, exe.DownloadHint,
 		)
 	}
 	if err := os.MkdirAll(install_dir, 0755); err != nil {
@@ -266,18 +287,18 @@ func (exe *toolchain) Lookup() (string, error) {
 		case 416:
 			contentRange := resp.Header.Get("Content-Range")
 			if contentRange != fmt.Sprintf("bytes */%d", stat.Size()) {
-				return fmt.Errorf("unable to resume download of '%v' (required for %v), please delete %v and try again\nGET %s HTTP status: %v", exe.Name, exe.RequiredFor, dest, url, resp.StatusCode)
+				return fmt.Errorf("unable to resume download of '%v' (required for %v), please delete %v and try again\nGET %s HTTP status: %v", name, exe.RequiredFor, dest, url, resp.StatusCode)
 			}
 		default:
 			return fmt.Errorf(
 				"unable to download '%v' (required for %v) and not found in $PATH, please install it, ie. %v\nGET %s HTTP status: %v",
-				exe.Name, exe.RequiredFor, exe.DownloadHint, url, resp.StatusCode,
+				name, exe.RequiredFor, exe.DownloadHint, url, resp.StatusCode,
 			)
 		}
 		if resp.StatusCode != 416 {
 			bar := progressbar.DefaultBytes(
 				resp.ContentLength,
-				fmt.Sprintf("gd: downloading %s v%s", exe.Name, exe.Version),
+				fmt.Sprintf("gd: downloading %s v%s", name, exe.Version),
 			)
 			if _, err := io.Copy(io.MultiWriter(out, bar), resp.Body); err != nil {
 				return xray.New(err)
@@ -323,6 +344,6 @@ func (exe *toolchain) Lookup() (string, error) {
 			return "", xray.New(err)
 		}
 	}
-	exe.path = install_path
+	exe.Path = install_path
 	return exe.PathToCommand(), nil
 }

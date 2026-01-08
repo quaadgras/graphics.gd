@@ -44,8 +44,11 @@ type Builder interface {
 
 func builderFor(goos string) Builder {
 	switch goos {
-	case "linux", "ubuntu", "arch", "debian", "nix":
+	case "linux", "ubuntu", "arch", "debian", "nix", "musl":
 		os.Setenv("GOOS", "linux")
+		if goos == "musl" {
+			return builder.Musl{}
+		}
 		return builder.Linux{}
 	case "windows", "win":
 		os.Setenv("GOOS", "windows")
@@ -86,6 +89,14 @@ func gd(args ...string) error {
 	}
 	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
 		return errors.New("gd requires an amd64, wasm, or arm64 GOARCH")
+	}
+	if runtime.GOOS == "linux" && os.Getenv("GOOS") == "" {
+		version, err := tooling.ListDynamicDependencies.CombinedOutput("--version")
+		if strings.HasPrefix(version, "musl") {
+			GOOS = "musl"
+		} else if err != nil {
+			return xray.New(err)
+		}
 	}
 	if err := project.Setup(); err != nil {
 		return err
