@@ -123,5 +123,25 @@ var Android = toolchain{
 	Name:        "android.jar",
 	DownloadURL: "https://release.graphics.gd/android.jar",
 	RequiredFor: "converting the exported .apk into an .aab",
-	IsResource:  true,
+	IsLibrary:   true,
+}
+
+var LibGodotEditor = toolchain{
+	Name:        "libgodot.$(GOOS).editor.$(GOARCH).$(EXT)",
+	DownloadURL: "https://release.graphics.gd/libgodot.$(GOOS).editor.$(GOARCH).$(EXT)",
+	DownloadEXT: map[string]string{"musl": "a", "linux": "a", "windows": "lib", "darwin": "a"},
+	RequiredFor: "launching the editor on musl systems",
+	IsLibrary:   true,
+}
+
+var LibGodot = toolchain{
+	Name:        "libgodot.$(GOOS).$(GOARCH).$(EXT)",
+	DownloadURL: "https://release.graphics.gd/libgodot.$(GOOS).$(GOARCH).$(EXT)",
+	DownloadEXT: map[string]string{"musl": "a", "linux": "a", "windows": "lib", "darwin": "a"},
+	RequiredFor: "musl systems & single binaries",
+	IsLibrary:   true,
+}
+
+var ListDynamicDependencies = toolchain{
+	Name: "ldd",
 }
