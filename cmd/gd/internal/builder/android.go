@@ -15,6 +15,7 @@ import (
 	"math/big"
 	"os"
 	"os/exec"
+	"os/user"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -287,9 +288,14 @@ func (android Android) BuildMain(...string) error {
 	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 		return xray.New(err)
 	}
+	my, err := user.Current()
+	if err != nil {
+		return xray.New(err)
+	}
+	HOME := my.HomeDir
 	GDPATH := os.Getenv("GDPATH")
 	if GDPATH == "" {
-		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+		GDPATH = filepath.Join(HOME, "gd")
 	}
 	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"), []byte("java stub"), 0755); err != nil {
 		return xray.New(err)
