@@ -200,6 +200,17 @@ func (Android) Build(args ...string) error {
 }
 
 func (android Android) Run(args ...string) error {
+	var debug_keystore string
+	switch runtime.GOOS {
+	case "linux":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "keystores", "debug.keystore")
+	case "windows":
+		debug_keystore = filepath.Join(os.Getenv("APPDATA"), "Godot", "keystores", "debug.keystore")
+	case "darwin":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "keystores", "debug.keystore")
+	default:
+		return nil
+	}
 	if err := android.Build(args...); err != nil {
 		return xray.New(err)
 	}
@@ -219,8 +230,16 @@ func (android Android) Run(args ...string) error {
 	if err := tooling.Godot.Exec("--headless", "--export-debug", "Android"); err != nil {
 		return xray.New(err)
 	}
+	apkPath := filepath.Join(project.ReleasesDirectory, "android", "arm64", path.Base(project.Directory)+".apk")
+	if err := tooling.AndroidPackageSigner.Exec(
+		"sign", "--ks", debug_keystore,
+		"--ks-key-alias", "androiddebugkey", "--ks-pass", "pass:android",
+		apkPath,
+	); err != nil {
+		return xray.New(err)
+	}
 	//  adb shell monkey -p com.example.original -c android.intent.category.LAUNCHER 1; adb logcat --pid=$(adb shell pidof com.example.original) > dump.txt
-	cmd := exec.Command(adb, "install", filepath.Join(project.ReleasesDirectory, "android", "arm64", path.Base(project.Directory)+".apk"))
+	cmd := exec.Command(adb, "install", apkPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
