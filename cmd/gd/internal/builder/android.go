@@ -150,19 +150,23 @@ func (Android) Build(args ...string) error {
 			if err := os.MkdirAll(filepath.Join(default_sdk_path, "build-tools", "35"), 0755); err != nil {
 				return xray.New(err)
 			}
-			var suffix = ""
 			if runtime.GOOS == "windows" {
-				suffix = ".exe"
+				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "adb.exe"), filepath.Join(default_sdk_path, "platform-tools", "adb.exe")); err != nil {
+					return xray.New(err)
+				}
+			} else {
+				if err := os.Symlink(filepath.Join(GDPATH, "bin", "adb"), filepath.Join(default_sdk_path, "platform-tools", "adb")); err != nil {
+					return xray.New(err)
+				}
 			}
-			if err := os.Symlink(filepath.Join(GDPATH, "bin", "adb"+suffix), filepath.Join(default_sdk_path, "platform-tools", "adb")); err != nil {
-				return xray.New(err)
-			}
-			suffix = ""
 			if runtime.GOOS == "windows" {
-				suffix = ".bat"
-			}
-			if err := os.Symlink(filepath.Join(GDPATH, "bin", "apksigner"), filepath.Join(default_sdk_path, "build-tools", "35", "apksigner"+suffix)); err != nil {
-				return xray.New(err)
+				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "apksigner.exe"), filepath.Join(default_sdk_path, "platform-tools", "apksigner.bat")); err != nil {
+					return xray.New(err)
+				}
+			} else {
+				if err := os.Symlink(filepath.Join(GDPATH, "bin", "apksigner"), filepath.Join(default_sdk_path, "build-tools", "35", "apksigner")); err != nil {
+					return xray.New(err)
+				}
 			}
 		}
 	}
