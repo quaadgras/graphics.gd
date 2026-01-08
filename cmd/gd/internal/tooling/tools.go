@@ -56,7 +56,8 @@ var AndroidPackageSigner = toolchain{
 	Name:        "apksigner",
 	Version:     "0.9",
 	VersionFlag: "--version",
-	DownloadURL: "https://release.graphics.gd/apksigner.$(GOOS).$(GOARCH)",
+	DownloadURL: "https://release.graphics.gd/apksigner.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT: map[string]string{"linux": "", "windows": ".exe", "darwin": ""},
 	RequiredFor: "building the .apk",
 }
 
