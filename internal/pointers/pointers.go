@@ -84,6 +84,8 @@ const (
 	revisionLocked = 1
 )
 
+var allocs atomic.Int64
+
 // matches ignores the most significant 2 bits.
 func (r revision) matches(other revision) bool {
 	return r&0b0011111111111111111111111111111111111111111111111111111111111111 == other&0b001111111111111111111111111111111111111111111111111111111111111
@@ -132,10 +134,15 @@ func (r revision) unpinned() revision {
 // for each table. Any entries -2 or less will be freed.
 var writes [shapesMax]atomic.Uint64
 
+var last_allocs int64
+
 // Cycle triggers an deadline garbage collection cycle, to clean up temporary
 // objects, only pointers allocated in the current or last cycle will
 // be preserved.
 func Cycle() {
+	if allocs.Load() <= last_allocs {
+		return
+	}
 	for s := range shapesMax {
 		tab := &tables[s]
 		for j := range tab.len.Load() {
@@ -233,6 +240,7 @@ func Let[T Generic[T, P], P Size](ptr P) T {
 }
 
 func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
+	allocs.Add(1)
 	tab := &tables[len(ptr)]
 	wat := &writes[len(ptr)]
 	for {

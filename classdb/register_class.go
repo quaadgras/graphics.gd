@@ -42,6 +42,8 @@ import (
 	"graphics.gd/internal/threadsafe"
 )
 
+var classes threadsafe.Handles[*classImplementation, gdextension.ExtensionClassID]
+
 // Tool can be embedded inside a struct to make it run in the editor.
 type Tool interface{ tool() }
 
@@ -197,7 +199,7 @@ func Register[T Class](exports ...any) {
 		if icon, ok := tags.Lookup("icon"); ok {
 			iconString = gd.NewString(icon)
 		}
-		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), gdextension.ExtensionClassID(cgoNewHandle(impl)), false, false, true, false, pointers.Get(iconString))
+		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), classes.New(impl), false, false, true, false, pointers.Get(iconString))
 
 		gd.RegisterCleanup(func() {
 			gdextension.Host.ClassDB.Register.Removal(pointers.Get(className))
@@ -537,7 +539,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		super = [1]gd.Object{pointers.Pin(super[0])}
 	}
 	instance := class.reloadInstance(value, super)
-	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
+	id := gdextension.ExtensionInstanceID(instances.New(instance))
+	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), id)
 	if add_root {
 		if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 			roots.Insert(value, keepalive)

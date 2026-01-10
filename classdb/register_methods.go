@@ -8,6 +8,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
@@ -18,6 +19,8 @@ import (
 
 	"graphics.gd/classdb/Engine"
 )
+
+var methods threadsafe.Handles[*methodImplementation, gdextension.FunctionID]
 
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
@@ -66,7 +69,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		call := variantCall(method)
 		gdextension.Host.ClassDB.MethodList.Push(minfo,
 			pointers.Get(gd.NewStringName(method.Name)),
-			gdextension.FunctionID(cgoNewHandle(&methodImplementation{
+			methods.New(&methodImplementation{
 				arg_count: method.Type.NumIn(),
 				dynamic:   call,
 				checked: func(instance any, args, ret gdextension.Pointer) {
@@ -77,7 +80,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 					result, _ := call(instance, v...)
 					return result
 				},
-			})),
+			}),
 			0,
 			returns,
 			arguments,
@@ -109,7 +112,7 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 	var call = variantCallStatic(fn)
 	gdextension.Host.ClassDB.MethodList.Push(method,
 		pointers.Get(gd.NewStringName(name)),
-		gdextension.FunctionID(cgoNewHandle(&methodImplementation{
+		methods.New(&methodImplementation{
 			arg_count: ftype.NumIn(),
 			dynamic:   call,
 			checked: func(instance any, args, ret gdextension.Pointer) {
@@ -119,7 +122,7 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 				result, _ := call(instance, v...)
 				return result
 			},
-		})),
+		}),
 		gdextension.MethodFlagStatic,
 		returns,
 		arguments,
