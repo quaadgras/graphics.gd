@@ -12,18 +12,17 @@ import (
 
 func init() {
 	gd.ExtensionInstanceLookup = func(obj gdextension.Object) any {
-		val, ok := handles.Load(uintptr(gdextension.Host.Objects.Extension.Fetch(obj)))
-		if !ok {
+		val := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
+		if val == nil {
 			return nil
 		}
-		return val.(*instanceImplementation).Value
+		return val.Value
 	}
 	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) {
-		val, ok := handles.Load(uintptr(gdextension.Host.Objects.Extension.Fetch(obj)))
-		if !ok {
+		impl := instances.Get(gdextension.Host.Objects.Extension.Fetch(obj))
+		if impl == nil {
 			return
 		}
-		impl := val.(*instanceImplementation)
 		key := reflect.ValueOf(impl.Value)
 		if goOnly {
 			roots.Remove(key)
@@ -35,18 +34,17 @@ func init() {
 		}
 	}
 	gd.RegisterCleanup(func() {
-		handles.Range(func(key any, value any) bool {
-			if instance, ok := value.(*instanceImplementation); ok {
+		for instance := range instances.All {
+			if instance != nil {
 				instance.Free()
 			}
-			return true
-		})
+		}
 	})
 
 	gdextension.On.Extension = gdextension.CallbacksForExtension{
 		Binding: gdextension.CallbacksForExtensionBinding{
 			Created: func(instance gdextension.ExtensionInstanceID) gdextension.ExtensionBindingID {
-				return gdextension.ExtensionBindingID(instance)
+				return 0
 			},
 			Removed: func(instance gdextension.ExtensionInstanceID, binding gdextension.ExtensionBindingID) {
 
@@ -57,10 +55,10 @@ func init() {
 		},
 		Instance: gdextension.CallbacksForExtensionInstance{
 			Set: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, value gdextension.Variant) bool {
-				return cgoHandle(instance).Value().(*instanceImplementation).Set(pointers.Let[gd.StringName](field), pointers.Let[gd.Variant](value).Copy())
+				return instances.Get(instance).Set(pointers.Let[gd.StringName](field), pointers.Let[gd.Variant](value).Copy())
 			},
 			Get: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, result gdextension.Returns[gdextension.Variant]) bool {
-				v, ok := cgoHandle(instance).Value().(*instanceImplementation).Get(pointers.Let[gd.StringName](field))
+				v, ok := instances.Get(instance).Get(pointers.Let[gd.StringName](field))
 				if !ok {
 					return false
 				}
@@ -73,16 +71,16 @@ func init() {
 				return true
 			},
 			PropertyList: func(instance gdextension.ExtensionInstanceID) gdextension.PropertyList {
-				return cgoHandle(instance).Value().(*instanceImplementation).GetPropertyList()
+				return instances.Get(instance).GetPropertyList()
 			},
 			PropertyValidation: func(instance gdextension.ExtensionInstanceID, list gdextension.PropertyList) bool {
-				return cgoHandle(instance).Value().(*instanceImplementation).ValidateProperty(list)
+				return instances.Get(instance).ValidateProperty(list)
 			},
 			PropertyHasDefault: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName) bool {
-				return cgoHandle(instance).Value().(*instanceImplementation).PropertyCanRevert(pointers.Let[gd.StringName](field))
+				return instances.Get(instance).PropertyCanRevert(pointers.Let[gd.StringName](field))
 			},
 			PropertyGetDefault: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, result gdextension.Returns[gdextension.Variant]) bool {
-				v, ok := cgoHandle(instance).Value().(*instanceImplementation).PropertyGetRevert(pointers.Let[gd.StringName](field))
+				v, ok := instances.Get(instance).PropertyGetRevert(pointers.Let[gd.StringName](field))
 				if ok {
 					raw, ok := pointers.End(v)
 					if ok {
@@ -94,7 +92,7 @@ func init() {
 				return ok
 			},
 			Stringify: func(instance gdextension.ExtensionInstanceID) gdextension.String {
-				s, ok := cgoHandle(instance).Value().(*instanceImplementation).ToString()
+				s, ok := instances.Get(instance).ToString()
 				if ok {
 					raw, ok := pointers.End(s)
 					if ok {
@@ -107,32 +105,32 @@ func init() {
 			},
 			Reference: func(instance gdextension.ExtensionInstanceID, increment bool) bool {
 				if increment {
-					cgoHandle(instance).Value().(*instanceImplementation).Reference()
+					instances.Get(instance).Reference()
 					return true
 				}
-				return cgoHandle(instance).Value().(*instanceImplementation).Unreference()
+				return instances.Get(instance).Unreference()
 			},
 			RID: func(instance gdextension.ExtensionInstanceID, rid gdextension.Returns[uint64]) {
 				gdmemory.Set(gdextension.Pointer(rid), uint64(0))
 			},
 			Notification: func(instance gdextension.ExtensionInstanceID, what int32, reverse bool) {
-				cgoHandle(instance).Value().(*instanceImplementation).Notification(Object.Notification(what), reverse)
+				instances.Get(instance).Notification(Object.Notification(what), reverse)
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-				defer gd.Recover()
-				var receiver any
+				//defer gd.Recover()
+				var receiver *instanceImplementation
 				if instance != 0 {
-					receiver = cgoHandle(instance).Value()
+					receiver = instances.Get(instance)
 				}
-				cgoHandle(fn).Value().(*methodImplementation).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
+				methods.Get(fn).checked(receiver, gdextension.Pointer(args), gdextension.Pointer(result))
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
 				defer gd.Recover()
-				var receiver any
+				var receiver *instanceImplementation
 				if instance != 0 {
-					receiver = cgoHandle(instance).Value()
+					receiver = instances.Get(instance)
 				}
-				method := cgoHandle(fn).Value().(*methodImplementation)
+				method := methods.Get(fn)
 				var variants = make([]gd.Variant, method.arg_count)
 				for i := range method.arg_count {
 					variants[i] = pointers.Let[gd.Variant](gdmemory.IndexVariants(args, method.arg_count, i))
@@ -147,15 +145,15 @@ func init() {
 			},
 			DynamicCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_err gdextension.Returns[gdextension.CallError]) {
 				defer gd.Recover()
-				var receiver any
+				var receiver *instanceImplementation
 				if instance != 0 {
-					receiver = cgoHandle(instance).Value()
+					receiver = instances.Get(instance)
 				}
 				var variants = make([]gd.Variant, arg_count)
 				for i := range arg_count {
 					variants[i] = pointers.Let[gd.Variant](gdmemory.IndexVariants(args, arg_count, i))
 				}
-				v, err := cgoHandle(fn).Value().(*methodImplementation).dynamic(receiver, variants...)
+				v, err := methods.Get(fn).dynamic(receiver, variants...)
 				if err != nil {
 					gdmemory.Set(gdextension.Pointer(call_err), gdextension.CallError{
 						Type: gdextension.CallInvalidMethod,
@@ -170,24 +168,24 @@ func init() {
 				}
 			},
 			Free: func(instance gdextension.ExtensionInstanceID) {
-				cgoHandle(instance).Value().(*instanceImplementation).Free()
-				cgoHandle(instance).Delete()
+				instances.Get(instance).Free()
+				instances.Del(instance)
 			},
 		},
 		Class: gdextension.CallbacksForExtensionClass{
 			Create: func(class gdextension.ExtensionClassID, notify_postinitialize bool) gdextension.Object {
-				return gdextension.Object(pointers.Get(cgoHandle(class).Value().(*classImplementation).CreateInstance(notify_postinitialize)[0])[0])
+				return gdextension.Object(pointers.Get(classes.Get(class).CreateInstance(notify_postinitialize)[0])[0])
 			},
 			Method: func(class gdextension.ExtensionClassID, method gdextension.StringName, hash uint32) gdextension.FunctionID {
-				virtual := cgoHandle(class).Value().(*classImplementation).GetVirtual(pointers.Let[gd.StringName](method))
+				virtual := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method))
 				if virtual == nil {
 					return 0
 				}
-				return gdextension.FunctionID(cgoNewHandle(&methodImplementation{
+				return methods.New(&methodImplementation{
 					checked: func(instance any, args, ret gdextension.Pointer) {
 						instance.(*instanceImplementation).CallVirtual(virtual, args, ret)
 					},
-				}))
+				})
 			},
 		},
 	}

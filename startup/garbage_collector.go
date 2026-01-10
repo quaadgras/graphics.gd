@@ -2,6 +2,7 @@ package startup
 
 import (
 	"os"
+	"os/user"
 	"path/filepath"
 
 	"graphics.gd/classdb/EditorInterface"
@@ -23,11 +24,15 @@ func init() {
 		if EngineClass.IsEditorHint() {
 			settings := EditorInterface.GetEditorSettings()
 			if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
-				GDPATH := os.Getenv("GDPATH")
-				if GDPATH == "" {
-					GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+				my, err := user.Current()
+				if err == nil {
+					HOME := my.HomeDir
+					GDPATH := os.Getenv("GDPATH")
+					if GDPATH == "" && HOME != "" {
+						GDPATH = filepath.Join(HOME, "gd")
+					}
+					settings.SetSetting("export/android/java_sdk_path", GDPATH)
 				}
-				settings.SetSetting("export/android/java_sdk_path", GDPATH)
 			}
 		}
 		if pause_main != nil {

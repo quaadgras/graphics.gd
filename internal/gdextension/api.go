@@ -272,7 +272,7 @@ type API struct {
 		}
 		Extension struct {
 			Setup func(obj Object, name StringName, class ExtensionInstanceID) `gd:"object_extension_setup"`
-			Fetch func(obj Object) ExtensionClassID                            `gd:"object_extension_fetch"`
+			Fetch func(obj Object) ExtensionInstanceID                         `gd:"object_extension_fetch"`
 			Close func(obj Object)                                             `gd:"object_extension_close"`
 		}
 	}
