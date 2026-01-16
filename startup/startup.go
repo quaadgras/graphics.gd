@@ -91,10 +91,10 @@ var hasLoaded bool
 // what startup functions are called in the main function.
 
 type goMainLoop struct {
-	classdb.Extension[goMainLoop, MainLoopClass.Instance] `gd:"GoMainLoop"`
+	MainLoopClass.Extension[goMainLoop] `gd:"GoMainLoop"`
 }
 type goSceneTree struct {
-	classdb.Extension[goSceneTree, SceneTree.Instance] `gd:"GoMainLoop"`
+	SceneTree.Extension[goSceneTree] `gd:"GoMainLoop"`
 }
 
 var main_loop_initialized = make(chan struct{})
