@@ -159,7 +159,7 @@ func (loop goMainLoop) Finalize() {
 //		func main() {
 //			frames := startup.Rendering()
 //	    	// init.
-//			for frame := range frames {
+//			for dt := range frames {
 //				// render frame
 //			}
 //			// finalize
