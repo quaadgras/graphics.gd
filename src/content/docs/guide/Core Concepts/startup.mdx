@@ -29,7 +29,7 @@ import "graphics.gd/startup"
 func main() {
 	frames := startup.Rendering()
 	// engine has started, rendering is available
-	for frame := range frames {
+	for dt := range frames {
 		// do something each frame
 	}
 }
