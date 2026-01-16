@@ -5,9 +5,6 @@ import (
 	"graphics.gd/internal/gdclass"
 )
 
-// Deprecated: use a classdb package Extension instead, ie. Node.Extension[MyClass]
-type Extension[T Class, S gd.IsClass] = gdclass.Extension[T, S]
-
 // ExtensionTo is an interface implemented by extensions to the given engine class.
 type ExtensionTo[T gd.IsClass] interface {
 	Class
