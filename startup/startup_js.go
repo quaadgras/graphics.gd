@@ -24,7 +24,7 @@ func init() {
 		},
 		Exit: func(level gdextension.InitializationLevel) {
 			if level == 2 {
-				for _, cleanup := range gd.Cleanups() {
+				for _, cleanup := range slices.Backwards(gd.Cleanups()) {
 					cleanup()
 				}
 				pointers.Cycle()

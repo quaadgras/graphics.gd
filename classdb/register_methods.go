@@ -31,15 +31,17 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		if !method.IsExported() || method.Type.NumIn() < 1 {
 			continue
 		}
-		if strings.HasPrefix(method.Name, "As") || method.Name == "Super" || method.Name == "UnsafePointer" {
+		if strings.HasPrefix(method.Name, "As") || method.Name == "Super" || method.Name == "UnsafePointer" || method.Name == "Virtual" {
 			continue
 		}
+		_, inherits := rtype.FieldByName("ExtensionInherits")
 		parent, ok := rtype.FieldByName("Class")
-		if !ok {
+		if !ok && !inherits {
 			panic(fmt.Sprintf("gdextension: %v does not have an embedded Class field", rtype))
-		}
-		if _, ok := reflect.PointerTo(parent.Type).MethodByName(method.Name); ok {
-			continue
+		} else if ok {
+			if _, ok := reflect.PointerTo(parent.Type).MethodByName(method.Name); ok {
+				continue
+			}
 		}
 		if method.Name == "OnRegister" {
 			continue

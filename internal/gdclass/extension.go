@@ -84,6 +84,47 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 	return obj
 }
 
+// FIXME can we remove this?
 func (class *Extension[T, S]) UnsafePointer() unsafe.Pointer {
 	return unsafe.Pointer(class)
+}
+
+type ExtensionInherits[S, T Interface] struct {
+	_     [0]*T
+	super S
+}
+
+// Super returns the underlying Super class (of type S).
+func (class *ExtensionInherits[S, T]) Super() *S {
+	return &class.super
+}
+
+func (class ExtensionInherits[S, T]) Virtual(s string) reflect.Value {
+	return class.super.Virtual(s)
+}
+
+func (class ExtensionInherits[S, T]) getObject() [1]gd.Object {
+	return class.super.getObject()
+}
+
+func (class ExtensionInherits[S, T]) superType() reflect.Type {
+	return reflect.TypeFor[S]()
+}
+
+func (class *ExtensionInherits[S, T]) setObject(obj [1]gd.Object) {
+	*(*[1]gd.Object)(unsafe.Pointer(&class.super)) = obj
+}
+
+func (class *ExtensionInherits[S, T]) AsObject() [1]gd.Object {
+	obj := class.getObject()
+	if obj == ([1]gd.Object{}) {
+		impl, ok := Registered.Load(reflect.TypeFor[T]())
+		if ok {
+			instancer := impl.(Constructor)
+			obj = instancer.CreateInstanceFrom(reflect.NewAt(reflect.TypeFor[T](), unsafe.Pointer(class)), true, false)
+			class.setObject(obj)
+		}
+	}
+	pointers.Bad(obj[0])
+	return obj
 }
