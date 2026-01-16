@@ -73,8 +73,45 @@ func args(c int32, v **byte) {
 }
 
 func goargs() {
-	return
+	// Read command line arguments from /proc/self/cmdline for musl compatibility
+	fd := open(&procSelfCmdline[0], _O_RDONLY, 0)
+	if fd < 0 {
+		argslice = nil
+		return
+	}
+
+	// Read the cmdline file - arguments are null-separated
+	var buf [4096]byte
+	n := read(fd, noescape(unsafe.Pointer(&buf[0])), int32(len(buf)))
+	closefd(fd)
+
+	if n <= 0 {
+		argslice = nil
+		return
+	}
+
+	// Count arguments (number of null terminators)
+	argc := int32(0)
+	for i := int32(0); i < n; i++ {
+		if buf[i] == 0 {
+			argc++
+		}
+	}
+
+	// Build argument slice
+	argslice = make([]string, argc)
+	arg := 0
+	start := int32(0)
+	for i := int32(0); i < n; i++ {
+		if buf[i] == 0 {
+			argslice[arg] = string(buf[start:i])
+			arg++
+			start = i + 1
+		}
+	}
 }
+
+var procSelfCmdline = []byte("/proc/self/cmdline\x00")
 
 func goenvs_unix() {
 	// TODO(austin): ppc64 in dynamic linking mode doesn't
