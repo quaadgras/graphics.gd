@@ -15,6 +15,7 @@ import (
 	"iter"
 	"os"
 	"runtime/debug"
+	"slices"
 
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
@@ -47,7 +48,7 @@ func init() {
 		},
 		Exit: func(level gdextension.InitializationLevel) {
 			if level == 2 {
-				for _, cleanup := range internal.Cleanups() {
+				for _, cleanup := range slices.Backward(internal.Cleanups()) {
 					cleanup()
 				}
 				pointers.Cycle()

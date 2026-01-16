@@ -44,11 +44,26 @@ import (
 
 var classes threadsafe.Handles[*classImplementation, gdextension.ExtensionClassID]
 
+// pendingRegistrations holds registration functions that are waiting for their parent
+// extension class to be registered first. Key is the parent's reflect.Type.
+var pendingRegistrations = make(map[reflect.Type][]func())
+
+// registeredTypes tracks which extension class types have been registered.
+var registeredTypes = make(map[reflect.Type]bool)
+
+// processPendingRegistrations checks if any deferred registrations can now proceed
+// because their parent class has been registered.
+func processPendingRegistrations(registeredType reflect.Type) {
+	if pending, ok := pendingRegistrations[registeredType]; ok {
+		delete(pendingRegistrations, registeredType)
+		for _, register := range pending {
+			register()
+		}
+	}
+}
+
 // Tool can be embedded inside a struct to make it run in the editor.
 type Tool interface{ tool() }
-
-// Deprecated: use a classdb package Extension instead, ie. Node.Extension[MyClass]
-type Extension[T Class, S gd.IsClass] = gdclass.Extension[T, S]
 
 // NameOf returns the defined name for the given [Extension]-embedding type.
 func NameOf(T Class) string {
@@ -120,8 +135,13 @@ to the editor as a plugin.
 func Register[T Class](exports ...any) {
 	var superType = gdclass.SuperType(([1]T{})[0])
 	var super = reflect.New(superType).Elem().Interface()
+	var classType = reflect.TypeFor[T]()
+
 	register := func() {
-		var classType = reflect.TypeFor[T]()
+		// Mark this type as registered and process any pending child registrations
+		registeredTypes[classType] = true
+		defer processPendingRegistrations(classType)
+
 		compile_keepalive(reflect.PointerTo(classType))
 		var base = classType
 		var tags reflect.StructTag = base.Field(0).Tag
@@ -173,9 +193,16 @@ func Register[T Class](exports ...any) {
 			refCounted = true // FIXME I think this can be unsafely overridden by the user, so we should check if the type is actually a RefCounted type.
 		}
 
+		// Find the engine class (first non-extension ancestor).
+		// This is safe because the deferred registration system ensures
+		// parent extension classes are registered before their children.
+		engineClass := findEngineClass(superType)
+
 		var impl = &classImplementation{
 			Name:           className,
 			Super:          superName,
+			SuperType:      superType,
+			EngineClass:    engineClass,
 			Type:           classType,
 			Tool:           tool,
 			RefCounted:     refCounted,
@@ -206,6 +233,7 @@ func Register[T Class](exports ...any) {
 			gdclass.Registered.Delete(classType)
 			className.Free()
 			superName.Free()
+			engineClass.Free()
 		})
 		var (
 			documentation = make(map[string]string)
@@ -296,6 +324,22 @@ func Register[T Class](exports ...any) {
 			}
 		}
 	}
+	// Check if the parent type is an extension class that hasn't been registered yet.
+	// If so, defer this registration until after the parent is registered.
+	// This is needed because when extension classes inherit from other extension classes,
+	// we need to know the full inheritance chain to find the underlying engine class.
+	isParentExtensionClass := superType.Implements(reflect.TypeFor[gdclass.Interface]()) ||
+		reflect.PointerTo(superType).Implements(reflect.TypeFor[gdclass.Interface]())
+
+	maybeDefer := func(doRegister func()) {
+		if isParentExtensionClass && !registeredTypes[superType] {
+			// Parent extension class not registered yet, defer this registration
+			pendingRegistrations[superType] = append(pendingRegistrations[superType], doRegister)
+		} else {
+			doRegister()
+		}
+	}
+
 	switch super.(type) {
 	case interface{ AsScript() Script.Instance },
 		interface {
@@ -304,12 +348,16 @@ func Register[T Class](exports ...any) {
 		interface {
 			AsScriptLanguage() ScriptLanguage.Instance
 		}:
-		gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, register)
+		gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
+			maybeDefer(register)
+		})
 	default:
 		if gd.Linked {
-			register()
+			maybeDefer(register)
 		} else {
-			gd.StartupFunctions = append(gd.StartupFunctions, register)
+			gd.StartupFunctions = append(gd.StartupFunctions, func() {
+				maybeDefer(register)
+			})
 		}
 	}
 }
@@ -499,8 +547,10 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 }
 
 type classImplementation struct {
-	Name  gd.StringName
-	Super gd.StringName
+	Name        gd.StringName
+	Super       gd.StringName
+	SuperType   reflect.Type
+	EngineClass gd.StringName // The first non-extension ancestor class, cached at registration time
 
 	Tool       bool
 	RefCounted bool
@@ -512,6 +562,27 @@ type classImplementation struct {
 	Constructor    func() reflect.Value
 
 	Singletons []reflect.StructField
+}
+
+// findEngineClass walks up the inheritance chain and returns the name of the
+// first class that is not a Go extension class. This must be called after
+// parent extension classes are registered (ensured by deferred registration).
+func findEngineClass(superType reflect.Type) gd.StringName {
+	currentType := superType
+	for {
+		// Check if this type is a registered extension class
+		if !registeredTypes[currentType] {
+			// This is not an extension class, so it's a built-in Godot class
+			return pointers.Pin(gd.NewStringName(nameOf(currentType)))
+		}
+		// It's an extension class, get its parent type
+		parentType := gdclass.SuperType(reflect.New(currentType).Elem().Interface().(gdclass.Interface))
+		if parentType == nil || parentType == currentType {
+			// Safety check to prevent infinite loop
+			return pointers.Pin(gd.NewStringName(nameOf(currentType)))
+		}
+		currentType = parentType
+	}
 }
 
 func (class classImplementation) IsVirtual() bool {
@@ -531,7 +602,10 @@ func (class classImplementation) CreateInstance(notify_postinitialize bool) [1]g
 }
 
 func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize bool, add_root bool) [1]gd.Object {
-	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
+	// Use EngineClass (the first built-in ancestor) for construction, not Super.
+	// This prevents the issue where extension classes inheriting from other extension
+	// classes would trigger multiple calls to set_instance_binding on the same object.
+	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))})}
 	if class.RefCounted {
 		gd.RefCounted(super[0]).InitRef()
 	}
