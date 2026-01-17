@@ -225,8 +225,8 @@ function App() {
             <span className="text-[#478CBF]">Godot</span>
           </h1>
           <p className="text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-8 leading-relaxed">
-            The simplicity of Go with the full graphics and game development
-            capabilities of Godot.
+            The simplicity of Go + the full graphics and game development
+            capabilities of Godot
           </p>
 
           <div className="flex flex-wrap gap-4 mb-12">
@@ -296,7 +296,7 @@ function App() {
         <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-              Fully Cross Platform (no proprietary SDKs required)
+              Run Everywhere (no proprietary SDKs required)
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl">
               Build native binaries for each platform, on any machine. Yes even
@@ -357,42 +357,45 @@ function App() {
       <section className="py-16 px-6 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-8">
-            Not just a wrapper
+            Designed for Go, not just a wrapper
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Strongly typed arguments
+                  Stronger Typing
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  RIDs, Callables, and Dictionary arguments are distinctly
-                  typed. No more runtime type errors.
+                  RIDs, Callables, and Dictionaries are all distinctly typed.
+                  Errors that other bindings catch at runtime, graphics.gd
+                  catches at compile time.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Go-native API docs
+                  Documentation Included
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  The entire Godot API reference ported to{" "}
+                  The complete Godot API documentation on{" "}
                   <a
                     href="https://pkg.go.dev/graphics.gd"
                     className="text-cyan-600 dark:text-cyan-400 hover:underline"
                   >
                     pkg.go.dev
-                  </a>
-                  , with Go code snippets.
+                  </a>{" "}
+                  with all code-snippets, links and formatting ported from Godot
+                  to Go.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Reusable variant packages
+                  Fully Ported Math
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  Vector math and other types are pure Go—use them in any
-                  project.
+                  Vector math, colors, and transforms have all been ported to
+                  pure Go. That means no FFI overhead plus you can use them all
+                  in any Go project.
                 </p>
               </div>
             </div>
@@ -400,30 +403,38 @@ function App() {
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Fast recompiles
+                  Fast Compilation
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  After the first build, iteration feels like a scripting
-                  language.
+                  After the initial cgo build, recompilation is fast. All of the
+                  safety, speed and convieniance with none of the wait.
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Cross-compile anywhere
+                  Fully Cross Platform
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  Target any platform from any host. No vendor toolchains
-                  required.
+                  Build and run on Android without Java nor the Google SDK.
+                  Build for iOS/macOS without Xcode. Target any platform from
+                  any host. All thanks to Go &{" "}
+                  <a
+                    href="https://ziglang.org/"
+                    className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                  >
+                    Zig
+                  </a>
+                  .
                 </p>
               </div>
               <div>
                 <h3 className="font-semibold text-zinc-900 dark:text-white mb-1">
-                  Editor compatible
+                  Performance Tuning
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  Full compatibility with the Godot editor. Run{" "}
-                  <code className="text-cyan-600 dark:text-cyan-400">gd</code>{" "}
-                  to open it.
+                  Access specialised & advanced techniques for reducing
+                  allocations, enabling garbage collection to be bypassed for
+                  engine objects.
                 </p>
               </div>
             </div>
@@ -455,8 +466,8 @@ function App() {
                   Aviary
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">
-                  A cooperative space and scene editor inspired by RTS, Tycoon,
-                  and Simulation games.
+                  A cooperative space and scene editor inspired by video games
+                  from the RTS, Tycoon, and Simulation genres.
                 </p>
               </div>
             </div>
@@ -469,15 +480,15 @@ function App() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">Get involved</h2>
           <p className="text-zinc-600 dark:text-zinc-400 mb-6 max-w-2xl">
-            The best way to help is to try it out and{" "}
+            graphics.gd is shaped by real-world use. Try building something,{" "}
             <a
               href="https://github.com/quaadgras/graphics.gd/issues/new/choose"
               className="text-cyan-600 dark:text-cyan-400 hover:underline"
             >
-              report anything that feels off
+              report rough edges
             </a>
-            . The API surface is huge and not everything has been translated
-            optimally yet.
+            , improve the variant packages, write benchmarks, or just share what
+            you're making. Every bit helps.
           </p>
 
           <div className="flex flex-wrap gap-4">
