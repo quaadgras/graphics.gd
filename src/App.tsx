@@ -43,14 +43,34 @@ func main() {
 const shaderCode = `type MyShader struct {
     CanvasItem.Shader[MyShader]
 
-    Tint rgba.Color \`gd:"tint"\`
+    Color rgba.Color \`gd:"color"\` // uniform
 }
 
-func (MyShader) Material(frag CanvasItem.Fragment) CanvasItem.Material {
+func (my MyShader) Material(frag CanvasItem.Fragment) CanvasItem.Material {
     return CanvasItem.Material{
-        Color: rgba.New(1, 0, 0, 1),
+        Color: my.Color,
     }
 }`;
+
+const extensionCode = `type Player struct {
+  CharacterBody2D.Extension[Player]
+
+  Speed    float64 \`gd:"speed" range:"0,500,10"\`
+  JumpForce float64 \`gd:"jump_force"\`
+}
+
+func (p *Player) TakeDamage(amount int) {
+    fmt.Println("Player took", amount, "damage")
+}`;
+
+const gdscriptCode = `@onready var player: Player = $Player
+
+func _ready():
+    player.speed = 200.0
+    player.jump_force = 400.0
+
+func _on_enemy_hit():
+    player.take_damage(10)`;
 
 function CodeBlock({
   code,
@@ -335,6 +355,13 @@ function App() {
               )}
             </div>
           </div>
+
+          <p className="text-zinc-600 dark:text-zinc-400 mt-8 max-w-2xl">
+            <i>
+              You can also use the gd command line tool with existing GDScript
+              projects to easily build your projects for different platforms.
+            </i>
+          </p>
         </div>
       </section>
 
@@ -350,6 +377,35 @@ function App() {
           </p>
 
           <CodeBlock code={shaderCode} filename="shader.go" isDark={isDark} />
+        </div>
+      </section>
+
+      {/* GDScript Integration */}
+      <section className="py-16 px-6 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+            With Automatic Scripting Integration
+          </h2>
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl">
+            Define types in Go, use them in GDScript. Exported fields become
+            properties, exported methods become callable — no boilerplate
+            required.
+          </p>
+
+          <div className="grid lg:grid-cols-2 gap-4">
+            <CodeBlock
+              code={extensionCode}
+              filename="player.go"
+              isDark={isDark}
+            />
+            <CodeBlock code={gdscriptCode} filename="game.gd" isDark={isDark} />
+          </div>
+          <p className="text-zinc-600 dark:text-zinc-400 mt-8 max-w-2xl">
+            <i>
+              Perfect when you're still learning Go or you need a little native
+              functionality in an existing GDScript project.
+            </i>
+          </p>
         </div>
       </section>
 
