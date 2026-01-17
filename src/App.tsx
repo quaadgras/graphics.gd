@@ -359,7 +359,8 @@ function App() {
           <p className="text-zinc-600 dark:text-zinc-400 mt-8 max-w-2xl">
             <i>
               You can also use the gd command line tool with existing GDScript
-              projects to easily build your projects for different platforms.
+              projects to easily build and run your projects on different
+              platforms.
             </i>
           </p>
         </div>
