@@ -11,6 +11,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 If you haven't already done so, you will need to [Download and Install Go](https://go.dev/dl/) so you will be able to compile any `.go` source files into native executables.
 
+### PATH
+
 After Go is installed, make sure `$GOPATH/bin` is part of your `PATH`, so that any tools that you decide to `go install` will be available for use in your terminal.
 
 <Tabs>
@@ -31,7 +33,7 @@ echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc && source ~/.bashrc
 </TabItem>
 </Tabs>
 
-### Other Dependencies
+## Other Dependencies
 `graphics.gd` will automatically manage other dependencies as-needed. If you do
 insist on downloading/installing them yourself set `GDTOOLCHAIN=local`.
 
