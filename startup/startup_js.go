@@ -1,6 +1,8 @@
 package startup
 
 import (
+	"slices"
+
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
@@ -24,7 +26,7 @@ func init() {
 		},
 		Exit: func(level gdextension.InitializationLevel) {
 			if level == 2 {
-				for _, cleanup := range slices.Backwards(gd.Cleanups()) {
+				for _, cleanup := range slices.Backward(gd.Cleanups()) {
 					cleanup()
 				}
 				pointers.Cycle()

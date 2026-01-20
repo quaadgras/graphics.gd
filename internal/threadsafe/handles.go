@@ -1,6 +1,6 @@
 package threadsafe
 
-type Handles[T any, ID ~uintptr] struct {
+type Handles[T any, ID ~uintptr | ~uint32] struct {
 	slice Slice[T]
 	reuse Queue[ID]
 }
