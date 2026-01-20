@@ -146,8 +146,10 @@ func (Android) Build(args ...string) error {
 		default_sdk_path = filepath.Join(HOME, "Android", "Sdk")
 	case "windows":
 		default_sdk_path = filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk")
-		_, err := tooling.AndroidDebugBridge.Lookup()
-		if err != nil {
+		if _, err := tooling.AndroidDebugBridge.Lookup(); err != nil {
+			return xray.New(err)
+		}
+		if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 			return xray.New(err)
 		}
 	case "darwin":
