@@ -133,6 +133,13 @@ func (Android) Build(args ...string) error {
 	if GDPATH == "" {
 		GDPATH = filepath.Join(HOME, "gd")
 	}
+	var exe string
+	if runtime.GOOS == "windows" {
+		exe = ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"+exe), []byte("java stub"), 0755); err != nil {
+		return xray.New(err)
+	}
 	var default_sdk_path string
 	switch runtime.GOOS {
 	case "linux":
@@ -305,7 +312,11 @@ func (android Android) BuildMain(...string) error {
 	if GDPATH == "" {
 		GDPATH = filepath.Join(HOME, "gd")
 	}
-	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"), []byte("java stub"), 0755); err != nil {
+	var exe string
+	if runtime.GOOS == "windows" {
+		exe = ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"+exe), []byte("java stub"), 0755); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
