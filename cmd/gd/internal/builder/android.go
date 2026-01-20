@@ -164,6 +164,12 @@ func (Android) Build(args ...string) error {
 				return xray.New(err)
 			}
 			if runtime.GOOS == "windows" {
+				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "AdbWinApi.dll"), filepath.Join(default_sdk_path, "platform-tools", "AdbWinApi.dll")); err != nil {
+					return xray.New(err)
+				}
+				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "AdbWinUsbApi.dll"), filepath.Join(default_sdk_path, "platform-tools", "AdbWinUsbApi.dll")); err != nil {
+					return xray.New(err)
+				}
 				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "adb.exe"), filepath.Join(default_sdk_path, "platform-tools", "adb.exe")); err != nil {
 					return xray.New(err)
 				}
