@@ -139,6 +139,10 @@ func (Android) Build(args ...string) error {
 		default_sdk_path = filepath.Join(HOME, "Android", "Sdk")
 	case "windows":
 		default_sdk_path = filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk")
+		_, err := tooling.AndroidDebugBridge.Lookup()
+		if err != nil {
+			return xray.New(err)
+		}
 	case "darwin":
 		default_sdk_path = filepath.Join(HOME, "Library", "Android", "Sdk")
 	}
@@ -151,10 +155,6 @@ func (Android) Build(args ...string) error {
 				return xray.New(err)
 			}
 			if runtime.GOOS == "windows" {
-				_, err := tooling.AndroidDebugBridge.Lookup()
-				if err != nil {
-					return xray.New(err)
-				}
 				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "adb.exe"), filepath.Join(default_sdk_path, "platform-tools", "adb.exe")); err != nil {
 					return xray.New(err)
 				}
