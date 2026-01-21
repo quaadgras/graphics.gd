@@ -17,6 +17,7 @@ a familiar development experience to something like [Love2D](https://love2d.org/
 package main
 
 import (
+	"graphics.gd/classdb"
 	"graphics.gd/classdb/Node2D"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/variant/Color"
