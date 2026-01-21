@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"runtime"
 
 	"graphics.gd/classdb/EditorInterface"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -33,6 +34,11 @@ func init() {
 					}
 					settings.SetSetting("export/android/java_sdk_path", GDPATH)
 				}
+			}
+			// work around godot bug on windows
+			android_sdk_path := settings.GetSetting("export/android/android_sdk_path").(String.Readable).String()
+			if runtime.GOOS == "windows" && android_sdk_path == os.Getenv("LOCALAPPDATA")+"/Android/Sdk" {
+				settings.SetSetting("export/android/java_sdk_path", filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk"))
 			}
 		}
 		if pause_main != nil {
