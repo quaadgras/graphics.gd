@@ -28,7 +28,7 @@ import (
 )
 
 func main() {
-	if err := gd(os.Args...); err != nil {
+	if err := gd(os.Args[1:]...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		fmt.Fprintln(os.Stderr, "\nis this error unexpected? open an issue! https://github.com/quaadgras/graphics.gd/issues/new/choose")
 		os.Exit(1)
@@ -140,7 +140,7 @@ func gd(args ...string) error {
 		}
 	}
 	switch len(args) {
-	case 1:
+	case 0:
 		if err := os.Chdir(project.Directory); err != nil {
 			return xray.New(err)
 		}
@@ -152,7 +152,7 @@ func gd(args ...string) error {
 		}
 		return tooling.Godot.Exec("-e")
 	default:
-		switch args[1] {
+		switch args[0] {
 		case "build":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
@@ -164,18 +164,18 @@ func gd(args ...string) error {
 			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
 				return xray.New(err)
 			}
-			return platform.BuildMain(args[2:]...)
+			return platform.BuildMain(args[1:]...)
 		case "run":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
 			}
-			return platform.Run(args[2:]...)
+			return platform.Run(args[1:]...)
 		case "test":
 			if !project.IncludesGo {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
 			converted := []string{}
-			for _, arg := range os.Args[2:] {
+			for _, arg := range os.Args[1:] {
 				switch arg {
 				case "-bench", "-benchmem", "-benchtime", "blockprofile",
 					"-blockprofilerate", "-count", "-coverprofile", "-cpu",

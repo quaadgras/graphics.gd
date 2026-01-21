@@ -94,11 +94,29 @@ func Setup() error {
 			isRun = true
 		}
 	}
+	originalWd := wd
 	wd, hasGoMod, err := findGoMod(wd)
 	if err != nil {
 		return xray.New(err)
 	}
 	var runningSpecificGoFile = specificGoFile && isRun
+	// If there's no go.mod but there's a main.go in the current directory,
+	// automatically run go mod init with the directory name.
+	if !hasGoMod && !runningSpecificGoFile {
+		if _, err := os.Stat(filepath.Join(originalWd, "main.go")); err == nil {
+			if err := tooling.Go.Exec("mod", "init", filepath.Base(originalWd)); err != nil {
+				return xray.New(err)
+			}
+			if err := tooling.Go.Exec("mod", "tidy"); err != nil {
+				return xray.New(err)
+			}
+			if err := tooling.Go.Exec("get", "graphics.gd@release"); err != nil {
+				return xray.New(err)
+			}
+			hasGoMod = true
+			wd = originalWd
+		}
+	}
 	if !runningSpecificGoFile && !hasGoMod {
 		if _, err := os.Stat(filepath.Join(wd, "project.godot")); err == nil {
 			Name = filepath.Base(wd)
