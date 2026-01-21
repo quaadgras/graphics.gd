@@ -6,10 +6,20 @@ sidebar:
 ---
 import { FileTree } from '@astrojs/starlight/components';
 
-Here's the recommended directory structure to follow for a `graphics.gd` project, start with a `main.go` file (or a few files)
-and gradually add `internal` packages as needed.
+Here's the minimal `main.go` that you need to successfully launch a project:
 
-All your assets and media should be sensibly organised underneath the `graphics` directory.
+```go
+package main
+
+import "graphics.gd/startup"
+
+func main() {
+	startup.Scene()
+}
+```
+
+Start with a `main.go` file (or a few files) and gradually add `internal` packages as needed. 
+Here's the recommended directory structure to follow for a `graphics.gd` project:
 
 <FileTree>
 - project_name/
