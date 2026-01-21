@@ -267,6 +267,9 @@ func (android Android) Run(args ...string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
+		fmt.Println("Device not recognized? Make sure developer mode is enabled:")
+		fmt.Println("	(go to Settings > About Phone, find the Build Number, and tap it 7 times quickly).")
+		fmt.Println("Also make sure to unlock your device and accept any USB debugging prompts!")
 		return xray.New(err)
 	}
 	cmd = exec.Command(adb, "shell", "monkey", "-p", "com.example."+project.AndroidSafePackageName(path.Base(project.Directory)), "-c", "android.intent.category.LAUNCHER", "1")
