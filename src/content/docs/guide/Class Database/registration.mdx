@@ -58,9 +58,24 @@ are available for more control on how struct fields will be presented to the eng
 * `gd:"rename"` sets the name of of the property within the engine.
 *  `range:"min_value, max_value, step, flags"` configures the allowed range of values for the property, this property will be represented as a slider in the editor.
 * `group:"name"` sets the associated group that the property will be organised under within the editor.
+* `gd:"-"` hide this field from the engine, use this if you need a field exported in Go but not in the engine.
+
+### Run in the Editor
+By default, methods and notifications will not be called when running your project inside the editor. To enable this,
+embed `classdb.Tool` to your extension class.
+
+```go
+type MyClass struct {
+	Node.Extension[MyClass]
+	classdb.Tool // methods will run in the editor.
+}
+```
+
+Use [Engine.IsEditorHint](https://pkg.go.dev/graphics.gd/classdb/Engine#IsEditorHint) to check whether you are running 
+in the editor or not.
 
 ### Constructors
-Go doesn't have constructors like `.gd` script, instead, if you have a function that you are use to initialize your
+Go doesn't have constructors like `.gd` script, instead, if you have a function that you are using to initialize your
 structures, you can register this with the engine, so that it will be used as the constructor by scripts.
 
 ```go
