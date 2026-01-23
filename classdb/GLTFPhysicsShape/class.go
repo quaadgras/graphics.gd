@@ -259,12 +259,12 @@ func New() Instance {
 /*
 The type of shape this shape represents. Valid values are "box", "capsule", "cylinder", "sphere", "hull", and "trimesh".
 */
-func (self Instance) ShapeType() string {
+func (self Instance) ShapeType() string { //gd:GLTFPhysicsShape.shape_type
 	return string(class(self).GetShapeType().String())
 }
 
 // SetShapeType sets the property returned by [GetShapeType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShapeType(value string) Instance {
+func (self Instance) SetShapeType(value string) Instance { //gd:GLTFPhysicsShape.shape_type
 	class(self).SetShapeType(String.New(value))
 	return self
 }
@@ -272,12 +272,12 @@ func (self Instance) SetShapeType(value string) Instance {
 /*
 The size of the shape, in meters. This is only used when the shape type is "box", and it represents the "diameter" of the box. This value should not be negative.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:GLTFPhysicsShape.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:GLTFPhysicsShape.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -285,12 +285,12 @@ func (self Instance) SetSize(value Vector3.XYZ) Instance {
 /*
 The radius of the shape, in meters. This is only used when the shape type is "capsule", "cylinder", or "sphere". This value should not be negative.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:GLTFPhysicsShape.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:GLTFPhysicsShape.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -298,12 +298,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The height of the shape, in meters. This is only used when the shape type is "capsule" or "cylinder". This value should not be negative, and for "capsule" it should be at least twice the radius.
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:GLTFPhysicsShape.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:GLTFPhysicsShape.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -316,12 +316,12 @@ This is the only variable not used in the [ToNode] method, it's intended to be u
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 [ToNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFPhysicsShape#Instance.ToNode
 */
-func (self Instance) IsTrigger() bool {
+func (self Instance) IsTrigger() bool { //gd:GLTFPhysicsShape.is_trigger
 	return bool(class(self).GetIsTrigger())
 }
 
 // SetIsTrigger sets the property returned by [GetIsTrigger]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIsTrigger(value bool) Instance {
+func (self Instance) SetIsTrigger(value bool) Instance { //gd:GLTFPhysicsShape.is_trigger
 	class(self).SetIsTrigger(value)
 	return self
 }
@@ -329,12 +329,12 @@ func (self Instance) SetIsTrigger(value bool) Instance {
 /*
 The index of the shape's mesh in the glTF file. This is only used when the shape type is "hull" (convex hull) or "trimesh" (concave trimesh).
 */
-func (self Instance) MeshIndex() int {
+func (self Instance) MeshIndex() int { //gd:GLTFPhysicsShape.mesh_index
 	return int(int(class(self).GetMeshIndex()))
 }
 
 // SetMeshIndex sets the property returned by [GetMeshIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMeshIndex(value int) Instance {
+func (self Instance) SetMeshIndex(value int) Instance { //gd:GLTFPhysicsShape.mesh_index
 	class(self).SetMeshIndex(int64(value))
 	return self
 }
@@ -344,12 +344,12 @@ The [ImporterMesh] resource of the shape. This is only used when the shape type 
 
 [ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
 */
-func (self Instance) ImporterMesh() ImporterMesh.Instance {
+func (self Instance) ImporterMesh() ImporterMesh.Instance { //gd:GLTFPhysicsShape.importer_mesh
 	return ImporterMesh.Instance(class(self).GetImporterMesh())
 }
 
 // SetImporterMesh sets the property returned by [GetImporterMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetImporterMesh(value ImporterMesh.Instance) Instance {
+func (self Instance) SetImporterMesh(value ImporterMesh.Instance) Instance { //gd:GLTFPhysicsShape.importer_mesh
 	class(self).SetImporterMesh(value)
 	return self
 }

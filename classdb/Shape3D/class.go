@@ -173,12 +173,12 @@ When set to 0, the default value from [ProjectSettings] "physics/3d/solver/defau
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) CustomSolverBias() Float.X {
+func (self Instance) CustomSolverBias() Float.X { //gd:Shape3D.custom_solver_bias
 	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
 // SetCustomSolverBias sets the property returned by [GetCustomSolverBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomSolverBias(value Float.X) Instance {
+func (self Instance) SetCustomSolverBias(value Float.X) Instance { //gd:Shape3D.custom_solver_bias
 	class(self).SetCustomSolverBias(float64(value))
 	return self
 }
@@ -188,12 +188,12 @@ The collision margin for the shape. This is not used in Godot Physics.
 
 Collision margins allow collision detection to be more efficient by adding an extra shell around shapes. Collision algorithms are more expensive when objects overlap by more than their margin, so a higher value for margins is better for performance, at the cost of accuracy around edges as it makes them less sharp.
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:Shape3D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:Shape3D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }

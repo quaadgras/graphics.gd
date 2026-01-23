@@ -292,12 +292,12 @@ If true, translation is enabled. Otherwise, [Translate] and [TranslatePlural] wi
 [Translate]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain#Instance.Translate
 [TranslatePlural]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain#Instance.TranslatePlural
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:TranslationDomain.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:TranslationDomain.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -307,12 +307,12 @@ If true, enables pseudolocalization for the project. This can be used to spot un
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationEnabled() bool {
+func (self Instance) PseudolocalizationEnabled() bool { //gd:TranslationDomain.pseudolocalization_enabled
 	return bool(class(self).IsPseudolocalizationEnabled())
 }
 
 // SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_enabled
 	class(self).SetPseudolocalizationEnabled(value)
 	return self
 }
@@ -322,12 +322,12 @@ Replace all characters with their accented variants during pseudolocalization.
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationAccentsEnabled() bool {
+func (self Instance) PseudolocalizationAccentsEnabled() bool { //gd:TranslationDomain.pseudolocalization_accents_enabled
 	return bool(class(self).IsPseudolocalizationAccentsEnabled())
 }
 
 // SetPseudolocalizationAccentsEnabled sets the property returned by [IsPseudolocalizationAccentsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationAccentsEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationAccentsEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_accents_enabled
 	class(self).SetPseudolocalizationAccentsEnabled(value)
 	return self
 }
@@ -337,12 +337,12 @@ Double vowels in strings during pseudolocalization to simulate the lengthening o
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationDoubleVowelsEnabled() bool {
+func (self Instance) PseudolocalizationDoubleVowelsEnabled() bool { //gd:TranslationDomain.pseudolocalization_double_vowels_enabled
 	return bool(class(self).IsPseudolocalizationDoubleVowelsEnabled())
 }
 
 // SetPseudolocalizationDoubleVowelsEnabled sets the property returned by [IsPseudolocalizationDoubleVowelsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationDoubleVowelsEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationDoubleVowelsEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_double_vowels_enabled
 	class(self).SetPseudolocalizationDoubleVowelsEnabled(value)
 	return self
 }
@@ -352,12 +352,12 @@ If true, emulate bidirectional (right-to-left) text when pseudolocalization is e
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationFakeBidiEnabled() bool {
+func (self Instance) PseudolocalizationFakeBidiEnabled() bool { //gd:TranslationDomain.pseudolocalization_fake_bidi_enabled
 	return bool(class(self).IsPseudolocalizationFakeBidiEnabled())
 }
 
 // SetPseudolocalizationFakeBidiEnabled sets the property returned by [IsPseudolocalizationFakeBidiEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationFakeBidiEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationFakeBidiEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_fake_bidi_enabled
 	class(self).SetPseudolocalizationFakeBidiEnabled(value)
 	return self
 }
@@ -367,12 +367,12 @@ Replace all characters in the string with *. Useful for finding non-localizable 
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationOverrideEnabled() bool {
+func (self Instance) PseudolocalizationOverrideEnabled() bool { //gd:TranslationDomain.pseudolocalization_override_enabled
 	return bool(class(self).IsPseudolocalizationOverrideEnabled())
 }
 
 // SetPseudolocalizationOverrideEnabled sets the property returned by [IsPseudolocalizationOverrideEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationOverrideEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationOverrideEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_override_enabled
 	class(self).SetPseudolocalizationOverrideEnabled(value)
 	return self
 }
@@ -382,12 +382,12 @@ Skip placeholders for string formatting like %s or %f during pseudolocalization.
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationSkipPlaceholdersEnabled() bool {
+func (self Instance) PseudolocalizationSkipPlaceholdersEnabled() bool { //gd:TranslationDomain.pseudolocalization_skip_placeholders_enabled
 	return bool(class(self).IsPseudolocalizationSkipPlaceholdersEnabled())
 }
 
 // SetPseudolocalizationSkipPlaceholdersEnabled sets the property returned by [IsPseudolocalizationSkipPlaceholdersEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationSkipPlaceholdersEnabled(value bool) Instance {
+func (self Instance) SetPseudolocalizationSkipPlaceholdersEnabled(value bool) Instance { //gd:TranslationDomain.pseudolocalization_skip_placeholders_enabled
 	class(self).SetPseudolocalizationSkipPlaceholdersEnabled(value)
 	return self
 }
@@ -397,12 +397,12 @@ The expansion ratio to use during pseudolocalization. A value of 0.3 is sufficie
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationExpansionRatio() Float.X {
+func (self Instance) PseudolocalizationExpansionRatio() Float.X { //gd:TranslationDomain.pseudolocalization_expansion_ratio
 	return Float.X(Float.X(class(self).GetPseudolocalizationExpansionRatio()))
 }
 
 // SetPseudolocalizationExpansionRatio sets the property returned by [GetPseudolocalizationExpansionRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationExpansionRatio(value Float.X) Instance {
+func (self Instance) SetPseudolocalizationExpansionRatio(value Float.X) Instance { //gd:TranslationDomain.pseudolocalization_expansion_ratio
 	class(self).SetPseudolocalizationExpansionRatio(float64(value))
 	return self
 }
@@ -412,12 +412,12 @@ Prefix that will be prepended to the pseudolocalized string.
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationPrefix() string {
+func (self Instance) PseudolocalizationPrefix() string { //gd:TranslationDomain.pseudolocalization_prefix
 	return string(class(self).GetPseudolocalizationPrefix().String())
 }
 
 // SetPseudolocalizationPrefix sets the property returned by [GetPseudolocalizationPrefix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationPrefix(value string) Instance {
+func (self Instance) SetPseudolocalizationPrefix(value string) Instance { //gd:TranslationDomain.pseudolocalization_prefix
 	class(self).SetPseudolocalizationPrefix(String.New(value))
 	return self
 }
@@ -427,12 +427,12 @@ Suffix that will be appended to the pseudolocalized string.
 
 Note: Updating this property does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] notification manually after you have finished modifying pseudolocalization related options.
 */
-func (self Instance) PseudolocalizationSuffix() string {
+func (self Instance) PseudolocalizationSuffix() string { //gd:TranslationDomain.pseudolocalization_suffix
 	return string(class(self).GetPseudolocalizationSuffix().String())
 }
 
 // SetPseudolocalizationSuffix sets the property returned by [GetPseudolocalizationSuffix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPseudolocalizationSuffix(value string) Instance {
+func (self Instance) SetPseudolocalizationSuffix(value string) Instance { //gd:TranslationDomain.pseudolocalization_suffix
 	class(self).SetPseudolocalizationSuffix(String.New(value))
 	return self
 }

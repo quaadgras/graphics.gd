@@ -253,32 +253,32 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Vertices() []float32 {
+func (self Instance) Vertices() []float32 { //gd:NavigationMeshSourceGeometryData3D.vertices
 	return []float32(slices.Collect(class(self).GetVertices().Values()))
 }
 
 // SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertices(value []float32) Instance {
+func (self Instance) SetVertices(value []float32) Instance { //gd:NavigationMeshSourceGeometryData3D.vertices
 	class(self).SetVertices(Packed.New(value...))
 	return self
 }
 
-func (self Instance) Indices() []int32 {
+func (self Instance) Indices() []int32 { //gd:NavigationMeshSourceGeometryData3D.indices
 	return []int32(slices.Collect(class(self).GetIndices().Values()))
 }
 
 // SetIndices sets the property returned by [GetIndices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndices(value []int32) Instance {
+func (self Instance) SetIndices(value []int32) Instance { //gd:NavigationMeshSourceGeometryData3D.indices
 	class(self).SetIndices(Packed.New(value...))
 	return self
 }
 
-func (self Instance) ProjectedObstructions() []ProjectedObstruction3D {
+func (self Instance) ProjectedObstructions() []ProjectedObstruction3D { //gd:NavigationMeshSourceGeometryData3D.projected_obstructions
 	return []ProjectedObstruction3D(gd.ArrayAs[[]ProjectedObstruction3D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
 // SetProjectedObstructions sets the property returned by [GetProjectedObstructions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProjectedObstructions(value []ProjectedObstruction3D) Instance {
+func (self Instance) SetProjectedObstructions(value []ProjectedObstruction3D) Instance { //gd:NavigationMeshSourceGeometryData3D.projected_obstructions
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 	return self
 }

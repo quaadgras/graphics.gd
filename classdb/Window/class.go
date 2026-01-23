@@ -1400,12 +1400,12 @@ Note: This method only works with native windows, i.e. the main window and [Wind
 [Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Mode() Mode {
+func (self Instance) Mode() Mode { //gd:Window.mode
 	return Mode(class(self).GetMode())
 }
 
 // SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode(value Mode) Instance {
+func (self Instance) SetMode(value Mode) Instance { //gd:Window.mode
 	class(self).SetMode(value)
 	return self
 }
@@ -1416,12 +1416,12 @@ The window's title. If the [Window] is native, title styles set in [Theme] will 
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Title() string {
+func (self Instance) Title() string { //gd:Window.title
 	return string(class(self).GetTitle().String())
 }
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitle(value string) Instance {
+func (self Instance) SetTitle(value string) Instance { //gd:Window.title
 	class(self).SetTitle(String.New(value))
 	return self
 }
@@ -1431,12 +1431,12 @@ Specifies the initial type of position for the [Window].
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) InitialPosition() WindowInitialPosition {
+func (self Instance) InitialPosition() WindowInitialPosition { //gd:Window.initial_position
 	return WindowInitialPosition(class(self).GetInitialPosition())
 }
 
 // SetInitialPosition sets the property returned by [GetInitialPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInitialPosition(value WindowInitialPosition) Instance {
+func (self Instance) SetInitialPosition(value WindowInitialPosition) Instance { //gd:Window.initial_position
 	class(self).SetInitialPosition(value)
 	return self
 }
@@ -1452,12 +1452,12 @@ Note: This property only works if [InitialPosition] is set to [WindowInitialPosi
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) Position() Vector2i.XY {
+func (self Instance) Position() Vector2i.XY { //gd:Window.position
 	return Vector2i.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2i.XY) Instance {
+func (self Instance) SetPosition(value Vector2i.XY) Instance { //gd:Window.position
 	class(self).SetPosition(Vector2i.XY(value))
 	return self
 }
@@ -1465,12 +1465,12 @@ func (self Instance) SetPosition(value Vector2i.XY) Instance {
 /*
 The window's size in pixels.
 */
-func (self Instance) Size() Vector2i.XY {
+func (self Instance) Size() Vector2i.XY { //gd:Window.size
 	return Vector2i.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2i.XY) Instance {
+func (self Instance) SetSize(value Vector2i.XY) Instance { //gd:Window.size
 	class(self).SetSize(Vector2i.XY(value))
 	return self
 }
@@ -1478,12 +1478,12 @@ func (self Instance) SetSize(value Vector2i.XY) Instance {
 /*
 The screen the window is currently on.
 */
-func (self Instance) CurrentScreen() int {
+func (self Instance) CurrentScreen() int { //gd:Window.current_screen
 	return int(int(class(self).GetCurrentScreen()))
 }
 
 // SetCurrentScreen sets the property returned by [GetCurrentScreen]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentScreen(value int) Instance {
+func (self Instance) SetCurrentScreen(value int) Instance { //gd:Window.current_screen
 	class(self).SetCurrentScreen(int64(value))
 	return self
 }
@@ -1501,12 +1501,12 @@ Note: This property is implemented on Linux (X11), macOS and Windows.
 
 [MousePassthrough]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MousePassthrough
 */
-func (self Instance) MousePassthroughPolygon() []Vector2.XY {
+func (self Instance) MousePassthroughPolygon() []Vector2.XY { //gd:Window.mouse_passthrough_polygon
 	return []Vector2.XY(slices.Collect(class(self).GetMousePassthroughPolygon().Values()))
 }
 
 // SetMousePassthroughPolygon sets the property returned by [GetMousePassthroughPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) Instance { //gd:Window.mouse_passthrough_polygon
 	class(self).SetMousePassthroughPolygon(Packed.New(value...))
 	return self
 }
@@ -1514,12 +1514,12 @@ func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) Instance {
 /*
 If true, the window is visible.
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:Window.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:Window.visible
 	class(self).SetVisible(value)
 	return self
 }
@@ -1532,12 +1532,12 @@ If false, you need to call [ChildControlsChanged] manually.
 [ChildControlsChanged]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ChildControlsChanged
 [MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
 */
-func (self Instance) WrapControls() bool {
+func (self Instance) WrapControls() bool { //gd:Window.wrap_controls
 	return bool(class(self).IsWrappingControls())
 }
 
 // SetWrapControls sets the property returned by [IsWrappingControls]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWrapControls(value bool) Instance {
+func (self Instance) SetWrapControls(value bool) Instance { //gd:Window.wrap_controls
 	class(self).SetWrapControls(value)
 	return self
 }
@@ -1549,12 +1549,12 @@ Note that behavior might be different depending on the platform.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Transient() bool {
+func (self Instance) Transient() bool { //gd:Window.transient
 	return bool(class(self).IsTransient())
 }
 
 // SetTransient sets the property returned by [IsTransient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransient(value bool) Instance {
+func (self Instance) SetTransient(value bool) Instance { //gd:Window.transient
 	class(self).SetTransient(value)
 	return self
 }
@@ -1565,12 +1565,12 @@ If true, and the [Window] is [Transient], this window will (at the time of becom
 [Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) TransientToFocused() bool {
+func (self Instance) TransientToFocused() bool { //gd:Window.transient_to_focused
 	return bool(class(self).IsTransientToFocused())
 }
 
 // SetTransientToFocused sets the property returned by [IsTransientToFocused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransientToFocused(value bool) Instance {
+func (self Instance) SetTransientToFocused(value bool) Instance { //gd:Window.transient_to_focused
 	class(self).SetTransientToFocused(value)
 	return self
 }
@@ -1583,12 +1583,12 @@ Needs [Transient] enabled to work.
 [Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Exclusive() bool {
+func (self Instance) Exclusive() bool { //gd:Window.exclusive
 	return bool(class(self).IsExclusive())
 }
 
 // SetExclusive sets the property returned by [IsExclusive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExclusive(value bool) Instance {
+func (self Instance) SetExclusive(value bool) Instance { //gd:Window.exclusive
 	class(self).SetExclusive(value)
 	return self
 }
@@ -1596,12 +1596,12 @@ func (self Instance) SetExclusive(value bool) Instance {
 /*
 If true, the window can't be resized.
 */
-func (self Instance) Unresizable() bool {
+func (self Instance) Unresizable() bool { //gd:Window.unresizable
 	return bool(class(self).GetFlag(0))
 }
 
 // SetUnresizable sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnresizable(value bool) Instance {
+func (self Instance) SetUnresizable(value bool) Instance { //gd:Window.unresizable
 	class(self).SetFlag(0, value)
 	return self
 }
@@ -1609,12 +1609,12 @@ func (self Instance) SetUnresizable(value bool) Instance {
 /*
 If true, the window will have no borders.
 */
-func (self Instance) Borderless() bool {
+func (self Instance) Borderless() bool { //gd:Window.borderless
 	return bool(class(self).GetFlag(1))
 }
 
 // SetBorderless sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderless(value bool) Instance {
+func (self Instance) SetBorderless(value bool) Instance { //gd:Window.borderless
 	class(self).SetFlag(1, value)
 	return self
 }
@@ -1624,12 +1624,12 @@ If true, the window will be on top of all other windows. Does not work if [Trans
 
 [Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
 */
-func (self Instance) AlwaysOnTop() bool {
+func (self Instance) AlwaysOnTop() bool { //gd:Window.always_on_top
 	return bool(class(self).GetFlag(2))
 }
 
 // SetAlwaysOnTop sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlwaysOnTop(value bool) Instance {
+func (self Instance) SetAlwaysOnTop(value bool) Instance { //gd:Window.always_on_top
 	class(self).SetFlag(2, value)
 	return self
 }
@@ -1644,12 +1644,12 @@ Note: This property has no effect if [ProjectSettings] "display/window/per_pixel
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Transparent() bool {
+func (self Instance) Transparent() bool { //gd:Window.transparent
 	return bool(class(self).GetFlag(3))
 }
 
 // SetTransparent sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransparent(value bool) Instance {
+func (self Instance) SetTransparent(value bool) Instance { //gd:Window.transparent
 	class(self).SetFlag(3, value)
 	return self
 }
@@ -1659,12 +1659,12 @@ If true, the [Window] can't be focused nor interacted with. It can still be visi
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Unfocusable() bool {
+func (self Instance) Unfocusable() bool { //gd:Window.unfocusable
 	return bool(class(self).GetFlag(4))
 }
 
 // SetUnfocusable sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnfocusable(value bool) Instance {
+func (self Instance) SetUnfocusable(value bool) Instance { //gd:Window.unfocusable
 	class(self).SetFlag(4, value)
 	return self
 }
@@ -1675,12 +1675,12 @@ If true, the [Window] will be considered a popup. Popups are sub-windows that do
 [Exclusive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Exclusive
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) PopupWindow() bool {
+func (self Instance) PopupWindow() bool { //gd:Window.popup_window
 	return bool(class(self).GetFlag(5))
 }
 
 // SetPopupWindow sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPopupWindow(value bool) Instance {
+func (self Instance) SetPopupWindow(value bool) Instance { //gd:Window.popup_window
 	class(self).SetFlag(5, value)
 	return self
 }
@@ -1694,12 +1694,12 @@ Note: This property only works with native windows.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ExtendToTitle() bool {
+func (self Instance) ExtendToTitle() bool { //gd:Window.extend_to_title
 	return bool(class(self).GetFlag(6))
 }
 
 // SetExtendToTitle sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExtendToTitle(value bool) Instance {
+func (self Instance) SetExtendToTitle(value bool) Instance { //gd:Window.extend_to_title
 	class(self).SetFlag(6, value)
 	return self
 }
@@ -1713,12 +1713,12 @@ Note: This property only works with native windows.
 
 [MousePassthroughPolygon]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MousePassthroughPolygon
 */
-func (self Instance) MousePassthrough() bool {
+func (self Instance) MousePassthrough() bool { //gd:Window.mouse_passthrough
 	return bool(class(self).GetFlag(7))
 }
 
 // SetMousePassthrough sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMousePassthrough(value bool) Instance {
+func (self Instance) SetMousePassthrough(value bool) Instance { //gd:Window.mouse_passthrough
 	class(self).SetFlag(7, value)
 	return self
 }
@@ -1732,12 +1732,12 @@ Note: This property only works with native windows.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) SharpCorners() bool {
+func (self Instance) SharpCorners() bool { //gd:Window.sharp_corners
 	return bool(class(self).GetFlag(8))
 }
 
 // SetSharpCorners sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSharpCorners(value bool) Instance {
+func (self Instance) SetSharpCorners(value bool) Instance { //gd:Window.sharp_corners
 	class(self).SetFlag(8, value)
 	return self
 }
@@ -1754,12 +1754,12 @@ Note: Enabling this setting will prevent standard screenshot methods from captur
 [DisplayServer.ScreenGetPixel]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetPixel
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ExcludeFromCapture() bool {
+func (self Instance) ExcludeFromCapture() bool { //gd:Window.exclude_from_capture
 	return bool(class(self).GetFlag(9))
 }
 
 // SetExcludeFromCapture sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeFromCapture(value bool) Instance {
+func (self Instance) SetExcludeFromCapture(value bool) Instance { //gd:Window.exclude_from_capture
 	class(self).SetFlag(9, value)
 	return self
 }
@@ -1769,12 +1769,12 @@ If true, the [Window] will signal to the window manager that it is supposed to b
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) PopupWmHint() bool {
+func (self Instance) PopupWmHint() bool { //gd:Window.popup_wm_hint
 	return bool(class(self).GetFlag(10))
 }
 
 // SetPopupWmHint sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPopupWmHint(value bool) Instance {
+func (self Instance) SetPopupWmHint(value bool) Instance { //gd:Window.popup_wm_hint
 	class(self).SetFlag(10, value)
 	return self
 }
@@ -1788,12 +1788,12 @@ Note: This property is implemented only on macOS and Windows.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) MinimizeDisabled() bool {
+func (self Instance) MinimizeDisabled() bool { //gd:Window.minimize_disabled
 	return bool(class(self).GetFlag(11))
 }
 
 // SetMinimizeDisabled sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimizeDisabled(value bool) Instance {
+func (self Instance) SetMinimizeDisabled(value bool) Instance { //gd:Window.minimize_disabled
 	class(self).SetFlag(11, value)
 	return self
 }
@@ -1807,12 +1807,12 @@ Note: This property is implemented only on macOS and Windows.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) MaximizeDisabled() bool {
+func (self Instance) MaximizeDisabled() bool { //gd:Window.maximize_disabled
 	return bool(class(self).GetFlag(12))
 }
 
 // SetMaximizeDisabled sets the property returned by [GetFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaximizeDisabled(value bool) Instance {
+func (self Instance) SetMaximizeDisabled(value bool) Instance { //gd:Window.maximize_disabled
 	class(self).SetFlag(12, value)
 	return self
 }
@@ -1820,12 +1820,12 @@ func (self Instance) SetMaximizeDisabled(value bool) Instance {
 /*
 If true, native window will be used regardless of parent viewport and project settings.
 */
-func (self Instance) ForceNative() bool {
+func (self Instance) ForceNative() bool { //gd:Window.force_native
 	return bool(class(self).GetForceNative())
 }
 
 // SetForceNative sets the property returned by [GetForceNative]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetForceNative(value bool) Instance {
+func (self Instance) SetForceNative(value bool) Instance { //gd:Window.force_native
 	class(self).SetForceNative(value)
 	return self
 }
@@ -1839,12 +1839,12 @@ Note: This property will be ignored in favor of [GetContentsMinimumSize] if [Wra
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 [WrapControls]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.WrapControls
 */
-func (self Instance) MinSize() Vector2i.XY {
+func (self Instance) MinSize() Vector2i.XY { //gd:Window.min_size
 	return Vector2i.XY(class(self).GetMinSize())
 }
 
 // SetMinSize sets the property returned by [GetMinSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinSize(value Vector2i.XY) Instance {
+func (self Instance) SetMinSize(value Vector2i.XY) Instance { //gd:Window.min_size
 	class(self).SetMinSize(Vector2i.XY(value))
 	return self
 }
@@ -1857,12 +1857,12 @@ Note: This property will be ignored if the value is lower than [MinSize].
 [MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) MaxSize() Vector2i.XY {
+func (self Instance) MaxSize() Vector2i.XY { //gd:Window.max_size
 	return Vector2i.XY(class(self).GetMaxSize())
 }
 
 // SetMaxSize sets the property returned by [GetMaxSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSize(value Vector2i.XY) Instance {
+func (self Instance) SetMaxSize(value Vector2i.XY) Instance { //gd:Window.max_size
 	class(self).SetMaxSize(Vector2i.XY(value))
 	return self
 }
@@ -1872,12 +1872,12 @@ If true, the [Window] width is expanded to keep the title bar text fully visible
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) KeepTitleVisible() bool {
+func (self Instance) KeepTitleVisible() bool { //gd:Window.keep_title_visible
 	return bool(class(self).GetKeepTitleVisible())
 }
 
 // SetKeepTitleVisible sets the property returned by [GetKeepTitleVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepTitleVisible(value bool) Instance {
+func (self Instance) SetKeepTitleVisible(value bool) Instance { //gd:Window.keep_title_visible
 	class(self).SetKeepTitleVisible(value)
 	return self
 }
@@ -1887,12 +1887,12 @@ Base size of the content (i.e. nodes that are drawn inside the window). If non-z
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ContentScaleSize() Vector2i.XY {
+func (self Instance) ContentScaleSize() Vector2i.XY { //gd:Window.content_scale_size
 	return Vector2i.XY(class(self).GetContentScaleSize())
 }
 
 // SetContentScaleSize sets the property returned by [GetContentScaleSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentScaleSize(value Vector2i.XY) Instance {
+func (self Instance) SetContentScaleSize(value Vector2i.XY) Instance { //gd:Window.content_scale_size
 	class(self).SetContentScaleSize(Vector2i.XY(value))
 	return self
 }
@@ -1902,12 +1902,12 @@ Specifies how the content is scaled when the [Window] is resized.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ContentScaleMode() ContentScaleMode {
+func (self Instance) ContentScaleMode() ContentScaleMode { //gd:Window.content_scale_mode
 	return ContentScaleMode(class(self).GetContentScaleMode())
 }
 
 // SetContentScaleMode sets the property returned by [GetContentScaleMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentScaleMode(value ContentScaleMode) Instance {
+func (self Instance) SetContentScaleMode(value ContentScaleMode) Instance { //gd:Window.content_scale_mode
 	class(self).SetContentScaleMode(value)
 	return self
 }
@@ -1918,12 +1918,12 @@ Specifies how the content's aspect behaves when the [Window] is resized. The bas
 [ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ContentScaleAspect() ContentScaleAspect {
+func (self Instance) ContentScaleAspect() ContentScaleAspect { //gd:Window.content_scale_aspect
 	return ContentScaleAspect(class(self).GetContentScaleAspect())
 }
 
 // SetContentScaleAspect sets the property returned by [GetContentScaleAspect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentScaleAspect(value ContentScaleAspect) Instance {
+func (self Instance) SetContentScaleAspect(value ContentScaleAspect) Instance { //gd:Window.content_scale_aspect
 	class(self).SetContentScaleAspect(value)
 	return self
 }
@@ -1934,12 +1934,12 @@ The policy to use to determine the final scale factor for 2D elements. This affe
 [ContentScaleFactor]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleFactor
 [ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
 */
-func (self Instance) ContentScaleStretch() ContentScaleStretch {
+func (self Instance) ContentScaleStretch() ContentScaleStretch { //gd:Window.content_scale_stretch
 	return ContentScaleStretch(class(self).GetContentScaleStretch())
 }
 
 // SetContentScaleStretch sets the property returned by [GetContentScaleStretch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentScaleStretch(value ContentScaleStretch) Instance {
+func (self Instance) SetContentScaleStretch(value ContentScaleStretch) Instance { //gd:Window.content_scale_stretch
 	class(self).SetContentScaleStretch(value)
 	return self
 }
@@ -1952,12 +1952,12 @@ Specifies the base scale of [Window]'s content when its [Size] is equal to [Cont
 [Viewport.GetStretchTransform]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetStretchTransform
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ContentScaleFactor() Float.X {
+func (self Instance) ContentScaleFactor() Float.X { //gd:Window.content_scale_factor
 	return Float.X(Float.X(class(self).GetContentScaleFactor()))
 }
 
 // SetContentScaleFactor sets the property returned by [GetContentScaleFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentScaleFactor(value Float.X) Instance {
+func (self Instance) SetContentScaleFactor(value Float.X) Instance { //gd:Window.content_scale_factor
 	class(self).SetContentScaleFactor(float64(value))
 	return self
 }
@@ -1965,12 +1965,12 @@ func (self Instance) SetContentScaleFactor(value Float.X) Instance {
 /*
 Toggles if any text should automatically change to its translated version depending on the current locale.
 */
-func (self Instance) AutoTranslate() bool {
+func (self Instance) AutoTranslate() bool { //gd:Window.auto_translate
 	return bool(class(self).IsAutoTranslating())
 }
 
 // SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTranslate(value bool) Instance {
+func (self Instance) SetAutoTranslate(value bool) Instance { //gd:Window.auto_translate
 	class(self).SetAutoTranslate(value)
 	return self
 }
@@ -1978,12 +1978,12 @@ func (self Instance) SetAutoTranslate(value bool) Instance {
 /*
 The human-readable node name that is reported to assistive apps.
 */
-func (self Instance) AccessibilityName() string {
+func (self Instance) AccessibilityName() string { //gd:Window.accessibility_name
 	return string(class(self).GetAccessibilityName().String())
 }
 
 // SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityName(value string) Instance {
+func (self Instance) SetAccessibilityName(value string) Instance { //gd:Window.accessibility_name
 	class(self).SetAccessibilityName(String.New(value))
 	return self
 }
@@ -1991,12 +1991,12 @@ func (self Instance) SetAccessibilityName(value string) Instance {
 /*
 The human-readable node description that is reported to assistive apps.
 */
-func (self Instance) AccessibilityDescription() string {
+func (self Instance) AccessibilityDescription() string { //gd:Window.accessibility_description
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
 // SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityDescription(value string) Instance {
+func (self Instance) SetAccessibilityDescription(value string) Instance { //gd:Window.accessibility_description
 	class(self).SetAccessibilityDescription(String.New(value))
 	return self
 }
@@ -2010,12 +2010,12 @@ Note: [Window] styles will have no effect unless the window is embedded.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Theme() Theme.Instance {
+func (self Instance) Theme() Theme.Instance { //gd:Window.theme
 	return Theme.Instance(class(self).GetTheme())
 }
 
 // SetTheme sets the property returned by [GetTheme]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTheme(value Theme.Instance) Instance {
+func (self Instance) SetTheme(value Theme.Instance) Instance { //gd:Window.theme
 	class(self).SetTheme(value)
 	return self
 }
@@ -2026,12 +2026,12 @@ The name of a theme type variation used by this [Window] to look up its own them
 [Control.ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) ThemeTypeVariation() string {
+func (self Instance) ThemeTypeVariation() string { //gd:Window.theme_type_variation
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
 // SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThemeTypeVariation(value string) Instance {
+func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Window.theme_type_variation
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 	return self
 }

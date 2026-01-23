@@ -250,12 +250,12 @@ func New() Instance {
 /*
 Specifies when the timer is updated during the main loop.
 */
-func (self Instance) ProcessCallback() TimerProcessCallback {
+func (self Instance) ProcessCallback() TimerProcessCallback { //gd:Timer.process_callback
 	return TimerProcessCallback(class(self).GetTimerProcessCallback())
 }
 
 // SetProcessCallback sets the property returned by [GetTimerProcessCallback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessCallback(value TimerProcessCallback) Instance {
+func (self Instance) SetProcessCallback(value TimerProcessCallback) Instance { //gd:Timer.process_callback
 	class(self).SetTimerProcessCallback(value)
 	return self
 }
@@ -270,12 +270,12 @@ Note: Timers can only process once per physics or process frame (depending on th
 [Start]: https://pkg.go.dev/graphics.gd/classdb/Timer#Instance.Start
 [Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
 */
-func (self Instance) WaitTime() Float.X {
+func (self Instance) WaitTime() Float.X { //gd:Timer.wait_time
 	return Float.X(Float.X(class(self).GetWaitTime()))
 }
 
 // SetWaitTime sets the property returned by [GetWaitTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWaitTime(value Float.X) Instance {
+func (self Instance) SetWaitTime(value Float.X) Instance { //gd:Timer.wait_time
 	class(self).SetWaitTime(float64(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetWaitTime(value Float.X) Instance {
 /*
 If true, the timer will stop after reaching the end. Otherwise, as by default, the timer will automatically restart.
 */
-func (self Instance) OneShot() bool {
+func (self Instance) OneShot() bool { //gd:Timer.one_shot
 	return bool(class(self).IsOneShot())
 }
 
 // SetOneShot sets the property returned by [IsOneShot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneShot(value bool) Instance {
+func (self Instance) SetOneShot(value bool) Instance { //gd:Timer.one_shot
 	class(self).SetOneShot(value)
 	return self
 }
@@ -300,12 +300,12 @@ Note: After the timer enters the tree, this property is automatically set to fal
 
 Note: This property does nothing when the timer is running in the editor.
 */
-func (self Instance) Autostart() bool {
+func (self Instance) Autostart() bool { //gd:Timer.autostart
 	return bool(class(self).HasAutostart())
 }
 
 // SetAutostart sets the property returned by [HasAutostart]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutostart(value bool) Instance {
+func (self Instance) SetAutostart(value bool) Instance { //gd:Timer.autostart
 	class(self).SetAutostart(value)
 	return self
 }
@@ -316,12 +316,12 @@ If true, the timer is paused. A paused timer does not process until this propert
 [Start]: https://pkg.go.dev/graphics.gd/classdb/Timer#Instance.Start
 [Stop]: https://pkg.go.dev/graphics.gd/classdb/Timer#Instance.Stop
 */
-func (self Instance) Paused() bool {
+func (self Instance) Paused() bool { //gd:Timer.paused
 	return bool(class(self).IsPaused())
 }
 
 // SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPaused(value bool) Instance {
+func (self Instance) SetPaused(value bool) Instance { //gd:Timer.paused
 	class(self).SetPaused(value)
 	return self
 }
@@ -331,12 +331,12 @@ If true, the timer will ignore [Engine.TimeScale] and update with the real, elap
 
 [Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
 */
-func (self Instance) IgnoreTimeScale() bool {
+func (self Instance) IgnoreTimeScale() bool { //gd:Timer.ignore_time_scale
 	return bool(class(self).IsIgnoringTimeScale())
 }
 
 // SetIgnoreTimeScale sets the property returned by [IsIgnoringTimeScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreTimeScale(value bool) Instance {
+func (self Instance) SetIgnoreTimeScale(value bool) Instance { //gd:Timer.ignore_time_scale
 	class(self).SetIgnoreTimeScale(value)
 	return self
 }
@@ -348,7 +348,7 @@ Note: This property is read-only and cannot be modified. It is based on [WaitTim
 
 [WaitTime]: https://pkg.go.dev/graphics.gd/classdb/Timer#Instance.WaitTime
 */
-func (self Instance) TimeLeft() Float.X {
+func (self Instance) TimeLeft() Float.X { //gd:Timer.time_left
 	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 

@@ -174,12 +174,12 @@ func New() Instance {
 /*
 Time between the original signal and the early reflections of the reverb signal, in milliseconds.
 */
-func (self Instance) PredelayMsec() Float.X {
+func (self Instance) PredelayMsec() Float.X { //gd:AudioEffectReverb.predelay_msec
 	return Float.X(Float.X(class(self).GetPredelayMsec()))
 }
 
 // SetPredelayMsec sets the property returned by [GetPredelayMsec]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPredelayMsec(value Float.X) Instance {
+func (self Instance) SetPredelayMsec(value Float.X) Instance { //gd:AudioEffectReverb.predelay_msec
 	class(self).SetPredelayMsec(float64(value))
 	return self
 }
@@ -187,12 +187,12 @@ func (self Instance) SetPredelayMsec(value Float.X) Instance {
 /*
 Output percent of predelay. Value can range from 0 to 1.
 */
-func (self Instance) PredelayFeedback() Float.X {
+func (self Instance) PredelayFeedback() Float.X { //gd:AudioEffectReverb.predelay_feedback
 	return Float.X(Float.X(class(self).GetPredelayFeedback()))
 }
 
 // SetPredelayFeedback sets the property returned by [GetPredelayFeedback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPredelayFeedback(value Float.X) Instance {
+func (self Instance) SetPredelayFeedback(value Float.X) Instance { //gd:AudioEffectReverb.predelay_feedback
 	class(self).SetPredelayFeedback(float64(value))
 	return self
 }
@@ -200,12 +200,12 @@ func (self Instance) SetPredelayFeedback(value Float.X) Instance {
 /*
 Dimensions of simulated room. Bigger means more echoes. Value can range from 0 to 1.
 */
-func (self Instance) RoomSize() Float.X {
+func (self Instance) RoomSize() Float.X { //gd:AudioEffectReverb.room_size
 	return Float.X(Float.X(class(self).GetRoomSize()))
 }
 
 // SetRoomSize sets the property returned by [GetRoomSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRoomSize(value Float.X) Instance {
+func (self Instance) SetRoomSize(value Float.X) Instance { //gd:AudioEffectReverb.room_size
 	class(self).SetRoomSize(float64(value))
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetRoomSize(value Float.X) Instance {
 /*
 Defines how reflective the imaginary room's walls are. Value can range from 0 to 1.
 */
-func (self Instance) Damping() Float.X {
+func (self Instance) Damping() Float.X { //gd:AudioEffectReverb.damping
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
 // SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDamping(value Float.X) Instance {
+func (self Instance) SetDamping(value Float.X) Instance { //gd:AudioEffectReverb.damping
 	class(self).SetDamping(float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetDamping(value Float.X) Instance {
 /*
 Widens or narrows the stereo image of the reverb tail. 1 means fully widens. Value can range from 0 to 1.
 */
-func (self Instance) Spread() Float.X {
+func (self Instance) Spread() Float.X { //gd:AudioEffectReverb.spread
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
 // SetSpread sets the property returned by [GetSpread]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpread(value Float.X) Instance {
+func (self Instance) SetSpread(value Float.X) Instance { //gd:AudioEffectReverb.spread
 	class(self).SetSpread(float64(value))
 	return self
 }
@@ -239,12 +239,12 @@ func (self Instance) SetSpread(value Float.X) Instance {
 /*
 High-pass filter passes signals with a frequency higher than a certain cutoff frequency and attenuates signals with frequencies lower than the cutoff frequency. Value can range from 0 to 1.
 */
-func (self Instance) Hipass() Float.X {
+func (self Instance) Hipass() Float.X { //gd:AudioEffectReverb.hipass
 	return Float.X(Float.X(class(self).GetHpf()))
 }
 
 // SetHipass sets the property returned by [GetHpf]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHipass(value Float.X) Instance {
+func (self Instance) SetHipass(value Float.X) Instance { //gd:AudioEffectReverb.hipass
 	class(self).SetHpf(float64(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetHipass(value Float.X) Instance {
 /*
 Output percent of original sound. At 0, only modified sound is outputted. Value can range from 0 to 1.
 */
-func (self Instance) Dry() Float.X {
+func (self Instance) Dry() Float.X { //gd:AudioEffectReverb.dry
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
 // SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDry(value Float.X) Instance {
+func (self Instance) SetDry(value Float.X) Instance { //gd:AudioEffectReverb.dry
 	class(self).SetDry(float64(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetDry(value Float.X) Instance {
 /*
 Output percent of modified sound. At 0, only original sound is outputted. Value can range from 0 to 1.
 */
-func (self Instance) Wet() Float.X {
+func (self Instance) Wet() Float.X { //gd:AudioEffectReverb.wet
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
 // SetWet sets the property returned by [GetWet]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWet(value Float.X) Instance {
+func (self Instance) SetWet(value Float.X) Instance { //gd:AudioEffectReverb.wet
 	class(self).SetWet(float64(value))
 	return self
 }

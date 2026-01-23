@@ -168,12 +168,12 @@ func New() Instance {
 /*
 Panning amount since last pan event.
 */
-func (self Instance) Delta() Vector2.XY {
+func (self Instance) Delta() Vector2.XY { //gd:InputEventPanGesture.delta
 	return Vector2.XY(class(self).GetDelta())
 }
 
 // SetDelta sets the property returned by [GetDelta]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDelta(value Vector2.XY) Instance {
+func (self Instance) SetDelta(value Vector2.XY) Instance { //gd:InputEventPanGesture.delta
 	class(self).SetDelta(Vector2.XY(value))
 	return self
 }

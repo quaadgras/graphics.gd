@@ -217,12 +217,12 @@ The collision SDF's size in 3D units. To improve SDF quality, the [Size] should 
 
 [Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Size
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:GPUParticlesCollisionSDF3D.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -233,12 +233,12 @@ The bake resolution to use for the signed distance field [Texture]. The texture 
 [Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Resolution
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Texture
 */
-func (self Instance) Resolution() Resolution {
+func (self Instance) Resolution() Resolution { //gd:GPUParticlesCollisionSDF3D.resolution
 	return Resolution(class(self).GetResolution())
 }
 
 // SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResolution(value Resolution) Instance {
+func (self Instance) SetResolution(value Resolution) Instance { //gd:GPUParticlesCollisionSDF3D.resolution
 	class(self).SetResolution(value)
 	return self
 }
@@ -249,12 +249,12 @@ The collision shape's thickness. Unlike other particle colliders, [GPUParticlesC
 [GPUParticlesCollisionSDF3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D
 [Thickness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Thickness
 */
-func (self Instance) Thickness() Float.X {
+func (self Instance) Thickness() Float.X { //gd:GPUParticlesCollisionSDF3D.thickness
 	return Float.X(Float.X(class(self).GetThickness()))
 }
 
 // SetThickness sets the property returned by [GetThickness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThickness(value Float.X) Instance {
+func (self Instance) SetThickness(value Float.X) Instance { //gd:GPUParticlesCollisionSDF3D.thickness
 	class(self).SetThickness(float64(value))
 	return self
 }
@@ -266,12 +266,12 @@ The visual layers to account for when baking the particle collision SDF. Only [M
 [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) BakeMask() int {
+func (self Instance) BakeMask() int { //gd:GPUParticlesCollisionSDF3D.bake_mask
 	return int(int(class(self).GetBakeMask()))
 }
 
 // SetBakeMask sets the property returned by [GetBakeMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeMask(value int) Instance {
+func (self Instance) SetBakeMask(value int) Instance { //gd:GPUParticlesCollisionSDF3D.bake_mask
 	class(self).SetBakeMask(int64(value))
 	return self
 }
@@ -279,12 +279,12 @@ func (self Instance) SetBakeMask(value int) Instance {
 /*
 The 3D texture representing the signed distance field.
 */
-func (self Instance) Texture() Texture3D.Instance {
+func (self Instance) Texture() Texture3D.Instance { //gd:GPUParticlesCollisionSDF3D.texture
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture3D.Instance) Instance {
+func (self Instance) SetTexture(value Texture3D.Instance) Instance { //gd:GPUParticlesCollisionSDF3D.texture
 	class(self).SetTexture(value)
 	return self
 }

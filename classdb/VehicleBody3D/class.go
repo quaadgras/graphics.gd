@@ -188,12 +188,12 @@ A negative value will result in the vehicle reversing.
 [RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
 [VehicleWheel3D.UseAsTraction]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.UseAsTraction
 */
-func (self Instance) EngineForce() Float.X {
+func (self Instance) EngineForce() Float.X { //gd:VehicleBody3D.engine_force
 	return Float.X(Float.X(class(self).GetEngineForce()))
 }
 
 // SetEngineForce sets the property returned by [GetEngineForce]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEngineForce(value Float.X) Instance {
+func (self Instance) SetEngineForce(value Float.X) Instance { //gd:VehicleBody3D.engine_force
 	class(self).SetEngineForce(float64(value))
 	return self
 }
@@ -203,12 +203,12 @@ Slows down the vehicle by applying a braking force. The vehicle is only slowed d
 
 [RigidBody3D.Mass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.Mass
 */
-func (self Instance) Brake() Float.X {
+func (self Instance) Brake() Float.X { //gd:VehicleBody3D.brake
 	return Float.X(Float.X(class(self).GetBrake()))
 }
 
 // SetBrake sets the property returned by [GetBrake]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBrake(value Float.X) Instance {
+func (self Instance) SetBrake(value Float.X) Instance { //gd:VehicleBody3D.brake
 	class(self).SetBrake(float64(value))
 	return self
 }
@@ -220,12 +220,12 @@ Note: This property is edited in the inspector in degrees. In code the property 
 
 [VehicleWheel3D.UseAsSteering]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D#Instance.UseAsSteering
 */
-func (self Instance) Steering() Float.X {
+func (self Instance) Steering() Float.X { //gd:VehicleBody3D.steering
 	return Float.X(Float.X(class(self).GetSteering()))
 }
 
 // SetSteering sets the property returned by [GetSteering]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSteering(value Float.X) Instance {
+func (self Instance) SetSteering(value Float.X) Instance { //gd:VehicleBody3D.steering
 	class(self).SetSteering(float64(value))
 	return self
 }

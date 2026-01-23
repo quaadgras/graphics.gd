@@ -219,12 +219,12 @@ func New() Instance {
 /*
 The number of voices in the effect.
 */
-func (self Instance) VoiceCount() int {
+func (self Instance) VoiceCount() int { //gd:AudioEffectChorus.voice_count
 	return int(int(class(self).GetVoiceCount()))
 }
 
 // SetVoiceCount sets the property returned by [GetVoiceCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVoiceCount(value int) Instance {
+func (self Instance) SetVoiceCount(value int) Instance { //gd:AudioEffectChorus.voice_count
 	class(self).SetVoiceCount(int64(value))
 	return self
 }
@@ -232,12 +232,12 @@ func (self Instance) SetVoiceCount(value int) Instance {
 /*
 The effect's raw signal.
 */
-func (self Instance) Dry() Float.X {
+func (self Instance) Dry() Float.X { //gd:AudioEffectChorus.dry
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
 // SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDry(value Float.X) Instance {
+func (self Instance) SetDry(value Float.X) Instance { //gd:AudioEffectChorus.dry
 	class(self).SetDry(float64(value))
 	return self
 }
@@ -245,12 +245,12 @@ func (self Instance) SetDry(value Float.X) Instance {
 /*
 The effect's processed signal.
 */
-func (self Instance) Wet() Float.X {
+func (self Instance) Wet() Float.X { //gd:AudioEffectChorus.wet
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
 // SetWet sets the property returned by [GetWet]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWet(value Float.X) Instance {
+func (self Instance) SetWet(value Float.X) Instance { //gd:AudioEffectChorus.wet
 	class(self).SetWet(float64(value))
 	return self
 }

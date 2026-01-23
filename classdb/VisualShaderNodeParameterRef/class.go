@@ -162,12 +162,12 @@ func New() Instance {
 /*
 The name of the parameter which this reference points to.
 */
-func (self Instance) ParameterName() string {
+func (self Instance) ParameterName() string { //gd:VisualShaderNodeParameterRef.parameter_name
 	return string(class(self).GetParameterName().String())
 }
 
 // SetParameterName sets the property returned by [GetParameterName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParameterName(value string) Instance {
+func (self Instance) SetParameterName(value string) Instance { //gd:VisualShaderNodeParameterRef.parameter_name
 	class(self).SetParameterName(String.New(value))
 	return self
 }

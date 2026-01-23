@@ -255,12 +255,12 @@ The number of [PhysicalBone2D] nodes linked in this modification.
 
 [PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
 */
-func (self Instance) PhysicalBoneChainLength() int {
+func (self Instance) PhysicalBoneChainLength() int { //gd:SkeletonModification2DPhysicalBones.physical_bone_chain_length
 	return int(int(class(self).GetPhysicalBoneChainLength()))
 }
 
 // SetPhysicalBoneChainLength sets the property returned by [GetPhysicalBoneChainLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicalBoneChainLength(value int) Instance {
+func (self Instance) SetPhysicalBoneChainLength(value int) Instance { //gd:SkeletonModification2DPhysicalBones.physical_bone_chain_length
 	class(self).SetPhysicalBoneChainLength(int64(value))
 	return self
 }

@@ -170,12 +170,12 @@ func New() Instance {
 /*
 Distortion type.
 */
-func (self Instance) Mode() Mode {
+func (self Instance) Mode() Mode { //gd:AudioEffectDistortion.mode
 	return Mode(class(self).GetMode())
 }
 
 // SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode(value Mode) Instance {
+func (self Instance) SetMode(value Mode) Instance { //gd:AudioEffectDistortion.mode
 	class(self).SetMode(value)
 	return self
 }
@@ -183,12 +183,12 @@ func (self Instance) SetMode(value Mode) Instance {
 /*
 Increases or decreases the volume before the effect, in decibels. Value can range from -60 to 60.
 */
-func (self Instance) PreGain() Float.X {
+func (self Instance) PreGain() Float.X { //gd:AudioEffectDistortion.pre_gain
 	return Float.X(Float.X(class(self).GetPreGain()))
 }
 
 // SetPreGain sets the property returned by [GetPreGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreGain(value Float.X) Instance {
+func (self Instance) SetPreGain(value Float.X) Instance { //gd:AudioEffectDistortion.pre_gain
 	class(self).SetPreGain(float64(value))
 	return self
 }
@@ -196,12 +196,12 @@ func (self Instance) SetPreGain(value Float.X) Instance {
 /*
 High-pass filter, in Hz. Frequencies higher than this value will not be affected by the distortion. Value can range from 1 to 20000.
 */
-func (self Instance) KeepHfHz() Float.X {
+func (self Instance) KeepHfHz() Float.X { //gd:AudioEffectDistortion.keep_hf_hz
 	return Float.X(Float.X(class(self).GetKeepHfHz()))
 }
 
 // SetKeepHfHz sets the property returned by [GetKeepHfHz]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepHfHz(value Float.X) Instance {
+func (self Instance) SetKeepHfHz(value Float.X) Instance { //gd:AudioEffectDistortion.keep_hf_hz
 	class(self).SetKeepHfHz(float64(value))
 	return self
 }
@@ -209,12 +209,12 @@ func (self Instance) SetKeepHfHz(value Float.X) Instance {
 /*
 Distortion power. Value can range from 0 to 1.
 */
-func (self Instance) Drive() Float.X {
+func (self Instance) Drive() Float.X { //gd:AudioEffectDistortion.drive
 	return Float.X(Float.X(class(self).GetDrive()))
 }
 
 // SetDrive sets the property returned by [GetDrive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrive(value Float.X) Instance {
+func (self Instance) SetDrive(value Float.X) Instance { //gd:AudioEffectDistortion.drive
 	class(self).SetDrive(float64(value))
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetDrive(value Float.X) Instance {
 /*
 Increases or decreases the volume after the effect, in decibels. Value can range from -80 to 24.
 */
-func (self Instance) PostGain() Float.X {
+func (self Instance) PostGain() Float.X { //gd:AudioEffectDistortion.post_gain
 	return Float.X(Float.X(class(self).GetPostGain()))
 }
 
 // SetPostGain sets the property returned by [GetPostGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPostGain(value Float.X) Instance {
+func (self Instance) SetPostGain(value Float.X) Instance { //gd:AudioEffectDistortion.post_gain
 	class(self).SetPostGain(float64(value))
 	return self
 }

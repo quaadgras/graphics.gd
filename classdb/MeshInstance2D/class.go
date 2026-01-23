@@ -171,12 +171,12 @@ The [Mesh] that will be drawn by the [MeshInstance2D].
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 [MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:MeshInstance2D.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:MeshInstance2D.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -187,12 +187,12 @@ The [Texture2D] that will be used if using the default [CanvasItemMaterial]. Can
 [CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:MeshInstance2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:MeshInstance2D.texture
 	class(self).SetTexture(value)
 	return self
 }

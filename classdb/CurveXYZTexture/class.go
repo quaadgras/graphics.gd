@@ -175,7 +175,7 @@ func New() Instance {
 The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:CurveXYZTexture.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -185,12 +185,12 @@ The [Curve] that is rendered onto the texture's red channel. Should be a unit [C
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) CurveX() Curve.Instance {
+func (self Instance) CurveX() Curve.Instance { //gd:CurveXYZTexture.curve_x
 	return Curve.Instance(class(self).GetCurveX())
 }
 
 // SetCurveX sets the property returned by [GetCurveX]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurveX(value Curve.Instance) Instance {
+func (self Instance) SetCurveX(value Curve.Instance) Instance { //gd:CurveXYZTexture.curve_x
 	class(self).SetCurveX(value)
 	return self
 }
@@ -200,12 +200,12 @@ The [Curve] that is rendered onto the texture's green channel. Should be a unit 
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) CurveY() Curve.Instance {
+func (self Instance) CurveY() Curve.Instance { //gd:CurveXYZTexture.curve_y
 	return Curve.Instance(class(self).GetCurveY())
 }
 
 // SetCurveY sets the property returned by [GetCurveY]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurveY(value Curve.Instance) Instance {
+func (self Instance) SetCurveY(value Curve.Instance) Instance { //gd:CurveXYZTexture.curve_y
 	class(self).SetCurveY(value)
 	return self
 }
@@ -215,12 +215,12 @@ The [Curve] that is rendered onto the texture's blue channel. Should be a unit [
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) CurveZ() Curve.Instance {
+func (self Instance) CurveZ() Curve.Instance { //gd:CurveXYZTexture.curve_z
 	return Curve.Instance(class(self).GetCurveZ())
 }
 
 // SetCurveZ sets the property returned by [GetCurveZ]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurveZ(value Curve.Instance) Instance {
+func (self Instance) SetCurveZ(value Curve.Instance) Instance { //gd:CurveXYZTexture.curve_z
 	class(self).SetCurveZ(value)
 	return self
 }

@@ -162,12 +162,12 @@ func New() Instance {
 /*
 The source texture.
 */
-func (self Instance) Texture() CurveXYZTexture.Instance {
+func (self Instance) Texture() CurveXYZTexture.Instance { //gd:VisualShaderNodeCurveXYZTexture.texture
 	return CurveXYZTexture.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value CurveXYZTexture.Instance) Instance {
+func (self Instance) SetTexture(value CurveXYZTexture.Instance) Instance { //gd:VisualShaderNodeCurveXYZTexture.texture
 	class(self).SetTexture(value)
 	return self
 }

@@ -176,12 +176,12 @@ Path to an [AnimationMixer] node to use as a basis for root motion.
 
 [AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
 */
-func (self Instance) AnimationPath() string {
+func (self Instance) AnimationPath() string { //gd:RootMotionView.animation_path
 	return string(class(self).GetAnimationPath().String())
 }
 
 // SetAnimationPath sets the property returned by [GetAnimationPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimationPath(value string) Instance {
+func (self Instance) SetAnimationPath(value string) Instance { //gd:RootMotionView.animation_path
 	class(self).SetAnimationPath(Path.ToNode(String.New(value)))
 	return self
 }
@@ -189,12 +189,12 @@ func (self Instance) SetAnimationPath(value string) Instance {
 /*
 The grid's color.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:RootMotionView.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:RootMotionView.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -202,12 +202,12 @@ func (self Instance) SetColor(value Color.RGBA) Instance {
 /*
 The grid's cell size in 3D units.
 */
-func (self Instance) CellSize() Float.X {
+func (self Instance) CellSize() Float.X { //gd:RootMotionView.cell_size
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
 // SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellSize(value Float.X) Instance {
+func (self Instance) SetCellSize(value Float.X) Instance { //gd:RootMotionView.cell_size
 	class(self).SetCellSize(float64(value))
 	return self
 }
@@ -217,12 +217,12 @@ The grid's radius in 3D units. The grid's opacity will fade gradually as the dis
 
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView#Instance.Radius
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:RootMotionView.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:RootMotionView.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -230,12 +230,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 If true, the grid's points will all be on the same Y coordinate (local Y = 0). If false, the points' original Y coordinate is preserved.
 */
-func (self Instance) ZeroY() bool {
+func (self Instance) ZeroY() bool { //gd:RootMotionView.zero_y
 	return bool(class(self).GetZeroY())
 }
 
 // SetZeroY sets the property returned by [GetZeroY]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZeroY(value bool) Instance {
+func (self Instance) SetZeroY(value bool) Instance { //gd:RootMotionView.zero_y
 	class(self).SetZeroY(value)
 	return self
 }

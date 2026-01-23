@@ -168,12 +168,12 @@ func New() Instance {
 /*
 The mouse button mask identifier, one of or a bitwise combination of the [MouseButton] button masks.
 */
-func (self Instance) ButtonMask() Input.MouseButtonMask {
+func (self Instance) ButtonMask() Input.MouseButtonMask { //gd:InputEventMouse.button_mask
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
 // SetButtonMask sets the property returned by [GetButtonMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance {
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance { //gd:InputEventMouse.button_mask
 	class(self).SetButtonMask(value)
 	return self
 }
@@ -190,12 +190,12 @@ When received in [Control.GuiInput], returns the mouse's position in the [Contro
 [Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:InputEventMouse.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2.XY) Instance {
+func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:InputEventMouse.position
 	class(self).SetPosition(Vector2.XY(value))
 	return self
 }
@@ -212,12 +212,12 @@ When received in [Control.GuiInput], returns the mouse's position in the [Canvas
 [Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) GlobalPosition() Vector2.XY {
+func (self Instance) GlobalPosition() Vector2.XY { //gd:InputEventMouse.global_position
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
 // SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalPosition(value Vector2.XY) Instance {
+func (self Instance) SetGlobalPosition(value Vector2.XY) Instance { //gd:InputEventMouse.global_position
 	class(self).SetGlobalPosition(Vector2.XY(value))
 	return self
 }

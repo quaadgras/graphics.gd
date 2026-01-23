@@ -192,12 +192,12 @@ func New() Instance {
 /*
 The name of the attached bone.
 */
-func (self Instance) BoneName() string {
+func (self Instance) BoneName() string { //gd:BoneAttachment3D.bone_name
 	return string(class(self).GetBoneName().String())
 }
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneName(value string) Instance {
+func (self Instance) SetBoneName(value string) Instance { //gd:BoneAttachment3D.bone_name
 	class(self).SetBoneName(String.New(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetBoneName(value string) Instance {
 /*
 The index of the attached bone.
 */
-func (self Instance) BoneIdx() int {
+func (self Instance) BoneIdx() int { //gd:BoneAttachment3D.bone_idx
 	return int(int(class(self).GetBoneIdx()))
 }
 
 // SetBoneIdx sets the property returned by [GetBoneIdx]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneIdx(value int) Instance {
+func (self Instance) SetBoneIdx(value int) Instance { //gd:BoneAttachment3D.bone_idx
 	class(self).SetBoneIdx(int64(value))
 	return self
 }
@@ -223,12 +223,12 @@ Note: This override performs interruptively in the skeleton update process using
 [BoneAttachment3D]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) OverridePose() bool {
+func (self Instance) OverridePose() bool { //gd:BoneAttachment3D.override_pose
 	return bool(class(self).GetOverridePose())
 }
 
 // SetOverridePose sets the property returned by [GetOverridePose]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOverridePose(value bool) Instance {
+func (self Instance) SetOverridePose(value bool) Instance { //gd:BoneAttachment3D.override_pose
 	class(self).SetOverridePose(value)
 	return self
 }
@@ -240,12 +240,12 @@ Whether the [BoneAttachment3D] node will use an external [Skeleton3D] node rathe
 [ExternalSkeleton]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D#Instance.ExternalSkeleton
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) UseExternalSkeleton() bool {
+func (self Instance) UseExternalSkeleton() bool { //gd:BoneAttachment3D.use_external_skeleton
 	return bool(class(self).GetUseExternalSkeleton())
 }
 
 // SetUseExternalSkeleton sets the property returned by [GetUseExternalSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseExternalSkeleton(value bool) Instance {
+func (self Instance) SetUseExternalSkeleton(value bool) Instance { //gd:BoneAttachment3D.use_external_skeleton
 	class(self).SetUseExternalSkeleton(value)
 	return self
 }
@@ -255,12 +255,12 @@ The node path to the external [Skeleton3D] node.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) ExternalSkeleton() string {
+func (self Instance) ExternalSkeleton() string { //gd:BoneAttachment3D.external_skeleton
 	return string(class(self).GetExternalSkeleton().String())
 }
 
 // SetExternalSkeleton sets the property returned by [GetExternalSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExternalSkeleton(value string) Instance {
+func (self Instance) SetExternalSkeleton(value string) Instance { //gd:BoneAttachment3D.external_skeleton
 	class(self).SetExternalSkeleton(Path.ToNode(String.New(value)))
 	return self
 }

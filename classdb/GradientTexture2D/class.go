@@ -188,12 +188,12 @@ The [Gradient] used to fill the texture.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) Gradient() Gradient.Instance {
+func (self Instance) Gradient() Gradient.Instance { //gd:GradientTexture2D.gradient
 	return Gradient.Instance(class(self).GetGradient())
 }
 
 // SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGradient(value Gradient.Instance) Instance {
+func (self Instance) SetGradient(value Gradient.Instance) Instance { //gd:GradientTexture2D.gradient
 	class(self).SetGradient(value)
 	return self
 }
@@ -204,7 +204,7 @@ The number of horizontal color samples that will be obtained from the [Gradient]
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:GradientTexture2D.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -215,7 +215,7 @@ The number of vertical color samples that will be obtained from the [Gradient], 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetHeight(value int) Instance {
+func (self Instance) SetHeight(value int) Instance { //gd:GradientTexture2D.height
 	class(self).SetHeight(int64(value))
 	return self
 }
@@ -225,12 +225,12 @@ If true, the generated texture will support high dynamic range ([Image.FormatRgb
 
 [Environment.GlowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowEnabled
 */
-func (self Instance) UseHdr() bool {
+func (self Instance) UseHdr() bool { //gd:GradientTexture2D.use_hdr
 	return bool(class(self).IsUsingHdr())
 }
 
 // SetUseHdr sets the property returned by [IsUsingHdr]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseHdr(value bool) Instance {
+func (self Instance) SetUseHdr(value bool) Instance { //gd:GradientTexture2D.use_hdr
 	class(self).SetUseHdr(value)
 	return self
 }
@@ -238,12 +238,12 @@ func (self Instance) SetUseHdr(value bool) Instance {
 /*
 The gradient's fill type.
 */
-func (self Instance) Fill() Fill {
+func (self Instance) Fill() Fill { //gd:GradientTexture2D.fill
 	return Fill(class(self).GetFill())
 }
 
 // SetFill sets the property returned by [GetFill]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFill(value Fill) Instance {
+func (self Instance) SetFill(value Fill) Instance { //gd:GradientTexture2D.fill
 	class(self).SetFill(value)
 	return self
 }
@@ -251,12 +251,12 @@ func (self Instance) SetFill(value Fill) Instance {
 /*
 The initial offset used to fill the texture specified in UV coordinates.
 */
-func (self Instance) FillFrom() Vector2.XY {
+func (self Instance) FillFrom() Vector2.XY { //gd:GradientTexture2D.fill_from
 	return Vector2.XY(class(self).GetFillFrom())
 }
 
 // SetFillFrom sets the property returned by [GetFillFrom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFillFrom(value Vector2.XY) Instance {
+func (self Instance) SetFillFrom(value Vector2.XY) Instance { //gd:GradientTexture2D.fill_from
 	class(self).SetFillFrom(Vector2.XY(value))
 	return self
 }
@@ -264,12 +264,12 @@ func (self Instance) SetFillFrom(value Vector2.XY) Instance {
 /*
 The final offset used to fill the texture specified in UV coordinates.
 */
-func (self Instance) FillTo() Vector2.XY {
+func (self Instance) FillTo() Vector2.XY { //gd:GradientTexture2D.fill_to
 	return Vector2.XY(class(self).GetFillTo())
 }
 
 // SetFillTo sets the property returned by [GetFillTo]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFillTo(value Vector2.XY) Instance {
+func (self Instance) SetFillTo(value Vector2.XY) Instance { //gd:GradientTexture2D.fill_to
 	class(self).SetFillTo(Vector2.XY(value))
 	return self
 }
@@ -277,12 +277,12 @@ func (self Instance) SetFillTo(value Vector2.XY) Instance {
 /*
 The gradient's repeat type.
 */
-func (self Instance) Repeat() Repeat {
+func (self Instance) Repeat() Repeat { //gd:GradientTexture2D.repeat
 	return Repeat(class(self).GetRepeat())
 }
 
 // SetRepeat sets the property returned by [GetRepeat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeat(value Repeat) Instance {
+func (self Instance) SetRepeat(value Repeat) Instance { //gd:GradientTexture2D.repeat
 	class(self).SetRepeat(value)
 	return self
 }

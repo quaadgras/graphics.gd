@@ -367,12 +367,12 @@ Note: Object A can detect a contact with object B only if object B is in any of 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
-func (self Instance) CollisionLayer() int {
+func (self Instance) CollisionLayer() int { //gd:SoftBody3D.collision_layer
 	return int(int(class(self).GetCollisionLayer()))
 }
 
 // SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionLayer(value int) Instance {
+func (self Instance) SetCollisionLayer(value int) Instance { //gd:SoftBody3D.collision_layer
 	class(self).SetCollisionLayer(int64(value))
 	return self
 }
@@ -385,12 +385,12 @@ Note: Object A can detect a contact with object B only if object B is in any of 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:SoftBody3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:SoftBody3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -400,12 +400,12 @@ node path to a [CollisionObject3D] this SoftBody3D should avoid clipping.
 
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
-func (self Instance) ParentCollisionIgnore() string {
+func (self Instance) ParentCollisionIgnore() string { //gd:SoftBody3D.parent_collision_ignore
 	return string(class(self).GetParentCollisionIgnore().String())
 }
 
 // SetParentCollisionIgnore sets the property returned by [GetParentCollisionIgnore]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParentCollisionIgnore(value string) Instance {
+func (self Instance) SetParentCollisionIgnore(value string) Instance { //gd:SoftBody3D.parent_collision_ignore
 	class(self).SetParentCollisionIgnore(Path.ToNode(String.New(value)))
 	return self
 }
@@ -413,12 +413,12 @@ func (self Instance) SetParentCollisionIgnore(value string) Instance {
 /*
 Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
 */
-func (self Instance) SimulationPrecision() int {
+func (self Instance) SimulationPrecision() int { //gd:SoftBody3D.simulation_precision
 	return int(int(class(self).GetSimulationPrecision()))
 }
 
 // SetSimulationPrecision sets the property returned by [GetSimulationPrecision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimulationPrecision(value int) Instance {
+func (self Instance) SetSimulationPrecision(value int) Instance { //gd:SoftBody3D.simulation_precision
 	class(self).SetSimulationPrecision(int64(value))
 	return self
 }
@@ -426,12 +426,12 @@ func (self Instance) SetSimulationPrecision(value int) Instance {
 /*
 The SoftBody3D's mass.
 */
-func (self Instance) TotalMass() Float.X {
+func (self Instance) TotalMass() Float.X { //gd:SoftBody3D.total_mass
 	return Float.X(Float.X(class(self).GetTotalMass()))
 }
 
 // SetTotalMass sets the property returned by [GetTotalMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTotalMass(value Float.X) Instance {
+func (self Instance) SetTotalMass(value Float.X) Instance { //gd:SoftBody3D.total_mass
 	class(self).SetTotalMass(float64(value))
 	return self
 }
@@ -439,12 +439,12 @@ func (self Instance) SetTotalMass(value Float.X) Instance {
 /*
 Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between 0.0 and 1.0 (inclusive).
 */
-func (self Instance) LinearStiffness() Float.X {
+func (self Instance) LinearStiffness() Float.X { //gd:SoftBody3D.linear_stiffness
 	return Float.X(Float.X(class(self).GetLinearStiffness()))
 }
 
 // SetLinearStiffness sets the property returned by [GetLinearStiffness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearStiffness(value Float.X) Instance {
+func (self Instance) SetLinearStiffness(value Float.X) Instance { //gd:SoftBody3D.linear_stiffness
 	class(self).SetLinearStiffness(float64(value))
 	return self
 }
@@ -457,12 +457,12 @@ Note: [ShrinkingFactor] is best used on surface meshes with pinned points.
 [ShrinkingFactor]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.ShrinkingFactor
 [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
-func (self Instance) ShrinkingFactor() Float.X {
+func (self Instance) ShrinkingFactor() Float.X { //gd:SoftBody3D.shrinking_factor
 	return Float.X(Float.X(class(self).GetShrinkingFactor()))
 }
 
 // SetShrinkingFactor sets the property returned by [GetShrinkingFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShrinkingFactor(value Float.X) Instance {
+func (self Instance) SetShrinkingFactor(value Float.X) Instance { //gd:SoftBody3D.shrinking_factor
 	class(self).SetShrinkingFactor(float64(value))
 	return self
 }
@@ -470,12 +470,12 @@ func (self Instance) SetShrinkingFactor(value Float.X) Instance {
 /*
 The pressure coefficient of this soft body. Simulate pressure build-up from inside this body. Higher values increase the strength of this effect.
 */
-func (self Instance) PressureCoefficient() Float.X {
+func (self Instance) PressureCoefficient() Float.X { //gd:SoftBody3D.pressure_coefficient
 	return Float.X(Float.X(class(self).GetPressureCoefficient()))
 }
 
 // SetPressureCoefficient sets the property returned by [GetPressureCoefficient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPressureCoefficient(value Float.X) Instance {
+func (self Instance) SetPressureCoefficient(value Float.X) Instance { //gd:SoftBody3D.pressure_coefficient
 	class(self).SetPressureCoefficient(float64(value))
 	return self
 }
@@ -483,12 +483,12 @@ func (self Instance) SetPressureCoefficient(value Float.X) Instance {
 /*
 The body's damping coefficient. Higher values will slow down the body more noticeably when forces are applied.
 */
-func (self Instance) DampingCoefficient() Float.X {
+func (self Instance) DampingCoefficient() Float.X { //gd:SoftBody3D.damping_coefficient
 	return Float.X(Float.X(class(self).GetDampingCoefficient()))
 }
 
 // SetDampingCoefficient sets the property returned by [GetDampingCoefficient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDampingCoefficient(value Float.X) Instance {
+func (self Instance) SetDampingCoefficient(value Float.X) Instance { //gd:SoftBody3D.damping_coefficient
 	class(self).SetDampingCoefficient(float64(value))
 	return self
 }
@@ -498,12 +498,12 @@ The body's drag coefficient. Higher values increase this body's air resistance.
 
 Note: This value is currently unused by Godot's default physics implementation.
 */
-func (self Instance) DragCoefficient() Float.X {
+func (self Instance) DragCoefficient() Float.X { //gd:SoftBody3D.drag_coefficient
 	return Float.X(Float.X(class(self).GetDragCoefficient()))
 }
 
 // SetDragCoefficient sets the property returned by [GetDragCoefficient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragCoefficient(value Float.X) Instance {
+func (self Instance) SetDragCoefficient(value Float.X) Instance { //gd:SoftBody3D.drag_coefficient
 	class(self).SetDragCoefficient(float64(value))
 	return self
 }
@@ -514,12 +514,12 @@ If true, the [SoftBody3D] will respond to [RayCast3D]s.
 [RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
 [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
-func (self Instance) RayPickable() bool {
+func (self Instance) RayPickable() bool { //gd:SoftBody3D.ray_pickable
 	return bool(class(self).IsRayPickable())
 }
 
 // SetRayPickable sets the property returned by [IsRayPickable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRayPickable(value bool) Instance {
+func (self Instance) SetRayPickable(value bool) Instance { //gd:SoftBody3D.ray_pickable
 	class(self).SetRayPickable(value)
 	return self
 }
@@ -529,12 +529,12 @@ Defines the behavior in physics when [Node.ProcessMode] is set to [Node.ProcessM
 
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 */
-func (self Instance) DisableMode() DisableMode {
+func (self Instance) DisableMode() DisableMode { //gd:SoftBody3D.disable_mode
 	return DisableMode(class(self).GetDisableMode())
 }
 
 // SetDisableMode sets the property returned by [GetDisableMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableMode(value DisableMode) Instance {
+func (self Instance) SetDisableMode(value DisableMode) Instance { //gd:SoftBody3D.disable_mode
 	class(self).SetDisableMode(value)
 	return self
 }

@@ -257,12 +257,12 @@ Collection of [OpenXRActionSet]s that are part of this action map.
 
 [OpenXRActionSet]: https://pkg.go.dev/graphics.gd/classdb/OpenXRActionSet
 */
-func (self Instance) ActionSets() []OpenXRActionSet.Instance {
+func (self Instance) ActionSets() []OpenXRActionSet.Instance { //gd:OpenXRActionMap.action_sets
 	return []OpenXRActionSet.Instance(gd.ArrayAs[[]OpenXRActionSet.Instance](gd.InternalArray(class(self).GetActionSets())))
 }
 
 // SetActionSets sets the property returned by [GetActionSets]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) Instance {
+func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) Instance { //gd:OpenXRActionMap.action_sets
 	class(self).SetActionSets(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -272,12 +272,12 @@ Collection of [OpenXRInteractionProfile]s that are part of this action map.
 
 [OpenXRInteractionProfile]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInteractionProfile
 */
-func (self Instance) InteractionProfiles() []OpenXRInteractionProfile.Instance {
+func (self Instance) InteractionProfiles() []OpenXRInteractionProfile.Instance { //gd:OpenXRActionMap.interaction_profiles
 	return []OpenXRInteractionProfile.Instance(gd.ArrayAs[[]OpenXRInteractionProfile.Instance](gd.InternalArray(class(self).GetInteractionProfiles())))
 }
 
 // SetInteractionProfiles sets the property returned by [GetInteractionProfiles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) Instance {
+func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) Instance { //gd:OpenXRActionMap.interaction_profiles
 	class(self).SetInteractionProfiles(gd.EngineArrayFromSlice(value))
 	return self
 }

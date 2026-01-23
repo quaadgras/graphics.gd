@@ -172,12 +172,12 @@ func New() Instance {
 /*
 Displacement of the upper edge along the X axis. 0.0 positions edge straight above the bottom-left edge.
 */
-func (self Instance) LeftToRight() Float.X {
+func (self Instance) LeftToRight() Float.X { //gd:PrismMesh.left_to_right
 	return Float.X(Float.X(class(self).GetLeftToRight()))
 }
 
 // SetLeftToRight sets the property returned by [GetLeftToRight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLeftToRight(value Float.X) Instance {
+func (self Instance) SetLeftToRight(value Float.X) Instance { //gd:PrismMesh.left_to_right
 	class(self).SetLeftToRight(float64(value))
 	return self
 }
@@ -185,12 +185,12 @@ func (self Instance) SetLeftToRight(value Float.X) Instance {
 /*
 Size of the prism.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:PrismMesh.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:PrismMesh.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -198,12 +198,12 @@ func (self Instance) SetSize(value Vector3.XYZ) Instance {
 /*
 Number of added edge loops along the X axis.
 */
-func (self Instance) SubdivideWidth() int {
+func (self Instance) SubdivideWidth() int { //gd:PrismMesh.subdivide_width
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
 // SetSubdivideWidth sets the property returned by [GetSubdivideWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideWidth(value int) Instance {
+func (self Instance) SetSubdivideWidth(value int) Instance { //gd:PrismMesh.subdivide_width
 	class(self).SetSubdivideWidth(int64(value))
 	return self
 }
@@ -211,12 +211,12 @@ func (self Instance) SetSubdivideWidth(value int) Instance {
 /*
 Number of added edge loops along the Y axis.
 */
-func (self Instance) SubdivideHeight() int {
+func (self Instance) SubdivideHeight() int { //gd:PrismMesh.subdivide_height
 	return int(int(class(self).GetSubdivideHeight()))
 }
 
 // SetSubdivideHeight sets the property returned by [GetSubdivideHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideHeight(value int) Instance {
+func (self Instance) SetSubdivideHeight(value int) Instance { //gd:PrismMesh.subdivide_height
 	class(self).SetSubdivideHeight(int64(value))
 	return self
 }
@@ -224,12 +224,12 @@ func (self Instance) SetSubdivideHeight(value int) Instance {
 /*
 Number of added edge loops along the Z axis.
 */
-func (self Instance) SubdivideDepth() int {
+func (self Instance) SubdivideDepth() int { //gd:PrismMesh.subdivide_depth
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
 // SetSubdivideDepth sets the property returned by [GetSubdivideDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideDepth(value int) Instance {
+func (self Instance) SetSubdivideDepth(value int) Instance { //gd:PrismMesh.subdivide_depth
 	class(self).SetSubdivideDepth(int64(value))
 	return self
 }

@@ -211,12 +211,12 @@ Note: Due to being a [Resource], it doesn't follow the rules of [Node.AutoTransl
 [Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:TextMesh.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:TextMesh.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -224,12 +224,12 @@ func (self Instance) SetText(value string) Instance {
 /*
 Font configuration used to display text.
 */
-func (self Instance) Font() Font.Instance {
+func (self Instance) Font() Font.Instance { //gd:TextMesh.font
 	return Font.Instance(class(self).GetFont())
 }
 
 // SetFont sets the property returned by [GetFont]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFont(value Font.Instance) Instance {
+func (self Instance) SetFont(value Font.Instance) Instance { //gd:TextMesh.font
 	class(self).SetFont(value)
 	return self
 }
@@ -239,12 +239,12 @@ Font size of the [TextMesh]'s text.
 
 [TextMesh]: https://pkg.go.dev/graphics.gd/classdb/TextMesh
 */
-func (self Instance) FontSize() int {
+func (self Instance) FontSize() int { //gd:TextMesh.font_size
 	return int(int(class(self).GetFontSize()))
 }
 
 // SetFontSize sets the property returned by [GetFontSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFontSize(value int) Instance {
+func (self Instance) SetFontSize(value int) Instance { //gd:TextMesh.font_size
 	class(self).SetFontSize(int64(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetFontSize(value int) Instance {
 /*
 Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
 */
-func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment { //gd:TextMesh.horizontal_alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 // SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance { //gd:TextMesh.horizontal_alignment
 	class(self).SetHorizontalAlignment(value)
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Insta
 /*
 Controls the text's vertical alignment. Supports top, center, and bottom.
 */
-func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment { //gd:TextMesh.vertical_alignment
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
 // SetVerticalAlignment sets the property returned by [GetVerticalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance { //gd:TextMesh.vertical_alignment
 	class(self).SetVerticalAlignment(value)
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance 
 /*
 If true, all the text displays as UPPERCASE.
 */
-func (self Instance) Uppercase() bool {
+func (self Instance) Uppercase() bool { //gd:TextMesh.uppercase
 	return bool(class(self).IsUppercase())
 }
 
 // SetUppercase sets the property returned by [IsUppercase]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUppercase(value bool) Instance {
+func (self Instance) SetUppercase(value bool) Instance { //gd:TextMesh.uppercase
 	class(self).SetUppercase(value)
 	return self
 }
@@ -291,12 +291,12 @@ func (self Instance) SetUppercase(value bool) Instance {
 /*
 Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
 */
-func (self Instance) LineSpacing() Float.X {
+func (self Instance) LineSpacing() Float.X { //gd:TextMesh.line_spacing
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
 // SetLineSpacing sets the property returned by [GetLineSpacing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLineSpacing(value Float.X) Instance {
+func (self Instance) SetLineSpacing(value Float.X) Instance { //gd:TextMesh.line_spacing
 	class(self).SetLineSpacing(float64(value))
 	return self
 }
@@ -304,12 +304,12 @@ func (self Instance) SetLineSpacing(value Float.X) Instance {
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
 */
-func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:TextMesh.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 // SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance { //gd:TextMesh.autowrap_mode
 	class(self).SetAutowrapMode(value)
 	return self
 }
@@ -317,12 +317,12 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 /*
 Line fill alignment rules.
 */
-func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+func (self Instance) JustificationFlags() TextServer.JustificationFlag { //gd:TextMesh.justification_flags
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
 // SetJustificationFlags sets the property returned by [GetJustificationFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance { //gd:TextMesh.justification_flags
 	class(self).SetJustificationFlags(value)
 	return self
 }
@@ -330,12 +330,12 @@ func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) I
 /*
 The size of one pixel's width on the text to scale it in 3D.
 */
-func (self Instance) PixelSize() Float.X {
+func (self Instance) PixelSize() Float.X { //gd:TextMesh.pixel_size
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
 // SetPixelSize sets the property returned by [GetPixelSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPixelSize(value Float.X) Instance {
+func (self Instance) SetPixelSize(value Float.X) Instance { //gd:TextMesh.pixel_size
 	class(self).SetPixelSize(float64(value))
 	return self
 }
@@ -343,12 +343,12 @@ func (self Instance) SetPixelSize(value Float.X) Instance {
 /*
 Step (in pixels) used to approximate Bézier curves.
 */
-func (self Instance) CurveStep() Float.X {
+func (self Instance) CurveStep() Float.X { //gd:TextMesh.curve_step
 	return Float.X(Float.X(class(self).GetCurveStep()))
 }
 
 // SetCurveStep sets the property returned by [GetCurveStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurveStep(value Float.X) Instance {
+func (self Instance) SetCurveStep(value Float.X) Instance { //gd:TextMesh.curve_step
 	class(self).SetCurveStep(float64(value))
 	return self
 }
@@ -356,12 +356,12 @@ func (self Instance) SetCurveStep(value Float.X) Instance {
 /*
 Depths of the mesh, if set to 0.0 only front surface, is generated, and UV layout is changed to use full texture for the front face only.
 */
-func (self Instance) Depth() Float.X {
+func (self Instance) Depth() Float.X { //gd:TextMesh.depth
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 // SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepth(value Float.X) Instance {
+func (self Instance) SetDepth(value Float.X) Instance { //gd:TextMesh.depth
 	class(self).SetDepth(float64(value))
 	return self
 }
@@ -369,12 +369,12 @@ func (self Instance) SetDepth(value Float.X) Instance {
 /*
 Text width (in pixels), used for fill alignment.
 */
-func (self Instance) Width() Float.X {
+func (self Instance) Width() Float.X { //gd:TextMesh.width
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
 // SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWidth(value Float.X) Instance {
+func (self Instance) SetWidth(value Float.X) Instance { //gd:TextMesh.width
 	class(self).SetWidth(float64(value))
 	return self
 }
@@ -382,12 +382,12 @@ func (self Instance) SetWidth(value Float.X) Instance {
 /*
 The text drawing offset (in pixels).
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:TextMesh.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:TextMesh.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -395,12 +395,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() TextServer.Direction {
+func (self Instance) TextDirection() TextServer.Direction { //gd:TextMesh.text_direction
 	return TextServer.Direction(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value TextServer.Direction) Instance {
+func (self Instance) SetTextDirection(value TextServer.Direction) Instance { //gd:TextMesh.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -408,12 +408,12 @@ func (self Instance) SetTextDirection(value TextServer.Direction) Instance {
 /*
 Language code used for text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:TextMesh.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:TextMesh.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }
@@ -421,12 +421,12 @@ func (self Instance) SetLanguage(value string) Instance {
 /*
 Set BiDi algorithm override for the structured text.
 */
-func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextMesh.structured_text_bidi_override
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 // SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance { //gd:TextMesh.structured_text_bidi_override
 	class(self).SetStructuredTextBidiOverride(value)
 	return self
 }
@@ -434,12 +434,12 @@ func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTe
 /*
 Set additional options for BiDi override.
 */
-func (self Instance) StructuredTextBidiOverrideOptions() []any {
+func (self Instance) StructuredTextBidiOverrideOptions() []any { //gd:TextMesh.structured_text_bidi_override_options
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 // SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance { //gd:TextMesh.structured_text_bidi_override_options
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 	return self
 }

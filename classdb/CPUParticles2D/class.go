@@ -291,12 +291,12 @@ If true, particles are being emitted. [Emitting] can be used to start and stop p
 [OnFinished]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.OnFinished
 [OneShot]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.OneShot
 */
-func (self Instance) Emitting() bool {
+func (self Instance) Emitting() bool { //gd:CPUParticles2D.emitting
 	return bool(class(self).IsEmitting())
 }
 
 // SetEmitting sets the property returned by [IsEmitting]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmitting(value bool) Instance {
+func (self Instance) SetEmitting(value bool) Instance { //gd:CPUParticles2D.emitting
 	class(self).SetEmitting(value)
 	return self
 }
@@ -304,12 +304,12 @@ func (self Instance) SetEmitting(value bool) Instance {
 /*
 Number of particles emitted in one emission cycle.
 */
-func (self Instance) Amount() int {
+func (self Instance) Amount() int { //gd:CPUParticles2D.amount
 	return int(int(class(self).GetAmount()))
 }
 
 // SetAmount sets the property returned by [GetAmount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmount(value int) Instance {
+func (self Instance) SetAmount(value int) Instance { //gd:CPUParticles2D.amount
 	class(self).SetAmount(int64(value))
 	return self
 }
@@ -317,12 +317,12 @@ func (self Instance) SetAmount(value int) Instance {
 /*
 Particle texture. If null, particles will be squares.
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:CPUParticles2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:CPUParticles2D.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -330,12 +330,12 @@ func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 /*
 Amount of time each particle will exist.
 */
-func (self Instance) Lifetime() Float.X {
+func (self Instance) Lifetime() Float.X { //gd:CPUParticles2D.lifetime
 	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
 // SetLifetime sets the property returned by [GetLifetime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLifetime(value Float.X) Instance {
+func (self Instance) SetLifetime(value Float.X) Instance { //gd:CPUParticles2D.lifetime
 	class(self).SetLifetime(float64(value))
 	return self
 }
@@ -343,12 +343,12 @@ func (self Instance) SetLifetime(value Float.X) Instance {
 /*
 If true, only one emission cycle occurs. If set true during a cycle, emission will stop at the cycle's end.
 */
-func (self Instance) OneShot() bool {
+func (self Instance) OneShot() bool { //gd:CPUParticles2D.one_shot
 	return bool(class(self).GetOneShot())
 }
 
 // SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneShot(value bool) Instance {
+func (self Instance) SetOneShot(value bool) Instance { //gd:CPUParticles2D.one_shot
 	class(self).SetOneShot(value)
 	return self
 }
@@ -356,12 +356,12 @@ func (self Instance) SetOneShot(value bool) Instance {
 /*
 Particle system starts as if it had already run for this many seconds.
 */
-func (self Instance) Preprocess() Float.X {
+func (self Instance) Preprocess() Float.X { //gd:CPUParticles2D.preprocess
 	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
 // SetPreprocess sets the property returned by [GetPreProcessTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreprocess(value Float.X) Instance {
+func (self Instance) SetPreprocess(value Float.X) Instance { //gd:CPUParticles2D.preprocess
 	class(self).SetPreProcessTime(float64(value))
 	return self
 }
@@ -369,12 +369,12 @@ func (self Instance) SetPreprocess(value Float.X) Instance {
 /*
 Particle system's running speed scaling ratio. A value of 0 can be used to pause the particles.
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:CPUParticles2D.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:CPUParticles2D.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }
@@ -382,12 +382,12 @@ func (self Instance) SetSpeedScale(value Float.X) Instance {
 /*
 How rapidly particles in an emission cycle are emitted. If greater than 0, there will be a gap in emissions before the next cycle begins.
 */
-func (self Instance) Explosiveness() Float.X {
+func (self Instance) Explosiveness() Float.X { //gd:CPUParticles2D.explosiveness
 	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
 // SetExplosiveness sets the property returned by [GetExplosivenessRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExplosiveness(value Float.X) Instance {
+func (self Instance) SetExplosiveness(value Float.X) Instance { //gd:CPUParticles2D.explosiveness
 	class(self).SetExplosivenessRatio(float64(value))
 	return self
 }
@@ -395,12 +395,12 @@ func (self Instance) SetExplosiveness(value Float.X) Instance {
 /*
 Emission lifetime randomness ratio.
 */
-func (self Instance) Randomness() Float.X {
+func (self Instance) Randomness() Float.X { //gd:CPUParticles2D.randomness
 	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
 // SetRandomness sets the property returned by [GetRandomnessRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRandomness(value Float.X) Instance {
+func (self Instance) SetRandomness(value Float.X) Instance { //gd:CPUParticles2D.randomness
 	class(self).SetRandomnessRatio(float64(value))
 	return self
 }
@@ -410,12 +410,12 @@ If true, particles will use the same seed for every simulation using the seed de
 
 [Seed]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Seed
 */
-func (self Instance) UseFixedSeed() bool {
+func (self Instance) UseFixedSeed() bool { //gd:CPUParticles2D.use_fixed_seed
 	return bool(class(self).GetUseFixedSeed())
 }
 
 // SetUseFixedSeed sets the property returned by [GetUseFixedSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseFixedSeed(value bool) Instance {
+func (self Instance) SetUseFixedSeed(value bool) Instance { //gd:CPUParticles2D.use_fixed_seed
 	class(self).SetUseFixedSeed(value)
 	return self
 }
@@ -425,12 +425,12 @@ Sets the random seed used by the particle system. Only effective if [UseFixedSee
 
 [UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.UseFixedSeed
 */
-func (self Instance) Seed() int {
+func (self Instance) Seed() int { //gd:CPUParticles2D.seed
 	return int(int(class(self).GetSeed()))
 }
 
 // SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeed(value int) Instance {
+func (self Instance) SetSeed(value int) Instance { //gd:CPUParticles2D.seed
 	class(self).SetSeed(int64(value))
 	return self
 }
@@ -438,12 +438,12 @@ func (self Instance) SetSeed(value int) Instance {
 /*
 Particle lifetime randomness ratio.
 */
-func (self Instance) LifetimeRandomness() Float.X {
+func (self Instance) LifetimeRandomness() Float.X { //gd:CPUParticles2D.lifetime_randomness
 	return Float.X(Float.X(class(self).GetLifetimeRandomness()))
 }
 
 // SetLifetimeRandomness sets the property returned by [GetLifetimeRandomness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLifetimeRandomness(value Float.X) Instance {
+func (self Instance) SetLifetimeRandomness(value Float.X) Instance { //gd:CPUParticles2D.lifetime_randomness
 	class(self).SetLifetimeRandomness(float64(value))
 	return self
 }
@@ -451,12 +451,12 @@ func (self Instance) SetLifetimeRandomness(value Float.X) Instance {
 /*
 The particle system's frame rate is fixed to a value. For example, changing the value to 2 will make the particles render at 2 frames per second. Note this does not slow down the simulation of the particle system itself.
 */
-func (self Instance) FixedFps() int {
+func (self Instance) FixedFps() int { //gd:CPUParticles2D.fixed_fps
 	return int(int(class(self).GetFixedFps()))
 }
 
 // SetFixedFps sets the property returned by [GetFixedFps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFixedFps(value int) Instance {
+func (self Instance) SetFixedFps(value int) Instance { //gd:CPUParticles2D.fixed_fps
 	class(self).SetFixedFps(int64(value))
 	return self
 }
@@ -464,12 +464,12 @@ func (self Instance) SetFixedFps(value int) Instance {
 /*
 If true, results in fractional delta calculation which has a smoother particles display effect.
 */
-func (self Instance) FractDelta() bool {
+func (self Instance) FractDelta() bool { //gd:CPUParticles2D.fract_delta
 	return bool(class(self).GetFractionalDelta())
 }
 
 // SetFractDelta sets the property returned by [GetFractionalDelta]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractDelta(value bool) Instance {
+func (self Instance) SetFractDelta(value bool) Instance { //gd:CPUParticles2D.fract_delta
 	class(self).SetFractionalDelta(value)
 	return self
 }
@@ -479,12 +479,12 @@ If true, particles use the parent node's coordinate space (known as local coordi
 
 [CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
 */
-func (self Instance) LocalCoords() bool {
+func (self Instance) LocalCoords() bool { //gd:CPUParticles2D.local_coords
 	return bool(class(self).GetUseLocalCoordinates())
 }
 
 // SetLocalCoords sets the property returned by [GetUseLocalCoordinates]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocalCoords(value bool) Instance {
+func (self Instance) SetLocalCoords(value bool) Instance { //gd:CPUParticles2D.local_coords
 	class(self).SetUseLocalCoordinates(value)
 	return self
 }
@@ -492,12 +492,12 @@ func (self Instance) SetLocalCoords(value bool) Instance {
 /*
 Particle draw order.
 */
-func (self Instance) DrawOrder() DrawOrder {
+func (self Instance) DrawOrder() DrawOrder { //gd:CPUParticles2D.draw_order
 	return DrawOrder(class(self).GetDrawOrder())
 }
 
 // SetDrawOrder sets the property returned by [GetDrawOrder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawOrder(value DrawOrder) Instance {
+func (self Instance) SetDrawOrder(value DrawOrder) Instance { //gd:CPUParticles2D.draw_order
 	class(self).SetDrawOrder(value)
 	return self
 }
@@ -505,12 +505,12 @@ func (self Instance) SetDrawOrder(value DrawOrder) Instance {
 /*
 Particles will be emitted inside this region.
 */
-func (self Instance) EmissionShape() EmissionShape {
+func (self Instance) EmissionShape() EmissionShape { //gd:CPUParticles2D.emission_shape
 	return EmissionShape(class(self).GetEmissionShape())
 }
 
 // SetEmissionShape sets the property returned by [GetEmissionShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionShape(value EmissionShape) Instance {
+func (self Instance) SetEmissionShape(value EmissionShape) Instance { //gd:CPUParticles2D.emission_shape
 	class(self).SetEmissionShape(value)
 	return self
 }
@@ -520,12 +520,12 @@ The sphere's radius if [EmissionShape] is set to [EmissionShapeSphere].
 
 [EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.EmissionShape
 */
-func (self Instance) EmissionSphereRadius() Float.X {
+func (self Instance) EmissionSphereRadius() Float.X { //gd:CPUParticles2D.emission_sphere_radius
 	return Float.X(Float.X(class(self).GetEmissionSphereRadius()))
 }
 
 // SetEmissionSphereRadius sets the property returned by [GetEmissionSphereRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionSphereRadius(value Float.X) Instance {
+func (self Instance) SetEmissionSphereRadius(value Float.X) Instance { //gd:CPUParticles2D.emission_sphere_radius
 	class(self).SetEmissionSphereRadius(float64(value))
 	return self
 }
@@ -535,12 +535,12 @@ The rectangle's extents if [EmissionShape] is set to [EmissionShapeRectangle].
 
 [EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.EmissionShape
 */
-func (self Instance) EmissionRectExtents() Vector2.XY {
+func (self Instance) EmissionRectExtents() Vector2.XY { //gd:CPUParticles2D.emission_rect_extents
 	return Vector2.XY(class(self).GetEmissionRectExtents())
 }
 
 // SetEmissionRectExtents sets the property returned by [GetEmissionRectExtents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionRectExtents(value Vector2.XY) Instance {
+func (self Instance) SetEmissionRectExtents(value Vector2.XY) Instance { //gd:CPUParticles2D.emission_rect_extents
 	class(self).SetEmissionRectExtents(Vector2.XY(value))
 	return self
 }
@@ -548,12 +548,12 @@ func (self Instance) SetEmissionRectExtents(value Vector2.XY) Instance {
 /*
 Sets the initial positions to spawn particles when using [EmissionShapePoints] or [EmissionShapeDirectedPoints].
 */
-func (self Instance) EmissionPoints() []Vector2.XY {
+func (self Instance) EmissionPoints() []Vector2.XY { //gd:CPUParticles2D.emission_points
 	return []Vector2.XY(slices.Collect(class(self).GetEmissionPoints().Values()))
 }
 
 // SetEmissionPoints sets the property returned by [GetEmissionPoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionPoints(value []Vector2.XY) Instance {
+func (self Instance) SetEmissionPoints(value []Vector2.XY) Instance { //gd:CPUParticles2D.emission_points
 	class(self).SetEmissionPoints(Packed.New(value...))
 	return self
 }
@@ -561,12 +561,12 @@ func (self Instance) SetEmissionPoints(value []Vector2.XY) Instance {
 /*
 Sets the direction the particles will be emitted in when using [EmissionShapeDirectedPoints].
 */
-func (self Instance) EmissionNormals() []Vector2.XY {
+func (self Instance) EmissionNormals() []Vector2.XY { //gd:CPUParticles2D.emission_normals
 	return []Vector2.XY(slices.Collect(class(self).GetEmissionNormals().Values()))
 }
 
 // SetEmissionNormals sets the property returned by [GetEmissionNormals]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionNormals(value []Vector2.XY) Instance {
+func (self Instance) SetEmissionNormals(value []Vector2.XY) Instance { //gd:CPUParticles2D.emission_normals
 	class(self).SetEmissionNormals(Packed.New(value...))
 	return self
 }
@@ -576,12 +576,12 @@ Sets the [Color.RGBA]s to modulate particles by when using [EmissionShapePoints]
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) EmissionColors() []Color.RGBA {
+func (self Instance) EmissionColors() []Color.RGBA { //gd:CPUParticles2D.emission_colors
 	return []Color.RGBA(slices.Collect(class(self).GetEmissionColors().Values()))
 }
 
 // SetEmissionColors sets the property returned by [GetEmissionColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionColors(value []Color.RGBA) Instance {
+func (self Instance) SetEmissionColors(value []Color.RGBA) Instance { //gd:CPUParticles2D.emission_colors
 	class(self).SetEmissionColors(Packed.New(value...))
 	return self
 }
@@ -589,12 +589,12 @@ func (self Instance) SetEmissionColors(value []Color.RGBA) Instance {
 /*
 Align Y axis of particle with the direction of its velocity.
 */
-func (self Instance) ParticleFlagAlignY() bool {
+func (self Instance) ParticleFlagAlignY() bool { //gd:CPUParticles2D.particle_flag_align_y
 	return bool(class(self).GetParticleFlag(0))
 }
 
 // SetParticleFlagAlignY sets the property returned by [GetParticleFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParticleFlagAlignY(value bool) Instance {
+func (self Instance) SetParticleFlagAlignY(value bool) Instance { //gd:CPUParticles2D.particle_flag_align_y
 	class(self).SetParticleFlag(0, value)
 	return self
 }
@@ -602,12 +602,12 @@ func (self Instance) SetParticleFlagAlignY(value bool) Instance {
 /*
 Unit vector specifying the particles' emission direction.
 */
-func (self Instance) Direction() Vector2.XY {
+func (self Instance) Direction() Vector2.XY { //gd:CPUParticles2D.direction
 	return Vector2.XY(class(self).GetDirection())
 }
 
 // SetDirection sets the property returned by [GetDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirection(value Vector2.XY) Instance {
+func (self Instance) SetDirection(value Vector2.XY) Instance { //gd:CPUParticles2D.direction
 	class(self).SetDirection(Vector2.XY(value))
 	return self
 }
@@ -615,12 +615,12 @@ func (self Instance) SetDirection(value Vector2.XY) Instance {
 /*
 Each particle's initial direction range from +spread to -spread degrees.
 */
-func (self Instance) Spread() Float.X {
+func (self Instance) Spread() Float.X { //gd:CPUParticles2D.spread
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
 // SetSpread sets the property returned by [GetSpread]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpread(value Float.X) Instance {
+func (self Instance) SetSpread(value Float.X) Instance { //gd:CPUParticles2D.spread
 	class(self).SetSpread(float64(value))
 	return self
 }
@@ -628,12 +628,12 @@ func (self Instance) SetSpread(value Float.X) Instance {
 /*
 Gravity applied to every particle.
 */
-func (self Instance) Gravity() Vector2.XY {
+func (self Instance) Gravity() Vector2.XY { //gd:CPUParticles2D.gravity
 	return Vector2.XY(class(self).GetGravity())
 }
 
 // SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravity(value Vector2.XY) Instance {
+func (self Instance) SetGravity(value Vector2.XY) Instance { //gd:CPUParticles2D.gravity
 	class(self).SetGravity(Vector2.XY(value))
 	return self
 }
@@ -643,12 +643,12 @@ Minimum equivalent of [InitialVelocityMax].
 
 [InitialVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.InitialVelocityMax
 */
-func (self Instance) InitialVelocityMin() Float.X {
+func (self Instance) InitialVelocityMin() Float.X { //gd:CPUParticles2D.initial_velocity_min
 	return Float.X(Float.X(class(self).GetParamMin(0)))
 }
 
 // SetInitialVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInitialVelocityMin(value Float.X) Instance {
+func (self Instance) SetInitialVelocityMin(value Float.X) Instance { //gd:CPUParticles2D.initial_velocity_min
 	class(self).SetParamMin(0, float64(value))
 	return self
 }
@@ -659,12 +659,12 @@ Maximum initial velocity magnitude for each particle. Direction comes from [Dire
 [Direction]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Direction
 [Spread]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Spread
 */
-func (self Instance) InitialVelocityMax() Float.X {
+func (self Instance) InitialVelocityMax() Float.X { //gd:CPUParticles2D.initial_velocity_max
 	return Float.X(Float.X(class(self).GetParamMax(0)))
 }
 
 // SetInitialVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInitialVelocityMax(value Float.X) Instance {
+func (self Instance) SetInitialVelocityMax(value Float.X) Instance { //gd:CPUParticles2D.initial_velocity_max
 	class(self).SetParamMax(0, float64(value))
 	return self
 }
@@ -674,12 +674,12 @@ Minimum equivalent of [AngularVelocityMax].
 
 [AngularVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AngularVelocityMax
 */
-func (self Instance) AngularVelocityMin() Float.X {
+func (self Instance) AngularVelocityMin() Float.X { //gd:CPUParticles2D.angular_velocity_min
 	return Float.X(Float.X(class(self).GetParamMin(1)))
 }
 
 // SetAngularVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocityMin(value Float.X) Instance {
+func (self Instance) SetAngularVelocityMin(value Float.X) Instance { //gd:CPUParticles2D.angular_velocity_min
 	class(self).SetParamMin(1, float64(value))
 	return self
 }
@@ -687,12 +687,12 @@ func (self Instance) SetAngularVelocityMin(value Float.X) Instance {
 /*
 Maximum initial angular velocity (rotation speed) applied to each particle in degrees per second.
 */
-func (self Instance) AngularVelocityMax() Float.X {
+func (self Instance) AngularVelocityMax() Float.X { //gd:CPUParticles2D.angular_velocity_max
 	return Float.X(Float.X(class(self).GetParamMax(1)))
 }
 
 // SetAngularVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocityMax(value Float.X) Instance {
+func (self Instance) SetAngularVelocityMax(value Float.X) Instance { //gd:CPUParticles2D.angular_velocity_max
 	class(self).SetParamMax(1, float64(value))
 	return self
 }
@@ -702,12 +702,12 @@ Each particle's angular velocity will vary along this [Curve]. Should be a unit 
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) AngularVelocityCurve() Curve.Instance {
+func (self Instance) AngularVelocityCurve() Curve.Instance { //gd:CPUParticles2D.angular_velocity_curve
 	return Curve.Instance(class(self).GetParamCurve(1))
 }
 
 // SetAngularVelocityCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocityCurve(value Curve.Instance) Instance {
+func (self Instance) SetAngularVelocityCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.angular_velocity_curve
 	class(self).SetParamCurve(1, value)
 	return self
 }
@@ -717,12 +717,12 @@ Minimum equivalent of [OrbitVelocityMax].
 
 [OrbitVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.OrbitVelocityMax
 */
-func (self Instance) OrbitVelocityMin() Float.X {
+func (self Instance) OrbitVelocityMin() Float.X { //gd:CPUParticles2D.orbit_velocity_min
 	return Float.X(Float.X(class(self).GetParamMin(2)))
 }
 
 // SetOrbitVelocityMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrbitVelocityMin(value Float.X) Instance {
+func (self Instance) SetOrbitVelocityMin(value Float.X) Instance { //gd:CPUParticles2D.orbit_velocity_min
 	class(self).SetParamMin(2, float64(value))
 	return self
 }
@@ -730,12 +730,12 @@ func (self Instance) SetOrbitVelocityMin(value Float.X) Instance {
 /*
 Maximum orbital velocity applied to each particle. Makes the particles circle around origin. Specified in number of full rotations around origin per second.
 */
-func (self Instance) OrbitVelocityMax() Float.X {
+func (self Instance) OrbitVelocityMax() Float.X { //gd:CPUParticles2D.orbit_velocity_max
 	return Float.X(Float.X(class(self).GetParamMax(2)))
 }
 
 // SetOrbitVelocityMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrbitVelocityMax(value Float.X) Instance {
+func (self Instance) SetOrbitVelocityMax(value Float.X) Instance { //gd:CPUParticles2D.orbit_velocity_max
 	class(self).SetParamMax(2, float64(value))
 	return self
 }
@@ -745,12 +745,12 @@ Each particle's orbital velocity will vary along this [Curve]. Should be a unit 
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) OrbitVelocityCurve() Curve.Instance {
+func (self Instance) OrbitVelocityCurve() Curve.Instance { //gd:CPUParticles2D.orbit_velocity_curve
 	return Curve.Instance(class(self).GetParamCurve(2))
 }
 
 // SetOrbitVelocityCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrbitVelocityCurve(value Curve.Instance) Instance {
+func (self Instance) SetOrbitVelocityCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.orbit_velocity_curve
 	class(self).SetParamCurve(2, value)
 	return self
 }
@@ -760,12 +760,12 @@ Minimum equivalent of [LinearAccelMax].
 
 [LinearAccelMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.LinearAccelMax
 */
-func (self Instance) LinearAccelMin() Float.X {
+func (self Instance) LinearAccelMin() Float.X { //gd:CPUParticles2D.linear_accel_min
 	return Float.X(Float.X(class(self).GetParamMin(3)))
 }
 
 // SetLinearAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearAccelMin(value Float.X) Instance {
+func (self Instance) SetLinearAccelMin(value Float.X) Instance { //gd:CPUParticles2D.linear_accel_min
 	class(self).SetParamMin(3, float64(value))
 	return self
 }
@@ -773,12 +773,12 @@ func (self Instance) SetLinearAccelMin(value Float.X) Instance {
 /*
 Maximum linear acceleration applied to each particle in the direction of motion.
 */
-func (self Instance) LinearAccelMax() Float.X {
+func (self Instance) LinearAccelMax() Float.X { //gd:CPUParticles2D.linear_accel_max
 	return Float.X(Float.X(class(self).GetParamMax(3)))
 }
 
 // SetLinearAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearAccelMax(value Float.X) Instance {
+func (self Instance) SetLinearAccelMax(value Float.X) Instance { //gd:CPUParticles2D.linear_accel_max
 	class(self).SetParamMax(3, float64(value))
 	return self
 }
@@ -788,12 +788,12 @@ Each particle's linear acceleration will vary along this [Curve]. Should be a un
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) LinearAccelCurve() Curve.Instance {
+func (self Instance) LinearAccelCurve() Curve.Instance { //gd:CPUParticles2D.linear_accel_curve
 	return Curve.Instance(class(self).GetParamCurve(3))
 }
 
 // SetLinearAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearAccelCurve(value Curve.Instance) Instance {
+func (self Instance) SetLinearAccelCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.linear_accel_curve
 	class(self).SetParamCurve(3, value)
 	return self
 }
@@ -803,12 +803,12 @@ Minimum equivalent of [RadialAccelMax].
 
 [RadialAccelMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.RadialAccelMax
 */
-func (self Instance) RadialAccelMin() Float.X {
+func (self Instance) RadialAccelMin() Float.X { //gd:CPUParticles2D.radial_accel_min
 	return Float.X(Float.X(class(self).GetParamMin(4)))
 }
 
 // SetRadialAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialAccelMin(value Float.X) Instance {
+func (self Instance) SetRadialAccelMin(value Float.X) Instance { //gd:CPUParticles2D.radial_accel_min
 	class(self).SetParamMin(4, float64(value))
 	return self
 }
@@ -816,12 +816,12 @@ func (self Instance) SetRadialAccelMin(value Float.X) Instance {
 /*
 Maximum radial acceleration applied to each particle. Makes particle accelerate away from the origin or towards it if negative.
 */
-func (self Instance) RadialAccelMax() Float.X {
+func (self Instance) RadialAccelMax() Float.X { //gd:CPUParticles2D.radial_accel_max
 	return Float.X(Float.X(class(self).GetParamMax(4)))
 }
 
 // SetRadialAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialAccelMax(value Float.X) Instance {
+func (self Instance) SetRadialAccelMax(value Float.X) Instance { //gd:CPUParticles2D.radial_accel_max
 	class(self).SetParamMax(4, float64(value))
 	return self
 }
@@ -831,12 +831,12 @@ Each particle's radial acceleration will vary along this [Curve]. Should be a un
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) RadialAccelCurve() Curve.Instance {
+func (self Instance) RadialAccelCurve() Curve.Instance { //gd:CPUParticles2D.radial_accel_curve
 	return Curve.Instance(class(self).GetParamCurve(4))
 }
 
 // SetRadialAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialAccelCurve(value Curve.Instance) Instance {
+func (self Instance) SetRadialAccelCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.radial_accel_curve
 	class(self).SetParamCurve(4, value)
 	return self
 }
@@ -846,12 +846,12 @@ Minimum equivalent of [TangentialAccelMax].
 
 [TangentialAccelMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.TangentialAccelMax
 */
-func (self Instance) TangentialAccelMin() Float.X {
+func (self Instance) TangentialAccelMin() Float.X { //gd:CPUParticles2D.tangential_accel_min
 	return Float.X(Float.X(class(self).GetParamMin(5)))
 }
 
 // SetTangentialAccelMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTangentialAccelMin(value Float.X) Instance {
+func (self Instance) SetTangentialAccelMin(value Float.X) Instance { //gd:CPUParticles2D.tangential_accel_min
 	class(self).SetParamMin(5, float64(value))
 	return self
 }
@@ -859,12 +859,12 @@ func (self Instance) SetTangentialAccelMin(value Float.X) Instance {
 /*
 Maximum tangential acceleration applied to each particle. Tangential acceleration is perpendicular to the particle's velocity giving the particles a swirling motion.
 */
-func (self Instance) TangentialAccelMax() Float.X {
+func (self Instance) TangentialAccelMax() Float.X { //gd:CPUParticles2D.tangential_accel_max
 	return Float.X(Float.X(class(self).GetParamMax(5)))
 }
 
 // SetTangentialAccelMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTangentialAccelMax(value Float.X) Instance {
+func (self Instance) SetTangentialAccelMax(value Float.X) Instance { //gd:CPUParticles2D.tangential_accel_max
 	class(self).SetParamMax(5, float64(value))
 	return self
 }
@@ -874,12 +874,12 @@ Each particle's tangential acceleration will vary along this [Curve]. Should be 
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) TangentialAccelCurve() Curve.Instance {
+func (self Instance) TangentialAccelCurve() Curve.Instance { //gd:CPUParticles2D.tangential_accel_curve
 	return Curve.Instance(class(self).GetParamCurve(5))
 }
 
 // SetTangentialAccelCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTangentialAccelCurve(value Curve.Instance) Instance {
+func (self Instance) SetTangentialAccelCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.tangential_accel_curve
 	class(self).SetParamCurve(5, value)
 	return self
 }
@@ -889,12 +889,12 @@ Minimum equivalent of [DampingMax].
 
 [DampingMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.DampingMax
 */
-func (self Instance) DampingMin() Float.X {
+func (self Instance) DampingMin() Float.X { //gd:CPUParticles2D.damping_min
 	return Float.X(Float.X(class(self).GetParamMin(6)))
 }
 
 // SetDampingMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDampingMin(value Float.X) Instance {
+func (self Instance) SetDampingMin(value Float.X) Instance { //gd:CPUParticles2D.damping_min
 	class(self).SetParamMin(6, float64(value))
 	return self
 }
@@ -902,12 +902,12 @@ func (self Instance) SetDampingMin(value Float.X) Instance {
 /*
 The maximum rate at which particles lose velocity. For example value of 100 means that the particle will go from 100 velocity to 0 in 1 second.
 */
-func (self Instance) DampingMax() Float.X {
+func (self Instance) DampingMax() Float.X { //gd:CPUParticles2D.damping_max
 	return Float.X(Float.X(class(self).GetParamMax(6)))
 }
 
 // SetDampingMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDampingMax(value Float.X) Instance {
+func (self Instance) SetDampingMax(value Float.X) Instance { //gd:CPUParticles2D.damping_max
 	class(self).SetParamMax(6, float64(value))
 	return self
 }
@@ -917,12 +917,12 @@ Damping will vary along this [Curve]. Should be a unit [Curve].
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) DampingCurve() Curve.Instance {
+func (self Instance) DampingCurve() Curve.Instance { //gd:CPUParticles2D.damping_curve
 	return Curve.Instance(class(self).GetParamCurve(6))
 }
 
 // SetDampingCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDampingCurve(value Curve.Instance) Instance {
+func (self Instance) SetDampingCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.damping_curve
 	class(self).SetParamCurve(6, value)
 	return self
 }
@@ -932,12 +932,12 @@ Minimum equivalent of [AngleMax].
 
 [AngleMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AngleMax
 */
-func (self Instance) AngleMin() Float.X {
+func (self Instance) AngleMin() Float.X { //gd:CPUParticles2D.angle_min
 	return Float.X(Float.X(class(self).GetParamMin(7)))
 }
 
 // SetAngleMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngleMin(value Float.X) Instance {
+func (self Instance) SetAngleMin(value Float.X) Instance { //gd:CPUParticles2D.angle_min
 	class(self).SetParamMin(7, float64(value))
 	return self
 }
@@ -945,12 +945,12 @@ func (self Instance) SetAngleMin(value Float.X) Instance {
 /*
 Maximum initial rotation applied to each particle, in degrees.
 */
-func (self Instance) AngleMax() Float.X {
+func (self Instance) AngleMax() Float.X { //gd:CPUParticles2D.angle_max
 	return Float.X(Float.X(class(self).GetParamMax(7)))
 }
 
 // SetAngleMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngleMax(value Float.X) Instance {
+func (self Instance) SetAngleMax(value Float.X) Instance { //gd:CPUParticles2D.angle_max
 	class(self).SetParamMax(7, float64(value))
 	return self
 }
@@ -960,12 +960,12 @@ Each particle's rotation will be animated along this [Curve]. Should be a unit [
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) AngleCurve() Curve.Instance {
+func (self Instance) AngleCurve() Curve.Instance { //gd:CPUParticles2D.angle_curve
 	return Curve.Instance(class(self).GetParamCurve(7))
 }
 
 // SetAngleCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngleCurve(value Curve.Instance) Instance {
+func (self Instance) SetAngleCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.angle_curve
 	class(self).SetParamCurve(7, value)
 	return self
 }
@@ -975,12 +975,12 @@ Minimum equivalent of [ScaleAmountMax].
 
 [ScaleAmountMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.ScaleAmountMax
 */
-func (self Instance) ScaleAmountMin() Float.X {
+func (self Instance) ScaleAmountMin() Float.X { //gd:CPUParticles2D.scale_amount_min
 	return Float.X(Float.X(class(self).GetParamMin(8)))
 }
 
 // SetScaleAmountMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleAmountMin(value Float.X) Instance {
+func (self Instance) SetScaleAmountMin(value Float.X) Instance { //gd:CPUParticles2D.scale_amount_min
 	class(self).SetParamMin(8, float64(value))
 	return self
 }
@@ -988,12 +988,12 @@ func (self Instance) SetScaleAmountMin(value Float.X) Instance {
 /*
 Maximum initial scale applied to each particle.
 */
-func (self Instance) ScaleAmountMax() Float.X {
+func (self Instance) ScaleAmountMax() Float.X { //gd:CPUParticles2D.scale_amount_max
 	return Float.X(Float.X(class(self).GetParamMax(8)))
 }
 
 // SetScaleAmountMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleAmountMax(value Float.X) Instance {
+func (self Instance) SetScaleAmountMax(value Float.X) Instance { //gd:CPUParticles2D.scale_amount_max
 	class(self).SetParamMax(8, float64(value))
 	return self
 }
@@ -1003,12 +1003,12 @@ Each particle's scale will vary along this [Curve]. Should be a unit [Curve].
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) ScaleAmountCurve() Curve.Instance {
+func (self Instance) ScaleAmountCurve() Curve.Instance { //gd:CPUParticles2D.scale_amount_curve
 	return Curve.Instance(class(self).GetParamCurve(8))
 }
 
 // SetScaleAmountCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleAmountCurve(value Curve.Instance) Instance {
+func (self Instance) SetScaleAmountCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.scale_amount_curve
 	class(self).SetParamCurve(8, value)
 	return self
 }
@@ -1019,12 +1019,12 @@ If true, the scale curve will be split into x and y components. See [ScaleCurveX
 [ScaleCurveX]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.ScaleCurveX
 [ScaleCurveY]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.ScaleCurveY
 */
-func (self Instance) SplitScale() bool {
+func (self Instance) SplitScale() bool { //gd:CPUParticles2D.split_scale
 	return bool(class(self).GetSplitScale())
 }
 
 // SetSplitScale sets the property returned by [GetSplitScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSplitScale(value bool) Instance {
+func (self Instance) SetSplitScale(value bool) Instance { //gd:CPUParticles2D.split_scale
 	class(self).SetSplitScale(value)
 	return self
 }
@@ -1037,12 +1037,12 @@ Each particle's horizontal scale will vary along this [Curve]. Should be a unit 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 [SplitScale]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.SplitScale
 */
-func (self Instance) ScaleCurveX() Curve.Instance {
+func (self Instance) ScaleCurveX() Curve.Instance { //gd:CPUParticles2D.scale_curve_x
 	return Curve.Instance(class(self).GetScaleCurveX())
 }
 
 // SetScaleCurveX sets the property returned by [GetScaleCurveX]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleCurveX(value Curve.Instance) Instance {
+func (self Instance) SetScaleCurveX(value Curve.Instance) Instance { //gd:CPUParticles2D.scale_curve_x
 	class(self).SetScaleCurveX(value)
 	return self
 }
@@ -1055,12 +1055,12 @@ Each particle's vertical scale will vary along this [Curve]. Should be a unit [C
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 [SplitScale]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.SplitScale
 */
-func (self Instance) ScaleCurveY() Curve.Instance {
+func (self Instance) ScaleCurveY() Curve.Instance { //gd:CPUParticles2D.scale_curve_y
 	return Curve.Instance(class(self).GetScaleCurveY())
 }
 
 // SetScaleCurveY sets the property returned by [GetScaleCurveY]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleCurveY(value Curve.Instance) Instance {
+func (self Instance) SetScaleCurveY(value Curve.Instance) Instance { //gd:CPUParticles2D.scale_curve_y
 	class(self).SetScaleCurveY(value)
 	return self
 }
@@ -1070,12 +1070,12 @@ Each particle's initial color. If [Texture] is defined, it will be multiplied by
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Texture
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:CPUParticles2D.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:CPUParticles2D.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -1086,12 +1086,12 @@ Each particle's color will vary along this [Gradient] over its lifetime (multipl
 [Color]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Color
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) ColorRamp() Gradient.Instance {
+func (self Instance) ColorRamp() Gradient.Instance { //gd:CPUParticles2D.color_ramp
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
 // SetColorRamp sets the property returned by [GetColorRamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorRamp(value Gradient.Instance) Instance {
+func (self Instance) SetColorRamp(value Gradient.Instance) Instance { //gd:CPUParticles2D.color_ramp
 	class(self).SetColorRamp(value)
 	return self
 }
@@ -1102,12 +1102,12 @@ Each particle's initial color will vary along this [Gradient] (multiplied with [
 [Color]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Color
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) ColorInitialRamp() Gradient.Instance {
+func (self Instance) ColorInitialRamp() Gradient.Instance { //gd:CPUParticles2D.color_initial_ramp
 	return Gradient.Instance(class(self).GetColorInitialRamp())
 }
 
 // SetColorInitialRamp sets the property returned by [GetColorInitialRamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorInitialRamp(value Gradient.Instance) Instance {
+func (self Instance) SetColorInitialRamp(value Gradient.Instance) Instance { //gd:CPUParticles2D.color_initial_ramp
 	class(self).SetColorInitialRamp(value)
 	return self
 }
@@ -1117,12 +1117,12 @@ Minimum equivalent of [HueVariationMax].
 
 [HueVariationMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.HueVariationMax
 */
-func (self Instance) HueVariationMin() Float.X {
+func (self Instance) HueVariationMin() Float.X { //gd:CPUParticles2D.hue_variation_min
 	return Float.X(Float.X(class(self).GetParamMin(9)))
 }
 
 // SetHueVariationMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHueVariationMin(value Float.X) Instance {
+func (self Instance) SetHueVariationMin(value Float.X) Instance { //gd:CPUParticles2D.hue_variation_min
 	class(self).SetParamMin(9, float64(value))
 	return self
 }
@@ -1130,12 +1130,12 @@ func (self Instance) SetHueVariationMin(value Float.X) Instance {
 /*
 Maximum initial hue variation applied to each particle. It will shift the particle color's hue.
 */
-func (self Instance) HueVariationMax() Float.X {
+func (self Instance) HueVariationMax() Float.X { //gd:CPUParticles2D.hue_variation_max
 	return Float.X(Float.X(class(self).GetParamMax(9)))
 }
 
 // SetHueVariationMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHueVariationMax(value Float.X) Instance {
+func (self Instance) SetHueVariationMax(value Float.X) Instance { //gd:CPUParticles2D.hue_variation_max
 	class(self).SetParamMax(9, float64(value))
 	return self
 }
@@ -1145,12 +1145,12 @@ Each particle's hue will vary along this [Curve]. Should be a unit [Curve].
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) HueVariationCurve() Curve.Instance {
+func (self Instance) HueVariationCurve() Curve.Instance { //gd:CPUParticles2D.hue_variation_curve
 	return Curve.Instance(class(self).GetParamCurve(9))
 }
 
 // SetHueVariationCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHueVariationCurve(value Curve.Instance) Instance {
+func (self Instance) SetHueVariationCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.hue_variation_curve
 	class(self).SetParamCurve(9, value)
 	return self
 }
@@ -1160,12 +1160,12 @@ Minimum equivalent of [AnimSpeedMax].
 
 [AnimSpeedMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AnimSpeedMax
 */
-func (self Instance) AnimSpeedMin() Float.X {
+func (self Instance) AnimSpeedMin() Float.X { //gd:CPUParticles2D.anim_speed_min
 	return Float.X(Float.X(class(self).GetParamMin(10)))
 }
 
 // SetAnimSpeedMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimSpeedMin(value Float.X) Instance {
+func (self Instance) SetAnimSpeedMin(value Float.X) Instance { //gd:CPUParticles2D.anim_speed_min
 	class(self).SetParamMin(10, float64(value))
 	return self
 }
@@ -1177,12 +1177,12 @@ With animation speed greater than 1, remember to enable [CanvasItemMaterial.Part
 
 [CanvasItemMaterial.ParticlesAnimLoop]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimLoop
 */
-func (self Instance) AnimSpeedMax() Float.X {
+func (self Instance) AnimSpeedMax() Float.X { //gd:CPUParticles2D.anim_speed_max
 	return Float.X(Float.X(class(self).GetParamMax(10)))
 }
 
 // SetAnimSpeedMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimSpeedMax(value Float.X) Instance {
+func (self Instance) SetAnimSpeedMax(value Float.X) Instance { //gd:CPUParticles2D.anim_speed_max
 	class(self).SetParamMax(10, float64(value))
 	return self
 }
@@ -1192,12 +1192,12 @@ Each particle's animation speed will vary along this [Curve]. Should be a unit [
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) AnimSpeedCurve() Curve.Instance {
+func (self Instance) AnimSpeedCurve() Curve.Instance { //gd:CPUParticles2D.anim_speed_curve
 	return Curve.Instance(class(self).GetParamCurve(10))
 }
 
 // SetAnimSpeedCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimSpeedCurve(value Curve.Instance) Instance {
+func (self Instance) SetAnimSpeedCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.anim_speed_curve
 	class(self).SetParamCurve(10, value)
 	return self
 }
@@ -1207,12 +1207,12 @@ Minimum equivalent of [AnimOffsetMax].
 
 [AnimOffsetMax]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AnimOffsetMax
 */
-func (self Instance) AnimOffsetMin() Float.X {
+func (self Instance) AnimOffsetMin() Float.X { //gd:CPUParticles2D.anim_offset_min
 	return Float.X(Float.X(class(self).GetParamMin(11)))
 }
 
 // SetAnimOffsetMin sets the property returned by [GetParamMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimOffsetMin(value Float.X) Instance {
+func (self Instance) SetAnimOffsetMin(value Float.X) Instance { //gd:CPUParticles2D.anim_offset_min
 	class(self).SetParamMin(11, float64(value))
 	return self
 }
@@ -1222,12 +1222,12 @@ Maximum animation offset that corresponds to frame index in the texture. 0 is th
 
 [CanvasItemMaterial.ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
 */
-func (self Instance) AnimOffsetMax() Float.X {
+func (self Instance) AnimOffsetMax() Float.X { //gd:CPUParticles2D.anim_offset_max
 	return Float.X(Float.X(class(self).GetParamMax(11)))
 }
 
 // SetAnimOffsetMax sets the property returned by [GetParamMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimOffsetMax(value Float.X) Instance {
+func (self Instance) SetAnimOffsetMax(value Float.X) Instance { //gd:CPUParticles2D.anim_offset_max
 	class(self).SetParamMax(11, float64(value))
 	return self
 }
@@ -1237,12 +1237,12 @@ Each particle's animation offset will vary along this [Curve]. Should be a unit 
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) AnimOffsetCurve() Curve.Instance {
+func (self Instance) AnimOffsetCurve() Curve.Instance { //gd:CPUParticles2D.anim_offset_curve
 	return Curve.Instance(class(self).GetParamCurve(11))
 }
 
 // SetAnimOffsetCurve sets the property returned by [GetParamCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimOffsetCurve(value Curve.Instance) Instance {
+func (self Instance) SetAnimOffsetCurve(value Curve.Instance) Instance { //gd:CPUParticles2D.anim_offset_curve
 	class(self).SetParamCurve(11, value)
 	return self
 }

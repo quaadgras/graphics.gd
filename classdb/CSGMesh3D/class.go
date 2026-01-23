@@ -186,12 +186,12 @@ Note: When using an [ArrayMesh], all vertex attributes except [Mesh.ArrayVertex]
 [QuadMesh]: https://pkg.go.dev/graphics.gd/classdb/QuadMesh
 [RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:CSGMesh3D.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:CSGMesh3D.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -201,12 +201,12 @@ The [Material] used in drawing the CSG shape.
 
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGMesh3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGMesh3D.material
 	class(self).SetMaterial(value)
 	return self
 }

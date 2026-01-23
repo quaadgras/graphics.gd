@@ -192,12 +192,12 @@ func New() Instance {
 /*
 The fill direction. See [FillMode] for possible values.
 */
-func (self Instance) FillMode() int {
+func (self Instance) FillMode() int { //gd:TextureProgressBar.fill_mode
 	return int(int(class(self).GetFillMode()))
 }
 
 // SetFillMode sets the property returned by [GetFillMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFillMode(value int) Instance {
+func (self Instance) SetFillMode(value int) Instance { //gd:TextureProgressBar.fill_mode
 	class(self).SetFillMode(int64(value))
 	return self
 }
@@ -212,12 +212,12 @@ Note: [RadialInitialAngle] is wrapped between 0 and 360 degrees (inclusive).
 [RadialInitialAngle]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.RadialInitialAngle
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 */
-func (self Instance) RadialInitialAngle() Angle.Radians {
+func (self Instance) RadialInitialAngle() Angle.Radians { //gd:TextureProgressBar.radial_initial_angle
 	return Angle.Radians(Float.X(class(self).GetRadialInitialAngle()))
 }
 
 // SetRadialInitialAngle sets the property returned by [GetRadialInitialAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialInitialAngle(value Angle.Radians) Instance {
+func (self Instance) SetRadialInitialAngle(value Angle.Radians) Instance { //gd:TextureProgressBar.radial_initial_angle
 	class(self).SetRadialInitialAngle(float64(value))
 	return self
 }
@@ -232,12 +232,12 @@ See [Range.Value], [Range.MaxValue].
 [Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 */
-func (self Instance) RadialFillDegrees() Float.X {
+func (self Instance) RadialFillDegrees() Float.X { //gd:TextureProgressBar.radial_fill_degrees
 	return Float.X(Float.X(class(self).GetFillDegrees()))
 }
 
 // SetRadialFillDegrees sets the property returned by [GetFillDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialFillDegrees(value Float.X) Instance {
+func (self Instance) SetRadialFillDegrees(value Float.X) Instance { //gd:TextureProgressBar.radial_fill_degrees
 	class(self).SetFillDegrees(float64(value))
 	return self
 }
@@ -250,12 +250,12 @@ Note: The effective radial center always stays within the [TextureProgress] boun
 [FillMode]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.FillMode
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 */
-func (self Instance) RadialCenterOffset() Vector2.XY {
+func (self Instance) RadialCenterOffset() Vector2.XY { //gd:TextureProgressBar.radial_center_offset
 	return Vector2.XY(class(self).GetRadialCenterOffset())
 }
 
 // SetRadialCenterOffset sets the property returned by [GetRadialCenterOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialCenterOffset(value Vector2.XY) Instance {
+func (self Instance) SetRadialCenterOffset(value Vector2.XY) Instance { //gd:TextureProgressBar.radial_center_offset
 	class(self).SetRadialCenterOffset(Vector2.XY(value))
 	return self
 }
@@ -270,12 +270,12 @@ If true, Godot treats the bar's textures like in [NinePatchRect]. Use the stretc
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 [TextureUnder]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureUnder
 */
-func (self Instance) NinePatchStretch() bool {
+func (self Instance) NinePatchStretch() bool { //gd:TextureProgressBar.nine_patch_stretch
 	return bool(class(self).GetNinePatchStretch())
 }
 
 // SetNinePatchStretch sets the property returned by [GetNinePatchStretch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNinePatchStretch(value bool) Instance {
+func (self Instance) SetNinePatchStretch(value bool) Instance { //gd:TextureProgressBar.nine_patch_stretch
 	class(self).SetNinePatchStretch(value)
 	return self
 }
@@ -285,12 +285,12 @@ The width of the 9-patch's left column. Only effective if [NinePatchStretch] is 
 
 [NinePatchStretch]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.NinePatchStretch
 */
-func (self Instance) StretchMarginLeft() int {
+func (self Instance) StretchMarginLeft() int { //gd:TextureProgressBar.stretch_margin_left
 	return int(int(class(self).GetStretchMargin(0)))
 }
 
 // SetStretchMarginLeft sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMarginLeft(value int) Instance {
+func (self Instance) SetStretchMarginLeft(value int) Instance { //gd:TextureProgressBar.stretch_margin_left
 	class(self).SetStretchMargin(0, int64(value))
 	return self
 }
@@ -300,12 +300,12 @@ The height of the 9-patch's top row. Only effective if [NinePatchStretch] is tru
 
 [NinePatchStretch]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.NinePatchStretch
 */
-func (self Instance) StretchMarginTop() int {
+func (self Instance) StretchMarginTop() int { //gd:TextureProgressBar.stretch_margin_top
 	return int(int(class(self).GetStretchMargin(1)))
 }
 
 // SetStretchMarginTop sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMarginTop(value int) Instance {
+func (self Instance) SetStretchMarginTop(value int) Instance { //gd:TextureProgressBar.stretch_margin_top
 	class(self).SetStretchMargin(1, int64(value))
 	return self
 }
@@ -315,12 +315,12 @@ The width of the 9-patch's right column. Only effective if [NinePatchStretch] is
 
 [NinePatchStretch]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.NinePatchStretch
 */
-func (self Instance) StretchMarginRight() int {
+func (self Instance) StretchMarginRight() int { //gd:TextureProgressBar.stretch_margin_right
 	return int(int(class(self).GetStretchMargin(2)))
 }
 
 // SetStretchMarginRight sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMarginRight(value int) Instance {
+func (self Instance) SetStretchMarginRight(value int) Instance { //gd:TextureProgressBar.stretch_margin_right
 	class(self).SetStretchMargin(2, int64(value))
 	return self
 }
@@ -330,12 +330,12 @@ The height of the 9-patch's bottom row. A margin of 16 means the 9-slice's botto
 
 [NinePatchStretch]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.NinePatchStretch
 */
-func (self Instance) StretchMarginBottom() int {
+func (self Instance) StretchMarginBottom() int { //gd:TextureProgressBar.stretch_margin_bottom
 	return int(int(class(self).GetStretchMargin(3)))
 }
 
 // SetStretchMarginBottom sets the property returned by [GetStretchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMarginBottom(value int) Instance {
+func (self Instance) SetStretchMarginBottom(value int) Instance { //gd:TextureProgressBar.stretch_margin_bottom
 	class(self).SetStretchMargin(3, int64(value))
 	return self
 }
@@ -345,12 +345,12 @@ func (self Instance) SetStretchMarginBottom(value int) Instance {
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) TextureUnder() Texture2D.Instance {
+func (self Instance) TextureUnder() Texture2D.Instance { //gd:TextureProgressBar.texture_under
 	return Texture2D.Instance(class(self).GetUnderTexture())
 }
 
 // SetTextureUnder sets the property returned by [GetUnderTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureUnder(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureUnder(value Texture2D.Instance) Instance { //gd:TextureProgressBar.texture_under
 	class(self).SetUnderTexture(value)
 	return self
 }
@@ -361,12 +361,12 @@ func (self Instance) SetTextureUnder(value Texture2D.Instance) Instance {
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 */
-func (self Instance) TextureOver() Texture2D.Instance {
+func (self Instance) TextureOver() Texture2D.Instance { //gd:TextureProgressBar.texture_over
 	return Texture2D.Instance(class(self).GetOverTexture())
 }
 
 // SetTextureOver sets the property returned by [GetOverTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureOver(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureOver(value Texture2D.Instance) Instance { //gd:TextureProgressBar.texture_over
 	class(self).SetOverTexture(value)
 	return self
 }
@@ -383,12 +383,12 @@ The value property comes from [Range]. See [Range.Value], [Range.MinValue], [Ran
 [Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) TextureProgress() Texture2D.Instance {
+func (self Instance) TextureProgress() Texture2D.Instance { //gd:TextureProgressBar.texture_progress
 	return Texture2D.Instance(class(self).GetProgressTexture())
 }
 
 // SetTextureProgress sets the property returned by [GetProgressTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureProgress(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureProgress(value Texture2D.Instance) Instance { //gd:TextureProgressBar.texture_progress
 	class(self).SetProgressTexture(value)
 	return self
 }
@@ -400,12 +400,12 @@ The offset of [TextureProgress]. Useful for [TextureOver] and [TextureUnder] wit
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 [TextureUnder]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureUnder
 */
-func (self Instance) TextureProgressOffset() Vector2.XY {
+func (self Instance) TextureProgressOffset() Vector2.XY { //gd:TextureProgressBar.texture_progress_offset
 	return Vector2.XY(class(self).GetTextureProgressOffset())
 }
 
 // SetTextureProgressOffset sets the property returned by [GetTextureProgressOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureProgressOffset(value Vector2.XY) Instance {
+func (self Instance) SetTextureProgressOffset(value Vector2.XY) Instance { //gd:TextureProgressBar.texture_progress_offset
 	class(self).SetTextureProgressOffset(Vector2.XY(value))
 	return self
 }
@@ -415,12 +415,12 @@ Multiplies the color of the bar's [TextureUnder] texture.
 
 [TextureUnder]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureUnder
 */
-func (self Instance) TintUnder() Color.RGBA {
+func (self Instance) TintUnder() Color.RGBA { //gd:TextureProgressBar.tint_under
 	return Color.RGBA(class(self).GetTintUnder())
 }
 
 // SetTintUnder sets the property returned by [GetTintUnder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintUnder(value Color.RGBA) Instance {
+func (self Instance) SetTintUnder(value Color.RGBA) Instance { //gd:TextureProgressBar.tint_under
 	class(self).SetTintUnder(Color.RGBA(value))
 	return self
 }
@@ -431,12 +431,12 @@ Multiplies the color of the bar's [TextureOver] texture. The effect is similar t
 [CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
 [TextureOver]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureOver
 */
-func (self Instance) TintOver() Color.RGBA {
+func (self Instance) TintOver() Color.RGBA { //gd:TextureProgressBar.tint_over
 	return Color.RGBA(class(self).GetTintOver())
 }
 
 // SetTintOver sets the property returned by [GetTintOver]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintOver(value Color.RGBA) Instance {
+func (self Instance) SetTintOver(value Color.RGBA) Instance { //gd:TextureProgressBar.tint_over
 	class(self).SetTintOver(Color.RGBA(value))
 	return self
 }
@@ -446,12 +446,12 @@ Multiplies the color of the bar's [TextureProgress] texture.
 
 [TextureProgress]: https://pkg.go.dev/graphics.gd/classdb/TextureProgressBar#Instance.TextureProgress
 */
-func (self Instance) TintProgress() Color.RGBA {
+func (self Instance) TintProgress() Color.RGBA { //gd:TextureProgressBar.tint_progress
 	return Color.RGBA(class(self).GetTintProgress())
 }
 
 // SetTintProgress sets the property returned by [GetTintProgress]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintProgress(value Color.RGBA) Instance {
+func (self Instance) SetTintProgress(value Color.RGBA) Instance { //gd:TextureProgressBar.tint_progress
 	class(self).SetTintProgress(Color.RGBA(value))
 	return self
 }

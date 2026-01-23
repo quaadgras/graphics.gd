@@ -954,12 +954,12 @@ Use [HasDefaultBaseScale] to check if this value is valid.
 [HasDefaultBaseScale]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultBaseScale
 [ThemeDB.FallbackBaseScale]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackBaseScale
 */
-func (self Instance) DefaultBaseScale() Float.X {
+func (self Instance) DefaultBaseScale() Float.X { //gd:Theme.default_base_scale
 	return Float.X(Float.X(class(self).GetDefaultBaseScale()))
 }
 
 // SetDefaultBaseScale sets the property returned by [GetDefaultBaseScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultBaseScale(value Float.X) Instance {
+func (self Instance) SetDefaultBaseScale(value Float.X) Instance { //gd:Theme.default_base_scale
 	class(self).SetDefaultBaseScale(float64(value))
 	return self
 }
@@ -972,12 +972,12 @@ Use [HasDefaultFont] to check if this value is valid.
 [HasDefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFont
 [ThemeDB.FallbackFont]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFont
 */
-func (self Instance) DefaultFont() Font.Instance {
+func (self Instance) DefaultFont() Font.Instance { //gd:Theme.default_font
 	return Font.Instance(class(self).GetDefaultFont())
 }
 
 // SetDefaultFont sets the property returned by [GetDefaultFont]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultFont(value Font.Instance) Instance {
+func (self Instance) SetDefaultFont(value Font.Instance) Instance { //gd:Theme.default_font
 	class(self).SetDefaultFont(value)
 	return self
 }
@@ -990,12 +990,12 @@ Values below 1 are invalid and can be used to unset the property. Use [HasDefaul
 [HasDefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.HasDefaultFontSize
 [ThemeDB.FallbackFontSize]: https://pkg.go.dev/graphics.gd/classdb/ThemeDB#FallbackFontSize
 */
-func (self Instance) DefaultFontSize() int {
+func (self Instance) DefaultFontSize() int { //gd:Theme.default_font_size
 	return int(int(class(self).GetDefaultFontSize()))
 }
 
 // SetDefaultFontSize sets the property returned by [GetDefaultFontSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultFontSize(value int) Instance {
+func (self Instance) SetDefaultFontSize(value int) Instance { //gd:Theme.default_font_size
 	class(self).SetDefaultFontSize(int64(value))
 	return self
 }

@@ -220,12 +220,12 @@ Mixing rate mode. If set to [MixRateCustom], [MixRate] is used, otherwise curren
 [AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
 [MixRate]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator#Instance.MixRate
 */
-func (self Instance) MixRateMode() AudioStreamGeneratorMixRate {
+func (self Instance) MixRateMode() AudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.mix_rate_mode
 	return AudioStreamGeneratorMixRate(class(self).GetMixRateMode())
 }
 
 // SetMixRateMode sets the property returned by [GetMixRateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) Instance {
+func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) Instance { //gd:AudioStreamGenerator.mix_rate_mode
 	class(self).SetMixRateMode(value)
 	return self
 }
@@ -247,12 +247,12 @@ Note: If you are using [AudioEffectCapture] as the source of your data, set [Mix
 [MixRateMode]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator#Instance.MixRateMode
 [Nyquist-Shannon sampling theorem]: https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem
 */
-func (self Instance) MixRate() Float.X {
+func (self Instance) MixRate() Float.X { //gd:AudioStreamGenerator.mix_rate
 	return Float.X(Float.X(class(self).GetMixRate()))
 }
 
 // SetMixRate sets the property returned by [GetMixRate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMixRate(value Float.X) Instance {
+func (self Instance) SetMixRate(value Float.X) Instance { //gd:AudioStreamGenerator.mix_rate
 	class(self).SetMixRate(float64(value))
 	return self
 }
@@ -260,12 +260,12 @@ func (self Instance) SetMixRate(value Float.X) Instance {
 /*
 The length of the buffer to generate (in seconds). Lower values result in less latency, but require the script to generate audio data faster, resulting in increased CPU usage and more risk for audio cracking if the CPU can't keep up.
 */
-func (self Instance) BufferLength() Float.X {
+func (self Instance) BufferLength() Float.X { //gd:AudioStreamGenerator.buffer_length
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
 // SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferLength(value Float.X) Instance {
+func (self Instance) SetBufferLength(value Float.X) Instance { //gd:AudioStreamGenerator.buffer_length
 	class(self).SetBufferLength(float64(value))
 	return self
 }

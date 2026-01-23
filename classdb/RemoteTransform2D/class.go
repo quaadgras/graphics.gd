@@ -184,12 +184,12 @@ func New() Instance {
 /*
 The node path to the remote node, relative to the RemoteTransform2D's position in the scene.
 */
-func (self Instance) RemotePath() string {
+func (self Instance) RemotePath() string { //gd:RemoteTransform2D.remote_path
 	return string(class(self).GetRemoteNode().String())
 }
 
 // SetRemotePath sets the property returned by [GetRemoteNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRemotePath(value string) Instance {
+func (self Instance) SetRemotePath(value string) Instance { //gd:RemoteTransform2D.remote_path
 	class(self).SetRemoteNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetRemotePath(value string) Instance {
 /*
 If true, global coordinates are used. If false, local coordinates are used.
 */
-func (self Instance) UseGlobalCoordinates() bool {
+func (self Instance) UseGlobalCoordinates() bool { //gd:RemoteTransform2D.use_global_coordinates
 	return bool(class(self).GetUseGlobalCoordinates())
 }
 
 // SetUseGlobalCoordinates sets the property returned by [GetUseGlobalCoordinates]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseGlobalCoordinates(value bool) Instance {
+func (self Instance) SetUseGlobalCoordinates(value bool) Instance { //gd:RemoteTransform2D.use_global_coordinates
 	class(self).SetUseGlobalCoordinates(value)
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetUseGlobalCoordinates(value bool) Instance {
 /*
 If true, the remote node's position is updated.
 */
-func (self Instance) UpdatePosition() bool {
+func (self Instance) UpdatePosition() bool { //gd:RemoteTransform2D.update_position
 	return bool(class(self).GetUpdatePosition())
 }
 
 // SetUpdatePosition sets the property returned by [GetUpdatePosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdatePosition(value bool) Instance {
+func (self Instance) SetUpdatePosition(value bool) Instance { //gd:RemoteTransform2D.update_position
 	class(self).SetUpdatePosition(value)
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetUpdatePosition(value bool) Instance {
 /*
 If true, the remote node's rotation is updated.
 */
-func (self Instance) UpdateRotation() bool {
+func (self Instance) UpdateRotation() bool { //gd:RemoteTransform2D.update_rotation
 	return bool(class(self).GetUpdateRotation())
 }
 
 // SetUpdateRotation sets the property returned by [GetUpdateRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdateRotation(value bool) Instance {
+func (self Instance) SetUpdateRotation(value bool) Instance { //gd:RemoteTransform2D.update_rotation
 	class(self).SetUpdateRotation(value)
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetUpdateRotation(value bool) Instance {
 /*
 If true, the remote node's scale is updated.
 */
-func (self Instance) UpdateScale() bool {
+func (self Instance) UpdateScale() bool { //gd:RemoteTransform2D.update_scale
 	return bool(class(self).GetUpdateScale())
 }
 
 // SetUpdateScale sets the property returned by [GetUpdateScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdateScale(value bool) Instance {
+func (self Instance) SetUpdateScale(value bool) Instance { //gd:RemoteTransform2D.update_scale
 	class(self).SetUpdateScale(value)
 	return self
 }

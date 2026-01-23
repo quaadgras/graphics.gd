@@ -192,12 +192,12 @@ func New() Instance {
 /*
 Title of the frame.
 */
-func (self Instance) Title() string {
+func (self Instance) Title() string { //gd:GraphFrame.title
 	return string(class(self).GetTitle().String())
 }
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitle(value string) Instance {
+func (self Instance) SetTitle(value string) Instance { //gd:GraphFrame.title
 	class(self).SetTitle(String.New(value))
 	return self
 }
@@ -207,12 +207,12 @@ If true, the frame's rect will be adjusted automatically to enclose all attached
 
 [GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
 */
-func (self Instance) AutoshrinkEnabled() bool {
+func (self Instance) AutoshrinkEnabled() bool { //gd:GraphFrame.autoshrink_enabled
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
 // SetAutoshrinkEnabled sets the property returned by [IsAutoshrinkEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoshrinkEnabled(value bool) Instance {
+func (self Instance) SetAutoshrinkEnabled(value bool) Instance { //gd:GraphFrame.autoshrink_enabled
 	class(self).SetAutoshrinkEnabled(value)
 	return self
 }
@@ -222,12 +222,12 @@ The margin around the attached nodes that is used to calculate the size of the f
 
 [AutoshrinkEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.AutoshrinkEnabled
 */
-func (self Instance) AutoshrinkMargin() int {
+func (self Instance) AutoshrinkMargin() int { //gd:GraphFrame.autoshrink_margin
 	return int(int(class(self).GetAutoshrinkMargin()))
 }
 
 // SetAutoshrinkMargin sets the property returned by [GetAutoshrinkMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoshrinkMargin(value int) Instance {
+func (self Instance) SetAutoshrinkMargin(value int) Instance { //gd:GraphFrame.autoshrink_margin
 	class(self).SetAutoshrinkMargin(int64(value))
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetAutoshrinkMargin(value int) Instance {
 /*
 The margin inside the frame that can be used to drag the frame.
 */
-func (self Instance) DragMargin() int {
+func (self Instance) DragMargin() int { //gd:GraphFrame.drag_margin
 	return int(int(class(self).GetDragMargin()))
 }
 
 // SetDragMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragMargin(value int) Instance {
+func (self Instance) SetDragMargin(value int) Instance { //gd:GraphFrame.drag_margin
 	class(self).SetDragMargin(int64(value))
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetDragMargin(value int) Instance {
 /*
 If true, the tint color will be used to tint the frame.
 */
-func (self Instance) TintColorEnabled() bool {
+func (self Instance) TintColorEnabled() bool { //gd:GraphFrame.tint_color_enabled
 	return bool(class(self).IsTintColorEnabled())
 }
 
 // SetTintColorEnabled sets the property returned by [IsTintColorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintColorEnabled(value bool) Instance {
+func (self Instance) SetTintColorEnabled(value bool) Instance { //gd:GraphFrame.tint_color_enabled
 	class(self).SetTintColorEnabled(value)
 	return self
 }
@@ -263,12 +263,12 @@ The color of the frame when [TintColorEnabled] is true.
 
 [TintColorEnabled]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame#Instance.TintColorEnabled
 */
-func (self Instance) TintColor() Color.RGBA {
+func (self Instance) TintColor() Color.RGBA { //gd:GraphFrame.tint_color
 	return Color.RGBA(class(self).GetTintColor())
 }
 
 // SetTintColor sets the property returned by [GetTintColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintColor(value Color.RGBA) Instance {
+func (self Instance) SetTintColor(value Color.RGBA) Instance { //gd:GraphFrame.tint_color
 	class(self).SetTintColor(Color.RGBA(value))
 	return self
 }

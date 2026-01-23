@@ -203,12 +203,12 @@ func New() Instance {
 /*
 The currently selected color.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:ColorPickerButton.color
 	return Color.RGBA(class(self).GetPickColor())
 }
 
 // SetColor sets the property returned by [GetPickColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:ColorPickerButton.color
 	class(self).SetPickColor(Color.RGBA(value))
 	return self
 }
@@ -218,12 +218,12 @@ If true, the alpha channel in the displayed [ColorPicker] will be visible.
 
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
 */
-func (self Instance) EditAlpha() bool {
+func (self Instance) EditAlpha() bool { //gd:ColorPickerButton.edit_alpha
 	return bool(class(self).IsEditingAlpha())
 }
 
 // SetEditAlpha sets the property returned by [IsEditingAlpha]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditAlpha(value bool) Instance {
+func (self Instance) SetEditAlpha(value bool) Instance { //gd:ColorPickerButton.edit_alpha
 	class(self).SetEditAlpha(value)
 	return self
 }
@@ -233,12 +233,12 @@ If true, the intensity slider in the displayed [ColorPicker] will be visible.
 
 [ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
 */
-func (self Instance) EditIntensity() bool {
+func (self Instance) EditIntensity() bool { //gd:ColorPickerButton.edit_intensity
 	return bool(class(self).IsEditingIntensity())
 }
 
 // SetEditIntensity sets the property returned by [IsEditingIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditIntensity(value bool) Instance {
+func (self Instance) SetEditIntensity(value bool) Instance { //gd:ColorPickerButton.edit_intensity
 	class(self).SetEditIntensity(value)
 	return self
 }

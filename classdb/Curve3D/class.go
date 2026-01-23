@@ -486,12 +486,12 @@ func New() Instance {
 /*
 If true, and the curve has more than 2 control points, the last point and the first one will be connected in a loop.
 */
-func (self Instance) Closed() bool {
+func (self Instance) Closed() bool { //gd:Curve3D.closed
 	return bool(class(self).IsClosed())
 }
 
 // SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClosed(value bool) Instance {
+func (self Instance) SetClosed(value bool) Instance { //gd:Curve3D.closed
 	class(self).SetClosed(value)
 	return self
 }
@@ -502,12 +502,12 @@ The distance in meters between two adjacent cached points. Changing it forces th
 [GetBakedLength]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.GetBakedLength
 [GetBakedPoints]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.GetBakedPoints
 */
-func (self Instance) BakeInterval() Float.X {
+func (self Instance) BakeInterval() Float.X { //gd:Curve3D.bake_interval
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
 
 // SetBakeInterval sets the property returned by [GetBakeInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeInterval(value Float.X) Instance {
+func (self Instance) SetBakeInterval(value Float.X) Instance { //gd:Curve3D.bake_interval
 	class(self).SetBakeInterval(float64(value))
 	return self
 }
@@ -515,12 +515,12 @@ func (self Instance) SetBakeInterval(value Float.X) Instance {
 /*
 The number of points describing the curve.
 */
-func (self Instance) PointCount() int {
+func (self Instance) PointCount() int { //gd:Curve3D.point_count
 	return int(int(class(self).GetPointCount()))
 }
 
 // SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPointCount(value int) Instance {
+func (self Instance) SetPointCount(value int) Instance { //gd:Curve3D.point_count
 	class(self).SetPointCount(int64(value))
 	return self
 }
@@ -530,12 +530,12 @@ If true, the curve will bake up vectors used for orientation. This is used when 
 
 [PathFollow3D.RotationMode]: https://pkg.go.dev/graphics.gd/classdb/PathFollow3D#Instance.RotationMode
 */
-func (self Instance) UpVectorEnabled() bool {
+func (self Instance) UpVectorEnabled() bool { //gd:Curve3D.up_vector_enabled
 	return bool(class(self).IsUpVectorEnabled())
 }
 
 // SetUpVectorEnabled sets the property returned by [IsUpVectorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpVectorEnabled(value bool) Instance {
+func (self Instance) SetUpVectorEnabled(value bool) Instance { //gd:Curve3D.up_vector_enabled
 	class(self).SetUpVectorEnabled(value)
 	return self
 }

@@ -178,12 +178,12 @@ func New() Instance {
 /*
 The button's text that will be displayed inside the button's area.
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:LinkButton.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:LinkButton.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -191,12 +191,12 @@ func (self Instance) SetText(value string) Instance {
 /*
 The underline mode to use for the text.
 */
-func (self Instance) Underline() UnderlineMode {
+func (self Instance) Underline() UnderlineMode { //gd:LinkButton.underline
 	return UnderlineMode(class(self).GetUnderlineMode())
 }
 
 // SetUnderline sets the property returned by [GetUnderlineMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnderline(value UnderlineMode) Instance {
+func (self Instance) SetUnderline(value UnderlineMode) Instance { //gd:LinkButton.underline
 	class(self).SetUnderlineMode(value)
 	return self
 }
@@ -208,12 +208,12 @@ The [URI] for this [LinkButton]. If set to a valid URI, pressing the button open
 [OS.ShellOpen]: https://pkg.go.dev/graphics.gd/classdb/OS#ShellOpen
 [URI]: https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 */
-func (self Instance) Uri() string {
+func (self Instance) Uri() string { //gd:LinkButton.uri
 	return string(class(self).GetUri().String())
 }
 
 // SetUri sets the property returned by [GetUri]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUri(value string) Instance {
+func (self Instance) SetUri(value string) Instance { //gd:LinkButton.uri
 	class(self).SetUri(String.New(value))
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetUri(value string) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:LinkButton.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:LinkButton.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -234,12 +234,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:LinkButton.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:LinkButton.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }
@@ -247,12 +247,12 @@ func (self Instance) SetLanguage(value string) Instance {
 /*
 Set BiDi algorithm override for the structured text.
 */
-func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:LinkButton.structured_text_bidi_override
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 // SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance { //gd:LinkButton.structured_text_bidi_override
 	class(self).SetStructuredTextBidiOverride(value)
 	return self
 }
@@ -260,12 +260,12 @@ func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTe
 /*
 Set additional options for BiDi override.
 */
-func (self Instance) StructuredTextBidiOverrideOptions() []any {
+func (self Instance) StructuredTextBidiOverrideOptions() []any { //gd:LinkButton.structured_text_bidi_override_options
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 // SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance { //gd:LinkButton.structured_text_bidi_override_options
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 	return self
 }

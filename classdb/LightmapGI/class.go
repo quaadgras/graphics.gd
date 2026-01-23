@@ -236,12 +236,12 @@ To further increase quality, enable [Supersampling] and/or increase [TexelScale]
 [TexelScale]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.TexelScale
 [UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
 */
-func (self Instance) Quality() BakeQuality {
+func (self Instance) Quality() BakeQuality { //gd:LightmapGI.quality
 	return BakeQuality(class(self).GetBakeQuality())
 }
 
 // SetQuality sets the property returned by [GetBakeQuality]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetQuality(value BakeQuality) Instance {
+func (self Instance) SetQuality(value BakeQuality) Instance { //gd:LightmapGI.quality
 	class(self).SetBakeQuality(value)
 	return self
 }
@@ -253,12 +253,12 @@ Supersampling provides increased lightmap quality with less noise, smoother shad
 
 [SupersamplingFactor]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.SupersamplingFactor
 */
-func (self Instance) Supersampling() bool {
+func (self Instance) Supersampling() bool { //gd:LightmapGI.supersampling
 	return bool(class(self).IsSupersamplingEnabled())
 }
 
 // SetSupersampling sets the property returned by [IsSupersamplingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSupersampling(value bool) Instance {
+func (self Instance) SetSupersampling(value bool) Instance { //gd:LightmapGI.supersampling
 	class(self).SetSupersamplingEnabled(value)
 	return self
 }
@@ -272,12 +272,12 @@ See [Supersampling] for more information.
 
 [Supersampling]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Supersampling
 */
-func (self Instance) SupersamplingFactor() Float.X {
+func (self Instance) SupersamplingFactor() Float.X { //gd:LightmapGI.supersampling_factor
 	return Float.X(Float.X(class(self).GetSupersamplingFactor()))
 }
 
 // SetSupersamplingFactor sets the property returned by [GetSupersamplingFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSupersamplingFactor(value Float.X) Instance {
+func (self Instance) SetSupersamplingFactor(value Float.X) Instance { //gd:LightmapGI.supersampling_factor
 	class(self).SetSupersamplingFactor(float64(value))
 	return self
 }
@@ -285,12 +285,12 @@ func (self Instance) SetSupersamplingFactor(value Float.X) Instance {
 /*
 Number of light bounces that are taken into account during baking. Higher values result in brighter, more realistic lighting, at the cost of longer bake times. If set to 0, only environment lighting, direct light and emissive lighting is baked.
 */
-func (self Instance) Bounces() int {
+func (self Instance) Bounces() int { //gd:LightmapGI.bounces
 	return int(int(class(self).GetBounces()))
 }
 
 // SetBounces sets the property returned by [GetBounces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBounces(value int) Instance {
+func (self Instance) SetBounces(value int) Instance { //gd:LightmapGI.bounces
 	class(self).SetBounces(int64(value))
 	return self
 }
@@ -303,12 +303,12 @@ Note: [BounceIndirectEnergy] only has an effect if [Bounces] is set to a value g
 [BounceIndirectEnergy]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.BounceIndirectEnergy
 [Bounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bounces
 */
-func (self Instance) BounceIndirectEnergy() Float.X {
+func (self Instance) BounceIndirectEnergy() Float.X { //gd:LightmapGI.bounce_indirect_energy
 	return Float.X(Float.X(class(self).GetBounceIndirectEnergy()))
 }
 
 // SetBounceIndirectEnergy sets the property returned by [GetBounceIndirectEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBounceIndirectEnergy(value Float.X) Instance {
+func (self Instance) SetBounceIndirectEnergy(value Float.X) Instance { //gd:LightmapGI.bounce_indirect_energy
 	class(self).SetBounceIndirectEnergy(float64(value))
 	return self
 }
@@ -323,12 +323,12 @@ Note: The property's name has no relationship with [DirectionalLight3D]. [Direct
 [Light3D.EditorOnly]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.EditorOnly
 [Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
 */
-func (self Instance) Directional() bool {
+func (self Instance) Directional() bool { //gd:LightmapGI.directional
 	return bool(class(self).IsDirectional())
 }
 
 // SetDirectional sets the property returned by [IsDirectional]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirectional(value bool) Instance {
+func (self Instance) SetDirectional(value bool) Instance { //gd:LightmapGI.directional
 	class(self).SetDirectional(value)
 	return self
 }
@@ -345,12 +345,12 @@ Note: The shadowmask texture is only created if [ShadowmaskMode] is not [Lightma
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 [ShadowmaskMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.ShadowmaskMode
 */
-func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode {
+func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode { //gd:LightmapGI.shadowmask_mode
 	return LightmapGIData.ShadowmaskMode(class(self).GetShadowmaskMode())
 }
 
 // SetShadowmaskMode sets the property returned by [GetShadowmaskMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) Instance {
+func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) Instance { //gd:LightmapGI.shadowmask_mode
 	class(self).SetShadowmaskMode(value)
 	return self
 }
@@ -363,12 +363,12 @@ Note: [UseTextureForBounces] only has an effect if [Bounces] is set to a value g
 [Bounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bounces
 [UseTextureForBounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseTextureForBounces
 */
-func (self Instance) UseTextureForBounces() bool {
+func (self Instance) UseTextureForBounces() bool { //gd:LightmapGI.use_texture_for_bounces
 	return bool(class(self).IsUsingTextureForBounces())
 }
 
 // SetUseTextureForBounces sets the property returned by [IsUsingTextureForBounces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseTextureForBounces(value bool) Instance {
+func (self Instance) SetUseTextureForBounces(value bool) Instance { //gd:LightmapGI.use_texture_for_bounces
 	class(self).SetUseTextureForBounces(value)
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetUseTextureForBounces(value bool) Instance {
 /*
 If true, ignore environment lighting when baking lightmaps.
 */
-func (self Instance) Interior() bool {
+func (self Instance) Interior() bool { //gd:LightmapGI.interior
 	return bool(class(self).IsInterior())
 }
 
 // SetInterior sets the property returned by [IsInterior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterior(value bool) Instance {
+func (self Instance) SetInterior(value bool) Instance { //gd:LightmapGI.interior
 	class(self).SetInterior(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetInterior(value bool) Instance {
 /*
 If true, uses a GPU-based denoising algorithm on the generated lightmap. This eliminates most noise within the generated lightmap at the cost of longer bake times. File sizes are generally not impacted significantly by the use of a denoiser, although lossless compression may do a better job at compressing a denoised image.
 */
-func (self Instance) UseDenoiser() bool {
+func (self Instance) UseDenoiser() bool { //gd:LightmapGI.use_denoiser
 	return bool(class(self).IsUsingDenoiser())
 }
 
 // SetUseDenoiser sets the property returned by [IsUsingDenoiser]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseDenoiser(value bool) Instance {
+func (self Instance) SetUseDenoiser(value bool) Instance { //gd:LightmapGI.use_denoiser
 	class(self).SetUseDenoiser(value)
 	return self
 }
@@ -405,12 +405,12 @@ The strength of denoising step applied to the generated lightmaps. Only effectiv
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
 */
-func (self Instance) DenoiserStrength() Float.X {
+func (self Instance) DenoiserStrength() Float.X { //gd:LightmapGI.denoiser_strength
 	return Float.X(Float.X(class(self).GetDenoiserStrength()))
 }
 
 // SetDenoiserStrength sets the property returned by [GetDenoiserStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDenoiserStrength(value Float.X) Instance {
+func (self Instance) SetDenoiserStrength(value Float.X) Instance { //gd:LightmapGI.denoiser_strength
 	class(self).SetDenoiserStrength(float64(value))
 	return self
 }
@@ -421,12 +421,12 @@ The distance in pixels from which the denoiser samples. Lower values preserve mo
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
 */
-func (self Instance) DenoiserRange() int {
+func (self Instance) DenoiserRange() int { //gd:LightmapGI.denoiser_range
 	return int(int(class(self).GetDenoiserRange()))
 }
 
 // SetDenoiserRange sets the property returned by [GetDenoiserRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDenoiserRange(value int) Instance {
+func (self Instance) SetDenoiserRange(value int) Instance { //gd:LightmapGI.denoiser_range
 	class(self).SetDenoiserRange(int64(value))
 	return self
 }
@@ -437,12 +437,12 @@ The bias to use when computing shadows. Increasing [Bias] can fix shadow acne on
 [Bias]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bias
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
-func (self Instance) Bias() Float.X {
+func (self Instance) Bias() Float.X { //gd:LightmapGI.bias
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
 // SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBias(value Float.X) Instance {
+func (self Instance) SetBias(value Float.X) Instance { //gd:LightmapGI.bias
 	class(self).SetBias(float64(value))
 	return self
 }
@@ -454,12 +454,12 @@ For example, doubling [TexelScale] doubles the lightmap texture resolution for a
 
 [TexelScale]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.TexelScale
 */
-func (self Instance) TexelScale() Float.X {
+func (self Instance) TexelScale() Float.X { //gd:LightmapGI.texel_scale
 	return Float.X(Float.X(class(self).GetTexelScale()))
 }
 
 // SetTexelScale sets the property returned by [GetTexelScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexelScale(value Float.X) Instance {
+func (self Instance) SetTexelScale(value Float.X) Instance { //gd:LightmapGI.texel_scale
 	class(self).SetTexelScale(float64(value))
 	return self
 }
@@ -469,12 +469,12 @@ The maximum texture size for the generated texture atlas. Higher values will res
 
 [MaxTextureSize]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.MaxTextureSize
 */
-func (self Instance) MaxTextureSize() int {
+func (self Instance) MaxTextureSize() int { //gd:LightmapGI.max_texture_size
 	return int(int(class(self).GetMaxTextureSize()))
 }
 
 // SetMaxTextureSize sets the property returned by [GetMaxTextureSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxTextureSize(value int) Instance {
+func (self Instance) SetMaxTextureSize(value int) Instance { //gd:LightmapGI.max_texture_size
 	class(self).SetMaxTextureSize(int64(value))
 	return self
 }
@@ -482,12 +482,12 @@ func (self Instance) SetMaxTextureSize(value int) Instance {
 /*
 The environment mode to use when baking lightmaps.
 */
-func (self Instance) EnvironmentMode() EnvironmentMode {
+func (self Instance) EnvironmentMode() EnvironmentMode { //gd:LightmapGI.environment_mode
 	return EnvironmentMode(class(self).GetEnvironmentMode())
 }
 
 // SetEnvironmentMode sets the property returned by [GetEnvironmentMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironmentMode(value EnvironmentMode) Instance {
+func (self Instance) SetEnvironmentMode(value EnvironmentMode) Instance { //gd:LightmapGI.environment_mode
 	class(self).SetEnvironmentMode(value)
 	return self
 }
@@ -497,12 +497,12 @@ The sky to use as a source of environment lighting. Only effective if [Environme
 
 [EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
 */
-func (self Instance) EnvironmentCustomSky() Sky.Instance {
+func (self Instance) EnvironmentCustomSky() Sky.Instance { //gd:LightmapGI.environment_custom_sky
 	return Sky.Instance(class(self).GetEnvironmentCustomSky())
 }
 
 // SetEnvironmentCustomSky sets the property returned by [GetEnvironmentCustomSky]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) Instance {
+func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) Instance { //gd:LightmapGI.environment_custom_sky
 	class(self).SetEnvironmentCustomSky(value)
 	return self
 }
@@ -512,12 +512,12 @@ The color to use for environment lighting. Only effective if [EnvironmentMode] i
 
 [EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
 */
-func (self Instance) EnvironmentCustomColor() Color.RGBA {
+func (self Instance) EnvironmentCustomColor() Color.RGBA { //gd:LightmapGI.environment_custom_color
 	return Color.RGBA(class(self).GetEnvironmentCustomColor())
 }
 
 // SetEnvironmentCustomColor sets the property returned by [GetEnvironmentCustomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) Instance {
+func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) Instance { //gd:LightmapGI.environment_custom_color
 	class(self).SetEnvironmentCustomColor(Color.RGBA(value))
 	return self
 }
@@ -527,12 +527,12 @@ The color multiplier to use for environment lighting. Only effective if [Environ
 
 [EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
 */
-func (self Instance) EnvironmentCustomEnergy() Float.X {
+func (self Instance) EnvironmentCustomEnergy() Float.X { //gd:LightmapGI.environment_custom_energy
 	return Float.X(Float.X(class(self).GetEnvironmentCustomEnergy()))
 }
 
 // SetEnvironmentCustomEnergy sets the property returned by [GetEnvironmentCustomEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironmentCustomEnergy(value Float.X) Instance {
+func (self Instance) SetEnvironmentCustomEnergy(value Float.X) Instance { //gd:LightmapGI.environment_custom_energy
 	class(self).SetEnvironmentCustomEnergy(float64(value))
 	return self
 }
@@ -543,12 +543,12 @@ The [CameraAttributes] resource that specifies exposure levels to bake at. Auto-
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
-func (self Instance) CameraAttributes() CameraAttributes.Instance {
+func (self Instance) CameraAttributes() CameraAttributes.Instance { //gd:LightmapGI.camera_attributes
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
 // SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance { //gd:LightmapGI.camera_attributes
 	class(self).SetCameraAttributes(value)
 	return self
 }
@@ -564,12 +564,12 @@ Note: Regardless of [GenerateProbesSubdiv], direct lighting on dynamic objects i
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 [LightmapProbe]: https://pkg.go.dev/graphics.gd/classdb/LightmapProbe
 */
-func (self Instance) GenerateProbesSubdiv() GenerateProbes {
+func (self Instance) GenerateProbesSubdiv() GenerateProbes { //gd:LightmapGI.generate_probes_subdiv
 	return GenerateProbes(class(self).GetGenerateProbes())
 }
 
 // SetGenerateProbesSubdiv sets the property returned by [GetGenerateProbes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) Instance {
+func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) Instance { //gd:LightmapGI.generate_probes_subdiv
 	class(self).SetGenerateProbes(value)
 	return self
 }
@@ -580,12 +580,12 @@ The [LightmapGIData] associated to this [LightmapGI] node. This resource is auto
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 [LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
 */
-func (self Instance) LightData() LightmapGIData.Instance {
+func (self Instance) LightData() LightmapGIData.Instance { //gd:LightmapGI.light_data
 	return LightmapGIData.Instance(class(self).GetLightData())
 }
 
 // SetLightData sets the property returned by [GetLightData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightData(value LightmapGIData.Instance) Instance {
+func (self Instance) SetLightData(value LightmapGIData.Instance) Instance { //gd:LightmapGI.light_data
 	class(self).SetLightData(value)
 	return self
 }

@@ -164,12 +164,12 @@ If false, the blended animations' frame are stopped when the blend value is 0.
 
 If true, forcing the blended animations to advance frame.
 */
-func (self Instance) Sync() bool {
+func (self Instance) Sync() bool { //gd:AnimationNodeSync.sync
 	return bool(class(self).IsUsingSync())
 }
 
 // SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSync(value bool) Instance {
+func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeSync.sync
 	class(self).SetUseSync(value)
 	return self
 }

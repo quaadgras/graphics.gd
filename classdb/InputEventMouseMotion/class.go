@@ -184,12 +184,12 @@ func New() Instance {
 /*
 Represents the angles of tilt of the pen. Positive X-coordinate value indicates a tilt to the right. Positive Y-coordinate value indicates a tilt toward the user. Ranges from -1.0 to 1.0 for both axes.
 */
-func (self Instance) Tilt() Vector2.XY {
+func (self Instance) Tilt() Vector2.XY { //gd:InputEventMouseMotion.tilt
 	return Vector2.XY(class(self).GetTilt())
 }
 
 // SetTilt sets the property returned by [GetTilt]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTilt(value Vector2.XY) Instance {
+func (self Instance) SetTilt(value Vector2.XY) Instance { //gd:InputEventMouseMotion.tilt
 	class(self).SetTilt(Vector2.XY(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetTilt(value Vector2.XY) Instance {
 /*
 Represents the pressure the user puts on the pen. Ranges from 0.0 to 1.0.
 */
-func (self Instance) Pressure() Float.X {
+func (self Instance) Pressure() Float.X { //gd:InputEventMouseMotion.pressure
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
 // SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPressure(value Float.X) Instance {
+func (self Instance) SetPressure(value Float.X) Instance { //gd:InputEventMouseMotion.pressure
 	class(self).SetPressure(float64(value))
 	return self
 }
@@ -212,12 +212,12 @@ Returns true when using the eraser end of a stylus pen.
 
 Note: This property is implemented on Linux, macOS and Windows.
 */
-func (self Instance) PenInverted() bool {
+func (self Instance) PenInverted() bool { //gd:InputEventMouseMotion.pen_inverted
 	return bool(class(self).GetPenInverted())
 }
 
 // SetPenInverted sets the property returned by [GetPenInverted]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPenInverted(value bool) Instance {
+func (self Instance) SetPenInverted(value bool) Instance { //gd:InputEventMouseMotion.pen_inverted
 	class(self).SetPenInverted(value)
 	return self
 }
@@ -233,12 +233,12 @@ Note: [Relative] is automatically scaled according to the content scale factor, 
 [Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Relative
 [ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
 */
-func (self Instance) Relative() Vector2.XY {
+func (self Instance) Relative() Vector2.XY { //gd:InputEventMouseMotion.relative
 	return Vector2.XY(class(self).GetRelative())
 }
 
 // SetRelative sets the property returned by [GetRelative]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRelative(value Vector2.XY) Instance {
+func (self Instance) SetRelative(value Vector2.XY) Instance { //gd:InputEventMouseMotion.relative
 	class(self).SetRelative(Vector2.XY(value))
 	return self
 }
@@ -254,12 +254,12 @@ Note: This coordinate is not scaled according to the content scale factor or cal
 [InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
 [Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Relative
 */
-func (self Instance) ScreenRelative() Vector2.XY {
+func (self Instance) ScreenRelative() Vector2.XY { //gd:InputEventMouseMotion.screen_relative
 	return Vector2.XY(class(self).GetScreenRelative())
 }
 
 // SetScreenRelative sets the property returned by [GetScreenRelative]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScreenRelative(value Vector2.XY) Instance {
+func (self Instance) SetScreenRelative(value Vector2.XY) Instance { //gd:InputEventMouseMotion.screen_relative
 	class(self).SetScreenRelative(Vector2.XY(value))
 	return self
 }
@@ -274,12 +274,12 @@ Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] 
 [ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Velocity
 */
-func (self Instance) Velocity() Vector2.XY {
+func (self Instance) Velocity() Vector2.XY { //gd:InputEventMouseMotion.velocity
 	return Vector2.XY(class(self).GetVelocity())
 }
 
 // SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVelocity(value Vector2.XY) Instance {
+func (self Instance) SetVelocity(value Vector2.XY) Instance { //gd:InputEventMouseMotion.velocity
 	class(self).SetVelocity(Vector2.XY(value))
 	return self
 }
@@ -292,12 +292,12 @@ Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] 
 [InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
 [ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
 */
-func (self Instance) ScreenVelocity() Vector2.XY {
+func (self Instance) ScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.screen_velocity
 	return Vector2.XY(class(self).GetScreenVelocity())
 }
 
 // SetScreenVelocity sets the property returned by [GetScreenVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScreenVelocity(value Vector2.XY) Instance {
+func (self Instance) SetScreenVelocity(value Vector2.XY) Instance { //gd:InputEventMouseMotion.screen_velocity
 	class(self).SetScreenVelocity(Vector2.XY(value))
 	return self
 }

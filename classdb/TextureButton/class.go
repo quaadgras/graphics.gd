@@ -195,12 +195,12 @@ Texture to display by default, when the node is not in the disabled, hover or pr
 
 [TextureFocused]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureFocused
 */
-func (self Instance) TextureNormal() Texture2D.Instance {
+func (self Instance) TextureNormal() Texture2D.Instance { //gd:TextureButton.texture_normal
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
 // SetTextureNormal sets the property returned by [GetTextureNormal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance { //gd:TextureButton.texture_normal
 	class(self).SetTextureNormal(value)
 	return self
 }
@@ -212,12 +212,12 @@ Texture to display on mouse down over the node, if the node has keyboard focus a
 [TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
 [TextureHover]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureHover
 */
-func (self Instance) TexturePressed() Texture2D.Instance {
+func (self Instance) TexturePressed() Texture2D.Instance { //gd:TextureButton.texture_pressed
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
 // SetTexturePressed sets the property returned by [GetTexturePressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance {
+func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance { //gd:TextureButton.texture_pressed
 	class(self).SetTexturePressed(value)
 	return self
 }
@@ -228,12 +228,12 @@ Texture to display when the mouse hovers over the node. If not assigned, the [Te
 [TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
 [TextureNormal]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureNormal
 */
-func (self Instance) TextureHover() Texture2D.Instance {
+func (self Instance) TextureHover() Texture2D.Instance { //gd:TextureButton.texture_hover
 	return Texture2D.Instance(class(self).GetTextureHover())
 }
 
 // SetTextureHover sets the property returned by [GetTextureHover]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureHover(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureHover(value Texture2D.Instance) Instance { //gd:TextureButton.texture_hover
 	class(self).SetTextureHover(value)
 	return self
 }
@@ -245,12 +245,12 @@ Texture to display when the node is disabled. See [BaseButton.Disabled]. If not 
 [TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
 [TextureNormal]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureNormal
 */
-func (self Instance) TextureDisabled() Texture2D.Instance {
+func (self Instance) TextureDisabled() Texture2D.Instance { //gd:TextureButton.texture_disabled
 	return Texture2D.Instance(class(self).GetTextureDisabled())
 }
 
 // SetTextureDisabled sets the property returned by [GetTextureDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureDisabled(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureDisabled(value Texture2D.Instance) Instance { //gd:TextureButton.texture_disabled
 	class(self).SetTextureDisabled(value)
 	return self
 }
@@ -260,12 +260,12 @@ Texture to overlay on the base texture when the node has mouse or keyboard focus
 
 [TextureFocused]: https://pkg.go.dev/graphics.gd/classdb/TextureButton#Instance.TextureFocused
 */
-func (self Instance) TextureFocused() Texture2D.Instance {
+func (self Instance) TextureFocused() Texture2D.Instance { //gd:TextureButton.texture_focused
 	return Texture2D.Instance(class(self).GetTextureFocused())
 }
 
 // SetTextureFocused sets the property returned by [GetTextureFocused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureFocused(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureFocused(value Texture2D.Instance) Instance { //gd:TextureButton.texture_focused
 	class(self).SetTextureFocused(value)
 	return self
 }
@@ -275,12 +275,12 @@ Pure black and white [BitMap] image to use for click detection. On the mask, whi
 
 [BitMap]: https://pkg.go.dev/graphics.gd/classdb/BitMap
 */
-func (self Instance) TextureClickMask() BitMap.Instance {
+func (self Instance) TextureClickMask() BitMap.Instance { //gd:TextureButton.texture_click_mask
 	return BitMap.Instance(class(self).GetClickMask())
 }
 
 // SetTextureClickMask sets the property returned by [GetClickMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureClickMask(value BitMap.Instance) Instance {
+func (self Instance) SetTextureClickMask(value BitMap.Instance) Instance { //gd:TextureButton.texture_click_mask
 	class(self).SetClickMask(value)
 	return self
 }
@@ -290,12 +290,12 @@ If true, the size of the texture won't be considered for minimum size calculatio
 
 [TextureButton]: https://pkg.go.dev/graphics.gd/classdb/TextureButton
 */
-func (self Instance) IgnoreTextureSize() bool {
+func (self Instance) IgnoreTextureSize() bool { //gd:TextureButton.ignore_texture_size
 	return bool(class(self).GetIgnoreTextureSize())
 }
 
 // SetIgnoreTextureSize sets the property returned by [GetIgnoreTextureSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreTextureSize(value bool) Instance {
+func (self Instance) SetIgnoreTextureSize(value bool) Instance { //gd:TextureButton.ignore_texture_size
 	class(self).SetIgnoreTextureSize(value)
 	return self
 }
@@ -303,12 +303,12 @@ func (self Instance) SetIgnoreTextureSize(value bool) Instance {
 /*
 Controls the texture's behavior when you resize the node's bounding rectangle. See the [StretchMode] constants for available options.
 */
-func (self Instance) StretchMode() StretchMode {
+func (self Instance) StretchMode() StretchMode { //gd:TextureButton.stretch_mode
 	return StretchMode(class(self).GetStretchMode())
 }
 
 // SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMode(value StretchMode) Instance {
+func (self Instance) SetStretchMode(value StretchMode) Instance { //gd:TextureButton.stretch_mode
 	class(self).SetStretchMode(value)
 	return self
 }
@@ -316,12 +316,12 @@ func (self Instance) SetStretchMode(value StretchMode) Instance {
 /*
 If true, texture is flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:TextureButton.flip_h
 	return bool(class(self).IsFlippedH())
 }
 
 // SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:TextureButton.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -329,12 +329,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, texture is flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:TextureButton.flip_v
 	return bool(class(self).IsFlippedV())
 }
 
 // SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:TextureButton.flip_v
 	class(self).SetFlipV(value)
 	return self
 }

@@ -690,12 +690,12 @@ Affects [ListDirBegin] and [GetDirectories].
 [GetDirectories]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetDirectories
 [ListDirBegin]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirBegin
 */
-func (self Instance) IncludeNavigational() bool {
+func (self Instance) IncludeNavigational() bool { //gd:DirAccess.include_navigational
 	return bool(class(self).GetIncludeNavigational())
 }
 
 // SetIncludeNavigational sets the property returned by [GetIncludeNavigational]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIncludeNavigational(value bool) Instance {
+func (self Instance) SetIncludeNavigational(value bool) Instance { //gd:DirAccess.include_navigational
 	class(self).SetIncludeNavigational(value)
 	return self
 }
@@ -709,12 +709,12 @@ Affects [ListDirBegin], [GetDirectories] and [GetFiles].
 [GetFiles]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetFiles
 [ListDirBegin]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirBegin
 */
-func (self Instance) IncludeHidden() bool {
+func (self Instance) IncludeHidden() bool { //gd:DirAccess.include_hidden
 	return bool(class(self).GetIncludeHidden())
 }
 
 // SetIncludeHidden sets the property returned by [GetIncludeHidden]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIncludeHidden(value bool) Instance {
+func (self Instance) SetIncludeHidden(value bool) Instance { //gd:DirAccess.include_hidden
 	class(self).SetIncludeHidden(value)
 	return self
 }

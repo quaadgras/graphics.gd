@@ -165,12 +165,12 @@ Overrides the step used when clicking increment and decrement buttons or when us
 
 [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
 */
-func (self Instance) CustomStep() Float.X {
+func (self Instance) CustomStep() Float.X { //gd:ScrollBar.custom_step
 	return Float.X(Float.X(class(self).GetCustomStep()))
 }
 
 // SetCustomStep sets the property returned by [GetCustomStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomStep(value Float.X) Instance {
+func (self Instance) SetCustomStep(value Float.X) Instance { //gd:ScrollBar.custom_step
 	class(self).SetCustomStep(float64(value))
 	return self
 }

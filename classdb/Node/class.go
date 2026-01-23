@@ -2416,12 +2416,12 @@ Note: When changing the name, the following characters will be replaced with an 
 
 [String.ValidateNodeName]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.ValidateNodeName
 */
-func (self Instance) Name() string {
+func (self Instance) Name() string { //gd:Node.name
 	return string(class(self).GetName().String())
 }
 
 // SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetName(value string) Instance {
+func (self Instance) SetName(value string) Instance { //gd:Node.name
 	class(self).SetName(String.Name(String.New(value)))
 	return self
 }
@@ -2435,12 +2435,12 @@ Note: If another node with the same [Owner] shares the same [Name] as this node,
 [Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 [Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
-func (self Instance) UniqueNameInOwner() bool {
+func (self Instance) UniqueNameInOwner() bool { //gd:Node.unique_name_in_owner
 	return bool(class(self).IsUniqueNameInOwner())
 }
 
 // SetUniqueNameInOwner sets the property returned by [IsUniqueNameInOwner]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUniqueNameInOwner(value bool) Instance {
+func (self Instance) SetUniqueNameInOwner(value bool) Instance { //gd:Node.unique_name_in_owner
 	class(self).SetUniqueNameInOwner(value)
 	return self
 }
@@ -2450,12 +2450,12 @@ The original scene's file path, if the node has been instantiated from a [Packed
 
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
-func (self Instance) SceneFilePath() string {
+func (self Instance) SceneFilePath() string { //gd:Node.scene_file_path
 	return string(class(self).GetSceneFilePath().String())
 }
 
 // SetSceneFilePath sets the property returned by [GetSceneFilePath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSceneFilePath(value string) Instance {
+func (self Instance) SetSceneFilePath(value string) Instance { //gd:Node.scene_file_path
 	class(self).SetSceneFilePath(String.New(value))
 	return self
 }
@@ -2469,12 +2469,12 @@ Note: In the editor, nodes not owned by the scene root are usually not displayed
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 [UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
-func (self Instance) Owner() Instance {
+func (self Instance) Owner() Instance { //gd:Node.owner
 	return Instance(class(self).GetOwner())
 }
 
 // SetOwner sets the property returned by [GetOwner]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOwner(value Instance) Instance {
+func (self Instance) SetOwner(value Instance) Instance { //gd:Node.owner
 	class(self).SetOwner(value)
 	return self
 }
@@ -2487,7 +2487,7 @@ Note: Renaming the node, or moving it in the tree, will not move the [Multiplaye
 [MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
 [SceneTree.GetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetMultiplayer
 */
-func (self Instance) Multiplayer() MultiplayerAPI.Instance {
+func (self Instance) Multiplayer() MultiplayerAPI.Instance { //gd:Node.multiplayer
 	return MultiplayerAPI.Instance(class(self).GetMultiplayer())
 }
 
@@ -2496,12 +2496,12 @@ The node's processing behavior. To check if the node can process in its current 
 
 [CanProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CanProcess
 */
-func (self Instance) ProcessMode() ProcessMode {
+func (self Instance) ProcessMode() ProcessMode { //gd:Node.process_mode
 	return ProcessMode(class(self).GetProcessMode())
 }
 
 // SetProcessMode sets the property returned by [GetProcessMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessMode(value ProcessMode) Instance {
+func (self Instance) SetProcessMode(value ProcessMode) Instance { //gd:Node.process_mode
 	class(self).SetProcessMode(value)
 	return self
 }
@@ -2511,12 +2511,12 @@ The node's execution order of the process callbacks ([Process], [NotificationPro
 
 [Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
-func (self Instance) ProcessPriority() int {
+func (self Instance) ProcessPriority() int { //gd:Node.process_priority
 	return int(int(class(self).GetProcessPriority()))
 }
 
 // SetProcessPriority sets the property returned by [GetProcessPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessPriority(value int) Instance {
+func (self Instance) SetProcessPriority(value int) Instance { //gd:Node.process_priority
 	class(self).SetProcessPriority(int64(value))
 	return self
 }
@@ -2527,12 +2527,12 @@ Similar to [ProcessPriority] but for [NotificationPhysicsProcess], [PhysicsProce
 [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
 */
-func (self Instance) ProcessPhysicsPriority() int {
+func (self Instance) ProcessPhysicsPriority() int { //gd:Node.process_physics_priority
 	return int(int(class(self).GetPhysicsProcessPriority()))
 }
 
 // SetProcessPhysicsPriority sets the property returned by [GetPhysicsProcessPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessPhysicsPriority(value int) Instance {
+func (self Instance) SetProcessPhysicsPriority(value int) Instance { //gd:Node.process_physics_priority
 	class(self).SetPhysicsProcessPriority(int64(value))
 	return self
 }
@@ -2553,12 +2553,12 @@ To better understand process thread groups, the idea is that any node set to any
 [Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 [ProcessThreadGroupOrder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessThreadGroupOrder
 */
-func (self Instance) ProcessThreadGroup() ProcessThreadGroup {
+func (self Instance) ProcessThreadGroup() ProcessThreadGroup { //gd:Node.process_thread_group
 	return ProcessThreadGroup(class(self).GetProcessThreadGroup())
 }
 
 // SetProcessThreadGroup sets the property returned by [GetProcessThreadGroup]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) Instance {
+func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) Instance { //gd:Node.process_thread_group
 	class(self).SetProcessThreadGroup(value)
 	return self
 }
@@ -2566,12 +2566,12 @@ func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) Instance {
 /*
 Change the process thread group order. Groups with a lesser order will process before groups with a greater order. This is useful when a large amount of nodes process in sub thread and, afterwards, another group wants to collect their result in the main thread, as an example.
 */
-func (self Instance) ProcessThreadGroupOrder() int {
+func (self Instance) ProcessThreadGroupOrder() int { //gd:Node.process_thread_group_order
 	return int(int(class(self).GetProcessThreadGroupOrder()))
 }
 
 // SetProcessThreadGroupOrder sets the property returned by [GetProcessThreadGroupOrder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessThreadGroupOrder(value int) Instance {
+func (self Instance) SetProcessThreadGroupOrder(value int) Instance { //gd:Node.process_thread_group_order
 	class(self).SetProcessThreadGroupOrder(int64(value))
 	return self
 }
@@ -2581,12 +2581,12 @@ Set whether the current thread group will process messages (calls to [CallDeferr
 
 [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
-func (self Instance) ProcessThreadMessages() ProcessThreadMessages {
+func (self Instance) ProcessThreadMessages() ProcessThreadMessages { //gd:Node.process_thread_messages
 	return ProcessThreadMessages(class(self).GetProcessThreadMessages())
 }
 
 // SetProcessThreadMessages sets the property returned by [GetProcessThreadMessages]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) Instance {
+func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) Instance { //gd:Node.process_thread_messages
 	class(self).SetProcessThreadMessages(value)
 	return self
 }
@@ -2605,12 +2605,12 @@ Note: When teleporting a node to a distant position, it's recommended to tempora
 [SceneTree.PhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.PhysicsInterpolation
 [VehicleWheel3D]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D
 */
-func (self Instance) PhysicsInterpolationMode() PhysicsInterpolationMode {
+func (self Instance) PhysicsInterpolationMode() PhysicsInterpolationMode { //gd:Node.physics_interpolation_mode
 	return PhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
 }
 
 // SetPhysicsInterpolationMode sets the property returned by [GetPhysicsInterpolationMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) Instance {
+func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) Instance { //gd:Node.physics_interpolation_mode
 	class(self).SetPhysicsInterpolationMode(value)
 	return self
 }
@@ -2625,12 +2625,12 @@ Note: For the root node, auto translate mode can also be set via [ProjectSetting
 [RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) AutoTranslateMode() AutoTranslateMode {
+func (self Instance) AutoTranslateMode() AutoTranslateMode { //gd:Node.auto_translate_mode
 	return AutoTranslateMode(class(self).GetAutoTranslateMode())
 }
 
 // SetAutoTranslateMode sets the property returned by [GetAutoTranslateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) Instance {
+func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) Instance { //gd:Node.auto_translate_mode
 	class(self).SetAutoTranslateMode(value)
 	return self
 }
@@ -2638,12 +2638,12 @@ func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) Instance {
 /*
 An optional description to the node. It will be displayed as a tooltip when hovering over the node in the editor's Scene dock.
 */
-func (self Instance) EditorDescription() string {
+func (self Instance) EditorDescription() string { //gd:Node.editor_description
 	return string(class(self).GetEditorDescription().String())
 }
 
 // SetEditorDescription sets the property returned by [GetEditorDescription]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorDescription(value string) Instance {
+func (self Instance) SetEditorDescription(value string) Instance { //gd:Node.editor_description
 	class(self).SetEditorDescription(String.New(value))
 	return self
 }

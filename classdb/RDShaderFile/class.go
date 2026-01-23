@@ -220,12 +220,12 @@ The base compilation error message, which indicates errors not related to a spec
 
 [RDShaderSPIRV]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSPIRV
 */
-func (self Instance) BaseError() string {
+func (self Instance) BaseError() string { //gd:RDShaderFile.base_error
 	return string(class(self).GetBaseError().String())
 }
 
 // SetBaseError sets the property returned by [GetBaseError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaseError(value string) Instance {
+func (self Instance) SetBaseError(value string) Instance { //gd:RDShaderFile.base_error
 	class(self).SetBaseError(String.New(value))
 	return self
 }

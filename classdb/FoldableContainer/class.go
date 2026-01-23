@@ -232,12 +232,12 @@ func New() Instance {
 /*
 If true, the container will becomes folded and will hide all its children.
 */
-func (self Instance) Folded() bool {
+func (self Instance) Folded() bool { //gd:FoldableContainer.folded
 	return bool(class(self).IsFolded())
 }
 
 // SetFolded sets the property returned by [IsFolded]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFolded(value bool) Instance {
+func (self Instance) SetFolded(value bool) Instance { //gd:FoldableContainer.folded
 	class(self).SetFolded(value)
 	return self
 }
@@ -245,12 +245,12 @@ func (self Instance) SetFolded(value bool) Instance {
 /*
 The container's title text.
 */
-func (self Instance) Title() string {
+func (self Instance) Title() string { //gd:FoldableContainer.title
 	return string(class(self).GetTitle().String())
 }
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitle(value string) Instance {
+func (self Instance) SetTitle(value string) Instance { //gd:FoldableContainer.title
 	class(self).SetTitle(String.New(value))
 	return self
 }
@@ -258,12 +258,12 @@ func (self Instance) SetTitle(value string) Instance {
 /*
 Title's horizontal text alignment.
 */
-func (self Instance) TitleAlignment() GUI.HorizontalAlignment {
+func (self Instance) TitleAlignment() GUI.HorizontalAlignment { //gd:FoldableContainer.title_alignment
 	return GUI.HorizontalAlignment(class(self).GetTitleAlignment())
 }
 
 // SetTitleAlignment sets the property returned by [GetTitleAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitleAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetTitleAlignment(value GUI.HorizontalAlignment) Instance { //gd:FoldableContainer.title_alignment
 	class(self).SetTitleAlignment(value)
 	return self
 }
@@ -271,12 +271,12 @@ func (self Instance) SetTitleAlignment(value GUI.HorizontalAlignment) Instance {
 /*
 Title's position.
 */
-func (self Instance) TitlePosition() TitlePosition {
+func (self Instance) TitlePosition() TitlePosition { //gd:FoldableContainer.title_position
 	return TitlePosition(class(self).GetTitlePosition())
 }
 
 // SetTitlePosition sets the property returned by [GetTitlePosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitlePosition(value TitlePosition) Instance {
+func (self Instance) SetTitlePosition(value TitlePosition) Instance { //gd:FoldableContainer.title_position
 	class(self).SetTitlePosition(value)
 	return self
 }
@@ -284,12 +284,12 @@ func (self Instance) SetTitlePosition(value TitlePosition) Instance {
 /*
 Defines the behavior of the title when the text is longer than the available space.
 */
-func (self Instance) TitleTextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TitleTextOverrunBehavior() TextServer.OverrunBehavior { //gd:FoldableContainer.title_text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTitleTextOverrunBehavior())
 }
 
 // SetTitleTextOverrunBehavior sets the property returned by [GetTitleTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitleTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTitleTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:FoldableContainer.title_text_overrun_behavior
 	class(self).SetTitleTextOverrunBehavior(value)
 	return self
 }
@@ -297,12 +297,12 @@ func (self Instance) SetTitleTextOverrunBehavior(value TextServer.OverrunBehavio
 /*
 Title text writing direction.
 */
-func (self Instance) TitleTextDirection() Control.TextDirection {
+func (self Instance) TitleTextDirection() Control.TextDirection { //gd:FoldableContainer.title_text_direction
 	return Control.TextDirection(class(self).GetTitleTextDirection())
 }
 
 // SetTitleTextDirection sets the property returned by [GetTitleTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitleTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTitleTextDirection(value Control.TextDirection) Instance { //gd:FoldableContainer.title_text_direction
 	class(self).SetTitleTextDirection(value)
 	return self
 }
@@ -310,12 +310,12 @@ func (self Instance) SetTitleTextDirection(value Control.TextDirection) Instance
 /*
 Language code used for text shaping algorithms. If left empty, current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:FoldableContainer.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:FoldableContainer.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }

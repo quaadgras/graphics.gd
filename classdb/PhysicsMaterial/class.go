@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The body's friction. Values range from 0 (frictionless) to 1 (maximum friction).
 */
-func (self Instance) Friction() Float.X {
+func (self Instance) Friction() Float.X { //gd:PhysicsMaterial.friction
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
 // SetFriction sets the property returned by [GetFriction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFriction(value Float.X) Instance {
+func (self Instance) SetFriction(value Float.X) Instance { //gd:PhysicsMaterial.friction
 	class(self).SetFriction(float64(value))
 	return self
 }
@@ -178,12 +178,12 @@ func (self Instance) SetFriction(value Float.X) Instance {
 /*
 If true, the physics engine will use the friction of the object marked as "rough" when two objects collide. If false, the physics engine will use the lowest friction of all colliding objects instead. If true for both colliding objects, the physics engine will use the highest friction.
 */
-func (self Instance) Rough() bool {
+func (self Instance) Rough() bool { //gd:PhysicsMaterial.rough
 	return bool(class(self).IsRough())
 }
 
 // SetRough sets the property returned by [IsRough]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRough(value bool) Instance {
+func (self Instance) SetRough(value bool) Instance { //gd:PhysicsMaterial.rough
 	class(self).SetRough(value)
 	return self
 }
@@ -195,12 +195,12 @@ Note: Even with [Bounce] set to 1.0, some energy will be lost over time due to l
 
 [Bounce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsMaterial#Instance.Bounce
 */
-func (self Instance) Bounce() Float.X {
+func (self Instance) Bounce() Float.X { //gd:PhysicsMaterial.bounce
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
 // SetBounce sets the property returned by [GetBounce]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBounce(value Float.X) Instance {
+func (self Instance) SetBounce(value Float.X) Instance { //gd:PhysicsMaterial.bounce
 	class(self).SetBounce(float64(value))
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetBounce(value Float.X) Instance {
 /*
 If true, subtracts the bounciness from the colliding object's bounciness instead of adding it.
 */
-func (self Instance) Absorbent() bool {
+func (self Instance) Absorbent() bool { //gd:PhysicsMaterial.absorbent
 	return bool(class(self).IsAbsorbent())
 }
 
 // SetAbsorbent sets the property returned by [IsAbsorbent]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAbsorbent(value bool) Instance {
+func (self Instance) SetAbsorbent(value bool) Instance { //gd:PhysicsMaterial.absorbent
 	class(self).SetAbsorbent(value)
 	return self
 }

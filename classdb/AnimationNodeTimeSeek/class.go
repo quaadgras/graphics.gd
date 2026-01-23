@@ -180,12 +180,12 @@ func New() Instance {
 /*
 If true, some processes are executed to handle keys between seeks, such as calculating root motion and finding the nearest discrete key.
 */
-func (self Instance) ExplicitElapse() bool {
+func (self Instance) ExplicitElapse() bool { //gd:AnimationNodeTimeSeek.explicit_elapse
 	return bool(class(self).IsExplicitElapse())
 }
 
 // SetExplicitElapse sets the property returned by [IsExplicitElapse]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExplicitElapse(value bool) Instance {
+func (self Instance) SetExplicitElapse(value bool) Instance { //gd:AnimationNodeTimeSeek.explicit_elapse
 	class(self).SetExplicitElapse(value)
 	return self
 }

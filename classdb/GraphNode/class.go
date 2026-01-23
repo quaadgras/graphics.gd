@@ -574,12 +574,12 @@ func New() Instance {
 /*
 The text displayed in the GraphNode's title bar.
 */
-func (self Instance) Title() string {
+func (self Instance) Title() string { //gd:GraphNode.title
 	return string(class(self).GetTitle().String())
 }
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitle(value string) Instance {
+func (self Instance) SetTitle(value string) Instance { //gd:GraphNode.title
 	class(self).SetTitle(String.New(value))
 	return self
 }
@@ -589,12 +589,12 @@ If true, you can connect ports with different types, even if the connection was 
 
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 */
-func (self Instance) IgnoreInvalidConnectionType() bool {
+func (self Instance) IgnoreInvalidConnectionType() bool { //gd:GraphNode.ignore_invalid_connection_type
 	return bool(class(self).IsIgnoringValidConnectionType())
 }
 
 // SetIgnoreInvalidConnectionType sets the property returned by [IsIgnoringValidConnectionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreInvalidConnectionType(value bool) Instance {
+func (self Instance) SetIgnoreInvalidConnectionType(value bool) Instance { //gd:GraphNode.ignore_invalid_connection_type
 	class(self).SetIgnoreInvalidConnectionType(value)
 	return self
 }
@@ -610,12 +610,12 @@ Determines how connection slots can be focused.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) SlotsFocusMode() Control.FocusMode {
+func (self Instance) SlotsFocusMode() Control.FocusMode { //gd:GraphNode.slots_focus_mode
 	return Control.FocusMode(class(self).GetSlotsFocusMode())
 }
 
 // SetSlotsFocusMode sets the property returned by [GetSlotsFocusMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSlotsFocusMode(value Control.FocusMode) Instance {
+func (self Instance) SetSlotsFocusMode(value Control.FocusMode) Instance { //gd:GraphNode.slots_focus_mode
 	class(self).SetSlotsFocusMode(value)
 	return self
 }

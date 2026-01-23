@@ -175,12 +175,12 @@ func New() Instance {
 /*
 The amount (or delta) of the event. When used for high-precision scroll events, this indicates the scroll amount (vertical or horizontal). This is only supported on some platforms; the reported sensitivity varies depending on the platform. May be 0 if not supported.
 */
-func (self Instance) Factor() Float.X {
+func (self Instance) Factor() Float.X { //gd:InputEventMouseButton.factor
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
 // SetFactor sets the property returned by [GetFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFactor(value Float.X) Instance {
+func (self Instance) SetFactor(value Float.X) Instance { //gd:InputEventMouseButton.factor
 	class(self).SetFactor(float64(value))
 	return self
 }
@@ -188,12 +188,12 @@ func (self Instance) SetFactor(value Float.X) Instance {
 /*
 The mouse button identifier, one of the [MouseButton] button or button wheel constants.
 */
-func (self Instance) ButtonIndex() Input.MouseButton {
+func (self Instance) ButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.button_index
 	return Input.MouseButton(class(self).GetButtonIndex())
 }
 
 // SetButtonIndex sets the property returned by [GetButtonIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetButtonIndex(value Input.MouseButton) Instance {
+func (self Instance) SetButtonIndex(value Input.MouseButton) Instance { //gd:InputEventMouseButton.button_index
 	class(self).SetButtonIndex(value)
 	return self
 }
@@ -202,7 +202,7 @@ func (self Instance) SetButtonIndex(value Input.MouseButton) Instance {
 If true, the mouse button event has been canceled.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetCanceled(value bool) Instance {
+func (self Instance) SetCanceled(value bool) Instance { //gd:InputEventMouseButton.canceled
 	class(self).SetCanceled(value)
 	return self
 }
@@ -211,7 +211,7 @@ func (self Instance) SetCanceled(value bool) Instance {
 If true, the mouse button's state is pressed. If false, the mouse button's state is released.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) Instance {
+func (self Instance) SetPressed(value bool) Instance { //gd:InputEventMouseButton.pressed
 	class(self).SetPressed(value)
 	return self
 }
@@ -219,12 +219,12 @@ func (self Instance) SetPressed(value bool) Instance {
 /*
 If true, the mouse button's state is a double-click.
 */
-func (self Instance) DoubleClick() bool {
+func (self Instance) DoubleClick() bool { //gd:InputEventMouseButton.double_click
 	return bool(class(self).IsDoubleClick())
 }
 
 // SetDoubleClick sets the property returned by [IsDoubleClick]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDoubleClick(value bool) Instance {
+func (self Instance) SetDoubleClick(value bool) Instance { //gd:InputEventMouseButton.double_click
 	class(self).SetDoubleClick(value)
 	return self
 }

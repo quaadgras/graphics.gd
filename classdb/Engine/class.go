@@ -536,13 +536,13 @@ Warning: If set to false anywhere in the project, important error messages may b
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func PrintErrorMessages() bool {
+func PrintErrorMessages() bool { //gd:Engine.print_error_messages
 	once.Do(singleton)
 	return bool(class(self).IsPrintingErrorMessages())
 }
 
 // SetPrintErrorMessages sets the property returned by [IsPrintingErrorMessages].
-func SetPrintErrorMessages(value bool) {
+func SetPrintErrorMessages(value bool) { //gd:Engine.print_error_messages
 	once.Do(singleton)
 	class(self).SetPrintErrorMessages(value)
 }
@@ -555,13 +555,13 @@ Note: This does not stop printing errors or warnings produced by scripts to the 
 [@GlobalScope.Print]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Print
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func PrintToStdout() bool {
+func PrintToStdout() bool { //gd:Engine.print_to_stdout
 	once.Do(singleton)
 	return bool(class(self).IsPrintingToStdout())
 }
 
 // SetPrintToStdout sets the property returned by [IsPrintingToStdout].
-func SetPrintToStdout(value bool) {
+func SetPrintToStdout(value bool) { //gd:Engine.print_to_stdout
 	once.Do(singleton)
 	class(self).SetPrintToStdout(value)
 }
@@ -574,13 +574,13 @@ Note: Only [MaxPhysicsStepsPerFrame] physics ticks may be simulated per rendered
 [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func PhysicsTicksPerSecond() int {
+func PhysicsTicksPerSecond() int { //gd:Engine.physics_ticks_per_second
 	once.Do(singleton)
 	return int(int(class(self).GetPhysicsTicksPerSecond()))
 }
 
 // SetPhysicsTicksPerSecond sets the property returned by [GetPhysicsTicksPerSecond].
-func SetPhysicsTicksPerSecond(value int) {
+func SetPhysicsTicksPerSecond(value int) { //gd:Engine.physics_ticks_per_second
 	once.Do(singleton)
 	class(self).SetPhysicsTicksPerSecond(int64(value))
 }
@@ -590,13 +590,13 @@ The maximum number of physics steps that can be simulated each rendered frame.
 
 Note: The default value is tuned to prevent expensive physics simulations from triggering even more expensive simulations indefinitely. However, the game will appear to slow down if the rendering FPS is less than 1 / max_physics_steps_per_frame of [PhysicsTicksPerSecond]. This occurs even if delta is consistently used in physics calculations. To avoid this, increase [MaxPhysicsStepsPerFrame] if you have increased [PhysicsTicksPerSecond] significantly above its default value.
 */
-func MaxPhysicsStepsPerFrame() int {
+func MaxPhysicsStepsPerFrame() int { //gd:Engine.max_physics_steps_per_frame
 	once.Do(singleton)
 	return int(int(class(self).GetMaxPhysicsStepsPerFrame()))
 }
 
 // SetMaxPhysicsStepsPerFrame sets the property returned by [GetMaxPhysicsStepsPerFrame].
-func SetMaxPhysicsStepsPerFrame(value int) {
+func SetMaxPhysicsStepsPerFrame(value int) { //gd:Engine.max_physics_steps_per_frame
 	once.Do(singleton)
 	class(self).SetMaxPhysicsStepsPerFrame(int64(value))
 }
@@ -619,13 +619,13 @@ Note: If [ProjectSettings] "display/window/vsync/vsync_mode" is Disabled, limiti
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [reduce input lag while avoiding tearing]: https://blurbusters.com/howto-low-lag-vsync-on/
 */
-func MaxFps() int {
+func MaxFps() int { //gd:Engine.max_fps
 	once.Do(singleton)
 	return int(int(class(self).GetMaxFps()))
 }
 
 // SetMaxFps sets the property returned by [GetMaxFps].
-func SetMaxFps(value int) {
+func SetMaxFps(value int) { //gd:Engine.max_fps
 	once.Do(singleton)
 	class(self).SetMaxFps(int64(value))
 }
@@ -648,13 +648,13 @@ Note: This does not automatically adjust [PhysicsTicksPerSecond]. With values ab
 [SceneTreeTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTreeTimer
 [Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
 */
-func TimeScale() Float.X {
+func TimeScale() Float.X { //gd:Engine.time_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetTimeScale()))
 }
 
 // SetTimeScale sets the property returned by [GetTimeScale].
-func SetTimeScale(value Float.X) {
+func SetTimeScale(value Float.X) { //gd:Engine.time_scale
 	once.Do(singleton)
 	class(self).SetTimeScale(float64(value))
 }
@@ -666,13 +666,13 @@ Note: The default value of 0.5 should be good enough for most cases; values abov
 
 Note: When using a custom physics interpolation solution, or within a network game, it's recommended to disable the physics jitter fix by setting this property to 0.
 */
-func PhysicsJitterFix() Float.X {
+func PhysicsJitterFix() Float.X { //gd:Engine.physics_jitter_fix
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPhysicsJitterFix()))
 }
 
 // SetPhysicsJitterFix sets the property returned by [GetPhysicsJitterFix].
-func SetPhysicsJitterFix(value Float.X) {
+func SetPhysicsJitterFix(value Float.X) { //gd:Engine.physics_jitter_fix
 	once.Do(singleton)
 	class(self).SetPhysicsJitterFix(float64(value))
 }

@@ -251,12 +251,12 @@ Minimum value. Range is clamped if [Value] is less than [MinValue].
 [MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) MinValue() Float.X {
+func (self Instance) MinValue() Float.X { //gd:Range.min_value
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
 // SetMinValue sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinValue(value Float.X) Instance {
+func (self Instance) SetMinValue(value Float.X) Instance { //gd:Range.min_value
 	class(self).SetMin(float64(value))
 	return self
 }
@@ -267,12 +267,12 @@ Maximum value. Range is clamped if [Value] is greater than [MaxValue].
 [MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) MaxValue() Float.X {
+func (self Instance) MaxValue() Float.X { //gd:Range.max_value
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
 // SetMaxValue sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxValue(value Float.X) Instance {
+func (self Instance) SetMaxValue(value Float.X) Instance { //gd:Range.max_value
 	class(self).SetMax(float64(value))
 	return self
 }
@@ -284,12 +284,12 @@ If greater than 0, [Value] will always be rounded to a multiple of this property
 [Rounded]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Rounded
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) Step() Float.X {
+func (self Instance) Step() Float.X { //gd:Range.step
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
 // SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStep(value Float.X) Instance {
+func (self Instance) SetStep(value Float.X) Instance { //gd:Range.step
 	class(self).SetStep(float64(value))
 	return self
 }
@@ -302,12 +302,12 @@ Page size. Used mainly for [ScrollBar]. A [ScrollBar]'s grabber length is the [S
 [Page]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Page
 [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
 */
-func (self Instance) Page() Float.X {
+func (self Instance) Page() Float.X { //gd:Range.page
 	return Float.X(Float.X(class(self).GetPage()))
 }
 
 // SetPage sets the property returned by [GetPage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPage(value Float.X) Instance {
+func (self Instance) SetPage(value Float.X) Instance { //gd:Range.page
 	class(self).SetPage(float64(value))
 	return self
 }
@@ -318,12 +318,12 @@ Range's current value. Changing this property (even via code) will trigger [OnVa
 [OnValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.OnValueChanged
 [SetValueNoSignal]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.SetValueNoSignal
 */
-func (self Instance) Value() Float.X {
+func (self Instance) Value() Float.X { //gd:Range.value
 	return Float.X(Float.X(class(self).GetValue()))
 }
 
 // SetValue sets the property returned by [GetValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetValue(value Float.X) Instance {
+func (self Instance) SetValue(value Float.X) Instance { //gd:Range.value
 	class(self).SetValue(float64(value))
 	return self
 }
@@ -331,12 +331,12 @@ func (self Instance) SetValue(value Float.X) Instance {
 /*
 The value mapped between 0 and 1.
 */
-func (self Instance) Ratio() Float.X {
+func (self Instance) Ratio() Float.X { //gd:Range.ratio
 	return Float.X(Float.X(class(self).GetAsRatio()))
 }
 
 // SetRatio sets the property returned by [GetAsRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRatio(value Float.X) Instance {
+func (self Instance) SetRatio(value Float.X) Instance { //gd:Range.ratio
 	class(self).SetAsRatio(float64(value))
 	return self
 }
@@ -347,12 +347,12 @@ If true, and [MinValue] is greater or equal to 0, [Value] will be represented ex
 [MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) ExpEdit() bool {
+func (self Instance) ExpEdit() bool { //gd:Range.exp_edit
 	return bool(class(self).IsRatioExp())
 }
 
 // SetExpEdit sets the property returned by [IsRatioExp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpEdit(value bool) Instance {
+func (self Instance) SetExpEdit(value bool) Instance { //gd:Range.exp_edit
 	class(self).SetExpRatio(value)
 	return self
 }
@@ -362,12 +362,12 @@ If true, [Value] will always be rounded to the nearest integer.
 
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) Rounded() bool {
+func (self Instance) Rounded() bool { //gd:Range.rounded
 	return bool(class(self).IsUsingRoundedValues())
 }
 
 // SetRounded sets the property returned by [IsUsingRoundedValues]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRounded(value bool) Instance {
+func (self Instance) SetRounded(value bool) Instance { //gd:Range.rounded
 	class(self).SetUseRoundedValues(value)
 	return self
 }
@@ -378,12 +378,12 @@ If true, [Value] may be greater than [MaxValue].
 [MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) AllowGreater() bool {
+func (self Instance) AllowGreater() bool { //gd:Range.allow_greater
 	return bool(class(self).IsGreaterAllowed())
 }
 
 // SetAllowGreater sets the property returned by [IsGreaterAllowed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowGreater(value bool) Instance {
+func (self Instance) SetAllowGreater(value bool) Instance { //gd:Range.allow_greater
 	class(self).SetAllowGreater(value)
 	return self
 }
@@ -394,12 +394,12 @@ If true, [Value] may be less than [MinValue].
 [MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
 [Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 */
-func (self Instance) AllowLesser() bool {
+func (self Instance) AllowLesser() bool { //gd:Range.allow_lesser
 	return bool(class(self).IsLesserAllowed())
 }
 
 // SetAllowLesser sets the property returned by [IsLesserAllowed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowLesser(value bool) Instance {
+func (self Instance) SetAllowLesser(value bool) Instance { //gd:Range.allow_lesser
 	class(self).SetAllowLesser(value)
 	return self
 }

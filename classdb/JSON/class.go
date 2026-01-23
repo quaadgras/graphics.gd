@@ -362,12 +362,12 @@ func New() Instance {
 /*
 Contains the parsed JSON data in any form.
 */
-func (self Instance) Data() any {
+func (self Instance) Data() any { //gd:JSON.data
 	return any(class(self).GetData().Interface())
 }
 
 // SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetData(value any) Instance {
+func (self Instance) SetData(value any) Instance { //gd:JSON.data
 	class(self).SetData(variant.New(value))
 	return self
 }

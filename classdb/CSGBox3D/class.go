@@ -172,12 +172,12 @@ func New() Instance {
 /*
 The box's width, height and depth.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:CSGBox3D.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:CSGBox3D.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -185,12 +185,12 @@ func (self Instance) SetSize(value Vector3.XYZ) Instance {
 /*
 The material used to render the box.
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGBox3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGBox3D.material
 	class(self).SetMaterial(value)
 	return self
 }

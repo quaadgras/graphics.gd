@@ -162,12 +162,12 @@ The ID of a [Window] that received this event.
 
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) WindowId() int {
+func (self Instance) WindowId() int { //gd:InputEventFromWindow.window_id
 	return int(int(class(self).GetWindowId()))
 }
 
 // SetWindowId sets the property returned by [GetWindowId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWindowId(value int) Instance {
+func (self Instance) SetWindowId(value int) Instance { //gd:InputEventFromWindow.window_id
 	class(self).SetWindowId(int64(value))
 	return self
 }

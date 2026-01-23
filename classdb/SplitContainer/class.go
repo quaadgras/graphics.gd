@@ -211,12 +211,12 @@ The initial offset of the splitting between the two [Control]s, with 0 being at 
 
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self Instance) SplitOffset() int {
+func (self Instance) SplitOffset() int { //gd:SplitContainer.split_offset
 	return int(int(class(self).GetSplitOffset()))
 }
 
 // SetSplitOffset sets the property returned by [GetSplitOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSplitOffset(value int) Instance {
+func (self Instance) SetSplitOffset(value int) Instance { //gd:SplitContainer.split_offset
 	class(self).SetSplitOffset(int64(value))
 	return self
 }
@@ -226,12 +226,12 @@ If true, the dragger will be disabled and the children will be sized as if the [
 
 [SplitOffset]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffset
 */
-func (self Instance) Collapsed() bool {
+func (self Instance) Collapsed() bool { //gd:SplitContainer.collapsed
 	return bool(class(self).IsCollapsed())
 }
 
 // SetCollapsed sets the property returned by [IsCollapsed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollapsed(value bool) Instance {
+func (self Instance) SetCollapsed(value bool) Instance { //gd:SplitContainer.collapsed
 	class(self).SetCollapsed(value)
 	return self
 }
@@ -239,12 +239,12 @@ func (self Instance) SetCollapsed(value bool) Instance {
 /*
 Enables or disables split dragging.
 */
-func (self Instance) DraggingEnabled() bool {
+func (self Instance) DraggingEnabled() bool { //gd:SplitContainer.dragging_enabled
 	return bool(class(self).IsDraggingEnabled())
 }
 
 // SetDraggingEnabled sets the property returned by [IsDraggingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDraggingEnabled(value bool) Instance {
+func (self Instance) SetDraggingEnabled(value bool) Instance { //gd:SplitContainer.dragging_enabled
 	class(self).SetDraggingEnabled(value)
 	return self
 }
@@ -254,12 +254,12 @@ Determines the dragger's visibility. This property does not determine whether dr
 
 [DraggingEnabled]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.DraggingEnabled
 */
-func (self Instance) DraggerVisibility() DraggerVisibility {
+func (self Instance) DraggerVisibility() DraggerVisibility { //gd:SplitContainer.dragger_visibility
 	return DraggerVisibility(class(self).GetDraggerVisibility())
 }
 
 // SetDraggerVisibility sets the property returned by [GetDraggerVisibility]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDraggerVisibility(value DraggerVisibility) Instance {
+func (self Instance) SetDraggerVisibility(value DraggerVisibility) Instance { //gd:SplitContainer.dragger_visibility
 	class(self).SetDraggerVisibility(value)
 	return self
 }
@@ -273,12 +273,12 @@ Can't be changed when using [HSplitContainer] and [VSplitContainer].
 [SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
 [VSplitContainer]: https://pkg.go.dev/graphics.gd/classdb/VSplitContainer
 */
-func (self Instance) Vertical() bool {
+func (self Instance) Vertical() bool { //gd:SplitContainer.vertical
 	return bool(class(self).IsVertical())
 }
 
 // SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertical(value bool) Instance {
+func (self Instance) SetVertical(value bool) Instance { //gd:SplitContainer.vertical
 	class(self).SetVertical(value)
 	return self
 }
@@ -288,12 +288,12 @@ If true, a touch-friendly drag handle will be enabled for better usability on sm
 
 [SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
 */
-func (self Instance) TouchDraggerEnabled() bool {
+func (self Instance) TouchDraggerEnabled() bool { //gd:SplitContainer.touch_dragger_enabled
 	return bool(class(self).IsTouchDraggerEnabled())
 }
 
 // SetTouchDraggerEnabled sets the property returned by [IsTouchDraggerEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTouchDraggerEnabled(value bool) Instance {
+func (self Instance) SetTouchDraggerEnabled(value bool) Instance { //gd:SplitContainer.touch_dragger_enabled
 	class(self).SetTouchDraggerEnabled(value)
 	return self
 }
@@ -301,12 +301,12 @@ func (self Instance) SetTouchDraggerEnabled(value bool) Instance {
 /*
 Reduces the size of the drag area and split bar theme's 'split_bar_background' at the beginning of the container.
 */
-func (self Instance) DragAreaMarginBegin() int {
+func (self Instance) DragAreaMarginBegin() int { //gd:SplitContainer.drag_area_margin_begin
 	return int(int(class(self).GetDragAreaMarginBegin()))
 }
 
 // SetDragAreaMarginBegin sets the property returned by [GetDragAreaMarginBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAreaMarginBegin(value int) Instance {
+func (self Instance) SetDragAreaMarginBegin(value int) Instance { //gd:SplitContainer.drag_area_margin_begin
 	class(self).SetDragAreaMarginBegin(int64(value))
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetDragAreaMarginBegin(value int) Instance {
 /*
 Reduces the size of the drag area and split bar theme's 'split_bar_background' at the end of the container.
 */
-func (self Instance) DragAreaMarginEnd() int {
+func (self Instance) DragAreaMarginEnd() int { //gd:SplitContainer.drag_area_margin_end
 	return int(int(class(self).GetDragAreaMarginEnd()))
 }
 
 // SetDragAreaMarginEnd sets the property returned by [GetDragAreaMarginEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAreaMarginEnd(value int) Instance {
+func (self Instance) SetDragAreaMarginEnd(value int) Instance { //gd:SplitContainer.drag_area_margin_end
 	class(self).SetDragAreaMarginEnd(int64(value))
 	return self
 }
@@ -330,12 +330,12 @@ Shifts the drag area in the axis of the container to prevent the drag area from 
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
 */
-func (self Instance) DragAreaOffset() int {
+func (self Instance) DragAreaOffset() int { //gd:SplitContainer.drag_area_offset
 	return int(int(class(self).GetDragAreaOffset()))
 }
 
 // SetDragAreaOffset sets the property returned by [GetDragAreaOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAreaOffset(value int) Instance {
+func (self Instance) SetDragAreaOffset(value int) Instance { //gd:SplitContainer.drag_area_offset
 	class(self).SetDragAreaOffset(int64(value))
 	return self
 }
@@ -346,12 +346,12 @@ Highlights the drag area [Rect2.PositionSize] so you can see where it is during 
 [DraggingEnabled]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.DraggingEnabled
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
-func (self Instance) DragAreaHighlightInEditor() bool {
+func (self Instance) DragAreaHighlightInEditor() bool { //gd:SplitContainer.drag_area_highlight_in_editor
 	return bool(class(self).IsDragAreaHighlightInEditorEnabled())
 }
 
 // SetDragAreaHighlightInEditor sets the property returned by [IsDragAreaHighlightInEditorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAreaHighlightInEditor(value bool) Instance {
+func (self Instance) SetDragAreaHighlightInEditor(value bool) Instance { //gd:SplitContainer.drag_area_highlight_in_editor
 	class(self).SetDragAreaHighlightInEditor(value)
 	return self
 }

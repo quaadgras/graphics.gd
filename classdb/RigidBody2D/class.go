@@ -451,12 +451,12 @@ func New() Instance {
 /*
 The body's mass.
 */
-func (self Instance) Mass() Float.X {
+func (self Instance) Mass() Float.X { //gd:RigidBody2D.mass
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
 // SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMass(value Float.X) Instance {
+func (self Instance) SetMass(value Float.X) Instance { //gd:RigidBody2D.mass
 	class(self).SetMass(float64(value))
 	return self
 }
@@ -466,12 +466,12 @@ The physics material override for the body.
 
 If a material is assigned to this property, it will be used instead of any other physics material, such as an inherited one.
 */
-func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
+func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance { //gd:RigidBody2D.physics_material_override
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
 // SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance {
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance { //gd:RigidBody2D.physics_material_override
 	class(self).SetPhysicsMaterialOverride(value)
 	return self
 }
@@ -482,12 +482,12 @@ Multiplies the gravity applied to the body. The body's gravity is calculated fro
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) GravityScale() Float.X {
+func (self Instance) GravityScale() Float.X { //gd:RigidBody2D.gravity_scale
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
 // SetGravityScale sets the property returned by [GetGravityScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityScale(value Float.X) Instance {
+func (self Instance) SetGravityScale(value Float.X) Instance { //gd:RigidBody2D.gravity_scale
 	class(self).SetGravityScale(float64(value))
 	return self
 }
@@ -495,12 +495,12 @@ func (self Instance) SetGravityScale(value Float.X) Instance {
 /*
 Defines the way the body's center of mass is set.
 */
-func (self Instance) CenterOfMassMode() CenterOfMassMode {
+func (self Instance) CenterOfMassMode() CenterOfMassMode { //gd:RigidBody2D.center_of_mass_mode
 	return CenterOfMassMode(class(self).GetCenterOfMassMode())
 }
 
 // SetCenterOfMassMode sets the property returned by [GetCenterOfMassMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) Instance {
+func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) Instance { //gd:RigidBody2D.center_of_mass_mode
 	class(self).SetCenterOfMassMode(value)
 	return self
 }
@@ -513,12 +513,12 @@ When [CenterOfMassMode] is set to [CenterOfMassModeAuto] (default value), the ce
 [CenterOfMass]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CenterOfMass
 [CenterOfMassMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CenterOfMassMode
 */
-func (self Instance) CenterOfMass() Vector2.XY {
+func (self Instance) CenterOfMass() Vector2.XY { //gd:RigidBody2D.center_of_mass
 	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
 // SetCenterOfMass sets the property returned by [GetCenterOfMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCenterOfMass(value Vector2.XY) Instance {
+func (self Instance) SetCenterOfMass(value Vector2.XY) Instance { //gd:RigidBody2D.center_of_mass
 	class(self).SetCenterOfMass(Vector2.XY(value))
 	return self
 }
@@ -532,12 +532,12 @@ Note: This value does not change when inertia is automatically computed. Use [Ph
 
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
-func (self Instance) Inertia() Float.X {
+func (self Instance) Inertia() Float.X { //gd:RigidBody2D.inertia
 	return Float.X(Float.X(class(self).GetInertia()))
 }
 
 // SetInertia sets the property returned by [GetInertia]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInertia(value Float.X) Instance {
+func (self Instance) SetInertia(value Float.X) Instance { //gd:RigidBody2D.inertia
 	class(self).SetInertia(float64(value))
 	return self
 }
@@ -548,12 +548,12 @@ If true, the body will not move and will not calculate forces until woken up by 
 [ApplyForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ApplyForce
 [ApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.ApplyImpulse
 */
-func (self Instance) Sleeping() bool {
+func (self Instance) Sleeping() bool { //gd:RigidBody2D.sleeping
 	return bool(class(self).IsSleeping())
 }
 
 // SetSleeping sets the property returned by [IsSleeping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSleeping(value bool) Instance {
+func (self Instance) SetSleeping(value bool) Instance { //gd:RigidBody2D.sleeping
 	class(self).SetSleeping(value)
 	return self
 }
@@ -563,12 +563,12 @@ If true, the body can enter sleep mode when there is no movement. See [Sleeping]
 
 [Sleeping]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Sleeping
 */
-func (self Instance) CanSleep() bool {
+func (self Instance) CanSleep() bool { //gd:RigidBody2D.can_sleep
 	return bool(class(self).IsAbleToSleep())
 }
 
 // SetCanSleep sets the property returned by [IsAbleToSleep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanSleep(value bool) Instance {
+func (self Instance) SetCanSleep(value bool) Instance { //gd:RigidBody2D.can_sleep
 	class(self).SetCanSleep(value)
 	return self
 }
@@ -576,12 +576,12 @@ func (self Instance) SetCanSleep(value bool) Instance {
 /*
 If true, the body cannot rotate. Gravity and forces only apply linear movement.
 */
-func (self Instance) LockRotation() bool {
+func (self Instance) LockRotation() bool { //gd:RigidBody2D.lock_rotation
 	return bool(class(self).IsLockRotationEnabled())
 }
 
 // SetLockRotation sets the property returned by [IsLockRotationEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLockRotation(value bool) Instance {
+func (self Instance) SetLockRotation(value bool) Instance { //gd:RigidBody2D.lock_rotation
 	class(self).SetLockRotationEnabled(value)
 	return self
 }
@@ -597,12 +597,12 @@ For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] inste
 [FreezeMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.FreezeMode
 [StaticBody2D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody2D
 */
-func (self Instance) Freeze() bool {
+func (self Instance) Freeze() bool { //gd:RigidBody2D.freeze
 	return bool(class(self).IsFreezeEnabled())
 }
 
 // SetFreeze sets the property returned by [IsFreezeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFreeze(value bool) Instance {
+func (self Instance) SetFreeze(value bool) Instance { //gd:RigidBody2D.freeze
 	class(self).SetFreezeEnabled(value)
 	return self
 }
@@ -616,12 +616,12 @@ For a body that is always frozen, use [StaticBody2D] or [AnimatableBody2D] inste
 [Freeze]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.Freeze
 [StaticBody2D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody2D
 */
-func (self Instance) FreezeMode() FreezeMode {
+func (self Instance) FreezeMode() FreezeMode { //gd:RigidBody2D.freeze_mode
 	return FreezeMode(class(self).GetFreezeMode())
 }
 
 // SetFreezeMode sets the property returned by [GetFreezeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFreezeMode(value FreezeMode) Instance {
+func (self Instance) SetFreezeMode(value FreezeMode) Instance { //gd:RigidBody2D.freeze_mode
 	class(self).SetFreezeMode(value)
 	return self
 }
@@ -634,12 +634,12 @@ Setting this property will call the method [PhysicsServer2D.BodySetOmitForceInte
 [IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Interface
 [PhysicsServer2D.BodySetOmitForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetOmitForceIntegration
 */
-func (self Instance) CustomIntegrator() bool {
+func (self Instance) CustomIntegrator() bool { //gd:RigidBody2D.custom_integrator
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
 // SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomIntegrator(value bool) Instance {
+func (self Instance) SetCustomIntegrator(value bool) Instance { //gd:RigidBody2D.custom_integrator
 	class(self).SetUseCustomIntegrator(value)
 	return self
 }
@@ -649,12 +649,12 @@ Continuous collision detection mode.
 
 Continuous collision detection tries to predict where a moving body will collide instead of moving it and correcting its movement after collision. Continuous collision detection is slower, but more precise and misses fewer collisions with small, fast-moving objects. Raycasting and shapecasting methods are available.
 */
-func (self Instance) ContinuousCd() CCDMode {
+func (self Instance) ContinuousCd() CCDMode { //gd:RigidBody2D.continuous_cd
 	return CCDMode(class(self).GetContinuousCollisionDetectionMode())
 }
 
 // SetContinuousCd sets the property returned by [GetContinuousCollisionDetectionMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContinuousCd(value CCDMode) Instance {
+func (self Instance) SetContinuousCd(value CCDMode) Instance { //gd:RigidBody2D.continuous_cd
 	class(self).SetContinuousCollisionDetectionMode(value)
 	return self
 }
@@ -666,12 +666,12 @@ Note: By default the maximum contacts reported is set to 0, meaning nothing will
 
 [MaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.MaxContactsReported
 */
-func (self Instance) ContactMonitor() bool {
+func (self Instance) ContactMonitor() bool { //gd:RigidBody2D.contact_monitor
 	return bool(class(self).IsContactMonitorEnabled())
 }
 
 // SetContactMonitor sets the property returned by [IsContactMonitorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContactMonitor(value bool) Instance {
+func (self Instance) SetContactMonitor(value bool) Instance { //gd:RigidBody2D.contact_monitor
 	class(self).SetContactMonitor(value)
 	return self
 }
@@ -685,12 +685,12 @@ Note: The number of contacts is different from the number of collisions. Collisi
 [GetCollidingBodies]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.GetCollidingBodies
 [GetContactCount]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.GetContactCount
 */
-func (self Instance) MaxContactsReported() int {
+func (self Instance) MaxContactsReported() int { //gd:RigidBody2D.max_contacts_reported
 	return int(int(class(self).GetMaxContactsReported()))
 }
 
 // SetMaxContactsReported sets the property returned by [GetMaxContactsReported]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxContactsReported(value int) Instance {
+func (self Instance) SetMaxContactsReported(value int) Instance { //gd:RigidBody2D.max_contacts_reported
 	class(self).SetMaxContactsReported(int64(value))
 	return self
 }
@@ -700,12 +700,12 @@ The body's linear velocity in pixels per second. Can be used sporadically, but d
 
 [IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Interface
 */
-func (self Instance) LinearVelocity() Vector2.XY {
+func (self Instance) LinearVelocity() Vector2.XY { //gd:RigidBody2D.linear_velocity
 	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
 // SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearVelocity(value Vector2.XY) Instance {
+func (self Instance) SetLinearVelocity(value Vector2.XY) Instance { //gd:RigidBody2D.linear_velocity
 	class(self).SetLinearVelocity(Vector2.XY(value))
 	return self
 }
@@ -715,12 +715,12 @@ Defines how [LinearDamp] is applied.
 
 [LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.LinearDamp
 */
-func (self Instance) LinearDampMode() DampMode {
+func (self Instance) LinearDampMode() DampMode { //gd:RigidBody2D.linear_damp_mode
 	return DampMode(class(self).GetLinearDampMode())
 }
 
 // SetLinearDampMode sets the property returned by [GetLinearDampMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDampMode(value DampMode) Instance {
+func (self Instance) SetLinearDampMode(value DampMode) Instance { //gd:RigidBody2D.linear_damp_mode
 	class(self).SetLinearDampMode(value)
 	return self
 }
@@ -735,12 +735,12 @@ See [ProjectSettings] "physics/2d/default_linear_damp" for more details about da
 [LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.LinearDampMode
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) LinearDamp() Float.X {
+func (self Instance) LinearDamp() Float.X { //gd:RigidBody2D.linear_damp
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
 // SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDamp(value Float.X) Instance {
+func (self Instance) SetLinearDamp(value Float.X) Instance { //gd:RigidBody2D.linear_damp
 	class(self).SetLinearDamp(float64(value))
 	return self
 }
@@ -748,12 +748,12 @@ func (self Instance) SetLinearDamp(value Float.X) Instance {
 /*
 The body's rotational velocity in radians per second.
 */
-func (self Instance) AngularVelocity() Float.X {
+func (self Instance) AngularVelocity() Float.X { //gd:RigidBody2D.angular_velocity
 	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
 // SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocity(value Float.X) Instance {
+func (self Instance) SetAngularVelocity(value Float.X) Instance { //gd:RigidBody2D.angular_velocity
 	class(self).SetAngularVelocity(float64(value))
 	return self
 }
@@ -763,12 +763,12 @@ Defines how [AngularDamp] is applied.
 
 [AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AngularDamp
 */
-func (self Instance) AngularDampMode() DampMode {
+func (self Instance) AngularDampMode() DampMode { //gd:RigidBody2D.angular_damp_mode
 	return DampMode(class(self).GetAngularDampMode())
 }
 
 // SetAngularDampMode sets the property returned by [GetAngularDampMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDampMode(value DampMode) Instance {
+func (self Instance) SetAngularDampMode(value DampMode) Instance { //gd:RigidBody2D.angular_damp_mode
 	class(self).SetAngularDampMode(value)
 	return self
 }
@@ -783,12 +783,12 @@ See [ProjectSettings] "physics/2d/default_angular_damp" for more details about d
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) AngularDamp() Float.X {
+func (self Instance) AngularDamp() Float.X { //gd:RigidBody2D.angular_damp
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
 // SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDamp(value Float.X) Instance {
+func (self Instance) SetAngularDamp(value Float.X) Instance { //gd:RigidBody2D.angular_damp
 	class(self).SetAngularDamp(float64(value))
 	return self
 }
@@ -801,12 +801,12 @@ See [AddConstantForce] and [AddConstantCentralForce].
 [AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantCentralForce
 [AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantForce
 */
-func (self Instance) ConstantForce() Vector2.XY {
+func (self Instance) ConstantForce() Vector2.XY { //gd:RigidBody2D.constant_force
 	return Vector2.XY(class(self).GetConstantForce())
 }
 
 // SetConstantForce sets the property returned by [GetConstantForce]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstantForce(value Vector2.XY) Instance {
+func (self Instance) SetConstantForce(value Vector2.XY) Instance { //gd:RigidBody2D.constant_force
 	class(self).SetConstantForce(Vector2.XY(value))
 	return self
 }
@@ -818,12 +818,12 @@ See [AddConstantTorque].
 
 [AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.AddConstantTorque
 */
-func (self Instance) ConstantTorque() Float.X {
+func (self Instance) ConstantTorque() Float.X { //gd:RigidBody2D.constant_torque
 	return Float.X(Float.X(class(self).GetConstantTorque()))
 }
 
 // SetConstantTorque sets the property returned by [GetConstantTorque]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstantTorque(value Float.X) Instance {
+func (self Instance) SetConstantTorque(value Float.X) Instance { //gd:RigidBody2D.constant_torque
 	class(self).SetConstantTorque(float64(value))
 	return self
 }

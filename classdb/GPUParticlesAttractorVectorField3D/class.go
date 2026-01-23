@@ -177,12 +177,12 @@ func New() Instance {
 /*
 The size of the vector field box in 3D units.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:GPUParticlesAttractorVectorField3D.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:GPUParticlesAttractorVectorField3D.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -194,12 +194,12 @@ Note: To get better performance, the 3D texture's resolution should reflect the 
 
 [Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Size
 */
-func (self Instance) Texture() Texture3D.Instance {
+func (self Instance) Texture() Texture3D.Instance { //gd:GPUParticlesAttractorVectorField3D.texture
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture3D.Instance) Instance {
+func (self Instance) SetTexture(value Texture3D.Instance) Instance { //gd:GPUParticlesAttractorVectorField3D.texture
 	class(self).SetTexture(value)
 	return self
 }

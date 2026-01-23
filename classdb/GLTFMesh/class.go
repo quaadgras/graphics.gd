@@ -196,12 +196,12 @@ func New() Instance {
 /*
 The original name of the mesh.
 */
-func (self Instance) OriginalName() string {
+func (self Instance) OriginalName() string { //gd:GLTFMesh.original_name
 	return string(class(self).GetOriginalName().String())
 }
 
 // SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalName(value string) Instance {
+func (self Instance) SetOriginalName(value string) Instance { //gd:GLTFMesh.original_name
 	class(self).SetOriginalName(String.New(value))
 	return self
 }
@@ -211,12 +211,12 @@ The [ImporterMesh] object representing the mesh itself.
 
 [ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
 */
-func (self Instance) Mesh() ImporterMesh.Instance {
+func (self Instance) Mesh() ImporterMesh.Instance { //gd:GLTFMesh.mesh
 	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value ImporterMesh.Instance) Instance {
+func (self Instance) SetMesh(value ImporterMesh.Instance) Instance { //gd:GLTFMesh.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -224,12 +224,12 @@ func (self Instance) SetMesh(value ImporterMesh.Instance) Instance {
 /*
 An array of floats representing the blend weights of the mesh.
 */
-func (self Instance) BlendWeights() []float32 {
+func (self Instance) BlendWeights() []float32 { //gd:GLTFMesh.blend_weights
 	return []float32(slices.Collect(class(self).GetBlendWeights().Values()))
 }
 
 // SetBlendWeights sets the property returned by [GetBlendWeights]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendWeights(value []float32) Instance {
+func (self Instance) SetBlendWeights(value []float32) Instance { //gd:GLTFMesh.blend_weights
 	class(self).SetBlendWeights(Packed.New(value...))
 	return self
 }
@@ -237,12 +237,12 @@ func (self Instance) SetBlendWeights(value []float32) Instance {
 /*
 An array of Material objects representing the materials used in the mesh.
 */
-func (self Instance) InstanceMaterials() []Material.Instance {
+func (self Instance) InstanceMaterials() []Material.Instance { //gd:GLTFMesh.instance_materials
 	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetInstanceMaterials())))
 }
 
 // SetInstanceMaterials sets the property returned by [GetInstanceMaterials]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInstanceMaterials(value []Material.Instance) Instance {
+func (self Instance) SetInstanceMaterials(value []Material.Instance) Instance { //gd:GLTFMesh.instance_materials
 	class(self).SetInstanceMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 	return self
 }

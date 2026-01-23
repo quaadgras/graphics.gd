@@ -195,12 +195,12 @@ If true, it is possible to unpress all buttons in this [ButtonGroup].
 
 [ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/ButtonGroup
 */
-func (self Instance) AllowUnpress() bool {
+func (self Instance) AllowUnpress() bool { //gd:ButtonGroup.allow_unpress
 	return bool(class(self).IsAllowUnpress())
 }
 
 // SetAllowUnpress sets the property returned by [IsAllowUnpress]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowUnpress(value bool) Instance {
+func (self Instance) SetAllowUnpress(value bool) Instance { //gd:ButtonGroup.allow_unpress
 	class(self).SetAllowUnpress(value)
 	return self
 }

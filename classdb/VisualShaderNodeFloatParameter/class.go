@@ -171,12 +171,12 @@ func New() Instance {
 /*
 A hint applied to the uniform, which controls the values it can take when set through the Inspector.
 */
-func (self Instance) Hint() Hint {
+func (self Instance) Hint() Hint { //gd:VisualShaderNodeFloatParameter.hint
 	return Hint(class(self).GetHint())
 }
 
 // SetHint sets the property returned by [GetHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHint(value Hint) Instance {
+func (self Instance) SetHint(value Hint) Instance { //gd:VisualShaderNodeFloatParameter.hint
 	class(self).SetHint(value)
 	return self
 }
@@ -186,12 +186,12 @@ Maximum value for range hints. Used if [Hint] is set to [HintRange] or [HintRang
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
 */
-func (self Instance) Min() Float.X {
+func (self Instance) Min() Float.X { //gd:VisualShaderNodeFloatParameter.min
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
 // SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMin(value Float.X) Instance {
+func (self Instance) SetMin(value Float.X) Instance { //gd:VisualShaderNodeFloatParameter.min
 	class(self).SetMin(float64(value))
 	return self
 }
@@ -201,12 +201,12 @@ Minimum value for range hints. Used if [Hint] is set to [HintRange] or [HintRang
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
 */
-func (self Instance) Max() Float.X {
+func (self Instance) Max() Float.X { //gd:VisualShaderNodeFloatParameter.max
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
 // SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMax(value Float.X) Instance {
+func (self Instance) SetMax(value Float.X) Instance { //gd:VisualShaderNodeFloatParameter.max
 	class(self).SetMax(float64(value))
 	return self
 }
@@ -216,12 +216,12 @@ Step (increment) value for the range hint with step. Used if [Hint] is set to [H
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.Hint
 */
-func (self Instance) Step() Float.X {
+func (self Instance) Step() Float.X { //gd:VisualShaderNodeFloatParameter.step
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
 // SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStep(value Float.X) Instance {
+func (self Instance) SetStep(value Float.X) Instance { //gd:VisualShaderNodeFloatParameter.step
 	class(self).SetStep(float64(value))
 	return self
 }
@@ -231,12 +231,12 @@ Enables usage of the [DefaultValue].
 
 [DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFloatParameter#Instance.DefaultValue
 */
-func (self Instance) DefaultValueEnabled() bool {
+func (self Instance) DefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParameter.default_value_enabled
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
 // SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValueEnabled(value bool) Instance {
+func (self Instance) SetDefaultValueEnabled(value bool) Instance { //gd:VisualShaderNodeFloatParameter.default_value_enabled
 	class(self).SetDefaultValueEnabled(value)
 	return self
 }
@@ -244,12 +244,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 /*
 A default value to be assigned within the shader.
 */
-func (self Instance) DefaultValue() Float.X {
+func (self Instance) DefaultValue() Float.X { //gd:VisualShaderNodeFloatParameter.default_value
 	return Float.X(Float.X(class(self).GetDefaultValue()))
 }
 
 // SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValue(value Float.X) Instance {
+func (self Instance) SetDefaultValue(value Float.X) Instance { //gd:VisualShaderNodeFloatParameter.default_value
 	class(self).SetDefaultValue(float64(value))
 	return self
 }

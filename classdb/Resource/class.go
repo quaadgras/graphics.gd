@@ -522,12 +522,12 @@ Note: Changing this property at run-time has no effect on already created duplic
 
 [PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
 */
-func (self Instance) ResourceLocalToScene() bool {
+func (self Instance) ResourceLocalToScene() bool { //gd:Resource.resource_local_to_scene
 	return bool(class(self).IsLocalToScene())
 }
 
 // SetResourceLocalToScene sets the property returned by [IsLocalToScene]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResourceLocalToScene(value bool) Instance {
+func (self Instance) SetResourceLocalToScene(value bool) Instance { //gd:Resource.resource_local_to_scene
 	class(self).SetLocalToScene(value)
 	return self
 }
@@ -540,12 +540,12 @@ Note: Setting this property manually may fail if a resource with the same path h
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 [TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
 */
-func (self Instance) ResourcePath() string {
+func (self Instance) ResourcePath() string { //gd:Resource.resource_path
 	return string(class(self).GetPath().String())
 }
 
 // SetResourcePath sets the property returned by [GetPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResourcePath(value string) Instance {
+func (self Instance) SetResourcePath(value string) Instance { //gd:Resource.resource_path
 	class(self).SetPath(String.New(value))
 	return self
 }
@@ -555,12 +555,12 @@ An optional name for this resource. When defined, its value is displayed to repr
 
 Note: Some resource formats do not support resource names. You can still set the name in the editor or via code, but it will be lost when the resource is reloaded. For example, only built-in scripts can have a resource name, while scripts stored in separate files cannot.
 */
-func (self Instance) ResourceName() string {
+func (self Instance) ResourceName() string { //gd:Resource.resource_name
 	return string(class(self).GetName().String())
 }
 
 // SetResourceName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResourceName(value string) Instance {
+func (self Instance) SetResourceName(value string) Instance { //gd:Resource.resource_name
 	class(self).SetName(String.New(value))
 	return self
 }
@@ -577,12 +577,12 @@ Warning: When setting, the ID must only consist of letters, numbers, and undersc
 [OnChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.OnChanged
 [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
-func (self Instance) ResourceSceneUniqueId() string {
+func (self Instance) ResourceSceneUniqueId() string { //gd:Resource.resource_scene_unique_id
 	return string(class(self).GetSceneUniqueId().String())
 }
 
 // SetResourceSceneUniqueId sets the property returned by [GetSceneUniqueId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResourceSceneUniqueId(value string) Instance {
+func (self Instance) SetResourceSceneUniqueId(value string) Instance { //gd:Resource.resource_scene_unique_id
 	class(self).SetSceneUniqueId(String.New(value))
 	return self
 }

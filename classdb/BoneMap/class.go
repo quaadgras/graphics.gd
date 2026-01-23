@@ -201,12 +201,12 @@ A [SkeletonProfile] of the mapping target. Key names in the [BoneMap] are synchr
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 [SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
 */
-func (self Instance) Profile() SkeletonProfile.Instance {
+func (self Instance) Profile() SkeletonProfile.Instance { //gd:BoneMap.profile
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
 // SetProfile sets the property returned by [GetProfile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance {
+func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance { //gd:BoneMap.profile
 	class(self).SetProfile(value)
 	return self
 }

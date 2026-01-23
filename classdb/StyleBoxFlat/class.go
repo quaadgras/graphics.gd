@@ -234,12 +234,12 @@ func New() Instance {
 /*
 The background color of the stylebox.
 */
-func (self Instance) BgColor() Color.RGBA {
+func (self Instance) BgColor() Color.RGBA { //gd:StyleBoxFlat.bg_color
 	return Color.RGBA(class(self).GetBgColor())
 }
 
 // SetBgColor sets the property returned by [GetBgColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBgColor(value Color.RGBA) Instance {
+func (self Instance) SetBgColor(value Color.RGBA) Instance { //gd:StyleBoxFlat.bg_color
 	class(self).SetBgColor(Color.RGBA(value))
 	return self
 }
@@ -247,12 +247,12 @@ func (self Instance) SetBgColor(value Color.RGBA) Instance {
 /*
 Toggles drawing of the inner part of the stylebox.
 */
-func (self Instance) DrawCenter() bool {
+func (self Instance) DrawCenter() bool { //gd:StyleBoxFlat.draw_center
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
 // SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawCenter(value bool) Instance {
+func (self Instance) SetDrawCenter(value bool) Instance { //gd:StyleBoxFlat.draw_center
 	class(self).SetDrawCenter(value)
 	return self
 }
@@ -268,12 +268,12 @@ Note: To ensure text does not touch the StyleBox's edges, consider increasing th
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 [StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) Skew() Vector2.XY {
+func (self Instance) Skew() Vector2.XY { //gd:StyleBoxFlat.skew
 	return Vector2.XY(class(self).GetSkew())
 }
 
 // SetSkew sets the property returned by [GetSkew]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkew(value Vector2.XY) Instance {
+func (self Instance) SetSkew(value Vector2.XY) Instance { //gd:StyleBoxFlat.skew
 	class(self).SetSkew(Vector2.XY(value))
 	return self
 }
@@ -281,12 +281,12 @@ func (self Instance) SetSkew(value Vector2.XY) Instance {
 /*
 Border width for the left border.
 */
-func (self Instance) BorderWidthLeft() int {
+func (self Instance) BorderWidthLeft() int { //gd:StyleBoxFlat.border_width_left
 	return int(int(class(self).GetBorderWidth(0)))
 }
 
 // SetBorderWidthLeft sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderWidthLeft(value int) Instance {
+func (self Instance) SetBorderWidthLeft(value int) Instance { //gd:StyleBoxFlat.border_width_left
 	class(self).SetBorderWidth(0, int64(value))
 	return self
 }
@@ -294,12 +294,12 @@ func (self Instance) SetBorderWidthLeft(value int) Instance {
 /*
 Border width for the top border.
 */
-func (self Instance) BorderWidthTop() int {
+func (self Instance) BorderWidthTop() int { //gd:StyleBoxFlat.border_width_top
 	return int(int(class(self).GetBorderWidth(1)))
 }
 
 // SetBorderWidthTop sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderWidthTop(value int) Instance {
+func (self Instance) SetBorderWidthTop(value int) Instance { //gd:StyleBoxFlat.border_width_top
 	class(self).SetBorderWidth(1, int64(value))
 	return self
 }
@@ -307,12 +307,12 @@ func (self Instance) SetBorderWidthTop(value int) Instance {
 /*
 Border width for the right border.
 */
-func (self Instance) BorderWidthRight() int {
+func (self Instance) BorderWidthRight() int { //gd:StyleBoxFlat.border_width_right
 	return int(int(class(self).GetBorderWidth(2)))
 }
 
 // SetBorderWidthRight sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderWidthRight(value int) Instance {
+func (self Instance) SetBorderWidthRight(value int) Instance { //gd:StyleBoxFlat.border_width_right
 	class(self).SetBorderWidth(2, int64(value))
 	return self
 }
@@ -320,12 +320,12 @@ func (self Instance) SetBorderWidthRight(value int) Instance {
 /*
 Border width for the bottom border.
 */
-func (self Instance) BorderWidthBottom() int {
+func (self Instance) BorderWidthBottom() int { //gd:StyleBoxFlat.border_width_bottom
 	return int(int(class(self).GetBorderWidth(3)))
 }
 
 // SetBorderWidthBottom sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderWidthBottom(value int) Instance {
+func (self Instance) SetBorderWidthBottom(value int) Instance { //gd:StyleBoxFlat.border_width_bottom
 	class(self).SetBorderWidth(3, int64(value))
 	return self
 }
@@ -333,12 +333,12 @@ func (self Instance) SetBorderWidthBottom(value int) Instance {
 /*
 Sets the color of the border.
 */
-func (self Instance) BorderColor() Color.RGBA {
+func (self Instance) BorderColor() Color.RGBA { //gd:StyleBoxFlat.border_color
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
 // SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderColor(value Color.RGBA) Instance {
+func (self Instance) SetBorderColor(value Color.RGBA) Instance { //gd:StyleBoxFlat.border_color
 	class(self).SetBorderColor(Color.RGBA(value))
 	return self
 }
@@ -346,12 +346,12 @@ func (self Instance) SetBorderColor(value Color.RGBA) Instance {
 /*
 If true, the border will fade into the background color.
 */
-func (self Instance) BorderBlend() bool {
+func (self Instance) BorderBlend() bool { //gd:StyleBoxFlat.border_blend
 	return bool(class(self).GetBorderBlend())
 }
 
 // SetBorderBlend sets the property returned by [GetBorderBlend]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderBlend(value bool) Instance {
+func (self Instance) SetBorderBlend(value bool) Instance { //gd:StyleBoxFlat.border_blend
 	class(self).SetBorderBlend(value)
 	return self
 }
@@ -359,12 +359,12 @@ func (self Instance) SetBorderBlend(value bool) Instance {
 /*
 The top-left corner's radius. If 0, the corner is not rounded.
 */
-func (self Instance) CornerRadiusTopLeft() int {
+func (self Instance) CornerRadiusTopLeft() int { //gd:StyleBoxFlat.corner_radius_top_left
 	return int(int(class(self).GetCornerRadius(0)))
 }
 
 // SetCornerRadiusTopLeft sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCornerRadiusTopLeft(value int) Instance {
+func (self Instance) SetCornerRadiusTopLeft(value int) Instance { //gd:StyleBoxFlat.corner_radius_top_left
 	class(self).SetCornerRadius(0, int64(value))
 	return self
 }
@@ -372,12 +372,12 @@ func (self Instance) SetCornerRadiusTopLeft(value int) Instance {
 /*
 The top-right corner's radius. If 0, the corner is not rounded.
 */
-func (self Instance) CornerRadiusTopRight() int {
+func (self Instance) CornerRadiusTopRight() int { //gd:StyleBoxFlat.corner_radius_top_right
 	return int(int(class(self).GetCornerRadius(1)))
 }
 
 // SetCornerRadiusTopRight sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCornerRadiusTopRight(value int) Instance {
+func (self Instance) SetCornerRadiusTopRight(value int) Instance { //gd:StyleBoxFlat.corner_radius_top_right
 	class(self).SetCornerRadius(1, int64(value))
 	return self
 }
@@ -385,12 +385,12 @@ func (self Instance) SetCornerRadiusTopRight(value int) Instance {
 /*
 The bottom-right corner's radius. If 0, the corner is not rounded.
 */
-func (self Instance) CornerRadiusBottomRight() int {
+func (self Instance) CornerRadiusBottomRight() int { //gd:StyleBoxFlat.corner_radius_bottom_right
 	return int(int(class(self).GetCornerRadius(2)))
 }
 
 // SetCornerRadiusBottomRight sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCornerRadiusBottomRight(value int) Instance {
+func (self Instance) SetCornerRadiusBottomRight(value int) Instance { //gd:StyleBoxFlat.corner_radius_bottom_right
 	class(self).SetCornerRadius(2, int64(value))
 	return self
 }
@@ -398,12 +398,12 @@ func (self Instance) SetCornerRadiusBottomRight(value int) Instance {
 /*
 The bottom-left corner's radius. If 0, the corner is not rounded.
 */
-func (self Instance) CornerRadiusBottomLeft() int {
+func (self Instance) CornerRadiusBottomLeft() int { //gd:StyleBoxFlat.corner_radius_bottom_left
 	return int(int(class(self).GetCornerRadius(3)))
 }
 
 // SetCornerRadiusBottomLeft sets the property returned by [GetCornerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCornerRadiusBottomLeft(value int) Instance {
+func (self Instance) SetCornerRadiusBottomLeft(value int) Instance { //gd:StyleBoxFlat.corner_radius_bottom_left
 	class(self).SetCornerRadius(3, int64(value))
 	return self
 }
@@ -417,12 +417,12 @@ A corner detail of 1 will result in chamfered corners instead of rounded corners
 
 [SetCornerRadiusAll]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.SetCornerRadiusAll
 */
-func (self Instance) CornerDetail() int {
+func (self Instance) CornerDetail() int { //gd:StyleBoxFlat.corner_detail
 	return int(int(class(self).GetCornerDetail()))
 }
 
 // SetCornerDetail sets the property returned by [GetCornerDetail]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCornerDetail(value int) Instance {
+func (self Instance) SetCornerDetail(value int) Instance { //gd:StyleBoxFlat.corner_detail
 	class(self).SetCornerDetail(int64(value))
 	return self
 }
@@ -437,12 +437,12 @@ Note: Unlike [StyleBox.ContentMarginLeft], [ExpandMarginLeft] does not affect th
 [ExpandMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginLeft
 [StyleBox.ContentMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginLeft
 */
-func (self Instance) ExpandMarginLeft() Float.X {
+func (self Instance) ExpandMarginLeft() Float.X { //gd:StyleBoxFlat.expand_margin_left
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
 // SetExpandMarginLeft sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginLeft(value Float.X) Instance {
+func (self Instance) SetExpandMarginLeft(value Float.X) Instance { //gd:StyleBoxFlat.expand_margin_left
 	class(self).SetExpandMargin(0, float64(value))
 	return self
 }
@@ -457,12 +457,12 @@ Note: Unlike [StyleBox.ContentMarginTop], [ExpandMarginTop] does not affect the 
 [ExpandMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginTop
 [StyleBox.ContentMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginTop
 */
-func (self Instance) ExpandMarginTop() Float.X {
+func (self Instance) ExpandMarginTop() Float.X { //gd:StyleBoxFlat.expand_margin_top
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
 // SetExpandMarginTop sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginTop(value Float.X) Instance {
+func (self Instance) SetExpandMarginTop(value Float.X) Instance { //gd:StyleBoxFlat.expand_margin_top
 	class(self).SetExpandMargin(1, float64(value))
 	return self
 }
@@ -477,12 +477,12 @@ Note: Unlike [StyleBox.ContentMarginRight], [ExpandMarginRight] does not affect 
 [ExpandMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginRight
 [StyleBox.ContentMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginRight
 */
-func (self Instance) ExpandMarginRight() Float.X {
+func (self Instance) ExpandMarginRight() Float.X { //gd:StyleBoxFlat.expand_margin_right
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
 // SetExpandMarginRight sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginRight(value Float.X) Instance {
+func (self Instance) SetExpandMarginRight(value Float.X) Instance { //gd:StyleBoxFlat.expand_margin_right
 	class(self).SetExpandMargin(2, float64(value))
 	return self
 }
@@ -497,12 +497,12 @@ Note: Unlike [StyleBox.ContentMarginBottom], [ExpandMarginBottom] does not affec
 [ExpandMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginBottom
 [StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) ExpandMarginBottom() Float.X {
+func (self Instance) ExpandMarginBottom() Float.X { //gd:StyleBoxFlat.expand_margin_bottom
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
 // SetExpandMarginBottom sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginBottom(value Float.X) Instance {
+func (self Instance) SetExpandMarginBottom(value Float.X) Instance { //gd:StyleBoxFlat.expand_margin_bottom
 	class(self).SetExpandMargin(3, float64(value))
 	return self
 }
@@ -512,12 +512,12 @@ The color of the shadow. This has no effect if [ShadowSize] is lower than 1.
 
 [ShadowSize]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ShadowSize
 */
-func (self Instance) ShadowColor() Color.RGBA {
+func (self Instance) ShadowColor() Color.RGBA { //gd:StyleBoxFlat.shadow_color
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
 // SetShadowColor sets the property returned by [GetShadowColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowColor(value Color.RGBA) Instance {
+func (self Instance) SetShadowColor(value Color.RGBA) Instance { //gd:StyleBoxFlat.shadow_color
 	class(self).SetShadowColor(Color.RGBA(value))
 	return self
 }
@@ -525,12 +525,12 @@ func (self Instance) SetShadowColor(value Color.RGBA) Instance {
 /*
 The shadow size in pixels.
 */
-func (self Instance) ShadowSize() int {
+func (self Instance) ShadowSize() int { //gd:StyleBoxFlat.shadow_size
 	return int(int(class(self).GetShadowSize()))
 }
 
 // SetShadowSize sets the property returned by [GetShadowSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowSize(value int) Instance {
+func (self Instance) SetShadowSize(value int) Instance { //gd:StyleBoxFlat.shadow_size
 	class(self).SetShadowSize(int64(value))
 	return self
 }
@@ -538,12 +538,12 @@ func (self Instance) SetShadowSize(value int) Instance {
 /*
 The shadow offset in pixels. Adjusts the position of the shadow relatively to the stylebox.
 */
-func (self Instance) ShadowOffset() Vector2.XY {
+func (self Instance) ShadowOffset() Vector2.XY { //gd:StyleBoxFlat.shadow_offset
 	return Vector2.XY(class(self).GetShadowOffset())
 }
 
 // SetShadowOffset sets the property returned by [GetShadowOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowOffset(value Vector2.XY) Instance {
+func (self Instance) SetShadowOffset(value Vector2.XY) Instance { //gd:StyleBoxFlat.shadow_offset
 	class(self).SetShadowOffset(Vector2.XY(value))
 	return self
 }
@@ -557,12 +557,12 @@ Note: When using beveled corners with 45-degree angles ([CornerDetail] = 1), it 
 [CornerDetail]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.CornerDetail
 [Skew]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.Skew
 */
-func (self Instance) AntiAliasing() bool {
+func (self Instance) AntiAliasing() bool { //gd:StyleBoxFlat.anti_aliasing
 	return bool(class(self).IsAntiAliased())
 }
 
 // SetAntiAliasing sets the property returned by [IsAntiAliased]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAntiAliasing(value bool) Instance {
+func (self Instance) SetAntiAliasing(value bool) Instance { //gd:StyleBoxFlat.anti_aliasing
 	class(self).SetAntiAliased(value)
 	return self
 }
@@ -572,12 +572,12 @@ This changes the size of the antialiasing effect. 1.0 is recommended for an opti
 
 Note: Higher values may produce a blur effect but can also create undesired artifacts on small boxes with large-radius corners.
 */
-func (self Instance) AntiAliasingSize() Float.X {
+func (self Instance) AntiAliasingSize() Float.X { //gd:StyleBoxFlat.anti_aliasing_size
 	return Float.X(Float.X(class(self).GetAaSize()))
 }
 
 // SetAntiAliasingSize sets the property returned by [GetAaSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAntiAliasingSize(value Float.X) Instance {
+func (self Instance) SetAntiAliasingSize(value Float.X) Instance { //gd:StyleBoxFlat.anti_aliasing_size
 	class(self).SetAaSize(float64(value))
 	return self
 }

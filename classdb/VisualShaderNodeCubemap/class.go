@@ -165,12 +165,12 @@ func New() Instance {
 /*
 Defines which source should be used for the sampling.
 */
-func (self Instance) Source() Source {
+func (self Instance) Source() Source { //gd:VisualShaderNodeCubemap.source
 	return Source(class(self).GetSource())
 }
 
 // SetSource sets the property returned by [GetSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSource(value Source) Instance {
+func (self Instance) SetSource(value Source) Instance { //gd:VisualShaderNodeCubemap.source
 	class(self).SetSource(value)
 	return self
 }
@@ -181,12 +181,12 @@ The [Cubemap] texture to sample when using [SourceTexture] as [Source].
 [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 [Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCubemap#Instance.Source
 */
-func (self Instance) CubeMap() TextureLayered.Instance {
+func (self Instance) CubeMap() TextureLayered.Instance { //gd:VisualShaderNodeCubemap.cube_map
 	return TextureLayered.Instance(class(self).GetCubeMap())
 }
 
 // SetCubeMap sets the property returned by [GetCubeMap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCubeMap(value TextureLayered.Instance) Instance {
+func (self Instance) SetCubeMap(value TextureLayered.Instance) Instance { //gd:VisualShaderNodeCubemap.cube_map
 	class(self).SetCubeMap(value)
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetCubeMap(value TextureLayered.Instance) Instance {
 /*
 Defines the type of data provided by the source texture.
 */
-func (self Instance) TextureType() TextureType {
+func (self Instance) TextureType() TextureType { //gd:VisualShaderNodeCubemap.texture_type
 	return TextureType(class(self).GetTextureType())
 }
 
 // SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureType(value TextureType) Instance {
+func (self Instance) SetTextureType(value TextureType) Instance { //gd:VisualShaderNodeCubemap.texture_type
 	class(self).SetTextureType(value)
 	return self
 }

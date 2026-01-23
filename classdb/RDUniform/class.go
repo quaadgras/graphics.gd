@@ -187,12 +187,12 @@ func New() Instance {
 /*
 The uniform's data type.
 */
-func (self Instance) UniformType() Rendering.UniformType {
+func (self Instance) UniformType() Rendering.UniformType { //gd:RDUniform.uniform_type
 	return Rendering.UniformType(class(self).GetUniformType())
 }
 
 // SetUniformType sets the property returned by [GetUniformType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUniformType(value Rendering.UniformType) Instance {
+func (self Instance) SetUniformType(value Rendering.UniformType) Instance { //gd:RDUniform.uniform_type
 	class(self).SetUniformType(value)
 	return self
 }
@@ -200,12 +200,12 @@ func (self Instance) SetUniformType(value Rendering.UniformType) Instance {
 /*
 The uniform's binding.
 */
-func (self Instance) Binding() int {
+func (self Instance) Binding() int { //gd:RDUniform.binding
 	return int(int(class(self).GetBinding()))
 }
 
 // SetBinding sets the property returned by [GetBinding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBinding(value int) Instance {
+func (self Instance) SetBinding(value int) Instance { //gd:RDUniform.binding
 	class(self).SetBinding(int64(value))
 	return self
 }

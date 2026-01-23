@@ -184,12 +184,12 @@ Note: If the parent node is a [SubViewportContainer] and its [SubViewportContain
 [SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
 [SubViewportContainer.Stretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.Stretch
 */
-func (self Instance) Size() Vector2i.XY {
+func (self Instance) Size() Vector2i.XY { //gd:SubViewport.size
 	return Vector2i.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2i.XY) Instance {
+func (self Instance) SetSize(value Vector2i.XY) Instance { //gd:SubViewport.size
 	class(self).SetSize(Vector2i.XY(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetSize(value Vector2i.XY) Instance {
 /*
 The 2D size override of the sub-viewport. If either the width or height is 0, the override is disabled.
 */
-func (self Instance) Size2dOverride() Vector2i.XY {
+func (self Instance) Size2dOverride() Vector2i.XY { //gd:SubViewport.size_2d_override
 	return Vector2i.XY(class(self).GetSize2dOverride())
 }
 
 // SetSize2dOverride sets the property returned by [GetSize2dOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize2dOverride(value Vector2i.XY) Instance {
+func (self Instance) SetSize2dOverride(value Vector2i.XY) Instance { //gd:SubViewport.size_2d_override
 	class(self).SetSize2dOverride(Vector2i.XY(value))
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetSize2dOverride(value Vector2i.XY) Instance {
 /*
 If true, the 2D size override affects stretch as well.
 */
-func (self Instance) Size2dOverrideStretch() bool {
+func (self Instance) Size2dOverrideStretch() bool { //gd:SubViewport.size_2d_override_stretch
 	return bool(class(self).IsSize2dOverrideStretchEnabled())
 }
 
 // SetSize2dOverrideStretch sets the property returned by [IsSize2dOverrideStretchEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize2dOverrideStretch(value bool) Instance {
+func (self Instance) SetSize2dOverrideStretch(value bool) Instance { //gd:SubViewport.size_2d_override_stretch
 	class(self).SetSize2dOverrideStretch(value)
 	return self
 }
@@ -225,12 +225,12 @@ The clear mode when the sub-viewport is used as a render target.
 
 Note: This property is intended for 2D usage.
 */
-func (self Instance) RenderTargetClearMode() ClearMode {
+func (self Instance) RenderTargetClearMode() ClearMode { //gd:SubViewport.render_target_clear_mode
 	return ClearMode(class(self).GetClearMode())
 }
 
 // SetRenderTargetClearMode sets the property returned by [GetClearMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderTargetClearMode(value ClearMode) Instance {
+func (self Instance) SetRenderTargetClearMode(value ClearMode) Instance { //gd:SubViewport.render_target_clear_mode
 	class(self).SetClearMode(value)
 	return self
 }
@@ -238,12 +238,12 @@ func (self Instance) SetRenderTargetClearMode(value ClearMode) Instance {
 /*
 The update mode when the sub-viewport is used as a render target.
 */
-func (self Instance) RenderTargetUpdateMode() UpdateMode {
+func (self Instance) RenderTargetUpdateMode() UpdateMode { //gd:SubViewport.render_target_update_mode
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
 // SetRenderTargetUpdateMode sets the property returned by [GetUpdateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) Instance {
+func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) Instance { //gd:SubViewport.render_target_update_mode
 	class(self).SetUpdateMode(value)
 	return self
 }

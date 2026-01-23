@@ -566,12 +566,12 @@ If true, the [AnimationMixer] will be processing.
 
 [AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
 */
-func (self Instance) Active() bool {
+func (self Instance) Active() bool { //gd:AnimationMixer.active
 	return bool(class(self).IsActive())
 }
 
 // SetActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActive(value bool) Instance {
+func (self Instance) SetActive(value bool) Instance { //gd:AnimationMixer.active
 	class(self).SetActive(value)
 	return self
 }
@@ -595,12 +595,12 @@ For example, if [AnimationNodeAdd2] blends two nodes with the amount 1.0, then t
 [AnimationNodeSub2]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeSub2
 [AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
 */
-func (self Instance) Deterministic() bool {
+func (self Instance) Deterministic() bool { //gd:AnimationMixer.deterministic
 	return bool(class(self).IsDeterministic())
 }
 
 // SetDeterministic sets the property returned by [IsDeterministic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeterministic(value bool) Instance {
+func (self Instance) SetDeterministic(value bool) Instance { //gd:AnimationMixer.deterministic
 	class(self).SetDeterministic(value)
 	return self
 }
@@ -610,12 +610,12 @@ This is used by the editor. If set to true, the scene will be saved with the eff
 
 This makes it more convenient to preview and edit animations in the editor, as changes to the scene will not be saved as long as they are set in the reset animation.
 */
-func (self Instance) ResetOnSave() bool {
+func (self Instance) ResetOnSave() bool { //gd:AnimationMixer.reset_on_save
 	return bool(class(self).IsResetOnSaveEnabled())
 }
 
 // SetResetOnSave sets the property returned by [IsResetOnSaveEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResetOnSave(value bool) Instance {
+func (self Instance) SetResetOnSave(value bool) Instance { //gd:AnimationMixer.reset_on_save
 	class(self).SetResetOnSaveEnabled(value)
 	return self
 }
@@ -623,12 +623,12 @@ func (self Instance) SetResetOnSave(value bool) Instance {
 /*
 The node which node path references will travel from.
 */
-func (self Instance) RootNode() string {
+func (self Instance) RootNode() string { //gd:AnimationMixer.root_node
 	return string(class(self).GetRootNode().String())
 }
 
 // SetRootNode sets the property returned by [GetRootNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootNode(value string) Instance {
+func (self Instance) SetRootNode(value string) Instance { //gd:AnimationMixer.root_node
 	class(self).SetRootNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -645,12 +645,12 @@ If the track has type [Animation.TypePosition3d], [Animation.TypeRotation3d], or
 [RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
 [RootMotionView]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView
 */
-func (self Instance) RootMotionTrack() string {
+func (self Instance) RootMotionTrack() string { //gd:AnimationMixer.root_motion_track
 	return string(class(self).GetRootMotionTrack().String())
 }
 
 // SetRootMotionTrack sets the property returned by [GetRootMotionTrack]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootMotionTrack(value string) Instance {
+func (self Instance) SetRootMotionTrack(value string) Instance { //gd:AnimationMixer.root_motion_track
 	class(self).SetRootMotionTrack(Path.ToNode(String.New(value)))
 	return self
 }
@@ -660,12 +660,12 @@ If true, [GetRootMotionPosition] value is extracted as a local translation value
 
 [GetRootMotionPosition]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionPosition
 */
-func (self Instance) RootMotionLocal() bool {
+func (self Instance) RootMotionLocal() bool { //gd:AnimationMixer.root_motion_local
 	return bool(class(self).IsRootMotionLocal())
 }
 
 // SetRootMotionLocal sets the property returned by [IsRootMotionLocal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootMotionLocal(value bool) Instance {
+func (self Instance) SetRootMotionLocal(value bool) Instance { //gd:AnimationMixer.root_motion_local
 	class(self).SetRootMotionLocal(value)
 	return self
 }
@@ -677,12 +677,12 @@ For example, if this value is 32 and the animation has two audio tracks, the two
 
 [AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
 */
-func (self Instance) AudioMaxPolyphony() int {
+func (self Instance) AudioMaxPolyphony() int { //gd:AnimationMixer.audio_max_polyphony
 	return int(int(class(self).GetAudioMaxPolyphony()))
 }
 
 // SetAudioMaxPolyphony sets the property returned by [GetAudioMaxPolyphony]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioMaxPolyphony(value int) Instance {
+func (self Instance) SetAudioMaxPolyphony(value int) Instance { //gd:AnimationMixer.audio_max_polyphony
 	class(self).SetAudioMaxPolyphony(int64(value))
 	return self
 }
@@ -690,12 +690,12 @@ func (self Instance) SetAudioMaxPolyphony(value int) Instance {
 /*
 The process notification in which to update animations.
 */
-func (self Instance) CallbackModeProcess() AnimationCallbackModeProcess {
+func (self Instance) CallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.callback_mode_process
 	return AnimationCallbackModeProcess(class(self).GetCallbackModeProcess())
 }
 
 // SetCallbackModeProcess sets the property returned by [GetCallbackModeProcess]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) Instance {
+func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) Instance { //gd:AnimationMixer.callback_mode_process
 	class(self).SetCallbackModeProcess(value)
 	return self
 }
@@ -703,12 +703,12 @@ func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) 
 /*
 The call mode used for "Call Method" tracks.
 */
-func (self Instance) CallbackModeMethod() AnimationCallbackModeMethod {
+func (self Instance) CallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.callback_mode_method
 	return AnimationCallbackModeMethod(class(self).GetCallbackModeMethod())
 }
 
 // SetCallbackModeMethod sets the property returned by [GetCallbackModeMethod]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) Instance {
+func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) Instance { //gd:AnimationMixer.callback_mode_method
 	class(self).SetCallbackModeMethod(value)
 	return self
 }
@@ -722,12 +722,12 @@ To make the blended results look good, it is recommended to set this to [Animati
 
 [CallbackModeDiscrete]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.CallbackModeDiscrete
 */
-func (self Instance) CallbackModeDiscrete() AnimationCallbackModeDiscrete {
+func (self Instance) CallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.callback_mode_discrete
 	return AnimationCallbackModeDiscrete(class(self).GetCallbackModeDiscrete())
 }
 
 // SetCallbackModeDiscrete sets the property returned by [GetCallbackModeDiscrete]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) Instance {
+func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) Instance { //gd:AnimationMixer.callback_mode_discrete
 	class(self).SetCallbackModeDiscrete(value)
 	return self
 }

@@ -176,12 +176,12 @@ func New() Instance {
 /*
 Specifies whether this node tracks the left or right hand of the player.
 */
-func (self Instance) Hand() Hands {
+func (self Instance) Hand() Hands { //gd:OpenXRHand.hand
 	return Hands(class(self).GetHand())
 }
 
 // SetHand sets the property returned by [GetHand]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHand(value Hands) Instance {
+func (self Instance) SetHand(value Hands) Instance { //gd:OpenXRHand.hand
 	class(self).SetHand(value)
 	return self
 }
@@ -189,12 +189,12 @@ func (self Instance) SetHand(value Hands) Instance {
 /*
 Set the motion range (if supported) limiting the hand motion.
 */
-func (self Instance) MotionRange() MotionRange {
+func (self Instance) MotionRange() MotionRange { //gd:OpenXRHand.motion_range
 	return MotionRange(class(self).GetMotionRange())
 }
 
 // SetMotionRange sets the property returned by [GetMotionRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionRange(value MotionRange) Instance {
+func (self Instance) SetMotionRange(value MotionRange) Instance { //gd:OpenXRHand.motion_range
 	class(self).SetMotionRange(value)
 	return self
 }
@@ -204,12 +204,12 @@ Set a [Skeleton3D] node for which the pose positions will be updated.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) HandSkeleton() string {
+func (self Instance) HandSkeleton() string { //gd:OpenXRHand.hand_skeleton
 	return string(class(self).GetHandSkeleton().String())
 }
 
 // SetHandSkeleton sets the property returned by [GetHandSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandSkeleton(value string) Instance {
+func (self Instance) SetHandSkeleton(value string) Instance { //gd:OpenXRHand.hand_skeleton
 	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
 	return self
 }
@@ -219,12 +219,12 @@ Set the type of skeleton rig the [HandSkeleton] is compliant with.
 
 [HandSkeleton]: https://pkg.go.dev/graphics.gd/classdb/OpenXRHand#Instance.HandSkeleton
 */
-func (self Instance) SkeletonRig() SkeletonRig {
+func (self Instance) SkeletonRig() SkeletonRig { //gd:OpenXRHand.skeleton_rig
 	return SkeletonRig(class(self).GetSkeletonRig())
 }
 
 // SetSkeletonRig sets the property returned by [GetSkeletonRig]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeletonRig(value SkeletonRig) Instance {
+func (self Instance) SetSkeletonRig(value SkeletonRig) Instance { //gd:OpenXRHand.skeleton_rig
 	class(self).SetSkeletonRig(value)
 	return self
 }
@@ -232,12 +232,12 @@ func (self Instance) SetSkeletonRig(value SkeletonRig) Instance {
 /*
 Specify the type of updates to perform on the bone.
 */
-func (self Instance) BoneUpdate() BoneUpdate {
+func (self Instance) BoneUpdate() BoneUpdate { //gd:OpenXRHand.bone_update
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
 // SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance { //gd:OpenXRHand.bone_update
 	class(self).SetBoneUpdate(value)
 	return self
 }

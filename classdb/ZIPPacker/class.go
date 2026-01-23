@@ -248,12 +248,12 @@ The compression level used when [StartFile] is called. Use [ZIPPacker.Compressio
 
 [StartFile]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.StartFile
 */
-func (self Instance) CompressionLevel() int {
+func (self Instance) CompressionLevel() int { //gd:ZIPPacker.compression_level
 	return int(int(class(self).GetCompressionLevel()))
 }
 
 // SetCompressionLevel sets the property returned by [GetCompressionLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompressionLevel(value int) Instance {
+func (self Instance) SetCompressionLevel(value int) Instance { //gd:ZIPPacker.compression_level
 	class(self).SetCompressionLevel(int64(value))
 	return self
 }

@@ -170,12 +170,12 @@ If below 0.05, this behavior is locked.
 
 [ConeTwistJoint3D]: https://pkg.go.dev/graphics.gd/classdb/ConeTwistJoint3D
 */
-func (self Instance) SwingSpan() Float.X {
+func (self Instance) SwingSpan() Float.X { //gd:ConeTwistJoint3D.swing_span
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
 // SetSwingSpan sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwingSpan(value Float.X) Instance {
+func (self Instance) SetSwingSpan(value Float.X) Instance { //gd:ConeTwistJoint3D.swing_span
 	class(self).SetParam(0, float64(value))
 	return self
 }
@@ -185,12 +185,12 @@ Twist is the rotation around the twist axis, this value defined how far the join
 
 Twist is locked if below 0.05.
 */
-func (self Instance) TwistSpan() Float.X {
+func (self Instance) TwistSpan() Float.X { //gd:ConeTwistJoint3D.twist_span
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
 // SetTwistSpan sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTwistSpan(value Float.X) Instance {
+func (self Instance) SetTwistSpan(value Float.X) Instance { //gd:ConeTwistJoint3D.twist_span
 	class(self).SetParam(1, float64(value))
 	return self
 }
@@ -200,12 +200,12 @@ The speed with which the swing or twist will take place.
 
 The higher, the faster.
 */
-func (self Instance) Bias() Float.X {
+func (self Instance) Bias() Float.X { //gd:ConeTwistJoint3D.bias
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
 // SetBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBias(value Float.X) Instance {
+func (self Instance) SetBias(value Float.X) Instance { //gd:ConeTwistJoint3D.bias
 	class(self).SetParam(2, float64(value))
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetBias(value Float.X) Instance {
 /*
 The ease with which the joint starts to twist. If it's too low, it takes more force to start twisting the joint.
 */
-func (self Instance) Softness() Float.X {
+func (self Instance) Softness() Float.X { //gd:ConeTwistJoint3D.softness
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
 // SetSoftness sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSoftness(value Float.X) Instance {
+func (self Instance) SetSoftness(value Float.X) Instance { //gd:ConeTwistJoint3D.softness
 	class(self).SetParam(3, float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetSoftness(value Float.X) Instance {
 /*
 Defines, how fast the swing- and twist-speed-difference on both sides gets synced.
 */
-func (self Instance) Relaxation() Float.X {
+func (self Instance) Relaxation() Float.X { //gd:ConeTwistJoint3D.relaxation
 	return Float.X(Float.X(class(self).GetParam(4)))
 }
 
 // SetRelaxation sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRelaxation(value Float.X) Instance {
+func (self Instance) SetRelaxation(value Float.X) Instance { //gd:ConeTwistJoint3D.relaxation
 	class(self).SetParam(4, float64(value))
 	return self
 }

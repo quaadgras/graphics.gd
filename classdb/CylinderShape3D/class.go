@@ -172,12 +172,12 @@ func New() Instance {
 /*
 The cylinder's height.
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:CylinderShape3D.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:CylinderShape3D.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -185,12 +185,12 @@ func (self Instance) SetHeight(value Float.X) Instance {
 /*
 The cylinder's radius.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:CylinderShape3D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:CylinderShape3D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }

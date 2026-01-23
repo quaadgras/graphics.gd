@@ -236,12 +236,12 @@ func New() Instance {
 /*
 Length of the internal ring buffer, in seconds. Setting the buffer length will have no effect if already initialized.
 */
-func (self Instance) BufferLength() Float.X {
+func (self Instance) BufferLength() Float.X { //gd:AudioEffectCapture.buffer_length
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
 // SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferLength(value Float.X) Instance {
+func (self Instance) SetBufferLength(value Float.X) Instance { //gd:AudioEffectCapture.buffer_length
 	class(self).SetBufferLength(float64(value))
 	return self
 }

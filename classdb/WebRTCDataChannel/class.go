@@ -260,12 +260,12 @@ func New() Instance {
 /*
 The transfer mode to use when sending outgoing packet. Either text or binary.
 */
-func (self Instance) WriteMode() WriteMode {
+func (self Instance) WriteMode() WriteMode { //gd:WebRTCDataChannel.write_mode
 	return WriteMode(class(self).GetWriteMode())
 }
 
 // SetWriteMode sets the property returned by [GetWriteMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWriteMode(value WriteMode) Instance {
+func (self Instance) SetWriteMode(value WriteMode) Instance { //gd:WebRTCDataChannel.write_mode
 	class(self).SetWriteMode(value)
 	return self
 }

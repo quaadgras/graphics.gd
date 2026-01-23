@@ -171,12 +171,12 @@ func New() Instance {
 /*
 The localized description of this action.
 */
-func (self Instance) LocalizedName() string {
+func (self Instance) LocalizedName() string { //gd:OpenXRAction.localized_name
 	return string(class(self).GetLocalizedName().String())
 }
 
 // SetLocalizedName sets the property returned by [GetLocalizedName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocalizedName(value string) Instance {
+func (self Instance) SetLocalizedName(value string) Instance { //gd:OpenXRAction.localized_name
 	class(self).SetLocalizedName(String.New(value))
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetLocalizedName(value string) Instance {
 /*
 The type of action.
 */
-func (self Instance) ActionType() ActionType {
+func (self Instance) ActionType() ActionType { //gd:OpenXRAction.action_type
 	return ActionType(class(self).GetActionType())
 }
 
 // SetActionType sets the property returned by [GetActionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActionType(value ActionType) Instance {
+func (self Instance) SetActionType(value ActionType) Instance { //gd:OpenXRAction.action_type
 	class(self).SetActionType(value)
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetActionType(value ActionType) Instance {
 /*
 A collections of toplevel paths to which this action can be bound.
 */
-func (self Instance) ToplevelPaths() []string {
+func (self Instance) ToplevelPaths() []string { //gd:OpenXRAction.toplevel_paths
 	return []string(class(self).GetToplevelPaths().Strings())
 }
 
 // SetToplevelPaths sets the property returned by [GetToplevelPaths]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetToplevelPaths(value []string) Instance {
+func (self Instance) SetToplevelPaths(value []string) Instance { //gd:OpenXRAction.toplevel_paths
 	class(self).SetToplevelPaths(Packed.MakeStrings(value...))
 	return self
 }

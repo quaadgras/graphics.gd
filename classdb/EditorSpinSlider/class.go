@@ -179,12 +179,12 @@ func New() Instance {
 /*
 The text that displays to the left of the value.
 */
-func (self Instance) Label() string {
+func (self Instance) Label() string { //gd:EditorSpinSlider.label
 	return string(class(self).GetLabel().String())
 }
 
 // SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLabel(value string) Instance {
+func (self Instance) SetLabel(value string) Instance { //gd:EditorSpinSlider.label
 	class(self).SetLabel(String.New(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetLabel(value string) Instance {
 /*
 The suffix to display after the value (in a faded color). This should generally be a plural word. You may have to use an abbreviation if the suffix is too long to be displayed.
 */
-func (self Instance) Suffix() string {
+func (self Instance) Suffix() string { //gd:EditorSpinSlider.suffix
 	return string(class(self).GetSuffix().String())
 }
 
 // SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSuffix(value string) Instance {
+func (self Instance) SetSuffix(value string) Instance { //gd:EditorSpinSlider.suffix
 	class(self).SetSuffix(String.New(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetSuffix(value string) Instance {
 /*
 If true, the slider can't be interacted with.
 */
-func (self Instance) ReadOnly() bool {
+func (self Instance) ReadOnly() bool { //gd:EditorSpinSlider.read_only
 	return bool(class(self).IsReadOnly())
 }
 
 // SetReadOnly sets the property returned by [IsReadOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReadOnly(value bool) Instance {
+func (self Instance) SetReadOnly(value bool) Instance { //gd:EditorSpinSlider.read_only
 	class(self).SetReadOnly(value)
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetReadOnly(value bool) Instance {
 /*
 If true, the slider will not draw background.
 */
-func (self Instance) Flat() bool {
+func (self Instance) Flat() bool { //gd:EditorSpinSlider.flat
 	return bool(class(self).IsFlat())
 }
 
 // SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlat(value bool) Instance {
+func (self Instance) SetFlat(value bool) Instance { //gd:EditorSpinSlider.flat
 	class(self).SetFlat(value)
 	return self
 }
@@ -231,12 +231,12 @@ func (self Instance) SetFlat(value bool) Instance {
 /*
 If true, the slider and up/down arrows are hidden.
 */
-func (self Instance) HideSlider() bool {
+func (self Instance) HideSlider() bool { //gd:EditorSpinSlider.hide_slider
 	return bool(class(self).IsHidingSlider())
 }
 
 // SetHideSlider sets the property returned by [IsHidingSlider]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideSlider(value bool) Instance {
+func (self Instance) SetHideSlider(value bool) Instance { //gd:EditorSpinSlider.hide_slider
 	class(self).SetHideSlider(value)
 	return self
 }
@@ -247,12 +247,12 @@ If true, the [EditorSpinSlider] is considered to be editing an integer value. If
 [EditorSpinSlider]: https://pkg.go.dev/graphics.gd/classdb/EditorSpinSlider
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) EditingInteger() bool {
+func (self Instance) EditingInteger() bool { //gd:EditorSpinSlider.editing_integer
 	return bool(class(self).IsEditingInteger())
 }
 
 // SetEditingInteger sets the property returned by [IsEditingInteger]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditingInteger(value bool) Instance {
+func (self Instance) SetEditingInteger(value bool) Instance { //gd:EditorSpinSlider.editing_integer
 	class(self).SetEditingInteger(value)
 	return self
 }

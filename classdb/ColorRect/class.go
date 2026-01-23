@@ -164,12 +164,12 @@ func New() Instance {
 /*
 The fill color of the rectangle.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:ColorRect.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:ColorRect.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }

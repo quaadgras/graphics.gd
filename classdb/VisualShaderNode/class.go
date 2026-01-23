@@ -223,22 +223,22 @@ func New() Instance {
 /*
 Sets the output port index which will be showed for preview. If set to -1 no port will be open for preview.
 */
-func (self Instance) OutputPortForPreview() int {
+func (self Instance) OutputPortForPreview() int { //gd:VisualShaderNode.output_port_for_preview
 	return int(int(class(self).GetOutputPortForPreview()))
 }
 
 // SetOutputPortForPreview sets the property returned by [GetOutputPortForPreview]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOutputPortForPreview(value int) Instance {
+func (self Instance) SetOutputPortForPreview(value int) Instance { //gd:VisualShaderNode.output_port_for_preview
 	class(self).SetOutputPortForPreview(int64(value))
 	return self
 }
 
-func (self Instance) DefaultInputValues() []any {
+func (self Instance) DefaultInputValues() []any { //gd:VisualShaderNode.default_input_values
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetDefaultInputValues())))
 }
 
 // SetDefaultInputValues sets the property returned by [GetDefaultInputValues]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultInputValues(value []any) Instance {
+func (self Instance) SetDefaultInputValues(value []any) Instance { //gd:VisualShaderNode.default_input_values
 	class(self).SetDefaultInputValues(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -246,12 +246,12 @@ func (self Instance) SetDefaultInputValues(value []any) Instance {
 /*
 Represents the index of the frame this node is linked to. If set to -1 the node is not linked to any frame.
 */
-func (self Instance) LinkedParentGraphFrame() int {
+func (self Instance) LinkedParentGraphFrame() int { //gd:VisualShaderNode.linked_parent_graph_frame
 	return int(int(class(self).GetFrame()))
 }
 
 // SetLinkedParentGraphFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinkedParentGraphFrame(value int) Instance {
+func (self Instance) SetLinkedParentGraphFrame(value int) Instance { //gd:VisualShaderNode.linked_parent_graph_frame
 	class(self).SetFrame(int64(value))
 	return self
 }

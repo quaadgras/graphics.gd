@@ -320,12 +320,12 @@ func New() Instance {
 /*
 If true, the feed is active.
 */
-func (self Instance) FeedIsActive() bool {
+func (self Instance) FeedIsActive() bool { //gd:CameraFeed.feed_is_active
 	return bool(class(self).IsActive())
 }
 
 // SetFeedIsActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedIsActive(value bool) Instance {
+func (self Instance) SetFeedIsActive(value bool) Instance { //gd:CameraFeed.feed_is_active
 	class(self).SetActive(value)
 	return self
 }
@@ -333,12 +333,12 @@ func (self Instance) SetFeedIsActive(value bool) Instance {
 /*
 The transform applied to the camera's image.
 */
-func (self Instance) FeedTransform() Transform2D.OriginXY {
+func (self Instance) FeedTransform() Transform2D.OriginXY { //gd:CameraFeed.feed_transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 // SetFeedTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetFeedTransform(value Transform2D.OriginXY) Instance { //gd:CameraFeed.feed_transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -346,7 +346,7 @@ func (self Instance) SetFeedTransform(value Transform2D.OriginXY) Instance {
 /*
 Formats supported by the feed. Each entry is a data structure describing format parameters.
 */
-func (self Instance) Formats() []Format {
+func (self Instance) Formats() []Format { //gd:CameraFeed.formats
 	return []Format(gd.ArrayAs[[]Format](gd.InternalArray(class(self).GetFormats())))
 }
 

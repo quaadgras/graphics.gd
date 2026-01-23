@@ -529,12 +529,12 @@ func New() Instance {
 /*
 If true, the tile will have its texture flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:TileData.flip_h
 	return bool(class(self).GetFlipH())
 }
 
 // SetFlipH sets the property returned by [GetFlipH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:TileData.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -542,12 +542,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, the tile will have its texture flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:TileData.flip_v
 	return bool(class(self).GetFlipV())
 }
 
 // SetFlipV sets the property returned by [GetFlipV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:TileData.flip_v
 	class(self).SetFlipV(value)
 	return self
 }
@@ -555,12 +555,12 @@ func (self Instance) SetFlipV(value bool) Instance {
 /*
 If true, the tile will display transposed, i.e. with horizontal and vertical texture UVs swapped.
 */
-func (self Instance) Transpose() bool {
+func (self Instance) Transpose() bool { //gd:TileData.transpose
 	return bool(class(self).GetTranspose())
 }
 
 // SetTranspose sets the property returned by [GetTranspose]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTranspose(value bool) Instance {
+func (self Instance) SetTranspose(value bool) Instance { //gd:TileData.transpose
 	class(self).SetTranspose(value)
 	return self
 }
@@ -568,12 +568,12 @@ func (self Instance) SetTranspose(value bool) Instance {
 /*
 Offsets the position of where the tile is drawn.
 */
-func (self Instance) TextureOrigin() Vector2i.XY {
+func (self Instance) TextureOrigin() Vector2i.XY { //gd:TileData.texture_origin
 	return Vector2i.XY(class(self).GetTextureOrigin())
 }
 
 // SetTextureOrigin sets the property returned by [GetTextureOrigin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureOrigin(value Vector2i.XY) Instance {
+func (self Instance) SetTextureOrigin(value Vector2i.XY) Instance { //gd:TileData.texture_origin
 	class(self).SetTextureOrigin(Vector2i.XY(value))
 	return self
 }
@@ -581,12 +581,12 @@ func (self Instance) SetTextureOrigin(value Vector2i.XY) Instance {
 /*
 Color modulation of the tile.
 */
-func (self Instance) Modulate() Color.RGBA {
+func (self Instance) Modulate() Color.RGBA { //gd:TileData.modulate
 	return Color.RGBA(class(self).GetModulate())
 }
 
 // SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulate(value Color.RGBA) Instance {
+func (self Instance) SetModulate(value Color.RGBA) Instance { //gd:TileData.modulate
 	class(self).SetModulate(Color.RGBA(value))
 	return self
 }
@@ -599,12 +599,12 @@ The [Material] to use for this [TileData]. This can be a [CanvasItemMaterial] to
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [TileData]: https://pkg.go.dev/graphics.gd/classdb/TileData
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:TileData.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:TileData.material
 	class(self).SetMaterial(value)
 	return self
 }
@@ -614,12 +614,12 @@ Ordering index of this tile, relative to [TileMapLayer].
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) ZIndex() int {
+func (self Instance) ZIndex() int { //gd:TileData.z_index
 	return int(int(class(self).GetZIndex()))
 }
 
 // SetZIndex sets the property returned by [GetZIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZIndex(value int) Instance {
+func (self Instance) SetZIndex(value int) Instance { //gd:TileData.z_index
 	class(self).SetZIndex(int64(value))
 	return self
 }
@@ -627,12 +627,12 @@ func (self Instance) SetZIndex(value int) Instance {
 /*
 Vertical point of the tile used for determining y-sorted order.
 */
-func (self Instance) YSortOrigin() int {
+func (self Instance) YSortOrigin() int { //gd:TileData.y_sort_origin
 	return int(int(class(self).GetYSortOrigin()))
 }
 
 // SetYSortOrigin sets the property returned by [GetYSortOrigin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetYSortOrigin(value int) Instance {
+func (self Instance) SetYSortOrigin(value int) Instance { //gd:TileData.y_sort_origin
 	class(self).SetYSortOrigin(int64(value))
 	return self
 }
@@ -640,12 +640,12 @@ func (self Instance) SetYSortOrigin(value int) Instance {
 /*
 ID of the terrain set that the tile uses.
 */
-func (self Instance) TerrainSet() int {
+func (self Instance) TerrainSet() int { //gd:TileData.terrain_set
 	return int(int(class(self).GetTerrainSet()))
 }
 
 // SetTerrainSet sets the property returned by [GetTerrainSet]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTerrainSet(value int) Instance {
+func (self Instance) SetTerrainSet(value int) Instance { //gd:TileData.terrain_set
 	class(self).SetTerrainSet(int64(value))
 	return self
 }
@@ -653,12 +653,12 @@ func (self Instance) SetTerrainSet(value int) Instance {
 /*
 ID of the terrain from the terrain set that the tile uses.
 */
-func (self Instance) Terrain() int {
+func (self Instance) Terrain() int { //gd:TileData.terrain
 	return int(int(class(self).GetTerrain()))
 }
 
 // SetTerrain sets the property returned by [GetTerrain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTerrain(value int) Instance {
+func (self Instance) SetTerrain(value int) Instance { //gd:TileData.terrain
 	class(self).SetTerrain(int64(value))
 	return self
 }
@@ -666,12 +666,12 @@ func (self Instance) SetTerrain(value int) Instance {
 /*
 Relative probability of this tile being selected when drawing a pattern of random tiles.
 */
-func (self Instance) Probability() Float.X {
+func (self Instance) Probability() Float.X { //gd:TileData.probability
 	return Float.X(Float.X(class(self).GetProbability()))
 }
 
 // SetProbability sets the property returned by [GetProbability]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProbability(value Float.X) Instance {
+func (self Instance) SetProbability(value Float.X) Instance { //gd:TileData.probability
 	class(self).SetProbability(float64(value))
 	return self
 }

@@ -196,12 +196,12 @@ Automatically use Meta (Cmd) on macOS and Ctrl on other platforms. If true, [Ctr
 [CtrlPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEventWithModifiers#Instance.CtrlPressed
 [MetaPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEventWithModifiers#Instance.MetaPressed
 */
-func (self Instance) CommandOrControlAutoremap() bool {
+func (self Instance) CommandOrControlAutoremap() bool { //gd:InputEventWithModifiers.command_or_control_autoremap
 	return bool(class(self).IsCommandOrControlAutoremap())
 }
 
 // SetCommandOrControlAutoremap sets the property returned by [IsCommandOrControlAutoremap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCommandOrControlAutoremap(value bool) Instance {
+func (self Instance) SetCommandOrControlAutoremap(value bool) Instance { //gd:InputEventWithModifiers.command_or_control_autoremap
 	class(self).SetCommandOrControlAutoremap(value)
 	return self
 }
@@ -209,12 +209,12 @@ func (self Instance) SetCommandOrControlAutoremap(value bool) Instance {
 /*
 State of the Alt modifier.
 */
-func (self Instance) AltPressed() bool {
+func (self Instance) AltPressed() bool { //gd:InputEventWithModifiers.alt_pressed
 	return bool(class(self).IsAltPressed())
 }
 
 // SetAltPressed sets the property returned by [IsAltPressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAltPressed(value bool) Instance {
+func (self Instance) SetAltPressed(value bool) Instance { //gd:InputEventWithModifiers.alt_pressed
 	class(self).SetAltPressed(value)
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetAltPressed(value bool) Instance {
 /*
 State of the Shift modifier.
 */
-func (self Instance) ShiftPressed() bool {
+func (self Instance) ShiftPressed() bool { //gd:InputEventWithModifiers.shift_pressed
 	return bool(class(self).IsShiftPressed())
 }
 
 // SetShiftPressed sets the property returned by [IsShiftPressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShiftPressed(value bool) Instance {
+func (self Instance) SetShiftPressed(value bool) Instance { //gd:InputEventWithModifiers.shift_pressed
 	class(self).SetShiftPressed(value)
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetShiftPressed(value bool) Instance {
 /*
 State of the Ctrl modifier.
 */
-func (self Instance) CtrlPressed() bool {
+func (self Instance) CtrlPressed() bool { //gd:InputEventWithModifiers.ctrl_pressed
 	return bool(class(self).IsCtrlPressed())
 }
 
 // SetCtrlPressed sets the property returned by [IsCtrlPressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCtrlPressed(value bool) Instance {
+func (self Instance) SetCtrlPressed(value bool) Instance { //gd:InputEventWithModifiers.ctrl_pressed
 	class(self).SetCtrlPressed(value)
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetCtrlPressed(value bool) Instance {
 /*
 State of the Meta modifier. On Windows and Linux, this represents the Windows key (sometimes called "meta" or "super" on Linux). On macOS, this represents the Command key.
 */
-func (self Instance) MetaPressed() bool {
+func (self Instance) MetaPressed() bool { //gd:InputEventWithModifiers.meta_pressed
 	return bool(class(self).IsMetaPressed())
 }
 
 // SetMetaPressed sets the property returned by [IsMetaPressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMetaPressed(value bool) Instance {
+func (self Instance) SetMetaPressed(value bool) Instance { //gd:InputEventWithModifiers.meta_pressed
 	class(self).SetMetaPressed(value)
 	return self
 }

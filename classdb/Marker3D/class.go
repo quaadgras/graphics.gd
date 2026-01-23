@@ -161,12 +161,12 @@ func New() Instance {
 /*
 Size of the gizmo cross that appears in the editor.
 */
-func (self Instance) GizmoExtents() Float.X {
+func (self Instance) GizmoExtents() Float.X { //gd:Marker3D.gizmo_extents
 	return Float.X(Float.X(class(self).GetGizmoExtents()))
 }
 
 // SetGizmoExtents sets the property returned by [GetGizmoExtents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGizmoExtents(value Float.X) Instance {
+func (self Instance) SetGizmoExtents(value Float.X) Instance { //gd:Marker3D.gizmo_extents
 	class(self).SetGizmoExtents(float64(value))
 	return self
 }

@@ -268,12 +268,12 @@ Note: If the button is disabled while held down, [OnButtonUp] will be emitted.
 
 [OnButtonUp]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnButtonUp
 */
-func (self Instance) Disabled() bool {
+func (self Instance) Disabled() bool { //gd:BaseButton.disabled
 	return bool(class(self).IsDisabled())
 }
 
 // SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisabled(value bool) Instance {
+func (self Instance) SetDisabled(value bool) Instance { //gd:BaseButton.disabled
 	class(self).SetDisabled(value)
 	return self
 }
@@ -281,12 +281,12 @@ func (self Instance) SetDisabled(value bool) Instance {
 /*
 If true, the button is in toggle mode. Makes the button flip state between pressed and unpressed each time its area is clicked.
 */
-func (self Instance) ToggleMode() bool {
+func (self Instance) ToggleMode() bool { //gd:BaseButton.toggle_mode
 	return bool(class(self).IsToggleMode())
 }
 
 // SetToggleMode sets the property returned by [IsToggleMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetToggleMode(value bool) Instance {
+func (self Instance) SetToggleMode(value bool) Instance { //gd:BaseButton.toggle_mode
 	class(self).SetToggleMode(value)
 	return self
 }
@@ -301,12 +301,12 @@ Note: Changing the value of [ButtonPressed] will result in [OnToggled] to be emi
 [SetPressedNoSignal]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.SetPressedNoSignal
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
 */
-func (self Instance) ButtonPressed() bool {
+func (self Instance) ButtonPressed() bool { //gd:BaseButton.button_pressed
 	return bool(class(self).IsPressed())
 }
 
 // SetButtonPressed sets the property returned by [IsPressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetButtonPressed(value bool) Instance {
+func (self Instance) SetButtonPressed(value bool) Instance { //gd:BaseButton.button_pressed
 	class(self).SetPressed(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetButtonPressed(value bool) Instance {
 /*
 Determines when the button is considered clicked.
 */
-func (self Instance) ActionMode() ActionMode {
+func (self Instance) ActionMode() ActionMode { //gd:BaseButton.action_mode
 	return ActionMode(class(self).GetActionMode())
 }
 
 // SetActionMode sets the property returned by [GetActionMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActionMode(value ActionMode) Instance {
+func (self Instance) SetActionMode(value ActionMode) Instance { //gd:BaseButton.action_mode
 	class(self).SetActionMode(value)
 	return self
 }
@@ -329,12 +329,12 @@ Binary mask to choose which mouse buttons this button will respond to.
 
 To allow both left-click and right-click, use MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT.
 */
-func (self Instance) ButtonMask() Input.MouseButtonMask {
+func (self Instance) ButtonMask() Input.MouseButtonMask { //gd:BaseButton.button_mask
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
 // SetButtonMask sets the property returned by [GetButtonMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance {
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) Instance { //gd:BaseButton.button_mask
 	class(self).SetButtonMask(value)
 	return self
 }
@@ -344,12 +344,12 @@ If true, the button stays pressed when moving the cursor outside the button whil
 
 Note: This property only affects the button's visual appearance. Signals will be emitted at the same moment regardless of this property's value.
 */
-func (self Instance) KeepPressedOutside() bool {
+func (self Instance) KeepPressedOutside() bool { //gd:BaseButton.keep_pressed_outside
 	return bool(class(self).IsKeepPressedOutside())
 }
 
 // SetKeepPressedOutside sets the property returned by [IsKeepPressedOutside]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepPressedOutside(value bool) Instance {
+func (self Instance) SetKeepPressedOutside(value bool) Instance { //gd:BaseButton.keep_pressed_outside
 	class(self).SetKeepPressedOutside(value)
 	return self
 }
@@ -359,12 +359,12 @@ func (self Instance) SetKeepPressedOutside(value bool) Instance {
 
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
 */
-func (self Instance) Shortcut() Shortcut.Instance {
+func (self Instance) Shortcut() Shortcut.Instance { //gd:BaseButton.shortcut
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
 // SetShortcut sets the property returned by [GetShortcut]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcut(value Shortcut.Instance) Instance {
+func (self Instance) SetShortcut(value Shortcut.Instance) Instance { //gd:BaseButton.shortcut
 	class(self).SetShortcut(value)
 	return self
 }
@@ -374,12 +374,12 @@ If true, the button will highlight for a short amount of time when its shortcut 
 
 [ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
 */
-func (self Instance) ShortcutFeedback() bool {
+func (self Instance) ShortcutFeedback() bool { //gd:BaseButton.shortcut_feedback
 	return bool(class(self).IsShortcutFeedback())
 }
 
 // SetShortcutFeedback sets the property returned by [IsShortcutFeedback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcutFeedback(value bool) Instance {
+func (self Instance) SetShortcutFeedback(value bool) Instance { //gd:BaseButton.shortcut_feedback
 	class(self).SetShortcutFeedback(value)
 	return self
 }
@@ -391,12 +391,12 @@ Note: This property does nothing when the tooltip control is customized using [C
 
 [Control.MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MakeCustomTooltip
 */
-func (self Instance) ShortcutInTooltip() bool {
+func (self Instance) ShortcutInTooltip() bool { //gd:BaseButton.shortcut_in_tooltip
 	return bool(class(self).IsShortcutInTooltipEnabled())
 }
 
 // SetShortcutInTooltip sets the property returned by [IsShortcutInTooltipEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcutInTooltip(value bool) Instance {
+func (self Instance) SetShortcutInTooltip(value bool) Instance { //gd:BaseButton.shortcut_in_tooltip
 	class(self).SetShortcutInTooltip(value)
 	return self
 }

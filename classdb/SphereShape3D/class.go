@@ -168,12 +168,12 @@ func New() Instance {
 /*
 The sphere's radius. The shape's diameter is double the radius.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:SphereShape3D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:SphereShape3D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }

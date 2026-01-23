@@ -1090,12 +1090,12 @@ The [TileSet] used by this [TileMap]. The textures, collisions, and additional b
 [TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) TileSet() TileSet.Instance {
+func (self Instance) TileSet() TileSet.Instance { //gd:TileMap.tile_set
 	return TileSet.Instance(class(self).GetTileset())
 }
 
 // SetTileSet sets the property returned by [GetTileset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileSet(value TileSet.Instance) Instance {
+func (self Instance) SetTileSet(value TileSet.Instance) Instance { //gd:TileMap.tile_set
 	class(self).SetTileset(value)
 	return self
 }
@@ -1109,12 +1109,12 @@ Note: As quadrants are created according to the map's coordinate system, the qua
 
 [RenderingQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.RenderingQuadrantSize
 */
-func (self Instance) RenderingQuadrantSize() int {
+func (self Instance) RenderingQuadrantSize() int { //gd:TileMap.rendering_quadrant_size
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
 // SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderingQuadrantSize(value int) Instance {
+func (self Instance) SetRenderingQuadrantSize(value int) Instance { //gd:TileMap.rendering_quadrant_size
 	class(self).SetRenderingQuadrantSize(int64(value))
 	return self
 }
@@ -1126,12 +1126,12 @@ Note: Enabling [CollisionAnimatable] may have a small performance impact, only d
 
 [CollisionAnimatable]: https://pkg.go.dev/graphics.gd/classdb/TileMap#Instance.CollisionAnimatable
 */
-func (self Instance) CollisionAnimatable() bool {
+func (self Instance) CollisionAnimatable() bool { //gd:TileMap.collision_animatable
 	return bool(class(self).IsCollisionAnimatable())
 }
 
 // SetCollisionAnimatable sets the property returned by [IsCollisionAnimatable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionAnimatable(value bool) Instance {
+func (self Instance) SetCollisionAnimatable(value bool) Instance { //gd:TileMap.collision_animatable
 	class(self).SetCollisionAnimatable(value)
 	return self
 }
@@ -1139,12 +1139,12 @@ func (self Instance) SetCollisionAnimatable(value bool) Instance {
 /*
 Show or hide the TileMap's collision shapes. If set to [VisibilityModeDefault], this depends on the show collision debug settings.
 */
-func (self Instance) CollisionVisibilityMode() VisibilityMode {
+func (self Instance) CollisionVisibilityMode() VisibilityMode { //gd:TileMap.collision_visibility_mode
 	return VisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
 // SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) Instance {
+func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) Instance { //gd:TileMap.collision_visibility_mode
 	class(self).SetCollisionVisibilityMode(value)
 	return self
 }
@@ -1152,12 +1152,12 @@ func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) Instance {
 /*
 Show or hide the TileMap's navigation meshes. If set to [VisibilityModeDefault], this depends on the show navigation debug settings.
 */
-func (self Instance) NavigationVisibilityMode() VisibilityMode {
+func (self Instance) NavigationVisibilityMode() VisibilityMode { //gd:TileMap.navigation_visibility_mode
 	return VisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
 // SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) Instance {
+func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) Instance { //gd:TileMap.navigation_visibility_mode
 	class(self).SetNavigationVisibilityMode(value)
 	return self
 }

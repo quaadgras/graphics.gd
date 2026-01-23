@@ -538,12 +538,12 @@ Defines the behavior in physics when [Node.ProcessMode] is set to [Node.ProcessM
 
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 */
-func (self Instance) DisableMode() DisableMode {
+func (self Instance) DisableMode() DisableMode { //gd:CollisionObject2D.disable_mode
 	return DisableMode(class(self).GetDisableMode())
 }
 
 // SetDisableMode sets the property returned by [GetDisableMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableMode(value DisableMode) Instance {
+func (self Instance) SetDisableMode(value DisableMode) Instance { //gd:CollisionObject2D.disable_mode
 	class(self).SetDisableMode(value)
 	return self
 }
@@ -556,12 +556,12 @@ Note: Object A can detect a contact with object B only if object B is in any of 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
 */
-func (self Instance) CollisionLayer() int {
+func (self Instance) CollisionLayer() int { //gd:CollisionObject2D.collision_layer
 	return int(int(class(self).GetCollisionLayer()))
 }
 
 // SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionLayer(value int) Instance {
+func (self Instance) SetCollisionLayer(value int) Instance { //gd:CollisionObject2D.collision_layer
 	class(self).SetCollisionLayer(int64(value))
 	return self
 }
@@ -574,12 +574,12 @@ Note: Object A can detect a contact with object B only if object B is in any of 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:CollisionObject2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:CollisionObject2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -587,12 +587,12 @@ func (self Instance) SetCollisionMask(value int) Instance {
 /*
 The priority used to solve colliding when occurring penetration. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
 */
-func (self Instance) CollisionPriority() Float.X {
+func (self Instance) CollisionPriority() Float.X { //gd:CollisionObject2D.collision_priority
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
 // SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionPriority(value Float.X) Instance {
+func (self Instance) SetCollisionPriority(value Float.X) Instance { //gd:CollisionObject2D.collision_priority
 	class(self).SetCollisionPriority(float64(value))
 	return self
 }
@@ -602,12 +602,12 @@ If true, this object is pickable. A pickable object can detect the mouse pointer
 
 [CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
 */
-func (self Instance) InputPickable() bool {
+func (self Instance) InputPickable() bool { //gd:CollisionObject2D.input_pickable
 	return bool(class(self).IsPickable())
 }
 
 // SetInputPickable sets the property returned by [IsPickable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInputPickable(value bool) Instance {
+func (self Instance) SetInputPickable(value bool) Instance { //gd:CollisionObject2D.input_pickable
 	class(self).SetPickable(value)
 	return self
 }

@@ -235,12 +235,12 @@ func New() Instance {
 /*
 URL to the device description.
 */
-func (self Instance) DescriptionUrl() string {
+func (self Instance) DescriptionUrl() string { //gd:UPNPDevice.description_url
 	return string(class(self).GetDescriptionUrl().String())
 }
 
 // SetDescriptionUrl sets the property returned by [GetDescriptionUrl]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDescriptionUrl(value string) Instance {
+func (self Instance) SetDescriptionUrl(value string) Instance { //gd:UPNPDevice.description_url
 	class(self).SetDescriptionUrl(String.New(value))
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetDescriptionUrl(value string) Instance {
 /*
 Service type.
 */
-func (self Instance) ServiceType() string {
+func (self Instance) ServiceType() string { //gd:UPNPDevice.service_type
 	return string(class(self).GetServiceType().String())
 }
 
 // SetServiceType sets the property returned by [GetServiceType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetServiceType(value string) Instance {
+func (self Instance) SetServiceType(value string) Instance { //gd:UPNPDevice.service_type
 	class(self).SetServiceType(String.New(value))
 	return self
 }
@@ -261,12 +261,12 @@ func (self Instance) SetServiceType(value string) Instance {
 /*
 IDG control URL.
 */
-func (self Instance) IgdControlUrl() string {
+func (self Instance) IgdControlUrl() string { //gd:UPNPDevice.igd_control_url
 	return string(class(self).GetIgdControlUrl().String())
 }
 
 // SetIgdControlUrl sets the property returned by [GetIgdControlUrl]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgdControlUrl(value string) Instance {
+func (self Instance) SetIgdControlUrl(value string) Instance { //gd:UPNPDevice.igd_control_url
 	class(self).SetIgdControlUrl(String.New(value))
 	return self
 }
@@ -274,12 +274,12 @@ func (self Instance) SetIgdControlUrl(value string) Instance {
 /*
 IGD service type.
 */
-func (self Instance) IgdServiceType() string {
+func (self Instance) IgdServiceType() string { //gd:UPNPDevice.igd_service_type
 	return string(class(self).GetIgdServiceType().String())
 }
 
 // SetIgdServiceType sets the property returned by [GetIgdServiceType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgdServiceType(value string) Instance {
+func (self Instance) SetIgdServiceType(value string) Instance { //gd:UPNPDevice.igd_service_type
 	class(self).SetIgdServiceType(String.New(value))
 	return self
 }
@@ -289,12 +289,12 @@ Address of the local machine in the network connecting it to this [UPNPDevice].
 
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
-func (self Instance) IgdOurAddr() string {
+func (self Instance) IgdOurAddr() string { //gd:UPNPDevice.igd_our_addr
 	return string(class(self).GetIgdOurAddr().String())
 }
 
 // SetIgdOurAddr sets the property returned by [GetIgdOurAddr]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgdOurAddr(value string) Instance {
+func (self Instance) SetIgdOurAddr(value string) Instance { //gd:UPNPDevice.igd_our_addr
 	class(self).SetIgdOurAddr(String.New(value))
 	return self
 }
@@ -302,12 +302,12 @@ func (self Instance) SetIgdOurAddr(value string) Instance {
 /*
 IGD status.
 */
-func (self Instance) IgdStatus() IGDStatus {
+func (self Instance) IgdStatus() IGDStatus { //gd:UPNPDevice.igd_status
 	return IGDStatus(class(self).GetIgdStatus())
 }
 
 // SetIgdStatus sets the property returned by [GetIgdStatus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgdStatus(value IGDStatus) Instance {
+func (self Instance) SetIgdStatus(value IGDStatus) Instance { //gd:UPNPDevice.igd_status
 	class(self).SetIgdStatus(value)
 	return self
 }

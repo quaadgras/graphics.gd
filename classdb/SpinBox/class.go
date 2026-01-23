@@ -238,12 +238,12 @@ Changes the alignment of the underlying [LineEdit].
 
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
-func (self Instance) Alignment() GUI.HorizontalAlignment {
+func (self Instance) Alignment() GUI.HorizontalAlignment { //gd:SpinBox.alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 // SetAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance { //gd:SpinBox.alignment
 	class(self).SetHorizontalAlignment(value)
 	return self
 }
@@ -253,12 +253,12 @@ If true, the [SpinBox] will be editable. Otherwise, it will be read only.
 
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) Editable() bool {
+func (self Instance) Editable() bool { //gd:SpinBox.editable
 	return bool(class(self).IsEditable())
 }
 
 // SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditable(value bool) Instance {
+func (self Instance) SetEditable(value bool) Instance { //gd:SpinBox.editable
 	class(self).SetEditable(value)
 	return self
 }
@@ -274,12 +274,12 @@ Note: If set to true, this will interfere with entering mathematical expressions
 [Range]: https://pkg.go.dev/graphics.gd/classdb/Range
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) UpdateOnTextChanged() bool {
+func (self Instance) UpdateOnTextChanged() bool { //gd:SpinBox.update_on_text_changed
 	return bool(class(self).GetUpdateOnTextChanged())
 }
 
 // SetUpdateOnTextChanged sets the property returned by [GetUpdateOnTextChanged]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdateOnTextChanged(value bool) Instance {
+func (self Instance) SetUpdateOnTextChanged(value bool) Instance { //gd:SpinBox.update_on_text_changed
 	class(self).SetUpdateOnTextChanged(value)
 	return self
 }
@@ -289,12 +289,12 @@ Adds the specified prefix string before the numerical value of the [SpinBox].
 
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) Prefix() string {
+func (self Instance) Prefix() string { //gd:SpinBox.prefix
 	return string(class(self).GetPrefix().String())
 }
 
 // SetPrefix sets the property returned by [GetPrefix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrefix(value string) Instance {
+func (self Instance) SetPrefix(value string) Instance { //gd:SpinBox.prefix
 	class(self).SetPrefix(String.New(value))
 	return self
 }
@@ -304,12 +304,12 @@ Adds the specified suffix string after the numerical value of the [SpinBox].
 
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) Suffix() string {
+func (self Instance) Suffix() string { //gd:SpinBox.suffix
 	return string(class(self).GetSuffix().String())
 }
 
 // SetSuffix sets the property returned by [GetSuffix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSuffix(value string) Instance {
+func (self Instance) SetSuffix(value string) Instance { //gd:SpinBox.suffix
 	class(self).SetSuffix(String.New(value))
 	return self
 }
@@ -323,12 +323,12 @@ Note: [Range.Value] will still be rounded to a multiple of [Range.Step].
 [Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) CustomArrowStep() Float.X {
+func (self Instance) CustomArrowStep() Float.X { //gd:SpinBox.custom_arrow_step
 	return Float.X(Float.X(class(self).GetCustomArrowStep()))
 }
 
 // SetCustomArrowStep sets the property returned by [GetCustomArrowStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomArrowStep(value Float.X) Instance {
+func (self Instance) SetCustomArrowStep(value Float.X) Instance { //gd:SpinBox.custom_arrow_step
 	class(self).SetCustomArrowStep(float64(value))
 	return self
 }
@@ -339,12 +339,12 @@ If true, the [SpinBox] will select the whole text when the [LineEdit] gains focu
 [LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 */
-func (self Instance) SelectAllOnFocus() bool {
+func (self Instance) SelectAllOnFocus() bool { //gd:SpinBox.select_all_on_focus
 	return bool(class(self).IsSelectAllOnFocus())
 }
 
 // SetSelectAllOnFocus sets the property returned by [IsSelectAllOnFocus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectAllOnFocus(value bool) Instance {
+func (self Instance) SetSelectAllOnFocus(value bool) Instance { //gd:SpinBox.select_all_on_focus
 	class(self).SetSelectAllOnFocus(value)
 	return self
 }

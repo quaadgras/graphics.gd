@@ -173,12 +173,12 @@ func New() Instance {
 /*
 If true, the playlist will shuffle each time playback starts and each time it loops.
 */
-func (self Instance) Shuffle() bool {
+func (self Instance) Shuffle() bool { //gd:AudioStreamPlaylist.shuffle
 	return bool(class(self).GetShuffle())
 }
 
 // SetShuffle sets the property returned by [GetShuffle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShuffle(value bool) Instance {
+func (self Instance) SetShuffle(value bool) Instance { //gd:AudioStreamPlaylist.shuffle
 	class(self).SetShuffle(value)
 	return self
 }
@@ -186,12 +186,12 @@ func (self Instance) SetShuffle(value bool) Instance {
 /*
 If true, the playlist will loop, otherwise the playlist will end when the last stream is finished.
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:AudioStreamPlaylist.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:AudioStreamPlaylist.loop
 	class(self).SetLoop(value)
 	return self
 }
@@ -199,12 +199,12 @@ func (self Instance) SetLoop(value bool) Instance {
 /*
 Fade time used when a stream ends, when going to the next one. Streams are expected to have an extra bit of audio after the end to help with fading.
 */
-func (self Instance) FadeTime() Float.X {
+func (self Instance) FadeTime() Float.X { //gd:AudioStreamPlaylist.fade_time
 	return Float.X(Float.X(class(self).GetFadeTime()))
 }
 
 // SetFadeTime sets the property returned by [GetFadeTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFadeTime(value Float.X) Instance {
+func (self Instance) SetFadeTime(value Float.X) Instance { //gd:AudioStreamPlaylist.fade_time
 	class(self).SetFadeTime(float64(value))
 	return self
 }
@@ -212,652 +212,652 @@ func (self Instance) SetFadeTime(value Float.X) Instance {
 /*
 Amount of streams in the playlist.
 */
-func (self Instance) StreamCount() int {
+func (self Instance) StreamCount() int { //gd:AudioStreamPlaylist.stream_count
 	return int(int(class(self).GetStreamCount()))
 }
 
 // SetStreamCount sets the property returned by [GetStreamCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamCount(value int) Instance {
+func (self Instance) SetStreamCount(value int) Instance { //gd:AudioStreamPlaylist.stream_count
 	class(self).SetStreamCount(int64(value))
 	return self
 }
 
-func (self Instance) Stream0() AudioStream.Instance {
+func (self Instance) Stream0() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_0
 	return AudioStream.Instance(class(self).GetListStream(0))
 }
 
 // SetStream0 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream0(value AudioStream.Instance) Instance {
+func (self Instance) SetStream0(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_0
 	class(self).SetListStream(0, value)
 	return self
 }
 
-func (self Instance) Stream1() AudioStream.Instance {
+func (self Instance) Stream1() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_1
 	return AudioStream.Instance(class(self).GetListStream(1))
 }
 
 // SetStream1 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream1(value AudioStream.Instance) Instance {
+func (self Instance) SetStream1(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_1
 	class(self).SetListStream(1, value)
 	return self
 }
 
-func (self Instance) Stream2() AudioStream.Instance {
+func (self Instance) Stream2() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_2
 	return AudioStream.Instance(class(self).GetListStream(2))
 }
 
 // SetStream2 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream2(value AudioStream.Instance) Instance {
+func (self Instance) SetStream2(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_2
 	class(self).SetListStream(2, value)
 	return self
 }
 
-func (self Instance) Stream3() AudioStream.Instance {
+func (self Instance) Stream3() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_3
 	return AudioStream.Instance(class(self).GetListStream(3))
 }
 
 // SetStream3 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream3(value AudioStream.Instance) Instance {
+func (self Instance) SetStream3(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_3
 	class(self).SetListStream(3, value)
 	return self
 }
 
-func (self Instance) Stream4() AudioStream.Instance {
+func (self Instance) Stream4() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_4
 	return AudioStream.Instance(class(self).GetListStream(4))
 }
 
 // SetStream4 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream4(value AudioStream.Instance) Instance {
+func (self Instance) SetStream4(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_4
 	class(self).SetListStream(4, value)
 	return self
 }
 
-func (self Instance) Stream5() AudioStream.Instance {
+func (self Instance) Stream5() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_5
 	return AudioStream.Instance(class(self).GetListStream(5))
 }
 
 // SetStream5 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream5(value AudioStream.Instance) Instance {
+func (self Instance) SetStream5(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_5
 	class(self).SetListStream(5, value)
 	return self
 }
 
-func (self Instance) Stream6() AudioStream.Instance {
+func (self Instance) Stream6() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_6
 	return AudioStream.Instance(class(self).GetListStream(6))
 }
 
 // SetStream6 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream6(value AudioStream.Instance) Instance {
+func (self Instance) SetStream6(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_6
 	class(self).SetListStream(6, value)
 	return self
 }
 
-func (self Instance) Stream7() AudioStream.Instance {
+func (self Instance) Stream7() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_7
 	return AudioStream.Instance(class(self).GetListStream(7))
 }
 
 // SetStream7 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream7(value AudioStream.Instance) Instance {
+func (self Instance) SetStream7(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_7
 	class(self).SetListStream(7, value)
 	return self
 }
 
-func (self Instance) Stream8() AudioStream.Instance {
+func (self Instance) Stream8() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_8
 	return AudioStream.Instance(class(self).GetListStream(8))
 }
 
 // SetStream8 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream8(value AudioStream.Instance) Instance {
+func (self Instance) SetStream8(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_8
 	class(self).SetListStream(8, value)
 	return self
 }
 
-func (self Instance) Stream9() AudioStream.Instance {
+func (self Instance) Stream9() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_9
 	return AudioStream.Instance(class(self).GetListStream(9))
 }
 
 // SetStream9 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream9(value AudioStream.Instance) Instance {
+func (self Instance) SetStream9(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_9
 	class(self).SetListStream(9, value)
 	return self
 }
 
-func (self Instance) Stream10() AudioStream.Instance {
+func (self Instance) Stream10() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_10
 	return AudioStream.Instance(class(self).GetListStream(10))
 }
 
 // SetStream10 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream10(value AudioStream.Instance) Instance {
+func (self Instance) SetStream10(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_10
 	class(self).SetListStream(10, value)
 	return self
 }
 
-func (self Instance) Stream11() AudioStream.Instance {
+func (self Instance) Stream11() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_11
 	return AudioStream.Instance(class(self).GetListStream(11))
 }
 
 // SetStream11 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream11(value AudioStream.Instance) Instance {
+func (self Instance) SetStream11(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_11
 	class(self).SetListStream(11, value)
 	return self
 }
 
-func (self Instance) Stream12() AudioStream.Instance {
+func (self Instance) Stream12() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_12
 	return AudioStream.Instance(class(self).GetListStream(12))
 }
 
 // SetStream12 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream12(value AudioStream.Instance) Instance {
+func (self Instance) SetStream12(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_12
 	class(self).SetListStream(12, value)
 	return self
 }
 
-func (self Instance) Stream13() AudioStream.Instance {
+func (self Instance) Stream13() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_13
 	return AudioStream.Instance(class(self).GetListStream(13))
 }
 
 // SetStream13 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream13(value AudioStream.Instance) Instance {
+func (self Instance) SetStream13(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_13
 	class(self).SetListStream(13, value)
 	return self
 }
 
-func (self Instance) Stream14() AudioStream.Instance {
+func (self Instance) Stream14() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_14
 	return AudioStream.Instance(class(self).GetListStream(14))
 }
 
 // SetStream14 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream14(value AudioStream.Instance) Instance {
+func (self Instance) SetStream14(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_14
 	class(self).SetListStream(14, value)
 	return self
 }
 
-func (self Instance) Stream15() AudioStream.Instance {
+func (self Instance) Stream15() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_15
 	return AudioStream.Instance(class(self).GetListStream(15))
 }
 
 // SetStream15 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream15(value AudioStream.Instance) Instance {
+func (self Instance) SetStream15(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_15
 	class(self).SetListStream(15, value)
 	return self
 }
 
-func (self Instance) Stream16() AudioStream.Instance {
+func (self Instance) Stream16() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_16
 	return AudioStream.Instance(class(self).GetListStream(16))
 }
 
 // SetStream16 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream16(value AudioStream.Instance) Instance {
+func (self Instance) SetStream16(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_16
 	class(self).SetListStream(16, value)
 	return self
 }
 
-func (self Instance) Stream17() AudioStream.Instance {
+func (self Instance) Stream17() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_17
 	return AudioStream.Instance(class(self).GetListStream(17))
 }
 
 // SetStream17 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream17(value AudioStream.Instance) Instance {
+func (self Instance) SetStream17(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_17
 	class(self).SetListStream(17, value)
 	return self
 }
 
-func (self Instance) Stream18() AudioStream.Instance {
+func (self Instance) Stream18() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_18
 	return AudioStream.Instance(class(self).GetListStream(18))
 }
 
 // SetStream18 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream18(value AudioStream.Instance) Instance {
+func (self Instance) SetStream18(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_18
 	class(self).SetListStream(18, value)
 	return self
 }
 
-func (self Instance) Stream19() AudioStream.Instance {
+func (self Instance) Stream19() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_19
 	return AudioStream.Instance(class(self).GetListStream(19))
 }
 
 // SetStream19 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream19(value AudioStream.Instance) Instance {
+func (self Instance) SetStream19(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_19
 	class(self).SetListStream(19, value)
 	return self
 }
 
-func (self Instance) Stream20() AudioStream.Instance {
+func (self Instance) Stream20() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_20
 	return AudioStream.Instance(class(self).GetListStream(20))
 }
 
 // SetStream20 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream20(value AudioStream.Instance) Instance {
+func (self Instance) SetStream20(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_20
 	class(self).SetListStream(20, value)
 	return self
 }
 
-func (self Instance) Stream21() AudioStream.Instance {
+func (self Instance) Stream21() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_21
 	return AudioStream.Instance(class(self).GetListStream(21))
 }
 
 // SetStream21 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream21(value AudioStream.Instance) Instance {
+func (self Instance) SetStream21(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_21
 	class(self).SetListStream(21, value)
 	return self
 }
 
-func (self Instance) Stream22() AudioStream.Instance {
+func (self Instance) Stream22() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_22
 	return AudioStream.Instance(class(self).GetListStream(22))
 }
 
 // SetStream22 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream22(value AudioStream.Instance) Instance {
+func (self Instance) SetStream22(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_22
 	class(self).SetListStream(22, value)
 	return self
 }
 
-func (self Instance) Stream23() AudioStream.Instance {
+func (self Instance) Stream23() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_23
 	return AudioStream.Instance(class(self).GetListStream(23))
 }
 
 // SetStream23 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream23(value AudioStream.Instance) Instance {
+func (self Instance) SetStream23(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_23
 	class(self).SetListStream(23, value)
 	return self
 }
 
-func (self Instance) Stream24() AudioStream.Instance {
+func (self Instance) Stream24() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_24
 	return AudioStream.Instance(class(self).GetListStream(24))
 }
 
 // SetStream24 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream24(value AudioStream.Instance) Instance {
+func (self Instance) SetStream24(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_24
 	class(self).SetListStream(24, value)
 	return self
 }
 
-func (self Instance) Stream25() AudioStream.Instance {
+func (self Instance) Stream25() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_25
 	return AudioStream.Instance(class(self).GetListStream(25))
 }
 
 // SetStream25 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream25(value AudioStream.Instance) Instance {
+func (self Instance) SetStream25(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_25
 	class(self).SetListStream(25, value)
 	return self
 }
 
-func (self Instance) Stream26() AudioStream.Instance {
+func (self Instance) Stream26() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_26
 	return AudioStream.Instance(class(self).GetListStream(26))
 }
 
 // SetStream26 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream26(value AudioStream.Instance) Instance {
+func (self Instance) SetStream26(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_26
 	class(self).SetListStream(26, value)
 	return self
 }
 
-func (self Instance) Stream27() AudioStream.Instance {
+func (self Instance) Stream27() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_27
 	return AudioStream.Instance(class(self).GetListStream(27))
 }
 
 // SetStream27 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream27(value AudioStream.Instance) Instance {
+func (self Instance) SetStream27(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_27
 	class(self).SetListStream(27, value)
 	return self
 }
 
-func (self Instance) Stream28() AudioStream.Instance {
+func (self Instance) Stream28() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_28
 	return AudioStream.Instance(class(self).GetListStream(28))
 }
 
 // SetStream28 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream28(value AudioStream.Instance) Instance {
+func (self Instance) SetStream28(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_28
 	class(self).SetListStream(28, value)
 	return self
 }
 
-func (self Instance) Stream29() AudioStream.Instance {
+func (self Instance) Stream29() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_29
 	return AudioStream.Instance(class(self).GetListStream(29))
 }
 
 // SetStream29 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream29(value AudioStream.Instance) Instance {
+func (self Instance) SetStream29(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_29
 	class(self).SetListStream(29, value)
 	return self
 }
 
-func (self Instance) Stream30() AudioStream.Instance {
+func (self Instance) Stream30() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_30
 	return AudioStream.Instance(class(self).GetListStream(30))
 }
 
 // SetStream30 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream30(value AudioStream.Instance) Instance {
+func (self Instance) SetStream30(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_30
 	class(self).SetListStream(30, value)
 	return self
 }
 
-func (self Instance) Stream31() AudioStream.Instance {
+func (self Instance) Stream31() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_31
 	return AudioStream.Instance(class(self).GetListStream(31))
 }
 
 // SetStream31 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream31(value AudioStream.Instance) Instance {
+func (self Instance) SetStream31(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_31
 	class(self).SetListStream(31, value)
 	return self
 }
 
-func (self Instance) Stream32() AudioStream.Instance {
+func (self Instance) Stream32() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_32
 	return AudioStream.Instance(class(self).GetListStream(32))
 }
 
 // SetStream32 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream32(value AudioStream.Instance) Instance {
+func (self Instance) SetStream32(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_32
 	class(self).SetListStream(32, value)
 	return self
 }
 
-func (self Instance) Stream33() AudioStream.Instance {
+func (self Instance) Stream33() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_33
 	return AudioStream.Instance(class(self).GetListStream(33))
 }
 
 // SetStream33 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream33(value AudioStream.Instance) Instance {
+func (self Instance) SetStream33(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_33
 	class(self).SetListStream(33, value)
 	return self
 }
 
-func (self Instance) Stream34() AudioStream.Instance {
+func (self Instance) Stream34() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_34
 	return AudioStream.Instance(class(self).GetListStream(34))
 }
 
 // SetStream34 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream34(value AudioStream.Instance) Instance {
+func (self Instance) SetStream34(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_34
 	class(self).SetListStream(34, value)
 	return self
 }
 
-func (self Instance) Stream35() AudioStream.Instance {
+func (self Instance) Stream35() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_35
 	return AudioStream.Instance(class(self).GetListStream(35))
 }
 
 // SetStream35 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream35(value AudioStream.Instance) Instance {
+func (self Instance) SetStream35(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_35
 	class(self).SetListStream(35, value)
 	return self
 }
 
-func (self Instance) Stream36() AudioStream.Instance {
+func (self Instance) Stream36() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_36
 	return AudioStream.Instance(class(self).GetListStream(36))
 }
 
 // SetStream36 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream36(value AudioStream.Instance) Instance {
+func (self Instance) SetStream36(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_36
 	class(self).SetListStream(36, value)
 	return self
 }
 
-func (self Instance) Stream37() AudioStream.Instance {
+func (self Instance) Stream37() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_37
 	return AudioStream.Instance(class(self).GetListStream(37))
 }
 
 // SetStream37 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream37(value AudioStream.Instance) Instance {
+func (self Instance) SetStream37(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_37
 	class(self).SetListStream(37, value)
 	return self
 }
 
-func (self Instance) Stream38() AudioStream.Instance {
+func (self Instance) Stream38() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_38
 	return AudioStream.Instance(class(self).GetListStream(38))
 }
 
 // SetStream38 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream38(value AudioStream.Instance) Instance {
+func (self Instance) SetStream38(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_38
 	class(self).SetListStream(38, value)
 	return self
 }
 
-func (self Instance) Stream39() AudioStream.Instance {
+func (self Instance) Stream39() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_39
 	return AudioStream.Instance(class(self).GetListStream(39))
 }
 
 // SetStream39 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream39(value AudioStream.Instance) Instance {
+func (self Instance) SetStream39(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_39
 	class(self).SetListStream(39, value)
 	return self
 }
 
-func (self Instance) Stream40() AudioStream.Instance {
+func (self Instance) Stream40() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_40
 	return AudioStream.Instance(class(self).GetListStream(40))
 }
 
 // SetStream40 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream40(value AudioStream.Instance) Instance {
+func (self Instance) SetStream40(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_40
 	class(self).SetListStream(40, value)
 	return self
 }
 
-func (self Instance) Stream41() AudioStream.Instance {
+func (self Instance) Stream41() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_41
 	return AudioStream.Instance(class(self).GetListStream(41))
 }
 
 // SetStream41 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream41(value AudioStream.Instance) Instance {
+func (self Instance) SetStream41(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_41
 	class(self).SetListStream(41, value)
 	return self
 }
 
-func (self Instance) Stream42() AudioStream.Instance {
+func (self Instance) Stream42() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_42
 	return AudioStream.Instance(class(self).GetListStream(42))
 }
 
 // SetStream42 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream42(value AudioStream.Instance) Instance {
+func (self Instance) SetStream42(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_42
 	class(self).SetListStream(42, value)
 	return self
 }
 
-func (self Instance) Stream43() AudioStream.Instance {
+func (self Instance) Stream43() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_43
 	return AudioStream.Instance(class(self).GetListStream(43))
 }
 
 // SetStream43 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream43(value AudioStream.Instance) Instance {
+func (self Instance) SetStream43(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_43
 	class(self).SetListStream(43, value)
 	return self
 }
 
-func (self Instance) Stream44() AudioStream.Instance {
+func (self Instance) Stream44() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_44
 	return AudioStream.Instance(class(self).GetListStream(44))
 }
 
 // SetStream44 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream44(value AudioStream.Instance) Instance {
+func (self Instance) SetStream44(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_44
 	class(self).SetListStream(44, value)
 	return self
 }
 
-func (self Instance) Stream45() AudioStream.Instance {
+func (self Instance) Stream45() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_45
 	return AudioStream.Instance(class(self).GetListStream(45))
 }
 
 // SetStream45 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream45(value AudioStream.Instance) Instance {
+func (self Instance) SetStream45(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_45
 	class(self).SetListStream(45, value)
 	return self
 }
 
-func (self Instance) Stream46() AudioStream.Instance {
+func (self Instance) Stream46() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_46
 	return AudioStream.Instance(class(self).GetListStream(46))
 }
 
 // SetStream46 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream46(value AudioStream.Instance) Instance {
+func (self Instance) SetStream46(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_46
 	class(self).SetListStream(46, value)
 	return self
 }
 
-func (self Instance) Stream47() AudioStream.Instance {
+func (self Instance) Stream47() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_47
 	return AudioStream.Instance(class(self).GetListStream(47))
 }
 
 // SetStream47 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream47(value AudioStream.Instance) Instance {
+func (self Instance) SetStream47(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_47
 	class(self).SetListStream(47, value)
 	return self
 }
 
-func (self Instance) Stream48() AudioStream.Instance {
+func (self Instance) Stream48() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_48
 	return AudioStream.Instance(class(self).GetListStream(48))
 }
 
 // SetStream48 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream48(value AudioStream.Instance) Instance {
+func (self Instance) SetStream48(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_48
 	class(self).SetListStream(48, value)
 	return self
 }
 
-func (self Instance) Stream49() AudioStream.Instance {
+func (self Instance) Stream49() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_49
 	return AudioStream.Instance(class(self).GetListStream(49))
 }
 
 // SetStream49 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream49(value AudioStream.Instance) Instance {
+func (self Instance) SetStream49(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_49
 	class(self).SetListStream(49, value)
 	return self
 }
 
-func (self Instance) Stream50() AudioStream.Instance {
+func (self Instance) Stream50() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_50
 	return AudioStream.Instance(class(self).GetListStream(50))
 }
 
 // SetStream50 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream50(value AudioStream.Instance) Instance {
+func (self Instance) SetStream50(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_50
 	class(self).SetListStream(50, value)
 	return self
 }
 
-func (self Instance) Stream51() AudioStream.Instance {
+func (self Instance) Stream51() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_51
 	return AudioStream.Instance(class(self).GetListStream(51))
 }
 
 // SetStream51 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream51(value AudioStream.Instance) Instance {
+func (self Instance) SetStream51(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_51
 	class(self).SetListStream(51, value)
 	return self
 }
 
-func (self Instance) Stream52() AudioStream.Instance {
+func (self Instance) Stream52() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_52
 	return AudioStream.Instance(class(self).GetListStream(52))
 }
 
 // SetStream52 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream52(value AudioStream.Instance) Instance {
+func (self Instance) SetStream52(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_52
 	class(self).SetListStream(52, value)
 	return self
 }
 
-func (self Instance) Stream53() AudioStream.Instance {
+func (self Instance) Stream53() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_53
 	return AudioStream.Instance(class(self).GetListStream(53))
 }
 
 // SetStream53 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream53(value AudioStream.Instance) Instance {
+func (self Instance) SetStream53(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_53
 	class(self).SetListStream(53, value)
 	return self
 }
 
-func (self Instance) Stream54() AudioStream.Instance {
+func (self Instance) Stream54() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_54
 	return AudioStream.Instance(class(self).GetListStream(54))
 }
 
 // SetStream54 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream54(value AudioStream.Instance) Instance {
+func (self Instance) SetStream54(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_54
 	class(self).SetListStream(54, value)
 	return self
 }
 
-func (self Instance) Stream55() AudioStream.Instance {
+func (self Instance) Stream55() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_55
 	return AudioStream.Instance(class(self).GetListStream(55))
 }
 
 // SetStream55 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream55(value AudioStream.Instance) Instance {
+func (self Instance) SetStream55(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_55
 	class(self).SetListStream(55, value)
 	return self
 }
 
-func (self Instance) Stream56() AudioStream.Instance {
+func (self Instance) Stream56() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_56
 	return AudioStream.Instance(class(self).GetListStream(56))
 }
 
 // SetStream56 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream56(value AudioStream.Instance) Instance {
+func (self Instance) SetStream56(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_56
 	class(self).SetListStream(56, value)
 	return self
 }
 
-func (self Instance) Stream57() AudioStream.Instance {
+func (self Instance) Stream57() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_57
 	return AudioStream.Instance(class(self).GetListStream(57))
 }
 
 // SetStream57 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream57(value AudioStream.Instance) Instance {
+func (self Instance) SetStream57(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_57
 	class(self).SetListStream(57, value)
 	return self
 }
 
-func (self Instance) Stream58() AudioStream.Instance {
+func (self Instance) Stream58() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_58
 	return AudioStream.Instance(class(self).GetListStream(58))
 }
 
 // SetStream58 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream58(value AudioStream.Instance) Instance {
+func (self Instance) SetStream58(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_58
 	class(self).SetListStream(58, value)
 	return self
 }
 
-func (self Instance) Stream59() AudioStream.Instance {
+func (self Instance) Stream59() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_59
 	return AudioStream.Instance(class(self).GetListStream(59))
 }
 
 // SetStream59 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream59(value AudioStream.Instance) Instance {
+func (self Instance) SetStream59(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_59
 	class(self).SetListStream(59, value)
 	return self
 }
 
-func (self Instance) Stream60() AudioStream.Instance {
+func (self Instance) Stream60() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_60
 	return AudioStream.Instance(class(self).GetListStream(60))
 }
 
 // SetStream60 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream60(value AudioStream.Instance) Instance {
+func (self Instance) SetStream60(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_60
 	class(self).SetListStream(60, value)
 	return self
 }
 
-func (self Instance) Stream61() AudioStream.Instance {
+func (self Instance) Stream61() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_61
 	return AudioStream.Instance(class(self).GetListStream(61))
 }
 
 // SetStream61 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream61(value AudioStream.Instance) Instance {
+func (self Instance) SetStream61(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_61
 	class(self).SetListStream(61, value)
 	return self
 }
 
-func (self Instance) Stream62() AudioStream.Instance {
+func (self Instance) Stream62() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_62
 	return AudioStream.Instance(class(self).GetListStream(62))
 }
 
 // SetStream62 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream62(value AudioStream.Instance) Instance {
+func (self Instance) SetStream62(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_62
 	class(self).SetListStream(62, value)
 	return self
 }
 
-func (self Instance) Stream63() AudioStream.Instance {
+func (self Instance) Stream63() AudioStream.Instance { //gd:AudioStreamPlaylist.stream_63
 	return AudioStream.Instance(class(self).GetListStream(63))
 }
 
 // SetStream63 sets the property returned by [GetListStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream63(value AudioStream.Instance) Instance {
+func (self Instance) SetStream63(value AudioStream.Instance) Instance { //gd:AudioStreamPlaylist.stream_63
 	class(self).SetListStream(63, value)
 	return self
 }

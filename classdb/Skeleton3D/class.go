@@ -699,12 +699,12 @@ Multiplies the 3D position track animation.
 
 Note: Unless this value is 1.0, the key value in animation will not match the actual position value.
 */
-func (self Instance) MotionScale() Float.X {
+func (self Instance) MotionScale() Float.X { //gd:Skeleton3D.motion_scale
 	return Float.X(Float.X(class(self).GetMotionScale()))
 }
 
 // SetMotionScale sets the property returned by [GetMotionScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionScale(value Float.X) Instance {
+func (self Instance) SetMotionScale(value Float.X) Instance { //gd:Skeleton3D.motion_scale
 	class(self).SetMotionScale(float64(value))
 	return self
 }
@@ -712,12 +712,12 @@ func (self Instance) SetMotionScale(value Float.X) Instance {
 /*
 If true, forces the bones in their default rest pose, regardless of their values. In the editor, this also prevents the bones from being edited.
 */
-func (self Instance) ShowRestOnly() bool {
+func (self Instance) ShowRestOnly() bool { //gd:Skeleton3D.show_rest_only
 	return bool(class(self).IsShowRestOnly())
 }
 
 // SetShowRestOnly sets the property returned by [IsShowRestOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowRestOnly(value bool) Instance {
+func (self Instance) SetShowRestOnly(value bool) Instance { //gd:Skeleton3D.show_rest_only
 	class(self).SetShowRestOnly(value)
 	return self
 }
@@ -725,12 +725,12 @@ func (self Instance) SetShowRestOnly(value bool) Instance {
 /*
 Sets the processing timing for the Modifier.
 */
-func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess {
+func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess { //gd:Skeleton3D.modifier_callback_mode_process
 	return ModifierCallbackModeProcess(class(self).GetModifierCallbackModeProcess())
 }
 
 // SetModifierCallbackModeProcess sets the property returned by [GetModifierCallbackModeProcess]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) Instance {
+func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) Instance { //gd:Skeleton3D.modifier_callback_mode_process
 	class(self).SetModifierCallbackModeProcess(value)
 	return self
 }
@@ -745,12 +745,12 @@ However, for old (deprecated) configurations, [Skeleton3D] has an internal virtu
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 [SkeletonModifier3D.Active]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Active
 */
-func (self Instance) AnimatePhysicalBones() bool {
+func (self Instance) AnimatePhysicalBones() bool { //gd:Skeleton3D.animate_physical_bones
 	return bool(class(self).GetAnimatePhysicalBones())
 }
 
 // SetAnimatePhysicalBones sets the property returned by [GetAnimatePhysicalBones]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimatePhysicalBones(value bool) Instance {
+func (self Instance) SetAnimatePhysicalBones(value bool) Instance { //gd:Skeleton3D.animate_physical_bones
 	class(self).SetAnimatePhysicalBones(value)
 	return self
 }

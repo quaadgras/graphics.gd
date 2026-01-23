@@ -173,12 +173,12 @@ func New() Instance {
 [ProceduralSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) SkyMaterial() Material.Instance {
+func (self Instance) SkyMaterial() Material.Instance { //gd:Sky.sky_material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetSkyMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyMaterial(value Material.Instance) Instance {
+func (self Instance) SetSkyMaterial(value Material.Instance) Instance { //gd:Sky.sky_material
 	class(self).SetMaterial(value)
 	return self
 }
@@ -186,12 +186,12 @@ func (self Instance) SetSkyMaterial(value Material.Instance) Instance {
 /*
 The method for generating the radiance map from the sky. The radiance map is a cubemap with increasingly blurry versions of the sky corresponding to different levels of roughness. Radiance maps can be expensive to calculate.
 */
-func (self Instance) ProcessMode() ProcessMode {
+func (self Instance) ProcessMode() ProcessMode { //gd:Sky.process_mode
 	return ProcessMode(class(self).GetProcessMode())
 }
 
 // SetProcessMode sets the property returned by [GetProcessMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessMode(value ProcessMode) Instance {
+func (self Instance) SetProcessMode(value ProcessMode) Instance { //gd:Sky.process_mode
 	class(self).SetProcessMode(value)
 	return self
 }
@@ -203,12 +203,12 @@ Note: Some hardware will have trouble with higher radiance sizes, especially [Ra
 
 [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
-func (self Instance) RadianceSize() RadianceSize {
+func (self Instance) RadianceSize() RadianceSize { //gd:Sky.radiance_size
 	return RadianceSize(class(self).GetRadianceSize())
 }
 
 // SetRadianceSize sets the property returned by [GetRadianceSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadianceSize(value RadianceSize) Instance {
+func (self Instance) SetRadianceSize(value RadianceSize) Instance { //gd:Sky.radiance_size
 	class(self).SetRadianceSize(value)
 	return self
 }

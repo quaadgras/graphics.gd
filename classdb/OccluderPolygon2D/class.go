@@ -166,12 +166,12 @@ func New() Instance {
 /*
 If true, closes the polygon. A closed OccluderPolygon2D occludes the light coming from any direction. An opened OccluderPolygon2D occludes the light only at its outline's direction.
 */
-func (self Instance) Closed() bool {
+func (self Instance) Closed() bool { //gd:OccluderPolygon2D.closed
 	return bool(class(self).IsClosed())
 }
 
 // SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClosed(value bool) Instance {
+func (self Instance) SetClosed(value bool) Instance { //gd:OccluderPolygon2D.closed
 	class(self).SetClosed(value)
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetClosed(value bool) Instance {
 /*
 The culling mode to use.
 */
-func (self Instance) CullMode() CullMode {
+func (self Instance) CullMode() CullMode { //gd:OccluderPolygon2D.cull_mode
 	return CullMode(class(self).GetCullMode())
 }
 
 // SetCullMode sets the property returned by [GetCullMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMode(value CullMode) Instance {
+func (self Instance) SetCullMode(value CullMode) Instance { //gd:OccluderPolygon2D.cull_mode
 	class(self).SetCullMode(value)
 	return self
 }
@@ -194,12 +194,12 @@ A [Vector2.XY] array with the index for polygon's vertices positions.
 
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:OccluderPolygon2D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:OccluderPolygon2D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }

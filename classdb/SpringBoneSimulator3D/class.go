@@ -1043,12 +1043,12 @@ This is useful for effects such as wind and anti-gravity.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) ExternalForce() Vector3.XYZ {
+func (self Instance) ExternalForce() Vector3.XYZ { //gd:SpringBoneSimulator3D.external_force
 	return Vector3.XYZ(class(self).GetExternalForce())
 }
 
 // SetExternalForce sets the property returned by [GetExternalForce]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExternalForce(value Vector3.XYZ) Instance {
+func (self Instance) SetExternalForce(value Vector3.XYZ) Instance { //gd:SpringBoneSimulator3D.external_force
 	class(self).SetExternalForce(Vector3.XYZ(value))
 	return self
 }
@@ -1056,12 +1056,12 @@ func (self Instance) SetExternalForce(value Vector3.XYZ) Instance {
 /*
 The number of settings.
 */
-func (self Instance) SettingCount() int {
+func (self Instance) SettingCount() int { //gd:SpringBoneSimulator3D.setting_count
 	return int(int(class(self).GetSettingCount()))
 }
 
 // SetSettingCount sets the property returned by [GetSettingCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSettingCount(value int) Instance {
+func (self Instance) SetSettingCount(value int) Instance { //gd:SpringBoneSimulator3D.setting_count
 	class(self).SetSettingCount(int64(value))
 	return self
 }

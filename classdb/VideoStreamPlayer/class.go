@@ -246,12 +246,12 @@ func New() Instance {
 /*
 The embedded audio track to play.
 */
-func (self Instance) AudioTrack() int {
+func (self Instance) AudioTrack() int { //gd:VideoStreamPlayer.audio_track
 	return int(int(class(self).GetAudioTrack()))
 }
 
 // SetAudioTrack sets the property returned by [GetAudioTrack]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioTrack(value int) Instance {
+func (self Instance) SetAudioTrack(value int) Instance { //gd:VideoStreamPlayer.audio_track
 	class(self).SetAudioTrack(int64(value))
 	return self
 }
@@ -259,12 +259,12 @@ func (self Instance) SetAudioTrack(value int) Instance {
 /*
 The assigned video stream. See description for supported formats.
 */
-func (self Instance) Stream() VideoStream.Instance {
+func (self Instance) Stream() VideoStream.Instance { //gd:VideoStreamPlayer.stream
 	return VideoStream.Instance(class(self).GetStream())
 }
 
 // SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream(value VideoStream.Instance) Instance {
+func (self Instance) SetStream(value VideoStream.Instance) Instance { //gd:VideoStreamPlayer.stream
 	class(self).SetStream(value)
 	return self
 }
@@ -272,12 +272,12 @@ func (self Instance) SetStream(value VideoStream.Instance) Instance {
 /*
 Audio volume in dB.
 */
-func (self Instance) VolumeDb() Float.X {
+func (self Instance) VolumeDb() Float.X { //gd:VideoStreamPlayer.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
 // SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeDb(value Float.X) Instance {
+func (self Instance) SetVolumeDb(value Float.X) Instance { //gd:VideoStreamPlayer.volume_db
 	class(self).SetVolumeDb(float64(value))
 	return self
 }
@@ -285,12 +285,12 @@ func (self Instance) SetVolumeDb(value Float.X) Instance {
 /*
 Audio volume as a linear value.
 */
-func (self Instance) Volume() Float.X {
+func (self Instance) Volume() Float.X { //gd:VideoStreamPlayer.volume
 	return Float.X(Float.X(class(self).GetVolume()))
 }
 
 // SetVolume sets the property returned by [GetVolume]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolume(value Float.X) Instance {
+func (self Instance) SetVolume(value Float.X) Instance { //gd:VideoStreamPlayer.volume
 	class(self).SetVolume(float64(value))
 	return self
 }
@@ -300,12 +300,12 @@ The stream's current speed scale. 1.0 is the normal speed, while 2.0 is double s
 
 [Paused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Paused
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:VideoStreamPlayer.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:VideoStreamPlayer.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }
@@ -313,12 +313,12 @@ func (self Instance) SetSpeedScale(value Float.X) Instance {
 /*
 If true, playback starts when the scene loads.
 */
-func (self Instance) Autoplay() bool {
+func (self Instance) Autoplay() bool { //gd:VideoStreamPlayer.autoplay
 	return bool(class(self).HasAutoplay())
 }
 
 // SetAutoplay sets the property returned by [HasAutoplay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value bool) Instance {
+func (self Instance) SetAutoplay(value bool) Instance { //gd:VideoStreamPlayer.autoplay
 	class(self).SetAutoplay(value)
 	return self
 }
@@ -326,12 +326,12 @@ func (self Instance) SetAutoplay(value bool) Instance {
 /*
 If true, the video is paused.
 */
-func (self Instance) Paused() bool {
+func (self Instance) Paused() bool { //gd:VideoStreamPlayer.paused
 	return bool(class(self).IsPaused())
 }
 
 // SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPaused(value bool) Instance {
+func (self Instance) SetPaused(value bool) Instance { //gd:VideoStreamPlayer.paused
 	class(self).SetPaused(value)
 	return self
 }
@@ -339,12 +339,12 @@ func (self Instance) SetPaused(value bool) Instance {
 /*
 If true, the video scales to the control size. Otherwise, the control minimum size will be automatically adjusted to match the video stream's dimensions.
 */
-func (self Instance) Expand() bool {
+func (self Instance) Expand() bool { //gd:VideoStreamPlayer.expand
 	return bool(class(self).HasExpand())
 }
 
 // SetExpand sets the property returned by [HasExpand]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpand(value bool) Instance {
+func (self Instance) SetExpand(value bool) Instance { //gd:VideoStreamPlayer.expand
 	class(self).SetExpand(value)
 	return self
 }
@@ -352,12 +352,12 @@ func (self Instance) SetExpand(value bool) Instance {
 /*
 If true, the video restarts when it reaches its end.
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:VideoStreamPlayer.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:VideoStreamPlayer.loop
 	class(self).SetLoop(value)
 	return self
 }
@@ -365,12 +365,12 @@ func (self Instance) SetLoop(value bool) Instance {
 /*
 Amount of time in milliseconds to store in buffer while playing.
 */
-func (self Instance) BufferingMsec() int {
+func (self Instance) BufferingMsec() int { //gd:VideoStreamPlayer.buffering_msec
 	return int(int(class(self).GetBufferingMsec()))
 }
 
 // SetBufferingMsec sets the property returned by [GetBufferingMsec]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferingMsec(value int) Instance {
+func (self Instance) SetBufferingMsec(value int) Instance { //gd:VideoStreamPlayer.buffering_msec
 	class(self).SetBufferingMsec(int64(value))
 	return self
 }
@@ -378,12 +378,12 @@ func (self Instance) SetBufferingMsec(value int) Instance {
 /*
 The current position of the stream, in seconds.
 */
-func (self Instance) StreamPosition() Float.X {
+func (self Instance) StreamPosition() Float.X { //gd:VideoStreamPlayer.stream_position
 	return Float.X(Float.X(class(self).GetStreamPosition()))
 }
 
 // SetStreamPosition sets the property returned by [GetStreamPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamPosition(value Float.X) Instance {
+func (self Instance) SetStreamPosition(value Float.X) Instance { //gd:VideoStreamPlayer.stream_position
 	class(self).SetStreamPosition(float64(value))
 	return self
 }
@@ -391,12 +391,12 @@ func (self Instance) SetStreamPosition(value Float.X) Instance {
 /*
 Audio bus to use for sound playback.
 */
-func (self Instance) Bus() string {
+func (self Instance) Bus() string { //gd:VideoStreamPlayer.bus
 	return string(class(self).GetBus().String())
 }
 
 // SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBus(value string) Instance {
+func (self Instance) SetBus(value string) Instance { //gd:VideoStreamPlayer.bus
 	class(self).SetBus(String.Name(String.New(value)))
 	return self
 }

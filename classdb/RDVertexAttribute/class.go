@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The location in the shader that this attribute is bound to.
 */
-func (self Instance) Location() int {
+func (self Instance) Location() int { //gd:RDVertexAttribute.location
 	return int(int(class(self).GetLocation()))
 }
 
 // SetLocation sets the property returned by [GetLocation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocation(value int) Instance {
+func (self Instance) SetLocation(value int) Instance { //gd:RDVertexAttribute.location
 	class(self).SetLocation(int64(value))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetLocation(value int) Instance {
 /*
 The number of bytes between the start of the vertex buffer and the first instance of this attribute.
 */
-func (self Instance) Offset() int {
+func (self Instance) Offset() int { //gd:RDVertexAttribute.offset
 	return int(int(class(self).GetOffset()))
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value int) Instance {
+func (self Instance) SetOffset(value int) Instance { //gd:RDVertexAttribute.offset
 	class(self).SetOffset(int64(value))
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetOffset(value int) Instance {
 /*
 The way that this attribute's data is interpreted when sent to a shader.
 */
-func (self Instance) Format() Rendering.DataFormat {
+func (self Instance) Format() Rendering.DataFormat { //gd:RDVertexAttribute.format
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
 // SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
+func (self Instance) SetFormat(value Rendering.DataFormat) Instance { //gd:RDVertexAttribute.format
 	class(self).SetFormat(value)
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
 /*
 The number of bytes between the starts of consecutive instances of this attribute.
 */
-func (self Instance) Stride() int {
+func (self Instance) Stride() int { //gd:RDVertexAttribute.stride
 	return int(int(class(self).GetStride()))
 }
 
 // SetStride sets the property returned by [GetStride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStride(value int) Instance {
+func (self Instance) SetStride(value int) Instance { //gd:RDVertexAttribute.stride
 	class(self).SetStride(int64(value))
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetStride(value int) Instance {
 /*
 The rate at which this attribute is pulled from its vertex buffer.
 */
-func (self Instance) Frequency() Rendering.VertexFrequency {
+func (self Instance) Frequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.frequency
 	return Rendering.VertexFrequency(class(self).GetFrequency())
 }
 
 // SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrequency(value Rendering.VertexFrequency) Instance {
+func (self Instance) SetFrequency(value Rendering.VertexFrequency) Instance { //gd:RDVertexAttribute.frequency
 	class(self).SetFrequency(value)
 	return self
 }

@@ -196,12 +196,12 @@ func New() Instance {
 /*
 The button's texture for the normal state.
 */
-func (self Instance) TextureNormal() Texture2D.Instance {
+func (self Instance) TextureNormal() Texture2D.Instance { //gd:TouchScreenButton.texture_normal
 	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
 // SetTextureNormal sets the property returned by [GetTextureNormal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance { //gd:TouchScreenButton.texture_normal
 	class(self).SetTextureNormal(value)
 	return self
 }
@@ -209,12 +209,12 @@ func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
 /*
 The button's texture for the pressed state.
 */
-func (self Instance) TexturePressed() Texture2D.Instance {
+func (self Instance) TexturePressed() Texture2D.Instance { //gd:TouchScreenButton.texture_pressed
 	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
 // SetTexturePressed sets the property returned by [GetTexturePressed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance {
+func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance { //gd:TouchScreenButton.texture_pressed
 	class(self).SetTexturePressed(value)
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetTexturePressed(value Texture2D.Instance) Instance {
 /*
 The button's bitmask.
 */
-func (self Instance) Bitmask() BitMap.Instance {
+func (self Instance) Bitmask() BitMap.Instance { //gd:TouchScreenButton.bitmask
 	return BitMap.Instance(class(self).GetBitmask())
 }
 
 // SetBitmask sets the property returned by [GetBitmask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBitmask(value BitMap.Instance) Instance {
+func (self Instance) SetBitmask(value BitMap.Instance) Instance { //gd:TouchScreenButton.bitmask
 	class(self).SetBitmask(value)
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetBitmask(value BitMap.Instance) Instance {
 /*
 The button's shape.
 */
-func (self Instance) Shape() Shape2D.Instance {
+func (self Instance) Shape() Shape2D.Instance { //gd:TouchScreenButton.shape
 	return Shape2D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape2D.Instance) Instance {
+func (self Instance) SetShape(value Shape2D.Instance) Instance { //gd:TouchScreenButton.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetShape(value Shape2D.Instance) Instance {
 /*
 If true, the button's shape is centered in the provided texture. If no texture is used, this property has no effect.
 */
-func (self Instance) ShapeCentered() bool {
+func (self Instance) ShapeCentered() bool { //gd:TouchScreenButton.shape_centered
 	return bool(class(self).IsShapeCentered())
 }
 
 // SetShapeCentered sets the property returned by [IsShapeCentered]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShapeCentered(value bool) Instance {
+func (self Instance) SetShapeCentered(value bool) Instance { //gd:TouchScreenButton.shape_centered
 	class(self).SetShapeCentered(value)
 	return self
 }
@@ -261,12 +261,12 @@ func (self Instance) SetShapeCentered(value bool) Instance {
 /*
 If true, the button's shape is visible in the editor.
 */
-func (self Instance) ShapeVisible() bool {
+func (self Instance) ShapeVisible() bool { //gd:TouchScreenButton.shape_visible
 	return bool(class(self).IsShapeVisible())
 }
 
 // SetShapeVisible sets the property returned by [IsShapeVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShapeVisible(value bool) Instance {
+func (self Instance) SetShapeVisible(value bool) Instance { //gd:TouchScreenButton.shape_visible
 	class(self).SetShapeVisible(value)
 	return self
 }
@@ -279,12 +279,12 @@ Note: This is a "pass-by" (not "bypass") press mode.
 [OnPressed]: https://pkg.go.dev/graphics.gd/classdb/TouchScreenButton#Instance.OnPressed
 [OnReleased]: https://pkg.go.dev/graphics.gd/classdb/TouchScreenButton#Instance.OnReleased
 */
-func (self Instance) PassbyPress() bool {
+func (self Instance) PassbyPress() bool { //gd:TouchScreenButton.passby_press
 	return bool(class(self).IsPassbyPressEnabled())
 }
 
 // SetPassbyPress sets the property returned by [IsPassbyPressEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPassbyPress(value bool) Instance {
+func (self Instance) SetPassbyPress(value bool) Instance { //gd:TouchScreenButton.passby_press
 	class(self).SetPassbyPress(value)
 	return self
 }
@@ -294,12 +294,12 @@ The button's action. Actions can be handled with [InputEventAction].
 
 [InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
 */
-func (self Instance) Action() string {
+func (self Instance) Action() string { //gd:TouchScreenButton.action
 	return string(class(self).GetAction().String())
 }
 
 // SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAction(value string) Instance {
+func (self Instance) SetAction(value string) Instance { //gd:TouchScreenButton.action
 	class(self).SetAction(String.New(value))
 	return self
 }
@@ -307,12 +307,12 @@ func (self Instance) SetAction(value string) Instance {
 /*
 The button's visibility mode.
 */
-func (self Instance) VisibilityMode() VisibilityMode {
+func (self Instance) VisibilityMode() VisibilityMode { //gd:TouchScreenButton.visibility_mode
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
 // SetVisibilityMode sets the property returned by [GetVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityMode(value VisibilityMode) Instance {
+func (self Instance) SetVisibilityMode(value VisibilityMode) Instance { //gd:TouchScreenButton.visibility_mode
 	class(self).SetVisibilityMode(value)
 	return self
 }

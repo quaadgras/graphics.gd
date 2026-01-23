@@ -162,12 +162,12 @@ func New() Instance {
 /*
 The type of tracker.
 */
-func (self Instance) Type() Type {
+func (self Instance) Type() Type { //gd:XRTracker.type
 	return Type(class(self).GetTrackerType())
 }
 
 // SetType sets the property returned by [GetTrackerType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetType(value Type) Instance {
+func (self Instance) SetType(value Type) Instance { //gd:XRTracker.type
 	class(self).SetTrackerType(value)
 	return self
 }
@@ -196,12 +196,12 @@ The unique name of this tracker. The trackers that are available differ between 
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 [XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
-func (self Instance) Name() string {
+func (self Instance) Name() string { //gd:XRTracker.name
 	return string(class(self).GetTrackerName().String())
 }
 
 // SetName sets the property returned by [GetTrackerName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetName(value string) Instance {
+func (self Instance) SetName(value string) Instance { //gd:XRTracker.name
 	class(self).SetTrackerName(String.Name(String.New(value)))
 	return self
 }
@@ -209,12 +209,12 @@ func (self Instance) SetName(value string) Instance {
 /*
 The description of this tracker.
 */
-func (self Instance) Description() string {
+func (self Instance) Description() string { //gd:XRTracker.description
 	return string(class(self).GetTrackerDesc().String())
 }
 
 // SetDescription sets the property returned by [GetTrackerDesc]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDescription(value string) Instance {
+func (self Instance) SetDescription(value string) Instance { //gd:XRTracker.description
 	class(self).SetTrackerDesc(String.New(value))
 	return self
 }

@@ -169,12 +169,12 @@ The [Shortcut] represented by this event. Its [Shortcut.MatchesEvent] method wil
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
 [Shortcut.MatchesEvent]: https://pkg.go.dev/graphics.gd/classdb/Shortcut#Instance.MatchesEvent
 */
-func (self Instance) Shortcut() Shortcut.Instance {
+func (self Instance) Shortcut() Shortcut.Instance { //gd:InputEventShortcut.shortcut
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
 // SetShortcut sets the property returned by [GetShortcut]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcut(value Shortcut.Instance) Instance {
+func (self Instance) SetShortcut(value Shortcut.Instance) Instance { //gd:InputEventShortcut.shortcut
 	class(self).SetShortcut(value)
 	return self
 }

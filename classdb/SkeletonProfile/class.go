@@ -405,12 +405,12 @@ A bone name that will be used as the root bone in [AnimationTree]. This should b
 
 [AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
 */
-func (self Instance) RootBone() string {
+func (self Instance) RootBone() string { //gd:SkeletonProfile.root_bone
 	return string(class(self).GetRootBone().String())
 }
 
 // SetRootBone sets the property returned by [GetRootBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootBone(value string) Instance {
+func (self Instance) SetRootBone(value string) Instance { //gd:SkeletonProfile.root_bone
 	class(self).SetRootBone(String.Name(String.New(value)))
 	return self
 }
@@ -420,12 +420,12 @@ A bone name which will use model's height as the coefficient for normalization. 
 
 [SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
 */
-func (self Instance) ScaleBaseBone() string {
+func (self Instance) ScaleBaseBone() string { //gd:SkeletonProfile.scale_base_bone
 	return string(class(self).GetScaleBaseBone().String())
 }
 
 // SetScaleBaseBone sets the property returned by [GetScaleBaseBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaleBaseBone(value string) Instance {
+func (self Instance) SetScaleBaseBone(value string) Instance { //gd:SkeletonProfile.scale_base_bone
 	class(self).SetScaleBaseBone(String.Name(String.New(value)))
 	return self
 }
@@ -438,12 +438,12 @@ This property exists to separate the bone list into several sections in the edit
 [BoneMap]: https://pkg.go.dev/graphics.gd/classdb/BoneMap
 [SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
 */
-func (self Instance) GroupSize() int {
+func (self Instance) GroupSize() int { //gd:SkeletonProfile.group_size
 	return int(int(class(self).GetGroupSize()))
 }
 
 // SetGroupSize sets the property returned by [GetGroupSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroupSize(value int) Instance {
+func (self Instance) SetGroupSize(value int) Instance { //gd:SkeletonProfile.group_size
 	class(self).SetGroupSize(int64(value))
 	return self
 }
@@ -457,12 +457,12 @@ The size of elements in [BoneMap] updates when changing this property in it's as
 [SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
 [SkeletonProfileHumanoid]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfileHumanoid
 */
-func (self Instance) BoneSize() int {
+func (self Instance) BoneSize() int { //gd:SkeletonProfile.bone_size
 	return int(int(class(self).GetBoneSize()))
 }
 
 // SetBoneSize sets the property returned by [GetBoneSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneSize(value int) Instance {
+func (self Instance) SetBoneSize(value int) Instance { //gd:SkeletonProfile.bone_size
 	class(self).SetBoneSize(int64(value))
 	return self
 }

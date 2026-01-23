@@ -160,12 +160,12 @@ func New() Instance {
 /*
 The multiplication type to be performed.
 */
-func (self Instance) Operator() Operator {
+func (self Instance) Operator() Operator { //gd:VisualShaderNodeTransformVecMult.operator
 	return Operator(class(self).GetOperator())
 }
 
 // SetOperator sets the property returned by [GetOperator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOperator(value Operator) Instance {
+func (self Instance) SetOperator(value Operator) Instance { //gd:VisualShaderNodeTransformVecMult.operator
 	class(self).SetOperator(value)
 	return self
 }

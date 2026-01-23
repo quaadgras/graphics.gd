@@ -279,12 +279,12 @@ The text displayed by the OK button (see [GetOkButton]). If empty, a default tex
 
 [GetOkButton]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.GetOkButton
 */
-func (self Instance) OkButtonText() string {
+func (self Instance) OkButtonText() string { //gd:AcceptDialog.ok_button_text
 	return string(class(self).GetOkButtonText().String())
 }
 
 // SetOkButtonText sets the property returned by [GetOkButtonText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOkButtonText(value string) Instance {
+func (self Instance) SetOkButtonText(value string) Instance { //gd:AcceptDialog.ok_button_text
 	class(self).SetOkButtonText(String.New(value))
 	return self
 }
@@ -292,12 +292,12 @@ func (self Instance) SetOkButtonText(value string) Instance {
 /*
 The text displayed by the dialog.
 */
-func (self Instance) DialogText() string {
+func (self Instance) DialogText() string { //gd:AcceptDialog.dialog_text
 	return string(class(self).GetText().String())
 }
 
 // SetDialogText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDialogText(value string) Instance {
+func (self Instance) SetDialogText(value string) Instance { //gd:AcceptDialog.dialog_text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -310,12 +310,12 @@ Note: Some nodes derived from this class can have a different default value, and
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 [OnConfirmed]: https://pkg.go.dev/graphics.gd/classdb/AcceptDialog#Instance.OnConfirmed
 */
-func (self Instance) DialogHideOnOk() bool {
+func (self Instance) DialogHideOnOk() bool { //gd:AcceptDialog.dialog_hide_on_ok
 	return bool(class(self).GetHideOnOk())
 }
 
 // SetDialogHideOnOk sets the property returned by [GetHideOnOk]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDialogHideOnOk(value bool) Instance {
+func (self Instance) SetDialogHideOnOk(value bool) Instance { //gd:AcceptDialog.dialog_hide_on_ok
 	class(self).SetHideOnOk(value)
 	return self
 }
@@ -323,12 +323,12 @@ func (self Instance) SetDialogHideOnOk(value bool) Instance {
 /*
 If true, the dialog will be hidden when the ui_cancel action is pressed (by default, this action is bound to [KeyEscape]).
 */
-func (self Instance) DialogCloseOnEscape() bool {
+func (self Instance) DialogCloseOnEscape() bool { //gd:AcceptDialog.dialog_close_on_escape
 	return bool(class(self).GetCloseOnEscape())
 }
 
 // SetDialogCloseOnEscape sets the property returned by [GetCloseOnEscape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDialogCloseOnEscape(value bool) Instance {
+func (self Instance) SetDialogCloseOnEscape(value bool) Instance { //gd:AcceptDialog.dialog_close_on_escape
 	class(self).SetCloseOnEscape(value)
 	return self
 }
@@ -336,12 +336,12 @@ func (self Instance) SetDialogCloseOnEscape(value bool) Instance {
 /*
 Sets autowrapping for the text in the dialog.
 */
-func (self Instance) DialogAutowrap() bool {
+func (self Instance) DialogAutowrap() bool { //gd:AcceptDialog.dialog_autowrap
 	return bool(class(self).HasAutowrap())
 }
 
 // SetDialogAutowrap sets the property returned by [HasAutowrap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDialogAutowrap(value bool) Instance {
+func (self Instance) SetDialogAutowrap(value bool) Instance { //gd:AcceptDialog.dialog_autowrap
 	class(self).SetAutowrap(value)
 	return self
 }

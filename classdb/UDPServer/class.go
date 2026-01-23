@@ -327,12 +327,12 @@ Define the maximum number of pending connections, during [Poll], any new pending
 
 [Poll]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.Poll
 */
-func (self Instance) MaxPendingConnections() int {
+func (self Instance) MaxPendingConnections() int { //gd:UDPServer.max_pending_connections
 	return int(int(class(self).GetMaxPendingConnections()))
 }
 
 // SetMaxPendingConnections sets the property returned by [GetMaxPendingConnections]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxPendingConnections(value int) Instance {
+func (self Instance) SetMaxPendingConnections(value int) Instance { //gd:UDPServer.max_pending_connections
 	class(self).SetMaxPendingConnections(int64(value))
 	return self
 }

@@ -423,12 +423,12 @@ func New() Instance {
 /*
 The file to download into. Will output any received file into it.
 */
-func (self Instance) DownloadFile() string {
+func (self Instance) DownloadFile() string { //gd:HTTPRequest.download_file
 	return string(class(self).GetDownloadFile().String())
 }
 
 // SetDownloadFile sets the property returned by [GetDownloadFile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDownloadFile(value string) Instance {
+func (self Instance) SetDownloadFile(value string) Instance { //gd:HTTPRequest.download_file
 	class(self).SetDownloadFile(String.New(value))
 	return self
 }
@@ -440,12 +440,12 @@ Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to 
 
 [HTTPClient.ReadChunkSize]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ReadChunkSize
 */
-func (self Instance) DownloadChunkSize() int {
+func (self Instance) DownloadChunkSize() int { //gd:HTTPRequest.download_chunk_size
 	return int(int(class(self).GetDownloadChunkSize()))
 }
 
 // SetDownloadChunkSize sets the property returned by [GetDownloadChunkSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDownloadChunkSize(value int) Instance {
+func (self Instance) SetDownloadChunkSize(value int) Instance { //gd:HTTPRequest.download_chunk_size
 	class(self).SetDownloadChunkSize(int64(value))
 	return self
 }
@@ -453,12 +453,12 @@ func (self Instance) SetDownloadChunkSize(value int) Instance {
 /*
 If true, multithreading is used to improve performance.
 */
-func (self Instance) UseThreads() bool {
+func (self Instance) UseThreads() bool { //gd:HTTPRequest.use_threads
 	return bool(class(self).IsUsingThreads())
 }
 
 // SetUseThreads sets the property returned by [IsUsingThreads]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseThreads(value bool) Instance {
+func (self Instance) SetUseThreads(value bool) Instance { //gd:HTTPRequest.use_threads
 	class(self).SetUseThreads(value)
 	return self
 }
@@ -475,12 +475,12 @@ If false no header will be added, and no decompression will be performed on resp
 [AcceptGzip]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.AcceptGzip
 [OnRequestCompleted]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.OnRequestCompleted
 */
-func (self Instance) AcceptGzip() bool {
+func (self Instance) AcceptGzip() bool { //gd:HTTPRequest.accept_gzip
 	return bool(class(self).IsAcceptingGzip())
 }
 
 // SetAcceptGzip sets the property returned by [IsAcceptingGzip]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAcceptGzip(value bool) Instance {
+func (self Instance) SetAcceptGzip(value bool) Instance { //gd:HTTPRequest.accept_gzip
 	class(self).SetAcceptGzip(value)
 	return self
 }
@@ -488,12 +488,12 @@ func (self Instance) SetAcceptGzip(value bool) Instance {
 /*
 Maximum allowed size for response bodies. If the response body is compressed, this will be used as the maximum allowed size for the decompressed body.
 */
-func (self Instance) BodySizeLimit() int {
+func (self Instance) BodySizeLimit() int { //gd:HTTPRequest.body_size_limit
 	return int(int(class(self).GetBodySizeLimit()))
 }
 
 // SetBodySizeLimit sets the property returned by [GetBodySizeLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodySizeLimit(value int) Instance {
+func (self Instance) SetBodySizeLimit(value int) Instance { //gd:HTTPRequest.body_size_limit
 	class(self).SetBodySizeLimit(int64(value))
 	return self
 }
@@ -501,12 +501,12 @@ func (self Instance) SetBodySizeLimit(value int) Instance {
 /*
 Maximum number of allowed redirects.
 */
-func (self Instance) MaxRedirects() int {
+func (self Instance) MaxRedirects() int { //gd:HTTPRequest.max_redirects
 	return int(int(class(self).GetMaxRedirects()))
 }
 
 // SetMaxRedirects sets the property returned by [GetMaxRedirects]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxRedirects(value int) Instance {
+func (self Instance) SetMaxRedirects(value int) Instance { //gd:HTTPRequest.max_redirects
 	class(self).SetMaxRedirects(int64(value))
 	return self
 }
@@ -516,12 +516,12 @@ The duration to wait in seconds before a request times out. If [Timeout] is set 
 
 [Timeout]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.Timeout
 */
-func (self Instance) Timeout() Float.X {
+func (self Instance) Timeout() Float.X { //gd:HTTPRequest.timeout
 	return Float.X(Float.X(class(self).GetTimeout()))
 }
 
 // SetTimeout sets the property returned by [GetTimeout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimeout(value Float.X) Instance {
+func (self Instance) SetTimeout(value Float.X) Instance { //gd:HTTPRequest.timeout
 	class(self).SetTimeout(float64(value))
 	return self
 }

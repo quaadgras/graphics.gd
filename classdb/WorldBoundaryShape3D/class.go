@@ -170,12 +170,12 @@ The [Plane.NormalD] used by the [WorldBoundaryShape3D] for collision.
 [Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 [WorldBoundaryShape3D]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape3D
 */
-func (self Instance) Plane() Plane.NormalD {
+func (self Instance) Plane() Plane.NormalD { //gd:WorldBoundaryShape3D.plane
 	return Plane.NormalD(class(self).GetPlane())
 }
 
 // SetPlane sets the property returned by [GetPlane]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlane(value Plane.NormalD) Instance {
+func (self Instance) SetPlane(value Plane.NormalD) Instance { //gd:WorldBoundaryShape3D.plane
 	class(self).SetPlane(Plane.NormalD(value))
 	return self
 }

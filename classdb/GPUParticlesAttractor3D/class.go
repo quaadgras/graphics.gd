@@ -179,12 +179,12 @@ Adjusts the strength of the attractor. If [Strength] is negative, particles will
 [Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
 [Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
 */
-func (self Instance) Strength() Float.X {
+func (self Instance) Strength() Float.X { //gd:GPUParticlesAttractor3D.strength
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
 // SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStrength(value Float.X) Instance {
+func (self Instance) SetStrength(value Float.X) Instance { //gd:GPUParticlesAttractor3D.strength
 	class(self).SetStrength(float64(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetStrength(value Float.X) Instance {
 /*
 The particle attractor's attenuation. Higher values result in more gradual pushing of particles as they come closer to the attractor's origin. Zero or negative values will cause particles to be pushed very fast as soon as the touch the attractor's edges.
 */
-func (self Instance) Attenuation() Float.X {
+func (self Instance) Attenuation() Float.X { //gd:GPUParticlesAttractor3D.attenuation
 	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
 // SetAttenuation sets the property returned by [GetAttenuation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttenuation(value Float.X) Instance {
+func (self Instance) SetAttenuation(value Float.X) Instance { //gd:GPUParticlesAttractor3D.attenuation
 	class(self).SetAttenuation(float64(value))
 	return self
 }
@@ -211,12 +211,12 @@ Note: If [Directionality] is greater than 0.0, the direction in which particles 
 [GPUParticlesAttractor3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D
 [Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
 */
-func (self Instance) Directionality() Float.X {
+func (self Instance) Directionality() Float.X { //gd:GPUParticlesAttractor3D.directionality
 	return Float.X(Float.X(class(self).GetDirectionality()))
 }
 
 // SetDirectionality sets the property returned by [GetDirectionality]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirectionality(value Float.X) Instance {
+func (self Instance) SetDirectionality(value Float.X) Instance { //gd:GPUParticlesAttractor3D.directionality
 	class(self).SetDirectionality(float64(value))
 	return self
 }
@@ -232,12 +232,12 @@ Particle attraction can also be disabled on a per-process material basis by sett
 [ParticleProcessMaterial.AttractorInteractionEnabled]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AttractorInteractionEnabled
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) CullMask() int {
+func (self Instance) CullMask() int { //gd:GPUParticlesAttractor3D.cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMask(value int) Instance {
+func (self Instance) SetCullMask(value int) Instance { //gd:GPUParticlesAttractor3D.cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }

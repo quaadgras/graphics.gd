@@ -166,12 +166,12 @@ Enables usage of the [DefaultValue].
 
 [DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeColorParameter#Instance.DefaultValue
 */
-func (self Instance) DefaultValueEnabled() bool {
+func (self Instance) DefaultValueEnabled() bool { //gd:VisualShaderNodeColorParameter.default_value_enabled
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
 // SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValueEnabled(value bool) Instance {
+func (self Instance) SetDefaultValueEnabled(value bool) Instance { //gd:VisualShaderNodeColorParameter.default_value_enabled
 	class(self).SetDefaultValueEnabled(value)
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 /*
 A default value to be assigned within the shader.
 */
-func (self Instance) DefaultValue() Color.RGBA {
+func (self Instance) DefaultValue() Color.RGBA { //gd:VisualShaderNodeColorParameter.default_value
 	return Color.RGBA(class(self).GetDefaultValue())
 }
 
 // SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValue(value Color.RGBA) Instance {
+func (self Instance) SetDefaultValue(value Color.RGBA) Instance { //gd:VisualShaderNodeColorParameter.default_value
 	class(self).SetDefaultValue(Color.RGBA(value))
 	return self
 }

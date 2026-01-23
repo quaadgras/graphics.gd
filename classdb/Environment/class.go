@@ -374,12 +374,12 @@ func New() Instance {
 /*
 The background mode.
 */
-func (self Instance) BackgroundMode() BGMode {
+func (self Instance) BackgroundMode() BGMode { //gd:Environment.background_mode
 	return BGMode(class(self).GetBackground())
 }
 
 // SetBackgroundMode sets the property returned by [GetBackground]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundMode(value BGMode) Instance {
+func (self Instance) SetBackgroundMode(value BGMode) Instance { //gd:Environment.background_mode
 	class(self).SetBackground(value)
 	return self
 }
@@ -389,12 +389,12 @@ The [Color.RGBA] displayed for clear areas of the scene. Only effective when usi
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) BackgroundColor() Color.RGBA {
+func (self Instance) BackgroundColor() Color.RGBA { //gd:Environment.background_color
 	return Color.RGBA(class(self).GetBgColor())
 }
 
 // SetBackgroundColor sets the property returned by [GetBgColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundColor(value Color.RGBA) Instance {
+func (self Instance) SetBackgroundColor(value Color.RGBA) Instance { //gd:Environment.background_color
 	class(self).SetBgColor(Color.RGBA(value))
 	return self
 }
@@ -402,12 +402,12 @@ func (self Instance) SetBackgroundColor(value Color.RGBA) Instance {
 /*
 Multiplier for background energy. Increase to make background brighter, decrease to make background dimmer.
 */
-func (self Instance) BackgroundEnergyMultiplier() Float.X {
+func (self Instance) BackgroundEnergyMultiplier() Float.X { //gd:Environment.background_energy_multiplier
 	return Float.X(Float.X(class(self).GetBgEnergyMultiplier()))
 }
 
 // SetBackgroundEnergyMultiplier sets the property returned by [GetBgEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetBackgroundEnergyMultiplier(value Float.X) Instance { //gd:Environment.background_energy_multiplier
 	class(self).SetBgEnergyMultiplier(float64(value))
 	return self
 }
@@ -417,12 +417,12 @@ Luminance of background measured in nits (candela per square meter). Only used w
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) BackgroundIntensity() Float.X {
+func (self Instance) BackgroundIntensity() Float.X { //gd:Environment.background_intensity
 	return Float.X(Float.X(class(self).GetBgIntensity()))
 }
 
 // SetBackgroundIntensity sets the property returned by [GetBgIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundIntensity(value Float.X) Instance {
+func (self Instance) SetBackgroundIntensity(value Float.X) Instance { //gd:Environment.background_intensity
 	class(self).SetBgIntensity(float64(value))
 	return self
 }
@@ -430,12 +430,12 @@ func (self Instance) SetBackgroundIntensity(value Float.X) Instance {
 /*
 The maximum layer ID to display. Only effective when using the [BgCanvas] background mode.
 */
-func (self Instance) BackgroundCanvasMaxLayer() int {
+func (self Instance) BackgroundCanvasMaxLayer() int { //gd:Environment.background_canvas_max_layer
 	return int(int(class(self).GetCanvasMaxLayer()))
 }
 
 // SetBackgroundCanvasMaxLayer sets the property returned by [GetCanvasMaxLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundCanvasMaxLayer(value int) Instance {
+func (self Instance) SetBackgroundCanvasMaxLayer(value int) Instance { //gd:Environment.background_canvas_max_layer
 	class(self).SetCanvasMaxLayer(int64(value))
 	return self
 }
@@ -443,12 +443,12 @@ func (self Instance) SetBackgroundCanvasMaxLayer(value int) Instance {
 /*
 The ID of the camera feed to show in the background.
 */
-func (self Instance) BackgroundCameraFeedId() int {
+func (self Instance) BackgroundCameraFeedId() int { //gd:Environment.background_camera_feed_id
 	return int(int(class(self).GetCameraFeedId()))
 }
 
 // SetBackgroundCameraFeedId sets the property returned by [GetCameraFeedId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackgroundCameraFeedId(value int) Instance {
+func (self Instance) SetBackgroundCameraFeedId(value int) Instance { //gd:Environment.background_camera_feed_id
 	class(self).SetCameraFeedId(int64(value))
 	return self
 }
@@ -459,12 +459,12 @@ The [Sky] resource used for this [Environment].
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
-func (self Instance) Sky() Sky.Instance {
+func (self Instance) Sky() Sky.Instance { //gd:Environment.sky
 	return Sky.Instance(class(self).GetSky())
 }
 
 // SetSky sets the property returned by [GetSky]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSky(value Sky.Instance) Instance {
+func (self Instance) SetSky(value Sky.Instance) Instance { //gd:Environment.sky
 	class(self).SetSky(value)
 	return self
 }
@@ -474,12 +474,12 @@ If set to a value greater than 0.0, overrides the field of view to use for sky r
 
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
-func (self Instance) SkyCustomFov() Float.X {
+func (self Instance) SkyCustomFov() Float.X { //gd:Environment.sky_custom_fov
 	return Float.X(Float.X(class(self).GetSkyCustomFov()))
 }
 
 // SetSkyCustomFov sets the property returned by [GetSkyCustomFov]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyCustomFov(value Float.X) Instance {
+func (self Instance) SetSkyCustomFov(value Float.X) Instance { //gd:Environment.sky_custom_fov
 	class(self).SetSkyCustomFov(float64(value))
 	return self
 }
@@ -487,12 +487,12 @@ func (self Instance) SetSkyCustomFov(value Float.X) Instance {
 /*
 The rotation to use for sky rendering.
 */
-func (self Instance) SkyRotation() Euler.Radians {
+func (self Instance) SkyRotation() Euler.Radians { //gd:Environment.sky_rotation
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetSkyRotation()))
 }
 
 // SetSkyRotation sets the property returned by [GetSkyRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyRotation(value Euler.Radians) Instance {
+func (self Instance) SetSkyRotation(value Euler.Radians) Instance { //gd:Environment.sky_rotation
 	class(self).SetSkyRotation(value.Vector3())
 	return self
 }
@@ -500,12 +500,12 @@ func (self Instance) SetSkyRotation(value Euler.Radians) Instance {
 /*
 The ambient light source to use for rendering materials and global illumination.
 */
-func (self Instance) AmbientLightSource() AmbientSource {
+func (self Instance) AmbientLightSource() AmbientSource { //gd:Environment.ambient_light_source
 	return AmbientSource(class(self).GetAmbientSource())
 }
 
 // SetAmbientLightSource sets the property returned by [GetAmbientSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientLightSource(value AmbientSource) Instance {
+func (self Instance) SetAmbientLightSource(value AmbientSource) Instance { //gd:Environment.ambient_light_source
 	class(self).SetAmbientSource(value)
 	return self
 }
@@ -516,12 +516,12 @@ The ambient light's [Color.RGBA]. Only effective if [AmbientLightSkyContribution
 [AmbientLightSkyContribution]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AmbientLightSkyContribution
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) AmbientLightColor() Color.RGBA {
+func (self Instance) AmbientLightColor() Color.RGBA { //gd:Environment.ambient_light_color
 	return Color.RGBA(class(self).GetAmbientLightColor())
 }
 
 // SetAmbientLightColor sets the property returned by [GetAmbientLightColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientLightColor(value Color.RGBA) Instance {
+func (self Instance) SetAmbientLightColor(value Color.RGBA) Instance { //gd:Environment.ambient_light_color
 	class(self).SetAmbientLightColor(Color.RGBA(value))
 	return self
 }
@@ -533,12 +533,12 @@ Note: [AmbientLightSkyContribution] is internally clamped between 0.0 and 1.0 (i
 
 [AmbientLightSkyContribution]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AmbientLightSkyContribution
 */
-func (self Instance) AmbientLightSkyContribution() Float.X {
+func (self Instance) AmbientLightSkyContribution() Float.X { //gd:Environment.ambient_light_sky_contribution
 	return Float.X(Float.X(class(self).GetAmbientLightSkyContribution()))
 }
 
 // SetAmbientLightSkyContribution sets the property returned by [GetAmbientLightSkyContribution]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientLightSkyContribution(value Float.X) Instance {
+func (self Instance) SetAmbientLightSkyContribution(value Float.X) Instance { //gd:Environment.ambient_light_sky_contribution
 	class(self).SetAmbientLightSkyContribution(float64(value))
 	return self
 }
@@ -548,12 +548,12 @@ The ambient light's energy. The higher the value, the stronger the light. Only e
 
 [AmbientLightSkyContribution]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AmbientLightSkyContribution
 */
-func (self Instance) AmbientLightEnergy() Float.X {
+func (self Instance) AmbientLightEnergy() Float.X { //gd:Environment.ambient_light_energy
 	return Float.X(Float.X(class(self).GetAmbientLightEnergy()))
 }
 
 // SetAmbientLightEnergy sets the property returned by [GetAmbientLightEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientLightEnergy(value Float.X) Instance {
+func (self Instance) SetAmbientLightEnergy(value Float.X) Instance { //gd:Environment.ambient_light_energy
 	class(self).SetAmbientLightEnergy(float64(value))
 	return self
 }
@@ -561,12 +561,12 @@ func (self Instance) SetAmbientLightEnergy(value Float.X) Instance {
 /*
 The reflected (specular) light source.
 */
-func (self Instance) ReflectedLightSource() ReflectionSource {
+func (self Instance) ReflectedLightSource() ReflectionSource { //gd:Environment.reflected_light_source
 	return ReflectionSource(class(self).GetReflectionSource())
 }
 
 // SetReflectedLightSource sets the property returned by [GetReflectionSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReflectedLightSource(value ReflectionSource) Instance {
+func (self Instance) SetReflectedLightSource(value ReflectionSource) Instance { //gd:Environment.reflected_light_source
 	class(self).SetReflectionSource(value)
 	return self
 }
@@ -574,12 +574,12 @@ func (self Instance) SetReflectedLightSource(value ReflectionSource) Instance {
 /*
 The tonemapping mode to use. Tonemapping is the process that "converts" HDR values to be suitable for rendering on an LDR display. (Godot doesn't support rendering on HDR displays yet.)
 */
-func (self Instance) TonemapMode() ToneMapper {
+func (self Instance) TonemapMode() ToneMapper { //gd:Environment.tonemap_mode
 	return ToneMapper(class(self).GetTonemapper())
 }
 
 // SetTonemapMode sets the property returned by [GetTonemapper]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTonemapMode(value ToneMapper) Instance {
+func (self Instance) SetTonemapMode(value ToneMapper) Instance { //gd:Environment.tonemap_mode
 	class(self).SetTonemapper(value)
 	return self
 }
@@ -592,12 +592,12 @@ Note: Values provided to the tonemapper will also be multiplied by 2.0 and 1.8 f
 [TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 */
-func (self Instance) TonemapExposure() Float.X {
+func (self Instance) TonemapExposure() Float.X { //gd:Environment.tonemap_exposure
 	return Float.X(Float.X(class(self).GetTonemapExposure()))
 }
 
 // SetTonemapExposure sets the property returned by [GetTonemapExposure]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTonemapExposure(value Float.X) Instance {
+func (self Instance) SetTonemapExposure(value Float.X) Instance { //gd:Environment.tonemap_exposure
 	class(self).SetTonemapExposure(float64(value))
 	return self
 }
@@ -610,12 +610,12 @@ Note: [TonemapWhite] is ignored when using [ToneMapperLinear] or [ToneMapperAgx]
 [TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 */
-func (self Instance) TonemapWhite() Float.X {
+func (self Instance) TonemapWhite() Float.X { //gd:Environment.tonemap_white
 	return Float.X(Float.X(class(self).GetTonemapWhite()))
 }
 
 // SetTonemapWhite sets the property returned by [GetTonemapWhite]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTonemapWhite(value Float.X) Instance {
+func (self Instance) SetTonemapWhite(value Float.X) Instance { //gd:Environment.tonemap_white
 	class(self).SetTonemapWhite(float64(value))
 	return self
 }
@@ -625,15 +625,18 @@ If true, screen-space reflections are enabled. Screen-space reflections are more
 
 Note: SSR is only supported in the Forward+ rendering method, not Mobile or Compatibility.
 
+Note: SSR is not supported on viewports that have a transparent background (where [Viewport.TransparentBg] is true).
+
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) SsrEnabled() bool {
+func (self Instance) SsrEnabled() bool { //gd:Environment.ssr_enabled
 	return bool(class(self).IsSsrEnabled())
 }
 
 // SetSsrEnabled sets the property returned by [IsSsrEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsrEnabled(value bool) Instance {
+func (self Instance) SetSsrEnabled(value bool) Instance { //gd:Environment.ssr_enabled
 	class(self).SetSsrEnabled(value)
 	return self
 }
@@ -641,12 +644,12 @@ func (self Instance) SetSsrEnabled(value bool) Instance {
 /*
 The maximum number of steps for screen-space reflections. Higher values are slower.
 */
-func (self Instance) SsrMaxSteps() int {
+func (self Instance) SsrMaxSteps() int { //gd:Environment.ssr_max_steps
 	return int(int(class(self).GetSsrMaxSteps()))
 }
 
 // SetSsrMaxSteps sets the property returned by [GetSsrMaxSteps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsrMaxSteps(value int) Instance {
+func (self Instance) SetSsrMaxSteps(value int) Instance { //gd:Environment.ssr_max_steps
 	class(self).SetSsrMaxSteps(int64(value))
 	return self
 }
@@ -654,12 +657,12 @@ func (self Instance) SetSsrMaxSteps(value int) Instance {
 /*
 The fade-in distance for screen-space reflections. Affects the area from the reflected material to the screen-space reflection. Only positive values are valid (negative values will be clamped to 0.0).
 */
-func (self Instance) SsrFadeIn() Float.X {
+func (self Instance) SsrFadeIn() Float.X { //gd:Environment.ssr_fade_in
 	return Float.X(Float.X(class(self).GetSsrFadeIn()))
 }
 
 // SetSsrFadeIn sets the property returned by [GetSsrFadeIn]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsrFadeIn(value Float.X) Instance {
+func (self Instance) SetSsrFadeIn(value Float.X) Instance { //gd:Environment.ssr_fade_in
 	class(self).SetSsrFadeIn(float64(value))
 	return self
 }
@@ -667,12 +670,12 @@ func (self Instance) SetSsrFadeIn(value Float.X) Instance {
 /*
 The fade-out distance for screen-space reflections. Affects the area from the screen-space reflection to the "global" reflection. Only positive values are valid (negative values will be clamped to 0.0).
 */
-func (self Instance) SsrFadeOut() Float.X {
+func (self Instance) SsrFadeOut() Float.X { //gd:Environment.ssr_fade_out
 	return Float.X(Float.X(class(self).GetSsrFadeOut()))
 }
 
 // SetSsrFadeOut sets the property returned by [GetSsrFadeOut]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsrFadeOut(value Float.X) Instance {
+func (self Instance) SetSsrFadeOut(value Float.X) Instance { //gd:Environment.ssr_fade_out
 	class(self).SetSsrFadeOut(float64(value))
 	return self
 }
@@ -680,12 +683,12 @@ func (self Instance) SetSsrFadeOut(value Float.X) Instance {
 /*
 The depth tolerance for screen-space reflections.
 */
-func (self Instance) SsrDepthTolerance() Float.X {
+func (self Instance) SsrDepthTolerance() Float.X { //gd:Environment.ssr_depth_tolerance
 	return Float.X(Float.X(class(self).GetSsrDepthTolerance()))
 }
 
 // SetSsrDepthTolerance sets the property returned by [GetSsrDepthTolerance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsrDepthTolerance(value Float.X) Instance {
+func (self Instance) SetSsrDepthTolerance(value Float.X) Instance { //gd:Environment.ssr_depth_tolerance
 	class(self).SetSsrDepthTolerance(float64(value))
 	return self
 }
@@ -695,12 +698,12 @@ If true, the screen-space ambient occlusion effect is enabled. This darkens obje
 
 Note: SSAO is only supported in the Forward+ rendering method, not Mobile or Compatibility.
 */
-func (self Instance) SsaoEnabled() bool {
+func (self Instance) SsaoEnabled() bool { //gd:Environment.ssao_enabled
 	return bool(class(self).IsSsaoEnabled())
 }
 
 // SetSsaoEnabled sets the property returned by [IsSsaoEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoEnabled(value bool) Instance {
+func (self Instance) SetSsaoEnabled(value bool) Instance { //gd:Environment.ssao_enabled
 	class(self).SetSsaoEnabled(value)
 	return self
 }
@@ -708,12 +711,12 @@ func (self Instance) SetSsaoEnabled(value bool) Instance {
 /*
 The distance at which objects can occlude each other when calculating screen-space ambient occlusion. Higher values will result in occlusion over a greater distance at the cost of performance and quality.
 */
-func (self Instance) SsaoRadius() Float.X {
+func (self Instance) SsaoRadius() Float.X { //gd:Environment.ssao_radius
 	return Float.X(Float.X(class(self).GetSsaoRadius()))
 }
 
 // SetSsaoRadius sets the property returned by [GetSsaoRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoRadius(value Float.X) Instance {
+func (self Instance) SetSsaoRadius(value Float.X) Instance { //gd:Environment.ssao_radius
 	class(self).SetSsaoRadius(float64(value))
 	return self
 }
@@ -721,12 +724,12 @@ func (self Instance) SetSsaoRadius(value Float.X) Instance {
 /*
 The primary screen-space ambient occlusion intensity. Acts as a multiplier for the screen-space ambient occlusion effect. A higher value results in darker occlusion.
 */
-func (self Instance) SsaoIntensity() Float.X {
+func (self Instance) SsaoIntensity() Float.X { //gd:Environment.ssao_intensity
 	return Float.X(Float.X(class(self).GetSsaoIntensity()))
 }
 
 // SetSsaoIntensity sets the property returned by [GetSsaoIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoIntensity(value Float.X) Instance {
+func (self Instance) SetSsaoIntensity(value Float.X) Instance { //gd:Environment.ssao_intensity
 	class(self).SetSsaoIntensity(float64(value))
 	return self
 }
@@ -736,12 +739,12 @@ The distribution of occlusion. A higher value results in darker occlusion, simil
 
 [SsaoIntensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SsaoIntensity
 */
-func (self Instance) SsaoPower() Float.X {
+func (self Instance) SsaoPower() Float.X { //gd:Environment.ssao_power
 	return Float.X(Float.X(class(self).GetSsaoPower()))
 }
 
 // SetSsaoPower sets the property returned by [GetSsaoPower]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoPower(value Float.X) Instance {
+func (self Instance) SetSsaoPower(value Float.X) Instance { //gd:Environment.ssao_power
 	class(self).SetSsaoPower(float64(value))
 	return self
 }
@@ -749,12 +752,12 @@ func (self Instance) SetSsaoPower(value Float.X) Instance {
 /*
 Sets the strength of the additional level of detail for the screen-space ambient occlusion effect. A high value makes the detail pass more prominent, but it may contribute to aliasing in your final image.
 */
-func (self Instance) SsaoDetail() Float.X {
+func (self Instance) SsaoDetail() Float.X { //gd:Environment.ssao_detail
 	return Float.X(Float.X(class(self).GetSsaoDetail()))
 }
 
 // SetSsaoDetail sets the property returned by [GetSsaoDetail]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoDetail(value Float.X) Instance {
+func (self Instance) SetSsaoDetail(value Float.X) Instance { //gd:Environment.ssao_detail
 	class(self).SetSsaoDetail(float64(value))
 	return self
 }
@@ -762,12 +765,12 @@ func (self Instance) SetSsaoDetail(value Float.X) Instance {
 /*
 The threshold for considering whether a given point on a surface is occluded or not represented as an angle from the horizon mapped into the 0.0-1.0 range. A value of 1.0 results in no occlusion.
 */
-func (self Instance) SsaoHorizon() Float.X {
+func (self Instance) SsaoHorizon() Float.X { //gd:Environment.ssao_horizon
 	return Float.X(Float.X(class(self).GetSsaoHorizon()))
 }
 
 // SetSsaoHorizon sets the property returned by [GetSsaoHorizon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoHorizon(value Float.X) Instance {
+func (self Instance) SetSsaoHorizon(value Float.X) Instance { //gd:Environment.ssao_horizon
 	class(self).SetSsaoHorizon(float64(value))
 	return self
 }
@@ -775,12 +778,12 @@ func (self Instance) SetSsaoHorizon(value Float.X) Instance {
 /*
 The amount that the screen-space ambient occlusion effect is allowed to blur over the edges of objects. Setting too high will result in aliasing around the edges of objects. Setting too low will make object edges appear blurry.
 */
-func (self Instance) SsaoSharpness() Float.X {
+func (self Instance) SsaoSharpness() Float.X { //gd:Environment.ssao_sharpness
 	return Float.X(Float.X(class(self).GetSsaoSharpness()))
 }
 
 // SetSsaoSharpness sets the property returned by [GetSsaoSharpness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoSharpness(value Float.X) Instance {
+func (self Instance) SetSsaoSharpness(value Float.X) Instance { //gd:Environment.ssao_sharpness
 	class(self).SetSsaoSharpness(float64(value))
 	return self
 }
@@ -788,12 +791,12 @@ func (self Instance) SetSsaoSharpness(value Float.X) Instance {
 /*
 The screen-space ambient occlusion intensity in direct light. In real life, ambient occlusion only applies to indirect light, which means its effects can't be seen in direct light. Values higher than 0 will make the SSAO effect visible in direct light.
 */
-func (self Instance) SsaoLightAffect() Float.X {
+func (self Instance) SsaoLightAffect() Float.X { //gd:Environment.ssao_light_affect
 	return Float.X(Float.X(class(self).GetSsaoDirectLightAffect()))
 }
 
 // SetSsaoLightAffect sets the property returned by [GetSsaoDirectLightAffect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoLightAffect(value Float.X) Instance {
+func (self Instance) SetSsaoLightAffect(value Float.X) Instance { //gd:Environment.ssao_light_affect
 	class(self).SetSsaoDirectLightAffect(float64(value))
 	return self
 }
@@ -801,12 +804,12 @@ func (self Instance) SetSsaoLightAffect(value Float.X) Instance {
 /*
 The screen-space ambient occlusion intensity on materials that have an AO texture defined. Values higher than 0 will make the SSAO effect visible in areas darkened by AO textures.
 */
-func (self Instance) SsaoAoChannelAffect() Float.X {
+func (self Instance) SsaoAoChannelAffect() Float.X { //gd:Environment.ssao_ao_channel_affect
 	return Float.X(Float.X(class(self).GetSsaoAoChannelAffect()))
 }
 
 // SetSsaoAoChannelAffect sets the property returned by [GetSsaoAoChannelAffect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsaoAoChannelAffect(value Float.X) Instance {
+func (self Instance) SetSsaoAoChannelAffect(value Float.X) Instance { //gd:Environment.ssao_ao_channel_affect
 	class(self).SetSsaoAoChannelAffect(float64(value))
 	return self
 }
@@ -819,12 +822,12 @@ Note: SSIL is only supported in the Forward+ rendering method, not Mobile or Com
 [Light3D.LightIndirectEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightIndirectEnergy
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) SsilEnabled() bool {
+func (self Instance) SsilEnabled() bool { //gd:Environment.ssil_enabled
 	return bool(class(self).IsSsilEnabled())
 }
 
 // SetSsilEnabled sets the property returned by [IsSsilEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsilEnabled(value bool) Instance {
+func (self Instance) SetSsilEnabled(value bool) Instance { //gd:Environment.ssil_enabled
 	class(self).SetSsilEnabled(value)
 	return self
 }
@@ -832,12 +835,12 @@ func (self Instance) SetSsilEnabled(value bool) Instance {
 /*
 The distance that bounced lighting can travel when using the screen space indirect lighting effect. A larger value will result in light bouncing further in a scene, but may result in under-sampling artifacts which look like long spikes surrounding light sources.
 */
-func (self Instance) SsilRadius() Float.X {
+func (self Instance) SsilRadius() Float.X { //gd:Environment.ssil_radius
 	return Float.X(Float.X(class(self).GetSsilRadius()))
 }
 
 // SetSsilRadius sets the property returned by [GetSsilRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsilRadius(value Float.X) Instance {
+func (self Instance) SetSsilRadius(value Float.X) Instance { //gd:Environment.ssil_radius
 	class(self).SetSsilRadius(float64(value))
 	return self
 }
@@ -845,12 +848,12 @@ func (self Instance) SetSsilRadius(value Float.X) Instance {
 /*
 The brightness multiplier for the screen-space indirect lighting effect. A higher value will result in brighter light.
 */
-func (self Instance) SsilIntensity() Float.X {
+func (self Instance) SsilIntensity() Float.X { //gd:Environment.ssil_intensity
 	return Float.X(Float.X(class(self).GetSsilIntensity()))
 }
 
 // SetSsilIntensity sets the property returned by [GetSsilIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsilIntensity(value Float.X) Instance {
+func (self Instance) SetSsilIntensity(value Float.X) Instance { //gd:Environment.ssil_intensity
 	class(self).SetSsilIntensity(float64(value))
 	return self
 }
@@ -858,12 +861,12 @@ func (self Instance) SetSsilIntensity(value Float.X) Instance {
 /*
 The amount that the screen-space indirect lighting effect is allowed to blur over the edges of objects. Setting too high will result in aliasing around the edges of objects. Setting too low will make object edges appear blurry.
 */
-func (self Instance) SsilSharpness() Float.X {
+func (self Instance) SsilSharpness() Float.X { //gd:Environment.ssil_sharpness
 	return Float.X(Float.X(class(self).GetSsilSharpness()))
 }
 
 // SetSsilSharpness sets the property returned by [GetSsilSharpness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsilSharpness(value Float.X) Instance {
+func (self Instance) SetSsilSharpness(value Float.X) Instance { //gd:Environment.ssil_sharpness
 	class(self).SetSsilSharpness(float64(value))
 	return self
 }
@@ -871,12 +874,12 @@ func (self Instance) SetSsilSharpness(value Float.X) Instance {
 /*
 Amount of normal rejection used when calculating screen-space indirect lighting. Normal rejection uses the normal of a given sample point to reject samples that are facing away from the current pixel. Normal rejection is necessary to avoid light leaking when only one side of an object is illuminated. However, normal rejection can be disabled if light leaking is desirable, such as when the scene mostly contains emissive objects that emit light from faces that cannot be seen from the camera.
 */
-func (self Instance) SsilNormalRejection() Float.X {
+func (self Instance) SsilNormalRejection() Float.X { //gd:Environment.ssil_normal_rejection
 	return Float.X(Float.X(class(self).GetSsilNormalRejection()))
 }
 
 // SetSsilNormalRejection sets the property returned by [GetSsilNormalRejection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSsilNormalRejection(value Float.X) Instance {
+func (self Instance) SetSsilNormalRejection(value Float.X) Instance { //gd:Environment.ssil_normal_rejection
 	class(self).SetSsilNormalRejection(float64(value))
 	return self
 }
@@ -894,12 +897,12 @@ Note: Meshes should have sufficiently thick walls to avoid light leaks (avoid on
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) SdfgiEnabled() bool {
+func (self Instance) SdfgiEnabled() bool { //gd:Environment.sdfgi_enabled
 	return bool(class(self).IsSdfgiEnabled())
 }
 
 // SetSdfgiEnabled sets the property returned by [IsSdfgiEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiEnabled(value bool) Instance {
+func (self Instance) SetSdfgiEnabled(value bool) Instance { //gd:Environment.sdfgi_enabled
 	class(self).SetSdfgiEnabled(value)
 	return self
 }
@@ -909,12 +912,12 @@ If true, SDFGI uses an occlusion detection approach to reduce light leaking. Occ
 
 [SdfgiUseOcclusion]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiUseOcclusion
 */
-func (self Instance) SdfgiUseOcclusion() bool {
+func (self Instance) SdfgiUseOcclusion() bool { //gd:Environment.sdfgi_use_occlusion
 	return bool(class(self).IsSdfgiUsingOcclusion())
 }
 
 // SetSdfgiUseOcclusion sets the property returned by [IsSdfgiUsingOcclusion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiUseOcclusion(value bool) Instance {
+func (self Instance) SetSdfgiUseOcclusion(value bool) Instance { //gd:Environment.sdfgi_use_occlusion
 	class(self).SetSdfgiUseOcclusion(value)
 	return self
 }
@@ -922,12 +925,12 @@ func (self Instance) SetSdfgiUseOcclusion(value bool) Instance {
 /*
 If true, SDFGI takes the environment lighting into account. This should be set to false for interior scenes.
 */
-func (self Instance) SdfgiReadSkyLight() bool {
+func (self Instance) SdfgiReadSkyLight() bool { //gd:Environment.sdfgi_read_sky_light
 	return bool(class(self).IsSdfgiReadingSkyLight())
 }
 
 // SetSdfgiReadSkyLight sets the property returned by [IsSdfgiReadingSkyLight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiReadSkyLight(value bool) Instance {
+func (self Instance) SetSdfgiReadSkyLight(value bool) Instance { //gd:Environment.sdfgi_read_sky_light
 	class(self).SetSdfgiReadSkyLight(value)
 	return self
 }
@@ -942,12 +945,12 @@ Note: If [SdfgiBounceFeedback] is 0.0, indirect lighting will not be represented
 [SdfgiBounceFeedback]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiBounceFeedback
 [SdfgiEnergy]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnergy
 */
-func (self Instance) SdfgiBounceFeedback() Float.X {
+func (self Instance) SdfgiBounceFeedback() Float.X { //gd:Environment.sdfgi_bounce_feedback
 	return Float.X(Float.X(class(self).GetSdfgiBounceFeedback()))
 }
 
 // SetSdfgiBounceFeedback sets the property returned by [GetSdfgiBounceFeedback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiBounceFeedback(value Float.X) Instance {
+func (self Instance) SetSdfgiBounceFeedback(value Float.X) Instance { //gd:Environment.sdfgi_bounce_feedback
 	class(self).SetSdfgiBounceFeedback(float64(value))
 	return self
 }
@@ -957,12 +960,12 @@ The number of cascades to use for SDFGI (between 1 and 8). A higher number of ca
 
 [SdfgiCascades]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiCascades
 */
-func (self Instance) SdfgiCascades() int {
+func (self Instance) SdfgiCascades() int { //gd:Environment.sdfgi_cascades
 	return int(int(class(self).GetSdfgiCascades()))
 }
 
 // SetSdfgiCascades sets the property returned by [GetSdfgiCascades]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiCascades(value int) Instance {
+func (self Instance) SetSdfgiCascades(value int) Instance { //gd:Environment.sdfgi_cascades
 	class(self).SetSdfgiCascades(int64(value))
 	return self
 }
@@ -975,12 +978,12 @@ Note: This property is linked to [SdfgiMaxDistance] and [SdfgiCascade0Distance].
 [SdfgiCascade0Distance]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiCascade0Distance
 [SdfgiMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiMaxDistance
 */
-func (self Instance) SdfgiMinCellSize() Float.X {
+func (self Instance) SdfgiMinCellSize() Float.X { //gd:Environment.sdfgi_min_cell_size
 	return Float.X(Float.X(class(self).GetSdfgiMinCellSize()))
 }
 
 // SetSdfgiMinCellSize sets the property returned by [GetSdfgiMinCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiMinCellSize(value Float.X) Instance {
+func (self Instance) SetSdfgiMinCellSize(value Float.X) Instance { //gd:Environment.sdfgi_min_cell_size
 	class(self).SetSdfgiMinCellSize(float64(value))
 	return self
 }
@@ -991,12 +994,12 @@ Note: This property is linked to [SdfgiMinCellSize] and [SdfgiMaxDistance]. Chan
 [SdfgiMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiMaxDistance
 [SdfgiMinCellSize]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiMinCellSize
 */
-func (self Instance) SdfgiCascade0Distance() Float.X {
+func (self Instance) SdfgiCascade0Distance() Float.X { //gd:Environment.sdfgi_cascade0_distance
 	return Float.X(Float.X(class(self).GetSdfgiCascade0Distance()))
 }
 
 // SetSdfgiCascade0Distance sets the property returned by [GetSdfgiCascade0Distance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiCascade0Distance(value Float.X) Instance {
+func (self Instance) SetSdfgiCascade0Distance(value Float.X) Instance { //gd:Environment.sdfgi_cascade0_distance
 	class(self).SetSdfgiCascade0Distance(float64(value))
 	return self
 }
@@ -1010,12 +1013,12 @@ Note: This property is linked to [SdfgiMinCellSize] and [SdfgiCascade0Distance].
 [SdfgiCascade0Distance]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiCascade0Distance
 [SdfgiMinCellSize]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiMinCellSize
 */
-func (self Instance) SdfgiMaxDistance() Float.X {
+func (self Instance) SdfgiMaxDistance() Float.X { //gd:Environment.sdfgi_max_distance
 	return Float.X(Float.X(class(self).GetSdfgiMaxDistance()))
 }
 
 // SetSdfgiMaxDistance sets the property returned by [GetSdfgiMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiMaxDistance(value Float.X) Instance {
+func (self Instance) SetSdfgiMaxDistance(value Float.X) Instance { //gd:Environment.sdfgi_max_distance
 	class(self).SetSdfgiMaxDistance(float64(value))
 	return self
 }
@@ -1025,12 +1028,12 @@ The Y scale to use for SDFGI cells. Lower values will result in SDFGI cells bein
 
 [SdfgiYScale]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiYScale
 */
-func (self Instance) SdfgiYScale() SDFGIYScale {
+func (self Instance) SdfgiYScale() SDFGIYScale { //gd:Environment.sdfgi_y_scale
 	return SDFGIYScale(class(self).GetSdfgiYScale())
 }
 
 // SetSdfgiYScale sets the property returned by [GetSdfgiYScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiYScale(value SDFGIYScale) Instance {
+func (self Instance) SetSdfgiYScale(value SDFGIYScale) Instance { //gd:Environment.sdfgi_y_scale
 	class(self).SetSdfgiYScale(value)
 	return self
 }
@@ -1040,12 +1043,12 @@ The energy multiplier to use for SDFGI. Higher values will result in brighter in
 
 [SdfgiBounceFeedback]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiBounceFeedback
 */
-func (self Instance) SdfgiEnergy() Float.X {
+func (self Instance) SdfgiEnergy() Float.X { //gd:Environment.sdfgi_energy
 	return Float.X(Float.X(class(self).GetSdfgiEnergy()))
 }
 
 // SetSdfgiEnergy sets the property returned by [GetSdfgiEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiEnergy(value Float.X) Instance {
+func (self Instance) SetSdfgiEnergy(value Float.X) Instance { //gd:Environment.sdfgi_energy
 	class(self).SetSdfgiEnergy(float64(value))
 	return self
 }
@@ -1053,12 +1056,12 @@ func (self Instance) SetSdfgiEnergy(value Float.X) Instance {
 /*
 The normal bias to use for SDFGI probes. Increasing this value can reduce visible streaking artifacts on sloped surfaces, at the cost of increased light leaking.
 */
-func (self Instance) SdfgiNormalBias() Float.X {
+func (self Instance) SdfgiNormalBias() Float.X { //gd:Environment.sdfgi_normal_bias
 	return Float.X(Float.X(class(self).GetSdfgiNormalBias()))
 }
 
 // SetSdfgiNormalBias sets the property returned by [GetSdfgiNormalBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiNormalBias(value Float.X) Instance {
+func (self Instance) SetSdfgiNormalBias(value Float.X) Instance { //gd:Environment.sdfgi_normal_bias
 	class(self).SetSdfgiNormalBias(float64(value))
 	return self
 }
@@ -1066,12 +1069,12 @@ func (self Instance) SetSdfgiNormalBias(value Float.X) Instance {
 /*
 The constant bias to use for SDFGI probes. Increasing this value can reduce visible streaking artifacts on sloped surfaces, at the cost of increased light leaking.
 */
-func (self Instance) SdfgiProbeBias() Float.X {
+func (self Instance) SdfgiProbeBias() Float.X { //gd:Environment.sdfgi_probe_bias
 	return Float.X(Float.X(class(self).GetSdfgiProbeBias()))
 }
 
 // SetSdfgiProbeBias sets the property returned by [GetSdfgiProbeBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfgiProbeBias(value Float.X) Instance {
+func (self Instance) SetSdfgiProbeBias(value Float.X) Instance { //gd:Environment.sdfgi_probe_bias
 	class(self).SetSdfgiProbeBias(float64(value))
 	return self
 }
@@ -1090,12 +1093,12 @@ Note: When using the Compatibility rendering method, glow uses a different imple
 [GlowNormalized]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowNormalized
 [GlowStrength]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowStrength
 */
-func (self Instance) GlowEnabled() bool {
+func (self Instance) GlowEnabled() bool { //gd:Environment.glow_enabled
 	return bool(class(self).IsGlowEnabled())
 }
 
 // SetGlowEnabled sets the property returned by [IsGlowEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowEnabled(value bool) Instance {
+func (self Instance) SetGlowEnabled(value bool) Instance { //gd:Environment.glow_enabled
 	class(self).SetGlowEnabled(value)
 	return self
 }
@@ -1107,12 +1110,12 @@ Note: [GlowNormalized] has no effect when using the Compatibility rendering meth
 
 [GlowNormalized]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowNormalized
 */
-func (self Instance) GlowNormalized() bool {
+func (self Instance) GlowNormalized() bool { //gd:Environment.glow_normalized
 	return bool(class(self).IsGlowNormalized())
 }
 
 // SetGlowNormalized sets the property returned by [IsGlowNormalized]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowNormalized(value bool) Instance {
+func (self Instance) SetGlowNormalized(value bool) Instance { //gd:Environment.glow_normalized
 	class(self).SetGlowNormalized(value)
 	return self
 }
@@ -1120,12 +1123,12 @@ func (self Instance) SetGlowNormalized(value bool) Instance {
 /*
 The overall brightness multiplier of the glow effect. When using the Mobile rendering method (which only supports a lower dynamic range up to 2.0), this should be increased to 1.5 to compensate.
 */
-func (self Instance) GlowIntensity() Float.X {
+func (self Instance) GlowIntensity() Float.X { //gd:Environment.glow_intensity
 	return Float.X(Float.X(class(self).GetGlowIntensity()))
 }
 
 // SetGlowIntensity sets the property returned by [GetGlowIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowIntensity(value Float.X) Instance {
+func (self Instance) SetGlowIntensity(value Float.X) Instance { //gd:Environment.glow_intensity
 	class(self).SetGlowIntensity(float64(value))
 	return self
 }
@@ -1137,12 +1140,12 @@ Note: [GlowStrength] has no effect when using the Compatibility rendering method
 
 [GlowStrength]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowStrength
 */
-func (self Instance) GlowStrength() Float.X {
+func (self Instance) GlowStrength() Float.X { //gd:Environment.glow_strength
 	return Float.X(Float.X(class(self).GetGlowStrength()))
 }
 
 // SetGlowStrength sets the property returned by [GetGlowStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowStrength(value Float.X) Instance {
+func (self Instance) SetGlowStrength(value Float.X) Instance { //gd:Environment.glow_strength
 	class(self).SetGlowStrength(float64(value))
 	return self
 }
@@ -1155,12 +1158,12 @@ Note: [GlowMix] has no effect when using the Compatibility rendering method, due
 [GlowBlendMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowBlendMode
 [GlowMix]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowMix
 */
-func (self Instance) GlowMix() Float.X {
+func (self Instance) GlowMix() Float.X { //gd:Environment.glow_mix
 	return Float.X(Float.X(class(self).GetGlowMix()))
 }
 
 // SetGlowMix sets the property returned by [GetGlowMix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowMix(value Float.X) Instance {
+func (self Instance) SetGlowMix(value Float.X) Instance { //gd:Environment.glow_mix
 	class(self).SetGlowMix(float64(value))
 	return self
 }
@@ -1170,12 +1173,12 @@ The bloom's intensity. If set to a value higher than 0, this will make glow visi
 
 [GlowHdrThreshold]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowHdrThreshold
 */
-func (self Instance) GlowBloom() Float.X {
+func (self Instance) GlowBloom() Float.X { //gd:Environment.glow_bloom
 	return Float.X(Float.X(class(self).GetGlowBloom()))
 }
 
 // SetGlowBloom sets the property returned by [GetGlowBloom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowBloom(value Float.X) Instance {
+func (self Instance) SetGlowBloom(value Float.X) Instance { //gd:Environment.glow_bloom
 	class(self).SetGlowBloom(float64(value))
 	return self
 }
@@ -1187,12 +1190,12 @@ Note: [GlowBlendMode] has no effect when using the Compatibility rendering metho
 
 [GlowBlendMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowBlendMode
 */
-func (self Instance) GlowBlendMode() GlowBlendMode {
+func (self Instance) GlowBlendMode() GlowBlendMode { //gd:Environment.glow_blend_mode
 	return GlowBlendMode(class(self).GetGlowBlendMode())
 }
 
 // SetGlowBlendMode sets the property returned by [GetGlowBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowBlendMode(value GlowBlendMode) Instance {
+func (self Instance) SetGlowBlendMode(value GlowBlendMode) Instance { //gd:Environment.glow_blend_mode
 	class(self).SetGlowBlendMode(value)
 	return self
 }
@@ -1200,12 +1203,12 @@ func (self Instance) SetGlowBlendMode(value GlowBlendMode) Instance {
 /*
 The lower threshold of the HDR glow. When using the Mobile rendering method (which only supports a lower dynamic range up to 2.0), this may need to be below 1.0 for glow to be visible. A value of 0.9 works well in this case. This value also needs to be decreased below 1.0 when using glow in 2D, as 2D rendering is performed in SDR.
 */
-func (self Instance) GlowHdrThreshold() Float.X {
+func (self Instance) GlowHdrThreshold() Float.X { //gd:Environment.glow_hdr_threshold
 	return Float.X(Float.X(class(self).GetGlowHdrBleedThreshold()))
 }
 
 // SetGlowHdrThreshold sets the property returned by [GetGlowHdrBleedThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowHdrThreshold(value Float.X) Instance {
+func (self Instance) SetGlowHdrThreshold(value Float.X) Instance { //gd:Environment.glow_hdr_threshold
 	class(self).SetGlowHdrBleedThreshold(float64(value))
 	return self
 }
@@ -1213,12 +1216,12 @@ func (self Instance) SetGlowHdrThreshold(value Float.X) Instance {
 /*
 The bleed scale of the HDR glow.
 */
-func (self Instance) GlowHdrScale() Float.X {
+func (self Instance) GlowHdrScale() Float.X { //gd:Environment.glow_hdr_scale
 	return Float.X(Float.X(class(self).GetGlowHdrBleedScale()))
 }
 
 // SetGlowHdrScale sets the property returned by [GetGlowHdrBleedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowHdrScale(value Float.X) Instance {
+func (self Instance) SetGlowHdrScale(value Float.X) Instance { //gd:Environment.glow_hdr_scale
 	class(self).SetGlowHdrBleedScale(float64(value))
 	return self
 }
@@ -1226,12 +1229,12 @@ func (self Instance) SetGlowHdrScale(value Float.X) Instance {
 /*
 The higher threshold of the HDR glow. Areas brighter than this threshold will be clamped for the purposes of the glow effect.
 */
-func (self Instance) GlowHdrLuminanceCap() Float.X {
+func (self Instance) GlowHdrLuminanceCap() Float.X { //gd:Environment.glow_hdr_luminance_cap
 	return Float.X(Float.X(class(self).GetGlowHdrLuminanceCap()))
 }
 
 // SetGlowHdrLuminanceCap sets the property returned by [GetGlowHdrLuminanceCap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowHdrLuminanceCap(value Float.X) Instance {
+func (self Instance) SetGlowHdrLuminanceCap(value Float.X) Instance { //gd:Environment.glow_hdr_luminance_cap
 	class(self).SetGlowHdrLuminanceCap(float64(value))
 	return self
 }
@@ -1246,12 +1249,12 @@ Note: [GlowMapStrength] has no effect when using the Compatibility rendering met
 [GlowMap]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowMap
 [GlowMapStrength]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowMapStrength
 */
-func (self Instance) GlowMapStrength() Float.X {
+func (self Instance) GlowMapStrength() Float.X { //gd:Environment.glow_map_strength
 	return Float.X(Float.X(class(self).GetGlowMapStrength()))
 }
 
 // SetGlowMapStrength sets the property returned by [GetGlowMapStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowMapStrength(value Float.X) Instance {
+func (self Instance) SetGlowMapStrength(value Float.X) Instance { //gd:Environment.glow_map_strength
 	class(self).SetGlowMapStrength(float64(value))
 	return self
 }
@@ -1266,12 +1269,12 @@ Note: [GlowMap] has no effect when using the Compatibility rendering method, due
 [GlowMap]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowMap
 [GlowMapStrength]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowMapStrength
 */
-func (self Instance) GlowMap() Texture.Instance {
+func (self Instance) GlowMap() Texture.Instance { //gd:Environment.glow_map
 	return Texture.Instance(class(self).GetGlowMap())
 }
 
 // SetGlowMap sets the property returned by [GetGlowMap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlowMap(value Texture.Instance) Instance {
+func (self Instance) SetGlowMap(value Texture.Instance) Instance { //gd:Environment.glow_map
 	class(self).SetGlowMap(value)
 	return self
 }
@@ -1279,12 +1282,12 @@ func (self Instance) SetGlowMap(value Texture.Instance) Instance {
 /*
 If true, fog effects are enabled.
 */
-func (self Instance) FogEnabled() bool {
+func (self Instance) FogEnabled() bool { //gd:Environment.fog_enabled
 	return bool(class(self).IsFogEnabled())
 }
 
 // SetFogEnabled sets the property returned by [IsFogEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogEnabled(value bool) Instance {
+func (self Instance) SetFogEnabled(value bool) Instance { //gd:Environment.fog_enabled
 	class(self).SetFogEnabled(value)
 	return self
 }
@@ -1292,12 +1295,12 @@ func (self Instance) SetFogEnabled(value bool) Instance {
 /*
 The fog mode.
 */
-func (self Instance) FogMode() FogMode {
+func (self Instance) FogMode() FogMode { //gd:Environment.fog_mode
 	return FogMode(class(self).GetFogMode())
 }
 
 // SetFogMode sets the property returned by [GetFogMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogMode(value FogMode) Instance {
+func (self Instance) SetFogMode(value FogMode) Instance { //gd:Environment.fog_mode
 	class(self).SetFogMode(value)
 	return self
 }
@@ -1305,12 +1308,12 @@ func (self Instance) SetFogMode(value FogMode) Instance {
 /*
 The fog's color.
 */
-func (self Instance) FogLightColor() Color.RGBA {
+func (self Instance) FogLightColor() Color.RGBA { //gd:Environment.fog_light_color
 	return Color.RGBA(class(self).GetFogLightColor())
 }
 
 // SetFogLightColor sets the property returned by [GetFogLightColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogLightColor(value Color.RGBA) Instance {
+func (self Instance) SetFogLightColor(value Color.RGBA) Instance { //gd:Environment.fog_light_color
 	class(self).SetFogLightColor(Color.RGBA(value))
 	return self
 }
@@ -1318,12 +1321,12 @@ func (self Instance) SetFogLightColor(value Color.RGBA) Instance {
 /*
 The fog's brightness. Higher values result in brighter fog.
 */
-func (self Instance) FogLightEnergy() Float.X {
+func (self Instance) FogLightEnergy() Float.X { //gd:Environment.fog_light_energy
 	return Float.X(Float.X(class(self).GetFogLightEnergy()))
 }
 
 // SetFogLightEnergy sets the property returned by [GetFogLightEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogLightEnergy(value Float.X) Instance {
+func (self Instance) SetFogLightEnergy(value Float.X) Instance { //gd:Environment.fog_light_energy
 	class(self).SetFogLightEnergy(float64(value))
 	return self
 }
@@ -1331,12 +1334,12 @@ func (self Instance) SetFogLightEnergy(value Float.X) Instance {
 /*
 If set above 0.0, renders the scene's directional light(s) in the fog color depending on the view angle. This can be used to give the impression that the sun is "piercing" through the fog.
 */
-func (self Instance) FogSunScatter() Float.X {
+func (self Instance) FogSunScatter() Float.X { //gd:Environment.fog_sun_scatter
 	return Float.X(Float.X(class(self).GetFogSunScatter()))
 }
 
 // SetFogSunScatter sets the property returned by [GetFogSunScatter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogSunScatter(value Float.X) Instance {
+func (self Instance) SetFogSunScatter(value Float.X) Instance { //gd:Environment.fog_sun_scatter
 	class(self).SetFogSunScatter(float64(value))
 	return self
 }
@@ -1350,12 +1353,12 @@ Depth Fog mode: The maximum intensity of the deep fog, effect will appear in the
 
 [FogMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogMode
 */
-func (self Instance) FogDensity() Float.X {
+func (self Instance) FogDensity() Float.X { //gd:Environment.fog_density
 	return Float.X(Float.X(class(self).GetFogDensity()))
 }
 
 // SetFogDensity sets the property returned by [GetFogDensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogDensity(value Float.X) Instance {
+func (self Instance) SetFogDensity(value Float.X) Instance { //gd:Environment.fog_density
 	class(self).SetFogDensity(float64(value))
 	return self
 }
@@ -1372,12 +1375,12 @@ Notice that this does not sample the [Sky] directly, but rather the radiance cub
 [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 [aerial perspective]: https://en.wikipedia.org/wiki/Aerial_perspective
 */
-func (self Instance) FogAerialPerspective() Float.X {
+func (self Instance) FogAerialPerspective() Float.X { //gd:Environment.fog_aerial_perspective
 	return Float.X(Float.X(class(self).GetFogAerialPerspective()))
 }
 
 // SetFogAerialPerspective sets the property returned by [GetFogAerialPerspective]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogAerialPerspective(value Float.X) Instance {
+func (self Instance) SetFogAerialPerspective(value Float.X) Instance { //gd:Environment.fog_aerial_perspective
 	class(self).SetFogAerialPerspective(float64(value))
 	return self
 }
@@ -1390,12 +1393,12 @@ Note: [FogSkyAffect] has no visual effect if [FogAerialPerspective] is 1.0.
 [FogAerialPerspective]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogAerialPerspective
 [FogSkyAffect]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogSkyAffect
 */
-func (self Instance) FogSkyAffect() Float.X {
+func (self Instance) FogSkyAffect() Float.X { //gd:Environment.fog_sky_affect
 	return Float.X(Float.X(class(self).GetFogSkyAffect()))
 }
 
 // SetFogSkyAffect sets the property returned by [GetFogSkyAffect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogSkyAffect(value Float.X) Instance {
+func (self Instance) SetFogSkyAffect(value Float.X) Instance { //gd:Environment.fog_sky_affect
 	class(self).SetFogSkyAffect(float64(value))
 	return self
 }
@@ -1403,12 +1406,12 @@ func (self Instance) SetFogSkyAffect(value Float.X) Instance {
 /*
 The height at which the height fog effect begins.
 */
-func (self Instance) FogHeight() Float.X {
+func (self Instance) FogHeight() Float.X { //gd:Environment.fog_height
 	return Float.X(Float.X(class(self).GetFogHeight()))
 }
 
 // SetFogHeight sets the property returned by [GetFogHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogHeight(value Float.X) Instance {
+func (self Instance) SetFogHeight(value Float.X) Instance { //gd:Environment.fog_height
 	class(self).SetFogHeight(float64(value))
 	return self
 }
@@ -1416,12 +1419,12 @@ func (self Instance) SetFogHeight(value Float.X) Instance {
 /*
 The density used to increase fog as height decreases. To make fog increase as height increases, use a negative value.
 */
-func (self Instance) FogHeightDensity() Float.X {
+func (self Instance) FogHeightDensity() Float.X { //gd:Environment.fog_height_density
 	return Float.X(Float.X(class(self).GetFogHeightDensity()))
 }
 
 // SetFogHeightDensity sets the property returned by [GetFogHeightDensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogHeightDensity(value Float.X) Instance {
+func (self Instance) SetFogHeightDensity(value Float.X) Instance { //gd:Environment.fog_height_density
 	class(self).SetFogHeightDensity(float64(value))
 	return self
 }
@@ -1431,12 +1434,12 @@ The fog depth's intensity curve. A number of presets are available in the Inspec
 
 [FogMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogMode
 */
-func (self Instance) FogDepthCurve() Float.X {
+func (self Instance) FogDepthCurve() Float.X { //gd:Environment.fog_depth_curve
 	return Float.X(Float.X(class(self).GetFogDepthCurve()))
 }
 
 // SetFogDepthCurve sets the property returned by [GetFogDepthCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogDepthCurve(value Float.X) Instance {
+func (self Instance) SetFogDepthCurve(value Float.X) Instance { //gd:Environment.fog_depth_curve
 	class(self).SetFogDepthCurve(float64(value))
 	return self
 }
@@ -1446,12 +1449,12 @@ The fog's depth starting distance from the camera. Only available when [FogMode]
 
 [FogMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogMode
 */
-func (self Instance) FogDepthBegin() Float.X {
+func (self Instance) FogDepthBegin() Float.X { //gd:Environment.fog_depth_begin
 	return Float.X(Float.X(class(self).GetFogDepthBegin()))
 }
 
 // SetFogDepthBegin sets the property returned by [GetFogDepthBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogDepthBegin(value Float.X) Instance {
+func (self Instance) SetFogDepthBegin(value Float.X) Instance { //gd:Environment.fog_depth_begin
 	class(self).SetFogDepthBegin(float64(value))
 	return self
 }
@@ -1462,12 +1465,12 @@ The fog's depth end distance from the camera. If this value is set to 0, it will
 [Camera3D.Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
 [FogMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.FogMode
 */
-func (self Instance) FogDepthEnd() Float.X {
+func (self Instance) FogDepthEnd() Float.X { //gd:Environment.fog_depth_end
 	return Float.X(Float.X(class(self).GetFogDepthEnd()))
 }
 
 // SetFogDepthEnd sets the property returned by [GetFogDepthEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFogDepthEnd(value Float.X) Instance {
+func (self Instance) SetFogDepthEnd(value Float.X) Instance { //gd:Environment.fog_depth_end
 	class(self).SetFogDepthEnd(float64(value))
 	return self
 }
@@ -1479,12 +1482,12 @@ Note: Volumetric fog is only supported in the Forward+ rendering method, not Mob
 
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) VolumetricFogEnabled() bool {
+func (self Instance) VolumetricFogEnabled() bool { //gd:Environment.volumetric_fog_enabled
 	return bool(class(self).IsVolumetricFogEnabled())
 }
 
 // SetVolumetricFogEnabled sets the property returned by [IsVolumetricFogEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogEnabled(value bool) Instance {
+func (self Instance) SetVolumetricFogEnabled(value bool) Instance { //gd:Environment.volumetric_fog_enabled
 	class(self).SetVolumetricFogEnabled(value)
 	return self
 }
@@ -1500,12 +1503,12 @@ To make volumetric fog work as a volumetric lighting solution, set [VolumetricFo
 [Light3D.LightVolumetricFogEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightVolumetricFogEnergy
 [VolumetricFogDensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogDensity
 */
-func (self Instance) VolumetricFogDensity() Float.X {
+func (self Instance) VolumetricFogDensity() Float.X { //gd:Environment.volumetric_fog_density
 	return Float.X(Float.X(class(self).GetVolumetricFogDensity()))
 }
 
 // SetVolumetricFogDensity sets the property returned by [GetVolumetricFogDensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogDensity(value Float.X) Instance {
+func (self Instance) SetVolumetricFogDensity(value Float.X) Instance { //gd:Environment.volumetric_fog_density
 	class(self).SetVolumetricFogDensity(float64(value))
 	return self
 }
@@ -1515,12 +1518,12 @@ The [Color.RGBA] of the volumetric fog when interacting with lights. Mist and fo
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) VolumetricFogAlbedo() Color.RGBA {
+func (self Instance) VolumetricFogAlbedo() Color.RGBA { //gd:Environment.volumetric_fog_albedo
 	return Color.RGBA(class(self).GetVolumetricFogAlbedo())
 }
 
 // SetVolumetricFogAlbedo sets the property returned by [GetVolumetricFogAlbedo]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogAlbedo(value Color.RGBA) Instance {
+func (self Instance) SetVolumetricFogAlbedo(value Color.RGBA) Instance { //gd:Environment.volumetric_fog_albedo
 	class(self).SetVolumetricFogAlbedo(Color.RGBA(value))
 	return self
 }
@@ -1528,12 +1531,12 @@ func (self Instance) SetVolumetricFogAlbedo(value Color.RGBA) Instance {
 /*
 The emitted light from the volumetric fog. Even with emission, volumetric fog will not cast light onto other surfaces. Emission is useful to establish an ambient color. As the volumetric fog effect uses single-scattering only, fog tends to need a little bit of emission to soften the harsh shadows.
 */
-func (self Instance) VolumetricFogEmission() Color.RGBA {
+func (self Instance) VolumetricFogEmission() Color.RGBA { //gd:Environment.volumetric_fog_emission
 	return Color.RGBA(class(self).GetVolumetricFogEmission())
 }
 
 // SetVolumetricFogEmission sets the property returned by [GetVolumetricFogEmission]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogEmission(value Color.RGBA) Instance {
+func (self Instance) SetVolumetricFogEmission(value Color.RGBA) Instance { //gd:Environment.volumetric_fog_emission
 	class(self).SetVolumetricFogEmission(Color.RGBA(value))
 	return self
 }
@@ -1541,12 +1544,12 @@ func (self Instance) SetVolumetricFogEmission(value Color.RGBA) Instance {
 /*
 The brightness of the emitted light from the volumetric fog.
 */
-func (self Instance) VolumetricFogEmissionEnergy() Float.X {
+func (self Instance) VolumetricFogEmissionEnergy() Float.X { //gd:Environment.volumetric_fog_emission_energy
 	return Float.X(Float.X(class(self).GetVolumetricFogEmissionEnergy()))
 }
 
 // SetVolumetricFogEmissionEnergy sets the property returned by [GetVolumetricFogEmissionEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogEmissionEnergy(value Float.X) Instance {
+func (self Instance) SetVolumetricFogEmissionEnergy(value Float.X) Instance { //gd:Environment.volumetric_fog_emission_energy
 	class(self).SetVolumetricFogEmissionEnergy(float64(value))
 	return self
 }
@@ -1567,12 +1570,12 @@ Note: Only [VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) are taken into accou
 [VolumetricFogGiInject]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogGiInject
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) VolumetricFogGiInject() Float.X {
+func (self Instance) VolumetricFogGiInject() Float.X { //gd:Environment.volumetric_fog_gi_inject
 	return Float.X(Float.X(class(self).GetVolumetricFogGiInject()))
 }
 
 // SetVolumetricFogGiInject sets the property returned by [GetVolumetricFogGiInject]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogGiInject(value Float.X) Instance {
+func (self Instance) SetVolumetricFogGiInject(value Float.X) Instance { //gd:Environment.volumetric_fog_gi_inject
 	class(self).SetVolumetricFogGiInject(float64(value))
 	return self
 }
@@ -1580,12 +1583,12 @@ func (self Instance) SetVolumetricFogGiInject(value Float.X) Instance {
 /*
 The direction of scattered light as it goes through the volumetric fog. A value close to 1.0 means almost all light is scattered forward. A value close to 0.0 means light is scattered equally in all directions. A value close to -1.0 means light is scattered mostly backward. Fog and mist scatter light slightly forward, while smoke scatters light equally in all directions.
 */
-func (self Instance) VolumetricFogAnisotropy() Float.X {
+func (self Instance) VolumetricFogAnisotropy() Float.X { //gd:Environment.volumetric_fog_anisotropy
 	return Float.X(Float.X(class(self).GetVolumetricFogAnisotropy()))
 }
 
 // SetVolumetricFogAnisotropy sets the property returned by [GetVolumetricFogAnisotropy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogAnisotropy(value Float.X) Instance {
+func (self Instance) SetVolumetricFogAnisotropy(value Float.X) Instance { //gd:Environment.volumetric_fog_anisotropy
 	class(self).SetVolumetricFogAnisotropy(float64(value))
 	return self
 }
@@ -1595,12 +1598,12 @@ The distance over which the volumetric fog is computed. Increase to compute fog 
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) VolumetricFogLength() Float.X {
+func (self Instance) VolumetricFogLength() Float.X { //gd:Environment.volumetric_fog_length
 	return Float.X(Float.X(class(self).GetVolumetricFogLength()))
 }
 
 // SetVolumetricFogLength sets the property returned by [GetVolumetricFogLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogLength(value Float.X) Instance {
+func (self Instance) SetVolumetricFogLength(value Float.X) Instance { //gd:Environment.volumetric_fog_length
 	class(self).SetVolumetricFogLength(float64(value))
 	return self
 }
@@ -1608,12 +1611,12 @@ func (self Instance) SetVolumetricFogLength(value Float.X) Instance {
 /*
 The distribution of size down the length of the froxel buffer. A higher value compresses the froxels closer to the camera and places more detail closer to the camera.
 */
-func (self Instance) VolumetricFogDetailSpread() Float.X {
+func (self Instance) VolumetricFogDetailSpread() Float.X { //gd:Environment.volumetric_fog_detail_spread
 	return Float.X(Float.X(class(self).GetVolumetricFogDetailSpread()))
 }
 
 // SetVolumetricFogDetailSpread sets the property returned by [GetVolumetricFogDetailSpread]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogDetailSpread(value Float.X) Instance {
+func (self Instance) SetVolumetricFogDetailSpread(value Float.X) Instance { //gd:Environment.volumetric_fog_detail_spread
 	class(self).SetVolumetricFogDetailSpread(float64(value))
 	return self
 }
@@ -1627,12 +1630,12 @@ Note: This has no visible effect if [VolumetricFogDensity] is 0.0 or if [Volumet
 [VolumetricFogAmbientInject]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogAmbientInject
 [VolumetricFogDensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogDensity
 */
-func (self Instance) VolumetricFogAmbientInject() Float.X {
+func (self Instance) VolumetricFogAmbientInject() Float.X { //gd:Environment.volumetric_fog_ambient_inject
 	return Float.X(Float.X(class(self).GetVolumetricFogAmbientInject()))
 }
 
 // SetVolumetricFogAmbientInject sets the property returned by [GetVolumetricFogAmbientInject]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogAmbientInject(value Float.X) Instance {
+func (self Instance) SetVolumetricFogAmbientInject(value Float.X) Instance { //gd:Environment.volumetric_fog_ambient_inject
 	class(self).SetVolumetricFogAmbientInject(float64(value))
 	return self
 }
@@ -1646,12 +1649,12 @@ Note: [VolumetricFogSkyAffect] also affects [FogVolume]s, even if [VolumetricFog
 [VolumetricFogDensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogDensity
 [VolumetricFogSkyAffect]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogSkyAffect
 */
-func (self Instance) VolumetricFogSkyAffect() Float.X {
+func (self Instance) VolumetricFogSkyAffect() Float.X { //gd:Environment.volumetric_fog_sky_affect
 	return Float.X(Float.X(class(self).GetVolumetricFogSkyAffect()))
 }
 
 // SetVolumetricFogSkyAffect sets the property returned by [GetVolumetricFogSkyAffect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogSkyAffect(value Float.X) Instance {
+func (self Instance) SetVolumetricFogSkyAffect(value Float.X) Instance { //gd:Environment.volumetric_fog_sky_affect
 	class(self).SetVolumetricFogSkyAffect(float64(value))
 	return self
 }
@@ -1663,12 +1666,12 @@ Enables temporal reprojection in the volumetric fog. Temporal reprojection blend
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 [Light3D.LightVolumetricFogEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightVolumetricFogEnergy
 */
-func (self Instance) VolumetricFogTemporalReprojectionEnabled() bool {
+func (self Instance) VolumetricFogTemporalReprojectionEnabled() bool { //gd:Environment.volumetric_fog_temporal_reprojection_enabled
 	return bool(class(self).IsVolumetricFogTemporalReprojectionEnabled())
 }
 
 // SetVolumetricFogTemporalReprojectionEnabled sets the property returned by [IsVolumetricFogTemporalReprojectionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogTemporalReprojectionEnabled(value bool) Instance {
+func (self Instance) SetVolumetricFogTemporalReprojectionEnabled(value bool) Instance { //gd:Environment.volumetric_fog_temporal_reprojection_enabled
 	class(self).SetVolumetricFogTemporalReprojectionEnabled(value)
 	return self
 }
@@ -1676,12 +1679,12 @@ func (self Instance) SetVolumetricFogTemporalReprojectionEnabled(value bool) Ins
 /*
 The amount by which to blend the last frame with the current frame. A higher number results in smoother volumetric fog, but makes "ghosting" much worse. A lower value reduces ghosting but can result in the per-frame temporal jitter becoming visible.
 */
-func (self Instance) VolumetricFogTemporalReprojectionAmount() Float.X {
+func (self Instance) VolumetricFogTemporalReprojectionAmount() Float.X { //gd:Environment.volumetric_fog_temporal_reprojection_amount
 	return Float.X(Float.X(class(self).GetVolumetricFogTemporalReprojectionAmount()))
 }
 
 // SetVolumetricFogTemporalReprojectionAmount sets the property returned by [GetVolumetricFogTemporalReprojectionAmount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumetricFogTemporalReprojectionAmount(value Float.X) Instance {
+func (self Instance) SetVolumetricFogTemporalReprojectionAmount(value Float.X) Instance { //gd:Environment.volumetric_fog_temporal_reprojection_amount
 	class(self).SetVolumetricFogTemporalReprojectionAmount(float64(value))
 	return self
 }
@@ -1689,12 +1692,12 @@ func (self Instance) SetVolumetricFogTemporalReprojectionAmount(value Float.X) I
 /*
 If true, enables the adjustment_* properties provided by this resource. If false, modifications to the adjustment_* properties will have no effect on the rendered scene.
 */
-func (self Instance) AdjustmentEnabled() bool {
+func (self Instance) AdjustmentEnabled() bool { //gd:Environment.adjustment_enabled
 	return bool(class(self).IsAdjustmentEnabled())
 }
 
 // SetAdjustmentEnabled sets the property returned by [IsAdjustmentEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdjustmentEnabled(value bool) Instance {
+func (self Instance) SetAdjustmentEnabled(value bool) Instance { //gd:Environment.adjustment_enabled
 	class(self).SetAdjustmentEnabled(value)
 	return self
 }
@@ -1704,12 +1707,12 @@ The global brightness value of the rendered scene. Effective only if [Adjustment
 
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
 */
-func (self Instance) AdjustmentBrightness() Float.X {
+func (self Instance) AdjustmentBrightness() Float.X { //gd:Environment.adjustment_brightness
 	return Float.X(Float.X(class(self).GetAdjustmentBrightness()))
 }
 
 // SetAdjustmentBrightness sets the property returned by [GetAdjustmentBrightness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdjustmentBrightness(value Float.X) Instance {
+func (self Instance) SetAdjustmentBrightness(value Float.X) Instance { //gd:Environment.adjustment_brightness
 	class(self).SetAdjustmentBrightness(float64(value))
 	return self
 }
@@ -1719,12 +1722,12 @@ The global contrast value of the rendered scene (default value is 1). Effective 
 
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
 */
-func (self Instance) AdjustmentContrast() Float.X {
+func (self Instance) AdjustmentContrast() Float.X { //gd:Environment.adjustment_contrast
 	return Float.X(Float.X(class(self).GetAdjustmentContrast()))
 }
 
 // SetAdjustmentContrast sets the property returned by [GetAdjustmentContrast]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdjustmentContrast(value Float.X) Instance {
+func (self Instance) SetAdjustmentContrast(value Float.X) Instance { //gd:Environment.adjustment_contrast
 	class(self).SetAdjustmentContrast(float64(value))
 	return self
 }
@@ -1734,12 +1737,12 @@ The global color saturation value of the rendered scene (default value is 1). Ef
 
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
 */
-func (self Instance) AdjustmentSaturation() Float.X {
+func (self Instance) AdjustmentSaturation() Float.X { //gd:Environment.adjustment_saturation
 	return Float.X(Float.X(class(self).GetAdjustmentSaturation()))
 }
 
 // SetAdjustmentSaturation sets the property returned by [GetAdjustmentSaturation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdjustmentSaturation(value Float.X) Instance {
+func (self Instance) SetAdjustmentSaturation(value Float.X) Instance { //gd:Environment.adjustment_saturation
 	class(self).SetAdjustmentSaturation(float64(value))
 	return self
 }
@@ -1752,12 +1755,12 @@ The [Texture2D] or [Texture3D] lookup table (LUT) to use for the built-in post-p
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
 */
-func (self Instance) AdjustmentColorCorrection() Texture.Instance {
+func (self Instance) AdjustmentColorCorrection() Texture.Instance { //gd:Environment.adjustment_color_correction
 	return Texture.Instance(class(self).GetAdjustmentColorCorrection())
 }
 
 // SetAdjustmentColorCorrection sets the property returned by [GetAdjustmentColorCorrection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdjustmentColorCorrection(value Texture.Instance) Instance {
+func (self Instance) SetAdjustmentColorCorrection(value Texture.Instance) Instance { //gd:Environment.adjustment_color_correction
 	class(self).SetAdjustmentColorCorrection(value)
 	return self
 }

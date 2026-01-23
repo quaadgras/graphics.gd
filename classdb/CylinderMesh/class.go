@@ -179,12 +179,12 @@ Top radius of the cylinder. If set to 0.0, the top faces will not be generated, 
 
 [CapTop]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapTop
 */
-func (self Instance) TopRadius() Float.X {
+func (self Instance) TopRadius() Float.X { //gd:CylinderMesh.top_radius
 	return Float.X(Float.X(class(self).GetTopRadius()))
 }
 
 // SetTopRadius sets the property returned by [GetTopRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTopRadius(value Float.X) Instance {
+func (self Instance) SetTopRadius(value Float.X) Instance { //gd:CylinderMesh.top_radius
 	class(self).SetTopRadius(float64(value))
 	return self
 }
@@ -194,12 +194,12 @@ Bottom radius of the cylinder. If set to 0.0, the bottom faces will not be gener
 
 [CapBottom]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapBottom
 */
-func (self Instance) BottomRadius() Float.X {
+func (self Instance) BottomRadius() Float.X { //gd:CylinderMesh.bottom_radius
 	return Float.X(Float.X(class(self).GetBottomRadius()))
 }
 
 // SetBottomRadius sets the property returned by [GetBottomRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBottomRadius(value Float.X) Instance {
+func (self Instance) SetBottomRadius(value Float.X) Instance { //gd:CylinderMesh.bottom_radius
 	class(self).SetBottomRadius(float64(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetBottomRadius(value Float.X) Instance {
 /*
 Full height of the cylinder.
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:CylinderMesh.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:CylinderMesh.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetHeight(value Float.X) Instance {
 /*
 Number of radial segments on the cylinder. Higher values result in a more detailed cylinder/cone at the cost of performance.
 */
-func (self Instance) RadialSegments() int {
+func (self Instance) RadialSegments() int { //gd:CylinderMesh.radial_segments
 	return int(int(class(self).GetRadialSegments()))
 }
 
 // SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialSegments(value int) Instance {
+func (self Instance) SetRadialSegments(value int) Instance { //gd:CylinderMesh.radial_segments
 	class(self).SetRadialSegments(int64(value))
 	return self
 }
@@ -235,12 +235,12 @@ Number of edge rings along the height of the cylinder. Changing [Rings] does not
 
 [Rings]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.Rings
 */
-func (self Instance) Rings() int {
+func (self Instance) Rings() int { //gd:CylinderMesh.rings
 	return int(int(class(self).GetRings()))
 }
 
 // SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRings(value int) Instance {
+func (self Instance) SetRings(value int) Instance { //gd:CylinderMesh.rings
 	class(self).SetRings(int64(value))
 	return self
 }
@@ -253,12 +253,12 @@ Note: If [TopRadius] is 0.0, cap generation is always skipped even if [CapTop] i
 [CapTop]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapTop
 [TopRadius]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.TopRadius
 */
-func (self Instance) CapTop() bool {
+func (self Instance) CapTop() bool { //gd:CylinderMesh.cap_top
 	return bool(class(self).IsCapTop())
 }
 
 // SetCapTop sets the property returned by [IsCapTop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCapTop(value bool) Instance {
+func (self Instance) SetCapTop(value bool) Instance { //gd:CylinderMesh.cap_top
 	class(self).SetCapTop(value)
 	return self
 }
@@ -271,12 +271,12 @@ Note: If [BottomRadius] is 0.0, cap generation is always skipped even if [CapBot
 [BottomRadius]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.BottomRadius
 [CapBottom]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapBottom
 */
-func (self Instance) CapBottom() bool {
+func (self Instance) CapBottom() bool { //gd:CylinderMesh.cap_bottom
 	return bool(class(self).IsCapBottom())
 }
 
 // SetCapBottom sets the property returned by [IsCapBottom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCapBottom(value bool) Instance {
+func (self Instance) SetCapBottom(value bool) Instance { //gd:CylinderMesh.cap_bottom
 	class(self).SetCapBottom(value)
 	return self
 }

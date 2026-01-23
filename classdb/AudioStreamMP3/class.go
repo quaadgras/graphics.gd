@@ -198,42 +198,42 @@ Contains the audio data in bytes.
 
 You can load a file without having to import it beforehand using the code snippet below. Keep in mind that this snippet loads the whole file into memory and may not be ideal for huge files (hundreds of megabytes or more).
 */
-func (self Instance) Data() []byte {
+func (self Instance) Data() []byte { //gd:AudioStreamMP3.data
 	return []byte(class(self).GetData().Bytes())
 }
 
 // SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetData(value []byte) Instance {
+func (self Instance) SetData(value []byte) Instance { //gd:AudioStreamMP3.data
 	class(self).SetData(Packed.BytesFrom(value...))
 	return self
 }
 
-func (self Instance) Bpm() Float.X {
+func (self Instance) Bpm() Float.X { //gd:AudioStreamMP3.bpm
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
 // SetBpm sets the property returned by [GetBpm]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBpm(value Float.X) Instance {
+func (self Instance) SetBpm(value Float.X) Instance { //gd:AudioStreamMP3.bpm
 	class(self).SetBpm(float64(value))
 	return self
 }
 
-func (self Instance) BeatCount() int {
+func (self Instance) BeatCount() int { //gd:AudioStreamMP3.beat_count
 	return int(int(class(self).GetBeatCount()))
 }
 
 // SetBeatCount sets the property returned by [GetBeatCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBeatCount(value int) Instance {
+func (self Instance) SetBeatCount(value int) Instance { //gd:AudioStreamMP3.beat_count
 	class(self).SetBeatCount(int64(value))
 	return self
 }
 
-func (self Instance) BarBeats() int {
+func (self Instance) BarBeats() int { //gd:AudioStreamMP3.bar_beats
 	return int(int(class(self).GetBarBeats()))
 }
 
 // SetBarBeats sets the property returned by [GetBarBeats]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBarBeats(value int) Instance {
+func (self Instance) SetBarBeats(value int) Instance { //gd:AudioStreamMP3.bar_beats
 	class(self).SetBarBeats(int64(value))
 	return self
 }
@@ -241,12 +241,12 @@ func (self Instance) SetBarBeats(value int) Instance {
 /*
 If true, the stream will automatically loop when it reaches the end.
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:AudioStreamMP3.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:AudioStreamMP3.loop
 	class(self).SetLoop(value)
 	return self
 }
@@ -254,12 +254,12 @@ func (self Instance) SetLoop(value bool) Instance {
 /*
 Time in seconds at which the stream starts after being looped.
 */
-func (self Instance) LoopOffset() Float.X {
+func (self Instance) LoopOffset() Float.X { //gd:AudioStreamMP3.loop_offset
 	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
 // SetLoopOffset sets the property returned by [GetLoopOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopOffset(value Float.X) Instance {
+func (self Instance) SetLoopOffset(value Float.X) Instance { //gd:AudioStreamMP3.loop_offset
 	class(self).SetLoopOffset(float64(value))
 	return self
 }

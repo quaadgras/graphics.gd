@@ -166,12 +166,12 @@ The specialization constant's value. Only bool, int and [Float.X] types are vali
 
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 */
-func (self Instance) Value() any {
+func (self Instance) Value() any { //gd:RDPipelineSpecializationConstant.value
 	return any(class(self).GetValue().Interface())
 }
 
 // SetValue sets the property returned by [GetValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetValue(value any) Instance {
+func (self Instance) SetValue(value any) Instance { //gd:RDPipelineSpecializationConstant.value
 	class(self).SetValue(variant.New(value))
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetValue(value any) Instance {
 /*
 The identifier of the specialization constant. This is a value starting from 0 and that increments for every different specialization constant for a given shader.
 */
-func (self Instance) ConstantId() int {
+func (self Instance) ConstantId() int { //gd:RDPipelineSpecializationConstant.constant_id
 	return int(int(class(self).GetConstantId()))
 }
 
 // SetConstantId sets the property returned by [GetConstantId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstantId(value int) Instance {
+func (self Instance) SetConstantId(value int) Instance { //gd:RDPipelineSpecializationConstant.constant_id
 	class(self).SetConstantId(int64(value))
 	return self
 }

@@ -177,12 +177,12 @@ func New() Instance {
 /*
 Radius of the sphere.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:CSGSphere3D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:CSGSphere3D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -190,12 +190,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 Number of vertical slices for the sphere.
 */
-func (self Instance) RadialSegments() int {
+func (self Instance) RadialSegments() int { //gd:CSGSphere3D.radial_segments
 	return int(int(class(self).GetRadialSegments()))
 }
 
 // SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialSegments(value int) Instance {
+func (self Instance) SetRadialSegments(value int) Instance { //gd:CSGSphere3D.radial_segments
 	class(self).SetRadialSegments(int64(value))
 	return self
 }
@@ -203,12 +203,12 @@ func (self Instance) SetRadialSegments(value int) Instance {
 /*
 Number of horizontal slices for the sphere.
 */
-func (self Instance) Rings() int {
+func (self Instance) Rings() int { //gd:CSGSphere3D.rings
 	return int(int(class(self).GetRings()))
 }
 
 // SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRings(value int) Instance {
+func (self Instance) SetRings(value int) Instance { //gd:CSGSphere3D.rings
 	class(self).SetRings(int64(value))
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetRings(value int) Instance {
 /*
 If true the normals of the sphere are set to give a smooth effect making the sphere seem rounded. If false the sphere will have a flat shaded look.
 */
-func (self Instance) SmoothFaces() bool {
+func (self Instance) SmoothFaces() bool { //gd:CSGSphere3D.smooth_faces
 	return bool(class(self).GetSmoothFaces())
 }
 
 // SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSmoothFaces(value bool) Instance {
+func (self Instance) SetSmoothFaces(value bool) Instance { //gd:CSGSphere3D.smooth_faces
 	class(self).SetSmoothFaces(value)
 	return self
 }
@@ -229,12 +229,12 @@ func (self Instance) SetSmoothFaces(value bool) Instance {
 /*
 The material used to render the sphere.
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGSphere3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGSphere3D.material
 	class(self).SetMaterial(value)
 	return self
 }

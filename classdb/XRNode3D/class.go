@@ -223,12 +223,12 @@ Godot defines a number of standard trackers such as left_hand and right_hand but
 
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
-func (self Instance) Tracker() string {
+func (self Instance) Tracker() string { //gd:XRNode3D.tracker
 	return string(class(self).GetTracker().String())
 }
 
 // SetTracker sets the property returned by [GetTracker]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTracker(value string) Instance {
+func (self Instance) SetTracker(value string) Instance { //gd:XRNode3D.tracker
 	class(self).SetTracker(String.Name(String.New(value)))
 	return self
 }
@@ -240,12 +240,12 @@ Godot defines number of standard pose names such as aim and grip but other may b
 
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
-func (self Instance) Pose() string {
+func (self Instance) Pose() string { //gd:XRNode3D.pose
 	return string(class(self).GetPoseName().String())
 }
 
 // SetPose sets the property returned by [GetPoseName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPose(value string) Instance {
+func (self Instance) SetPose(value string) Instance { //gd:XRNode3D.pose
 	class(self).SetPoseName(String.Name(String.New(value)))
 	return self
 }
@@ -253,12 +253,12 @@ func (self Instance) SetPose(value string) Instance {
 /*
 Enables showing the node when tracking starts, and hiding the node when tracking is lost.
 */
-func (self Instance) ShowWhenTracked() bool {
+func (self Instance) ShowWhenTracked() bool { //gd:XRNode3D.show_when_tracked
 	return bool(class(self).GetShowWhenTracked())
 }
 
 // SetShowWhenTracked sets the property returned by [GetShowWhenTracked]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowWhenTracked(value bool) Instance {
+func (self Instance) SetShowWhenTracked(value bool) Instance { //gd:XRNode3D.show_when_tracked
 	class(self).SetShowWhenTracked(value)
 	return self
 }

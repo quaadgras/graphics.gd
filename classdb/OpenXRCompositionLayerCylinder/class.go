@@ -168,12 +168,12 @@ func New() Instance {
 /*
 The radius of the cylinder.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:OpenXRCompositionLayerCylinder.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:OpenXRCompositionLayerCylinder.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -181,12 +181,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The aspect ratio of the slice. Used to set the height relative to the width.
 */
-func (self Instance) AspectRatio() Float.X {
+func (self Instance) AspectRatio() Float.X { //gd:OpenXRCompositionLayerCylinder.aspect_ratio
 	return Float.X(Float.X(class(self).GetAspectRatio()))
 }
 
 // SetAspectRatio sets the property returned by [GetAspectRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAspectRatio(value Float.X) Instance {
+func (self Instance) SetAspectRatio(value Float.X) Instance { //gd:OpenXRCompositionLayerCylinder.aspect_ratio
 	class(self).SetAspectRatio(float64(value))
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetAspectRatio(value Float.X) Instance {
 /*
 The central angle of the cylinder. Used to set the width.
 */
-func (self Instance) CentralAngle() Angle.Radians {
+func (self Instance) CentralAngle() Angle.Radians { //gd:OpenXRCompositionLayerCylinder.central_angle
 	return Angle.Radians(Float.X(class(self).GetCentralAngle()))
 }
 
 // SetCentralAngle sets the property returned by [GetCentralAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCentralAngle(value Angle.Radians) Instance {
+func (self Instance) SetCentralAngle(value Angle.Radians) Instance { //gd:OpenXRCompositionLayerCylinder.central_angle
 	class(self).SetCentralAngle(float64(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetCentralAngle(value Angle.Radians) Instance {
 /*
 The number of segments to use in the fallback mesh.
 */
-func (self Instance) FallbackSegments() int {
+func (self Instance) FallbackSegments() int { //gd:OpenXRCompositionLayerCylinder.fallback_segments
 	return int(int(class(self).GetFallbackSegments()))
 }
 
 // SetFallbackSegments sets the property returned by [GetFallbackSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbackSegments(value int) Instance {
+func (self Instance) SetFallbackSegments(value int) Instance { //gd:OpenXRCompositionLayerCylinder.fallback_segments
 	class(self).SetFallbackSegments(int64(value))
 	return self
 }

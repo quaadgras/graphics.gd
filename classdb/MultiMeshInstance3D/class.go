@@ -171,12 +171,12 @@ The [MultiMesh] resource that will be used and shared among all instances of the
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [MultiMeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance3D
 */
-func (self Instance) Multimesh() MultiMesh.Instance {
+func (self Instance) Multimesh() MultiMesh.Instance { //gd:MultiMeshInstance3D.multimesh
 	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
 // SetMultimesh sets the property returned by [GetMultimesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance {
+func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance { //gd:MultiMeshInstance3D.multimesh
 	class(self).SetMultimesh(value)
 	return self
 }

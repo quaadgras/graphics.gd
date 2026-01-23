@@ -274,12 +274,12 @@ func New() Instance {
 /*
 Returns the shader's code as the user has written it, not the full generated code used internally.
 */
-func (self Instance) Code() string {
+func (self Instance) Code() string { //gd:Shader.code
 	return string(class(self).GetCode().String())
 }
 
 // SetCode sets the property returned by [GetCode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCode(value string) Instance {
+func (self Instance) SetCode(value string) Instance { //gd:Shader.code
 	class(self).SetCode(String.New(value))
 	return self
 }

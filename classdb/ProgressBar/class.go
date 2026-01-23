@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The fill direction. See [FillMode] for possible values.
 */
-func (self Instance) FillMode() int {
+func (self Instance) FillMode() int { //gd:ProgressBar.fill_mode
 	return int(int(class(self).GetFillMode()))
 }
 
 // SetFillMode sets the property returned by [GetFillMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFillMode(value int) Instance {
+func (self Instance) SetFillMode(value int) Instance { //gd:ProgressBar.fill_mode
 	class(self).SetFillMode(int64(value))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetFillMode(value int) Instance {
 /*
 If true, the fill percentage is displayed on the bar.
 */
-func (self Instance) ShowPercentage() bool {
+func (self Instance) ShowPercentage() bool { //gd:ProgressBar.show_percentage
 	return bool(class(self).IsPercentageShown())
 }
 
 // SetShowPercentage sets the property returned by [IsPercentageShown]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowPercentage(value bool) Instance {
+func (self Instance) SetShowPercentage(value bool) Instance { //gd:ProgressBar.show_percentage
 	class(self).SetShowPercentage(value)
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetShowPercentage(value bool) Instance {
 /*
 When set to true, the progress bar indicates that something is happening with an animation, but does not show the fill percentage or value.
 */
-func (self Instance) Indeterminate() bool {
+func (self Instance) Indeterminate() bool { //gd:ProgressBar.indeterminate
 	return bool(class(self).IsIndeterminate())
 }
 
 // SetIndeterminate sets the property returned by [IsIndeterminate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndeterminate(value bool) Instance {
+func (self Instance) SetIndeterminate(value bool) Instance { //gd:ProgressBar.indeterminate
 	class(self).SetIndeterminate(value)
 	return self
 }
@@ -210,12 +210,12 @@ If false, the [Indeterminate] animation will be paused in the editor.
 
 [Indeterminate]: https://pkg.go.dev/graphics.gd/classdb/ProgressBar#Instance.Indeterminate
 */
-func (self Instance) EditorPreviewIndeterminate() bool {
+func (self Instance) EditorPreviewIndeterminate() bool { //gd:ProgressBar.editor_preview_indeterminate
 	return bool(class(self).IsEditorPreviewIndeterminateEnabled())
 }
 
 // SetEditorPreviewIndeterminate sets the property returned by [IsEditorPreviewIndeterminateEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorPreviewIndeterminate(value bool) Instance {
+func (self Instance) SetEditorPreviewIndeterminate(value bool) Instance { //gd:ProgressBar.editor_preview_indeterminate
 	class(self).SetEditorPreviewIndeterminate(value)
 	return self
 }

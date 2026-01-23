@@ -156,7 +156,7 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PortType() VisualShaderNode.PortType {
+func (self Instance) PortType() VisualShaderNode.PortType { //gd:VisualShaderNodeReroute.port_type
 	return VisualShaderNode.PortType(class(self).GetPortType())
 }
 

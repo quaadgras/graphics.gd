@@ -186,7 +186,7 @@ The [VisibleOnScreenNotifier3D]'s bounding box.
 [VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetAabb(value AABB.PositionSize) Instance { //gd:VisibleOnScreenNotifier3D.aabb
 	class(self).SetAabb(AABB.PositionSize(value))
 	return self
 }

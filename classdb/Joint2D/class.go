@@ -182,12 +182,12 @@ Path to the first body (A) attached to the joint. The node must inherit [Physics
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) NodeA() string {
+func (self Instance) NodeA() string { //gd:Joint2D.node_a
 	return string(class(self).GetNodeA().String())
 }
 
 // SetNodeA sets the property returned by [GetNodeA]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodeA(value string) Instance {
+func (self Instance) SetNodeA(value string) Instance { //gd:Joint2D.node_a
 	class(self).SetNodeA(Path.ToNode(String.New(value)))
 	return self
 }
@@ -197,12 +197,12 @@ Path to the second body (B) attached to the joint. The node must inherit [Physic
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) NodeB() string {
+func (self Instance) NodeB() string { //gd:Joint2D.node_b
 	return string(class(self).GetNodeB().String())
 }
 
 // SetNodeB sets the property returned by [GetNodeB]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodeB(value string) Instance {
+func (self Instance) SetNodeB(value string) Instance { //gd:Joint2D.node_b
 	class(self).SetNodeB(Path.ToNode(String.New(value)))
 	return self
 }
@@ -217,12 +217,12 @@ When set to 0, the default value from [ProjectSettings] "physics/2d/solver/defau
 [NodeB]: https://pkg.go.dev/graphics.gd/classdb/Joint2D#Instance.NodeB
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) Bias() Float.X {
+func (self Instance) Bias() Float.X { //gd:Joint2D.bias
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
 // SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBias(value Float.X) Instance {
+func (self Instance) SetBias(value Float.X) Instance { //gd:Joint2D.bias
 	class(self).SetBias(float64(value))
 	return self
 }
@@ -230,12 +230,12 @@ func (self Instance) SetBias(value Float.X) Instance {
 /*
 If true, the two bodies bound together do not collide with each other.
 */
-func (self Instance) DisableCollision() bool {
+func (self Instance) DisableCollision() bool { //gd:Joint2D.disable_collision
 	return bool(class(self).GetExcludeNodesFromCollision())
 }
 
 // SetDisableCollision sets the property returned by [GetExcludeNodesFromCollision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableCollision(value bool) Instance {
+func (self Instance) SetDisableCollision(value bool) Instance { //gd:Joint2D.disable_collision
 	class(self).SetExcludeNodesFromCollision(value)
 	return self
 }

@@ -1043,12 +1043,12 @@ Set when a validated word from [OnSymbolValidate] is clicked, the [OnSymbolLooku
 [OnSymbolLookup]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolLookup
 [OnSymbolValidate]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolValidate
 */
-func (self Instance) SymbolLookupOnClick() bool {
+func (self Instance) SymbolLookupOnClick() bool { //gd:CodeEdit.symbol_lookup_on_click
 	return bool(class(self).IsSymbolLookupOnClickEnabled())
 }
 
 // SetSymbolLookupOnClick sets the property returned by [IsSymbolLookupOnClickEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSymbolLookupOnClick(value bool) Instance {
+func (self Instance) SetSymbolLookupOnClick(value bool) Instance { //gd:CodeEdit.symbol_lookup_on_click
 	class(self).SetSymbolLookupOnClickEnabled(value)
 	return self
 }
@@ -1058,12 +1058,12 @@ If true, the [OnSymbolHovered] signal is emitted when hovering over a word.
 
 [OnSymbolHovered]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolHovered
 */
-func (self Instance) SymbolTooltipOnHover() bool {
+func (self Instance) SymbolTooltipOnHover() bool { //gd:CodeEdit.symbol_tooltip_on_hover
 	return bool(class(self).IsSymbolTooltipOnHoverEnabled())
 }
 
 // SetSymbolTooltipOnHover sets the property returned by [IsSymbolTooltipOnHoverEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSymbolTooltipOnHover(value bool) Instance {
+func (self Instance) SetSymbolTooltipOnHover(value bool) Instance { //gd:CodeEdit.symbol_tooltip_on_hover
 	class(self).SetSymbolTooltipOnHoverEnabled(value)
 	return self
 }
@@ -1075,12 +1075,12 @@ If true, lines can be folded. Otherwise, line folding methods like [FoldLine] wi
 [FoldLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.FoldLine
 [GuttersDrawFoldGutter]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawFoldGutter
 */
-func (self Instance) LineFolding() bool {
+func (self Instance) LineFolding() bool { //gd:CodeEdit.line_folding
 	return bool(class(self).IsLineFoldingEnabled())
 }
 
 // SetLineFolding sets the property returned by [IsLineFoldingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLineFolding(value bool) Instance {
+func (self Instance) SetLineFolding(value bool) Instance { //gd:CodeEdit.line_folding
 	class(self).SetLineFoldingEnabled(value)
 	return self
 }
@@ -1088,12 +1088,12 @@ func (self Instance) SetLineFolding(value bool) Instance {
 /*
 Draws vertical lines at the provided columns. The first entry is considered a main hard guideline and is drawn more prominently.
 */
-func (self Instance) LineLengthGuidelines() []int {
+func (self Instance) LineLengthGuidelines() []int { //gd:CodeEdit.line_length_guidelines
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetLineLengthGuidelines())))
 }
 
 // SetLineLengthGuidelines sets the property returned by [GetLineLengthGuidelines]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLineLengthGuidelines(value []int) Instance {
+func (self Instance) SetLineLengthGuidelines(value []int) Instance { //gd:CodeEdit.line_length_guidelines
 	class(self).SetLineLengthGuidelines(gd.ArrayFromSlice[Array.Contains[int64]](value))
 	return self
 }
@@ -1103,12 +1103,12 @@ If true, breakpoints are drawn in the gutter. This gutter is shared with bookmar
 
 [SetLineAsBreakpoint]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsBreakpoint
 */
-func (self Instance) GuttersDrawBreakpointsGutter() bool {
+func (self Instance) GuttersDrawBreakpointsGutter() bool { //gd:CodeEdit.gutters_draw_breakpoints_gutter
 	return bool(class(self).IsDrawingBreakpointsGutter())
 }
 
 // SetGuttersDrawBreakpointsGutter sets the property returned by [IsDrawingBreakpointsGutter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersDrawBreakpointsGutter(value bool) Instance {
+func (self Instance) SetGuttersDrawBreakpointsGutter(value bool) Instance { //gd:CodeEdit.gutters_draw_breakpoints_gutter
 	class(self).SetDrawBreakpointsGutter(value)
 	return self
 }
@@ -1118,12 +1118,12 @@ If true, bookmarks are drawn in the gutter. This gutter is shared with breakpoin
 
 [SetLineAsBookmarked]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsBookmarked
 */
-func (self Instance) GuttersDrawBookmarks() bool {
+func (self Instance) GuttersDrawBookmarks() bool { //gd:CodeEdit.gutters_draw_bookmarks
 	return bool(class(self).IsDrawingBookmarksGutter())
 }
 
 // SetGuttersDrawBookmarks sets the property returned by [IsDrawingBookmarksGutter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersDrawBookmarks(value bool) Instance {
+func (self Instance) SetGuttersDrawBookmarks(value bool) Instance { //gd:CodeEdit.gutters_draw_bookmarks
 	class(self).SetDrawBookmarksGutter(value)
 	return self
 }
@@ -1133,12 +1133,12 @@ If true, executing lines are marked in the gutter. This gutter is shared with br
 
 [SetLineAsExecuting]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsExecuting
 */
-func (self Instance) GuttersDrawExecutingLines() bool {
+func (self Instance) GuttersDrawExecutingLines() bool { //gd:CodeEdit.gutters_draw_executing_lines
 	return bool(class(self).IsDrawingExecutingLinesGutter())
 }
 
 // SetGuttersDrawExecutingLines sets the property returned by [IsDrawingExecutingLinesGutter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersDrawExecutingLines(value bool) Instance {
+func (self Instance) SetGuttersDrawExecutingLines(value bool) Instance { //gd:CodeEdit.gutters_draw_executing_lines
 	class(self).SetDrawExecutingLinesGutter(value)
 	return self
 }
@@ -1146,12 +1146,12 @@ func (self Instance) SetGuttersDrawExecutingLines(value bool) Instance {
 /*
 If true, the line number gutter is drawn. Line numbers start at 1 and are incremented for each line of text. Clicking and dragging in the line number gutter will select entire lines of text.
 */
-func (self Instance) GuttersDrawLineNumbers() bool {
+func (self Instance) GuttersDrawLineNumbers() bool { //gd:CodeEdit.gutters_draw_line_numbers
 	return bool(class(self).IsDrawLineNumbersEnabled())
 }
 
 // SetGuttersDrawLineNumbers sets the property returned by [IsDrawLineNumbersEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersDrawLineNumbers(value bool) Instance {
+func (self Instance) SetGuttersDrawLineNumbers(value bool) Instance { //gd:CodeEdit.gutters_draw_line_numbers
 	class(self).SetDrawLineNumbers(value)
 	return self
 }
@@ -1161,12 +1161,12 @@ If true, line numbers drawn in the gutter are zero padded based on the total lin
 
 [GuttersDrawLineNumbers]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawLineNumbers
 */
-func (self Instance) GuttersZeroPadLineNumbers() bool {
+func (self Instance) GuttersZeroPadLineNumbers() bool { //gd:CodeEdit.gutters_zero_pad_line_numbers
 	return bool(class(self).IsLineNumbersZeroPadded())
 }
 
 // SetGuttersZeroPadLineNumbers sets the property returned by [IsLineNumbersZeroPadded]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersZeroPadLineNumbers(value bool) Instance {
+func (self Instance) SetGuttersZeroPadLineNumbers(value bool) Instance { //gd:CodeEdit.gutters_zero_pad_line_numbers
 	class(self).SetLineNumbersZeroPadded(value)
 	return self
 }
@@ -1179,12 +1179,12 @@ If true, the fold gutter is drawn. In this gutter, the theme's 'can_fold_code_re
 [LineFolding]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.LineFolding
 [ToggleFoldableLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.ToggleFoldableLine
 */
-func (self Instance) GuttersDrawFoldGutter() bool {
+func (self Instance) GuttersDrawFoldGutter() bool { //gd:CodeEdit.gutters_draw_fold_gutter
 	return bool(class(self).IsDrawingFoldGutter())
 }
 
 // SetGuttersDrawFoldGutter sets the property returned by [IsDrawingFoldGutter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuttersDrawFoldGutter(value bool) Instance {
+func (self Instance) SetGuttersDrawFoldGutter(value bool) Instance { //gd:CodeEdit.gutters_draw_fold_gutter
 	class(self).SetDrawFoldGutter(value)
 	return self
 }
@@ -1192,12 +1192,12 @@ func (self Instance) SetGuttersDrawFoldGutter(value bool) Instance {
 /*
 Sets the string delimiters. All existing string delimiters will be removed.
 */
-func (self Instance) DelimiterStrings() []string {
+func (self Instance) DelimiterStrings() []string { //gd:CodeEdit.delimiter_strings
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetStringDelimiters())))
 }
 
 // SetDelimiterStrings sets the property returned by [GetStringDelimiters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDelimiterStrings(value []string) Instance {
+func (self Instance) SetDelimiterStrings(value []string) Instance { //gd:CodeEdit.delimiter_strings
 	class(self).SetStringDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
@@ -1205,12 +1205,12 @@ func (self Instance) SetDelimiterStrings(value []string) Instance {
 /*
 Sets the comment delimiters. All existing comment delimiters will be removed.
 */
-func (self Instance) DelimiterComments() []string {
+func (self Instance) DelimiterComments() []string { //gd:CodeEdit.delimiter_comments
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCommentDelimiters())))
 }
 
 // SetDelimiterComments sets the property returned by [GetCommentDelimiters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDelimiterComments(value []string) Instance {
+func (self Instance) SetDelimiterComments(value []string) Instance { //gd:CodeEdit.delimiter_comments
 	class(self).SetCommentDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
@@ -1222,12 +1222,12 @@ If true, the [ProjectSettings] "input/ui_text_completion_query" action requests 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [RequestCodeCompletion]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Interface
 */
-func (self Instance) CodeCompletionEnabled() bool {
+func (self Instance) CodeCompletionEnabled() bool { //gd:CodeEdit.code_completion_enabled
 	return bool(class(self).IsCodeCompletionEnabled())
 }
 
 // SetCodeCompletionEnabled sets the property returned by [IsCodeCompletionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCodeCompletionEnabled(value bool) Instance {
+func (self Instance) SetCodeCompletionEnabled(value bool) Instance { //gd:CodeEdit.code_completion_enabled
 	class(self).SetCodeCompletionEnabled(value)
 	return self
 }
@@ -1235,12 +1235,12 @@ func (self Instance) SetCodeCompletionEnabled(value bool) Instance {
 /*
 Sets prefixes that will trigger code completion.
 */
-func (self Instance) CodeCompletionPrefixes() []string {
+func (self Instance) CodeCompletionPrefixes() []string { //gd:CodeEdit.code_completion_prefixes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCodeCompletionPrefixes())))
 }
 
 // SetCodeCompletionPrefixes sets the property returned by [GetCodeCompletionPrefixes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCodeCompletionPrefixes(value []string) Instance {
+func (self Instance) SetCodeCompletionPrefixes(value []string) Instance { //gd:CodeEdit.code_completion_prefixes
 	class(self).SetCodeCompletionPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
@@ -1250,12 +1250,12 @@ Size of the tabulation indent (one Tab press) in characters. If [IndentUseSpaces
 
 [IndentUseSpaces]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentUseSpaces
 */
-func (self Instance) IndentSize() int {
+func (self Instance) IndentSize() int { //gd:CodeEdit.indent_size
 	return int(int(class(self).GetIndentSize()))
 }
 
 // SetIndentSize sets the property returned by [GetIndentSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndentSize(value int) Instance {
+func (self Instance) SetIndentSize(value int) Instance { //gd:CodeEdit.indent_size
 	class(self).SetIndentSize(int64(value))
 	return self
 }
@@ -1263,12 +1263,12 @@ func (self Instance) SetIndentSize(value int) Instance {
 /*
 Use spaces instead of tabs for indentation.
 */
-func (self Instance) IndentUseSpaces() bool {
+func (self Instance) IndentUseSpaces() bool { //gd:CodeEdit.indent_use_spaces
 	return bool(class(self).IsIndentUsingSpaces())
 }
 
 // SetIndentUseSpaces sets the property returned by [IsIndentUsingSpaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndentUseSpaces(value bool) Instance {
+func (self Instance) SetIndentUseSpaces(value bool) Instance { //gd:CodeEdit.indent_use_spaces
 	class(self).SetIndentUsingSpaces(value)
 	return self
 }
@@ -1279,12 +1279,12 @@ If true, an extra indent is automatically inserted when a new line is added and 
 [AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
 [IndentAutomaticPrefixes]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentAutomaticPrefixes
 */
-func (self Instance) IndentAutomatic() bool {
+func (self Instance) IndentAutomatic() bool { //gd:CodeEdit.indent_automatic
 	return bool(class(self).IsAutoIndentEnabled())
 }
 
 // SetIndentAutomatic sets the property returned by [IsAutoIndentEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndentAutomatic(value bool) Instance {
+func (self Instance) SetIndentAutomatic(value bool) Instance { //gd:CodeEdit.indent_automatic
 	class(self).SetAutoIndentEnabled(value)
 	return self
 }
@@ -1294,12 +1294,12 @@ Prefixes to trigger an automatic indent. Used when [IndentAutomatic] is set to t
 
 [IndentAutomatic]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentAutomatic
 */
-func (self Instance) IndentAutomaticPrefixes() []string {
+func (self Instance) IndentAutomaticPrefixes() []string { //gd:CodeEdit.indent_automatic_prefixes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAutoIndentPrefixes())))
 }
 
 // SetIndentAutomaticPrefixes sets the property returned by [GetAutoIndentPrefixes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndentAutomaticPrefixes(value []string) Instance {
+func (self Instance) SetIndentAutomaticPrefixes(value []string) Instance { //gd:CodeEdit.indent_automatic_prefixes
 	class(self).SetAutoIndentPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
@@ -1309,12 +1309,12 @@ If true, uses [AutoBraceCompletionPairs] to automatically insert the closing bra
 
 [AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
 */
-func (self Instance) AutoBraceCompletionEnabled() bool {
+func (self Instance) AutoBraceCompletionEnabled() bool { //gd:CodeEdit.auto_brace_completion_enabled
 	return bool(class(self).IsAutoBraceCompletionEnabled())
 }
 
 // SetAutoBraceCompletionEnabled sets the property returned by [IsAutoBraceCompletionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoBraceCompletionEnabled(value bool) Instance {
+func (self Instance) SetAutoBraceCompletionEnabled(value bool) Instance { //gd:CodeEdit.auto_brace_completion_enabled
 	class(self).SetAutoBraceCompletionEnabled(value)
 	return self
 }
@@ -1324,12 +1324,12 @@ If true, highlights brace pairs when the caret is on either one, using [AutoBrac
 
 [AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
 */
-func (self Instance) AutoBraceCompletionHighlightMatching() bool {
+func (self Instance) AutoBraceCompletionHighlightMatching() bool { //gd:CodeEdit.auto_brace_completion_highlight_matching
 	return bool(class(self).IsHighlightMatchingBracesEnabled())
 }
 
 // SetAutoBraceCompletionHighlightMatching sets the property returned by [IsHighlightMatchingBracesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) Instance {
+func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) Instance { //gd:CodeEdit.auto_brace_completion_highlight_matching
 	class(self).SetHighlightMatchingBracesEnabled(value)
 	return self
 }
@@ -1340,12 +1340,12 @@ Sets the brace pairs to be autocompleted. For each entry in the dictionary, the 
 [AutoBraceCompletionEnabled]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionEnabled
 [AutoBraceCompletionHighlightMatching]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionHighlightMatching
 */
-func (self Instance) AutoBraceCompletionPairs() map[any]any {
+func (self Instance) AutoBraceCompletionPairs() map[any]any { //gd:CodeEdit.auto_brace_completion_pairs
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAutoBraceCompletionPairs()))
 }
 
 // SetAutoBraceCompletionPairs sets the property returned by [GetAutoBraceCompletionPairs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) Instance {
+func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) Instance { //gd:CodeEdit.auto_brace_completion_pairs
 	class(self).SetAutoBraceCompletionPairs(gd.DictionaryFromMap(value))
 	return self
 }

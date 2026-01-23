@@ -176,12 +176,12 @@ The action's name. This is usually the name of an existing action in the [InputM
 
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
-func (self Instance) Action() string {
+func (self Instance) Action() string { //gd:InputEventAction.action
 	return string(class(self).GetAction().String())
 }
 
 // SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAction(value string) Instance {
+func (self Instance) SetAction(value string) Instance { //gd:InputEventAction.action
 	class(self).SetAction(String.Name(String.New(value)))
 	return self
 }
@@ -190,7 +190,7 @@ func (self Instance) SetAction(value string) Instance {
 If true, the action's state is pressed. If false, the action's state is released.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) Instance {
+func (self Instance) SetPressed(value bool) Instance { //gd:InputEventAction.pressed
 	class(self).SetPressed(value)
 	return self
 }
@@ -198,12 +198,12 @@ func (self Instance) SetPressed(value bool) Instance {
 /*
 The action's strength between 0 and 1. This value is considered as equal to 0 if pressed is false. The event strength allows faking analog joypad motion events, by specifying how strongly the joypad axis is bent or pressed.
 */
-func (self Instance) Strength() Float.X {
+func (self Instance) Strength() Float.X { //gd:InputEventAction.strength
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
 // SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStrength(value Float.X) Instance {
+func (self Instance) SetStrength(value Float.X) Instance { //gd:InputEventAction.strength
 	class(self).SetStrength(float64(value))
 	return self
 }
@@ -214,12 +214,12 @@ The real event index in action this event corresponds to (from events defined fo
 [InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
 [InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
 */
-func (self Instance) EventIndex() int {
+func (self Instance) EventIndex() int { //gd:InputEventAction.event_index
 	return int(int(class(self).GetEventIndex()))
 }
 
 // SetEventIndex sets the property returned by [GetEventIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEventIndex(value int) Instance {
+func (self Instance) SetEventIndex(value int) Instance { //gd:InputEventAction.event_index
 	class(self).SetEventIndex(int64(value))
 	return self
 }

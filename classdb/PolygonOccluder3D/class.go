@@ -169,12 +169,12 @@ The polygon to use for occlusion culling. The polygon can be convex or concave, 
 
 The polygon must not have intersecting lines. Otherwise, triangulation will fail (with an error message printed).
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:PolygonOccluder3D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:PolygonOccluder3D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }

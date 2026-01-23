@@ -167,12 +167,12 @@ func New() Instance {
 /*
 The spring joint's maximum length. The two attached bodies cannot stretch it past this value.
 */
-func (self Instance) Length() Float.X {
+func (self Instance) Length() Float.X { //gd:DampedSpringJoint2D.length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLength(value Float.X) Instance {
+func (self Instance) SetLength(value Float.X) Instance { //gd:DampedSpringJoint2D.length
 	class(self).SetLength(float64(value))
 	return self
 }
@@ -180,12 +180,12 @@ func (self Instance) SetLength(value Float.X) Instance {
 /*
 When the bodies attached to the spring joint move they stretch or squash it. The joint always tries to resize towards this length.
 */
-func (self Instance) RestLength() Float.X {
+func (self Instance) RestLength() Float.X { //gd:DampedSpringJoint2D.rest_length
 	return Float.X(Float.X(class(self).GetRestLength()))
 }
 
 // SetRestLength sets the property returned by [GetRestLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRestLength(value Float.X) Instance {
+func (self Instance) SetRestLength(value Float.X) Instance { //gd:DampedSpringJoint2D.rest_length
 	class(self).SetRestLength(float64(value))
 	return self
 }
@@ -193,12 +193,12 @@ func (self Instance) SetRestLength(value Float.X) Instance {
 /*
 The higher the value, the less the bodies attached to the joint will deform it. The joint applies an opposing force to the bodies, the product of the stiffness multiplied by the size difference from its resting length.
 */
-func (self Instance) Stiffness() Float.X {
+func (self Instance) Stiffness() Float.X { //gd:DampedSpringJoint2D.stiffness
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
 // SetStiffness sets the property returned by [GetStiffness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStiffness(value Float.X) Instance {
+func (self Instance) SetStiffness(value Float.X) Instance { //gd:DampedSpringJoint2D.stiffness
 	class(self).SetStiffness(float64(value))
 	return self
 }
@@ -208,12 +208,12 @@ The spring joint's damping ratio. A value between 0 and 1. When the two bodies m
 
 [Damping]: https://pkg.go.dev/graphics.gd/classdb/DampedSpringJoint2D#Instance.Damping
 */
-func (self Instance) Damping() Float.X {
+func (self Instance) Damping() Float.X { //gd:DampedSpringJoint2D.damping
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
 // SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDamping(value Float.X) Instance {
+func (self Instance) SetDamping(value Float.X) Instance { //gd:DampedSpringJoint2D.damping
 	class(self).SetDamping(float64(value))
 	return self
 }

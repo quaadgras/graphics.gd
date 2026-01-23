@@ -243,12 +243,12 @@ func New() Instance {
 
 [SkeletonProfile]: https://pkg.go.dev/graphics.gd/classdb/SkeletonProfile
 */
-func (self Instance) Profile() SkeletonProfile.Instance {
+func (self Instance) Profile() SkeletonProfile.Instance { //gd:RetargetModifier3D.profile
 	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
 // SetProfile sets the property returned by [GetProfile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance {
+func (self Instance) SetProfile(value SkeletonProfile.Instance) Instance { //gd:RetargetModifier3D.profile
 	class(self).SetProfile(value)
 	return self
 }
@@ -264,12 +264,12 @@ In case the target skeleton has fewer bones than the source skeleton, the source
 
 This is useful for using dummy bone with length 0 to match postures when retargeting between models with different number of bones.
 */
-func (self Instance) UseGlobalPose() bool {
+func (self Instance) UseGlobalPose() bool { //gd:RetargetModifier3D.use_global_pose
 	return bool(class(self).IsUsingGlobalPose())
 }
 
 // SetUseGlobalPose sets the property returned by [IsUsingGlobalPose]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseGlobalPose(value bool) Instance {
+func (self Instance) SetUseGlobalPose(value bool) Instance { //gd:RetargetModifier3D.use_global_pose
 	class(self).SetUseGlobalPose(value)
 	return self
 }
@@ -279,12 +279,12 @@ Flags to control the process of the transform elements individually when [UseGlo
 
 [UseGlobalPose]: https://pkg.go.dev/graphics.gd/classdb/RetargetModifier3D#Instance.UseGlobalPose
 */
-func (self Instance) Enable() TransformFlag {
+func (self Instance) Enable() TransformFlag { //gd:RetargetModifier3D.enable
 	return TransformFlag(class(self).GetEnableFlags())
 }
 
 // SetEnable sets the property returned by [GetEnableFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnable(value TransformFlag) Instance {
+func (self Instance) SetEnable(value TransformFlag) Instance { //gd:RetargetModifier3D.enable
 	class(self).SetEnableFlags(value)
 	return self
 }

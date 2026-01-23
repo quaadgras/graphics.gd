@@ -207,12 +207,12 @@ Note: The Doppler effect will only be heard on [AudioStreamPlayer3D]s if [AudioS
 [AudioStreamPlayer3D.DopplerTracking]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.DopplerTracking
 [Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
 */
-func (self Instance) DopplerTracking() DopplerTracking {
+func (self Instance) DopplerTracking() DopplerTracking { //gd:AudioListener3D.doppler_tracking
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
 // SetDopplerTracking sets the property returned by [GetDopplerTracking]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
+func (self Instance) SetDopplerTracking(value DopplerTracking) Instance { //gd:AudioListener3D.doppler_tracking
 	class(self).SetDopplerTracking(value)
 	return self
 }

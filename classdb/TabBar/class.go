@@ -501,12 +501,12 @@ The index of the current selected tab. A value of -1 means that no tab is select
 
 [DeselectEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DeselectEnabled
 */
-func (self Instance) CurrentTab() int {
+func (self Instance) CurrentTab() int { //gd:TabBar.current_tab
 	return int(int(class(self).GetCurrentTab()))
 }
 
 // SetCurrentTab sets the property returned by [GetCurrentTab]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentTab(value int) Instance {
+func (self Instance) SetCurrentTab(value int) Instance { //gd:TabBar.current_tab
 	class(self).SetCurrentTab(int64(value))
 	return self
 }
@@ -514,12 +514,12 @@ func (self Instance) SetCurrentTab(value int) Instance {
 /*
 The position at which tabs will be placed.
 */
-func (self Instance) TabAlignment() AlignmentMode {
+func (self Instance) TabAlignment() AlignmentMode { //gd:TabBar.tab_alignment
 	return AlignmentMode(class(self).GetTabAlignment())
 }
 
 // SetTabAlignment sets the property returned by [GetTabAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabAlignment(value AlignmentMode) Instance {
+func (self Instance) SetTabAlignment(value AlignmentMode) Instance { //gd:TabBar.tab_alignment
 	class(self).SetTabAlignment(value)
 	return self
 }
@@ -527,12 +527,12 @@ func (self Instance) SetTabAlignment(value AlignmentMode) Instance {
 /*
 If true, tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.
 */
-func (self Instance) ClipTabs() bool {
+func (self Instance) ClipTabs() bool { //gd:TabBar.clip_tabs
 	return bool(class(self).GetClipTabs())
 }
 
 // SetClipTabs sets the property returned by [GetClipTabs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipTabs(value bool) Instance {
+func (self Instance) SetClipTabs(value bool) Instance { //gd:TabBar.clip_tabs
 	class(self).SetClipTabs(value)
 	return self
 }
@@ -542,12 +542,12 @@ If true, middle clicking on the mouse will fire the [OnTabClosePressed] signal.
 
 [OnTabClosePressed]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.OnTabClosePressed
 */
-func (self Instance) CloseWithMiddleMouse() bool {
+func (self Instance) CloseWithMiddleMouse() bool { //gd:TabBar.close_with_middle_mouse
 	return bool(class(self).GetCloseWithMiddleMouse())
 }
 
 // SetCloseWithMiddleMouse sets the property returned by [GetCloseWithMiddleMouse]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCloseWithMiddleMouse(value bool) Instance {
+func (self Instance) SetCloseWithMiddleMouse(value bool) Instance { //gd:TabBar.close_with_middle_mouse
 	class(self).SetCloseWithMiddleMouse(value)
 	return self
 }
@@ -555,12 +555,12 @@ func (self Instance) SetCloseWithMiddleMouse(value bool) Instance {
 /*
 When the close button will appear on the tabs.
 */
-func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy {
+func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy { //gd:TabBar.tab_close_display_policy
 	return CloseButtonDisplayPolicy(class(self).GetTabCloseDisplayPolicy())
 }
 
 // SetTabCloseDisplayPolicy sets the property returned by [GetTabCloseDisplayPolicy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) Instance {
+func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) Instance { //gd:TabBar.tab_close_display_policy
 	class(self).SetTabCloseDisplayPolicy(value)
 	return self
 }
@@ -568,12 +568,12 @@ func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) In
 /*
 Sets the maximum width which all tabs should be limited to. Unlimited if set to 0.
 */
-func (self Instance) MaxTabWidth() int {
+func (self Instance) MaxTabWidth() int { //gd:TabBar.max_tab_width
 	return int(int(class(self).GetMaxTabWidth()))
 }
 
 // SetMaxTabWidth sets the property returned by [GetMaxTabWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxTabWidth(value int) Instance {
+func (self Instance) SetMaxTabWidth(value int) Instance { //gd:TabBar.max_tab_width
 	class(self).SetMaxTabWidth(int64(value))
 	return self
 }
@@ -581,12 +581,12 @@ func (self Instance) SetMaxTabWidth(value int) Instance {
 /*
 if true, the mouse's scroll wheel can be used to navigate the scroll view.
 */
-func (self Instance) ScrollingEnabled() bool {
+func (self Instance) ScrollingEnabled() bool { //gd:TabBar.scrolling_enabled
 	return bool(class(self).GetScrollingEnabled())
 }
 
 // SetScrollingEnabled sets the property returned by [GetScrollingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollingEnabled(value bool) Instance {
+func (self Instance) SetScrollingEnabled(value bool) Instance { //gd:TabBar.scrolling_enabled
 	class(self).SetScrollingEnabled(value)
 	return self
 }
@@ -594,12 +594,12 @@ func (self Instance) SetScrollingEnabled(value bool) Instance {
 /*
 If true, tabs can be rearranged with mouse drag.
 */
-func (self Instance) DragToRearrangeEnabled() bool {
+func (self Instance) DragToRearrangeEnabled() bool { //gd:TabBar.drag_to_rearrange_enabled
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
 // SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragToRearrangeEnabled(value bool) Instance {
+func (self Instance) SetDragToRearrangeEnabled(value bool) Instance { //gd:TabBar.drag_to_rearrange_enabled
 	class(self).SetDragToRearrangeEnabled(value)
 	return self
 }
@@ -612,12 +612,12 @@ Setting this to -1 will disable rearranging between [TabBar]s.
 [DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DragToRearrangeEnabled
 [TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
 */
-func (self Instance) TabsRearrangeGroup() int {
+func (self Instance) TabsRearrangeGroup() int { //gd:TabBar.tabs_rearrange_group
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
 // SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabsRearrangeGroup(value int) Instance {
+func (self Instance) SetTabsRearrangeGroup(value int) Instance { //gd:TabBar.tabs_rearrange_group
 	class(self).SetTabsRearrangeGroup(int64(value))
 	return self
 }
@@ -625,12 +625,12 @@ func (self Instance) SetTabsRearrangeGroup(value int) Instance {
 /*
 If true, the tab offset will be changed to keep the currently selected tab visible.
 */
-func (self Instance) ScrollToSelected() bool {
+func (self Instance) ScrollToSelected() bool { //gd:TabBar.scroll_to_selected
 	return bool(class(self).GetScrollToSelected())
 }
 
 // SetScrollToSelected sets the property returned by [GetScrollToSelected]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollToSelected(value bool) Instance {
+func (self Instance) SetScrollToSelected(value bool) Instance { //gd:TabBar.scroll_to_selected
 	class(self).SetScrollToSelected(value)
 	return self
 }
@@ -638,12 +638,12 @@ func (self Instance) SetScrollToSelected(value bool) Instance {
 /*
 If true, enables selecting a tab with the right mouse button.
 */
-func (self Instance) SelectWithRmb() bool {
+func (self Instance) SelectWithRmb() bool { //gd:TabBar.select_with_rmb
 	return bool(class(self).GetSelectWithRmb())
 }
 
 // SetSelectWithRmb sets the property returned by [GetSelectWithRmb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectWithRmb(value bool) Instance {
+func (self Instance) SetSelectWithRmb(value bool) Instance { //gd:TabBar.select_with_rmb
 	class(self).SetSelectWithRmb(value)
 	return self
 }
@@ -651,12 +651,12 @@ func (self Instance) SetSelectWithRmb(value bool) Instance {
 /*
 If true, all tabs can be deselected so that no tab is selected. Click on the current tab to deselect it.
 */
-func (self Instance) DeselectEnabled() bool {
+func (self Instance) DeselectEnabled() bool { //gd:TabBar.deselect_enabled
 	return bool(class(self).GetDeselectEnabled())
 }
 
 // SetDeselectEnabled sets the property returned by [GetDeselectEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeselectEnabled(value bool) Instance {
+func (self Instance) SetDeselectEnabled(value bool) Instance { //gd:TabBar.deselect_enabled
 	class(self).SetDeselectEnabled(value)
 	return self
 }
@@ -664,12 +664,12 @@ func (self Instance) SetDeselectEnabled(value bool) Instance {
 /*
 The number of tabs currently in the bar.
 */
-func (self Instance) TabCount() int {
+func (self Instance) TabCount() int { //gd:TabBar.tab_count
 	return int(int(class(self).GetTabCount()))
 }
 
 // SetTabCount sets the property returned by [GetTabCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabCount(value int) Instance {
+func (self Instance) SetTabCount(value int) Instance { //gd:TabBar.tab_count
 	class(self).SetTabCount(int64(value))
 	return self
 }

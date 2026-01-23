@@ -309,12 +309,12 @@ The [SpriteFrames] resource containing the animation(s). Allows you the option t
 
 [SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames
 */
-func (self Instance) SpriteFrames() SpriteFrames.Instance {
+func (self Instance) SpriteFrames() SpriteFrames.Instance { //gd:AnimatedSprite2D.sprite_frames
 	return SpriteFrames.Instance(class(self).GetSpriteFrames())
 }
 
 // SetSpriteFrames sets the property returned by [GetSpriteFrames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) Instance {
+func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) Instance { //gd:AnimatedSprite2D.sprite_frames
 	class(self).SetSpriteFrames(value)
 	return self
 }
@@ -326,12 +326,12 @@ The current animation from the [SpriteFrames] resource. If this value is changed
 [FrameProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.FrameProgress
 [SpriteFrames]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.SpriteFrames
 */
-func (self Instance) Animation() string {
+func (self Instance) Animation() string { //gd:AnimatedSprite2D.animation
 	return string(class(self).GetAnimation().String())
 }
 
 // SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimation(value string) Instance {
+func (self Instance) SetAnimation(value string) Instance { //gd:AnimatedSprite2D.animation
 	class(self).SetAnimation(String.Name(String.New(value)))
 	return self
 }
@@ -339,12 +339,12 @@ func (self Instance) SetAnimation(value string) Instance {
 /*
 The key of the animation to play when the scene loads.
 */
-func (self Instance) Autoplay() string {
+func (self Instance) Autoplay() string { //gd:AnimatedSprite2D.autoplay
 	return string(class(self).GetAutoplay().String())
 }
 
 // SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value string) Instance {
+func (self Instance) SetAutoplay(value string) Instance { //gd:AnimatedSprite2D.autoplay
 	class(self).SetAutoplay(String.New(value))
 	return self
 }
@@ -355,12 +355,12 @@ The displayed animation frame's index. Setting this property also resets [FrameP
 [FrameProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.FrameProgress
 [SetFrameAndProgress]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.SetFrameAndProgress
 */
-func (self Instance) Frame() int {
+func (self Instance) Frame() int { //gd:AnimatedSprite2D.frame
 	return int(int(class(self).GetFrame()))
 }
 
 // SetFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrame(value int) Instance {
+func (self Instance) SetFrame(value int) Instance { //gd:AnimatedSprite2D.frame
 	class(self).SetFrame(int64(value))
 	return self
 }
@@ -368,12 +368,12 @@ func (self Instance) SetFrame(value int) Instance {
 /*
 The progress value between 0.0 and 1.0 until the current frame transitions to the next frame. If the animation is playing backwards, the value transitions from 1.0 to 0.0.
 */
-func (self Instance) FrameProgress() Float.X {
+func (self Instance) FrameProgress() Float.X { //gd:AnimatedSprite2D.frame_progress
 	return Float.X(Float.X(class(self).GetFrameProgress()))
 }
 
 // SetFrameProgress sets the property returned by [GetFrameProgress]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrameProgress(value Float.X) Instance {
+func (self Instance) SetFrameProgress(value Float.X) Instance { //gd:AnimatedSprite2D.frame_progress
 	class(self).SetFrameProgress(float64(value))
 	return self
 }
@@ -383,12 +383,12 @@ The speed scaling ratio. For example, if this value is 1, then the animation pla
 
 If set to a negative value, the animation is played in reverse. If set to 0, the animation will not advance.
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:AnimatedSprite2D.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:AnimatedSprite2D.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }
@@ -400,12 +400,12 @@ Note: For games with a pixel art aesthetic, textures may appear deformed when ce
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) Centered() bool {
+func (self Instance) Centered() bool { //gd:AnimatedSprite2D.centered
 	return bool(class(self).IsCentered())
 }
 
 // SetCentered sets the property returned by [IsCentered]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCentered(value bool) Instance {
+func (self Instance) SetCentered(value bool) Instance { //gd:AnimatedSprite2D.centered
 	class(self).SetCentered(value)
 	return self
 }
@@ -413,12 +413,12 @@ func (self Instance) SetCentered(value bool) Instance {
 /*
 The texture's drawing offset.
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:AnimatedSprite2D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:AnimatedSprite2D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -426,12 +426,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 If true, texture is flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:AnimatedSprite2D.flip_h
 	return bool(class(self).IsFlippedH())
 }
 
 // SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:AnimatedSprite2D.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -439,12 +439,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, texture is flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:AnimatedSprite2D.flip_v
 	return bool(class(self).IsFlippedV())
 }
 
 // SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:AnimatedSprite2D.flip_v
 	class(self).SetFlipV(value)
 	return self
 }

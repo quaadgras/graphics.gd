@@ -165,12 +165,12 @@ The RID of the texture object created on the [RenderingDevice].
 
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
-func (self Instance) TextureRdRid() RID.Texture {
+func (self Instance) TextureRdRid() RID.Texture { //gd:Texture2DRD.texture_rd_rid
 	return RID.Texture(RID.Texture(class(self).GetTextureRdRid()))
 }
 
 // SetTextureRdRid sets the property returned by [GetTextureRdRid]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRdRid(value RID.Texture) Instance {
+func (self Instance) SetTextureRdRid(value RID.Texture) Instance { //gd:Texture2DRD.texture_rd_rid
 	class(self).SetTextureRdRid(RID.Any(value))
 	return self
 }

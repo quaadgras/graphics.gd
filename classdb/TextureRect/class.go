@@ -173,12 +173,12 @@ The node's [Texture2D] resource.
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:TextureRect.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:TextureRect.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -186,12 +186,12 @@ func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 /*
 Defines how minimum size is determined based on the texture's size.
 */
-func (self Instance) ExpandMode() ExpandMode {
+func (self Instance) ExpandMode() ExpandMode { //gd:TextureRect.expand_mode
 	return ExpandMode(class(self).GetExpandMode())
 }
 
 // SetExpandMode sets the property returned by [GetExpandMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMode(value ExpandMode) Instance {
+func (self Instance) SetExpandMode(value ExpandMode) Instance { //gd:TextureRect.expand_mode
 	class(self).SetExpandMode(value)
 	return self
 }
@@ -199,12 +199,12 @@ func (self Instance) SetExpandMode(value ExpandMode) Instance {
 /*
 Controls the texture's behavior when resizing the node's bounding rectangle.
 */
-func (self Instance) StretchMode() StretchMode {
+func (self Instance) StretchMode() StretchMode { //gd:TextureRect.stretch_mode
 	return StretchMode(class(self).GetStretchMode())
 }
 
 // SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMode(value StretchMode) Instance {
+func (self Instance) SetStretchMode(value StretchMode) Instance { //gd:TextureRect.stretch_mode
 	class(self).SetStretchMode(value)
 	return self
 }
@@ -212,12 +212,12 @@ func (self Instance) SetStretchMode(value StretchMode) Instance {
 /*
 If true, texture is flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:TextureRect.flip_h
 	return bool(class(self).IsFlippedH())
 }
 
 // SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:TextureRect.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -225,12 +225,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, texture is flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:TextureRect.flip_v
 	return bool(class(self).IsFlippedV())
 }
 
 // SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:TextureRect.flip_v
 	class(self).SetFlipV(value)
 	return self
 }

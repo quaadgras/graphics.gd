@@ -160,12 +160,12 @@ func New() Instance {
 /*
 The comparison function.
 */
-func (self Instance) Function() Function {
+func (self Instance) Function() Function { //gd:VisualShaderNodeIs.function
 	return Function(class(self).GetFunction())
 }
 
 // SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunction(value Function) Instance {
+func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNodeIs.function
 	class(self).SetFunction(value)
 	return self
 }

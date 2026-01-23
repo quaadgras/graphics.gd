@@ -281,12 +281,12 @@ Whether this link is currently active. If false, [NavigationServer2D.MapGetPath]
 
 [NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:NavigationLink2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:NavigationLink2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -297,12 +297,12 @@ Whether this link can be traveled in both directions or only from [StartPosition
 [EndPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.EndPosition
 [StartPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.StartPosition
 */
-func (self Instance) Bidirectional() bool {
+func (self Instance) Bidirectional() bool { //gd:NavigationLink2D.bidirectional
 	return bool(class(self).IsBidirectional())
 }
 
 // SetBidirectional sets the property returned by [IsBidirectional]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBidirectional(value bool) Instance {
+func (self Instance) SetBidirectional(value bool) Instance { //gd:NavigationLink2D.bidirectional
 	class(self).SetBidirectional(value)
 	return self
 }
@@ -312,12 +312,12 @@ A bitfield determining all navigation layers the link belongs to. These navigati
 
 [NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
 */
-func (self Instance) NavigationLayers() int {
+func (self Instance) NavigationLayers() int { //gd:NavigationLink2D.navigation_layers
 	return int(int(class(self).GetNavigationLayers()))
 }
 
 // SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationLayers(value int) Instance {
+func (self Instance) SetNavigationLayers(value int) Instance { //gd:NavigationLink2D.navigation_layers
 	class(self).SetNavigationLayers(int64(value))
 	return self
 }
@@ -331,12 +331,12 @@ The distance the link will search is controlled by [NavigationServer2D.MapSetLin
 
 [NavigationServer2D.MapSetLinkConnectionRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapSetLinkConnectionRadius
 */
-func (self Instance) StartPosition() Vector2.XY {
+func (self Instance) StartPosition() Vector2.XY { //gd:NavigationLink2D.start_position
 	return Vector2.XY(class(self).GetStartPosition())
 }
 
 // SetStartPosition sets the property returned by [GetStartPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStartPosition(value Vector2.XY) Instance {
+func (self Instance) SetStartPosition(value Vector2.XY) Instance { //gd:NavigationLink2D.start_position
 	class(self).SetStartPosition(Vector2.XY(value))
 	return self
 }
@@ -350,12 +350,12 @@ The distance the link will search is controlled by [NavigationServer2D.MapSetLin
 
 [NavigationServer2D.MapSetLinkConnectionRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapSetLinkConnectionRadius
 */
-func (self Instance) EndPosition() Vector2.XY {
+func (self Instance) EndPosition() Vector2.XY { //gd:NavigationLink2D.end_position
 	return Vector2.XY(class(self).GetEndPosition())
 }
 
 // SetEndPosition sets the property returned by [GetEndPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEndPosition(value Vector2.XY) Instance {
+func (self Instance) SetEndPosition(value Vector2.XY) Instance { //gd:NavigationLink2D.end_position
 	class(self).SetEndPosition(Vector2.XY(value))
 	return self
 }
@@ -365,12 +365,12 @@ When pathfinding enters this link from another regions navigation mesh the [Ente
 
 [EnterCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.EnterCost
 */
-func (self Instance) EnterCost() Float.X {
+func (self Instance) EnterCost() Float.X { //gd:NavigationLink2D.enter_cost
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
 // SetEnterCost sets the property returned by [GetEnterCost]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnterCost(value Float.X) Instance {
+func (self Instance) SetEnterCost(value Float.X) Instance { //gd:NavigationLink2D.enter_cost
 	class(self).SetEnterCost(float64(value))
 	return self
 }
@@ -380,12 +380,12 @@ When pathfinding moves along the link the traveled distance is multiplied with [
 
 [TravelCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.TravelCost
 */
-func (self Instance) TravelCost() Float.X {
+func (self Instance) TravelCost() Float.X { //gd:NavigationLink2D.travel_cost
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
 // SetTravelCost sets the property returned by [GetTravelCost]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTravelCost(value Float.X) Instance {
+func (self Instance) SetTravelCost(value Float.X) Instance { //gd:NavigationLink2D.travel_cost
 	class(self).SetTravelCost(float64(value))
 	return self
 }

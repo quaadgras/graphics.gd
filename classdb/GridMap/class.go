@@ -484,12 +484,12 @@ The assigned [MeshLibrary].
 
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 */
-func (self Instance) MeshLibrary() MeshLibrary.Instance {
+func (self Instance) MeshLibrary() MeshLibrary.Instance { //gd:GridMap.mesh_library
 	return MeshLibrary.Instance(class(self).GetMeshLibrary())
 }
 
 // SetMeshLibrary sets the property returned by [GetMeshLibrary]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) Instance {
+func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) Instance { //gd:GridMap.mesh_library
 	class(self).SetMeshLibrary(value)
 	return self
 }
@@ -499,12 +499,12 @@ Overrides the default friction and bounce physics properties for the whole [Grid
 
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 */
-func (self Instance) PhysicsMaterial() PhysicsMaterial.Instance {
+func (self Instance) PhysicsMaterial() PhysicsMaterial.Instance { //gd:GridMap.physics_material
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterial())
 }
 
 // SetPhysicsMaterial sets the property returned by [GetPhysicsMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) Instance {
+func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) Instance { //gd:GridMap.physics_material
 	class(self).SetPhysicsMaterial(value)
 	return self
 }
@@ -516,12 +516,12 @@ This does not affect the size of the meshes. See [CellScale].
 
 [CellScale]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CellScale
 */
-func (self Instance) CellSize() Vector3.XYZ {
+func (self Instance) CellSize() Vector3.XYZ { //gd:GridMap.cell_size
 	return Vector3.XYZ(class(self).GetCellSize())
 }
 
 // SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellSize(value Vector3.XYZ) Instance {
+func (self Instance) SetCellSize(value Vector3.XYZ) Instance { //gd:GridMap.cell_size
 	class(self).SetCellSize(Vector3.XYZ(value))
 	return self
 }
@@ -529,12 +529,12 @@ func (self Instance) SetCellSize(value Vector3.XYZ) Instance {
 /*
 The size of each octant measured in number of cells. This applies to all three axis.
 */
-func (self Instance) CellOctantSize() int {
+func (self Instance) CellOctantSize() int { //gd:GridMap.cell_octant_size
 	return int(int(class(self).GetOctantSize()))
 }
 
 // SetCellOctantSize sets the property returned by [GetOctantSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellOctantSize(value int) Instance {
+func (self Instance) SetCellOctantSize(value int) Instance { //gd:GridMap.cell_octant_size
 	class(self).SetOctantSize(int64(value))
 	return self
 }
@@ -542,12 +542,12 @@ func (self Instance) SetCellOctantSize(value int) Instance {
 /*
 If true, grid items are centered on the X axis.
 */
-func (self Instance) CellCenterX() bool {
+func (self Instance) CellCenterX() bool { //gd:GridMap.cell_center_x
 	return bool(class(self).GetCenterX())
 }
 
 // SetCellCenterX sets the property returned by [GetCenterX]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellCenterX(value bool) Instance {
+func (self Instance) SetCellCenterX(value bool) Instance { //gd:GridMap.cell_center_x
 	class(self).SetCenterX(value)
 	return self
 }
@@ -555,12 +555,12 @@ func (self Instance) SetCellCenterX(value bool) Instance {
 /*
 If true, grid items are centered on the Y axis.
 */
-func (self Instance) CellCenterY() bool {
+func (self Instance) CellCenterY() bool { //gd:GridMap.cell_center_y
 	return bool(class(self).GetCenterY())
 }
 
 // SetCellCenterY sets the property returned by [GetCenterY]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellCenterY(value bool) Instance {
+func (self Instance) SetCellCenterY(value bool) Instance { //gd:GridMap.cell_center_y
 	class(self).SetCenterY(value)
 	return self
 }
@@ -568,12 +568,12 @@ func (self Instance) SetCellCenterY(value bool) Instance {
 /*
 If true, grid items are centered on the Z axis.
 */
-func (self Instance) CellCenterZ() bool {
+func (self Instance) CellCenterZ() bool { //gd:GridMap.cell_center_z
 	return bool(class(self).GetCenterZ())
 }
 
 // SetCellCenterZ sets the property returned by [GetCenterZ]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellCenterZ(value bool) Instance {
+func (self Instance) SetCellCenterZ(value bool) Instance { //gd:GridMap.cell_center_z
 	class(self).SetCenterZ(value)
 	return self
 }
@@ -583,12 +583,12 @@ The scale of the cell items.
 
 This does not affect the size of the grid cells themselves, only the items in them. This can be used to make cell items overlap their neighbors.
 */
-func (self Instance) CellScale() Float.X {
+func (self Instance) CellScale() Float.X { //gd:GridMap.cell_scale
 	return Float.X(Float.X(class(self).GetCellScale()))
 }
 
 // SetCellScale sets the property returned by [GetCellScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellScale(value Float.X) Instance {
+func (self Instance) SetCellScale(value Float.X) Instance { //gd:GridMap.cell_scale
 	class(self).SetCellScale(float64(value))
 	return self
 }
@@ -598,12 +598,12 @@ The physics layers this GridMap is in.
 
 GridMaps act as static bodies, meaning they aren't affected by gravity or other forces. They only affect other physics bodies that collide with them.
 */
-func (self Instance) CollisionLayer() int {
+func (self Instance) CollisionLayer() int { //gd:GridMap.collision_layer
 	return int(int(class(self).GetCollisionLayer()))
 }
 
 // SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionLayer(value int) Instance {
+func (self Instance) SetCollisionLayer(value int) Instance { //gd:GridMap.collision_layer
 	class(self).SetCollisionLayer(int64(value))
 	return self
 }
@@ -613,12 +613,12 @@ The physics layers this GridMap detects collisions in. See [Collision layers and
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:GridMap.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:GridMap.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -626,12 +626,12 @@ func (self Instance) SetCollisionMask(value int) Instance {
 /*
 The priority used to solve colliding when occurring penetration. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
 */
-func (self Instance) CollisionPriority() Float.X {
+func (self Instance) CollisionPriority() Float.X { //gd:GridMap.collision_priority
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
 // SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionPriority(value Float.X) Instance {
+func (self Instance) SetCollisionPriority(value Float.X) Instance { //gd:GridMap.collision_priority
 	class(self).SetCollisionPriority(float64(value))
 	return self
 }
@@ -641,12 +641,12 @@ If true, this GridMap creates a navigation region for each cell that uses a [Mes
 
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 */
-func (self Instance) BakeNavigation() bool {
+func (self Instance) BakeNavigation() bool { //gd:GridMap.bake_navigation
 	return bool(class(self).IsBakingNavigation())
 }
 
 // SetBakeNavigation sets the property returned by [IsBakingNavigation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeNavigation(value bool) Instance {
+func (self Instance) SetBakeNavigation(value bool) Instance { //gd:GridMap.bake_navigation
 	class(self).SetBakeNavigation(value)
 	return self
 }

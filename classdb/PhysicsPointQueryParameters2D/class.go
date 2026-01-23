@@ -171,12 +171,12 @@ func New() Instance {
 /*
 The position being queried for, in global coordinates.
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:PhysicsPointQueryParameters2D.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2.XY) Instance {
+func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:PhysicsPointQueryParameters2D.position
 	class(self).SetPosition(Vector2.XY(value))
 	return self
 }
@@ -188,12 +188,12 @@ If 0, restricts the query to the Viewport's default canvas layer.
 
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
-func (self Instance) CanvasInstanceId() int {
+func (self Instance) CanvasInstanceId() int { //gd:PhysicsPointQueryParameters2D.canvas_instance_id
 	return int(int(class(self).GetCanvasInstanceId()))
 }
 
 // SetCanvasInstanceId sets the property returned by [GetCanvasInstanceId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanvasInstanceId(value int) Instance {
+func (self Instance) SetCanvasInstanceId(value int) Instance { //gd:PhysicsPointQueryParameters2D.canvas_instance_id
 	class(self).SetCanvasInstanceId(int64(value))
 	return self
 }
@@ -203,12 +203,12 @@ The physics layers the query will detect (as a bitmask). By default, all collisi
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:PhysicsPointQueryParameters2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:PhysicsPointQueryParameters2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -222,12 +222,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Exclude() []RID.Body2D {
+func (self Instance) Exclude() []RID.Body2D { //gd:PhysicsPointQueryParameters2D.exclude
 	return []RID.Body2D(gd.ArrayAs[[]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
 // SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExclude(value []RID.Body2D) Instance {
+func (self Instance) SetExclude(value []RID.Body2D) Instance { //gd:PhysicsPointQueryParameters2D.exclude
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -237,12 +237,12 @@ If true, the query will take [PhysicsBody2D]s into account.
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:PhysicsPointQueryParameters2D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:PhysicsPointQueryParameters2D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }
@@ -252,12 +252,12 @@ If true, the query will take [Area2D]s into account.
 
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:PhysicsPointQueryParameters2D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:PhysicsPointQueryParameters2D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }

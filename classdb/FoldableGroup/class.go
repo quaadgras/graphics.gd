@@ -188,12 +188,12 @@ func New() Instance {
 /*
 If true, it is possible to fold all containers in this FoldableGroup.
 */
-func (self Instance) AllowFoldingAll() bool {
+func (self Instance) AllowFoldingAll() bool { //gd:FoldableGroup.allow_folding_all
 	return bool(class(self).IsAllowFoldingAll())
 }
 
 // SetAllowFoldingAll sets the property returned by [IsAllowFoldingAll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowFoldingAll(value bool) Instance {
+func (self Instance) SetAllowFoldingAll(value bool) Instance { //gd:FoldableGroup.allow_folding_all
 	class(self).SetAllowFoldingAll(value)
 	return self
 }

@@ -241,12 +241,12 @@ func New() Instance {
 /*
 Path to the spawn root. Spawnable scenes that are added as direct children are replicated to other peers.
 */
-func (self Instance) SpawnPath() string {
+func (self Instance) SpawnPath() string { //gd:MultiplayerSpawner.spawn_path
 	return string(class(self).GetSpawnPath().String())
 }
 
 // SetSpawnPath sets the property returned by [GetSpawnPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpawnPath(value string) Instance {
+func (self Instance) SetSpawnPath(value string) Instance { //gd:MultiplayerSpawner.spawn_path
 	class(self).SetSpawnPath(Path.ToNode(String.New(value)))
 	return self
 }
@@ -256,12 +256,12 @@ Maximum number of nodes allowed to be spawned by this spawner. Includes both spa
 
 When set to 0 (the default), there is no limit.
 */
-func (self Instance) SpawnLimit() int {
+func (self Instance) SpawnLimit() int { //gd:MultiplayerSpawner.spawn_limit
 	return int(int(class(self).GetSpawnLimit()))
 }
 
 // SetSpawnLimit sets the property returned by [GetSpawnLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpawnLimit(value int) Instance {
+func (self Instance) SetSpawnLimit(value int) Instance { //gd:MultiplayerSpawner.spawn_limit
 	class(self).SetSpawnLimit(int64(value))
 	return self
 }
@@ -275,12 +275,12 @@ Note: The returned node should not be added to the scene with [Node.AddChild]. T
 [Node.AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 [Spawn]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.Spawn
 */
-func (self Instance) SpawnFunction() func(data any) Node.Instance {
+func (self Instance) SpawnFunction() func(data any) Node.Instance { //gd:MultiplayerSpawner.spawn_function
 	return (func(data any) Node.Instance)(gd.CallableAs[func(data any) Node.Instance](gd.InternalCallable(class(self).GetSpawnFunction())))
 }
 
 // SetSpawnFunction sets the property returned by [GetSpawnFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) Instance {
+func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) Instance { //gd:MultiplayerSpawner.spawn_function
 	class(self).SetSpawnFunction(Callable.New(value))
 	return self
 }

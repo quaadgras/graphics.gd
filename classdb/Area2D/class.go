@@ -286,12 +286,12 @@ func New() Instance {
 /*
 If true, the area detects bodies or areas entering and exiting it.
 */
-func (self Instance) Monitoring() bool {
+func (self Instance) Monitoring() bool { //gd:Area2D.monitoring
 	return bool(class(self).IsMonitoring())
 }
 
 // SetMonitoring sets the property returned by [IsMonitoring]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMonitoring(value bool) Instance {
+func (self Instance) SetMonitoring(value bool) Instance { //gd:Area2D.monitoring
 	class(self).SetMonitoring(value)
 	return self
 }
@@ -299,12 +299,12 @@ func (self Instance) SetMonitoring(value bool) Instance {
 /*
 If true, other monitoring areas can detect this area.
 */
-func (self Instance) Monitorable() bool {
+func (self Instance) Monitorable() bool { //gd:Area2D.monitorable
 	return bool(class(self).IsMonitorable())
 }
 
 // SetMonitorable sets the property returned by [IsMonitorable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMonitorable(value bool) Instance {
+func (self Instance) SetMonitorable(value bool) Instance { //gd:Area2D.monitorable
 	class(self).SetMonitorable(value)
 	return self
 }
@@ -314,12 +314,12 @@ The area's priority. Higher priority areas are processed first. The [World2D]'s 
 
 [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 */
-func (self Instance) Priority() int {
+func (self Instance) Priority() int { //gd:Area2D.priority
 	return int(int(class(self).GetPriority()))
 }
 
 // SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPriority(value int) Instance {
+func (self Instance) SetPriority(value int) Instance { //gd:Area2D.priority
 	class(self).SetPriority(int64(value))
 	return self
 }
@@ -327,12 +327,12 @@ func (self Instance) SetPriority(value int) Instance {
 /*
 Override mode for gravity calculations within this area.
 */
-func (self Instance) GravitySpaceOverride() SpaceOverride {
+func (self Instance) GravitySpaceOverride() SpaceOverride { //gd:Area2D.gravity_space_override
 	return SpaceOverride(class(self).GetGravitySpaceOverrideMode())
 }
 
 // SetGravitySpaceOverride sets the property returned by [GetGravitySpaceOverrideMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravitySpaceOverride(value SpaceOverride) Instance {
+func (self Instance) SetGravitySpaceOverride(value SpaceOverride) Instance { //gd:Area2D.gravity_space_override
 	class(self).SetGravitySpaceOverrideMode(value)
 	return self
 }
@@ -343,12 +343,12 @@ If true, gravity is calculated from a point (set via [GravityPointCenter]). See 
 [GravityPointCenter]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravityPointCenter
 [GravitySpaceOverride]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravitySpaceOverride
 */
-func (self Instance) GravityPoint() bool {
+func (self Instance) GravityPoint() bool { //gd:Area2D.gravity_point
 	return bool(class(self).IsGravityAPoint())
 }
 
 // SetGravityPoint sets the property returned by [IsGravityAPoint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityPoint(value bool) Instance {
+func (self Instance) SetGravityPoint(value bool) Instance { //gd:Area2D.gravity_point
 	class(self).SetGravityIsPoint(value)
 	return self
 }
@@ -360,12 +360,12 @@ The above is true only when the unit distance is a positive number. When this is
 
 [Gravity]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Gravity
 */
-func (self Instance) GravityPointUnitDistance() Float.X {
+func (self Instance) GravityPointUnitDistance() Float.X { //gd:Area2D.gravity_point_unit_distance
 	return Float.X(Float.X(class(self).GetGravityPointUnitDistance()))
 }
 
 // SetGravityPointUnitDistance sets the property returned by [GetGravityPointUnitDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityPointUnitDistance(value Float.X) Instance {
+func (self Instance) SetGravityPointUnitDistance(value Float.X) Instance { //gd:Area2D.gravity_point_unit_distance
 	class(self).SetGravityPointUnitDistance(float64(value))
 	return self
 }
@@ -375,12 +375,12 @@ If gravity is a point (see [GravityPoint]), this will be the point of attraction
 
 [GravityPoint]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravityPoint
 */
-func (self Instance) GravityPointCenter() Vector2.XY {
+func (self Instance) GravityPointCenter() Vector2.XY { //gd:Area2D.gravity_point_center
 	return Vector2.XY(class(self).GetGravityPointCenter())
 }
 
 // SetGravityPointCenter sets the property returned by [GetGravityPointCenter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityPointCenter(value Vector2.XY) Instance {
+func (self Instance) SetGravityPointCenter(value Vector2.XY) Instance { //gd:Area2D.gravity_point_center
 	class(self).SetGravityPointCenter(Vector2.XY(value))
 	return self
 }
@@ -388,12 +388,12 @@ func (self Instance) SetGravityPointCenter(value Vector2.XY) Instance {
 /*
 The area's gravity vector (not normalized).
 */
-func (self Instance) GravityDirection() Vector2.XY {
+func (self Instance) GravityDirection() Vector2.XY { //gd:Area2D.gravity_direction
 	return Vector2.XY(class(self).GetGravityDirection())
 }
 
 // SetGravityDirection sets the property returned by [GetGravityDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityDirection(value Vector2.XY) Instance {
+func (self Instance) SetGravityDirection(value Vector2.XY) Instance { //gd:Area2D.gravity_direction
 	class(self).SetGravityDirection(Vector2.XY(value))
 	return self
 }
@@ -401,12 +401,12 @@ func (self Instance) SetGravityDirection(value Vector2.XY) Instance {
 /*
 The area's gravity intensity (in pixels per second squared). This value multiplies the gravity direction. This is useful to alter the force of gravity without altering its direction.
 */
-func (self Instance) Gravity() Float.X {
+func (self Instance) Gravity() Float.X { //gd:Area2D.gravity
 	return Float.X(Float.X(class(self).GetGravity()))
 }
 
 // SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravity(value Float.X) Instance {
+func (self Instance) SetGravity(value Float.X) Instance { //gd:Area2D.gravity
 	class(self).SetGravity(float64(value))
 	return self
 }
@@ -414,12 +414,12 @@ func (self Instance) SetGravity(value Float.X) Instance {
 /*
 Override mode for linear damping calculations within this area.
 */
-func (self Instance) LinearDampSpaceOverride() SpaceOverride {
+func (self Instance) LinearDampSpaceOverride() SpaceOverride { //gd:Area2D.linear_damp_space_override
 	return SpaceOverride(class(self).GetLinearDampSpaceOverrideMode())
 }
 
 // SetLinearDampSpaceOverride sets the property returned by [GetLinearDampSpaceOverrideMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) Instance {
+func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) Instance { //gd:Area2D.linear_damp_space_override
 	class(self).SetLinearDampSpaceOverrideMode(value)
 	return self
 }
@@ -431,12 +431,12 @@ See [ProjectSettings] "physics/2d/default_linear_damp" for more details about da
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) LinearDamp() Float.X {
+func (self Instance) LinearDamp() Float.X { //gd:Area2D.linear_damp
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
 // SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDamp(value Float.X) Instance {
+func (self Instance) SetLinearDamp(value Float.X) Instance { //gd:Area2D.linear_damp
 	class(self).SetLinearDamp(float64(value))
 	return self
 }
@@ -444,12 +444,12 @@ func (self Instance) SetLinearDamp(value Float.X) Instance {
 /*
 Override mode for angular damping calculations within this area.
 */
-func (self Instance) AngularDampSpaceOverride() SpaceOverride {
+func (self Instance) AngularDampSpaceOverride() SpaceOverride { //gd:Area2D.angular_damp_space_override
 	return SpaceOverride(class(self).GetAngularDampSpaceOverrideMode())
 }
 
 // SetAngularDampSpaceOverride sets the property returned by [GetAngularDampSpaceOverrideMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) Instance {
+func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) Instance { //gd:Area2D.angular_damp_space_override
 	class(self).SetAngularDampSpaceOverrideMode(value)
 	return self
 }
@@ -461,12 +461,12 @@ See [ProjectSettings] "physics/2d/default_angular_damp" for more details about d
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) AngularDamp() Float.X {
+func (self Instance) AngularDamp() Float.X { //gd:Area2D.angular_damp
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
 // SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDamp(value Float.X) Instance {
+func (self Instance) SetAngularDamp(value Float.X) Instance { //gd:Area2D.angular_damp
 	class(self).SetAngularDamp(float64(value))
 	return self
 }
@@ -474,12 +474,12 @@ func (self Instance) SetAngularDamp(value Float.X) Instance {
 /*
 If true, the area's audio bus overrides the default audio bus.
 */
-func (self Instance) AudioBusOverride() bool {
+func (self Instance) AudioBusOverride() bool { //gd:Area2D.audio_bus_override
 	return bool(class(self).IsOverridingAudioBus())
 }
 
 // SetAudioBusOverride sets the property returned by [IsOverridingAudioBus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioBusOverride(value bool) Instance {
+func (self Instance) SetAudioBusOverride(value bool) Instance { //gd:Area2D.audio_bus_override
 	class(self).SetAudioBusOverride(value)
 	return self
 }
@@ -487,12 +487,12 @@ func (self Instance) SetAudioBusOverride(value bool) Instance {
 /*
 The name of the area's audio bus.
 */
-func (self Instance) AudioBusName() string {
+func (self Instance) AudioBusName() string { //gd:Area2D.audio_bus_name
 	return string(class(self).GetAudioBusName().String())
 }
 
 // SetAudioBusName sets the property returned by [GetAudioBusName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioBusName(value string) Instance {
+func (self Instance) SetAudioBusName(value string) Instance { //gd:Area2D.audio_bus_name
 	class(self).SetAudioBusName(String.Name(String.New(value)))
 	return self
 }

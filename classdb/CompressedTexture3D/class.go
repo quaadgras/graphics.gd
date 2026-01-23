@@ -171,12 +171,12 @@ The [CompressedTexture3D]'s file path to a .ctex3d file.
 
 [CompressedTexture3D]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture3D
 */
-func (self Instance) LoadPath() string {
+func (self Instance) LoadPath() string { //gd:CompressedTexture3D.load_path
 	return string(class(self).GetLoadPath().String())
 }
 
 // SetLoadPath sets the property returned by [GetLoadPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoadPath(value string) Instance {
+func (self Instance) SetLoadPath(value string) Instance { //gd:CompressedTexture3D.load_path
 	class(self).Load(String.New(value))
 	return self
 }

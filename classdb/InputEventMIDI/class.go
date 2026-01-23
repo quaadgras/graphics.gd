@@ -222,12 +222,12 @@ func New() Instance {
 /*
 The MIDI channel of this message, ranging from 0 to 15. MIDI channel 9 is reserved for percussion instruments.
 */
-func (self Instance) Channel() int {
+func (self Instance) Channel() int { //gd:InputEventMIDI.channel
 	return int(int(class(self).GetChannel()))
 }
 
 // SetChannel sets the property returned by [GetChannel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetChannel(value int) Instance {
+func (self Instance) SetChannel(value int) Instance { //gd:InputEventMIDI.channel
 	class(self).SetChannel(int64(value))
 	return self
 }
@@ -239,12 +239,12 @@ For more information, see the [MIDI message status byte list chart].
 
 [MIDI message status byte list chart]: https://www.midi.org/specifications-old/item/table-2-expanded-messages-list-status-bytes
 */
-func (self Instance) Message() Message {
+func (self Instance) Message() Message { //gd:InputEventMIDI.message
 	return Message(class(self).GetMessage())
 }
 
 // SetMessage sets the property returned by [GetMessage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMessage(value Message) Instance {
+func (self Instance) SetMessage(value Message) Instance { //gd:InputEventMIDI.message
 	class(self).SetMessage(value)
 	return self
 }
@@ -256,12 +256,12 @@ On a piano, the middle C is 60, followed by a C-sharp (61), then a D (62), and s
 
 [piano key frequency chart]: https://en.wikipedia.org/wiki/Piano_key_frequencies
 */
-func (self Instance) Pitch() int {
+func (self Instance) Pitch() int { //gd:InputEventMIDI.pitch
 	return int(int(class(self).GetPitch()))
 }
 
 // SetPitch sets the property returned by [GetPitch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPitch(value int) Instance {
+func (self Instance) SetPitch(value int) Instance { //gd:InputEventMIDI.pitch
 	class(self).SetPitch(int64(value))
 	return self
 }
@@ -271,12 +271,12 @@ The velocity of the MIDI message. This value ranges from 0 to 127. For a musical
 
 Note: Some MIDI devices may send a [MidiMessageNoteOn] message with 0 velocity and expect it to be treated the same as a [MidiMessageNoteOff] message. If necessary, this can be handled with a few lines of code:
 */
-func (self Instance) Velocity() int {
+func (self Instance) Velocity() int { //gd:InputEventMIDI.velocity
 	return int(int(class(self).GetVelocity()))
 }
 
 // SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVelocity(value int) Instance {
+func (self Instance) SetVelocity(value int) Instance { //gd:InputEventMIDI.velocity
 	class(self).SetVelocity(int64(value))
 	return self
 }
@@ -288,12 +288,12 @@ To see what each value means, refer to the [General MIDI's instrument list]. Kee
 
 [General MIDI's instrument list]: https://en.wikipedia.org/wiki/General_MIDI#Program_change_events
 */
-func (self Instance) Instrument() int {
+func (self Instance) Instrument() int { //gd:InputEventMIDI.instrument
 	return int(int(class(self).GetInstrument()))
 }
 
 // SetInstrument sets the property returned by [GetInstrument]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInstrument(value int) Instance {
+func (self Instance) SetInstrument(value int) Instance { //gd:InputEventMIDI.instrument
 	class(self).SetInstrument(int64(value))
 	return self
 }
@@ -305,12 +305,12 @@ Note: For many devices, this value is always 0. Other devices such as musical ke
 
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.Velocity
 */
-func (self Instance) Pressure() int {
+func (self Instance) Pressure() int { //gd:InputEventMIDI.pressure
 	return int(int(class(self).GetPressure()))
 }
 
 // SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPressure(value int) Instance {
+func (self Instance) SetPressure(value int) Instance { //gd:InputEventMIDI.pressure
 	class(self).SetPressure(int64(value))
 	return self
 }
@@ -321,12 +321,12 @@ The unique number of the controller, if [Message] is [MidiMessageControlChange],
 [General MIDI specification]: https://en.wikipedia.org/wiki/General_MIDI#Controller_events
 [Message]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.Message
 */
-func (self Instance) ControllerNumber() int {
+func (self Instance) ControllerNumber() int { //gd:InputEventMIDI.controller_number
 	return int(int(class(self).GetControllerNumber()))
 }
 
 // SetControllerNumber sets the property returned by [GetControllerNumber]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetControllerNumber(value int) Instance {
+func (self Instance) SetControllerNumber(value int) Instance { //gd:InputEventMIDI.controller_number
 	class(self).SetControllerNumber(int64(value))
 	return self
 }
@@ -337,12 +337,12 @@ The value applied to the controller. If [Message] is [MidiMessageControlChange],
 [ControllerValue]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.ControllerValue
 [Message]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.Message
 */
-func (self Instance) ControllerValue() int {
+func (self Instance) ControllerValue() int { //gd:InputEventMIDI.controller_value
 	return int(int(class(self).GetControllerValue()))
 }
 
 // SetControllerValue sets the property returned by [GetControllerValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetControllerValue(value int) Instance {
+func (self Instance) SetControllerValue(value int) Instance { //gd:InputEventMIDI.controller_value
 	class(self).SetControllerValue(int64(value))
 	return self
 }

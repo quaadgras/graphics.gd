@@ -175,12 +175,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Data() []Vector3.XYZ {
+func (self Instance) Data() []Vector3.XYZ { //gd:ConcavePolygonShape3D.data
 	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
 }
 
 // SetData sets the property returned by [GetFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetData(value []Vector3.XYZ) Instance {
+func (self Instance) SetData(value []Vector3.XYZ) Instance { //gd:ConcavePolygonShape3D.data
 	class(self).SetFaces(Packed.New(value...))
 	return self
 }
@@ -188,12 +188,12 @@ func (self Instance) SetData(value []Vector3.XYZ) Instance {
 /*
 If set to true, collisions occur on both sides of the concave shape faces. Otherwise they occur only along the face normals.
 */
-func (self Instance) BackfaceCollision() bool {
+func (self Instance) BackfaceCollision() bool { //gd:ConcavePolygonShape3D.backface_collision
 	return bool(class(self).IsBackfaceCollisionEnabled())
 }
 
 // SetBackfaceCollision sets the property returned by [IsBackfaceCollisionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackfaceCollision(value bool) Instance {
+func (self Instance) SetBackfaceCollision(value bool) Instance { //gd:ConcavePolygonShape3D.backface_collision
 	class(self).SetBackfaceCollisionEnabled(value)
 	return self
 }

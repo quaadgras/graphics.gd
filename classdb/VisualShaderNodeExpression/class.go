@@ -166,12 +166,12 @@ func New() Instance {
 /*
 An expression in Godot Shading Language, which will be injected at the start of the graph's matching shader function (vertex, fragment, or light), and thus cannot be used to declare functions, varyings, uniforms, or global constants.
 */
-func (self Instance) Expression() string {
+func (self Instance) Expression() string { //gd:VisualShaderNodeExpression.expression
 	return string(class(self).GetExpression().String())
 }
 
 // SetExpression sets the property returned by [GetExpression]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpression(value string) Instance {
+func (self Instance) SetExpression(value string) Instance { //gd:VisualShaderNodeExpression.expression
 	class(self).SetExpression(String.New(value))
 	return self
 }

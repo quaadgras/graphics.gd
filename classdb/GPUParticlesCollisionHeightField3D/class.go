@@ -209,12 +209,12 @@ The collision heightmap's size in 3D units. To improve heightmap quality, [Size]
 
 [Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Size
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:GPUParticlesCollisionHeightField3D.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:GPUParticlesCollisionHeightField3D.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -224,12 +224,12 @@ Higher resolutions can represent small details more accurately in large scenes, 
 
 [UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.UpdateMode
 */
-func (self Instance) Resolution() Resolution {
+func (self Instance) Resolution() Resolution { //gd:GPUParticlesCollisionHeightField3D.resolution
 	return Resolution(class(self).GetResolution())
 }
 
 // SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResolution(value Resolution) Instance {
+func (self Instance) SetResolution(value Resolution) Instance { //gd:GPUParticlesCollisionHeightField3D.resolution
 	class(self).SetResolution(value)
 	return self
 }
@@ -237,12 +237,12 @@ func (self Instance) SetResolution(value Resolution) Instance {
 /*
 The update policy to use for the generated heightmap.
 */
-func (self Instance) UpdateMode() UpdateMode {
+func (self Instance) UpdateMode() UpdateMode { //gd:GPUParticlesCollisionHeightField3D.update_mode
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
 // SetUpdateMode sets the property returned by [GetUpdateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdateMode(value UpdateMode) Instance {
+func (self Instance) SetUpdateMode(value UpdateMode) Instance { //gd:GPUParticlesCollisionHeightField3D.update_mode
 	class(self).SetUpdateMode(value)
 	return self
 }
@@ -257,12 +257,12 @@ Following the camera has a performance cost, as it will force the heightmap to u
 [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 [Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Resolution
 */
-func (self Instance) FollowCameraEnabled() bool {
+func (self Instance) FollowCameraEnabled() bool { //gd:GPUParticlesCollisionHeightField3D.follow_camera_enabled
 	return bool(class(self).IsFollowCameraEnabled())
 }
 
 // SetFollowCameraEnabled sets the property returned by [IsFollowCameraEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowCameraEnabled(value bool) Instance {
+func (self Instance) SetFollowCameraEnabled(value bool) Instance { //gd:GPUParticlesCollisionHeightField3D.follow_camera_enabled
 	class(self).SetFollowCameraEnabled(value)
 	return self
 }
@@ -280,12 +280,12 @@ To adjust [HeightfieldMask] more easily using a script, use [GetHeightfieldMaskV
 [SetHeightfieldMaskValue]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.SetHeightfieldMaskValue
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) HeightfieldMask() int {
+func (self Instance) HeightfieldMask() int { //gd:GPUParticlesCollisionHeightField3D.heightfield_mask
 	return int(int(class(self).GetHeightfieldMask()))
 }
 
 // SetHeightfieldMask sets the property returned by [GetHeightfieldMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeightfieldMask(value int) Instance {
+func (self Instance) SetHeightfieldMask(value int) Instance { //gd:GPUParticlesCollisionHeightField3D.heightfield_mask
 	class(self).SetHeightfieldMask(int64(value))
 	return self
 }

@@ -579,12 +579,12 @@ func New() Instance {
 /*
 If true, filtering is enabled.
 */
-func (self Instance) FilterEnabled() bool {
+func (self Instance) FilterEnabled() bool { //gd:AnimationNode.filter_enabled
 	return bool(class(self).IsFilterEnabled())
 }
 
 // SetFilterEnabled sets the property returned by [IsFilterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterEnabled(value bool) Instance {
+func (self Instance) SetFilterEnabled(value bool) Instance { //gd:AnimationNode.filter_enabled
 	class(self).SetFilterEnabled(value)
 	return self
 }

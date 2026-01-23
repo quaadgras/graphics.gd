@@ -192,12 +192,12 @@ The root animation node of this [AnimationTree]. See [AnimationRootNode].
 [AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
 [AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
 */
-func (self Instance) TreeRoot() AnimationRootNode.Instance {
+func (self Instance) TreeRoot() AnimationRootNode.Instance { //gd:AnimationTree.tree_root
 	return AnimationRootNode.Instance(class(self).GetTreeRoot())
 }
 
 // SetTreeRoot sets the property returned by [GetTreeRoot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) Instance {
+func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) Instance { //gd:AnimationTree.tree_root
 	class(self).SetTreeRoot(value)
 	return self
 }
@@ -209,12 +209,12 @@ The path to the [Node] used to evaluate the [AnimationNode] [Expression] if one 
 [Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
-func (self Instance) AdvanceExpressionBaseNode() string {
+func (self Instance) AdvanceExpressionBaseNode() string { //gd:AnimationTree.advance_expression_base_node
 	return string(class(self).GetAdvanceExpressionBaseNode().String())
 }
 
 // SetAdvanceExpressionBaseNode sets the property returned by [GetAdvanceExpressionBaseNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdvanceExpressionBaseNode(value string) Instance {
+func (self Instance) SetAdvanceExpressionBaseNode(value string) Instance { //gd:AnimationTree.advance_expression_base_node
 	class(self).SetAdvanceExpressionBaseNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -224,12 +224,12 @@ The path to the [AnimationPlayer] used for animating.
 
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 */
-func (self Instance) AnimPlayer() string {
+func (self Instance) AnimPlayer() string { //gd:AnimationTree.anim_player
 	return string(class(self).GetAnimationPlayer().String())
 }
 
 // SetAnimPlayer sets the property returned by [GetAnimationPlayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimPlayer(value string) Instance {
+func (self Instance) SetAnimPlayer(value string) Instance { //gd:AnimationTree.anim_player
 	class(self).SetAnimationPlayer(Path.ToNode(String.New(value)))
 	return self
 }

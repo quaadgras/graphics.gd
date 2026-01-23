@@ -160,12 +160,12 @@ func New() Instance {
 /*
 If true, the result of this emitter is projected to 2D space. By default it is false and meant for use in 3D space.
 */
-func (self Instance) Mode2d() bool {
+func (self Instance) Mode2d() bool { //gd:VisualShaderNodeParticleEmitter.mode_2d
 	return bool(class(self).IsMode2d())
 }
 
 // SetMode2d sets the property returned by [IsMode2d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode2d(value bool) Instance {
+func (self Instance) SetMode2d(value bool) Instance { //gd:VisualShaderNodeParticleEmitter.mode_2d
 	class(self).SetMode2d(value)
 	return self
 }

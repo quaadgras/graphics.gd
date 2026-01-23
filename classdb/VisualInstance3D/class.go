@@ -280,12 +280,12 @@ Note: [VoxelGI], SDFGI and [LightmapGI] will always take all layers into account
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) Layers() int {
+func (self Instance) Layers() int { //gd:VisualInstance3D.layers
 	return int(int(class(self).GetLayerMask()))
 }
 
 // SetLayers sets the property returned by [GetLayerMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayers(value int) Instance {
+func (self Instance) SetLayers(value int) Instance { //gd:VisualInstance3D.layers
 	class(self).SetLayerMask(int64(value))
 	return self
 }
@@ -295,12 +295,12 @@ The amount by which the depth of this [VisualInstance3D] will be adjusted when s
 
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
-func (self Instance) SortingOffset() Float.X {
+func (self Instance) SortingOffset() Float.X { //gd:VisualInstance3D.sorting_offset
 	return Float.X(Float.X(class(self).GetSortingOffset()))
 }
 
 // SetSortingOffset sets the property returned by [GetSortingOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSortingOffset(value Float.X) Instance {
+func (self Instance) SetSortingOffset(value Float.X) Instance { //gd:VisualInstance3D.sorting_offset
 	class(self).SetSortingOffset(float64(value))
 	return self
 }
@@ -314,12 +314,12 @@ The [AABB.PositionSize] center based sorting is generally more accurate for 3D m
 [CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
 [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
 */
-func (self Instance) SortingUseAabbCenter() bool {
+func (self Instance) SortingUseAabbCenter() bool { //gd:VisualInstance3D.sorting_use_aabb_center
 	return bool(class(self).IsSortingUseAabbCenter())
 }
 
 // SetSortingUseAabbCenter sets the property returned by [IsSortingUseAabbCenter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSortingUseAabbCenter(value bool) Instance {
+func (self Instance) SetSortingUseAabbCenter(value bool) Instance { //gd:VisualInstance3D.sorting_use_aabb_center
 	class(self).SetSortingUseAabbCenter(value)
 	return self
 }

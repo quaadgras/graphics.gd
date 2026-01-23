@@ -177,12 +177,12 @@ func New() Instance {
 /*
 The distance along the path, in pixels. Changing this value sets this node's position to a point within the path.
 */
-func (self Instance) Progress() Float.X {
+func (self Instance) Progress() Float.X { //gd:PathFollow2D.progress
 	return Float.X(Float.X(class(self).GetProgress()))
 }
 
 // SetProgress sets the property returned by [GetProgress]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProgress(value Float.X) Instance {
+func (self Instance) SetProgress(value Float.X) Instance { //gd:PathFollow2D.progress
 	class(self).SetProgress(float64(value))
 	return self
 }
@@ -196,12 +196,12 @@ It can be set or get only if the [PathFollow2D] is the child of a [Path2D] which
 [Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
 [PathFollow2D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow2D
 */
-func (self Instance) ProgressRatio() Float.X {
+func (self Instance) ProgressRatio() Float.X { //gd:PathFollow2D.progress_ratio
 	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
 // SetProgressRatio sets the property returned by [GetProgressRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProgressRatio(value Float.X) Instance {
+func (self Instance) SetProgressRatio(value Float.X) Instance { //gd:PathFollow2D.progress_ratio
 	class(self).SetProgressRatio(float64(value))
 	return self
 }
@@ -209,12 +209,12 @@ func (self Instance) SetProgressRatio(value Float.X) Instance {
 /*
 The node's offset along the curve.
 */
-func (self Instance) HOffset() Float.X {
+func (self Instance) HOffset() Float.X { //gd:PathFollow2D.h_offset
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
 // SetHOffset sets the property returned by [GetHOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHOffset(value Float.X) Instance {
+func (self Instance) SetHOffset(value Float.X) Instance { //gd:PathFollow2D.h_offset
 	class(self).SetHOffset(float64(value))
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetHOffset(value Float.X) Instance {
 /*
 The node's offset perpendicular to the curve.
 */
-func (self Instance) VOffset() Float.X {
+func (self Instance) VOffset() Float.X { //gd:PathFollow2D.v_offset
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
 // SetVOffset sets the property returned by [GetVOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVOffset(value Float.X) Instance {
+func (self Instance) SetVOffset(value Float.X) Instance { //gd:PathFollow2D.v_offset
 	class(self).SetVOffset(float64(value))
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetVOffset(value Float.X) Instance {
 /*
 If true, this node rotates to follow the path, with the +X direction facing forward on the path.
 */
-func (self Instance) Rotates() bool {
+func (self Instance) Rotates() bool { //gd:PathFollow2D.rotates
 	return bool(class(self).IsRotating())
 }
 
 // SetRotates sets the property returned by [IsRotating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotates(value bool) Instance {
+func (self Instance) SetRotates(value bool) Instance { //gd:PathFollow2D.rotates
 	class(self).SetRotates(value)
 	return self
 }
@@ -255,12 +255,12 @@ There are two answers to this problem: either increase the number of cached poin
 [Curve2D]: https://pkg.go.dev/graphics.gd/classdb/Curve2D
 [Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
 */
-func (self Instance) CubicInterp() bool {
+func (self Instance) CubicInterp() bool { //gd:PathFollow2D.cubic_interp
 	return bool(class(self).GetCubicInterpolation())
 }
 
 // SetCubicInterp sets the property returned by [GetCubicInterpolation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCubicInterp(value bool) Instance {
+func (self Instance) SetCubicInterp(value bool) Instance { //gd:PathFollow2D.cubic_interp
 	class(self).SetCubicInterpolation(value)
 	return self
 }
@@ -268,12 +268,12 @@ func (self Instance) SetCubicInterp(value bool) Instance {
 /*
 If true, any offset outside the path's length will wrap around, instead of stopping at the ends. Use it for cyclic paths.
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:PathFollow2D.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:PathFollow2D.loop
 	class(self).SetLoop(value)
 	return self
 }

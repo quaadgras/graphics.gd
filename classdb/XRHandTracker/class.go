@@ -265,12 +265,12 @@ func New() Instance {
 /*
 If true, the hand tracking data is valid.
 */
-func (self Instance) HasTrackingData() bool {
+func (self Instance) HasTrackingData() bool { //gd:XRHandTracker.has_tracking_data
 	return bool(class(self).GetHasTrackingData())
 }
 
 // SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHasTrackingData(value bool) Instance {
+func (self Instance) SetHasTrackingData(value bool) Instance { //gd:XRHandTracker.has_tracking_data
 	class(self).SetHasTrackingData(value)
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetHasTrackingData(value bool) Instance {
 /*
 The source of the hand tracking data.
 */
-func (self Instance) HandTrackingSource() HandTrackingSource {
+func (self Instance) HandTrackingSource() HandTrackingSource { //gd:XRHandTracker.hand_tracking_source
 	return HandTrackingSource(class(self).GetHandTrackingSource())
 }
 
 // SetHandTrackingSource sets the property returned by [GetHandTrackingSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandTrackingSource(value HandTrackingSource) Instance {
+func (self Instance) SetHandTrackingSource(value HandTrackingSource) Instance { //gd:XRHandTracker.hand_tracking_source
 	class(self).SetHandTrackingSource(value)
 	return self
 }

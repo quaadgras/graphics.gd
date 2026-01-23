@@ -179,12 +179,12 @@ func New() Instance {
 /*
 Determines the shape of the ribbon.
 */
-func (self Instance) Shape() Shape {
+func (self Instance) Shape() Shape { //gd:RibbonTrailMesh.shape
 	return Shape(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape) Instance {
+func (self Instance) SetShape(value Shape) Instance { //gd:RibbonTrailMesh.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -194,12 +194,12 @@ The baseline size of the ribbon. The size of a particular section segment is obt
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Curve
 */
-func (self Instance) Size() Float.X {
+func (self Instance) Size() Float.X { //gd:RibbonTrailMesh.size
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Float.X) Instance {
+func (self Instance) SetSize(value Float.X) Instance { //gd:RibbonTrailMesh.size
 	class(self).SetSize(float64(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetSize(value Float.X) Instance {
 /*
 The total number of sections on the ribbon.
 */
-func (self Instance) Sections() int {
+func (self Instance) Sections() int { //gd:RibbonTrailMesh.sections
 	return int(int(class(self).GetSections()))
 }
 
 // SetSections sets the property returned by [GetSections]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSections(value int) Instance {
+func (self Instance) SetSections(value int) Instance { //gd:RibbonTrailMesh.sections
 	class(self).SetSections(int64(value))
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetSections(value int) Instance {
 /*
 The length of a section of the ribbon.
 */
-func (self Instance) SectionLength() Float.X {
+func (self Instance) SectionLength() Float.X { //gd:RibbonTrailMesh.section_length
 	return Float.X(Float.X(class(self).GetSectionLength()))
 }
 
 // SetSectionLength sets the property returned by [GetSectionLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSectionLength(value Float.X) Instance {
+func (self Instance) SetSectionLength(value Float.X) Instance { //gd:RibbonTrailMesh.section_length
 	class(self).SetSectionLength(float64(value))
 	return self
 }
@@ -235,12 +235,12 @@ The number of segments in a section. The [Curve] is sampled on each segment to d
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Curve
 */
-func (self Instance) SectionSegments() int {
+func (self Instance) SectionSegments() int { //gd:RibbonTrailMesh.section_segments
 	return int(int(class(self).GetSectionSegments()))
 }
 
 // SetSectionSegments sets the property returned by [GetSectionSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSectionSegments(value int) Instance {
+func (self Instance) SetSectionSegments(value int) Instance { //gd:RibbonTrailMesh.section_segments
 	class(self).SetSectionSegments(int64(value))
 	return self
 }
@@ -251,12 +251,12 @@ Determines the size of the ribbon along its length. The size of a particular sec
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 [Size]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Size
 */
-func (self Instance) Curve() Curve.Instance {
+func (self Instance) Curve() Curve.Instance { //gd:RibbonTrailMesh.curve
 	return Curve.Instance(class(self).GetCurve())
 }
 
 // SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurve(value Curve.Instance) Instance {
+func (self Instance) SetCurve(value Curve.Instance) Instance { //gd:RibbonTrailMesh.curve
 	class(self).SetCurve(value)
 	return self
 }

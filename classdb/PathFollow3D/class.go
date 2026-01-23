@@ -190,12 +190,12 @@ func New() Instance {
 /*
 The distance from the first vertex, measured in 3D units along the path. Changing this value sets this node's position to a point within the path.
 */
-func (self Instance) Progress() Float.X {
+func (self Instance) Progress() Float.X { //gd:PathFollow3D.progress
 	return Float.X(Float.X(class(self).GetProgress()))
 }
 
 // SetProgress sets the property returned by [GetProgress]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProgress(value Float.X) Instance {
+func (self Instance) SetProgress(value Float.X) Instance { //gd:PathFollow3D.progress
 	class(self).SetProgress(float64(value))
 	return self
 }
@@ -209,12 +209,12 @@ It can be set or get only if the [PathFollow3D] is the child of a [Path3D] which
 [Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
 [PathFollow3D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow3D
 */
-func (self Instance) ProgressRatio() Float.X {
+func (self Instance) ProgressRatio() Float.X { //gd:PathFollow3D.progress_ratio
 	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
 // SetProgressRatio sets the property returned by [GetProgressRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProgressRatio(value Float.X) Instance {
+func (self Instance) SetProgressRatio(value Float.X) Instance { //gd:PathFollow3D.progress_ratio
 	class(self).SetProgressRatio(float64(value))
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetProgressRatio(value Float.X) Instance {
 /*
 The node's offset along the curve.
 */
-func (self Instance) HOffset() Float.X {
+func (self Instance) HOffset() Float.X { //gd:PathFollow3D.h_offset
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
 // SetHOffset sets the property returned by [GetHOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHOffset(value Float.X) Instance {
+func (self Instance) SetHOffset(value Float.X) Instance { //gd:PathFollow3D.h_offset
 	class(self).SetHOffset(float64(value))
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetHOffset(value Float.X) Instance {
 /*
 The node's offset perpendicular to the curve.
 */
-func (self Instance) VOffset() Float.X {
+func (self Instance) VOffset() Float.X { //gd:PathFollow3D.v_offset
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
 // SetVOffset sets the property returned by [GetVOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVOffset(value Float.X) Instance {
+func (self Instance) SetVOffset(value Float.X) Instance { //gd:PathFollow3D.v_offset
 	class(self).SetVOffset(float64(value))
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetVOffset(value Float.X) Instance {
 /*
 Allows or forbids rotation on one or more axes, depending on the [RotationMode] constants being used.
 */
-func (self Instance) RotationMode() RotationMode {
+func (self Instance) RotationMode() RotationMode { //gd:PathFollow3D.rotation_mode
 	return RotationMode(class(self).GetRotationMode())
 }
 
 // SetRotationMode sets the property returned by [GetRotationMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationMode(value RotationMode) Instance {
+func (self Instance) SetRotationMode(value RotationMode) Instance { //gd:PathFollow3D.rotation_mode
 	class(self).SetRotationMode(value)
 	return self
 }
@@ -261,12 +261,12 @@ func (self Instance) SetRotationMode(value RotationMode) Instance {
 /*
 If true, the node moves on the travel path with orienting the +Z axis as forward. See also [Vector3.Forward] and [Vector3.ModelFront].
 */
-func (self Instance) UseModelFront() bool {
+func (self Instance) UseModelFront() bool { //gd:PathFollow3D.use_model_front
 	return bool(class(self).IsUsingModelFront())
 }
 
 // SetUseModelFront sets the property returned by [IsUsingModelFront]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseModelFront(value bool) Instance {
+func (self Instance) SetUseModelFront(value bool) Instance { //gd:PathFollow3D.use_model_front
 	class(self).SetUseModelFront(value)
 	return self
 }
@@ -281,12 +281,12 @@ There are two answers to this problem: either increase the number of cached poin
 [Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
 [Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
 */
-func (self Instance) CubicInterp() bool {
+func (self Instance) CubicInterp() bool { //gd:PathFollow3D.cubic_interp
 	return bool(class(self).GetCubicInterpolation())
 }
 
 // SetCubicInterp sets the property returned by [GetCubicInterpolation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCubicInterp(value bool) Instance {
+func (self Instance) SetCubicInterp(value bool) Instance { //gd:PathFollow3D.cubic_interp
 	class(self).SetCubicInterpolation(value)
 	return self
 }
@@ -294,12 +294,12 @@ func (self Instance) SetCubicInterp(value bool) Instance {
 /*
 If true, any offset outside the path's length will wrap around, instead of stopping at the ends. Use it for cyclic paths.
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:PathFollow3D.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:PathFollow3D.loop
 	class(self).SetLoop(value)
 	return self
 }
@@ -309,12 +309,12 @@ If true, the tilt property of [Curve3D] takes effect.
 
 [Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
 */
-func (self Instance) TiltEnabled() bool {
+func (self Instance) TiltEnabled() bool { //gd:PathFollow3D.tilt_enabled
 	return bool(class(self).IsTiltEnabled())
 }
 
 // SetTiltEnabled sets the property returned by [IsTiltEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTiltEnabled(value bool) Instance {
+func (self Instance) SetTiltEnabled(value bool) Instance { //gd:PathFollow3D.tilt_enabled
 	class(self).SetTiltEnabled(value)
 	return self
 }

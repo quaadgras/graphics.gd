@@ -214,12 +214,12 @@ func New() Instance {
 /*
 If true, Light2D will emit light.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:Light2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:Light2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -227,12 +227,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 If true, Light2D will only appear when editing the scene.
 */
-func (self Instance) EditorOnly() bool {
+func (self Instance) EditorOnly() bool { //gd:Light2D.editor_only
 	return bool(class(self).IsEditorOnly())
 }
 
 // SetEditorOnly sets the property returned by [IsEditorOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorOnly(value bool) Instance {
+func (self Instance) SetEditorOnly(value bool) Instance { //gd:Light2D.editor_only
 	class(self).SetEditorOnly(value)
 	return self
 }
@@ -242,12 +242,12 @@ The Light2D's [Color.RGBA].
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:Light2D.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:Light2D.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -255,12 +255,12 @@ func (self Instance) SetColor(value Color.RGBA) Instance {
 /*
 The Light2D's energy value. The larger the value, the stronger the light.
 */
-func (self Instance) Energy() Float.X {
+func (self Instance) Energy() Float.X { //gd:Light2D.energy
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
 // SetEnergy sets the property returned by [GetEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnergy(value Float.X) Instance {
+func (self Instance) SetEnergy(value Float.X) Instance { //gd:Light2D.energy
 	class(self).SetEnergy(float64(value))
 	return self
 }
@@ -268,12 +268,12 @@ func (self Instance) SetEnergy(value Float.X) Instance {
 /*
 The Light2D's blend mode.
 */
-func (self Instance) BlendMode() BlendMode {
+func (self Instance) BlendMode() BlendMode { //gd:Light2D.blend_mode
 	return BlendMode(class(self).GetBlendMode())
 }
 
 // SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendMode(value BlendMode) Instance {
+func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:Light2D.blend_mode
 	class(self).SetBlendMode(value)
 	return self
 }
@@ -281,12 +281,12 @@ func (self Instance) SetBlendMode(value BlendMode) Instance {
 /*
 Minimum z value of objects that are affected by the Light2D.
 */
-func (self Instance) RangeZMin() int {
+func (self Instance) RangeZMin() int { //gd:Light2D.range_z_min
 	return int(int(class(self).GetZRangeMin()))
 }
 
 // SetRangeZMin sets the property returned by [GetZRangeMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeZMin(value int) Instance {
+func (self Instance) SetRangeZMin(value int) Instance { //gd:Light2D.range_z_min
 	class(self).SetZRangeMin(int64(value))
 	return self
 }
@@ -294,12 +294,12 @@ func (self Instance) SetRangeZMin(value int) Instance {
 /*
 Maximum z value of objects that are affected by the Light2D.
 */
-func (self Instance) RangeZMax() int {
+func (self Instance) RangeZMax() int { //gd:Light2D.range_z_max
 	return int(int(class(self).GetZRangeMax()))
 }
 
 // SetRangeZMax sets the property returned by [GetZRangeMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeZMax(value int) Instance {
+func (self Instance) SetRangeZMax(value int) Instance { //gd:Light2D.range_z_max
 	class(self).SetZRangeMax(int64(value))
 	return self
 }
@@ -307,12 +307,12 @@ func (self Instance) SetRangeZMax(value int) Instance {
 /*
 Minimum layer value of objects that are affected by the Light2D.
 */
-func (self Instance) RangeLayerMin() int {
+func (self Instance) RangeLayerMin() int { //gd:Light2D.range_layer_min
 	return int(int(class(self).GetLayerRangeMin()))
 }
 
 // SetRangeLayerMin sets the property returned by [GetLayerRangeMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeLayerMin(value int) Instance {
+func (self Instance) SetRangeLayerMin(value int) Instance { //gd:Light2D.range_layer_min
 	class(self).SetLayerRangeMin(int64(value))
 	return self
 }
@@ -320,12 +320,12 @@ func (self Instance) SetRangeLayerMin(value int) Instance {
 /*
 Maximum layer value of objects that are affected by the Light2D.
 */
-func (self Instance) RangeLayerMax() int {
+func (self Instance) RangeLayerMax() int { //gd:Light2D.range_layer_max
 	return int(int(class(self).GetLayerRangeMax()))
 }
 
 // SetRangeLayerMax sets the property returned by [GetLayerRangeMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeLayerMax(value int) Instance {
+func (self Instance) SetRangeLayerMax(value int) Instance { //gd:Light2D.range_layer_max
 	class(self).SetLayerRangeMax(int64(value))
 	return self
 }
@@ -340,12 +340,12 @@ Note: [RangeItemCullMask] is ignored by [DirectionalLight2D], which will always 
 [RangeItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeItemCullMask
 [ShadowItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowItemCullMask
 */
-func (self Instance) RangeItemCullMask() int {
+func (self Instance) RangeItemCullMask() int { //gd:Light2D.range_item_cull_mask
 	return int(int(class(self).GetItemCullMask()))
 }
 
 // SetRangeItemCullMask sets the property returned by [GetItemCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeItemCullMask(value int) Instance {
+func (self Instance) SetRangeItemCullMask(value int) Instance { //gd:Light2D.range_item_cull_mask
 	class(self).SetItemCullMask(int64(value))
 	return self
 }
@@ -353,12 +353,12 @@ func (self Instance) SetRangeItemCullMask(value int) Instance {
 /*
 If true, the Light2D will cast shadows.
 */
-func (self Instance) ShadowEnabled() bool {
+func (self Instance) ShadowEnabled() bool { //gd:Light2D.shadow_enabled
 	return bool(class(self).IsShadowEnabled())
 }
 
 // SetShadowEnabled sets the property returned by [IsShadowEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowEnabled(value bool) Instance {
+func (self Instance) SetShadowEnabled(value bool) Instance { //gd:Light2D.shadow_enabled
 	class(self).SetShadowEnabled(value)
 	return self
 }
@@ -368,12 +368,12 @@ func (self Instance) SetShadowEnabled(value bool) Instance {
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) ShadowColor() Color.RGBA {
+func (self Instance) ShadowColor() Color.RGBA { //gd:Light2D.shadow_color
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
 // SetShadowColor sets the property returned by [GetShadowColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowColor(value Color.RGBA) Instance {
+func (self Instance) SetShadowColor(value Color.RGBA) Instance { //gd:Light2D.shadow_color
 	class(self).SetShadowColor(Color.RGBA(value))
 	return self
 }
@@ -381,12 +381,12 @@ func (self Instance) SetShadowColor(value Color.RGBA) Instance {
 /*
 Shadow filter type.
 */
-func (self Instance) ShadowFilter() ShadowFilter {
+func (self Instance) ShadowFilter() ShadowFilter { //gd:Light2D.shadow_filter
 	return ShadowFilter(class(self).GetShadowFilter())
 }
 
 // SetShadowFilter sets the property returned by [GetShadowFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowFilter(value ShadowFilter) Instance {
+func (self Instance) SetShadowFilter(value ShadowFilter) Instance { //gd:Light2D.shadow_filter
 	class(self).SetShadowFilter(value)
 	return self
 }
@@ -397,12 +397,12 @@ Smoothing value for shadows. Higher values will result in softer shadows, at the
 [ShadowFilter]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowFilter
 [ShadowFilterSmooth]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.ShadowFilterSmooth
 */
-func (self Instance) ShadowFilterSmooth() Float.X {
+func (self Instance) ShadowFilterSmooth() Float.X { //gd:Light2D.shadow_filter_smooth
 	return Float.X(Float.X(class(self).GetShadowSmooth()))
 }
 
 // SetShadowFilterSmooth sets the property returned by [GetShadowSmooth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowFilterSmooth(value Float.X) Instance {
+func (self Instance) SetShadowFilterSmooth(value Float.X) Instance { //gd:Light2D.shadow_filter_smooth
 	class(self).SetShadowSmooth(float64(value))
 	return self
 }
@@ -414,12 +414,12 @@ The shadow mask. Used with [LightOccluder2D] to cast shadows. Only occluders wit
 [LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 [RangeItemCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeItemCullMask
 */
-func (self Instance) ShadowItemCullMask() int {
+func (self Instance) ShadowItemCullMask() int { //gd:Light2D.shadow_item_cull_mask
 	return int(int(class(self).GetItemShadowCullMask()))
 }
 
 // SetShadowItemCullMask sets the property returned by [GetItemShadowCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowItemCullMask(value int) Instance {
+func (self Instance) SetShadowItemCullMask(value int) Instance { //gd:Light2D.shadow_item_cull_mask
 	class(self).SetItemShadowCullMask(int64(value))
 	return self
 }

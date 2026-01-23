@@ -175,12 +175,12 @@ func New() Instance {
 /*
 Range hint of this node. Use it to customize valid parameter range.
 */
-func (self Instance) Hint() Hint {
+func (self Instance) Hint() Hint { //gd:VisualShaderNodeIntParameter.hint
 	return Hint(class(self).GetHint())
 }
 
 // SetHint sets the property returned by [GetHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHint(value Hint) Instance {
+func (self Instance) SetHint(value Hint) Instance { //gd:VisualShaderNodeIntParameter.hint
 	class(self).SetHint(value)
 	return self
 }
@@ -190,12 +190,12 @@ The minimum value this parameter can take. [Hint] must be either [HintRange] or 
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
 */
-func (self Instance) Min() int {
+func (self Instance) Min() int { //gd:VisualShaderNodeIntParameter.min
 	return int(int(class(self).GetMin()))
 }
 
 // SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMin(value int) Instance {
+func (self Instance) SetMin(value int) Instance { //gd:VisualShaderNodeIntParameter.min
 	class(self).SetMin(int64(value))
 	return self
 }
@@ -205,12 +205,12 @@ The maximum value this parameter can take. [Hint] must be either [HintRange] or 
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
 */
-func (self Instance) Max() int {
+func (self Instance) Max() int { //gd:VisualShaderNodeIntParameter.max
 	return int(int(class(self).GetMax()))
 }
 
 // SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMax(value int) Instance {
+func (self Instance) SetMax(value int) Instance { //gd:VisualShaderNodeIntParameter.max
 	class(self).SetMax(int64(value))
 	return self
 }
@@ -220,12 +220,12 @@ The step between parameter's values. Forces the parameter to be a multiple of th
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
 */
-func (self Instance) Step() int {
+func (self Instance) Step() int { //gd:VisualShaderNodeIntParameter.step
 	return int(int(class(self).GetStep()))
 }
 
 // SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStep(value int) Instance {
+func (self Instance) SetStep(value int) Instance { //gd:VisualShaderNodeIntParameter.step
 	class(self).SetStep(int64(value))
 	return self
 }
@@ -235,12 +235,12 @@ The names used for the enum select in the editor. [Hint] must be [HintEnum] for 
 
 [Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
 */
-func (self Instance) EnumNames() []string {
+func (self Instance) EnumNames() []string { //gd:VisualShaderNodeIntParameter.enum_names
 	return []string(class(self).GetEnumNames().Strings())
 }
 
 // SetEnumNames sets the property returned by [GetEnumNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnumNames(value []string) Instance {
+func (self Instance) SetEnumNames(value []string) Instance { //gd:VisualShaderNodeIntParameter.enum_names
 	class(self).SetEnumNames(Packed.MakeStrings(value...))
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetEnumNames(value []string) Instance {
 /*
 If true, the node will have a custom default value.
 */
-func (self Instance) DefaultValueEnabled() bool {
+func (self Instance) DefaultValueEnabled() bool { //gd:VisualShaderNodeIntParameter.default_value_enabled
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
 // SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValueEnabled(value bool) Instance {
+func (self Instance) SetDefaultValueEnabled(value bool) Instance { //gd:VisualShaderNodeIntParameter.default_value_enabled
 	class(self).SetDefaultValueEnabled(value)
 	return self
 }
@@ -263,12 +263,12 @@ Default value of this parameter, which will be used if not set externally. [Defa
 
 [DefaultValueEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.DefaultValueEnabled
 */
-func (self Instance) DefaultValue() int {
+func (self Instance) DefaultValue() int { //gd:VisualShaderNodeIntParameter.default_value
 	return int(int(class(self).GetDefaultValue()))
 }
 
 // SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValue(value int) Instance {
+func (self Instance) SetDefaultValue(value int) Instance { //gd:VisualShaderNodeIntParameter.default_value
 	class(self).SetDefaultValue(int64(value))
 	return self
 }

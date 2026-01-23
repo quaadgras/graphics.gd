@@ -200,12 +200,12 @@ Color of the sky at the top. Blends with [SkyHorizonColor].
 
 [SkyHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyHorizonColor
 */
-func (self Instance) SkyTopColor() Color.RGBA {
+func (self Instance) SkyTopColor() Color.RGBA { //gd:ProceduralSkyMaterial.sky_top_color
 	return Color.RGBA(class(self).GetSkyTopColor())
 }
 
 // SetSkyTopColor sets the property returned by [GetSkyTopColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyTopColor(value Color.RGBA) Instance {
+func (self Instance) SetSkyTopColor(value Color.RGBA) Instance { //gd:ProceduralSkyMaterial.sky_top_color
 	class(self).SetSkyTopColor(Color.RGBA(value))
 	return self
 }
@@ -215,12 +215,12 @@ Color of the sky at the horizon. Blends with [SkyTopColor].
 
 [SkyTopColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyTopColor
 */
-func (self Instance) SkyHorizonColor() Color.RGBA {
+func (self Instance) SkyHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.sky_horizon_color
 	return Color.RGBA(class(self).GetSkyHorizonColor())
 }
 
 // SetSkyHorizonColor sets the property returned by [GetSkyHorizonColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyHorizonColor(value Color.RGBA) Instance {
+func (self Instance) SetSkyHorizonColor(value Color.RGBA) Instance { //gd:ProceduralSkyMaterial.sky_horizon_color
 	class(self).SetSkyHorizonColor(Color.RGBA(value))
 	return self
 }
@@ -231,12 +231,12 @@ How quickly the [SkyHorizonColor] fades into the [SkyTopColor].
 [SkyHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyHorizonColor
 [SkyTopColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyTopColor
 */
-func (self Instance) SkyCurve() Float.X {
+func (self Instance) SkyCurve() Float.X { //gd:ProceduralSkyMaterial.sky_curve
 	return Float.X(Float.X(class(self).GetSkyCurve()))
 }
 
 // SetSkyCurve sets the property returned by [GetSkyCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyCurve(value Float.X) Instance {
+func (self Instance) SetSkyCurve(value Float.X) Instance { //gd:ProceduralSkyMaterial.sky_curve
 	class(self).SetSkyCurve(float64(value))
 	return self
 }
@@ -244,12 +244,12 @@ func (self Instance) SetSkyCurve(value Float.X) Instance {
 /*
 Multiplier for sky color. A higher value will make the sky brighter.
 */
-func (self Instance) SkyEnergyMultiplier() Float.X {
+func (self Instance) SkyEnergyMultiplier() Float.X { //gd:ProceduralSkyMaterial.sky_energy_multiplier
 	return Float.X(Float.X(class(self).GetSkyEnergyMultiplier()))
 }
 
 // SetSkyEnergyMultiplier sets the property returned by [GetSkyEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetSkyEnergyMultiplier(value Float.X) Instance { //gd:ProceduralSkyMaterial.sky_energy_multiplier
 	class(self).SetSkyEnergyMultiplier(float64(value))
 	return self
 }
@@ -261,12 +261,12 @@ The sky cover texture to use. This texture must use an equirectangular projectio
 [SkyCoverModulate]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyCoverModulate
 [SkyEnergyMultiplier]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyEnergyMultiplier
 */
-func (self Instance) SkyCover() Texture2D.Instance {
+func (self Instance) SkyCover() Texture2D.Instance { //gd:ProceduralSkyMaterial.sky_cover
 	return Texture2D.Instance(class(self).GetSkyCover())
 }
 
 // SetSkyCover sets the property returned by [GetSkyCover]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyCover(value Texture2D.Instance) Instance {
+func (self Instance) SetSkyCover(value Texture2D.Instance) Instance { //gd:ProceduralSkyMaterial.sky_cover
 	class(self).SetSkyCover(value)
 	return self
 }
@@ -276,12 +276,12 @@ The tint to apply to the [SkyCover] texture. This can be used to change the sky 
 
 [SkyCover]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SkyCover
 */
-func (self Instance) SkyCoverModulate() Color.RGBA {
+func (self Instance) SkyCoverModulate() Color.RGBA { //gd:ProceduralSkyMaterial.sky_cover_modulate
 	return Color.RGBA(class(self).GetSkyCoverModulate())
 }
 
 // SetSkyCoverModulate sets the property returned by [GetSkyCoverModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyCoverModulate(value Color.RGBA) Instance {
+func (self Instance) SetSkyCoverModulate(value Color.RGBA) Instance { //gd:ProceduralSkyMaterial.sky_cover_modulate
 	class(self).SetSkyCoverModulate(Color.RGBA(value))
 	return self
 }
@@ -291,12 +291,12 @@ Color of the ground at the bottom. Blends with [GroundHorizonColor].
 
 [GroundHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundHorizonColor
 */
-func (self Instance) GroundBottomColor() Color.RGBA {
+func (self Instance) GroundBottomColor() Color.RGBA { //gd:ProceduralSkyMaterial.ground_bottom_color
 	return Color.RGBA(class(self).GetGroundBottomColor())
 }
 
 // SetGroundBottomColor sets the property returned by [GetGroundBottomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroundBottomColor(value Color.RGBA) Instance {
+func (self Instance) SetGroundBottomColor(value Color.RGBA) Instance { //gd:ProceduralSkyMaterial.ground_bottom_color
 	class(self).SetGroundBottomColor(Color.RGBA(value))
 	return self
 }
@@ -306,12 +306,12 @@ Color of the ground at the horizon. Blends with [GroundBottomColor].
 
 [GroundBottomColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundBottomColor
 */
-func (self Instance) GroundHorizonColor() Color.RGBA {
+func (self Instance) GroundHorizonColor() Color.RGBA { //gd:ProceduralSkyMaterial.ground_horizon_color
 	return Color.RGBA(class(self).GetGroundHorizonColor())
 }
 
 // SetGroundHorizonColor sets the property returned by [GetGroundHorizonColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroundHorizonColor(value Color.RGBA) Instance {
+func (self Instance) SetGroundHorizonColor(value Color.RGBA) Instance { //gd:ProceduralSkyMaterial.ground_horizon_color
 	class(self).SetGroundHorizonColor(Color.RGBA(value))
 	return self
 }
@@ -322,12 +322,12 @@ How quickly the [GroundHorizonColor] fades into the [GroundBottomColor].
 [GroundBottomColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundBottomColor
 [GroundHorizonColor]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.GroundHorizonColor
 */
-func (self Instance) GroundCurve() Float.X {
+func (self Instance) GroundCurve() Float.X { //gd:ProceduralSkyMaterial.ground_curve
 	return Float.X(Float.X(class(self).GetGroundCurve()))
 }
 
 // SetGroundCurve sets the property returned by [GetGroundCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroundCurve(value Float.X) Instance {
+func (self Instance) SetGroundCurve(value Float.X) Instance { //gd:ProceduralSkyMaterial.ground_curve
 	class(self).SetGroundCurve(float64(value))
 	return self
 }
@@ -335,12 +335,12 @@ func (self Instance) SetGroundCurve(value Float.X) Instance {
 /*
 Multiplier for ground color. A higher value will make the ground brighter.
 */
-func (self Instance) GroundEnergyMultiplier() Float.X {
+func (self Instance) GroundEnergyMultiplier() Float.X { //gd:ProceduralSkyMaterial.ground_energy_multiplier
 	return Float.X(Float.X(class(self).GetGroundEnergyMultiplier()))
 }
 
 // SetGroundEnergyMultiplier sets the property returned by [GetGroundEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroundEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetGroundEnergyMultiplier(value Float.X) Instance { //gd:ProceduralSkyMaterial.ground_energy_multiplier
 	class(self).SetGroundEnergyMultiplier(float64(value))
 	return self
 }
@@ -348,12 +348,12 @@ func (self Instance) SetGroundEnergyMultiplier(value Float.X) Instance {
 /*
 Distance from center of sun where it fades out completely.
 */
-func (self Instance) SunAngleMax() Angle.Radians {
+func (self Instance) SunAngleMax() Angle.Radians { //gd:ProceduralSkyMaterial.sun_angle_max
 	return Angle.Radians(Float.X(class(self).GetSunAngleMax()))
 }
 
 // SetSunAngleMax sets the property returned by [GetSunAngleMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSunAngleMax(value Angle.Radians) Instance {
+func (self Instance) SetSunAngleMax(value Angle.Radians) Instance { //gd:ProceduralSkyMaterial.sun_angle_max
 	class(self).SetSunAngleMax(float64(value))
 	return self
 }
@@ -363,12 +363,12 @@ How quickly the sun fades away between the edge of the sun disk and [SunAngleMax
 
 [SunAngleMax]: https://pkg.go.dev/graphics.gd/classdb/ProceduralSkyMaterial#Instance.SunAngleMax
 */
-func (self Instance) SunCurve() Float.X {
+func (self Instance) SunCurve() Float.X { //gd:ProceduralSkyMaterial.sun_curve
 	return Float.X(Float.X(class(self).GetSunCurve()))
 }
 
 // SetSunCurve sets the property returned by [GetSunCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSunCurve(value Float.X) Instance {
+func (self Instance) SetSunCurve(value Float.X) Instance { //gd:ProceduralSkyMaterial.sun_curve
 	class(self).SetSunCurve(float64(value))
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetSunCurve(value Float.X) Instance {
 /*
 If true, enables debanding. Debanding adds a small amount of noise which helps reduce banding that appears from the smooth changes in color in the sky.
 */
-func (self Instance) UseDebanding() bool {
+func (self Instance) UseDebanding() bool { //gd:ProceduralSkyMaterial.use_debanding
 	return bool(class(self).GetUseDebanding())
 }
 
 // SetUseDebanding sets the property returned by [GetUseDebanding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseDebanding(value bool) Instance {
+func (self Instance) SetUseDebanding(value bool) Instance { //gd:ProceduralSkyMaterial.use_debanding
 	class(self).SetUseDebanding(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetUseDebanding(value bool) Instance {
 /*
 The sky's overall brightness multiplier. Higher values result in a brighter sky.
 */
-func (self Instance) EnergyMultiplier() Float.X {
+func (self Instance) EnergyMultiplier() Float.X { //gd:ProceduralSkyMaterial.energy_multiplier
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
 // SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance { //gd:ProceduralSkyMaterial.energy_multiplier
 	class(self).SetEnergyMultiplier(float64(value))
 	return self
 }

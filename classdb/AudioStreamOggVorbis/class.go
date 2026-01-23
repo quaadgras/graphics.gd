@@ -198,42 +198,42 @@ func New() Instance {
 /*
 Contains the raw Ogg data for this stream.
 */
-func (self Instance) PacketSequence() OggPacketSequence.Instance {
+func (self Instance) PacketSequence() OggPacketSequence.Instance { //gd:AudioStreamOggVorbis.packet_sequence
 	return OggPacketSequence.Instance(class(self).GetPacketSequence())
 }
 
 // SetPacketSequence sets the property returned by [GetPacketSequence]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) Instance {
+func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) Instance { //gd:AudioStreamOggVorbis.packet_sequence
 	class(self).SetPacketSequence(value)
 	return self
 }
 
-func (self Instance) Bpm() Float.X {
+func (self Instance) Bpm() Float.X { //gd:AudioStreamOggVorbis.bpm
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
 // SetBpm sets the property returned by [GetBpm]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBpm(value Float.X) Instance {
+func (self Instance) SetBpm(value Float.X) Instance { //gd:AudioStreamOggVorbis.bpm
 	class(self).SetBpm(float64(value))
 	return self
 }
 
-func (self Instance) BeatCount() int {
+func (self Instance) BeatCount() int { //gd:AudioStreamOggVorbis.beat_count
 	return int(int(class(self).GetBeatCount()))
 }
 
 // SetBeatCount sets the property returned by [GetBeatCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBeatCount(value int) Instance {
+func (self Instance) SetBeatCount(value int) Instance { //gd:AudioStreamOggVorbis.beat_count
 	class(self).SetBeatCount(int64(value))
 	return self
 }
 
-func (self Instance) BarBeats() int {
+func (self Instance) BarBeats() int { //gd:AudioStreamOggVorbis.bar_beats
 	return int(int(class(self).GetBarBeats()))
 }
 
 // SetBarBeats sets the property returned by [GetBarBeats]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBarBeats(value int) Instance {
+func (self Instance) SetBarBeats(value int) Instance { //gd:AudioStreamOggVorbis.bar_beats
 	class(self).SetBarBeats(int64(value))
 	return self
 }
@@ -245,12 +245,12 @@ Commonly used tags include title, artist, album, tracknumber, and date (date doe
 
 Note: No tag is guaranteed to be present in every file, so make sure to account for the keys not always existing.
 */
-func (self Instance) Tags() map[string]interface{} {
+func (self Instance) Tags() map[string]interface{} { //gd:AudioStreamOggVorbis.tags
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
 // SetTags sets the property returned by [GetTags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTags(value map[string]interface{}) Instance {
+func (self Instance) SetTags(value map[string]interface{}) Instance { //gd:AudioStreamOggVorbis.tags
 	class(self).SetTags(gd.DictionaryFromMap(value))
 	return self
 }
@@ -260,12 +260,12 @@ If true, the audio will play again from the specified [LoopOffset] once it is do
 
 [LoopOffset]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis#Instance.LoopOffset
 */
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:AudioStreamOggVorbis.loop
 	return bool(class(self).HasLoop())
 }
 
 // SetLoop sets the property returned by [HasLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:AudioStreamOggVorbis.loop
 	class(self).SetLoop(value)
 	return self
 }
@@ -273,12 +273,12 @@ func (self Instance) SetLoop(value bool) Instance {
 /*
 Time in seconds at which the stream starts after being looped.
 */
-func (self Instance) LoopOffset() Float.X {
+func (self Instance) LoopOffset() Float.X { //gd:AudioStreamOggVorbis.loop_offset
 	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
 // SetLoopOffset sets the property returned by [GetLoopOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopOffset(value Float.X) Instance {
+func (self Instance) SetLoopOffset(value Float.X) Instance { //gd:AudioStreamOggVorbis.loop_offset
 	class(self).SetLoopOffset(float64(value))
 	return self
 }

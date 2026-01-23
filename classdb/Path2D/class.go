@@ -168,12 +168,12 @@ A [Curve2D] describing the path.
 
 [Curve2D]: https://pkg.go.dev/graphics.gd/classdb/Curve2D
 */
-func (self Instance) Curve() Curve2D.Instance {
+func (self Instance) Curve() Curve2D.Instance { //gd:Path2D.curve
 	return Curve2D.Instance(class(self).GetCurve())
 }
 
 // SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurve(value Curve2D.Instance) Instance {
+func (self Instance) SetCurve(value Curve2D.Instance) Instance { //gd:Path2D.curve
 	class(self).SetCurve(value)
 	return self
 }

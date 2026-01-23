@@ -168,12 +168,12 @@ The groove's length. The groove is from the joint's origin towards [Length] alon
 
 [Length]: https://pkg.go.dev/graphics.gd/classdb/GrooveJoint2D#Instance.Length
 */
-func (self Instance) Length() Float.X {
+func (self Instance) Length() Float.X { //gd:GrooveJoint2D.length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLength(value Float.X) Instance {
+func (self Instance) SetLength(value Float.X) Instance { //gd:GrooveJoint2D.length
 	class(self).SetLength(float64(value))
 	return self
 }
@@ -183,12 +183,12 @@ The body B's initial anchor position defined by the joint's origin and a local o
 
 [InitialOffset]: https://pkg.go.dev/graphics.gd/classdb/GrooveJoint2D#Instance.InitialOffset
 */
-func (self Instance) InitialOffset() Float.X {
+func (self Instance) InitialOffset() Float.X { //gd:GrooveJoint2D.initial_offset
 	return Float.X(Float.X(class(self).GetInitialOffset()))
 }
 
 // SetInitialOffset sets the property returned by [GetInitialOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInitialOffset(value Float.X) Instance {
+func (self Instance) SetInitialOffset(value Float.X) Instance { //gd:GrooveJoint2D.initial_offset
 	class(self).SetInitialOffset(float64(value))
 	return self
 }

@@ -257,12 +257,12 @@ If [RootPath] was spawned by a [MultiplayerSpawner], the node will be also be sp
 [MultiplayerSpawner]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner
 [RootPath]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.RootPath
 */
-func (self Instance) RootPath() string {
+func (self Instance) RootPath() string { //gd:MultiplayerSynchronizer.root_path
 	return string(class(self).GetRootPath().String())
 }
 
 // SetRootPath sets the property returned by [GetRootPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootPath(value string) Instance {
+func (self Instance) SetRootPath(value string) Instance { //gd:MultiplayerSynchronizer.root_path
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
 	return self
 }
@@ -270,12 +270,12 @@ func (self Instance) SetRootPath(value string) Instance {
 /*
 Time interval between synchronizations. Used when the replication is set to [Scenereplicationconfig.ReplicationModeAlways]. If set to 0.0 (the default), synchronizations happen every network process frame.
 */
-func (self Instance) ReplicationInterval() Float.X {
+func (self Instance) ReplicationInterval() Float.X { //gd:MultiplayerSynchronizer.replication_interval
 	return Float.X(Float.X(class(self).GetReplicationInterval()))
 }
 
 // SetReplicationInterval sets the property returned by [GetReplicationInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReplicationInterval(value Float.X) Instance {
+func (self Instance) SetReplicationInterval(value Float.X) Instance { //gd:MultiplayerSynchronizer.replication_interval
 	class(self).SetReplicationInterval(float64(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetReplicationInterval(value Float.X) Instance {
 /*
 Time interval between delta synchronizations. Used when the replication is set to [Scenereplicationconfig.ReplicationModeOnChange]. If set to 0.0 (the default), delta synchronizations happen every network process frame.
 */
-func (self Instance) DeltaInterval() Float.X {
+func (self Instance) DeltaInterval() Float.X { //gd:MultiplayerSynchronizer.delta_interval
 	return Float.X(Float.X(class(self).GetDeltaInterval()))
 }
 
 // SetDeltaInterval sets the property returned by [GetDeltaInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeltaInterval(value Float.X) Instance {
+func (self Instance) SetDeltaInterval(value Float.X) Instance { //gd:MultiplayerSynchronizer.delta_interval
 	class(self).SetDeltaInterval(float64(value))
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetDeltaInterval(value Float.X) Instance {
 /*
 Resource containing which properties to synchronize.
 */
-func (self Instance) ReplicationConfig() SceneReplicationConfig.Instance {
+func (self Instance) ReplicationConfig() SceneReplicationConfig.Instance { //gd:MultiplayerSynchronizer.replication_config
 	return SceneReplicationConfig.Instance(class(self).GetReplicationConfig())
 }
 
 // SetReplicationConfig sets the property returned by [GetReplicationConfig]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) Instance {
+func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) Instance { //gd:MultiplayerSynchronizer.replication_config
 	class(self).SetReplicationConfig(value)
 	return self
 }
@@ -309,12 +309,12 @@ func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance)
 /*
 Specifies when visibility filters are updated.
 */
-func (self Instance) VisibilityUpdateMode() VisibilityUpdateMode {
+func (self Instance) VisibilityUpdateMode() VisibilityUpdateMode { //gd:MultiplayerSynchronizer.visibility_update_mode
 	return VisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
 // SetVisibilityUpdateMode sets the property returned by [GetVisibilityUpdateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) Instance {
+func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) Instance { //gd:MultiplayerSynchronizer.visibility_update_mode
 	class(self).SetVisibilityUpdateMode(value)
 	return self
 }
@@ -325,12 +325,12 @@ Whether synchronization should be visible to all peers by default. See [SetVisib
 [AddVisibilityFilter]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.AddVisibilityFilter
 [SetVisibilityFor]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.SetVisibilityFor
 */
-func (self Instance) PublicVisibility() bool {
+func (self Instance) PublicVisibility() bool { //gd:MultiplayerSynchronizer.public_visibility
 	return bool(class(self).IsVisibilityPublic())
 }
 
 // SetPublicVisibility sets the property returned by [IsVisibilityPublic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPublicVisibility(value bool) Instance {
+func (self Instance) SetPublicVisibility(value bool) Instance { //gd:MultiplayerSynchronizer.public_visibility
 	class(self).SetVisibilityPublic(value)
 	return self
 }

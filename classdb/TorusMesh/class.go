@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The inner radius of the torus.
 */
-func (self Instance) InnerRadius() Float.X {
+func (self Instance) InnerRadius() Float.X { //gd:TorusMesh.inner_radius
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
 // SetInnerRadius sets the property returned by [GetInnerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInnerRadius(value Float.X) Instance {
+func (self Instance) SetInnerRadius(value Float.X) Instance { //gd:TorusMesh.inner_radius
 	class(self).SetInnerRadius(float64(value))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetInnerRadius(value Float.X) Instance {
 /*
 The outer radius of the torus.
 */
-func (self Instance) OuterRadius() Float.X {
+func (self Instance) OuterRadius() Float.X { //gd:TorusMesh.outer_radius
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
 // SetOuterRadius sets the property returned by [GetOuterRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOuterRadius(value Float.X) Instance {
+func (self Instance) SetOuterRadius(value Float.X) Instance { //gd:TorusMesh.outer_radius
 	class(self).SetOuterRadius(float64(value))
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetOuterRadius(value Float.X) Instance {
 /*
 The number of slices the torus is constructed of.
 */
-func (self Instance) Rings() int {
+func (self Instance) Rings() int { //gd:TorusMesh.rings
 	return int(int(class(self).GetRings()))
 }
 
 // SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRings(value int) Instance {
+func (self Instance) SetRings(value int) Instance { //gd:TorusMesh.rings
 	class(self).SetRings(int64(value))
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetRings(value int) Instance {
 /*
 The number of edges each ring of the torus is constructed of.
 */
-func (self Instance) RingSegments() int {
+func (self Instance) RingSegments() int { //gd:TorusMesh.ring_segments
 	return int(int(class(self).GetRingSegments()))
 }
 
 // SetRingSegments sets the property returned by [GetRingSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRingSegments(value int) Instance {
+func (self Instance) SetRingSegments(value int) Instance { //gd:TorusMesh.ring_segments
 	class(self).SetRingSegments(int64(value))
 	return self
 }

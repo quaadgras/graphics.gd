@@ -185,12 +185,12 @@ func New() Instance {
 /*
 The VisibleOnScreenNotifier2D's bounding rectangle.
 */
-func (self Instance) Rect() Rect2.PositionSize {
+func (self Instance) Rect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.rect
 	return Rect2.PositionSize(class(self).GetRect())
 }
 
 // SetRect sets the property returned by [GetRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetRect(value Rect2.PositionSize) Instance { //gd:VisibleOnScreenNotifier2D.rect
 	class(self).SetRect(Rect2.PositionSize(value))
 	return self
 }
@@ -200,12 +200,12 @@ If true, shows the rectangle area of [Rect] in the editor with a translucent mag
 
 [Rect]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D#Instance.Rect
 */
-func (self Instance) ShowRect() bool {
+func (self Instance) ShowRect() bool { //gd:VisibleOnScreenNotifier2D.show_rect
 	return bool(class(self).IsShowingRect())
 }
 
 // SetShowRect sets the property returned by [IsShowingRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowRect(value bool) Instance {
+func (self Instance) SetShowRect(value bool) Instance { //gd:VisibleOnScreenNotifier2D.show_rect
 	class(self).SetShowRect(value)
 	return self
 }

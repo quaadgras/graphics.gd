@@ -207,12 +207,12 @@ func New() Instance {
 /*
 If true, the body tracking data is valid.
 */
-func (self Instance) HasTrackingData() bool {
+func (self Instance) HasTrackingData() bool { //gd:XRBodyTracker.has_tracking_data
 	return bool(class(self).GetHasTrackingData())
 }
 
 // SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHasTrackingData(value bool) Instance {
+func (self Instance) SetHasTrackingData(value bool) Instance { //gd:XRBodyTracker.has_tracking_data
 	class(self).SetHasTrackingData(value)
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetHasTrackingData(value bool) Instance {
 /*
 The type of body tracking data captured.
 */
-func (self Instance) BodyFlags() BodyFlags {
+func (self Instance) BodyFlags() BodyFlags { //gd:XRBodyTracker.body_flags
 	return BodyFlags(class(self).GetBodyFlags())
 }
 
 // SetBodyFlags sets the property returned by [GetBodyFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodyFlags(value BodyFlags) Instance {
+func (self Instance) SetBodyFlags(value BodyFlags) Instance { //gd:XRBodyTracker.body_flags
 	class(self).SetBodyFlags(value)
 	return self
 }

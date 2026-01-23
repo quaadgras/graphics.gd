@@ -173,7 +173,7 @@ func New() Instance {
 The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:CurveTexture.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -183,12 +183,12 @@ The format the texture should be generated with. When passing a CurveTexture as 
 
 [Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
-func (self Instance) TextureMode() TextureMode {
+func (self Instance) TextureMode() TextureMode { //gd:CurveTexture.texture_mode
 	return TextureMode(class(self).GetTextureMode())
 }
 
 // SetTextureMode sets the property returned by [GetTextureMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMode(value TextureMode) Instance {
+func (self Instance) SetTextureMode(value TextureMode) Instance { //gd:CurveTexture.texture_mode
 	class(self).SetTextureMode(value)
 	return self
 }
@@ -198,12 +198,12 @@ The [Curve] that is rendered onto the texture. Should be a unit [Curve].
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) Curve() Curve.Instance {
+func (self Instance) Curve() Curve.Instance { //gd:CurveTexture.curve
 	return Curve.Instance(class(self).GetCurve())
 }
 
 // SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurve(value Curve.Instance) Instance {
+func (self Instance) SetCurve(value Curve.Instance) Instance { //gd:CurveTexture.curve
 	class(self).SetCurve(value)
 	return self
 }

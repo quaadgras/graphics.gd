@@ -188,12 +188,12 @@ Note: If [Shape] is [Renderingserver.FogVolumeShapeCone] or [Renderingserver.Fog
 [Shape]: https://pkg.go.dev/graphics.gd/classdb/FogVolume#Instance.Shape
 [Size]: https://pkg.go.dev/graphics.gd/classdb/FogVolume#Instance.Size
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:FogVolume.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:FogVolume.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -203,12 +203,12 @@ The shape of the [FogVolume]. This can be set to either [Renderingserver.FogVolu
 
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) Shape() RenderingServer.FogVolumeShape {
+func (self Instance) Shape() RenderingServer.FogVolumeShape { //gd:FogVolume.shape
 	return RenderingServer.FogVolumeShape(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value RenderingServer.FogVolumeShape) Instance {
+func (self Instance) SetShape(value RenderingServer.FogVolumeShape) Instance { //gd:FogVolume.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -221,12 +221,12 @@ The [Material] used by the [FogVolume]. Can be either a built-in [FogMaterial] o
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:FogVolume.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:FogVolume.material
 	class(self).SetMaterial(value)
 	return self
 }

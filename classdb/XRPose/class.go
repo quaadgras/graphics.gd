@@ -183,12 +183,12 @@ func New() Instance {
 /*
 If true our tracking data is up to date. If false we're no longer receiving new tracking data and our state is whatever that last valid state was.
 */
-func (self Instance) HasTrackingData() bool {
+func (self Instance) HasTrackingData() bool { //gd:XRPose.has_tracking_data
 	return bool(class(self).GetHasTrackingData())
 }
 
 // SetHasTrackingData sets the property returned by [GetHasTrackingData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHasTrackingData(value bool) Instance {
+func (self Instance) SetHasTrackingData(value bool) Instance { //gd:XRPose.has_tracking_data
 	class(self).SetHasTrackingData(value)
 	return self
 }
@@ -206,12 +206,12 @@ The name of this pose. Usually, this name is derived from an action map set up b
 
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
-func (self Instance) Name() string {
+func (self Instance) Name() string { //gd:XRPose.name
 	return string(class(self).GetName().String())
 }
 
 // SetName sets the property returned by [GetName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetName(value string) Instance {
+func (self Instance) SetName(value string) Instance { //gd:XRPose.name
 	class(self).SetName(String.Name(String.New(value)))
 	return self
 }
@@ -219,12 +219,12 @@ func (self Instance) SetName(value string) Instance {
 /*
 The transform containing the original and transform as reported by the XR runtime.
 */
-func (self Instance) Transform() Transform3D.BasisOrigin {
+func (self Instance) Transform() Transform3D.BasisOrigin { //gd:XRPose.transform
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance { //gd:XRPose.transform
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -232,12 +232,12 @@ func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
 /*
 The linear velocity of this pose.
 */
-func (self Instance) LinearVelocity() Vector3.XYZ {
+func (self Instance) LinearVelocity() Vector3.XYZ { //gd:XRPose.linear_velocity
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
 // SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance { //gd:XRPose.linear_velocity
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -245,12 +245,12 @@ func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 /*
 The angular velocity for this pose.
 */
-func (self Instance) AngularVelocity() Vector3.XYZ {
+func (self Instance) AngularVelocity() Vector3.XYZ { //gd:XRPose.angular_velocity
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
 // SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance { //gd:XRPose.angular_velocity
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -258,12 +258,12 @@ func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 /*
 The tracking confidence for this pose, provides insight on how accurate the spatial positioning of this record is.
 */
-func (self Instance) TrackingConfidence() TrackingConfidence {
+func (self Instance) TrackingConfidence() TrackingConfidence { //gd:XRPose.tracking_confidence
 	return TrackingConfidence(class(self).GetTrackingConfidence())
 }
 
 // SetTrackingConfidence sets the property returned by [GetTrackingConfidence]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTrackingConfidence(value TrackingConfidence) Instance {
+func (self Instance) SetTrackingConfidence(value TrackingConfidence) Instance { //gd:XRPose.tracking_confidence
 	class(self).SetTrackingConfidence(value)
 	return self
 }

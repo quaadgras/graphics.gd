@@ -192,7 +192,7 @@ func New() Instance {
 External texture size.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSize(value Vector2.XY) Instance {
+func (self Instance) SetSize(value Vector2.XY) Instance { //gd:ExternalTexture.size
 	class(self).SetSize(Vector2.XY(value))
 	return self
 }

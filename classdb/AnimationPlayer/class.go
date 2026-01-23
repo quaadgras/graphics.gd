@@ -698,12 +698,12 @@ Note: While this property appears in the Inspector, it's not meant to be edited,
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
-func (self Instance) CurrentAnimation() string {
+func (self Instance) CurrentAnimation() string { //gd:AnimationPlayer.current_animation
 	return string(class(self).GetCurrentAnimation().String())
 }
 
 // SetCurrentAnimation sets the property returned by [GetCurrentAnimation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentAnimation(value string) Instance {
+func (self Instance) SetCurrentAnimation(value string) Instance { //gd:AnimationPlayer.current_animation
 	class(self).SetCurrentAnimation(String.New(value))
 	return self
 }
@@ -713,12 +713,12 @@ If playing, the current animation's key, otherwise, the animation last played. W
 
 [CurrentAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimation
 */
-func (self Instance) AssignedAnimation() string {
+func (self Instance) AssignedAnimation() string { //gd:AnimationPlayer.assigned_animation
 	return string(class(self).GetAssignedAnimation().String())
 }
 
 // SetAssignedAnimation sets the property returned by [GetAssignedAnimation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAssignedAnimation(value string) Instance {
+func (self Instance) SetAssignedAnimation(value string) Instance { //gd:AnimationPlayer.assigned_animation
 	class(self).SetAssignedAnimation(String.New(value))
 	return self
 }
@@ -726,12 +726,12 @@ func (self Instance) SetAssignedAnimation(value string) Instance {
 /*
 The key of the animation to play when the scene loads.
 */
-func (self Instance) Autoplay() string {
+func (self Instance) Autoplay() string { //gd:AnimationPlayer.autoplay
 	return string(class(self).GetAutoplay().String())
 }
 
 // SetAutoplay sets the property returned by [GetAutoplay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value string) Instance {
+func (self Instance) SetAutoplay(value string) Instance { //gd:AnimationPlayer.autoplay
 	class(self).SetAutoplay(String.New(value))
 	return self
 }
@@ -739,14 +739,14 @@ func (self Instance) SetAutoplay(value string) Instance {
 /*
 The length (in seconds) of the currently playing animation.
 */
-func (self Instance) CurrentAnimationLength() Float.X {
+func (self Instance) CurrentAnimationLength() Float.X { //gd:AnimationPlayer.current_animation_length
 	return Float.X(Float.X(class(self).GetCurrentAnimationLength()))
 }
 
 /*
 The position (in seconds) of the currently playing animation.
 */
-func (self Instance) CurrentAnimationPosition() Float.X {
+func (self Instance) CurrentAnimationPosition() Float.X { //gd:AnimationPlayer.current_animation_position
 	return Float.X(Float.X(class(self).GetCurrentAnimationPosition()))
 }
 
@@ -759,12 +759,12 @@ Note: Capture interpolation is only performed if the animation contains a captur
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 [PlayWithCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayWithCapture
 */
-func (self Instance) PlaybackAutoCapture() bool {
+func (self Instance) PlaybackAutoCapture() bool { //gd:AnimationPlayer.playback_auto_capture
 	return bool(class(self).IsAutoCapture())
 }
 
 // SetPlaybackAutoCapture sets the property returned by [IsAutoCapture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackAutoCapture(value bool) Instance {
+func (self Instance) SetPlaybackAutoCapture(value bool) Instance { //gd:AnimationPlayer.playback_auto_capture
 	class(self).SetAutoCapture(value)
 	return self
 }
@@ -778,12 +778,12 @@ If [PlaybackAutoCaptureDuration] is negative value, the duration is set to the i
 [PlayWithCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayWithCapture
 [PlaybackAutoCaptureDuration]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaybackAutoCaptureDuration
 */
-func (self Instance) PlaybackAutoCaptureDuration() Float.X {
+func (self Instance) PlaybackAutoCaptureDuration() Float.X { //gd:AnimationPlayer.playback_auto_capture_duration
 	return Float.X(Float.X(class(self).GetAutoCaptureDuration()))
 }
 
 // SetPlaybackAutoCaptureDuration sets the property returned by [GetAutoCaptureDuration]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) Instance {
+func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) Instance { //gd:AnimationPlayer.playback_auto_capture_duration
 	class(self).SetAutoCaptureDuration(float64(value))
 	return self
 }
@@ -791,12 +791,12 @@ func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) Instance {
 /*
 The transition type of the capture interpolation. See also [Tween.TransitionType].
 */
-func (self Instance) PlaybackAutoCaptureTransitionType() Tween.TransitionType {
+func (self Instance) PlaybackAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.playback_auto_capture_transition_type
 	return Tween.TransitionType(class(self).GetAutoCaptureTransitionType())
 }
 
 // SetPlaybackAutoCaptureTransitionType sets the property returned by [GetAutoCaptureTransitionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) Instance {
+func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) Instance { //gd:AnimationPlayer.playback_auto_capture_transition_type
 	class(self).SetAutoCaptureTransitionType(value)
 	return self
 }
@@ -804,12 +804,12 @@ func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.Transition
 /*
 The ease type of the capture interpolation. See also [Tween.EaseType].
 */
-func (self Instance) PlaybackAutoCaptureEaseType() Tween.EaseType {
+func (self Instance) PlaybackAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.playback_auto_capture_ease_type
 	return Tween.EaseType(class(self).GetAutoCaptureEaseType())
 }
 
 // SetPlaybackAutoCaptureEaseType sets the property returned by [GetAutoCaptureEaseType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) Instance {
+func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) Instance { //gd:AnimationPlayer.playback_auto_capture_ease_type
 	class(self).SetAutoCaptureEaseType(value)
 	return self
 }
@@ -817,12 +817,12 @@ func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) Instan
 /*
 The default time in which to blend animations. Ranges from 0 to 4096 with 0.01 precision.
 */
-func (self Instance) PlaybackDefaultBlendTime() Float.X {
+func (self Instance) PlaybackDefaultBlendTime() Float.X { //gd:AnimationPlayer.playback_default_blend_time
 	return Float.X(Float.X(class(self).GetDefaultBlendTime()))
 }
 
 // SetPlaybackDefaultBlendTime sets the property returned by [GetDefaultBlendTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) Instance {
+func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) Instance { //gd:AnimationPlayer.playback_default_blend_time
 	class(self).SetDefaultBlendTime(float64(value))
 	return self
 }
@@ -832,12 +832,12 @@ The speed scaling ratio. For example, if this value is 1, then the animation pla
 
 If set to a negative value, the animation is played in reverse. If set to 0, the animation will not advance.
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:AnimationPlayer.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:AnimationPlayer.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }
@@ -852,12 +852,12 @@ Note: This obeys the same logic as the [OnAnimationmixer.AnimationFinished] sign
 [OnAnimationmixer.AnimationFinished]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.OnAnimationmixer.AnimationFinished
 [SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
 */
-func (self Instance) MovieQuitOnFinish() bool {
+func (self Instance) MovieQuitOnFinish() bool { //gd:AnimationPlayer.movie_quit_on_finish
 	return bool(class(self).IsMovieQuitOnFinishEnabled())
 }
 
 // SetMovieQuitOnFinish sets the property returned by [IsMovieQuitOnFinishEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMovieQuitOnFinish(value bool) Instance {
+func (self Instance) SetMovieQuitOnFinish(value bool) Instance { //gd:AnimationPlayer.movie_quit_on_finish
 	class(self).SetMovieQuitOnFinishEnabled(value)
 	return self
 }

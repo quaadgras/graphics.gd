@@ -570,13 +570,13 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Number of available audio buses.
 */
-func BusCount() int {
+func BusCount() int { //gd:AudioServer.bus_count
 	once.Do(singleton)
 	return int(int(class(self).GetBusCount()))
 }
 
 // SetBusCount sets the property returned by [GetBusCount].
-func SetBusCount(value int) {
+func SetBusCount(value int) { //gd:AudioServer.bus_count
 	once.Do(singleton)
 	class(self).SetBusCount(int64(value))
 }
@@ -584,13 +584,13 @@ func SetBusCount(value int) {
 /*
 Name of the current device for audio output (see [GetOutputDeviceList]). On systems with multiple audio outputs (such as analog, USB and HDMI audio), this can be used to select the audio output device. The value "Default" will play audio on the system-wide default audio output. If an invalid device name is set, the value will be reverted back to "Default".
 */
-func OutputDevice() string {
+func OutputDevice() string { //gd:AudioServer.output_device
 	once.Do(singleton)
 	return string(class(self).GetOutputDevice().String())
 }
 
 // SetOutputDevice sets the property returned by [GetOutputDevice].
-func SetOutputDevice(value string) {
+func SetOutputDevice(value string) { //gd:AudioServer.output_device
 	once.Do(singleton)
 	class(self).SetOutputDevice(String.New(value))
 }
@@ -602,13 +602,13 @@ Note: [ProjectSettings] "audio/driver/enable_input" must be true for audio input
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func InputDevice() string {
+func InputDevice() string { //gd:AudioServer.input_device
 	once.Do(singleton)
 	return string(class(self).GetInputDevice().String())
 }
 
 // SetInputDevice sets the property returned by [GetInputDevice].
-func SetInputDevice(value string) {
+func SetInputDevice(value string) { //gd:AudioServer.input_device
 	once.Do(singleton)
 	class(self).SetInputDevice(String.New(value))
 }
@@ -619,13 +619,13 @@ Scales the rate at which audio is played (i.e. setting it to 0.5 will make the a
 [AudioServer.PlaybackSpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#PlaybackSpeedScale
 [Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
 */
-func PlaybackSpeedScale() Float.X {
+func PlaybackSpeedScale() Float.X { //gd:AudioServer.playback_speed_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPlaybackSpeedScale()))
 }
 
 // SetPlaybackSpeedScale sets the property returned by [GetPlaybackSpeedScale].
-func SetPlaybackSpeedScale(value Float.X) {
+func SetPlaybackSpeedScale(value Float.X) { //gd:AudioServer.playback_speed_scale
 	once.Do(singleton)
 	class(self).SetPlaybackSpeedScale(float64(value))
 }

@@ -175,12 +175,12 @@ func New() Instance {
 /*
 The alignment of the container's children (must be one of [AlignmentBegin], [AlignmentCenter], or [AlignmentEnd]).
 */
-func (self Instance) Alignment() AlignmentMode {
+func (self Instance) Alignment() AlignmentMode { //gd:FlowContainer.alignment
 	return AlignmentMode(class(self).GetAlignment())
 }
 
 // SetAlignment sets the property returned by [GetAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value AlignmentMode) Instance {
+func (self Instance) SetAlignment(value AlignmentMode) Instance { //gd:FlowContainer.alignment
 	class(self).SetAlignment(value)
 	return self
 }
@@ -188,12 +188,12 @@ func (self Instance) SetAlignment(value AlignmentMode) Instance {
 /*
 The wrap behavior of the last, partially filled row or column (must be one of [LastWrapAlignmentInherit], [LastWrapAlignmentBegin], [LastWrapAlignmentCenter], or [LastWrapAlignmentEnd]).
 */
-func (self Instance) LastWrapAlignment() LastWrapAlignmentMode {
+func (self Instance) LastWrapAlignment() LastWrapAlignmentMode { //gd:FlowContainer.last_wrap_alignment
 	return LastWrapAlignmentMode(class(self).GetLastWrapAlignment())
 }
 
 // SetLastWrapAlignment sets the property returned by [GetLastWrapAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) Instance {
+func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) Instance { //gd:FlowContainer.last_wrap_alignment
 	class(self).SetLastWrapAlignment(value)
 	return self
 }
@@ -207,12 +207,12 @@ Can't be changed when using [HFlowContainer] and [VFlowContainer].
 [HFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/HFlowContainer
 [VFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/VFlowContainer
 */
-func (self Instance) Vertical() bool {
+func (self Instance) Vertical() bool { //gd:FlowContainer.vertical
 	return bool(class(self).IsVertical())
 }
 
 // SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertical(value bool) Instance {
+func (self Instance) SetVertical(value bool) Instance { //gd:FlowContainer.vertical
 	class(self).SetVertical(value)
 	return self
 }
@@ -225,12 +225,12 @@ When using a vertical [FlowContainer] with a right to left [Control.LayoutDirect
 [Control.LayoutDirection]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.LayoutDirection
 [FlowContainer]: https://pkg.go.dev/graphics.gd/classdb/FlowContainer
 */
-func (self Instance) ReverseFill() bool {
+func (self Instance) ReverseFill() bool { //gd:FlowContainer.reverse_fill
 	return bool(class(self).IsReverseFill())
 }
 
 // SetReverseFill sets the property returned by [IsReverseFill]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReverseFill(value bool) Instance {
+func (self Instance) SetReverseFill(value bool) Instance { //gd:FlowContainer.reverse_fill
 	class(self).SetReverseFill(value)
 	return self
 }

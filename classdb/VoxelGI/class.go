@@ -240,12 +240,12 @@ Number of times to subdivide the grid that the [VoxelGI] operates on. A higher n
 
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) Subdiv() Subdiv {
+func (self Instance) Subdiv() Subdiv { //gd:VoxelGI.subdiv
 	return Subdiv(class(self).GetSubdiv())
 }
 
 // SetSubdiv sets the property returned by [GetSubdiv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdiv(value Subdiv) Instance {
+func (self Instance) SetSubdiv(value Subdiv) Instance { //gd:VoxelGI.subdiv
 	class(self).SetSubdiv(value)
 	return self
 }
@@ -258,12 +258,12 @@ Note: Size is clamped to 1.0 unit or more on each axis.
 [Subdiv]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Subdiv
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:VoxelGI.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:VoxelGI.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -274,12 +274,12 @@ The [CameraAttributes] resource that specifies exposure levels to bake at. Auto-
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) CameraAttributes() CameraAttributes.Instance {
+func (self Instance) CameraAttributes() CameraAttributes.Instance { //gd:VoxelGI.camera_attributes
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
 // SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance { //gd:VoxelGI.camera_attributes
 	class(self).SetCameraAttributes(value)
 	return self
 }
@@ -290,12 +290,12 @@ The [VoxelGIData] resource that holds the data for this [VoxelGI].
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 [VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
 */
-func (self Instance) Data() VoxelGIData.Instance {
+func (self Instance) Data() VoxelGIData.Instance { //gd:VoxelGI.data
 	return VoxelGIData.Instance(class(self).GetProbeData())
 }
 
 // SetData sets the property returned by [GetProbeData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetData(value VoxelGIData.Instance) Instance {
+func (self Instance) SetData(value VoxelGIData.Instance) Instance { //gd:VoxelGI.data
 	class(self).SetProbeData(value)
 	return self
 }

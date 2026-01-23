@@ -448,12 +448,12 @@ If set, a new navigation path from the current agent position to the [TargetPosi
 
 [TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetPosition
 */
-func (self Instance) TargetPosition() Vector2.XY {
+func (self Instance) TargetPosition() Vector2.XY { //gd:NavigationAgent2D.target_position
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance { //gd:NavigationAgent2D.target_position
 	class(self).SetTargetPosition(Vector2.XY(value))
 	return self
 }
@@ -461,12 +461,12 @@ func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
 /*
 The distance threshold before a path point is considered to be reached. This allows agents to not have to hit a path point on the path exactly, but only to reach its general area. If this value is set too high, the NavigationAgent will skip points on the path, which can lead to it leaving the navigation mesh. If this value is set too low, the NavigationAgent will be stuck in a repath loop because it will constantly overshoot the distance to the next point on each physics frame update.
 */
-func (self Instance) PathDesiredDistance() Float.X {
+func (self Instance) PathDesiredDistance() Float.X { //gd:NavigationAgent2D.path_desired_distance
 	return Float.X(Float.X(class(self).GetPathDesiredDistance()))
 }
 
 // SetPathDesiredDistance sets the property returned by [GetPathDesiredDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathDesiredDistance(value Float.X) Instance {
+func (self Instance) SetPathDesiredDistance(value Float.X) Instance { //gd:NavigationAgent2D.path_desired_distance
 	class(self).SetPathDesiredDistance(float64(value))
 	return self
 }
@@ -483,12 +483,12 @@ You can also make navigation end closer to the target than each individual path 
 [OnTargetReached]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnTargetReached
 [PathDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathDesiredDistance
 */
-func (self Instance) TargetDesiredDistance() Float.X {
+func (self Instance) TargetDesiredDistance() Float.X { //gd:NavigationAgent2D.target_desired_distance
 	return Float.X(Float.X(class(self).GetTargetDesiredDistance()))
 }
 
 // SetTargetDesiredDistance sets the property returned by [GetTargetDesiredDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetDesiredDistance(value Float.X) Instance {
+func (self Instance) SetTargetDesiredDistance(value Float.X) Instance { //gd:NavigationAgent2D.target_desired_distance
 	class(self).SetTargetDesiredDistance(float64(value))
 	return self
 }
@@ -496,12 +496,12 @@ func (self Instance) SetTargetDesiredDistance(value Float.X) Instance {
 /*
 The maximum distance the agent is allowed away from the ideal path to the final position. This can happen due to trying to avoid collisions. When the maximum distance is exceeded, it recalculates the ideal path.
 */
-func (self Instance) PathMaxDistance() Float.X {
+func (self Instance) PathMaxDistance() Float.X { //gd:NavigationAgent2D.path_max_distance
 	return Float.X(Float.X(class(self).GetPathMaxDistance()))
 }
 
 // SetPathMaxDistance sets the property returned by [GetPathMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathMaxDistance(value Float.X) Instance {
+func (self Instance) SetPathMaxDistance(value Float.X) Instance { //gd:NavigationAgent2D.path_max_distance
 	class(self).SetPathMaxDistance(float64(value))
 	return self
 }
@@ -509,12 +509,12 @@ func (self Instance) SetPathMaxDistance(value Float.X) Instance {
 /*
 A bitfield determining which navigation layers of navigation regions this agent will use to calculate a path. Changing it during runtime will clear the current navigation path and generate a new one, according to the new navigation layers.
 */
-func (self Instance) NavigationLayers() int {
+func (self Instance) NavigationLayers() int { //gd:NavigationAgent2D.navigation_layers
 	return int(int(class(self).GetNavigationLayers()))
 }
 
 // SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationLayers(value int) Instance {
+func (self Instance) SetNavigationLayers(value int) Instance { //gd:NavigationAgent2D.navigation_layers
 	class(self).SetNavigationLayers(int64(value))
 	return self
 }
@@ -522,12 +522,12 @@ func (self Instance) SetNavigationLayers(value int) Instance {
 /*
 The pathfinding algorithm used in the path query.
 */
-func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters2D.PathfindingAlgorithm {
+func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters2D.PathfindingAlgorithm { //gd:NavigationAgent2D.pathfinding_algorithm
 	return NavigationPathQueryParameters2D.PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
 // SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) Instance {
+func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) Instance { //gd:NavigationAgent2D.pathfinding_algorithm
 	class(self).SetPathfindingAlgorithm(value)
 	return self
 }
@@ -537,12 +537,12 @@ The path postprocessing applied to the raw path corridor found by the [Pathfindi
 
 [PathfindingAlgorithm]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathfindingAlgorithm
 */
-func (self Instance) PathPostprocessing() NavigationPathQueryParameters2D.PathPostProcessing {
+func (self Instance) PathPostprocessing() NavigationPathQueryParameters2D.PathPostProcessing { //gd:NavigationAgent2D.path_postprocessing
 	return NavigationPathQueryParameters2D.PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
 // SetPathPostprocessing sets the property returned by [GetPathPostprocessing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) Instance {
+func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) Instance { //gd:NavigationAgent2D.path_postprocessing
 	class(self).SetPathPostprocessing(value)
 	return self
 }
@@ -550,12 +550,12 @@ func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D
 /*
 Additional information to return with the navigation path.
 */
-func (self Instance) PathMetadataFlags() NavigationPathQueryParameters2D.PathMetadataFlags {
+func (self Instance) PathMetadataFlags() NavigationPathQueryParameters2D.PathMetadataFlags { //gd:NavigationAgent2D.path_metadata_flags
 	return NavigationPathQueryParameters2D.PathMetadataFlags(class(self).GetPathMetadataFlags())
 }
 
 // SetPathMetadataFlags sets the property returned by [GetPathMetadataFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) Instance {
+func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) Instance { //gd:NavigationAgent2D.path_metadata_flags
 	class(self).SetPathMetadataFlags(value)
 	return self
 }
@@ -567,12 +567,12 @@ Path simplification can be helpful to mitigate various path following issues tha
 
 [SimplifyEpsilon]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.SimplifyEpsilon
 */
-func (self Instance) SimplifyPath() bool {
+func (self Instance) SimplifyPath() bool { //gd:NavigationAgent2D.simplify_path
 	return bool(class(self).GetSimplifyPath())
 }
 
 // SetSimplifyPath sets the property returned by [GetSimplifyPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimplifyPath(value bool) Instance {
+func (self Instance) SetSimplifyPath(value bool) Instance { //gd:NavigationAgent2D.simplify_path
 	class(self).SetSimplifyPath(value)
 	return self
 }
@@ -580,12 +580,12 @@ func (self Instance) SetSimplifyPath(value bool) Instance {
 /*
 The path simplification amount in worlds units.
 */
-func (self Instance) SimplifyEpsilon() Float.X {
+func (self Instance) SimplifyEpsilon() Float.X { //gd:NavigationAgent2D.simplify_epsilon
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
 // SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimplifyEpsilon(value Float.X) Instance {
+func (self Instance) SetSimplifyEpsilon(value Float.X) Instance { //gd:NavigationAgent2D.simplify_epsilon
 	class(self).SetSimplifyEpsilon(float64(value))
 	return self
 }
@@ -593,12 +593,12 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) Instance {
 /*
 The maximum allowed length of the returned path in world units. A path will be clipped when going over this length.
 */
-func (self Instance) PathReturnMaxLength() Float.X {
+func (self Instance) PathReturnMaxLength() Float.X { //gd:NavigationAgent2D.path_return_max_length
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
 // SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathReturnMaxLength(value Float.X) Instance {
+func (self Instance) SetPathReturnMaxLength(value Float.X) Instance { //gd:NavigationAgent2D.path_return_max_length
 	class(self).SetPathReturnMaxLength(float64(value))
 	return self
 }
@@ -610,12 +610,12 @@ Note: This will perform a sphere clip considering only the actual navigation mes
 
 [PathReturnMaxLength]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathReturnMaxLength
 */
-func (self Instance) PathReturnMaxRadius() Float.X {
+func (self Instance) PathReturnMaxRadius() Float.X { //gd:NavigationAgent2D.path_return_max_radius
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
 // SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
+func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance { //gd:NavigationAgent2D.path_return_max_radius
 	class(self).SetPathReturnMaxRadius(float64(value))
 	return self
 }
@@ -623,12 +623,12 @@ func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
 /*
 The maximum number of polygons that are searched before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
 */
-func (self Instance) PathSearchMaxPolygons() int {
+func (self Instance) PathSearchMaxPolygons() int { //gd:NavigationAgent2D.path_search_max_polygons
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
 // SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
+func (self Instance) SetPathSearchMaxPolygons(value int) Instance { //gd:NavigationAgent2D.path_search_max_polygons
 	class(self).SetPathSearchMaxPolygons(int64(value))
 	return self
 }
@@ -636,12 +636,12 @@ func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
 /*
 The maximum distance a searched polygon can be away from the start polygon before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
 */
-func (self Instance) PathSearchMaxDistance() Float.X {
+func (self Instance) PathSearchMaxDistance() Float.X { //gd:NavigationAgent2D.path_search_max_distance
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
 // SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance {
+func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance { //gd:NavigationAgent2D.path_search_max_distance
 	class(self).SetPathSearchMaxDistance(float64(value))
 	return self
 }
@@ -653,12 +653,12 @@ If true the agent is registered for an RVO avoidance callback on the [Navigation
 [OnVelocityComputed]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnVelocityComputed
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.Velocity
 */
-func (self Instance) AvoidanceEnabled() bool {
+func (self Instance) AvoidanceEnabled() bool { //gd:NavigationAgent2D.avoidance_enabled
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
 // SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidanceEnabled(value bool) Instance {
+func (self Instance) SetAvoidanceEnabled(value bool) Instance { //gd:NavigationAgent2D.avoidance_enabled
 	class(self).SetAvoidanceEnabled(value)
 	return self
 }
@@ -668,12 +668,12 @@ Sets the new wanted velocity for the agent. The avoidance simulation will try to
 
 [SetVelocityForced]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.SetVelocityForced
 */
-func (self Instance) Velocity() Vector2.XY {
+func (self Instance) Velocity() Vector2.XY { //gd:NavigationAgent2D.velocity
 	return Vector2.XY(class(self).GetVelocity())
 }
 
 // SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVelocity(value Vector2.XY) Instance {
+func (self Instance) SetVelocity(value Vector2.XY) Instance { //gd:NavigationAgent2D.velocity
 	class(self).SetVelocity(Vector2.XY(value))
 	return self
 }
@@ -687,12 +687,12 @@ Does not affect normal pathfinding. To change an actor's pathfinding radius bake
 [NavigationPolygon.AgentRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.AgentRadius
 [NeighborDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.NeighborDistance
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:NavigationAgent2D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:NavigationAgent2D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -700,12 +700,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The distance to search for other agents.
 */
-func (self Instance) NeighborDistance() Float.X {
+func (self Instance) NeighborDistance() Float.X { //gd:NavigationAgent2D.neighbor_distance
 	return Float.X(Float.X(class(self).GetNeighborDistance()))
 }
 
 // SetNeighborDistance sets the property returned by [GetNeighborDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNeighborDistance(value Float.X) Instance {
+func (self Instance) SetNeighborDistance(value Float.X) Instance { //gd:NavigationAgent2D.neighbor_distance
 	class(self).SetNeighborDistance(float64(value))
 	return self
 }
@@ -713,12 +713,12 @@ func (self Instance) SetNeighborDistance(value Float.X) Instance {
 /*
 The maximum number of neighbors for the agent to consider.
 */
-func (self Instance) MaxNeighbors() int {
+func (self Instance) MaxNeighbors() int { //gd:NavigationAgent2D.max_neighbors
 	return int(int(class(self).GetMaxNeighbors()))
 }
 
 // SetMaxNeighbors sets the property returned by [GetMaxNeighbors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxNeighbors(value int) Instance {
+func (self Instance) SetMaxNeighbors(value int) Instance { //gd:NavigationAgent2D.max_neighbors
 	class(self).SetMaxNeighbors(int64(value))
 	return self
 }
@@ -726,12 +726,12 @@ func (self Instance) SetMaxNeighbors(value int) Instance {
 /*
 The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to other agents. The larger the number, the sooner the agent will respond to other agents, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 */
-func (self Instance) TimeHorizonAgents() Float.X {
+func (self Instance) TimeHorizonAgents() Float.X { //gd:NavigationAgent2D.time_horizon_agents
 	return Float.X(Float.X(class(self).GetTimeHorizonAgents()))
 }
 
 // SetTimeHorizonAgents sets the property returned by [GetTimeHorizonAgents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimeHorizonAgents(value Float.X) Instance {
+func (self Instance) SetTimeHorizonAgents(value Float.X) Instance { //gd:NavigationAgent2D.time_horizon_agents
 	class(self).SetTimeHorizonAgents(float64(value))
 	return self
 }
@@ -739,12 +739,12 @@ func (self Instance) SetTimeHorizonAgents(value Float.X) Instance {
 /*
 The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to static avoidance obstacles. The larger the number, the sooner the agent will respond to static avoidance obstacles, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
 */
-func (self Instance) TimeHorizonObstacles() Float.X {
+func (self Instance) TimeHorizonObstacles() Float.X { //gd:NavigationAgent2D.time_horizon_obstacles
 	return Float.X(Float.X(class(self).GetTimeHorizonObstacles()))
 }
 
 // SetTimeHorizonObstacles sets the property returned by [GetTimeHorizonObstacles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimeHorizonObstacles(value Float.X) Instance {
+func (self Instance) SetTimeHorizonObstacles(value Float.X) Instance { //gd:NavigationAgent2D.time_horizon_obstacles
 	class(self).SetTimeHorizonObstacles(float64(value))
 	return self
 }
@@ -752,12 +752,12 @@ func (self Instance) SetTimeHorizonObstacles(value Float.X) Instance {
 /*
 The maximum speed that an agent can move.
 */
-func (self Instance) MaxSpeed() Float.X {
+func (self Instance) MaxSpeed() Float.X { //gd:NavigationAgent2D.max_speed
 	return Float.X(Float.X(class(self).GetMaxSpeed()))
 }
 
 // SetMaxSpeed sets the property returned by [GetMaxSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSpeed(value Float.X) Instance {
+func (self Instance) SetMaxSpeed(value Float.X) Instance { //gd:NavigationAgent2D.max_speed
 	class(self).SetMaxSpeed(float64(value))
 	return self
 }
@@ -767,12 +767,12 @@ A bitfield determining the avoidance layers for this NavigationAgent. Other agen
 
 [AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceMask
 */
-func (self Instance) AvoidanceLayers() int {
+func (self Instance) AvoidanceLayers() int { //gd:NavigationAgent2D.avoidance_layers
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
 // SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidanceLayers(value int) Instance {
+func (self Instance) SetAvoidanceLayers(value int) Instance { //gd:NavigationAgent2D.avoidance_layers
 	class(self).SetAvoidanceLayers(int64(value))
 	return self
 }
@@ -782,12 +782,12 @@ A bitfield determining what other avoidance agents and obstacles this Navigation
 
 [AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceLayers
 */
-func (self Instance) AvoidanceMask() int {
+func (self Instance) AvoidanceMask() int { //gd:NavigationAgent2D.avoidance_mask
 	return int(int(class(self).GetAvoidanceMask()))
 }
 
 // SetAvoidanceMask sets the property returned by [GetAvoidanceMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidanceMask(value int) Instance {
+func (self Instance) SetAvoidanceMask(value int) Instance { //gd:NavigationAgent2D.avoidance_mask
 	class(self).SetAvoidanceMask(int64(value))
 	return self
 }
@@ -798,12 +798,12 @@ The agent does not adjust the velocity for other agents that would match the [Av
 [AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceMask
 [AvoidancePriority]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidancePriority
 */
-func (self Instance) AvoidancePriority() Float.X {
+func (self Instance) AvoidancePriority() Float.X { //gd:NavigationAgent2D.avoidance_priority
 	return Float.X(Float.X(class(self).GetAvoidancePriority()))
 }
 
 // SetAvoidancePriority sets the property returned by [GetAvoidancePriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidancePriority(value Float.X) Instance {
+func (self Instance) SetAvoidancePriority(value Float.X) Instance { //gd:NavigationAgent2D.avoidance_priority
 	class(self).SetAvoidancePriority(float64(value))
 	return self
 }
@@ -811,12 +811,12 @@ func (self Instance) SetAvoidancePriority(value Float.X) Instance {
 /*
 If true shows debug visuals for this agent.
 */
-func (self Instance) DebugEnabled() bool {
+func (self Instance) DebugEnabled() bool { //gd:NavigationAgent2D.debug_enabled
 	return bool(class(self).GetDebugEnabled())
 }
 
 // SetDebugEnabled sets the property returned by [GetDebugEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugEnabled(value bool) Instance {
+func (self Instance) SetDebugEnabled(value bool) Instance { //gd:NavigationAgent2D.debug_enabled
 	class(self).SetDebugEnabled(value)
 	return self
 }
@@ -826,12 +826,12 @@ If true uses the defined [DebugPathCustomColor] for this agent instead of global
 
 [DebugPathCustomColor]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugPathCustomColor
 */
-func (self Instance) DebugUseCustom() bool {
+func (self Instance) DebugUseCustom() bool { //gd:NavigationAgent2D.debug_use_custom
 	return bool(class(self).GetDebugUseCustom())
 }
 
 // SetDebugUseCustom sets the property returned by [GetDebugUseCustom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugUseCustom(value bool) Instance {
+func (self Instance) SetDebugUseCustom(value bool) Instance { //gd:NavigationAgent2D.debug_use_custom
 	class(self).SetDebugUseCustom(value)
 	return self
 }
@@ -841,12 +841,12 @@ If [DebugUseCustom] is true uses this color for this agent instead of global col
 
 [DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
 */
-func (self Instance) DebugPathCustomColor() Color.RGBA {
+func (self Instance) DebugPathCustomColor() Color.RGBA { //gd:NavigationAgent2D.debug_path_custom_color
 	return Color.RGBA(class(self).GetDebugPathCustomColor())
 }
 
 // SetDebugPathCustomColor sets the property returned by [GetDebugPathCustomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugPathCustomColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugPathCustomColor(value Color.RGBA) Instance { //gd:NavigationAgent2D.debug_path_custom_color
 	class(self).SetDebugPathCustomColor(Color.RGBA(value))
 	return self
 }
@@ -856,12 +856,12 @@ If [DebugUseCustom] is true uses this rasterized point size for rendering path p
 
 [DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
 */
-func (self Instance) DebugPathCustomPointSize() Float.X {
+func (self Instance) DebugPathCustomPointSize() Float.X { //gd:NavigationAgent2D.debug_path_custom_point_size
 	return Float.X(Float.X(class(self).GetDebugPathCustomPointSize()))
 }
 
 // SetDebugPathCustomPointSize sets the property returned by [GetDebugPathCustomPointSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugPathCustomPointSize(value Float.X) Instance {
+func (self Instance) SetDebugPathCustomPointSize(value Float.X) Instance { //gd:NavigationAgent2D.debug_path_custom_point_size
 	class(self).SetDebugPathCustomPointSize(float64(value))
 	return self
 }
@@ -871,12 +871,12 @@ If [DebugUseCustom] is true uses this line width for rendering paths for this ag
 
 [DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
 */
-func (self Instance) DebugPathCustomLineWidth() Float.X {
+func (self Instance) DebugPathCustomLineWidth() Float.X { //gd:NavigationAgent2D.debug_path_custom_line_width
 	return Float.X(Float.X(class(self).GetDebugPathCustomLineWidth()))
 }
 
 // SetDebugPathCustomLineWidth sets the property returned by [GetDebugPathCustomLineWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugPathCustomLineWidth(value Float.X) Instance {
+func (self Instance) SetDebugPathCustomLineWidth(value Float.X) Instance { //gd:NavigationAgent2D.debug_path_custom_line_width
 	class(self).SetDebugPathCustomLineWidth(float64(value))
 	return self
 }

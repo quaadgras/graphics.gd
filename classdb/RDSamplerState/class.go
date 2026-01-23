@@ -189,12 +189,12 @@ func New() Instance {
 /*
 The sampler's magnification filter. It is the filtering method used when sampling texels that appear bigger than on-screen pixels.
 */
-func (self Instance) MagFilter() Rendering.SamplerFilter {
+func (self Instance) MagFilter() Rendering.SamplerFilter { //gd:RDSamplerState.mag_filter
 	return Rendering.SamplerFilter(class(self).GetMagFilter())
 }
 
 // SetMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMagFilter(value Rendering.SamplerFilter) Instance {
+func (self Instance) SetMagFilter(value Rendering.SamplerFilter) Instance { //gd:RDSamplerState.mag_filter
 	class(self).SetMagFilter(value)
 	return self
 }
@@ -202,12 +202,12 @@ func (self Instance) SetMagFilter(value Rendering.SamplerFilter) Instance {
 /*
 The sampler's minification filter. It is the filtering method used when sampling texels that appear smaller than on-screen pixels.
 */
-func (self Instance) MinFilter() Rendering.SamplerFilter {
+func (self Instance) MinFilter() Rendering.SamplerFilter { //gd:RDSamplerState.min_filter
 	return Rendering.SamplerFilter(class(self).GetMinFilter())
 }
 
 // SetMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinFilter(value Rendering.SamplerFilter) Instance {
+func (self Instance) SetMinFilter(value Rendering.SamplerFilter) Instance { //gd:RDSamplerState.min_filter
 	class(self).SetMinFilter(value)
 	return self
 }
@@ -215,12 +215,12 @@ func (self Instance) SetMinFilter(value Rendering.SamplerFilter) Instance {
 /*
 The filtering method to use for mipmaps.
 */
-func (self Instance) MipFilter() Rendering.SamplerFilter {
+func (self Instance) MipFilter() Rendering.SamplerFilter { //gd:RDSamplerState.mip_filter
 	return Rendering.SamplerFilter(class(self).GetMipFilter())
 }
 
 // SetMipFilter sets the property returned by [GetMipFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMipFilter(value Rendering.SamplerFilter) Instance {
+func (self Instance) SetMipFilter(value Rendering.SamplerFilter) Instance { //gd:RDSamplerState.mip_filter
 	class(self).SetMipFilter(value)
 	return self
 }
@@ -228,12 +228,12 @@ func (self Instance) SetMipFilter(value Rendering.SamplerFilter) Instance {
 /*
 The repeat mode to use along the U axis of UV coordinates. This affects the returned values if sampling outside the UV bounds.
 */
-func (self Instance) RepeatU() Rendering.SamplerRepeatMode {
+func (self Instance) RepeatU() Rendering.SamplerRepeatMode { //gd:RDSamplerState.repeat_u
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatU())
 }
 
 // SetRepeatU sets the property returned by [GetRepeatU]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) Instance {
+func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) Instance { //gd:RDSamplerState.repeat_u
 	class(self).SetRepeatU(value)
 	return self
 }
@@ -241,12 +241,12 @@ func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) Instance {
 /*
 The repeat mode to use along the V axis of UV coordinates. This affects the returned values if sampling outside the UV bounds.
 */
-func (self Instance) RepeatV() Rendering.SamplerRepeatMode {
+func (self Instance) RepeatV() Rendering.SamplerRepeatMode { //gd:RDSamplerState.repeat_v
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatV())
 }
 
 // SetRepeatV sets the property returned by [GetRepeatV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) Instance {
+func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) Instance { //gd:RDSamplerState.repeat_v
 	class(self).SetRepeatV(value)
 	return self
 }
@@ -254,12 +254,12 @@ func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) Instance {
 /*
 The repeat mode to use along the W axis of UV coordinates. This affects the returned values if sampling outside the UV bounds. Only effective for 3D samplers.
 */
-func (self Instance) RepeatW() Rendering.SamplerRepeatMode {
+func (self Instance) RepeatW() Rendering.SamplerRepeatMode { //gd:RDSamplerState.repeat_w
 	return Rendering.SamplerRepeatMode(class(self).GetRepeatW())
 }
 
 // SetRepeatW sets the property returned by [GetRepeatW]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) Instance {
+func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) Instance { //gd:RDSamplerState.repeat_w
 	class(self).SetRepeatW(value)
 	return self
 }
@@ -267,12 +267,12 @@ func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) Instance {
 /*
 The mipmap LOD bias to use. Positive values will make the sampler blurrier at a given distance, while negative values will make the sampler sharper at a given distance (at the risk of looking grainy). Recommended values are between -0.5 and 0.0. Only effective if the sampler has mipmaps available.
 */
-func (self Instance) LodBias() Float.X {
+func (self Instance) LodBias() Float.X { //gd:RDSamplerState.lod_bias
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
 // SetLodBias sets the property returned by [GetLodBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLodBias(value Float.X) Instance {
+func (self Instance) SetLodBias(value Float.X) Instance { //gd:RDSamplerState.lod_bias
 	class(self).SetLodBias(float64(value))
 	return self
 }
@@ -282,12 +282,12 @@ If true, perform anisotropic sampling. See [AnisotropyMax].
 
 [AnisotropyMax]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.AnisotropyMax
 */
-func (self Instance) UseAnisotropy() bool {
+func (self Instance) UseAnisotropy() bool { //gd:RDSamplerState.use_anisotropy
 	return bool(class(self).GetUseAnisotropy())
 }
 
 // SetUseAnisotropy sets the property returned by [GetUseAnisotropy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseAnisotropy(value bool) Instance {
+func (self Instance) SetUseAnisotropy(value bool) Instance { //gd:RDSamplerState.use_anisotropy
 	class(self).SetUseAnisotropy(value)
 	return self
 }
@@ -300,12 +300,12 @@ If [AnisotropyMax] is 1.0, forcibly disables anisotropy even if [UseAnisotropy] 
 [AnisotropyMax]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.AnisotropyMax
 [UseAnisotropy]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.UseAnisotropy
 */
-func (self Instance) AnisotropyMax() Float.X {
+func (self Instance) AnisotropyMax() Float.X { //gd:RDSamplerState.anisotropy_max
 	return Float.X(Float.X(class(self).GetAnisotropyMax()))
 }
 
 // SetAnisotropyMax sets the property returned by [GetAnisotropyMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnisotropyMax(value Float.X) Instance {
+func (self Instance) SetAnisotropyMax(value Float.X) Instance { //gd:RDSamplerState.anisotropy_max
 	class(self).SetAnisotropyMax(float64(value))
 	return self
 }
@@ -315,12 +315,12 @@ If true, returned values will be based on the comparison operation defined in [C
 
 [CompareOp]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.CompareOp
 */
-func (self Instance) EnableCompare() bool {
+func (self Instance) EnableCompare() bool { //gd:RDSamplerState.enable_compare
 	return bool(class(self).GetEnableCompare())
 }
 
 // SetEnableCompare sets the property returned by [GetEnableCompare]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableCompare(value bool) Instance {
+func (self Instance) SetEnableCompare(value bool) Instance { //gd:RDSamplerState.enable_compare
 	class(self).SetEnableCompare(value)
 	return self
 }
@@ -330,12 +330,12 @@ The compare operation to use. Only effective if [EnableCompare] is true.
 
 [EnableCompare]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.EnableCompare
 */
-func (self Instance) CompareOp() Rendering.CompareOperator {
+func (self Instance) CompareOp() Rendering.CompareOperator { //gd:RDSamplerState.compare_op
 	return Rendering.CompareOperator(class(self).GetCompareOp())
 }
 
 // SetCompareOp sets the property returned by [GetCompareOp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompareOp(value Rendering.CompareOperator) Instance {
+func (self Instance) SetCompareOp(value Rendering.CompareOperator) Instance { //gd:RDSamplerState.compare_op
 	class(self).SetCompareOp(value)
 	return self
 }
@@ -343,12 +343,12 @@ func (self Instance) SetCompareOp(value Rendering.CompareOperator) Instance {
 /*
 The minimum mipmap LOD bias to display (highest resolution). Only effective if the sampler has mipmaps available.
 */
-func (self Instance) MinLod() Float.X {
+func (self Instance) MinLod() Float.X { //gd:RDSamplerState.min_lod
 	return Float.X(Float.X(class(self).GetMinLod()))
 }
 
 // SetMinLod sets the property returned by [GetMinLod]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinLod(value Float.X) Instance {
+func (self Instance) SetMinLod(value Float.X) Instance { //gd:RDSamplerState.min_lod
 	class(self).SetMinLod(float64(value))
 	return self
 }
@@ -356,12 +356,12 @@ func (self Instance) SetMinLod(value Float.X) Instance {
 /*
 The maximum mipmap LOD bias to display (lowest resolution). Only effective if the sampler has mipmaps available.
 */
-func (self Instance) MaxLod() Float.X {
+func (self Instance) MaxLod() Float.X { //gd:RDSamplerState.max_lod
 	return Float.X(Float.X(class(self).GetMaxLod()))
 }
 
 // SetMaxLod sets the property returned by [GetMaxLod]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxLod(value Float.X) Instance {
+func (self Instance) SetMaxLod(value Float.X) Instance { //gd:RDSamplerState.max_lod
 	class(self).SetMaxLod(float64(value))
 	return self
 }
@@ -373,12 +373,12 @@ The border color that will be returned when sampling outside the sampler's bound
 [RepeatV]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.RepeatV
 [RepeatW]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.RepeatW
 */
-func (self Instance) BorderColor() Rendering.SamplerBorderColor {
+func (self Instance) BorderColor() Rendering.SamplerBorderColor { //gd:RDSamplerState.border_color
 	return Rendering.SamplerBorderColor(class(self).GetBorderColor())
 }
 
 // SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) Instance {
+func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) Instance { //gd:RDSamplerState.border_color
 	class(self).SetBorderColor(value)
 	return self
 }
@@ -386,12 +386,12 @@ func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) Instance
 /*
 If true, the texture will be sampled with coordinates ranging from 0 to the texture's resolution. Otherwise, the coordinates will be normalized and range from 0 to 1.
 */
-func (self Instance) UnnormalizedUvw() bool {
+func (self Instance) UnnormalizedUvw() bool { //gd:RDSamplerState.unnormalized_uvw
 	return bool(class(self).GetUnnormalizedUvw())
 }
 
 // SetUnnormalizedUvw sets the property returned by [GetUnnormalizedUvw]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnnormalizedUvw(value bool) Instance {
+func (self Instance) SetUnnormalizedUvw(value bool) Instance { //gd:RDSamplerState.unnormalized_uvw
 	class(self).SetUnnormalizedUvw(value)
 	return self
 }

@@ -415,12 +415,12 @@ func New() Instance {
 /*
 The location from which the user may select a file, including res://, user://, and the local file system.
 */
-func (self Instance) Access() Access {
+func (self Instance) Access() Access { //gd:EditorFileDialog.access
 	return Access(class(self).GetAccess())
 }
 
 // SetAccess sets the property returned by [GetAccess]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccess(value Access) Instance {
+func (self Instance) SetAccess(value Access) Instance { //gd:EditorFileDialog.access
 	class(self).SetAccess(value)
 	return self
 }
@@ -430,12 +430,12 @@ The view format in which the [EditorFileDialog] displays resources to the user.
 
 [EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
 */
-func (self Instance) DisplayMode() DisplayMode {
+func (self Instance) DisplayMode() DisplayMode { //gd:EditorFileDialog.display_mode
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
 // SetDisplayMode sets the property returned by [GetDisplayMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisplayMode(value DisplayMode) Instance {
+func (self Instance) SetDisplayMode(value DisplayMode) Instance { //gd:EditorFileDialog.display_mode
 	class(self).SetDisplayMode(value)
 	return self
 }
@@ -443,12 +443,12 @@ func (self Instance) SetDisplayMode(value DisplayMode) Instance {
 /*
 The dialog's open or save mode, which affects the selection behavior.
 */
-func (self Instance) FileMode() FileMode {
+func (self Instance) FileMode() FileMode { //gd:EditorFileDialog.file_mode
 	return FileMode(class(self).GetFileMode())
 }
 
 // SetFileMode sets the property returned by [GetFileMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFileMode(value FileMode) Instance {
+func (self Instance) SetFileMode(value FileMode) Instance { //gd:EditorFileDialog.file_mode
 	class(self).SetFileMode(value)
 	return self
 }
@@ -456,12 +456,12 @@ func (self Instance) SetFileMode(value FileMode) Instance {
 /*
 The currently occupied directory.
 */
-func (self Instance) CurrentDir() string {
+func (self Instance) CurrentDir() string { //gd:EditorFileDialog.current_dir
 	return string(class(self).GetCurrentDir().String())
 }
 
 // SetCurrentDir sets the property returned by [GetCurrentDir]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentDir(value string) Instance {
+func (self Instance) SetCurrentDir(value string) Instance { //gd:EditorFileDialog.current_dir
 	class(self).SetCurrentDir(String.New(value))
 	return self
 }
@@ -469,12 +469,12 @@ func (self Instance) SetCurrentDir(value string) Instance {
 /*
 The currently selected file.
 */
-func (self Instance) CurrentFile() string {
+func (self Instance) CurrentFile() string { //gd:EditorFileDialog.current_file
 	return string(class(self).GetCurrentFile().String())
 }
 
 // SetCurrentFile sets the property returned by [GetCurrentFile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentFile(value string) Instance {
+func (self Instance) SetCurrentFile(value string) Instance { //gd:EditorFileDialog.current_file
 	class(self).SetCurrentFile(String.New(value))
 	return self
 }
@@ -482,12 +482,12 @@ func (self Instance) SetCurrentFile(value string) Instance {
 /*
 The file system path in the address bar.
 */
-func (self Instance) CurrentPath() string {
+func (self Instance) CurrentPath() string { //gd:EditorFileDialog.current_path
 	return string(class(self).GetCurrentPath().String())
 }
 
 // SetCurrentPath sets the property returned by [GetCurrentPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentPath(value string) Instance {
+func (self Instance) SetCurrentPath(value string) Instance { //gd:EditorFileDialog.current_path
 	class(self).SetCurrentPath(String.New(value))
 	return self
 }
@@ -495,12 +495,12 @@ func (self Instance) SetCurrentPath(value string) Instance {
 /*
 The available file type filters. For example, this shows only .png and .gd files: set_filters(PackedStringArray(["*.png ; PNG Images","*.gd ; GDScript Files"])). Multiple file types can also be specified in a single filter. "*.png, *.jpg, *.jpeg ; Supported Images" will show both PNG and JPEG files when selected.
 */
-func (self Instance) Filters() []string {
+func (self Instance) Filters() []string { //gd:EditorFileDialog.filters
 	return []string(class(self).GetFilters().Strings())
 }
 
 // SetFilters sets the property returned by [GetFilters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilters(value []string) Instance {
+func (self Instance) SetFilters(value []string) Instance { //gd:EditorFileDialog.filters
 	class(self).SetFilters(Packed.MakeStrings(value...))
 	return self
 }
@@ -511,12 +511,12 @@ The number of additional [OptionButton]s and [CheckBox]es in the dialog.
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) OptionCount() int {
+func (self Instance) OptionCount() int { //gd:EditorFileDialog.option_count
 	return int(int(class(self).GetOptionCount()))
 }
 
 // SetOptionCount sets the property returned by [GetOptionCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOptionCount(value int) Instance {
+func (self Instance) SetOptionCount(value int) Instance { //gd:EditorFileDialog.option_count
 	class(self).SetOptionCount(int64(value))
 	return self
 }
@@ -527,12 +527,12 @@ If true, hidden files and directories will be visible in the [EditorFileDialog].
 [EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
 [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
 */
-func (self Instance) ShowHiddenFiles() bool {
+func (self Instance) ShowHiddenFiles() bool { //gd:EditorFileDialog.show_hidden_files
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
 // SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowHiddenFiles(value bool) Instance {
+func (self Instance) SetShowHiddenFiles(value bool) Instance { //gd:EditorFileDialog.show_hidden_files
 	class(self).SetShowHiddenFiles(value)
 	return self
 }
@@ -542,12 +542,12 @@ If true, the [EditorFileDialog] will not warn the user before overwriting files.
 
 [EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
 */
-func (self Instance) DisableOverwriteWarning() bool {
+func (self Instance) DisableOverwriteWarning() bool { //gd:EditorFileDialog.disable_overwrite_warning
 	return bool(class(self).IsOverwriteWarningDisabled())
 }
 
 // SetDisableOverwriteWarning sets the property returned by [IsOverwriteWarningDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableOverwriteWarning(value bool) Instance {
+func (self Instance) SetDisableOverwriteWarning(value bool) Instance { //gd:EditorFileDialog.disable_overwrite_warning
 	class(self).SetDisableOverwriteWarning(value)
 	return self
 }

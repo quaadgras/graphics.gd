@@ -1293,12 +1293,12 @@ If true, hides the [PopupMenu] when an item is selected.
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) HideOnItemSelection() bool {
+func (self Instance) HideOnItemSelection() bool { //gd:PopupMenu.hide_on_item_selection
 	return bool(class(self).IsHideOnItemSelection())
 }
 
 // SetHideOnItemSelection sets the property returned by [IsHideOnItemSelection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideOnItemSelection(value bool) Instance {
+func (self Instance) SetHideOnItemSelection(value bool) Instance { //gd:PopupMenu.hide_on_item_selection
 	class(self).SetHideOnItemSelection(value)
 	return self
 }
@@ -1308,12 +1308,12 @@ If true, hides the [PopupMenu] when a checkbox or radio button is selected.
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) HideOnCheckableItemSelection() bool {
+func (self Instance) HideOnCheckableItemSelection() bool { //gd:PopupMenu.hide_on_checkable_item_selection
 	return bool(class(self).IsHideOnCheckableItemSelection())
 }
 
 // SetHideOnCheckableItemSelection sets the property returned by [IsHideOnCheckableItemSelection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideOnCheckableItemSelection(value bool) Instance {
+func (self Instance) SetHideOnCheckableItemSelection(value bool) Instance { //gd:PopupMenu.hide_on_checkable_item_selection
 	class(self).SetHideOnCheckableItemSelection(value)
 	return self
 }
@@ -1323,12 +1323,12 @@ If true, hides the [PopupMenu] when a state item is selected.
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) HideOnStateItemSelection() bool {
+func (self Instance) HideOnStateItemSelection() bool { //gd:PopupMenu.hide_on_state_item_selection
 	return bool(class(self).IsHideOnStateItemSelection())
 }
 
 // SetHideOnStateItemSelection sets the property returned by [IsHideOnStateItemSelection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideOnStateItemSelection(value bool) Instance {
+func (self Instance) SetHideOnStateItemSelection(value bool) Instance { //gd:PopupMenu.hide_on_state_item_selection
 	class(self).SetHideOnStateItemSelection(value)
 	return self
 }
@@ -1336,12 +1336,12 @@ func (self Instance) SetHideOnStateItemSelection(value bool) Instance {
 /*
 Sets the delay time in seconds for the submenu item to popup on mouse hovering. If the popup menu is added as a child of another (acting as a submenu), it will inherit the delay time of the parent menu item.
 */
-func (self Instance) SubmenuPopupDelay() Float.X {
+func (self Instance) SubmenuPopupDelay() Float.X { //gd:PopupMenu.submenu_popup_delay
 	return Float.X(Float.X(class(self).GetSubmenuPopupDelay()))
 }
 
 // SetSubmenuPopupDelay sets the property returned by [GetSubmenuPopupDelay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubmenuPopupDelay(value Float.X) Instance {
+func (self Instance) SetSubmenuPopupDelay(value Float.X) Instance { //gd:PopupMenu.submenu_popup_delay
 	class(self).SetSubmenuPopupDelay(float64(value))
 	return self
 }
@@ -1351,12 +1351,12 @@ If true, allows navigating [PopupMenu] with letter keys.
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) AllowSearch() bool {
+func (self Instance) AllowSearch() bool { //gd:PopupMenu.allow_search
 	return bool(class(self).GetAllowSearch())
 }
 
 // SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowSearch(value bool) Instance {
+func (self Instance) SetAllowSearch(value bool) Instance { //gd:PopupMenu.allow_search
 	class(self).SetAllowSearch(value)
 	return self
 }
@@ -1366,12 +1366,12 @@ If set to one of the values of [NativeMenu.SystemMenus], this [PopupMenu] is bou
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) SystemMenuId() NativeMenu.SystemMenus {
+func (self Instance) SystemMenuId() NativeMenu.SystemMenus { //gd:PopupMenu.system_menu_id
 	return NativeMenu.SystemMenus(class(self).GetSystemMenu())
 }
 
 // SetSystemMenuId sets the property returned by [GetSystemMenu]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) Instance {
+func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) Instance { //gd:PopupMenu.system_menu_id
 	class(self).SetSystemMenu(value)
 	return self
 }
@@ -1386,12 +1386,12 @@ Note: If [PopupMenu] is linked to [StatusIndicator], [MenuBar], or another [Popu
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 [StatusIndicator]: https://pkg.go.dev/graphics.gd/classdb/StatusIndicator
 */
-func (self Instance) PreferNativeMenu() bool {
+func (self Instance) PreferNativeMenu() bool { //gd:PopupMenu.prefer_native_menu
 	return bool(class(self).IsPreferNativeMenu())
 }
 
 // SetPreferNativeMenu sets the property returned by [IsPreferNativeMenu]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreferNativeMenu(value bool) Instance {
+func (self Instance) SetPreferNativeMenu(value bool) Instance { //gd:PopupMenu.prefer_native_menu
 	class(self).SetPreferNativeMenu(value)
 	return self
 }
@@ -1399,12 +1399,12 @@ func (self Instance) SetPreferNativeMenu(value bool) Instance {
 /*
 The number of items currently in the list.
 */
-func (self Instance) ItemCount() int {
+func (self Instance) ItemCount() int { //gd:PopupMenu.item_count
 	return int(int(class(self).GetItemCount()))
 }
 
 // SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetItemCount(value int) Instance {
+func (self Instance) SetItemCount(value int) Instance { //gd:PopupMenu.item_count
 	class(self).SetItemCount(int64(value))
 	return self
 }

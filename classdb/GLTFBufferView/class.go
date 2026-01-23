@@ -178,12 +178,12 @@ func New() Instance {
 /*
 The index of the buffer this buffer view is referencing. If -1, this buffer view is not referencing any buffer.
 */
-func (self Instance) Buffer() int {
+func (self Instance) Buffer() int { //gd:GLTFBufferView.buffer
 	return int(int(class(self).GetBuffer()))
 }
 
 // SetBuffer sets the property returned by [GetBuffer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBuffer(value int) Instance {
+func (self Instance) SetBuffer(value int) Instance { //gd:GLTFBufferView.buffer
 	class(self).SetBuffer(int64(value))
 	return self
 }
@@ -191,12 +191,12 @@ func (self Instance) SetBuffer(value int) Instance {
 /*
 The offset, in bytes, from the start of the buffer to the start of this buffer view.
 */
-func (self Instance) ByteOffset() int {
+func (self Instance) ByteOffset() int { //gd:GLTFBufferView.byte_offset
 	return int(int(class(self).GetByteOffset()))
 }
 
 // SetByteOffset sets the property returned by [GetByteOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetByteOffset(value int) Instance {
+func (self Instance) SetByteOffset(value int) Instance { //gd:GLTFBufferView.byte_offset
 	class(self).SetByteOffset(int64(value))
 	return self
 }
@@ -204,12 +204,12 @@ func (self Instance) SetByteOffset(value int) Instance {
 /*
 The length, in bytes, of this buffer view. If 0, this buffer view is empty.
 */
-func (self Instance) ByteLength() int {
+func (self Instance) ByteLength() int { //gd:GLTFBufferView.byte_length
 	return int(int(class(self).GetByteLength()))
 }
 
 // SetByteLength sets the property returned by [GetByteLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetByteLength(value int) Instance {
+func (self Instance) SetByteLength(value int) Instance { //gd:GLTFBufferView.byte_length
 	class(self).SetByteLength(int64(value))
 	return self
 }
@@ -217,12 +217,12 @@ func (self Instance) SetByteLength(value int) Instance {
 /*
 The stride, in bytes, between interleaved data. If -1, this buffer view is not interleaved.
 */
-func (self Instance) ByteStride() int {
+func (self Instance) ByteStride() int { //gd:GLTFBufferView.byte_stride
 	return int(int(class(self).GetByteStride()))
 }
 
 // SetByteStride sets the property returned by [GetByteStride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetByteStride(value int) Instance {
+func (self Instance) SetByteStride(value int) Instance { //gd:GLTFBufferView.byte_stride
 	class(self).SetByteStride(int64(value))
 	return self
 }
@@ -232,12 +232,12 @@ true if the GLTFBufferView's OpenGL GPU buffer type is an ELEMENT_ARRAY_BUFFER u
 
 [Buffers, BufferViews, and Accessors]: https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
 */
-func (self Instance) Indices() bool {
+func (self Instance) Indices() bool { //gd:GLTFBufferView.indices
 	return bool(class(self).GetIndices())
 }
 
 // SetIndices sets the property returned by [GetIndices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndices(value bool) Instance {
+func (self Instance) SetIndices(value bool) Instance { //gd:GLTFBufferView.indices
 	class(self).SetIndices(value)
 	return self
 }
@@ -247,12 +247,12 @@ true if the GLTFBufferView's OpenGL GPU buffer type is an ARRAY_BUFFER used for 
 
 [Buffers, BufferViews, and Accessors]: https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
 */
-func (self Instance) VertexAttributes() bool {
+func (self Instance) VertexAttributes() bool { //gd:GLTFBufferView.vertex_attributes
 	return bool(class(self).GetVertexAttributes())
 }
 
 // SetVertexAttributes sets the property returned by [GetVertexAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertexAttributes(value bool) Instance {
+func (self Instance) SetVertexAttributes(value bool) Instance { //gd:GLTFBufferView.vertex_attributes
 	class(self).SetVertexAttributes(value)
 	return self
 }

@@ -174,12 +174,12 @@ The scale of the game world compared to the real world. This is the same as [XRS
 
 [XRServer.WorldScale]: https://pkg.go.dev/graphics.gd/classdb/XRServer#WorldScale
 */
-func (self Instance) WorldScale() Float.X {
+func (self Instance) WorldScale() Float.X { //gd:XROrigin3D.world_scale
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
 // SetWorldScale sets the property returned by [GetWorldScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWorldScale(value Float.X) Instance {
+func (self Instance) SetWorldScale(value Float.X) Instance { //gd:XROrigin3D.world_scale
 	class(self).SetWorldScale(float64(value))
 	return self
 }
@@ -189,12 +189,12 @@ If true, this origin node is currently being used by the [XRServer]. Only one or
 
 [XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
-func (self Instance) Current() bool {
+func (self Instance) Current() bool { //gd:XROrigin3D.current
 	return bool(class(self).IsCurrent())
 }
 
 // SetCurrent sets the property returned by [IsCurrent]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrent(value bool) Instance {
+func (self Instance) SetCurrent(value bool) Instance { //gd:XROrigin3D.current
 	class(self).SetCurrent(value)
 	return self
 }

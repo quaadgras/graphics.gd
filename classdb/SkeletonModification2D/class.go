@@ -319,12 +319,12 @@ If true, the modification's [Execute] function will be called by the [SkeletonMo
 [Execute]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2D#Interface
 [SkeletonModificationStack2D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModificationStack2D
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:SkeletonModification2D.enabled
 	return bool(class(self).GetEnabled())
 }
 
 // SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:SkeletonModification2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -332,12 +332,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 The execution mode for the modification. This tells the modification stack when to execute the modification. Some modifications have settings that are only available in certain execution modes.
 */
-func (self Instance) ExecutionMode() int {
+func (self Instance) ExecutionMode() int { //gd:SkeletonModification2D.execution_mode
 	return int(int(class(self).GetExecutionMode()))
 }
 
 // SetExecutionMode sets the property returned by [GetExecutionMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExecutionMode(value int) Instance {
+func (self Instance) SetExecutionMode(value int) Instance { //gd:SkeletonModification2D.execution_mode
 	class(self).SetExecutionMode(int64(value))
 	return self
 }

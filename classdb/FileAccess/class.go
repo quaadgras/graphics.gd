@@ -953,12 +953,12 @@ Note: This is always reset to system endianness, which is little-endian on all s
 [BigEndian]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.BigEndian
 [endianness]: https://en.wikipedia.org/wiki/Endianness
 */
-func (self Instance) BigEndian() bool {
+func (self Instance) BigEndian() bool { //gd:FileAccess.big_endian
 	return bool(class(self).IsBigEndian())
 }
 
 // SetBigEndian sets the property returned by [IsBigEndian]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBigEndian(value bool) Instance {
+func (self Instance) SetBigEndian(value bool) Instance { //gd:FileAccess.big_endian
 	class(self).SetBigEndian(value)
 	return self
 }

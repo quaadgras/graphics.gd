@@ -259,12 +259,12 @@ func New() Instance {
 /*
 The NodePath to the node that is the target for the FABRIK modification. This node is what the FABRIK chain will attempt to rotate the bone chain to.
 */
-func (self Instance) TargetNodepath() string {
+func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DFABRIK.target_nodepath
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNodepath(value string) Instance {
+func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DFABRIK.target_nodepath
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -272,12 +272,12 @@ func (self Instance) SetTargetNodepath(value string) Instance {
 /*
 The number of FABRIK joints in the FABRIK modification.
 */
-func (self Instance) FabrikDataChainLength() int {
+func (self Instance) FabrikDataChainLength() int { //gd:SkeletonModification2DFABRIK.fabrik_data_chain_length
 	return int(int(class(self).GetFabrikDataChainLength()))
 }
 
 // SetFabrikDataChainLength sets the property returned by [GetFabrikDataChainLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFabrikDataChainLength(value int) Instance {
+func (self Instance) SetFabrikDataChainLength(value int) Instance { //gd:SkeletonModification2DFABRIK.fabrik_data_chain_length
 	class(self).SetFabrikDataChainLength(int64(value))
 	return self
 }

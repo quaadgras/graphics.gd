@@ -194,12 +194,12 @@ func New() Instance {
 /*
 The title of the node.
 */
-func (self Instance) Title() string {
+func (self Instance) Title() string { //gd:VisualShaderNodeFrame.title
 	return string(class(self).GetTitle().String())
 }
 
 // SetTitle sets the property returned by [GetTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTitle(value string) Instance {
+func (self Instance) SetTitle(value string) Instance { //gd:VisualShaderNodeFrame.title
 	class(self).SetTitle(String.New(value))
 	return self
 }
@@ -209,12 +209,12 @@ If true, the frame will be tinted with the color specified in [TintColor].
 
 [TintColor]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFrame#Instance.TintColor
 */
-func (self Instance) TintColorEnabled() bool {
+func (self Instance) TintColorEnabled() bool { //gd:VisualShaderNodeFrame.tint_color_enabled
 	return bool(class(self).IsTintColorEnabled())
 }
 
 // SetTintColorEnabled sets the property returned by [IsTintColorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintColorEnabled(value bool) Instance {
+func (self Instance) SetTintColorEnabled(value bool) Instance { //gd:VisualShaderNodeFrame.tint_color_enabled
 	class(self).SetTintColorEnabled(value)
 	return self
 }
@@ -224,12 +224,12 @@ The color of the frame when [TintColorEnabled] is true.
 
 [TintColorEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeFrame#Instance.TintColorEnabled
 */
-func (self Instance) TintColor() Color.RGBA {
+func (self Instance) TintColor() Color.RGBA { //gd:VisualShaderNodeFrame.tint_color
 	return Color.RGBA(class(self).GetTintColor())
 }
 
 // SetTintColor sets the property returned by [GetTintColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTintColor(value Color.RGBA) Instance {
+func (self Instance) SetTintColor(value Color.RGBA) Instance { //gd:VisualShaderNodeFrame.tint_color
 	class(self).SetTintColor(Color.RGBA(value))
 	return self
 }
@@ -237,12 +237,12 @@ func (self Instance) SetTintColor(value Color.RGBA) Instance {
 /*
 If true, the frame will automatically resize to enclose all attached nodes.
 */
-func (self Instance) Autoshrink() bool {
+func (self Instance) Autoshrink() bool { //gd:VisualShaderNodeFrame.autoshrink
 	return bool(class(self).IsAutoshrinkEnabled())
 }
 
 // SetAutoshrink sets the property returned by [IsAutoshrinkEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoshrink(value bool) Instance {
+func (self Instance) SetAutoshrink(value bool) Instance { //gd:VisualShaderNodeFrame.autoshrink
 	class(self).SetAutoshrinkEnabled(value)
 	return self
 }
@@ -250,12 +250,12 @@ func (self Instance) SetAutoshrink(value bool) Instance {
 /*
 The list of nodes attached to the frame.
 */
-func (self Instance) AttachedNodes() []int32 {
+func (self Instance) AttachedNodes() []int32 { //gd:VisualShaderNodeFrame.attached_nodes
 	return []int32(slices.Collect(class(self).GetAttachedNodes().Values()))
 }
 
 // SetAttachedNodes sets the property returned by [GetAttachedNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttachedNodes(value []int32) Instance {
+func (self Instance) SetAttachedNodes(value []int32) Instance { //gd:VisualShaderNodeFrame.attached_nodes
 	class(self).SetAttachedNodes(Packed.New(value...))
 	return self
 }

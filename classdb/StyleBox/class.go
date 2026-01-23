@@ -298,12 +298,12 @@ Refer to [ContentMarginBottom] for extra considerations.
 
 [ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) ContentMarginLeft() Float.X {
+func (self Instance) ContentMarginLeft() Float.X { //gd:StyleBox.content_margin_left
 	return Float.X(Float.X(class(self).GetContentMargin(0)))
 }
 
 // SetContentMarginLeft sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentMarginLeft(value Float.X) Instance {
+func (self Instance) SetContentMarginLeft(value Float.X) Instance { //gd:StyleBox.content_margin_left
 	class(self).SetContentMargin(0, float64(value))
 	return self
 }
@@ -315,12 +315,12 @@ Refer to [ContentMarginBottom] for extra considerations.
 
 [ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) ContentMarginTop() Float.X {
+func (self Instance) ContentMarginTop() Float.X { //gd:StyleBox.content_margin_top
 	return Float.X(Float.X(class(self).GetContentMargin(1)))
 }
 
 // SetContentMarginTop sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentMarginTop(value Float.X) Instance {
+func (self Instance) SetContentMarginTop(value Float.X) Instance { //gd:StyleBox.content_margin_top
 	class(self).SetContentMargin(1, float64(value))
 	return self
 }
@@ -332,12 +332,12 @@ Refer to [ContentMarginBottom] for extra considerations.
 
 [ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) ContentMarginRight() Float.X {
+func (self Instance) ContentMarginRight() Float.X { //gd:StyleBox.content_margin_right
 	return Float.X(Float.X(class(self).GetContentMargin(2)))
 }
 
 // SetContentMarginRight sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentMarginRight(value Float.X) Instance {
+func (self Instance) SetContentMarginRight(value Float.X) Instance { //gd:StyleBox.content_margin_right
 	class(self).SetContentMargin(2, float64(value))
 	return self
 }
@@ -355,12 +355,12 @@ It is up to the code using this style box to decide what these contents are: for
 [GetMargin]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.GetMargin
 [StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
 */
-func (self Instance) ContentMarginBottom() Float.X {
+func (self Instance) ContentMarginBottom() Float.X { //gd:StyleBox.content_margin_bottom
 	return Float.X(Float.X(class(self).GetContentMargin(3)))
 }
 
 // SetContentMarginBottom sets the property returned by [GetContentMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContentMarginBottom(value Float.X) Instance {
+func (self Instance) SetContentMarginBottom(value Float.X) Instance { //gd:StyleBox.content_margin_bottom
 	class(self).SetContentMargin(3, float64(value))
 	return self
 }

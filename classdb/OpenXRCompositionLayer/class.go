@@ -236,12 +236,12 @@ The [SubViewport] to render on the composition layer.
 
 [SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
 */
-func (self Instance) LayerViewport() SubViewport.Instance {
+func (self Instance) LayerViewport() SubViewport.Instance { //gd:OpenXRCompositionLayer.layer_viewport
 	return SubViewport.Instance(class(self).GetLayerViewport())
 }
 
 // SetLayerViewport sets the property returned by [GetLayerViewport]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayerViewport(value SubViewport.Instance) Instance {
+func (self Instance) SetLayerViewport(value SubViewport.Instance) Instance { //gd:OpenXRCompositionLayer.layer_viewport
 	class(self).SetLayerViewport(value)
 	return self
 }
@@ -257,12 +257,12 @@ Note: This will only work in Android builds.
 [GetAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.GetAndroidSurface
 [LayerViewport]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.LayerViewport
 */
-func (self Instance) UseAndroidSurface() bool {
+func (self Instance) UseAndroidSurface() bool { //gd:OpenXRCompositionLayer.use_android_surface
 	return bool(class(self).GetUseAndroidSurface())
 }
 
 // SetUseAndroidSurface sets the property returned by [GetUseAndroidSurface]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseAndroidSurface(value bool) Instance {
+func (self Instance) SetUseAndroidSurface(value bool) Instance { //gd:OpenXRCompositionLayer.use_android_surface
 	class(self).SetUseAndroidSurface(value)
 	return self
 }
@@ -272,12 +272,12 @@ The size of the Android surface to create if [UseAndroidSurface] is enabled.
 
 [UseAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.UseAndroidSurface
 */
-func (self Instance) AndroidSurfaceSize() Vector2i.XY {
+func (self Instance) AndroidSurfaceSize() Vector2i.XY { //gd:OpenXRCompositionLayer.android_surface_size
 	return Vector2i.XY(class(self).GetAndroidSurfaceSize())
 }
 
 // SetAndroidSurfaceSize sets the property returned by [GetAndroidSurfaceSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) Instance {
+func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) Instance { //gd:OpenXRCompositionLayer.android_surface_size
 	class(self).SetAndroidSurfaceSize(Vector2i.XY(value))
 	return self
 }
@@ -287,12 +287,12 @@ The sort order for this composition layer. Higher numbers will be shown in front
 
 Note: This will have no effect if a fallback mesh is being used.
 */
-func (self Instance) SortOrder() int {
+func (self Instance) SortOrder() int { //gd:OpenXRCompositionLayer.sort_order
 	return int(int(class(self).GetSortOrder()))
 }
 
 // SetSortOrder sets the property returned by [GetSortOrder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSortOrder(value int) Instance {
+func (self Instance) SetSortOrder(value int) Instance { //gd:OpenXRCompositionLayer.sort_order
 	class(self).SetSortOrder(int64(value))
 	return self
 }
@@ -304,12 +304,12 @@ Can be combined with [Viewport.TransparentBg] to give the layer a transparent ba
 
 [Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
 */
-func (self Instance) AlphaBlend() bool {
+func (self Instance) AlphaBlend() bool { //gd:OpenXRCompositionLayer.alpha_blend
 	return bool(class(self).GetAlphaBlend())
 }
 
 // SetAlphaBlend sets the property returned by [GetAlphaBlend]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaBlend(value bool) Instance {
+func (self Instance) SetAlphaBlend(value bool) Instance { //gd:OpenXRCompositionLayer.alpha_blend
 	class(self).SetAlphaBlend(value)
 	return self
 }
@@ -321,12 +321,12 @@ This can be used to create the illusion that the composition layer exists in the
 
 [SortOrder]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.SortOrder
 */
-func (self Instance) EnableHolePunch() bool {
+func (self Instance) EnableHolePunch() bool { //gd:OpenXRCompositionLayer.enable_hole_punch
 	return bool(class(self).GetEnableHolePunch())
 }
 
 // SetEnableHolePunch sets the property returned by [GetEnableHolePunch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableHolePunch(value bool) Instance {
+func (self Instance) SetEnableHolePunch(value bool) Instance { //gd:OpenXRCompositionLayer.enable_hole_punch
 	class(self).SetEnableHolePunch(value)
 	return self
 }
@@ -336,12 +336,12 @@ The minification filter of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateMinFilter() Filter {
+func (self Instance) SwapchainStateMinFilter() Filter { //gd:OpenXRCompositionLayer.swapchain_state_min_filter
 	return Filter(class(self).GetMinFilter())
 }
 
 // SetSwapchainStateMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateMinFilter(value Filter) Instance {
+func (self Instance) SetSwapchainStateMinFilter(value Filter) Instance { //gd:OpenXRCompositionLayer.swapchain_state_min_filter
 	class(self).SetMinFilter(value)
 	return self
 }
@@ -351,12 +351,12 @@ The magnification filter of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateMagFilter() Filter {
+func (self Instance) SwapchainStateMagFilter() Filter { //gd:OpenXRCompositionLayer.swapchain_state_mag_filter
 	return Filter(class(self).GetMagFilter())
 }
 
 // SetSwapchainStateMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateMagFilter(value Filter) Instance {
+func (self Instance) SetSwapchainStateMagFilter(value Filter) Instance { //gd:OpenXRCompositionLayer.swapchain_state_mag_filter
 	class(self).SetMagFilter(value)
 	return self
 }
@@ -366,12 +366,12 @@ The mipmap mode of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateMipmapMode() MipmapMode {
+func (self Instance) SwapchainStateMipmapMode() MipmapMode { //gd:OpenXRCompositionLayer.swapchain_state_mipmap_mode
 	return MipmapMode(class(self).GetMipmapMode())
 }
 
 // SetSwapchainStateMipmapMode sets the property returned by [GetMipmapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) Instance {
+func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) Instance { //gd:OpenXRCompositionLayer.swapchain_state_mipmap_mode
 	class(self).SetMipmapMode(value)
 	return self
 }
@@ -381,12 +381,12 @@ The horizontal wrap mode of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateHorizontalWrap() Wrap {
+func (self Instance) SwapchainStateHorizontalWrap() Wrap { //gd:OpenXRCompositionLayer.swapchain_state_horizontal_wrap
 	return Wrap(class(self).GetHorizontalWrap())
 }
 
 // SetSwapchainStateHorizontalWrap sets the property returned by [GetHorizontalWrap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) Instance {
+func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) Instance { //gd:OpenXRCompositionLayer.swapchain_state_horizontal_wrap
 	class(self).SetHorizontalWrap(value)
 	return self
 }
@@ -396,12 +396,12 @@ The vertical wrap mode of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateVerticalWrap() Wrap {
+func (self Instance) SwapchainStateVerticalWrap() Wrap { //gd:OpenXRCompositionLayer.swapchain_state_vertical_wrap
 	return Wrap(class(self).GetVerticalWrap())
 }
 
 // SetSwapchainStateVerticalWrap sets the property returned by [GetVerticalWrap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) Instance {
+func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) Instance { //gd:OpenXRCompositionLayer.swapchain_state_vertical_wrap
 	class(self).SetVerticalWrap(value)
 	return self
 }
@@ -411,12 +411,12 @@ The swizzle value for the red channel of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateRedSwizzle() Swizzle {
+func (self Instance) SwapchainStateRedSwizzle() Swizzle { //gd:OpenXRCompositionLayer.swapchain_state_red_swizzle
 	return Swizzle(class(self).GetRedSwizzle())
 }
 
 // SetSwapchainStateRedSwizzle sets the property returned by [GetRedSwizzle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) Instance {
+func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) Instance { //gd:OpenXRCompositionLayer.swapchain_state_red_swizzle
 	class(self).SetRedSwizzle(value)
 	return self
 }
@@ -426,12 +426,12 @@ The swizzle value for the green channel of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateGreenSwizzle() Swizzle {
+func (self Instance) SwapchainStateGreenSwizzle() Swizzle { //gd:OpenXRCompositionLayer.swapchain_state_green_swizzle
 	return Swizzle(class(self).GetGreenSwizzle())
 }
 
 // SetSwapchainStateGreenSwizzle sets the property returned by [GetGreenSwizzle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) Instance {
+func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) Instance { //gd:OpenXRCompositionLayer.swapchain_state_green_swizzle
 	class(self).SetGreenSwizzle(value)
 	return self
 }
@@ -441,12 +441,12 @@ The swizzle value for the blue channel of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateBlueSwizzle() Swizzle {
+func (self Instance) SwapchainStateBlueSwizzle() Swizzle { //gd:OpenXRCompositionLayer.swapchain_state_blue_swizzle
 	return Swizzle(class(self).GetBlueSwizzle())
 }
 
 // SetSwapchainStateBlueSwizzle sets the property returned by [GetBlueSwizzle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) Instance {
+func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) Instance { //gd:OpenXRCompositionLayer.swapchain_state_blue_swizzle
 	class(self).SetBlueSwizzle(value)
 	return self
 }
@@ -456,12 +456,12 @@ The swizzle value for the alpha channel of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateAlphaSwizzle() Swizzle {
+func (self Instance) SwapchainStateAlphaSwizzle() Swizzle { //gd:OpenXRCompositionLayer.swapchain_state_alpha_swizzle
 	return Swizzle(class(self).GetAlphaSwizzle())
 }
 
 // SetSwapchainStateAlphaSwizzle sets the property returned by [GetAlphaSwizzle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) Instance {
+func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) Instance { //gd:OpenXRCompositionLayer.swapchain_state_alpha_swizzle
 	class(self).SetAlphaSwizzle(value)
 	return self
 }
@@ -471,12 +471,12 @@ The max anisotropy of the swapchain state.
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateMaxAnisotropy() Float.X {
+func (self Instance) SwapchainStateMaxAnisotropy() Float.X { //gd:OpenXRCompositionLayer.swapchain_state_max_anisotropy
 	return Float.X(Float.X(class(self).GetMaxAnisotropy()))
 }
 
 // SetSwapchainStateMaxAnisotropy sets the property returned by [GetMaxAnisotropy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) Instance {
+func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) Instance { //gd:OpenXRCompositionLayer.swapchain_state_max_anisotropy
 	class(self).SetMaxAnisotropy(float64(value))
 	return self
 }
@@ -486,12 +486,12 @@ The border color of the swapchain state that is used when the wrap mode clamps t
 
 Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
 */
-func (self Instance) SwapchainStateBorderColor() Color.RGBA {
+func (self Instance) SwapchainStateBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.swapchain_state_border_color
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
 // SetSwapchainStateBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) Instance {
+func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) Instance { //gd:OpenXRCompositionLayer.swapchain_state_border_color
 	class(self).SetBorderColor(Color.RGBA(value))
 	return self
 }

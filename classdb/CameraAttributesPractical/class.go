@@ -186,16 +186,19 @@ Enables depth of field blur for objects further than [DofBlurFarDistance]. Stren
 
 Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 
+Note: Depth of field blur is not supported on viewports that have a transparent background (where [Viewport.TransparentBg] is true).
+
 [DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
 [DofBlurFarDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarDistance
 [DofBlurFarTransition]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarTransition
+[Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
 */
-func (self Instance) DofBlurFarEnabled() bool {
+func (self Instance) DofBlurFarEnabled() bool { //gd:CameraAttributesPractical.dof_blur_far_enabled
 	return bool(class(self).IsDofBlurFarEnabled())
 }
 
 // SetDofBlurFarEnabled sets the property returned by [IsDofBlurFarEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurFarEnabled(value bool) Instance {
+func (self Instance) SetDofBlurFarEnabled(value bool) Instance { //gd:CameraAttributesPractical.dof_blur_far_enabled
 	class(self).SetDofBlurFarEnabled(value)
 	return self
 }
@@ -205,12 +208,12 @@ Objects further from the [Camera3D] by this amount will be blurred by the depth 
 
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
-func (self Instance) DofBlurFarDistance() Float.X {
+func (self Instance) DofBlurFarDistance() Float.X { //gd:CameraAttributesPractical.dof_blur_far_distance
 	return Float.X(Float.X(class(self).GetDofBlurFarDistance()))
 }
 
 // SetDofBlurFarDistance sets the property returned by [GetDofBlurFarDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurFarDistance(value Float.X) Instance {
+func (self Instance) SetDofBlurFarDistance(value Float.X) Instance { //gd:CameraAttributesPractical.dof_blur_far_distance
 	class(self).SetDofBlurFarDistance(float64(value))
 	return self
 }
@@ -222,12 +225,12 @@ When positive, distance over which (starting from [DofBlurFarDistance]) blur eff
 [DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
 [DofBlurFarDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarDistance
 */
-func (self Instance) DofBlurFarTransition() Float.X {
+func (self Instance) DofBlurFarTransition() Float.X { //gd:CameraAttributesPractical.dof_blur_far_transition
 	return Float.X(Float.X(class(self).GetDofBlurFarTransition()))
 }
 
 // SetDofBlurFarTransition sets the property returned by [GetDofBlurFarTransition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurFarTransition(value Float.X) Instance {
+func (self Instance) SetDofBlurFarTransition(value Float.X) Instance { //gd:CameraAttributesPractical.dof_blur_far_transition
 	class(self).SetDofBlurFarTransition(float64(value))
 	return self
 }
@@ -237,16 +240,19 @@ Enables depth of field blur for objects closer than [DofBlurNearDistance]. Stren
 
 Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 
+Note: Depth of field blur is not supported on viewports that have a transparent background (where [Viewport.TransparentBg] is true).
+
 [DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
 [DofBlurNearDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearDistance
 [DofBlurNearTransition]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearTransition
+[Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
 */
-func (self Instance) DofBlurNearEnabled() bool {
+func (self Instance) DofBlurNearEnabled() bool { //gd:CameraAttributesPractical.dof_blur_near_enabled
 	return bool(class(self).IsDofBlurNearEnabled())
 }
 
 // SetDofBlurNearEnabled sets the property returned by [IsDofBlurNearEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurNearEnabled(value bool) Instance {
+func (self Instance) SetDofBlurNearEnabled(value bool) Instance { //gd:CameraAttributesPractical.dof_blur_near_enabled
 	class(self).SetDofBlurNearEnabled(value)
 	return self
 }
@@ -256,12 +262,12 @@ Objects closer from the [Camera3D] by this amount will be blurred by the depth o
 
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
-func (self Instance) DofBlurNearDistance() Float.X {
+func (self Instance) DofBlurNearDistance() Float.X { //gd:CameraAttributesPractical.dof_blur_near_distance
 	return Float.X(Float.X(class(self).GetDofBlurNearDistance()))
 }
 
 // SetDofBlurNearDistance sets the property returned by [GetDofBlurNearDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurNearDistance(value Float.X) Instance {
+func (self Instance) SetDofBlurNearDistance(value Float.X) Instance { //gd:CameraAttributesPractical.dof_blur_near_distance
 	class(self).SetDofBlurNearDistance(float64(value))
 	return self
 }
@@ -273,12 +279,12 @@ When positive, distance over which blur effect will scale from 0 to [DofBlurAmou
 [DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
 [DofBlurNearDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearDistance
 */
-func (self Instance) DofBlurNearTransition() Float.X {
+func (self Instance) DofBlurNearTransition() Float.X { //gd:CameraAttributesPractical.dof_blur_near_transition
 	return Float.X(Float.X(class(self).GetDofBlurNearTransition()))
 }
 
 // SetDofBlurNearTransition sets the property returned by [GetDofBlurNearTransition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurNearTransition(value Float.X) Instance {
+func (self Instance) SetDofBlurNearTransition(value Float.X) Instance { //gd:CameraAttributesPractical.dof_blur_near_transition
 	class(self).SetDofBlurNearTransition(float64(value))
 	return self
 }
@@ -286,12 +292,12 @@ func (self Instance) SetDofBlurNearTransition(value Float.X) Instance {
 /*
 Sets the maximum amount of blur. When using physically-based blur amounts, will instead act as a multiplier. High values lead to an increased amount of blurriness, but can be much more expensive to calculate. It is best to keep this as low as possible for a given art style.
 */
-func (self Instance) DofBlurAmount() Float.X {
+func (self Instance) DofBlurAmount() Float.X { //gd:CameraAttributesPractical.dof_blur_amount
 	return Float.X(Float.X(class(self).GetDofBlurAmount()))
 }
 
 // SetDofBlurAmount sets the property returned by [GetDofBlurAmount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDofBlurAmount(value Float.X) Instance {
+func (self Instance) SetDofBlurAmount(value Float.X) Instance { //gd:CameraAttributesPractical.dof_blur_amount
 	class(self).SetDofBlurAmount(float64(value))
 	return self
 }
@@ -299,12 +305,12 @@ func (self Instance) SetDofBlurAmount(value Float.X) Instance {
 /*
 The minimum sensitivity (in ISO) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing above a certain brightness, resulting in a cut off point where the scene will remain dark.
 */
-func (self Instance) AutoExposureMinSensitivity() Float.X {
+func (self Instance) AutoExposureMinSensitivity() Float.X { //gd:CameraAttributesPractical.auto_exposure_min_sensitivity
 	return Float.X(Float.X(class(self).GetAutoExposureMinSensitivity()))
 }
 
 // SetAutoExposureMinSensitivity sets the property returned by [GetAutoExposureMinSensitivity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureMinSensitivity(value Float.X) Instance {
+func (self Instance) SetAutoExposureMinSensitivity(value Float.X) Instance { //gd:CameraAttributesPractical.auto_exposure_min_sensitivity
 	class(self).SetAutoExposureMinSensitivity(float64(value))
 	return self
 }
@@ -312,12 +318,12 @@ func (self Instance) SetAutoExposureMinSensitivity(value Float.X) Instance {
 /*
 The maximum sensitivity (in ISO) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing below a certain brightness, resulting in a cut off point where the scene will remain bright.
 */
-func (self Instance) AutoExposureMaxSensitivity() Float.X {
+func (self Instance) AutoExposureMaxSensitivity() Float.X { //gd:CameraAttributesPractical.auto_exposure_max_sensitivity
 	return Float.X(Float.X(class(self).GetAutoExposureMaxSensitivity()))
 }
 
 // SetAutoExposureMaxSensitivity sets the property returned by [GetAutoExposureMaxSensitivity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) Instance {
+func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) Instance { //gd:CameraAttributesPractical.auto_exposure_max_sensitivity
 	class(self).SetAutoExposureMaxSensitivity(float64(value))
 	return self
 }

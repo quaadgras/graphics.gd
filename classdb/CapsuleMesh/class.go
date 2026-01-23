@@ -174,12 +174,12 @@ Note: The [Radius] of a capsule cannot be greater than half of its [Height]. Oth
 [Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Height
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Radius
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:CapsuleMesh.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:CapsuleMesh.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -192,12 +192,12 @@ Note: The [Height] of a capsule must be at least twice its [Radius]. Otherwise, 
 [Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Height
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Radius
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:CapsuleMesh.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:CapsuleMesh.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetHeight(value Float.X) Instance {
 /*
 Number of radial segments on the capsule mesh.
 */
-func (self Instance) RadialSegments() int {
+func (self Instance) RadialSegments() int { //gd:CapsuleMesh.radial_segments
 	return int(int(class(self).GetRadialSegments()))
 }
 
 // SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialSegments(value int) Instance {
+func (self Instance) SetRadialSegments(value int) Instance { //gd:CapsuleMesh.radial_segments
 	class(self).SetRadialSegments(int64(value))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetRadialSegments(value int) Instance {
 /*
 Number of rings along the height of the capsule.
 */
-func (self Instance) Rings() int {
+func (self Instance) Rings() int { //gd:CapsuleMesh.rings
 	return int(int(class(self).GetRings()))
 }
 
 // SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRings(value int) Instance {
+func (self Instance) SetRings(value int) Instance { //gd:CapsuleMesh.rings
 	class(self).SetRings(int64(value))
 	return self
 }

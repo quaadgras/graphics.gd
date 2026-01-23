@@ -168,12 +168,12 @@ The [Object] identifier stored in this [EncodedObjectAsID] instance. The object 
 [EncodedObjectAsID]: https://pkg.go.dev/graphics.gd/classdb/EncodedObjectAsID
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
-func (self Instance) ObjectId() int {
+func (self Instance) ObjectId() int { //gd:EncodedObjectAsID.object_id
 	return int(int(class(self).GetObjectId()))
 }
 
 // SetObjectId sets the property returned by [GetObjectId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetObjectId(value int) Instance {
+func (self Instance) SetObjectId(value int) Instance { //gd:EncodedObjectAsID.object_id
 	class(self).SetObjectId(int64(value))
 	return self
 }

@@ -383,12 +383,12 @@ Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "i
 [WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) SessionMode() string {
+func (self Instance) SessionMode() string { //gd:WebXRInterface.session_mode
 	return string(class(self).GetSessionMode().String())
 }
 
 // SetSessionMode sets the property returned by [GetSessionMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSessionMode(value string) Instance {
+func (self Instance) SetSessionMode(value string) Instance { //gd:WebXRInterface.session_mode
 	class(self).SetSessionMode(String.New(value))
 	return self
 }
@@ -406,12 +406,12 @@ See the MDN documentation on [WebXR's session features] for a list of possible v
 [WebXR's session features]: https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession#session_features
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) RequiredFeatures() string {
+func (self Instance) RequiredFeatures() string { //gd:WebXRInterface.required_features
 	return string(class(self).GetRequiredFeatures().String())
 }
 
 // SetRequiredFeatures sets the property returned by [GetRequiredFeatures]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRequiredFeatures(value string) Instance {
+func (self Instance) SetRequiredFeatures(value string) Instance { //gd:WebXRInterface.required_features
 	class(self).SetRequiredFeatures(String.New(value))
 	return self
 }
@@ -428,12 +428,12 @@ See the MDN documentation on [WebXR's session features] for a list of possible v
 [WebXR's session features]: https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession#session_features
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) OptionalFeatures() string {
+func (self Instance) OptionalFeatures() string { //gd:WebXRInterface.optional_features
 	return string(class(self).GetOptionalFeatures().String())
 }
 
 // SetOptionalFeatures sets the property returned by [GetOptionalFeatures]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOptionalFeatures(value string) Instance {
+func (self Instance) SetOptionalFeatures(value string) Instance { //gd:WebXRInterface.optional_features
 	class(self).SetOptionalFeatures(String.New(value))
 	return self
 }
@@ -453,12 +453,12 @@ Possible values come from [WebXR's XRReferenceSpaceType]. If you want to use a p
 [WebXR's XRReferenceSpaceType]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpaceType
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) RequestedReferenceSpaceTypes() string {
+func (self Instance) RequestedReferenceSpaceTypes() string { //gd:WebXRInterface.requested_reference_space_types
 	return string(class(self).GetRequestedReferenceSpaceTypes().String())
 }
 
 // SetRequestedReferenceSpaceTypes sets the property returned by [GetRequestedReferenceSpaceTypes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRequestedReferenceSpaceTypes(value string) Instance {
+func (self Instance) SetRequestedReferenceSpaceTypes(value string) Instance { //gd:WebXRInterface.requested_reference_space_types
 	class(self).SetRequestedReferenceSpaceTypes(String.New(value))
 	return self
 }
@@ -474,7 +474,7 @@ Possible values come from [WebXR's XRReferenceSpaceType]. If you want to use a p
 [WebXR's XRReferenceSpaceType]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpaceType
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) ReferenceSpaceType() string {
+func (self Instance) ReferenceSpaceType() string { //gd:WebXRInterface.reference_space_type
 	return string(class(self).GetReferenceSpaceType().String())
 }
 
@@ -490,7 +490,7 @@ Note: This may not be support by all web browsers, in which case it will be an e
 [RequiredFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.RequiredFeatures
 [XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
-func (self Instance) EnabledFeatures() string {
+func (self Instance) EnabledFeatures() string { //gd:WebXRInterface.enabled_features
 	return string(class(self).GetEnabledFeatures().String())
 }
 
@@ -501,7 +501,7 @@ Possible values come from [WebXR's XRVisibilityState], including "hidden", "visi
 
 [WebXR's XRVisibilityState]: https://developer.mozilla.org/en-US/docs/Web/API/XRVisibilityState
 */
-func (self Instance) VisibilityState() string {
+func (self Instance) VisibilityState() string { //gd:WebXRInterface.visibility_state
 	return string(class(self).GetVisibilityState().String())
 }
 

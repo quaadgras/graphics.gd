@@ -173,12 +173,12 @@ If true, the body's movement will be synchronized to the physics frame. This is 
 [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 [PhysicsBody2D.MoveAndCollide]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D#Instance.MoveAndCollide
 */
-func (self Instance) SyncToPhysics() bool {
+func (self Instance) SyncToPhysics() bool { //gd:AnimatableBody2D.sync_to_physics
 	return bool(class(self).IsSyncToPhysicsEnabled())
 }
 
 // SetSyncToPhysics sets the property returned by [IsSyncToPhysicsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSyncToPhysics(value bool) Instance {
+func (self Instance) SetSyncToPhysics(value bool) Instance { //gd:AnimatableBody2D.sync_to_physics
 	class(self).SetSyncToPhysics(value)
 	return self
 }

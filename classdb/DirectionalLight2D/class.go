@@ -172,12 +172,12 @@ The maximum distance from the camera center objects can be before their shadows 
 [Camera2D.Zoom]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Zoom
 [MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.MaxDistance
 */
-func (self Instance) MaxDistance() Float.X {
+func (self Instance) MaxDistance() Float.X { //gd:DirectionalLight2D.max_distance
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
 // SetMaxDistance sets the property returned by [GetMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDistance(value Float.X) Instance {
+func (self Instance) SetMaxDistance(value Float.X) Instance { //gd:DirectionalLight2D.max_distance
 	class(self).SetMaxDistance(float64(value))
 	return self
 }

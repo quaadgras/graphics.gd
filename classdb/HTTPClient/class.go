@@ -420,12 +420,12 @@ func New() Instance {
 /*
 If true, execution will block until all data is read from the response.
 */
-func (self Instance) BlockingModeEnabled() bool {
+func (self Instance) BlockingModeEnabled() bool { //gd:HTTPClient.blocking_mode_enabled
 	return bool(class(self).IsBlockingModeEnabled())
 }
 
 // SetBlockingModeEnabled sets the property returned by [IsBlockingModeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlockingModeEnabled(value bool) Instance {
+func (self Instance) SetBlockingModeEnabled(value bool) Instance { //gd:HTTPClient.blocking_mode_enabled
 	class(self).SetBlockingMode(value)
 	return self
 }
@@ -433,12 +433,12 @@ func (self Instance) SetBlockingModeEnabled(value bool) Instance {
 /*
 The connection to use for this client.
 */
-func (self Instance) Connection() StreamPeer.Instance {
+func (self Instance) Connection() StreamPeer.Instance { //gd:HTTPClient.connection
 	return StreamPeer.Instance(class(self).GetConnection())
 }
 
 // SetConnection sets the property returned by [GetConnection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConnection(value StreamPeer.Instance) Instance {
+func (self Instance) SetConnection(value StreamPeer.Instance) Instance { //gd:HTTPClient.connection
 	class(self).SetConnection(value)
 	return self
 }
@@ -448,12 +448,12 @@ The size of the buffer used and maximum bytes to read per iteration. See [ReadRe
 
 [ReadResponseBodyChunk]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ReadResponseBodyChunk
 */
-func (self Instance) ReadChunkSize() int {
+func (self Instance) ReadChunkSize() int { //gd:HTTPClient.read_chunk_size
 	return int(int(class(self).GetReadChunkSize()))
 }
 
 // SetReadChunkSize sets the property returned by [GetReadChunkSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReadChunkSize(value int) Instance {
+func (self Instance) SetReadChunkSize(value int) Instance { //gd:HTTPClient.read_chunk_size
 	class(self).SetReadChunkSize(int64(value))
 	return self
 }

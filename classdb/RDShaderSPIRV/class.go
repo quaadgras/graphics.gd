@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The SPIR-V bytecode for the vertex shader stage.
 */
-func (self Instance) BytecodeVertex() []byte {
+func (self Instance) BytecodeVertex() []byte { //gd:RDShaderSPIRV.bytecode_vertex
 	return []byte(class(self).GetStageBytecode(0).Bytes())
 }
 
 // SetBytecodeVertex sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBytecodeVertex(value []byte) Instance {
+func (self Instance) SetBytecodeVertex(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_vertex
 	class(self).SetStageBytecode(0, Packed.BytesFrom(value...))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetBytecodeVertex(value []byte) Instance {
 /*
 The SPIR-V bytecode for the fragment shader stage.
 */
-func (self Instance) BytecodeFragment() []byte {
+func (self Instance) BytecodeFragment() []byte { //gd:RDShaderSPIRV.bytecode_fragment
 	return []byte(class(self).GetStageBytecode(1).Bytes())
 }
 
 // SetBytecodeFragment sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBytecodeFragment(value []byte) Instance {
+func (self Instance) SetBytecodeFragment(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_fragment
 	class(self).SetStageBytecode(1, Packed.BytesFrom(value...))
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetBytecodeFragment(value []byte) Instance {
 /*
 The SPIR-V bytecode for the tessellation control shader stage.
 */
-func (self Instance) BytecodeTesselationControl() []byte {
+func (self Instance) BytecodeTesselationControl() []byte { //gd:RDShaderSPIRV.bytecode_tesselation_control
 	return []byte(class(self).GetStageBytecode(2).Bytes())
 }
 
 // SetBytecodeTesselationControl sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBytecodeTesselationControl(value []byte) Instance {
+func (self Instance) SetBytecodeTesselationControl(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_tesselation_control
 	class(self).SetStageBytecode(2, Packed.BytesFrom(value...))
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetBytecodeTesselationControl(value []byte) Instance {
 /*
 The SPIR-V bytecode for the tessellation evaluation shader stage.
 */
-func (self Instance) BytecodeTesselationEvaluation() []byte {
+func (self Instance) BytecodeTesselationEvaluation() []byte { //gd:RDShaderSPIRV.bytecode_tesselation_evaluation
 	return []byte(class(self).GetStageBytecode(3).Bytes())
 }
 
 // SetBytecodeTesselationEvaluation sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBytecodeTesselationEvaluation(value []byte) Instance {
+func (self Instance) SetBytecodeTesselationEvaluation(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_tesselation_evaluation
 	class(self).SetStageBytecode(3, Packed.BytesFrom(value...))
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetBytecodeTesselationEvaluation(value []byte) Instance {
 /*
 The SPIR-V bytecode for the compute shader stage.
 */
-func (self Instance) BytecodeCompute() []byte {
+func (self Instance) BytecodeCompute() []byte { //gd:RDShaderSPIRV.bytecode_compute
 	return []byte(class(self).GetStageBytecode(4).Bytes())
 }
 
 // SetBytecodeCompute sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBytecodeCompute(value []byte) Instance {
+func (self Instance) SetBytecodeCompute(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_compute
 	class(self).SetStageBytecode(4, Packed.BytesFrom(value...))
 	return self
 }
@@ -234,12 +234,12 @@ func (self Instance) SetBytecodeCompute(value []byte) Instance {
 /*
 The compilation error message for the vertex shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
-func (self Instance) CompileErrorVertex() string {
+func (self Instance) CompileErrorVertex() string { //gd:RDShaderSPIRV.compile_error_vertex
 	return string(class(self).GetStageCompileError(0).String())
 }
 
 // SetCompileErrorVertex sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompileErrorVertex(value string) Instance {
+func (self Instance) SetCompileErrorVertex(value string) Instance { //gd:RDShaderSPIRV.compile_error_vertex
 	class(self).SetStageCompileError(0, String.New(value))
 	return self
 }
@@ -247,12 +247,12 @@ func (self Instance) SetCompileErrorVertex(value string) Instance {
 /*
 The compilation error message for the fragment shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
-func (self Instance) CompileErrorFragment() string {
+func (self Instance) CompileErrorFragment() string { //gd:RDShaderSPIRV.compile_error_fragment
 	return string(class(self).GetStageCompileError(1).String())
 }
 
 // SetCompileErrorFragment sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompileErrorFragment(value string) Instance {
+func (self Instance) SetCompileErrorFragment(value string) Instance { //gd:RDShaderSPIRV.compile_error_fragment
 	class(self).SetStageCompileError(1, String.New(value))
 	return self
 }
@@ -260,12 +260,12 @@ func (self Instance) SetCompileErrorFragment(value string) Instance {
 /*
 The compilation error message for the tessellation control shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
-func (self Instance) CompileErrorTesselationControl() string {
+func (self Instance) CompileErrorTesselationControl() string { //gd:RDShaderSPIRV.compile_error_tesselation_control
 	return string(class(self).GetStageCompileError(2).String())
 }
 
 // SetCompileErrorTesselationControl sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompileErrorTesselationControl(value string) Instance {
+func (self Instance) SetCompileErrorTesselationControl(value string) Instance { //gd:RDShaderSPIRV.compile_error_tesselation_control
 	class(self).SetStageCompileError(2, String.New(value))
 	return self
 }
@@ -273,12 +273,12 @@ func (self Instance) SetCompileErrorTesselationControl(value string) Instance {
 /*
 The compilation error message for the tessellation evaluation shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
-func (self Instance) CompileErrorTesselationEvaluation() string {
+func (self Instance) CompileErrorTesselationEvaluation() string { //gd:RDShaderSPIRV.compile_error_tesselation_evaluation
 	return string(class(self).GetStageCompileError(3).String())
 }
 
 // SetCompileErrorTesselationEvaluation sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompileErrorTesselationEvaluation(value string) Instance {
+func (self Instance) SetCompileErrorTesselationEvaluation(value string) Instance { //gd:RDShaderSPIRV.compile_error_tesselation_evaluation
 	class(self).SetStageCompileError(3, String.New(value))
 	return self
 }
@@ -286,12 +286,12 @@ func (self Instance) SetCompileErrorTesselationEvaluation(value string) Instance
 /*
 The compilation error message for the compute shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
-func (self Instance) CompileErrorCompute() string {
+func (self Instance) CompileErrorCompute() string { //gd:RDShaderSPIRV.compile_error_compute
 	return string(class(self).GetStageCompileError(4).String())
 }
 
 // SetCompileErrorCompute sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompileErrorCompute(value string) Instance {
+func (self Instance) SetCompileErrorCompute(value string) Instance { //gd:RDShaderSPIRV.compile_error_compute
 	class(self).SetStageCompileError(4, String.New(value))
 	return self
 }

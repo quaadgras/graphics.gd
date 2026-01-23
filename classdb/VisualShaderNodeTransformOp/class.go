@@ -162,12 +162,12 @@ func New() Instance {
 /*
 The type of the operation to be performed on the transforms.
 */
-func (self Instance) Operator() Operator {
+func (self Instance) Operator() Operator { //gd:VisualShaderNodeTransformOp.operator
 	return Operator(class(self).GetOperator())
 }
 
 // SetOperator sets the property returned by [GetOperator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOperator(value Operator) Instance {
+func (self Instance) SetOperator(value Operator) Instance { //gd:VisualShaderNodeTransformOp.operator
 	class(self).SetOperator(value)
 	return self
 }

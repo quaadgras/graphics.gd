@@ -203,12 +203,12 @@ func New() Instance {
 /*
 Array of font family names to search, first matching font found is used.
 */
-func (self Instance) FontNames() []string {
+func (self Instance) FontNames() []string { //gd:SystemFont.font_names
 	return []string(class(self).GetFontNames().Strings())
 }
 
 // SetFontNames sets the property returned by [GetFontNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFontNames(value []string) Instance {
+func (self Instance) SetFontNames(value []string) Instance { //gd:SystemFont.font_names
 	class(self).SetFontNames(Packed.MakeStrings(value...))
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetFontNames(value []string) Instance {
 /*
 If set to true, italic or oblique font is preferred.
 */
-func (self Instance) FontItalic() bool {
+func (self Instance) FontItalic() bool { //gd:SystemFont.font_italic
 	return bool(class(self).GetFontItalic())
 }
 
 // SetFontItalic sets the property returned by [GetFontItalic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFontItalic(value bool) Instance {
+func (self Instance) SetFontItalic(value bool) Instance { //gd:SystemFont.font_italic
 	class(self).SetFontItalic(value)
 	return self
 }
@@ -230,7 +230,7 @@ func (self Instance) SetFontItalic(value bool) Instance {
 Preferred weight (boldness) of the font. A value in the 100...999 range, normal font weight is 400, bold font weight is 700.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontWeight(value int) Instance {
+func (self Instance) SetFontWeight(value int) Instance { //gd:SystemFont.font_weight
 	class(self).SetFontWeight(int64(value))
 	return self
 }
@@ -239,7 +239,7 @@ func (self Instance) SetFontWeight(value int) Instance {
 Preferred font stretch amount, compared to a normal width. A percentage value between 50% and 200%.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetFontStretch(value int) Instance {
+func (self Instance) SetFontStretch(value int) Instance { //gd:SystemFont.font_stretch
 	class(self).SetFontStretch(int64(value))
 	return self
 }
@@ -247,12 +247,12 @@ func (self Instance) SetFontStretch(value int) Instance {
 /*
 Font anti-aliasing mode.
 */
-func (self Instance) Antialiasing() TextServer.FontAntialiasing {
+func (self Instance) Antialiasing() TextServer.FontAntialiasing { //gd:SystemFont.antialiasing
 	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
 // SetAntialiasing sets the property returned by [GetAntialiasing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) Instance {
+func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) Instance { //gd:SystemFont.antialiasing
 	class(self).SetAntialiasing(value)
 	return self
 }
@@ -260,12 +260,12 @@ func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) Instance
 /*
 If set to true, generate mipmaps for the font textures.
 */
-func (self Instance) GenerateMipmaps() bool {
+func (self Instance) GenerateMipmaps() bool { //gd:SystemFont.generate_mipmaps
 	return bool(class(self).GetGenerateMipmaps())
 }
 
 // SetGenerateMipmaps sets the property returned by [GetGenerateMipmaps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGenerateMipmaps(value bool) Instance {
+func (self Instance) SetGenerateMipmaps(value bool) Instance { //gd:SystemFont.generate_mipmaps
 	class(self).SetGenerateMipmaps(value)
 	return self
 }
@@ -273,12 +273,12 @@ func (self Instance) SetGenerateMipmaps(value bool) Instance {
 /*
 If set to true, embedded font bitmap loading is disabled (bitmap-only and color fonts ignore this property).
 */
-func (self Instance) DisableEmbeddedBitmaps() bool {
+func (self Instance) DisableEmbeddedBitmaps() bool { //gd:SystemFont.disable_embedded_bitmaps
 	return bool(class(self).GetDisableEmbeddedBitmaps())
 }
 
 // SetDisableEmbeddedBitmaps sets the property returned by [GetDisableEmbeddedBitmaps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableEmbeddedBitmaps(value bool) Instance {
+func (self Instance) SetDisableEmbeddedBitmaps(value bool) Instance { //gd:SystemFont.disable_embedded_bitmaps
 	class(self).SetDisableEmbeddedBitmaps(value)
 	return self
 }
@@ -286,12 +286,12 @@ func (self Instance) SetDisableEmbeddedBitmaps(value bool) Instance {
 /*
 If set to true, system fonts can be automatically used as fallbacks.
 */
-func (self Instance) AllowSystemFallback() bool {
+func (self Instance) AllowSystemFallback() bool { //gd:SystemFont.allow_system_fallback
 	return bool(class(self).IsAllowSystemFallback())
 }
 
 // SetAllowSystemFallback sets the property returned by [IsAllowSystemFallback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowSystemFallback(value bool) Instance {
+func (self Instance) SetAllowSystemFallback(value bool) Instance { //gd:SystemFont.allow_system_fallback
 	class(self).SetAllowSystemFallback(value)
 	return self
 }
@@ -299,12 +299,12 @@ func (self Instance) SetAllowSystemFallback(value bool) Instance {
 /*
 If set to true, auto-hinting is supported and preferred over font built-in hinting.
 */
-func (self Instance) ForceAutohinter() bool {
+func (self Instance) ForceAutohinter() bool { //gd:SystemFont.force_autohinter
 	return bool(class(self).IsForceAutohinter())
 }
 
 // SetForceAutohinter sets the property returned by [IsForceAutohinter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetForceAutohinter(value bool) Instance {
+func (self Instance) SetForceAutohinter(value bool) Instance { //gd:SystemFont.force_autohinter
 	class(self).SetForceAutohinter(value)
 	return self
 }
@@ -312,12 +312,12 @@ func (self Instance) SetForceAutohinter(value bool) Instance {
 /*
 If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
 */
-func (self Instance) ModulateColorGlyphs() bool {
+func (self Instance) ModulateColorGlyphs() bool { //gd:SystemFont.modulate_color_glyphs
 	return bool(class(self).IsModulateColorGlyphs())
 }
 
 // SetModulateColorGlyphs sets the property returned by [IsModulateColorGlyphs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulateColorGlyphs(value bool) Instance {
+func (self Instance) SetModulateColorGlyphs(value bool) Instance { //gd:SystemFont.modulate_color_glyphs
 	class(self).SetModulateColorGlyphs(value)
 	return self
 }
@@ -325,12 +325,12 @@ func (self Instance) SetModulateColorGlyphs(value bool) Instance {
 /*
 Font hinting mode.
 */
-func (self Instance) Hinting() TextServer.Hinting {
+func (self Instance) Hinting() TextServer.Hinting { //gd:SystemFont.hinting
 	return TextServer.Hinting(class(self).GetHinting())
 }
 
 // SetHinting sets the property returned by [GetHinting]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHinting(value TextServer.Hinting) Instance {
+func (self Instance) SetHinting(value TextServer.Hinting) Instance { //gd:SystemFont.hinting
 	class(self).SetHinting(value)
 	return self
 }
@@ -338,12 +338,12 @@ func (self Instance) SetHinting(value TextServer.Hinting) Instance {
 /*
 Font glyph subpixel positioning mode. Subpixel positioning provides shaper text and better kerning for smaller font sizes, at the cost of memory usage and font rasterization speed. Use [Textserver.SubpixelPositioningAuto] to automatically enable it based on the font size.
 */
-func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
+func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning { //gd:SystemFont.subpixel_positioning
 	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
 // SetSubpixelPositioning sets the property returned by [GetSubpixelPositioning]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) Instance {
+func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) Instance { //gd:SystemFont.subpixel_positioning
 	class(self).SetSubpixelPositioning(value)
 	return self
 }
@@ -351,12 +351,12 @@ func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning
 /*
 If set to true, when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
 */
-func (self Instance) KeepRoundingRemainders() bool {
+func (self Instance) KeepRoundingRemainders() bool { //gd:SystemFont.keep_rounding_remainders
 	return bool(class(self).GetKeepRoundingRemainders())
 }
 
 // SetKeepRoundingRemainders sets the property returned by [GetKeepRoundingRemainders]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepRoundingRemainders(value bool) Instance {
+func (self Instance) SetKeepRoundingRemainders(value bool) Instance { //gd:SystemFont.keep_rounding_remainders
 	class(self).SetKeepRoundingRemainders(value)
 	return self
 }
@@ -364,12 +364,12 @@ func (self Instance) SetKeepRoundingRemainders(value bool) Instance {
 /*
 If set to true, glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 */
-func (self Instance) MultichannelSignedDistanceField() bool {
+func (self Instance) MultichannelSignedDistanceField() bool { //gd:SystemFont.multichannel_signed_distance_field
 	return bool(class(self).IsMultichannelSignedDistanceField())
 }
 
 // SetMultichannelSignedDistanceField sets the property returned by [IsMultichannelSignedDistanceField]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMultichannelSignedDistanceField(value bool) Instance {
+func (self Instance) SetMultichannelSignedDistanceField(value bool) Instance { //gd:SystemFont.multichannel_signed_distance_field
 	class(self).SetMultichannelSignedDistanceField(value)
 	return self
 }
@@ -379,12 +379,12 @@ The width of the range around the shape between the minimum and maximum represen
 
 [MsdfPixelRange]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MsdfPixelRange
 */
-func (self Instance) MsdfPixelRange() int {
+func (self Instance) MsdfPixelRange() int { //gd:SystemFont.msdf_pixel_range
 	return int(int(class(self).GetMsdfPixelRange()))
 }
 
 // SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMsdfPixelRange(value int) Instance {
+func (self Instance) SetMsdfPixelRange(value int) Instance { //gd:SystemFont.msdf_pixel_range
 	class(self).SetMsdfPixelRange(int64(value))
 	return self
 }
@@ -392,12 +392,12 @@ func (self Instance) SetMsdfPixelRange(value int) Instance {
 /*
 Source font size used to generate MSDF textures. Higher values allow for more precision, but are slower to render and require more memory. Only increase this value if you notice a visible lack of precision in glyph rendering.
 */
-func (self Instance) MsdfSize() int {
+func (self Instance) MsdfSize() int { //gd:SystemFont.msdf_size
 	return int(int(class(self).GetMsdfSize()))
 }
 
 // SetMsdfSize sets the property returned by [GetMsdfSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMsdfSize(value int) Instance {
+func (self Instance) SetMsdfSize(value int) Instance { //gd:SystemFont.msdf_size
 	class(self).SetMsdfSize(int64(value))
 	return self
 }
@@ -407,12 +407,12 @@ If set to a positive value, overrides the oversampling factor of the viewport th
 
 [Viewport.Oversampling]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Oversampling
 */
-func (self Instance) Oversampling() Float.X {
+func (self Instance) Oversampling() Float.X { //gd:SystemFont.oversampling
 	return Float.X(Float.X(class(self).GetOversampling()))
 }
 
 // SetOversampling sets the property returned by [GetOversampling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOversampling(value Float.X) Instance {
+func (self Instance) SetOversampling(value Float.X) Instance { //gd:SystemFont.oversampling
 	class(self).SetOversampling(float64(value))
 	return self
 }

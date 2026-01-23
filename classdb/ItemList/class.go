@@ -741,12 +741,12 @@ func New() Instance {
 /*
 Allows single or multiple item selection. See the [SelectMode] constants.
 */
-func (self Instance) SelectMode() SelectMode {
+func (self Instance) SelectMode() SelectMode { //gd:ItemList.select_mode
 	return SelectMode(class(self).GetSelectMode())
 }
 
 // SetSelectMode sets the property returned by [GetSelectMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectMode(value SelectMode) Instance {
+func (self Instance) SetSelectMode(value SelectMode) Instance { //gd:ItemList.select_mode
 	class(self).SetSelectMode(value)
 	return self
 }
@@ -754,12 +754,12 @@ func (self Instance) SetSelectMode(value SelectMode) Instance {
 /*
 If true, the currently selected item can be selected again.
 */
-func (self Instance) AllowReselect() bool {
+func (self Instance) AllowReselect() bool { //gd:ItemList.allow_reselect
 	return bool(class(self).GetAllowReselect())
 }
 
 // SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowReselect(value bool) Instance {
+func (self Instance) SetAllowReselect(value bool) Instance { //gd:ItemList.allow_reselect
 	class(self).SetAllowReselect(value)
 	return self
 }
@@ -767,12 +767,12 @@ func (self Instance) SetAllowReselect(value bool) Instance {
 /*
 If true, right mouse button click can select items.
 */
-func (self Instance) AllowRmbSelect() bool {
+func (self Instance) AllowRmbSelect() bool { //gd:ItemList.allow_rmb_select
 	return bool(class(self).GetAllowRmbSelect())
 }
 
 // SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowRmbSelect(value bool) Instance {
+func (self Instance) SetAllowRmbSelect(value bool) Instance { //gd:ItemList.allow_rmb_select
 	class(self).SetAllowRmbSelect(value)
 	return self
 }
@@ -782,12 +782,12 @@ If true, allows navigating the [ItemList] with letter keys through incremental s
 
 [ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
 */
-func (self Instance) AllowSearch() bool {
+func (self Instance) AllowSearch() bool { //gd:ItemList.allow_search
 	return bool(class(self).GetAllowSearch())
 }
 
 // SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowSearch(value bool) Instance {
+func (self Instance) SetAllowSearch(value bool) Instance { //gd:ItemList.allow_search
 	class(self).SetAllowSearch(value)
 	return self
 }
@@ -800,12 +800,12 @@ Note: This property takes effect only when [IconMode] is [IconModeTop]. To make 
 [FixedColumnWidth]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.FixedColumnWidth
 [IconMode]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.IconMode
 */
-func (self Instance) MaxTextLines() int {
+func (self Instance) MaxTextLines() int { //gd:ItemList.max_text_lines
 	return int(int(class(self).GetMaxTextLines()))
 }
 
 // SetMaxTextLines sets the property returned by [GetMaxTextLines]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxTextLines(value int) Instance {
+func (self Instance) SetMaxTextLines(value int) Instance { //gd:ItemList.max_text_lines
 	class(self).SetMaxTextLines(int64(value))
 	return self
 }
@@ -813,12 +813,12 @@ func (self Instance) SetMaxTextLines(value int) Instance {
 /*
 If true, the control will automatically resize the width to fit its content.
 */
-func (self Instance) AutoWidth() bool {
+func (self Instance) AutoWidth() bool { //gd:ItemList.auto_width
 	return bool(class(self).HasAutoWidth())
 }
 
 // SetAutoWidth sets the property returned by [HasAutoWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoWidth(value bool) Instance {
+func (self Instance) SetAutoWidth(value bool) Instance { //gd:ItemList.auto_width
 	class(self).SetAutoWidth(value)
 	return self
 }
@@ -826,12 +826,12 @@ func (self Instance) SetAutoWidth(value bool) Instance {
 /*
 If true, the control will automatically resize the height to fit its content.
 */
-func (self Instance) AutoHeight() bool {
+func (self Instance) AutoHeight() bool { //gd:ItemList.auto_height
 	return bool(class(self).HasAutoHeight())
 }
 
 // SetAutoHeight sets the property returned by [HasAutoHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoHeight(value bool) Instance {
+func (self Instance) SetAutoHeight(value bool) Instance { //gd:ItemList.auto_height
 	class(self).SetAutoHeight(value)
 	return self
 }
@@ -839,12 +839,12 @@ func (self Instance) SetAutoHeight(value bool) Instance {
 /*
 The clipping behavior when the text exceeds an item's bounding rectangle.
 */
-func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:ItemList.text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
 // SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:ItemList.text_overrun_behavior
 	class(self).SetTextOverrunBehavior(value)
 	return self
 }
@@ -856,12 +856,12 @@ If false, the control will add a horizontal scrollbar to make all items visible.
 
 [HFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/HFlowContainer
 */
-func (self Instance) WraparoundItems() bool {
+func (self Instance) WraparoundItems() bool { //gd:ItemList.wraparound_items
 	return bool(class(self).HasWraparoundItems())
 }
 
 // SetWraparoundItems sets the property returned by [HasWraparoundItems]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWraparoundItems(value bool) Instance {
+func (self Instance) SetWraparoundItems(value bool) Instance { //gd:ItemList.wraparound_items
 	class(self).SetWraparoundItems(value)
 	return self
 }
@@ -869,12 +869,12 @@ func (self Instance) SetWraparoundItems(value bool) Instance {
 /*
 The number of items currently in the list.
 */
-func (self Instance) ItemCount() int {
+func (self Instance) ItemCount() int { //gd:ItemList.item_count
 	return int(int(class(self).GetItemCount()))
 }
 
 // SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetItemCount(value int) Instance {
+func (self Instance) SetItemCount(value int) Instance { //gd:ItemList.item_count
 	class(self).SetItemCount(int64(value))
 	return self
 }
@@ -886,12 +886,12 @@ If greater than zero, the content will be split among the specified columns.
 
 A value of zero means unlimited columns, i.e. all items will be put in the same row.
 */
-func (self Instance) MaxColumns() int {
+func (self Instance) MaxColumns() int { //gd:ItemList.max_columns
 	return int(int(class(self).GetMaxColumns()))
 }
 
 // SetMaxColumns sets the property returned by [GetMaxColumns]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxColumns(value int) Instance {
+func (self Instance) SetMaxColumns(value int) Instance { //gd:ItemList.max_columns
 	class(self).SetMaxColumns(int64(value))
 	return self
 }
@@ -901,12 +901,12 @@ Whether all columns will have the same width.
 
 If true, the width is equal to the largest column width of all columns.
 */
-func (self Instance) SameColumnWidth() bool {
+func (self Instance) SameColumnWidth() bool { //gd:ItemList.same_column_width
 	return bool(class(self).IsSameColumnWidth())
 }
 
 // SetSameColumnWidth sets the property returned by [IsSameColumnWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSameColumnWidth(value bool) Instance {
+func (self Instance) SetSameColumnWidth(value bool) Instance { //gd:ItemList.same_column_width
 	class(self).SetSameColumnWidth(value)
 	return self
 }
@@ -916,12 +916,12 @@ The width all columns will be adjusted to.
 
 A value of zero disables the adjustment, each item will have a width equal to the width of its content and the columns will have an uneven width.
 */
-func (self Instance) FixedColumnWidth() int {
+func (self Instance) FixedColumnWidth() int { //gd:ItemList.fixed_column_width
 	return int(int(class(self).GetFixedColumnWidth()))
 }
 
 // SetFixedColumnWidth sets the property returned by [GetFixedColumnWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFixedColumnWidth(value int) Instance {
+func (self Instance) SetFixedColumnWidth(value int) Instance { //gd:ItemList.fixed_column_width
 	class(self).SetFixedColumnWidth(int64(value))
 	return self
 }
@@ -929,12 +929,12 @@ func (self Instance) SetFixedColumnWidth(value int) Instance {
 /*
 The icon position, whether above or to the left of the text. See the [IconMode] constants.
 */
-func (self Instance) IconMode() IconMode {
+func (self Instance) IconMode() IconMode { //gd:ItemList.icon_mode
 	return IconMode(class(self).GetIconMode())
 }
 
 // SetIconMode sets the property returned by [GetIconMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIconMode(value IconMode) Instance {
+func (self Instance) SetIconMode(value IconMode) Instance { //gd:ItemList.icon_mode
 	class(self).SetIconMode(value)
 	return self
 }
@@ -944,12 +944,12 @@ The scale of icon applied after [FixedIconSize] and transposing takes effect.
 
 [FixedIconSize]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.FixedIconSize
 */
-func (self Instance) IconScale() Float.X {
+func (self Instance) IconScale() Float.X { //gd:ItemList.icon_scale
 	return Float.X(Float.X(class(self).GetIconScale()))
 }
 
 // SetIconScale sets the property returned by [GetIconScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIconScale(value Float.X) Instance {
+func (self Instance) SetIconScale(value Float.X) Instance { //gd:ItemList.icon_scale
 	class(self).SetIconScale(float64(value))
 	return self
 }
@@ -959,12 +959,12 @@ The size all icons will be adjusted to.
 
 If either X or Y component is not greater than zero, icon size won't be affected.
 */
-func (self Instance) FixedIconSize() Vector2i.XY {
+func (self Instance) FixedIconSize() Vector2i.XY { //gd:ItemList.fixed_icon_size
 	return Vector2i.XY(class(self).GetFixedIconSize())
 }
 
 // SetFixedIconSize sets the property returned by [GetFixedIconSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFixedIconSize(value Vector2i.XY) Instance {
+func (self Instance) SetFixedIconSize(value Vector2i.XY) Instance { //gd:ItemList.fixed_icon_size
 	class(self).SetFixedIconSize(Vector2i.XY(value))
 	return self
 }

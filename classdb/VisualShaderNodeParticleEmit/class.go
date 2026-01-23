@@ -160,12 +160,12 @@ func New() Instance {
 /*
 Flags used to override the properties defined in the sub-emitter's process material.
 */
-func (self Instance) Flags() EmitFlags {
+func (self Instance) Flags() EmitFlags { //gd:VisualShaderNodeParticleEmit.flags
 	return EmitFlags(class(self).GetFlags())
 }
 
 // SetFlags sets the property returned by [GetFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlags(value EmitFlags) Instance {
+func (self Instance) SetFlags(value EmitFlags) Instance { //gd:VisualShaderNodeParticleEmit.flags
 	class(self).SetFlags(value)
 	return self
 }

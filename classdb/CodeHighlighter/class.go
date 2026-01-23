@@ -311,12 +311,12 @@ func New() Instance {
 /*
 Sets the color for numbers.
 */
-func (self Instance) NumberColor() Color.RGBA {
+func (self Instance) NumberColor() Color.RGBA { //gd:CodeHighlighter.number_color
 	return Color.RGBA(class(self).GetNumberColor())
 }
 
 // SetNumberColor sets the property returned by [GetNumberColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNumberColor(value Color.RGBA) Instance {
+func (self Instance) SetNumberColor(value Color.RGBA) Instance { //gd:CodeHighlighter.number_color
 	class(self).SetNumberColor(Color.RGBA(value))
 	return self
 }
@@ -324,12 +324,12 @@ func (self Instance) SetNumberColor(value Color.RGBA) Instance {
 /*
 Sets the color for symbols.
 */
-func (self Instance) SymbolColor() Color.RGBA {
+func (self Instance) SymbolColor() Color.RGBA { //gd:CodeHighlighter.symbol_color
 	return Color.RGBA(class(self).GetSymbolColor())
 }
 
 // SetSymbolColor sets the property returned by [GetSymbolColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSymbolColor(value Color.RGBA) Instance {
+func (self Instance) SetSymbolColor(value Color.RGBA) Instance { //gd:CodeHighlighter.symbol_color
 	class(self).SetSymbolColor(Color.RGBA(value))
 	return self
 }
@@ -337,12 +337,12 @@ func (self Instance) SetSymbolColor(value Color.RGBA) Instance {
 /*
 Sets color for functions. A function is a non-keyword string followed by a '('.
 */
-func (self Instance) FunctionColor() Color.RGBA {
+func (self Instance) FunctionColor() Color.RGBA { //gd:CodeHighlighter.function_color
 	return Color.RGBA(class(self).GetFunctionColor())
 }
 
 // SetFunctionColor sets the property returned by [GetFunctionColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunctionColor(value Color.RGBA) Instance {
+func (self Instance) SetFunctionColor(value Color.RGBA) Instance { //gd:CodeHighlighter.function_color
 	class(self).SetFunctionColor(Color.RGBA(value))
 	return self
 }
@@ -350,12 +350,12 @@ func (self Instance) SetFunctionColor(value Color.RGBA) Instance {
 /*
 Sets color for member variables. A member variable is non-keyword, non-function string proceeded with a '.'.
 */
-func (self Instance) MemberVariableColor() Color.RGBA {
+func (self Instance) MemberVariableColor() Color.RGBA { //gd:CodeHighlighter.member_variable_color
 	return Color.RGBA(class(self).GetMemberVariableColor())
 }
 
 // SetMemberVariableColor sets the property returned by [GetMemberVariableColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMemberVariableColor(value Color.RGBA) Instance {
+func (self Instance) SetMemberVariableColor(value Color.RGBA) Instance { //gd:CodeHighlighter.member_variable_color
 	class(self).SetMemberVariableColor(Color.RGBA(value))
 	return self
 }
@@ -363,12 +363,12 @@ func (self Instance) SetMemberVariableColor(value Color.RGBA) Instance {
 /*
 Sets the keyword colors. All existing keywords will be removed. The data structure key is the keyword. The value is the keyword color.
 */
-func (self Instance) KeywordColors() map[any]any {
+func (self Instance) KeywordColors() map[any]any { //gd:CodeHighlighter.keyword_colors
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetKeywordColors()))
 }
 
 // SetKeywordColors sets the property returned by [GetKeywordColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeywordColors(value map[any]any) Instance {
+func (self Instance) SetKeywordColors(value map[any]any) Instance { //gd:CodeHighlighter.keyword_colors
 	class(self).SetKeywordColors(gd.DictionaryFromMap(value))
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetKeywordColors(value map[any]any) Instance {
 /*
 Sets the member keyword colors. All existing member keyword will be removed. The data structure key is the member keyword. The value is the member keyword color.
 */
-func (self Instance) MemberKeywordColors() map[any]any {
+func (self Instance) MemberKeywordColors() map[any]any { //gd:CodeHighlighter.member_keyword_colors
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemberKeywordColors()))
 }
 
 // SetMemberKeywordColors sets the property returned by [GetMemberKeywordColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMemberKeywordColors(value map[any]any) Instance {
+func (self Instance) SetMemberKeywordColors(value map[any]any) Instance { //gd:CodeHighlighter.member_keyword_colors
 	class(self).SetMemberKeywordColors(gd.DictionaryFromMap(value))
 	return self
 }
@@ -394,7 +394,7 @@ func (self Instance) ColorRegions() map[string]struct {
 	G float32
 	B float32
 	A float32
-} {
+} { //gd:CodeHighlighter.color_regions
 	return map[string]struct {
 		R float32
 		G float32
@@ -414,7 +414,7 @@ func (self Instance) SetColorRegions(value map[string]struct {
 	G float32
 	B float32
 	A float32
-}) Instance {
+}) Instance { //gd:CodeHighlighter.color_regions
 	class(self).SetColorRegions(gd.DictionaryFromMap(value))
 	return self
 }

@@ -284,12 +284,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Vertices() []Vector3.XYZ {
+func (self Instance) Vertices() []Vector3.XYZ { //gd:NavigationMesh.vertices
 	return []Vector3.XYZ(slices.Collect(class(self).GetVertices().Values()))
 }
 
 // SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertices(value []Vector3.XYZ) Instance {
+func (self Instance) SetVertices(value []Vector3.XYZ) Instance { //gd:NavigationMesh.vertices
 	class(self).SetVertices(Packed.New(value...))
 	return self
 }
@@ -297,12 +297,12 @@ func (self Instance) SetVertices(value []Vector3.XYZ) Instance {
 /*
 Partitioning algorithm for creating the navigation mesh polys.
 */
-func (self Instance) SamplePartitionType() SamplePartitionType {
+func (self Instance) SamplePartitionType() SamplePartitionType { //gd:NavigationMesh.sample_partition_type
 	return SamplePartitionType(class(self).GetSamplePartitionType())
 }
 
 // SetSamplePartitionType sets the property returned by [GetSamplePartitionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance {
+func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance { //gd:NavigationMesh.sample_partition_type
 	class(self).SetSamplePartitionType(value)
 	return self
 }
@@ -310,12 +310,12 @@ func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance 
 /*
 Determines which type of nodes will be parsed as geometry.
 */
-func (self Instance) GeometryParsedGeometryType() ParsedGeometryType {
+func (self Instance) GeometryParsedGeometryType() ParsedGeometryType { //gd:NavigationMesh.geometry_parsed_geometry_type
 	return ParsedGeometryType(class(self).GetParsedGeometryType())
 }
 
 // SetGeometryParsedGeometryType sets the property returned by [GetParsedGeometryType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGeometryParsedGeometryType(value ParsedGeometryType) Instance {
+func (self Instance) SetGeometryParsedGeometryType(value ParsedGeometryType) Instance { //gd:NavigationMesh.geometry_parsed_geometry_type
 	class(self).SetParsedGeometryType(value)
 	return self
 }
@@ -327,12 +327,12 @@ Only used when [GeometryParsedGeometryType] is [ParsedGeometryStaticColliders] o
 
 [GeometryParsedGeometryType]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometryParsedGeometryType
 */
-func (self Instance) GeometryCollisionMask() int {
+func (self Instance) GeometryCollisionMask() int { //gd:NavigationMesh.geometry_collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetGeometryCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGeometryCollisionMask(value int) Instance {
+func (self Instance) SetGeometryCollisionMask(value int) Instance { //gd:NavigationMesh.geometry_collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -340,12 +340,12 @@ func (self Instance) SetGeometryCollisionMask(value int) Instance {
 /*
 The source of the geometry used when baking.
 */
-func (self Instance) GeometrySourceGeometryMode() SourceGeometryMode {
+func (self Instance) GeometrySourceGeometryMode() SourceGeometryMode { //gd:NavigationMesh.geometry_source_geometry_mode
 	return SourceGeometryMode(class(self).GetSourceGeometryMode())
 }
 
 // SetGeometrySourceGeometryMode sets the property returned by [GetSourceGeometryMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGeometrySourceGeometryMode(value SourceGeometryMode) Instance {
+func (self Instance) SetGeometrySourceGeometryMode(value SourceGeometryMode) Instance { //gd:NavigationMesh.geometry_source_geometry_mode
 	class(self).SetSourceGeometryMode(value)
 	return self
 }
@@ -357,12 +357,12 @@ Only used when [GeometrySourceGeometryMode] is [SourceGeometryGroupsWithChildren
 
 [GeometrySourceGeometryMode]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometrySourceGeometryMode
 */
-func (self Instance) GeometrySourceGroupName() string {
+func (self Instance) GeometrySourceGroupName() string { //gd:NavigationMesh.geometry_source_group_name
 	return string(class(self).GetSourceGroupName().String())
 }
 
 // SetGeometrySourceGroupName sets the property returned by [GetSourceGroupName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGeometrySourceGroupName(value string) Instance {
+func (self Instance) SetGeometrySourceGroupName(value string) Instance { //gd:NavigationMesh.geometry_source_group_name
 	class(self).SetSourceGroupName(String.Name(String.New(value)))
 	return self
 }
@@ -370,12 +370,12 @@ func (self Instance) SetGeometrySourceGroupName(value string) Instance {
 /*
 The cell size used to rasterize the navigation mesh vertices on the XZ plane. Must match with the cell size on the navigation map.
 */
-func (self Instance) CellSize() Float.X {
+func (self Instance) CellSize() Float.X { //gd:NavigationMesh.cell_size
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
 // SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellSize(value Float.X) Instance {
+func (self Instance) SetCellSize(value Float.X) Instance { //gd:NavigationMesh.cell_size
 	class(self).SetCellSize(float64(value))
 	return self
 }
@@ -383,12 +383,12 @@ func (self Instance) SetCellSize(value Float.X) Instance {
 /*
 The cell height used to rasterize the navigation mesh vertices on the Y axis. Must match with the cell height on the navigation map.
 */
-func (self Instance) CellHeight() Float.X {
+func (self Instance) CellHeight() Float.X { //gd:NavigationMesh.cell_height
 	return Float.X(Float.X(class(self).GetCellHeight()))
 }
 
 // SetCellHeight sets the property returned by [GetCellHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellHeight(value Float.X) Instance {
+func (self Instance) SetCellHeight(value Float.X) Instance { //gd:NavigationMesh.cell_height
 	class(self).SetCellHeight(float64(value))
 	return self
 }
@@ -405,12 +405,12 @@ Note: If this value is not 0.0, it will be rounded up to the nearest multiple of
 [EdgeMaxError]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.EdgeMaxError
 [FilterBakingAabb]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.FilterBakingAabb
 */
-func (self Instance) BorderSize() Float.X {
+func (self Instance) BorderSize() Float.X { //gd:NavigationMesh.border_size
 	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
 // SetBorderSize sets the property returned by [GetBorderSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderSize(value Float.X) Instance {
+func (self Instance) SetBorderSize(value Float.X) Instance { //gd:NavigationMesh.border_size
 	class(self).SetBorderSize(float64(value))
 	return self
 }
@@ -422,12 +422,12 @@ Note: While baking, this value will be rounded up to the nearest multiple of [Ce
 
 [CellHeight]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.CellHeight
 */
-func (self Instance) AgentHeight() Float.X {
+func (self Instance) AgentHeight() Float.X { //gd:NavigationMesh.agent_height
 	return Float.X(Float.X(class(self).GetAgentHeight()))
 }
 
 // SetAgentHeight sets the property returned by [GetAgentHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAgentHeight(value Float.X) Instance {
+func (self Instance) SetAgentHeight(value Float.X) Instance { //gd:NavigationMesh.agent_height
 	class(self).SetAgentHeight(float64(value))
 	return self
 }
@@ -441,12 +441,12 @@ Note: The radius must be equal or higher than 0.0. If the radius is 0.0, it won'
 
 [CellSize]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.CellSize
 */
-func (self Instance) AgentRadius() Float.X {
+func (self Instance) AgentRadius() Float.X { //gd:NavigationMesh.agent_radius
 	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
 // SetAgentRadius sets the property returned by [GetAgentRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAgentRadius(value Float.X) Instance {
+func (self Instance) SetAgentRadius(value Float.X) Instance { //gd:NavigationMesh.agent_radius
 	class(self).SetAgentRadius(float64(value))
 	return self
 }
@@ -458,12 +458,12 @@ Note: While baking, this value will be rounded down to the nearest multiple of [
 
 [CellHeight]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.CellHeight
 */
-func (self Instance) AgentMaxClimb() Float.X {
+func (self Instance) AgentMaxClimb() Float.X { //gd:NavigationMesh.agent_max_climb
 	return Float.X(Float.X(class(self).GetAgentMaxClimb()))
 }
 
 // SetAgentMaxClimb sets the property returned by [GetAgentMaxClimb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAgentMaxClimb(value Float.X) Instance {
+func (self Instance) SetAgentMaxClimb(value Float.X) Instance { //gd:NavigationMesh.agent_max_climb
 	class(self).SetAgentMaxClimb(float64(value))
 	return self
 }
@@ -471,12 +471,12 @@ func (self Instance) SetAgentMaxClimb(value Float.X) Instance {
 /*
 The maximum slope that is considered walkable, in degrees.
 */
-func (self Instance) AgentMaxSlope() Float.X {
+func (self Instance) AgentMaxSlope() Float.X { //gd:NavigationMesh.agent_max_slope
 	return Float.X(Float.X(class(self).GetAgentMaxSlope()))
 }
 
 // SetAgentMaxSlope sets the property returned by [GetAgentMaxSlope]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAgentMaxSlope(value Float.X) Instance {
+func (self Instance) SetAgentMaxSlope(value Float.X) Instance { //gd:NavigationMesh.agent_max_slope
 	class(self).SetAgentMaxSlope(float64(value))
 	return self
 }
@@ -486,12 +486,12 @@ The minimum size of a region for it to be created.
 
 Note: This value will be squared to calculate the minimum number of cells allowed to form isolated island areas. For example, a value of 8 will set the number of cells to 64.
 */
-func (self Instance) RegionMinSize() Float.X {
+func (self Instance) RegionMinSize() Float.X { //gd:NavigationMesh.region_min_size
 	return Float.X(Float.X(class(self).GetRegionMinSize()))
 }
 
 // SetRegionMinSize sets the property returned by [GetRegionMinSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionMinSize(value Float.X) Instance {
+func (self Instance) SetRegionMinSize(value Float.X) Instance { //gd:NavigationMesh.region_min_size
 	class(self).SetRegionMinSize(float64(value))
 	return self
 }
@@ -501,12 +501,12 @@ Any regions with a size smaller than this will be merged with larger regions if 
 
 Note: This value will be squared to calculate the number of cells. For example, a value of 20 will set the number of cells to 400.
 */
-func (self Instance) RegionMergeSize() Float.X {
+func (self Instance) RegionMergeSize() Float.X { //gd:NavigationMesh.region_merge_size
 	return Float.X(Float.X(class(self).GetRegionMergeSize()))
 }
 
 // SetRegionMergeSize sets the property returned by [GetRegionMergeSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionMergeSize(value Float.X) Instance {
+func (self Instance) SetRegionMergeSize(value Float.X) Instance { //gd:NavigationMesh.region_merge_size
 	class(self).SetRegionMergeSize(float64(value))
 	return self
 }
@@ -518,12 +518,12 @@ Note: While baking, this value will be rounded up to the nearest multiple of [Ce
 
 [CellSize]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.CellSize
 */
-func (self Instance) EdgeMaxLength() Float.X {
+func (self Instance) EdgeMaxLength() Float.X { //gd:NavigationMesh.edge_max_length
 	return Float.X(Float.X(class(self).GetEdgeMaxLength()))
 }
 
 // SetEdgeMaxLength sets the property returned by [GetEdgeMaxLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEdgeMaxLength(value Float.X) Instance {
+func (self Instance) SetEdgeMaxLength(value Float.X) Instance { //gd:NavigationMesh.edge_max_length
 	class(self).SetEdgeMaxLength(float64(value))
 	return self
 }
@@ -531,12 +531,12 @@ func (self Instance) SetEdgeMaxLength(value Float.X) Instance {
 /*
 The maximum distance a simplified contour's border edges should deviate the original raw contour.
 */
-func (self Instance) EdgeMaxError() Float.X {
+func (self Instance) EdgeMaxError() Float.X { //gd:NavigationMesh.edge_max_error
 	return Float.X(Float.X(class(self).GetEdgeMaxError()))
 }
 
 // SetEdgeMaxError sets the property returned by [GetEdgeMaxError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEdgeMaxError(value Float.X) Instance {
+func (self Instance) SetEdgeMaxError(value Float.X) Instance { //gd:NavigationMesh.edge_max_error
 	class(self).SetEdgeMaxError(float64(value))
 	return self
 }
@@ -544,12 +544,12 @@ func (self Instance) SetEdgeMaxError(value Float.X) Instance {
 /*
 The maximum number of vertices allowed for polygons generated during the contour to polygon conversion process.
 */
-func (self Instance) VerticesPerPolygon() Float.X {
+func (self Instance) VerticesPerPolygon() Float.X { //gd:NavigationMesh.vertices_per_polygon
 	return Float.X(Float.X(class(self).GetVerticesPerPolygon()))
 }
 
 // SetVerticesPerPolygon sets the property returned by [GetVerticesPerPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticesPerPolygon(value Float.X) Instance {
+func (self Instance) SetVerticesPerPolygon(value Float.X) Instance { //gd:NavigationMesh.vertices_per_polygon
 	class(self).SetVerticesPerPolygon(float64(value))
 	return self
 }
@@ -557,12 +557,12 @@ func (self Instance) SetVerticesPerPolygon(value Float.X) Instance {
 /*
 The sampling distance to use when generating the detail mesh, in cell unit.
 */
-func (self Instance) DetailSampleDistance() Float.X {
+func (self Instance) DetailSampleDistance() Float.X { //gd:NavigationMesh.detail_sample_distance
 	return Float.X(Float.X(class(self).GetDetailSampleDistance()))
 }
 
 // SetDetailSampleDistance sets the property returned by [GetDetailSampleDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDetailSampleDistance(value Float.X) Instance {
+func (self Instance) SetDetailSampleDistance(value Float.X) Instance { //gd:NavigationMesh.detail_sample_distance
 	class(self).SetDetailSampleDistance(float64(value))
 	return self
 }
@@ -570,12 +570,12 @@ func (self Instance) SetDetailSampleDistance(value Float.X) Instance {
 /*
 The maximum distance the detail mesh surface should deviate from heightfield, in cell unit.
 */
-func (self Instance) DetailSampleMaxError() Float.X {
+func (self Instance) DetailSampleMaxError() Float.X { //gd:NavigationMesh.detail_sample_max_error
 	return Float.X(Float.X(class(self).GetDetailSampleMaxError()))
 }
 
 // SetDetailSampleMaxError sets the property returned by [GetDetailSampleMaxError]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDetailSampleMaxError(value Float.X) Instance {
+func (self Instance) SetDetailSampleMaxError(value Float.X) Instance { //gd:NavigationMesh.detail_sample_max_error
 	class(self).SetDetailSampleMaxError(float64(value))
 	return self
 }
@@ -585,12 +585,12 @@ If true, marks non-walkable spans as walkable if their maximum is within [AgentM
 
 [AgentMaxClimb]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.AgentMaxClimb
 */
-func (self Instance) FilterLowHangingObstacles() bool {
+func (self Instance) FilterLowHangingObstacles() bool { //gd:NavigationMesh.filter_low_hanging_obstacles
 	return bool(class(self).GetFilterLowHangingObstacles())
 }
 
 // SetFilterLowHangingObstacles sets the property returned by [GetFilterLowHangingObstacles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterLowHangingObstacles(value bool) Instance {
+func (self Instance) SetFilterLowHangingObstacles(value bool) Instance { //gd:NavigationMesh.filter_low_hanging_obstacles
 	class(self).SetFilterLowHangingObstacles(value)
 	return self
 }
@@ -598,12 +598,12 @@ func (self Instance) SetFilterLowHangingObstacles(value bool) Instance {
 /*
 If true, marks spans that are ledges as non-walkable.
 */
-func (self Instance) FilterLedgeSpans() bool {
+func (self Instance) FilterLedgeSpans() bool { //gd:NavigationMesh.filter_ledge_spans
 	return bool(class(self).GetFilterLedgeSpans())
 }
 
 // SetFilterLedgeSpans sets the property returned by [GetFilterLedgeSpans]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterLedgeSpans(value bool) Instance {
+func (self Instance) SetFilterLedgeSpans(value bool) Instance { //gd:NavigationMesh.filter_ledge_spans
 	class(self).SetFilterLedgeSpans(value)
 	return self
 }
@@ -613,12 +613,12 @@ If true, marks walkable spans as not walkable if the clearance above the span is
 
 [AgentHeight]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.AgentHeight
 */
-func (self Instance) FilterWalkableLowHeightSpans() bool {
+func (self Instance) FilterWalkableLowHeightSpans() bool { //gd:NavigationMesh.filter_walkable_low_height_spans
 	return bool(class(self).GetFilterWalkableLowHeightSpans())
 }
 
 // SetFilterWalkableLowHeightSpans sets the property returned by [GetFilterWalkableLowHeightSpans]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterWalkableLowHeightSpans(value bool) Instance {
+func (self Instance) SetFilterWalkableLowHeightSpans(value bool) Instance { //gd:NavigationMesh.filter_walkable_low_height_spans
 	class(self).SetFilterWalkableLowHeightSpans(value)
 	return self
 }
@@ -628,12 +628,12 @@ If the baking [AABB.PositionSize] has a volume the navigation mesh baking will b
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 */
-func (self Instance) FilterBakingAabb() AABB.PositionSize {
+func (self Instance) FilterBakingAabb() AABB.PositionSize { //gd:NavigationMesh.filter_baking_aabb
 	return AABB.PositionSize(class(self).GetFilterBakingAabb())
 }
 
 // SetFilterBakingAabb sets the property returned by [GetFilterBakingAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterBakingAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetFilterBakingAabb(value AABB.PositionSize) Instance { //gd:NavigationMesh.filter_baking_aabb
 	class(self).SetFilterBakingAabb(AABB.PositionSize(value))
 	return self
 }
@@ -644,12 +644,12 @@ The position offset applied to the [FilterBakingAabb] [AABB.PositionSize].
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 [FilterBakingAabb]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.FilterBakingAabb
 */
-func (self Instance) FilterBakingAabbOffset() Vector3.XYZ {
+func (self Instance) FilterBakingAabbOffset() Vector3.XYZ { //gd:NavigationMesh.filter_baking_aabb_offset
 	return Vector3.XYZ(class(self).GetFilterBakingAabbOffset())
 }
 
 // SetFilterBakingAabbOffset sets the property returned by [GetFilterBakingAabbOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) Instance { //gd:NavigationMesh.filter_baking_aabb_offset
 	class(self).SetFilterBakingAabbOffset(Vector3.XYZ(value))
 	return self
 }

@@ -161,12 +161,12 @@ func New() Instance {
 /*
 A floating-point constant which represents a state of this node.
 */
-func (self Instance) Constant() Float.X {
+func (self Instance) Constant() Float.X { //gd:VisualShaderNodeFloatConstant.constant
 	return Float.X(Float.X(class(self).GetConstant()))
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value Float.X) Instance {
+func (self Instance) SetConstant(value Float.X) Instance { //gd:VisualShaderNodeFloatConstant.constant
 	class(self).SetConstant(float64(value))
 	return self
 }

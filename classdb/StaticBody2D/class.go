@@ -182,12 +182,12 @@ The physics material override for the body.
 
 If a material is assigned to this property, it will be used instead of any other physics material, such as an inherited one.
 */
-func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
+func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance { //gd:StaticBody2D.physics_material_override
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
 // SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance {
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) Instance { //gd:StaticBody2D.physics_material_override
 	class(self).SetPhysicsMaterialOverride(value)
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) 
 /*
 The body's constant linear velocity. This does not move the body, but affects touching bodies, as if it were moving.
 */
-func (self Instance) ConstantLinearVelocity() Vector2.XY {
+func (self Instance) ConstantLinearVelocity() Vector2.XY { //gd:StaticBody2D.constant_linear_velocity
 	return Vector2.XY(class(self).GetConstantLinearVelocity())
 }
 
 // SetConstantLinearVelocity sets the property returned by [GetConstantLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstantLinearVelocity(value Vector2.XY) Instance {
+func (self Instance) SetConstantLinearVelocity(value Vector2.XY) Instance { //gd:StaticBody2D.constant_linear_velocity
 	class(self).SetConstantLinearVelocity(Vector2.XY(value))
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetConstantLinearVelocity(value Vector2.XY) Instance {
 /*
 The body's constant angular velocity. This does not rotate the body, but affects touching bodies, as if it were rotating.
 */
-func (self Instance) ConstantAngularVelocity() Float.X {
+func (self Instance) ConstantAngularVelocity() Float.X { //gd:StaticBody2D.constant_angular_velocity
 	return Float.X(Float.X(class(self).GetConstantAngularVelocity()))
 }
 
 // SetConstantAngularVelocity sets the property returned by [GetConstantAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstantAngularVelocity(value Float.X) Instance {
+func (self Instance) SetConstantAngularVelocity(value Float.X) Instance { //gd:StaticBody2D.constant_angular_velocity
 	class(self).SetConstantAngularVelocity(float64(value))
 	return self
 }

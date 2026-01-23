@@ -182,12 +182,12 @@ The ParallaxBackground's scroll value. Calculated automatically when using a [Ca
 
 [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 */
-func (self Instance) ScrollOffset() Vector2.XY {
+func (self Instance) ScrollOffset() Vector2.XY { //gd:ParallaxBackground.scroll_offset
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
 // SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance { //gd:ParallaxBackground.scroll_offset
 	class(self).SetScrollOffset(Vector2.XY(value))
 	return self
 }
@@ -197,12 +197,12 @@ The base position offset for all [ParallaxLayer] children.
 
 [ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
 */
-func (self Instance) ScrollBaseOffset() Vector2.XY {
+func (self Instance) ScrollBaseOffset() Vector2.XY { //gd:ParallaxBackground.scroll_base_offset
 	return Vector2.XY(class(self).GetScrollBaseOffset())
 }
 
 // SetScrollBaseOffset sets the property returned by [GetScrollBaseOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollBaseOffset(value Vector2.XY) Instance {
+func (self Instance) SetScrollBaseOffset(value Vector2.XY) Instance { //gd:ParallaxBackground.scroll_base_offset
 	class(self).SetScrollBaseOffset(Vector2.XY(value))
 	return self
 }
@@ -212,12 +212,12 @@ The base motion scale for all [ParallaxLayer] children.
 
 [ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
 */
-func (self Instance) ScrollBaseScale() Vector2.XY {
+func (self Instance) ScrollBaseScale() Vector2.XY { //gd:ParallaxBackground.scroll_base_scale
 	return Vector2.XY(class(self).GetScrollBaseScale())
 }
 
 // SetScrollBaseScale sets the property returned by [GetScrollBaseScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollBaseScale(value Vector2.XY) Instance {
+func (self Instance) SetScrollBaseScale(value Vector2.XY) Instance { //gd:ParallaxBackground.scroll_base_scale
 	class(self).SetScrollBaseScale(Vector2.XY(value))
 	return self
 }
@@ -227,12 +227,12 @@ Top-left limits for scrolling to begin. If the camera is outside of this limit, 
 
 [ScrollLimitEnd]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollLimitEnd
 */
-func (self Instance) ScrollLimitBegin() Vector2.XY {
+func (self Instance) ScrollLimitBegin() Vector2.XY { //gd:ParallaxBackground.scroll_limit_begin
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
 // SetScrollLimitBegin sets the property returned by [GetLimitBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollLimitBegin(value Vector2.XY) Instance {
+func (self Instance) SetScrollLimitBegin(value Vector2.XY) Instance { //gd:ParallaxBackground.scroll_limit_begin
 	class(self).SetLimitBegin(Vector2.XY(value))
 	return self
 }
@@ -242,12 +242,12 @@ Bottom-right limits for scrolling to end. If the camera is outside of this limit
 
 [ScrollLimitBegin]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollLimitBegin
 */
-func (self Instance) ScrollLimitEnd() Vector2.XY {
+func (self Instance) ScrollLimitEnd() Vector2.XY { //gd:ParallaxBackground.scroll_limit_end
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
 // SetScrollLimitEnd sets the property returned by [GetLimitEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollLimitEnd(value Vector2.XY) Instance {
+func (self Instance) SetScrollLimitEnd(value Vector2.XY) Instance { //gd:ParallaxBackground.scroll_limit_end
 	class(self).SetLimitEnd(Vector2.XY(value))
 	return self
 }
@@ -257,12 +257,12 @@ If true, elements in [ParallaxLayer] child aren't affected by the zoom level of 
 
 [ParallaxLayer]: https://pkg.go.dev/graphics.gd/classdb/ParallaxLayer
 */
-func (self Instance) ScrollIgnoreCameraZoom() bool {
+func (self Instance) ScrollIgnoreCameraZoom() bool { //gd:ParallaxBackground.scroll_ignore_camera_zoom
 	return bool(class(self).IsIgnoreCameraZoom())
 }
 
 // SetScrollIgnoreCameraZoom sets the property returned by [IsIgnoreCameraZoom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollIgnoreCameraZoom(value bool) Instance {
+func (self Instance) SetScrollIgnoreCameraZoom(value bool) Instance { //gd:ParallaxBackground.scroll_ignore_camera_zoom
 	class(self).SetIgnoreCameraZoom(value)
 	return self
 }

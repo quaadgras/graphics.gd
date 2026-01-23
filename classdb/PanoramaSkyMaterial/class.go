@@ -177,12 +177,12 @@ func New() Instance {
 [PanoramaSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/PanoramaSkyMaterial
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Panorama() Texture2D.Instance {
+func (self Instance) Panorama() Texture2D.Instance { //gd:PanoramaSkyMaterial.panorama
 	return Texture2D.Instance(class(self).GetPanorama())
 }
 
 // SetPanorama sets the property returned by [GetPanorama]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPanorama(value Texture2D.Instance) Instance {
+func (self Instance) SetPanorama(value Texture2D.Instance) Instance { //gd:PanoramaSkyMaterial.panorama
 	class(self).SetPanorama(value)
 	return self
 }
@@ -190,12 +190,12 @@ func (self Instance) SetPanorama(value Texture2D.Instance) Instance {
 /*
 A boolean value to determine if the background texture should be filtered or not.
 */
-func (self Instance) Filter() bool {
+func (self Instance) Filter() bool { //gd:PanoramaSkyMaterial.filter
 	return bool(class(self).IsFilteringEnabled())
 }
 
 // SetFilter sets the property returned by [IsFilteringEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilter(value bool) Instance {
+func (self Instance) SetFilter(value bool) Instance { //gd:PanoramaSkyMaterial.filter
 	class(self).SetFilteringEnabled(value)
 	return self
 }
@@ -203,12 +203,12 @@ func (self Instance) SetFilter(value bool) Instance {
 /*
 The sky's overall brightness multiplier. Higher values result in a brighter sky.
 */
-func (self Instance) EnergyMultiplier() Float.X {
+func (self Instance) EnergyMultiplier() Float.X { //gd:PanoramaSkyMaterial.energy_multiplier
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
 // SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance { //gd:PanoramaSkyMaterial.energy_multiplier
 	class(self).SetEnergyMultiplier(float64(value))
 	return self
 }

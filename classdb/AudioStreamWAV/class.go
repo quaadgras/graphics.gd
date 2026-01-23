@@ -257,12 +257,12 @@ Note: If [Format] is set to [FormatQoa], this property expects data from a full 
 
 [Format]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV#Instance.Format
 */
-func (self Instance) Data() []byte {
+func (self Instance) Data() []byte { //gd:AudioStreamWAV.data
 	return []byte(class(self).GetData().Bytes())
 }
 
 // SetData sets the property returned by [GetData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetData(value []byte) Instance {
+func (self Instance) SetData(value []byte) Instance { //gd:AudioStreamWAV.data
 	class(self).SetData(Packed.BytesFrom(value...))
 	return self
 }
@@ -270,12 +270,12 @@ func (self Instance) SetData(value []byte) Instance {
 /*
 Audio format.
 */
-func (self Instance) Format() Format {
+func (self Instance) Format() Format { //gd:AudioStreamWAV.format
 	return Format(class(self).GetFormat())
 }
 
 // SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFormat(value Format) Instance {
+func (self Instance) SetFormat(value Format) Instance { //gd:AudioStreamWAV.format
 	class(self).SetFormat(value)
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetFormat(value Format) Instance {
 /*
 The loop mode.
 */
-func (self Instance) LoopMode() LoopMode {
+func (self Instance) LoopMode() LoopMode { //gd:AudioStreamWAV.loop_mode
 	return LoopMode(class(self).GetLoopMode())
 }
 
 // SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopMode(value LoopMode) Instance {
+func (self Instance) SetLoopMode(value LoopMode) Instance { //gd:AudioStreamWAV.loop_mode
 	class(self).SetLoopMode(value)
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetLoopMode(value LoopMode) Instance {
 /*
 The loop start point (in number of samples, relative to the beginning of the stream).
 */
-func (self Instance) LoopBegin() int {
+func (self Instance) LoopBegin() int { //gd:AudioStreamWAV.loop_begin
 	return int(int(class(self).GetLoopBegin()))
 }
 
 // SetLoopBegin sets the property returned by [GetLoopBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopBegin(value int) Instance {
+func (self Instance) SetLoopBegin(value int) Instance { //gd:AudioStreamWAV.loop_begin
 	class(self).SetLoopBegin(int64(value))
 	return self
 }
@@ -309,12 +309,12 @@ func (self Instance) SetLoopBegin(value int) Instance {
 /*
 The loop end point (in number of samples, relative to the beginning of the stream).
 */
-func (self Instance) LoopEnd() int {
+func (self Instance) LoopEnd() int { //gd:AudioStreamWAV.loop_end
 	return int(int(class(self).GetLoopEnd()))
 }
 
 // SetLoopEnd sets the property returned by [GetLoopEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopEnd(value int) Instance {
+func (self Instance) SetLoopEnd(value int) Instance { //gd:AudioStreamWAV.loop_end
 	class(self).SetLoopEnd(int64(value))
 	return self
 }
@@ -328,12 +328,12 @@ According to the [Nyquist-Shannon sampling theorem], there is no quality differe
 
 [Nyquist-Shannon sampling theorem]: https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem
 */
-func (self Instance) MixRate() int {
+func (self Instance) MixRate() int { //gd:AudioStreamWAV.mix_rate
 	return int(int(class(self).GetMixRate()))
 }
 
 // SetMixRate sets the property returned by [GetMixRate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMixRate(value int) Instance {
+func (self Instance) SetMixRate(value int) Instance { //gd:AudioStreamWAV.mix_rate
 	class(self).SetMixRate(int64(value))
 	return self
 }
@@ -341,12 +341,12 @@ func (self Instance) SetMixRate(value int) Instance {
 /*
 If true, audio is stereo.
 */
-func (self Instance) Stereo() bool {
+func (self Instance) Stereo() bool { //gd:AudioStreamWAV.stereo
 	return bool(class(self).IsStereo())
 }
 
 // SetStereo sets the property returned by [IsStereo]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStereo(value bool) Instance {
+func (self Instance) SetStereo(value bool) Instance { //gd:AudioStreamWAV.stereo
 	class(self).SetStereo(value)
 	return self
 }
@@ -360,12 +360,12 @@ Note: No tag is guaranteed to be present in every file, so make sure to account 
 
 Note: Only WAV files using a LIST chunk with an identifier of INFO to encode the tags are currently supported.
 */
-func (self Instance) Tags() map[string]interface{} {
+func (self Instance) Tags() map[string]interface{} { //gd:AudioStreamWAV.tags
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
 // SetTags sets the property returned by [GetTags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTags(value map[string]interface{}) Instance {
+func (self Instance) SetTags(value map[string]interface{}) Instance { //gd:AudioStreamWAV.tags
 	class(self).SetTags(gd.DictionaryFromMap(value))
 	return self
 }

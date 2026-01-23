@@ -270,12 +270,12 @@ The polygon's fill color. If [Texture] is set, it will be multiplied by this col
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
 [VertexColors]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.VertexColors
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:Polygon2D.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:Polygon2D.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetColor(value Color.RGBA) Instance {
 /*
 The offset applied to each vertex.
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:Polygon2D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:Polygon2D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 If true, polygon edges will be anti-aliased.
 */
-func (self Instance) Antialiased() bool {
+func (self Instance) Antialiased() bool { //gd:Polygon2D.antialiased
 	return bool(class(self).GetAntialiased())
 }
 
 // SetAntialiased sets the property returned by [GetAntialiased]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAntialiased(value bool) Instance {
+func (self Instance) SetAntialiased(value bool) Instance { //gd:Polygon2D.antialiased
 	class(self).SetAntialiased(value)
 	return self
 }
@@ -311,12 +311,12 @@ The polygon's fill texture. Use [Uv] to set texture coordinates.
 
 [Uv]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Uv
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:Polygon2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:Polygon2D.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -326,12 +326,12 @@ Amount to offset the polygon's [Texture]. If set to Vector2(0, 0), the texture's
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
 */
-func (self Instance) TextureOffset() Vector2.XY {
+func (self Instance) TextureOffset() Vector2.XY { //gd:Polygon2D.texture_offset
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
 // SetTextureOffset sets the property returned by [GetTextureOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureOffset(value Vector2.XY) Instance {
+func (self Instance) SetTextureOffset(value Vector2.XY) Instance { //gd:Polygon2D.texture_offset
 	class(self).SetTextureOffset(Vector2.XY(value))
 	return self
 }
@@ -342,12 +342,12 @@ Amount to multiply the [Uv] coordinates when using [Texture]. Larger values make
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Texture
 [Uv]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Uv
 */
-func (self Instance) TextureScale() Vector2.XY {
+func (self Instance) TextureScale() Vector2.XY { //gd:Polygon2D.texture_scale
 	return Vector2.XY(class(self).GetTextureScale())
 }
 
 // SetTextureScale sets the property returned by [GetTextureScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureScale(value Vector2.XY) Instance {
+func (self Instance) SetTextureScale(value Vector2.XY) Instance { //gd:Polygon2D.texture_scale
 	class(self).SetTextureScale(Vector2.XY(value))
 	return self
 }
@@ -355,12 +355,12 @@ func (self Instance) SetTextureScale(value Vector2.XY) Instance {
 /*
 The texture's rotation in radians.
 */
-func (self Instance) TextureRotation() Angle.Radians {
+func (self Instance) TextureRotation() Angle.Radians { //gd:Polygon2D.texture_rotation
 	return Angle.Radians(Float.X(class(self).GetTextureRotation()))
 }
 
 // SetTextureRotation sets the property returned by [GetTextureRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRotation(value Angle.Radians) Instance {
+func (self Instance) SetTextureRotation(value Angle.Radians) Instance { //gd:Polygon2D.texture_rotation
 	class(self).SetTextureRotation(float64(value))
 	return self
 }
@@ -370,12 +370,12 @@ Path to a [Skeleton2D] node used for skeleton-based deformations of this polygon
 
 [Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
 */
-func (self Instance) Skeleton() string {
+func (self Instance) Skeleton() string { //gd:Polygon2D.skeleton
 	return string(class(self).GetSkeleton().String())
 }
 
 // SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeleton(value string) Instance {
+func (self Instance) SetSkeleton(value string) Instance { //gd:Polygon2D.skeleton
 	class(self).SetSkeleton(Path.ToNode(String.New(value)))
 	return self
 }
@@ -385,12 +385,12 @@ If true, the polygon will be inverted, containing the area outside the defined p
 
 [InvertBorder]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.InvertBorder
 */
-func (self Instance) InvertEnabled() bool {
+func (self Instance) InvertEnabled() bool { //gd:Polygon2D.invert_enabled
 	return bool(class(self).GetInvertEnabled())
 }
 
 // SetInvertEnabled sets the property returned by [GetInvertEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInvertEnabled(value bool) Instance {
+func (self Instance) SetInvertEnabled(value bool) Instance { //gd:Polygon2D.invert_enabled
 	class(self).SetInvertEnabled(value)
 	return self
 }
@@ -400,12 +400,12 @@ Added padding applied to the bounding box when [InvertEnabled] is set to true. S
 
 [InvertEnabled]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.InvertEnabled
 */
-func (self Instance) InvertBorder() Float.X {
+func (self Instance) InvertBorder() Float.X { //gd:Polygon2D.invert_border
 	return Float.X(Float.X(class(self).GetInvertBorder()))
 }
 
 // SetInvertBorder sets the property returned by [GetInvertBorder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInvertBorder(value Float.X) Instance {
+func (self Instance) SetInvertBorder(value Float.X) Instance { //gd:Polygon2D.invert_border
 	class(self).SetInvertBorder(float64(value))
 	return self
 }
@@ -413,12 +413,12 @@ func (self Instance) SetInvertBorder(value Float.X) Instance {
 /*
 The polygon's list of vertices. The final point will be connected to the first.
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:Polygon2D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:Polygon2D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }
@@ -426,12 +426,12 @@ func (self Instance) SetPolygon(value []Vector2.XY) Instance {
 /*
 Texture coordinates for each vertex of the polygon. There should be one UV value per polygon vertex. If there are fewer, undefined vertices will use Vector2(0, 0).
 */
-func (self Instance) Uv() []Vector2.XY {
+func (self Instance) Uv() []Vector2.XY { //gd:Polygon2D.uv
 	return []Vector2.XY(slices.Collect(class(self).GetUv().Values()))
 }
 
 // SetUv sets the property returned by [GetUv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUv(value []Vector2.XY) Instance {
+func (self Instance) SetUv(value []Vector2.XY) Instance { //gd:Polygon2D.uv
 	class(self).SetUv(Packed.New(value...))
 	return self
 }
@@ -441,12 +441,12 @@ Color for each vertex. Colors are interpolated between vertices, resulting in sm
 
 [Color]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Color
 */
-func (self Instance) VertexColors() []Color.RGBA {
+func (self Instance) VertexColors() []Color.RGBA { //gd:Polygon2D.vertex_colors
 	return []Color.RGBA(slices.Collect(class(self).GetVertexColors().Values()))
 }
 
 // SetVertexColors sets the property returned by [GetVertexColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertexColors(value []Color.RGBA) Instance {
+func (self Instance) SetVertexColors(value []Color.RGBA) Instance { //gd:Polygon2D.vertex_colors
 	class(self).SetVertexColors(Packed.New(value...))
 	return self
 }
@@ -456,12 +456,12 @@ The list of polygons, in case more than one is being represented. Every individu
 
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D#Instance.Polygon
 */
-func (self Instance) Polygons() [][]int32 {
+func (self Instance) Polygons() [][]int32 { //gd:Polygon2D.polygons
 	return [][]int32(gd.ArrayAs[[][]int32](gd.InternalArray(class(self).GetPolygons())))
 }
 
 // SetPolygons sets the property returned by [GetPolygons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygons(value [][]int32) Instance {
+func (self Instance) SetPolygons(value [][]int32) Instance { //gd:Polygon2D.polygons
 	class(self).SetPolygons(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -469,12 +469,12 @@ func (self Instance) SetPolygons(value [][]int32) Instance {
 /*
 Number of internal vertices, used for UV mapping.
 */
-func (self Instance) InternalVertexCount() int {
+func (self Instance) InternalVertexCount() int { //gd:Polygon2D.internal_vertex_count
 	return int(int(class(self).GetInternalVertexCount()))
 }
 
 // SetInternalVertexCount sets the property returned by [GetInternalVertexCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInternalVertexCount(value int) Instance {
+func (self Instance) SetInternalVertexCount(value int) Instance { //gd:Polygon2D.internal_vertex_count
 	class(self).SetInternalVertexCount(int64(value))
 	return self
 }

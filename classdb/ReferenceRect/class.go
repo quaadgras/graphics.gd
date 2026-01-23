@@ -170,12 +170,12 @@ Sets the border color of the [ReferenceRect].
 
 [ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
 */
-func (self Instance) BorderColor() Color.RGBA {
+func (self Instance) BorderColor() Color.RGBA { //gd:ReferenceRect.border_color
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
 // SetBorderColor sets the property returned by [GetBorderColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderColor(value Color.RGBA) Instance {
+func (self Instance) SetBorderColor(value Color.RGBA) Instance { //gd:ReferenceRect.border_color
 	class(self).SetBorderColor(Color.RGBA(value))
 	return self
 }
@@ -185,12 +185,12 @@ Sets the border width of the [ReferenceRect]. The border grows both inwards and 
 
 [ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
 */
-func (self Instance) BorderWidth() Float.X {
+func (self Instance) BorderWidth() Float.X { //gd:ReferenceRect.border_width
 	return Float.X(Float.X(class(self).GetBorderWidth()))
 }
 
 // SetBorderWidth sets the property returned by [GetBorderWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderWidth(value Float.X) Instance {
+func (self Instance) SetBorderWidth(value Float.X) Instance { //gd:ReferenceRect.border_width
 	class(self).SetBorderWidth(float64(value))
 	return self
 }
@@ -200,12 +200,12 @@ If true, the [ReferenceRect] will only be visible while in editor. Otherwise, [R
 
 [ReferenceRect]: https://pkg.go.dev/graphics.gd/classdb/ReferenceRect
 */
-func (self Instance) EditorOnly() bool {
+func (self Instance) EditorOnly() bool { //gd:ReferenceRect.editor_only
 	return bool(class(self).GetEditorOnly())
 }
 
 // SetEditorOnly sets the property returned by [GetEditorOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorOnly(value bool) Instance {
+func (self Instance) SetEditorOnly(value bool) Instance { //gd:ReferenceRect.editor_only
 	class(self).SetEditorOnly(value)
 	return self
 }

@@ -164,12 +164,12 @@ func New() Instance {
 /*
 A type of operands and returned value.
 */
-func (self Instance) OpType() OpType {
+func (self Instance) OpType() OpType { //gd:VisualShaderNodeDerivativeFunc.op_type
 	return OpType(class(self).GetOpType())
 }
 
 // SetOpType sets the property returned by [GetOpType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOpType(value OpType) Instance {
+func (self Instance) SetOpType(value OpType) Instance { //gd:VisualShaderNodeDerivativeFunc.op_type
 	class(self).SetOpType(value)
 	return self
 }
@@ -177,12 +177,12 @@ func (self Instance) SetOpType(value OpType) Instance {
 /*
 A derivative function type.
 */
-func (self Instance) Function() Function {
+func (self Instance) Function() Function { //gd:VisualShaderNodeDerivativeFunc.function
 	return Function(class(self).GetFunction())
 }
 
 // SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunction(value Function) Instance {
+func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNodeDerivativeFunc.function
 	class(self).SetFunction(value)
 	return self
 }
@@ -190,12 +190,12 @@ func (self Instance) SetFunction(value Function) Instance {
 /*
 Sets the level of precision to use for the derivative function. When using the Compatibility renderer, this setting has no effect.
 */
-func (self Instance) Precision() Precision {
+func (self Instance) Precision() Precision { //gd:VisualShaderNodeDerivativeFunc.precision
 	return Precision(class(self).GetPrecision())
 }
 
 // SetPrecision sets the property returned by [GetPrecision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrecision(value Precision) Instance {
+func (self Instance) SetPrecision(value Precision) Instance { //gd:VisualShaderNodeDerivativeFunc.precision
 	class(self).SetPrecision(value)
 	return self
 }

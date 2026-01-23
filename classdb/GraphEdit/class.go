@@ -769,12 +769,12 @@ func New() Instance {
 /*
 The scroll offset.
 */
-func (self Instance) ScrollOffset() Vector2.XY {
+func (self Instance) ScrollOffset() Vector2.XY { //gd:GraphEdit.scroll_offset
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
 // SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance { //gd:GraphEdit.scroll_offset
 	class(self).SetScrollOffset(Vector2.XY(value))
 	return self
 }
@@ -782,12 +782,12 @@ func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
 /*
 If true, the grid is visible.
 */
-func (self Instance) ShowGrid() bool {
+func (self Instance) ShowGrid() bool { //gd:GraphEdit.show_grid
 	return bool(class(self).IsShowingGrid())
 }
 
 // SetShowGrid sets the property returned by [IsShowingGrid]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowGrid(value bool) Instance {
+func (self Instance) SetShowGrid(value bool) Instance { //gd:GraphEdit.show_grid
 	class(self).SetShowGrid(value)
 	return self
 }
@@ -795,12 +795,12 @@ func (self Instance) SetShowGrid(value bool) Instance {
 /*
 The pattern used for drawing the grid.
 */
-func (self Instance) GridPattern() GridPattern {
+func (self Instance) GridPattern() GridPattern { //gd:GraphEdit.grid_pattern
 	return GridPattern(class(self).GetGridPattern())
 }
 
 // SetGridPattern sets the property returned by [GetGridPattern]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGridPattern(value GridPattern) Instance {
+func (self Instance) SetGridPattern(value GridPattern) Instance { //gd:GraphEdit.grid_pattern
 	class(self).SetGridPattern(value)
 	return self
 }
@@ -808,12 +808,12 @@ func (self Instance) SetGridPattern(value GridPattern) Instance {
 /*
 If true, enables snapping.
 */
-func (self Instance) SnappingEnabled() bool {
+func (self Instance) SnappingEnabled() bool { //gd:GraphEdit.snapping_enabled
 	return bool(class(self).IsSnappingEnabled())
 }
 
 // SetSnappingEnabled sets the property returned by [IsSnappingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnappingEnabled(value bool) Instance {
+func (self Instance) SetSnappingEnabled(value bool) Instance { //gd:GraphEdit.snapping_enabled
 	class(self).SetSnappingEnabled(value)
 	return self
 }
@@ -821,12 +821,12 @@ func (self Instance) SetSnappingEnabled(value bool) Instance {
 /*
 The snapping distance in pixels, also determines the grid line distance.
 */
-func (self Instance) SnappingDistance() int {
+func (self Instance) SnappingDistance() int { //gd:GraphEdit.snapping_distance
 	return int(int(class(self).GetSnappingDistance()))
 }
 
 // SetSnappingDistance sets the property returned by [GetSnappingDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnappingDistance(value int) Instance {
+func (self Instance) SetSnappingDistance(value int) Instance { //gd:GraphEdit.snapping_distance
 	class(self).SetSnappingDistance(int64(value))
 	return self
 }
@@ -834,12 +834,12 @@ func (self Instance) SetSnappingDistance(value int) Instance {
 /*
 Defines the control scheme for panning with mouse wheel.
 */
-func (self Instance) PanningScheme() PanningScheme {
+func (self Instance) PanningScheme() PanningScheme { //gd:GraphEdit.panning_scheme
 	return PanningScheme(class(self).GetPanningScheme())
 }
 
 // SetPanningScheme sets the property returned by [GetPanningScheme]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPanningScheme(value PanningScheme) Instance {
+func (self Instance) SetPanningScheme(value PanningScheme) Instance { //gd:GraphEdit.panning_scheme
 	class(self).SetPanningScheme(value)
 	return self
 }
@@ -847,12 +847,12 @@ func (self Instance) SetPanningScheme(value PanningScheme) Instance {
 /*
 If true, enables disconnection of existing connections in the GraphEdit by dragging the right end.
 */
-func (self Instance) RightDisconnects() bool {
+func (self Instance) RightDisconnects() bool { //gd:GraphEdit.right_disconnects
 	return bool(class(self).IsRightDisconnectsEnabled())
 }
 
 // SetRightDisconnects sets the property returned by [IsRightDisconnectsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRightDisconnects(value bool) Instance {
+func (self Instance) SetRightDisconnects(value bool) Instance { //gd:GraphEdit.right_disconnects
 	class(self).SetRightDisconnects(value)
 	return self
 }
@@ -860,12 +860,12 @@ func (self Instance) SetRightDisconnects(value bool) Instance {
 /*
 data structure of human readable port type names.
 */
-func (self Instance) TypeNames() map[int]string {
+func (self Instance) TypeNames() map[int]string { //gd:GraphEdit.type_names
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetTypeNames()))
 }
 
 // SetTypeNames sets the property returned by [GetTypeNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTypeNames(value map[int]string) Instance {
+func (self Instance) SetTypeNames(value map[int]string) Instance { //gd:GraphEdit.type_names
 	class(self).SetTypeNames(gd.DictionaryFromMap(value))
 	return self
 }
@@ -873,12 +873,12 @@ func (self Instance) SetTypeNames(value map[int]string) Instance {
 /*
 The curvature of the lines between the nodes. 0 results in straight lines.
 */
-func (self Instance) ConnectionLinesCurvature() Float.X {
+func (self Instance) ConnectionLinesCurvature() Float.X { //gd:GraphEdit.connection_lines_curvature
 	return Float.X(Float.X(class(self).GetConnectionLinesCurvature()))
 }
 
 // SetConnectionLinesCurvature sets the property returned by [GetConnectionLinesCurvature]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConnectionLinesCurvature(value Float.X) Instance {
+func (self Instance) SetConnectionLinesCurvature(value Float.X) Instance { //gd:GraphEdit.connection_lines_curvature
 	class(self).SetConnectionLinesCurvature(float64(value))
 	return self
 }
@@ -886,12 +886,12 @@ func (self Instance) SetConnectionLinesCurvature(value Float.X) Instance {
 /*
 The thickness of the lines between the nodes.
 */
-func (self Instance) ConnectionLinesThickness() Float.X {
+func (self Instance) ConnectionLinesThickness() Float.X { //gd:GraphEdit.connection_lines_thickness
 	return Float.X(Float.X(class(self).GetConnectionLinesThickness()))
 }
 
 // SetConnectionLinesThickness sets the property returned by [GetConnectionLinesThickness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConnectionLinesThickness(value Float.X) Instance {
+func (self Instance) SetConnectionLinesThickness(value Float.X) Instance { //gd:GraphEdit.connection_lines_thickness
 	class(self).SetConnectionLinesThickness(float64(value))
 	return self
 }
@@ -899,12 +899,12 @@ func (self Instance) SetConnectionLinesThickness(value Float.X) Instance {
 /*
 If true, the lines between nodes will use antialiasing.
 */
-func (self Instance) ConnectionLinesAntialiased() bool {
+func (self Instance) ConnectionLinesAntialiased() bool { //gd:GraphEdit.connection_lines_antialiased
 	return bool(class(self).IsConnectionLinesAntialiased())
 }
 
 // SetConnectionLinesAntialiased sets the property returned by [IsConnectionLinesAntialiased]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConnectionLinesAntialiased(value bool) Instance {
+func (self Instance) SetConnectionLinesAntialiased(value bool) Instance { //gd:GraphEdit.connection_lines_antialiased
 	class(self).SetConnectionLinesAntialiased(value)
 	return self
 }
@@ -918,12 +918,12 @@ Connections with keep_alive set to false may be deleted automatically if invalid
 
 [GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
 */
-func (self Instance) Connections() []Connection {
+func (self Instance) Connections() []Connection { //gd:GraphEdit.connections
 	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
 }
 
 // SetConnections sets the property returned by [GetConnectionList]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConnections(value []Connection) Instance {
+func (self Instance) SetConnections(value []Connection) Instance { //gd:GraphEdit.connections
 	class(self).SetConnections(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](value))
 	return self
 }
@@ -931,12 +931,12 @@ func (self Instance) SetConnections(value []Connection) Instance {
 /*
 The current zoom value.
 */
-func (self Instance) Zoom() Float.X {
+func (self Instance) Zoom() Float.X { //gd:GraphEdit.zoom
 	return Float.X(Float.X(class(self).GetZoom()))
 }
 
 // SetZoom sets the property returned by [GetZoom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZoom(value Float.X) Instance {
+func (self Instance) SetZoom(value Float.X) Instance { //gd:GraphEdit.zoom
 	class(self).SetZoom(float64(value))
 	return self
 }
@@ -944,12 +944,12 @@ func (self Instance) SetZoom(value Float.X) Instance {
 /*
 The lower zoom limit.
 */
-func (self Instance) ZoomMin() Float.X {
+func (self Instance) ZoomMin() Float.X { //gd:GraphEdit.zoom_min
 	return Float.X(Float.X(class(self).GetZoomMin()))
 }
 
 // SetZoomMin sets the property returned by [GetZoomMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZoomMin(value Float.X) Instance {
+func (self Instance) SetZoomMin(value Float.X) Instance { //gd:GraphEdit.zoom_min
 	class(self).SetZoomMin(float64(value))
 	return self
 }
@@ -957,12 +957,12 @@ func (self Instance) SetZoomMin(value Float.X) Instance {
 /*
 The upper zoom limit.
 */
-func (self Instance) ZoomMax() Float.X {
+func (self Instance) ZoomMax() Float.X { //gd:GraphEdit.zoom_max
 	return Float.X(Float.X(class(self).GetZoomMax()))
 }
 
 // SetZoomMax sets the property returned by [GetZoomMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZoomMax(value Float.X) Instance {
+func (self Instance) SetZoomMax(value Float.X) Instance { //gd:GraphEdit.zoom_max
 	class(self).SetZoomMax(float64(value))
 	return self
 }
@@ -970,12 +970,12 @@ func (self Instance) SetZoomMax(value Float.X) Instance {
 /*
 The step of each zoom level.
 */
-func (self Instance) ZoomStep() Float.X {
+func (self Instance) ZoomStep() Float.X { //gd:GraphEdit.zoom_step
 	return Float.X(Float.X(class(self).GetZoomStep()))
 }
 
 // SetZoomStep sets the property returned by [GetZoomStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZoomStep(value Float.X) Instance {
+func (self Instance) SetZoomStep(value Float.X) Instance { //gd:GraphEdit.zoom_step
 	class(self).SetZoomStep(float64(value))
 	return self
 }
@@ -983,12 +983,12 @@ func (self Instance) SetZoomStep(value Float.X) Instance {
 /*
 If true, the minimap is visible.
 */
-func (self Instance) MinimapEnabled() bool {
+func (self Instance) MinimapEnabled() bool { //gd:GraphEdit.minimap_enabled
 	return bool(class(self).IsMinimapEnabled())
 }
 
 // SetMinimapEnabled sets the property returned by [IsMinimapEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimapEnabled(value bool) Instance {
+func (self Instance) SetMinimapEnabled(value bool) Instance { //gd:GraphEdit.minimap_enabled
 	class(self).SetMinimapEnabled(value)
 	return self
 }
@@ -996,12 +996,12 @@ func (self Instance) SetMinimapEnabled(value bool) Instance {
 /*
 The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
 */
-func (self Instance) MinimapSize() Vector2.XY {
+func (self Instance) MinimapSize() Vector2.XY { //gd:GraphEdit.minimap_size
 	return Vector2.XY(class(self).GetMinimapSize())
 }
 
 // SetMinimapSize sets the property returned by [GetMinimapSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimapSize(value Vector2.XY) Instance {
+func (self Instance) SetMinimapSize(value Vector2.XY) Instance { //gd:GraphEdit.minimap_size
 	class(self).SetMinimapSize(Vector2.XY(value))
 	return self
 }
@@ -1009,12 +1009,12 @@ func (self Instance) SetMinimapSize(value Vector2.XY) Instance {
 /*
 The opacity of the minimap rectangle.
 */
-func (self Instance) MinimapOpacity() Float.X {
+func (self Instance) MinimapOpacity() Float.X { //gd:GraphEdit.minimap_opacity
 	return Float.X(Float.X(class(self).GetMinimapOpacity()))
 }
 
 // SetMinimapOpacity sets the property returned by [GetMinimapOpacity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimapOpacity(value Float.X) Instance {
+func (self Instance) SetMinimapOpacity(value Float.X) Instance { //gd:GraphEdit.minimap_opacity
 	class(self).SetMinimapOpacity(float64(value))
 	return self
 }
@@ -1022,12 +1022,12 @@ func (self Instance) SetMinimapOpacity(value Float.X) Instance {
 /*
 If true, the menu toolbar is visible.
 */
-func (self Instance) ShowMenu() bool {
+func (self Instance) ShowMenu() bool { //gd:GraphEdit.show_menu
 	return bool(class(self).IsShowingMenu())
 }
 
 // SetShowMenu sets the property returned by [IsShowingMenu]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowMenu(value bool) Instance {
+func (self Instance) SetShowMenu(value bool) Instance { //gd:GraphEdit.show_menu
 	class(self).SetShowMenu(value)
 	return self
 }
@@ -1035,12 +1035,12 @@ func (self Instance) SetShowMenu(value bool) Instance {
 /*
 If true, the label with the current zoom level is visible. The zoom level is displayed in percents.
 */
-func (self Instance) ShowZoomLabel() bool {
+func (self Instance) ShowZoomLabel() bool { //gd:GraphEdit.show_zoom_label
 	return bool(class(self).IsShowingZoomLabel())
 }
 
 // SetShowZoomLabel sets the property returned by [IsShowingZoomLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowZoomLabel(value bool) Instance {
+func (self Instance) SetShowZoomLabel(value bool) Instance { //gd:GraphEdit.show_zoom_label
 	class(self).SetShowZoomLabel(value)
 	return self
 }
@@ -1048,12 +1048,12 @@ func (self Instance) SetShowZoomLabel(value bool) Instance {
 /*
 If true, buttons that allow to change and reset the zoom level are visible.
 */
-func (self Instance) ShowZoomButtons() bool {
+func (self Instance) ShowZoomButtons() bool { //gd:GraphEdit.show_zoom_buttons
 	return bool(class(self).IsShowingZoomButtons())
 }
 
 // SetShowZoomButtons sets the property returned by [IsShowingZoomButtons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowZoomButtons(value bool) Instance {
+func (self Instance) SetShowZoomButtons(value bool) Instance { //gd:GraphEdit.show_zoom_buttons
 	class(self).SetShowZoomButtons(value)
 	return self
 }
@@ -1061,12 +1061,12 @@ func (self Instance) SetShowZoomButtons(value bool) Instance {
 /*
 If true, buttons that allow to configure grid and snapping options are visible.
 */
-func (self Instance) ShowGridButtons() bool {
+func (self Instance) ShowGridButtons() bool { //gd:GraphEdit.show_grid_buttons
 	return bool(class(self).IsShowingGridButtons())
 }
 
 // SetShowGridButtons sets the property returned by [IsShowingGridButtons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowGridButtons(value bool) Instance {
+func (self Instance) SetShowGridButtons(value bool) Instance { //gd:GraphEdit.show_grid_buttons
 	class(self).SetShowGridButtons(value)
 	return self
 }
@@ -1074,12 +1074,12 @@ func (self Instance) SetShowGridButtons(value bool) Instance {
 /*
 If true, the button to toggle the minimap is visible.
 */
-func (self Instance) ShowMinimapButton() bool {
+func (self Instance) ShowMinimapButton() bool { //gd:GraphEdit.show_minimap_button
 	return bool(class(self).IsShowingMinimapButton())
 }
 
 // SetShowMinimapButton sets the property returned by [IsShowingMinimapButton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowMinimapButton(value bool) Instance {
+func (self Instance) SetShowMinimapButton(value bool) Instance { //gd:GraphEdit.show_minimap_button
 	class(self).SetShowMinimapButton(value)
 	return self
 }
@@ -1087,12 +1087,12 @@ func (self Instance) SetShowMinimapButton(value bool) Instance {
 /*
 If true, the button to automatically arrange graph nodes is visible.
 */
-func (self Instance) ShowArrangeButton() bool {
+func (self Instance) ShowArrangeButton() bool { //gd:GraphEdit.show_arrange_button
 	return bool(class(self).IsShowingArrangeButton())
 }
 
 // SetShowArrangeButton sets the property returned by [IsShowingArrangeButton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowArrangeButton(value bool) Instance {
+func (self Instance) SetShowArrangeButton(value bool) Instance { //gd:GraphEdit.show_arrange_button
 	class(self).SetShowArrangeButton(value)
 	return self
 }

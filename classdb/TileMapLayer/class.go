@@ -761,12 +761,12 @@ func New() Instance {
 /*
 The raw tile map data as a byte array.
 */
-func (self Instance) TileMapData() []byte {
+func (self Instance) TileMapData() []byte { //gd:TileMapLayer.tile_map_data
 	return []byte(class(self).GetTileMapDataAsArray().Bytes())
 }
 
 // SetTileMapData sets the property returned by [GetTileMapDataAsArray]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileMapData(value []byte) Instance {
+func (self Instance) SetTileMapData(value []byte) Instance { //gd:TileMapLayer.tile_map_data
 	class(self).SetTileMapDataFromArray(Packed.BytesFrom(value...))
 	return self
 }
@@ -776,12 +776,12 @@ If false, disables this [TileMapLayer] completely (rendering, collision, navigat
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:TileMapLayer.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:TileMapLayer.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -791,12 +791,12 @@ The [TileSet] used by this layer. The textures, collisions, and additional behav
 
 [TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
 */
-func (self Instance) TileSet() TileSet.Instance {
+func (self Instance) TileSet() TileSet.Instance { //gd:TileMapLayer.tile_set
 	return TileSet.Instance(class(self).GetTileSet())
 }
 
 // SetTileSet sets the property returned by [GetTileSet]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileSet(value TileSet.Instance) Instance {
+func (self Instance) SetTileSet(value TileSet.Instance) Instance { //gd:TileMapLayer.tile_set
 	class(self).SetTileSet(value)
 	return self
 }
@@ -804,12 +804,12 @@ func (self Instance) SetTileSet(value TileSet.Instance) Instance {
 /*
 Enable or disable light occlusion.
 */
-func (self Instance) OcclusionEnabled() bool {
+func (self Instance) OcclusionEnabled() bool { //gd:TileMapLayer.occlusion_enabled
 	return bool(class(self).IsOcclusionEnabled())
 }
 
 // SetOcclusionEnabled sets the property returned by [IsOcclusionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOcclusionEnabled(value bool) Instance {
+func (self Instance) SetOcclusionEnabled(value bool) Instance { //gd:TileMapLayer.occlusion_enabled
 	class(self).SetOcclusionEnabled(value)
 	return self
 }
@@ -817,12 +817,12 @@ func (self Instance) SetOcclusionEnabled(value bool) Instance {
 /*
 This Y-sort origin value is added to each tile's Y-sort origin value. This allows, for example, to fake a different height level. This can be useful for top-down view games.
 */
-func (self Instance) YSortOrigin() int {
+func (self Instance) YSortOrigin() int { //gd:TileMapLayer.y_sort_origin
 	return int(int(class(self).GetYSortOrigin()))
 }
 
 // SetYSortOrigin sets the property returned by [GetYSortOrigin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetYSortOrigin(value int) Instance {
+func (self Instance) SetYSortOrigin(value int) Instance { //gd:TileMapLayer.y_sort_origin
 	class(self).SetYSortOrigin(int64(value))
 	return self
 }
@@ -832,12 +832,12 @@ If [CanvasItem.YSortEnabled] is enabled, setting this to true will reverse the o
 
 [CanvasItem.YSortEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.YSortEnabled
 */
-func (self Instance) XDrawOrderReversed() bool {
+func (self Instance) XDrawOrderReversed() bool { //gd:TileMapLayer.x_draw_order_reversed
 	return bool(class(self).IsXDrawOrderReversed())
 }
 
 // SetXDrawOrderReversed sets the property returned by [IsXDrawOrderReversed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXDrawOrderReversed(value bool) Instance {
+func (self Instance) SetXDrawOrderReversed(value bool) Instance { //gd:TileMapLayer.x_draw_order_reversed
 	class(self).SetXDrawOrderReversed(value)
 	return self
 }
@@ -852,12 +852,12 @@ Note: As quadrants are created according to the map's coordinate system, the qua
 [RenderingQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.RenderingQuadrantSize
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) RenderingQuadrantSize() int {
+func (self Instance) RenderingQuadrantSize() int { //gd:TileMapLayer.rendering_quadrant_size
 	return int(int(class(self).GetRenderingQuadrantSize()))
 }
 
 // SetRenderingQuadrantSize sets the property returned by [GetRenderingQuadrantSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderingQuadrantSize(value int) Instance {
+func (self Instance) SetRenderingQuadrantSize(value int) Instance { //gd:TileMapLayer.rendering_quadrant_size
 	class(self).SetRenderingQuadrantSize(int64(value))
 	return self
 }
@@ -865,12 +865,12 @@ func (self Instance) SetRenderingQuadrantSize(value int) Instance {
 /*
 Enable or disable collisions.
 */
-func (self Instance) CollisionEnabled() bool {
+func (self Instance) CollisionEnabled() bool { //gd:TileMapLayer.collision_enabled
 	return bool(class(self).IsCollisionEnabled())
 }
 
 // SetCollisionEnabled sets the property returned by [IsCollisionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionEnabled(value bool) Instance {
+func (self Instance) SetCollisionEnabled(value bool) Instance { //gd:TileMapLayer.collision_enabled
 	class(self).SetCollisionEnabled(value)
 	return self
 }
@@ -880,12 +880,12 @@ If true, this [TileMapLayer] collision shapes will be instantiated as kinematic 
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) UseKinematicBodies() bool {
+func (self Instance) UseKinematicBodies() bool { //gd:TileMapLayer.use_kinematic_bodies
 	return bool(class(self).IsUsingKinematicBodies())
 }
 
 // SetUseKinematicBodies sets the property returned by [IsUsingKinematicBodies]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseKinematicBodies(value bool) Instance {
+func (self Instance) SetUseKinematicBodies(value bool) Instance { //gd:TileMapLayer.use_kinematic_bodies
 	class(self).SetUseKinematicBodies(value)
 	return self
 }
@@ -895,12 +895,12 @@ Show or hide the [TileMapLayer]'s collision shapes. If set to [DebugVisibilityMo
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) CollisionVisibilityMode() DebugVisibilityMode {
+func (self Instance) CollisionVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.collision_visibility_mode
 	return DebugVisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
 // SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) Instance {
+func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) Instance { //gd:TileMapLayer.collision_visibility_mode
 	class(self).SetCollisionVisibilityMode(value)
 	return self
 }
@@ -916,12 +916,12 @@ Note: This impacts the value returned by [GetCoordsForBodyRid].
 [PhysicsQuadrantSize]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer#Instance.PhysicsQuadrantSize
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) PhysicsQuadrantSize() int {
+func (self Instance) PhysicsQuadrantSize() int { //gd:TileMapLayer.physics_quadrant_size
 	return int(int(class(self).GetPhysicsQuadrantSize()))
 }
 
 // SetPhysicsQuadrantSize sets the property returned by [GetPhysicsQuadrantSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsQuadrantSize(value int) Instance {
+func (self Instance) SetPhysicsQuadrantSize(value int) Instance { //gd:TileMapLayer.physics_quadrant_size
 	class(self).SetPhysicsQuadrantSize(int64(value))
 	return self
 }
@@ -929,12 +929,12 @@ func (self Instance) SetPhysicsQuadrantSize(value int) Instance {
 /*
 If true, navigation regions are enabled.
 */
-func (self Instance) NavigationEnabled() bool {
+func (self Instance) NavigationEnabled() bool { //gd:TileMapLayer.navigation_enabled
 	return bool(class(self).IsNavigationEnabled())
 }
 
 // SetNavigationEnabled sets the property returned by [IsNavigationEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationEnabled(value bool) Instance {
+func (self Instance) SetNavigationEnabled(value bool) Instance { //gd:TileMapLayer.navigation_enabled
 	class(self).SetNavigationEnabled(value)
 	return self
 }
@@ -944,12 +944,12 @@ Show or hide the [TileMapLayer]'s navigation meshes. If set to [DebugVisibilityM
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) NavigationVisibilityMode() DebugVisibilityMode {
+func (self Instance) NavigationVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.navigation_visibility_mode
 	return DebugVisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
 // SetNavigationVisibilityMode sets the property returned by [GetNavigationVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) Instance {
+func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) Instance { //gd:TileMapLayer.navigation_visibility_mode
 	class(self).SetNavigationVisibilityMode(value)
 	return self
 }

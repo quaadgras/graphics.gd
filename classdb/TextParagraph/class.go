@@ -545,12 +545,12 @@ func New() Instance {
 /*
 Text writing direction.
 */
-func (self Instance) Direction() TextServer.Direction {
+func (self Instance) Direction() TextServer.Direction { //gd:TextParagraph.direction
 	return TextServer.Direction(class(self).GetDirection())
 }
 
 // SetDirection sets the property returned by [GetDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirection(value TextServer.Direction) Instance {
+func (self Instance) SetDirection(value TextServer.Direction) Instance { //gd:TextParagraph.direction
 	class(self).SetDirection(value)
 	return self
 }
@@ -558,12 +558,12 @@ func (self Instance) SetDirection(value TextServer.Direction) Instance {
 /*
 Custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (self Instance) CustomPunctuation() string {
+func (self Instance) CustomPunctuation() string { //gd:TextParagraph.custom_punctuation
 	return string(class(self).GetCustomPunctuation().String())
 }
 
 // SetCustomPunctuation sets the property returned by [GetCustomPunctuation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomPunctuation(value string) Instance {
+func (self Instance) SetCustomPunctuation(value string) Instance { //gd:TextParagraph.custom_punctuation
 	class(self).SetCustomPunctuation(String.New(value))
 	return self
 }
@@ -571,12 +571,12 @@ func (self Instance) SetCustomPunctuation(value string) Instance {
 /*
 Text orientation.
 */
-func (self Instance) Orientation() TextServer.Orientation {
+func (self Instance) Orientation() TextServer.Orientation { //gd:TextParagraph.orientation
 	return TextServer.Orientation(class(self).GetOrientation())
 }
 
 // SetOrientation sets the property returned by [GetOrientation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrientation(value TextServer.Orientation) Instance {
+func (self Instance) SetOrientation(value TextServer.Orientation) Instance { //gd:TextParagraph.orientation
 	class(self).SetOrientation(value)
 	return self
 }
@@ -584,12 +584,12 @@ func (self Instance) SetOrientation(value TextServer.Orientation) Instance {
 /*
 If set to true text will display invalid characters.
 */
-func (self Instance) PreserveInvalid() bool {
+func (self Instance) PreserveInvalid() bool { //gd:TextParagraph.preserve_invalid
 	return bool(class(self).GetPreserveInvalid())
 }
 
 // SetPreserveInvalid sets the property returned by [GetPreserveInvalid]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreserveInvalid(value bool) Instance {
+func (self Instance) SetPreserveInvalid(value bool) Instance { //gd:TextParagraph.preserve_invalid
 	class(self).SetPreserveInvalid(value)
 	return self
 }
@@ -597,12 +597,12 @@ func (self Instance) SetPreserveInvalid(value bool) Instance {
 /*
 If set to true text will display control characters.
 */
-func (self Instance) PreserveControl() bool {
+func (self Instance) PreserveControl() bool { //gd:TextParagraph.preserve_control
 	return bool(class(self).GetPreserveControl())
 }
 
 // SetPreserveControl sets the property returned by [GetPreserveControl]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreserveControl(value bool) Instance {
+func (self Instance) SetPreserveControl(value bool) Instance { //gd:TextParagraph.preserve_control
 	class(self).SetPreserveControl(value)
 	return self
 }
@@ -610,12 +610,12 @@ func (self Instance) SetPreserveControl(value bool) Instance {
 /*
 Paragraph horizontal alignment.
 */
-func (self Instance) Alignment() GUI.HorizontalAlignment {
+func (self Instance) Alignment() GUI.HorizontalAlignment { //gd:TextParagraph.alignment
 	return GUI.HorizontalAlignment(class(self).GetAlignment())
 }
 
 // SetAlignment sets the property returned by [GetAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance { //gd:TextParagraph.alignment
 	class(self).SetAlignment(value)
 	return self
 }
@@ -625,12 +625,12 @@ Line breaking rules. For more info see [TextServer].
 
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self Instance) BreakFlags() TextServer.LineBreakFlag {
+func (self Instance) BreakFlags() TextServer.LineBreakFlag { //gd:TextParagraph.break_flags
 	return TextServer.LineBreakFlag(class(self).GetBreakFlags())
 }
 
 // SetBreakFlags sets the property returned by [GetBreakFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBreakFlags(value TextServer.LineBreakFlag) Instance {
+func (self Instance) SetBreakFlags(value TextServer.LineBreakFlag) Instance { //gd:TextParagraph.break_flags
 	class(self).SetBreakFlags(value)
 	return self
 }
@@ -638,12 +638,12 @@ func (self Instance) SetBreakFlags(value TextServer.LineBreakFlag) Instance {
 /*
 Line fill alignment rules.
 */
-func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+func (self Instance) JustificationFlags() TextServer.JustificationFlag { //gd:TextParagraph.justification_flags
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
 // SetJustificationFlags sets the property returned by [GetJustificationFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance { //gd:TextParagraph.justification_flags
 	class(self).SetJustificationFlags(value)
 	return self
 }
@@ -651,12 +651,12 @@ func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) I
 /*
 The clipping behavior when the text exceeds the paragraph's set width.
 */
-func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextParagraph.text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
 // SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:TextParagraph.text_overrun_behavior
 	class(self).SetTextOverrunBehavior(value)
 	return self
 }
@@ -664,12 +664,12 @@ func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) In
 /*
 Ellipsis character used for text clipping.
 */
-func (self Instance) EllipsisChar() string {
+func (self Instance) EllipsisChar() string { //gd:TextParagraph.ellipsis_char
 	return string(class(self).GetEllipsisChar().String())
 }
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEllipsisChar(value string) Instance {
+func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextParagraph.ellipsis_char
 	class(self).SetEllipsisChar(String.New(value))
 	return self
 }
@@ -677,12 +677,12 @@ func (self Instance) SetEllipsisChar(value string) Instance {
 /*
 Paragraph width.
 */
-func (self Instance) Width() Float.X {
+func (self Instance) Width() Float.X { //gd:TextParagraph.width
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
 // SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWidth(value Float.X) Instance {
+func (self Instance) SetWidth(value Float.X) Instance { //gd:TextParagraph.width
 	class(self).SetWidth(float64(value))
 	return self
 }
@@ -690,12 +690,12 @@ func (self Instance) SetWidth(value Float.X) Instance {
 /*
 Limits the lines of text shown.
 */
-func (self Instance) MaxLinesVisible() int {
+func (self Instance) MaxLinesVisible() int { //gd:TextParagraph.max_lines_visible
 	return int(int(class(self).GetMaxLinesVisible()))
 }
 
 // SetMaxLinesVisible sets the property returned by [GetMaxLinesVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxLinesVisible(value int) Instance {
+func (self Instance) SetMaxLinesVisible(value int) Instance { //gd:TextParagraph.max_lines_visible
 	class(self).SetMaxLinesVisible(int64(value))
 	return self
 }
@@ -703,12 +703,12 @@ func (self Instance) SetMaxLinesVisible(value int) Instance {
 /*
 Additional vertical spacing between lines (in pixels), spacing is added to line descent. This value can be negative.
 */
-func (self Instance) LineSpacing() Float.X {
+func (self Instance) LineSpacing() Float.X { //gd:TextParagraph.line_spacing
 	return Float.X(Float.X(class(self).GetLineSpacing()))
 }
 
 // SetLineSpacing sets the property returned by [GetLineSpacing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLineSpacing(value Float.X) Instance {
+func (self Instance) SetLineSpacing(value Float.X) Instance { //gd:TextParagraph.line_spacing
 	class(self).SetLineSpacing(float64(value))
 	return self
 }

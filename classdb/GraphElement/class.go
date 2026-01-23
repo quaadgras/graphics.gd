@@ -176,12 +176,12 @@ The offset of the GraphElement, relative to the scroll offset of the [GraphEdit]
 
 [GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
 */
-func (self Instance) PositionOffset() Vector2.XY {
+func (self Instance) PositionOffset() Vector2.XY { //gd:GraphElement.position_offset
 	return Vector2.XY(class(self).GetPositionOffset())
 }
 
 // SetPositionOffset sets the property returned by [GetPositionOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionOffset(value Vector2.XY) Instance {
+func (self Instance) SetPositionOffset(value Vector2.XY) Instance { //gd:GraphElement.position_offset
 	class(self).SetPositionOffset(Vector2.XY(value))
 	return self
 }
@@ -194,12 +194,12 @@ Note: Dragging the handle will only emit the [OnResizeRequest] and [OnResizeEnd]
 [OnResizeEnd]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.OnResizeEnd
 [OnResizeRequest]: https://pkg.go.dev/graphics.gd/classdb/GraphElement#Instance.OnResizeRequest
 */
-func (self Instance) Resizable() bool {
+func (self Instance) Resizable() bool { //gd:GraphElement.resizable
 	return bool(class(self).IsResizable())
 }
 
 // SetResizable sets the property returned by [IsResizable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResizable(value bool) Instance {
+func (self Instance) SetResizable(value bool) Instance { //gd:GraphElement.resizable
 	class(self).SetResizable(value)
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetResizable(value bool) Instance {
 /*
 If true, the user can drag the GraphElement.
 */
-func (self Instance) Draggable() bool {
+func (self Instance) Draggable() bool { //gd:GraphElement.draggable
 	return bool(class(self).IsDraggable())
 }
 
 // SetDraggable sets the property returned by [IsDraggable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDraggable(value bool) Instance {
+func (self Instance) SetDraggable(value bool) Instance { //gd:GraphElement.draggable
 	class(self).SetDraggable(value)
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetDraggable(value bool) Instance {
 /*
 If true, the user can select the GraphElement.
 */
-func (self Instance) Selectable() bool {
+func (self Instance) Selectable() bool { //gd:GraphElement.selectable
 	return bool(class(self).IsSelectable())
 }
 
 // SetSelectable sets the property returned by [IsSelectable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectable(value bool) Instance {
+func (self Instance) SetSelectable(value bool) Instance { //gd:GraphElement.selectable
 	class(self).SetSelectable(value)
 	return self
 }
@@ -233,12 +233,12 @@ func (self Instance) SetSelectable(value bool) Instance {
 /*
 If true, the GraphElement is selected.
 */
-func (self Instance) Selected() bool {
+func (self Instance) Selected() bool { //gd:GraphElement.selected
 	return bool(class(self).IsSelected())
 }
 
 // SetSelected sets the property returned by [IsSelected]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelected(value bool) Instance {
+func (self Instance) SetSelected(value bool) Instance { //gd:GraphElement.selected
 	class(self).SetSelected(value)
 	return self
 }

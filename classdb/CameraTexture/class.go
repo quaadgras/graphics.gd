@@ -172,12 +172,12 @@ The ID of the [CameraFeed] for which we want to display the image.
 
 [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
 */
-func (self Instance) CameraFeedId() int {
+func (self Instance) CameraFeedId() int { //gd:CameraTexture.camera_feed_id
 	return int(int(class(self).GetCameraFeedId()))
 }
 
 // SetCameraFeedId sets the property returned by [GetCameraFeedId]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraFeedId(value int) Instance {
+func (self Instance) SetCameraFeedId(value int) Instance { //gd:CameraTexture.camera_feed_id
 	class(self).SetCameraFeedId(int64(value))
 	return self
 }
@@ -187,12 +187,12 @@ Which image within the [CameraFeed] we want access to, important if the camera i
 
 [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
 */
-func (self Instance) WhichFeed() CameraFeed.ImageType {
+func (self Instance) WhichFeed() CameraFeed.ImageType { //gd:CameraTexture.which_feed
 	return CameraFeed.ImageType(class(self).GetWhichFeed())
 }
 
 // SetWhichFeed sets the property returned by [GetWhichFeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWhichFeed(value CameraFeed.ImageType) Instance {
+func (self Instance) SetWhichFeed(value CameraFeed.ImageType) Instance { //gd:CameraTexture.which_feed
 	class(self).SetWhichFeed(value)
 	return self
 }
@@ -202,12 +202,12 @@ Convenience property that gives access to the active property of the [CameraFeed
 
 [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
 */
-func (self Instance) CameraIsActive() bool {
+func (self Instance) CameraIsActive() bool { //gd:CameraTexture.camera_is_active
 	return bool(class(self).GetCameraActive())
 }
 
 // SetCameraIsActive sets the property returned by [GetCameraActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraIsActive(value bool) Instance {
+func (self Instance) SetCameraIsActive(value bool) Instance { //gd:CameraTexture.camera_is_active
 	class(self).SetCameraActive(value)
 	return self
 }

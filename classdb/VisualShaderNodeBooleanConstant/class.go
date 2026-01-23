@@ -163,12 +163,12 @@ func New() Instance {
 /*
 A boolean constant which represents a state of this node.
 */
-func (self Instance) Constant() bool {
+func (self Instance) Constant() bool { //gd:VisualShaderNodeBooleanConstant.constant
 	return bool(class(self).GetConstant())
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value bool) Instance {
+func (self Instance) SetConstant(value bool) Instance { //gd:VisualShaderNodeBooleanConstant.constant
 	class(self).SetConstant(value)
 	return self
 }

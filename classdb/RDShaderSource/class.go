@@ -168,12 +168,12 @@ func New() Instance {
 /*
 Source code for the shader's vertex stage.
 */
-func (self Instance) SourceVertex() string {
+func (self Instance) SourceVertex() string { //gd:RDShaderSource.source_vertex
 	return string(class(self).GetStageSource(0).String())
 }
 
 // SetSourceVertex sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceVertex(value string) Instance {
+func (self Instance) SetSourceVertex(value string) Instance { //gd:RDShaderSource.source_vertex
 	class(self).SetStageSource(0, String.New(value))
 	return self
 }
@@ -181,12 +181,12 @@ func (self Instance) SetSourceVertex(value string) Instance {
 /*
 Source code for the shader's fragment stage.
 */
-func (self Instance) SourceFragment() string {
+func (self Instance) SourceFragment() string { //gd:RDShaderSource.source_fragment
 	return string(class(self).GetStageSource(1).String())
 }
 
 // SetSourceFragment sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceFragment(value string) Instance {
+func (self Instance) SetSourceFragment(value string) Instance { //gd:RDShaderSource.source_fragment
 	class(self).SetStageSource(1, String.New(value))
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetSourceFragment(value string) Instance {
 /*
 Source code for the shader's tessellation control stage.
 */
-func (self Instance) SourceTesselationControl() string {
+func (self Instance) SourceTesselationControl() string { //gd:RDShaderSource.source_tesselation_control
 	return string(class(self).GetStageSource(2).String())
 }
 
 // SetSourceTesselationControl sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceTesselationControl(value string) Instance {
+func (self Instance) SetSourceTesselationControl(value string) Instance { //gd:RDShaderSource.source_tesselation_control
 	class(self).SetStageSource(2, String.New(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetSourceTesselationControl(value string) Instance {
 /*
 Source code for the shader's tessellation evaluation stage.
 */
-func (self Instance) SourceTesselationEvaluation() string {
+func (self Instance) SourceTesselationEvaluation() string { //gd:RDShaderSource.source_tesselation_evaluation
 	return string(class(self).GetStageSource(3).String())
 }
 
 // SetSourceTesselationEvaluation sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceTesselationEvaluation(value string) Instance {
+func (self Instance) SetSourceTesselationEvaluation(value string) Instance { //gd:RDShaderSource.source_tesselation_evaluation
 	class(self).SetStageSource(3, String.New(value))
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetSourceTesselationEvaluation(value string) Instance {
 /*
 Source code for the shader's compute stage.
 */
-func (self Instance) SourceCompute() string {
+func (self Instance) SourceCompute() string { //gd:RDShaderSource.source_compute
 	return string(class(self).GetStageSource(4).String())
 }
 
 // SetSourceCompute sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceCompute(value string) Instance {
+func (self Instance) SetSourceCompute(value string) Instance { //gd:RDShaderSource.source_compute
 	class(self).SetStageSource(4, String.New(value))
 	return self
 }
@@ -233,12 +233,12 @@ func (self Instance) SetSourceCompute(value string) Instance {
 /*
 The language the shader is written in.
 */
-func (self Instance) Language() Rendering.ShaderLanguage {
+func (self Instance) Language() Rendering.ShaderLanguage { //gd:RDShaderSource.language
 	return Rendering.ShaderLanguage(class(self).GetLanguage())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value Rendering.ShaderLanguage) Instance {
+func (self Instance) SetLanguage(value Rendering.ShaderLanguage) Instance { //gd:RDShaderSource.language
 	class(self).SetLanguage(value)
 	return self
 }

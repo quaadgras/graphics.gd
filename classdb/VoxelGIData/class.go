@@ -219,12 +219,12 @@ func New() Instance {
 /*
 The dynamic range to use (1.0 represents a low dynamic range scene brightness). Higher values can be used to provide brighter indirect lighting, at the cost of more visible color banding in dark areas (both in indirect lighting and reflections). To avoid color banding, it's recommended to use the lowest value that does not result in visible light clipping.
 */
-func (self Instance) DynamicRange() Float.X {
+func (self Instance) DynamicRange() Float.X { //gd:VoxelGIData.dynamic_range
 	return Float.X(Float.X(class(self).GetDynamicRange()))
 }
 
 // SetDynamicRange sets the property returned by [GetDynamicRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDynamicRange(value Float.X) Instance {
+func (self Instance) SetDynamicRange(value Float.X) Instance { //gd:VoxelGIData.dynamic_range
 	class(self).SetDynamicRange(float64(value))
 	return self
 }
@@ -237,12 +237,12 @@ The energy of the indirect lighting and reflections produced by the [VoxelGI] no
 [UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) Energy() Float.X {
+func (self Instance) Energy() Float.X { //gd:VoxelGIData.energy
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
 // SetEnergy sets the property returned by [GetEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnergy(value Float.X) Instance {
+func (self Instance) SetEnergy(value Float.X) Instance { //gd:VoxelGIData.energy
 	class(self).SetEnergy(float64(value))
 	return self
 }
@@ -253,12 +253,12 @@ The normal bias to use for indirect lighting and reflections. Higher values redu
 [Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
 [NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
 */
-func (self Instance) Bias() Float.X {
+func (self Instance) Bias() Float.X { //gd:VoxelGIData.bias
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
 // SetBias sets the property returned by [GetBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBias(value Float.X) Instance {
+func (self Instance) SetBias(value Float.X) Instance { //gd:VoxelGIData.bias
 	class(self).SetBias(float64(value))
 	return self
 }
@@ -269,12 +269,12 @@ The normal bias to use for indirect lighting and reflections. Higher values redu
 [Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
 [NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
 */
-func (self Instance) NormalBias() Float.X {
+func (self Instance) NormalBias() Float.X { //gd:VoxelGIData.normal_bias
 	return Float.X(Float.X(class(self).GetNormalBias()))
 }
 
 // SetNormalBias sets the property returned by [GetNormalBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalBias(value Float.X) Instance {
+func (self Instance) SetNormalBias(value Float.X) Instance { //gd:VoxelGIData.normal_bias
 	class(self).SetNormalBias(float64(value))
 	return self
 }
@@ -286,12 +286,12 @@ The multiplier to use when light bounces off a surface. Higher values result in 
 [Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
 [UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
 */
-func (self Instance) Propagation() Float.X {
+func (self Instance) Propagation() Float.X { //gd:VoxelGIData.propagation
 	return Float.X(Float.X(class(self).GetPropagation()))
 }
 
 // SetPropagation sets the property returned by [GetPropagation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPropagation(value Float.X) Instance {
+func (self Instance) SetPropagation(value Float.X) Instance { //gd:VoxelGIData.propagation
 	class(self).SetPropagation(float64(value))
 	return self
 }
@@ -303,12 +303,12 @@ If true, performs two bounces of indirect lighting instead of one. This makes in
 [Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
 [UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
 */
-func (self Instance) UseTwoBounces() bool {
+func (self Instance) UseTwoBounces() bool { //gd:VoxelGIData.use_two_bounces
 	return bool(class(self).IsUsingTwoBounces())
 }
 
 // SetUseTwoBounces sets the property returned by [IsUsingTwoBounces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseTwoBounces(value bool) Instance {
+func (self Instance) SetUseTwoBounces(value bool) Instance { //gd:VoxelGIData.use_two_bounces
 	class(self).SetUseTwoBounces(value)
 	return self
 }
@@ -319,12 +319,12 @@ If true, [Environment] lighting is ignored by the [VoxelGI] node. If false, [Env
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) Interior() bool {
+func (self Instance) Interior() bool { //gd:VoxelGIData.interior
 	return bool(class(self).IsInterior())
 }
 
 // SetInterior sets the property returned by [IsInterior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterior(value bool) Instance {
+func (self Instance) SetInterior(value bool) Instance { //gd:VoxelGIData.interior
 	class(self).SetInterior(value)
 	return self
 }

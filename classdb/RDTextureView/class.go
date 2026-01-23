@@ -171,12 +171,12 @@ Optional override for the data format to return sampled values in. The correspon
 
 [RDTextureFormat]: https://pkg.go.dev/graphics.gd/classdb/RDTextureFormat
 */
-func (self Instance) FormatOverride() Rendering.DataFormat {
+func (self Instance) FormatOverride() Rendering.DataFormat { //gd:RDTextureView.format_override
 	return Rendering.DataFormat(class(self).GetFormatOverride())
 }
 
 // SetFormatOverride sets the property returned by [GetFormatOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFormatOverride(value Rendering.DataFormat) Instance {
+func (self Instance) SetFormatOverride(value Rendering.DataFormat) Instance { //gd:RDTextureView.format_override
 	class(self).SetFormatOverride(value)
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetFormatOverride(value Rendering.DataFormat) Instance {
 /*
 The channel to sample when sampling the red color channel.
 */
-func (self Instance) SwizzleR() Rendering.TextureSwizzle {
+func (self Instance) SwizzleR() Rendering.TextureSwizzle { //gd:RDTextureView.swizzle_r
 	return Rendering.TextureSwizzle(class(self).GetSwizzleR())
 }
 
 // SetSwizzleR sets the property returned by [GetSwizzleR]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) Instance {
+func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) Instance { //gd:RDTextureView.swizzle_r
 	class(self).SetSwizzleR(value)
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) Instance {
 /*
 The channel to sample when sampling the green color channel.
 */
-func (self Instance) SwizzleG() Rendering.TextureSwizzle {
+func (self Instance) SwizzleG() Rendering.TextureSwizzle { //gd:RDTextureView.swizzle_g
 	return Rendering.TextureSwizzle(class(self).GetSwizzleG())
 }
 
 // SetSwizzleG sets the property returned by [GetSwizzleG]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) Instance {
+func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) Instance { //gd:RDTextureView.swizzle_g
 	class(self).SetSwizzleG(value)
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) Instance {
 /*
 The channel to sample when sampling the blue color channel.
 */
-func (self Instance) SwizzleB() Rendering.TextureSwizzle {
+func (self Instance) SwizzleB() Rendering.TextureSwizzle { //gd:RDTextureView.swizzle_b
 	return Rendering.TextureSwizzle(class(self).GetSwizzleB())
 }
 
 // SetSwizzleB sets the property returned by [GetSwizzleB]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) Instance {
+func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) Instance { //gd:RDTextureView.swizzle_b
 	class(self).SetSwizzleB(value)
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) Instance {
 /*
 The channel to sample when sampling the alpha channel.
 */
-func (self Instance) SwizzleA() Rendering.TextureSwizzle {
+func (self Instance) SwizzleA() Rendering.TextureSwizzle { //gd:RDTextureView.swizzle_a
 	return Rendering.TextureSwizzle(class(self).GetSwizzleA())
 }
 
 // SetSwizzleA sets the property returned by [GetSwizzleA]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) Instance {
+func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) Instance { //gd:RDTextureView.swizzle_a
 	class(self).SetSwizzleA(value)
 	return self
 }

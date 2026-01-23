@@ -166,12 +166,12 @@ The name of the class this node was supposed to be (see [Object.GetClass]).
 
 [Object.GetClass]: https://pkg.go.dev/graphics.gd/variant/Object#GetClass
 */
-func (self Instance) OriginalClass() string {
+func (self Instance) OriginalClass() string { //gd:MissingNode.original_class
 	return string(class(self).GetOriginalClass().String())
 }
 
 // SetOriginalClass sets the property returned by [GetOriginalClass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalClass(value string) Instance {
+func (self Instance) SetOriginalClass(value string) Instance { //gd:MissingNode.original_class
 	class(self).SetOriginalClass(String.New(value))
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetOriginalClass(value string) Instance {
 /*
 Returns the path of the scene this node was instance of originally.
 */
-func (self Instance) OriginalScene() string {
+func (self Instance) OriginalScene() string { //gd:MissingNode.original_scene
 	return string(class(self).GetOriginalScene().String())
 }
 
 // SetOriginalScene sets the property returned by [GetOriginalScene]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalScene(value string) Instance {
+func (self Instance) SetOriginalScene(value string) Instance { //gd:MissingNode.original_scene
 	class(self).SetOriginalScene(String.New(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetOriginalScene(value string) Instance {
 /*
 If true, allows new properties to be set along with existing ones. If false, only existing properties' values can be set, and new properties cannot be added.
 */
-func (self Instance) RecordingProperties() bool {
+func (self Instance) RecordingProperties() bool { //gd:MissingNode.recording_properties
 	return bool(class(self).IsRecordingProperties())
 }
 
 // SetRecordingProperties sets the property returned by [IsRecordingProperties]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRecordingProperties(value bool) Instance {
+func (self Instance) SetRecordingProperties(value bool) Instance { //gd:MissingNode.recording_properties
 	class(self).SetRecordingProperties(value)
 	return self
 }

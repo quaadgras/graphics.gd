@@ -388,12 +388,12 @@ If true, changing the [FileMode] property will set the window title accordingly 
 
 [FileMode]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.FileMode
 */
-func (self Instance) ModeOverridesTitle() bool {
+func (self Instance) ModeOverridesTitle() bool { //gd:FileDialog.mode_overrides_title
 	return bool(class(self).IsModeOverridingTitle())
 }
 
 // SetModeOverridesTitle sets the property returned by [IsModeOverridingTitle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModeOverridesTitle(value bool) Instance {
+func (self Instance) SetModeOverridesTitle(value bool) Instance { //gd:FileDialog.mode_overrides_title
 	class(self).SetModeOverridesTitle(value)
 	return self
 }
@@ -401,12 +401,12 @@ func (self Instance) SetModeOverridesTitle(value bool) Instance {
 /*
 The dialog's open or save mode, which affects the selection behavior.
 */
-func (self Instance) FileMode() FileMode {
+func (self Instance) FileMode() FileMode { //gd:FileDialog.file_mode
 	return FileMode(class(self).GetFileMode())
 }
 
 // SetFileMode sets the property returned by [GetFileMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFileMode(value FileMode) Instance {
+func (self Instance) SetFileMode(value FileMode) Instance { //gd:FileDialog.file_mode
 	class(self).SetFileMode(value)
 	return self
 }
@@ -414,12 +414,12 @@ func (self Instance) SetFileMode(value FileMode) Instance {
 /*
 Display mode of the dialog's file list.
 */
-func (self Instance) DisplayMode() DisplayMode {
+func (self Instance) DisplayMode() DisplayMode { //gd:FileDialog.display_mode
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
 // SetDisplayMode sets the property returned by [GetDisplayMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisplayMode(value DisplayMode) Instance {
+func (self Instance) SetDisplayMode(value DisplayMode) Instance { //gd:FileDialog.display_mode
 	class(self).SetDisplayMode(value)
 	return self
 }
@@ -431,12 +431,12 @@ Warning: In Web builds, FileDialog cannot access the host file system. In sandbo
 
 [UseNativeDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.UseNativeDialog
 */
-func (self Instance) Access() Access {
+func (self Instance) Access() Access { //gd:FileDialog.access
 	return Access(class(self).GetAccess())
 }
 
 // SetAccess sets the property returned by [GetAccess]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccess(value Access) Instance {
+func (self Instance) SetAccess(value Access) Instance { //gd:FileDialog.access
 	class(self).SetAccess(value)
 	return self
 }
@@ -448,12 +448,12 @@ Note: This property is ignored by native file dialogs.
 
 [FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
 */
-func (self Instance) RootSubfolder() string {
+func (self Instance) RootSubfolder() string { //gd:FileDialog.root_subfolder
 	return string(class(self).GetRootSubfolder().String())
 }
 
 // SetRootSubfolder sets the property returned by [GetRootSubfolder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootSubfolder(value string) Instance {
+func (self Instance) SetRootSubfolder(value string) Instance { //gd:FileDialog.root_subfolder
 	class(self).SetRootSubfolder(String.New(value))
 	return self
 }
@@ -463,12 +463,12 @@ The available file type filters. Each filter string in the array should be forma
 
 Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
 */
-func (self Instance) Filters() []string {
+func (self Instance) Filters() []string { //gd:FileDialog.filters
 	return []string(class(self).GetFilters().Strings())
 }
 
 // SetFilters sets the property returned by [GetFilters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilters(value []string) Instance {
+func (self Instance) SetFilters(value []string) Instance { //gd:FileDialog.filters
 	class(self).SetFilters(Packed.MakeStrings(value...))
 	return self
 }
@@ -481,12 +481,12 @@ See also [Filters], which should be used to restrict the file types that can be 
 [FilenameFilter]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.FilenameFilter
 [Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
 */
-func (self Instance) FilenameFilter() string {
+func (self Instance) FilenameFilter() string { //gd:FileDialog.filename_filter
 	return string(class(self).GetFilenameFilter().String())
 }
 
 // SetFilenameFilter sets the property returned by [GetFilenameFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilenameFilter(value string) Instance {
+func (self Instance) SetFilenameFilter(value string) Instance { //gd:FileDialog.filename_filter
 	class(self).SetFilenameFilter(String.New(value))
 	return self
 }
@@ -496,12 +496,12 @@ If true, the dialog will show hidden files.
 
 Note: This property is ignored by native file dialogs on Android and Linux.
 */
-func (self Instance) ShowHiddenFiles() bool {
+func (self Instance) ShowHiddenFiles() bool { //gd:FileDialog.show_hidden_files
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
 // SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowHiddenFiles(value bool) Instance {
+func (self Instance) SetShowHiddenFiles(value bool) Instance { //gd:FileDialog.show_hidden_files
 	class(self).SetShowHiddenFiles(value)
 	return self
 }
@@ -520,12 +520,12 @@ Note: Native dialogs are isolated from the base process, file dialog properties 
 [DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
-func (self Instance) UseNativeDialog() bool {
+func (self Instance) UseNativeDialog() bool { //gd:FileDialog.use_native_dialog
 	return bool(class(self).GetUseNativeDialog())
 }
 
 // SetUseNativeDialog sets the property returned by [GetUseNativeDialog]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseNativeDialog(value bool) Instance {
+func (self Instance) SetUseNativeDialog(value bool) Instance { //gd:FileDialog.use_native_dialog
 	class(self).SetUseNativeDialog(value)
 	return self
 }
@@ -536,12 +536,12 @@ The number of additional [OptionButton]s and [CheckBox]es in the dialog.
 [CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
 [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 */
-func (self Instance) OptionCount() int {
+func (self Instance) OptionCount() int { //gd:FileDialog.option_count
 	return int(int(class(self).GetOptionCount()))
 }
 
 // SetOptionCount sets the property returned by [GetOptionCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOptionCount(value int) Instance {
+func (self Instance) SetOptionCount(value int) Instance { //gd:FileDialog.option_count
 	class(self).SetOptionCount(int64(value))
 	return self
 }
@@ -549,12 +549,12 @@ func (self Instance) SetOptionCount(value int) Instance {
 /*
 If true, shows the toggle hidden files button.
 */
-func (self Instance) HiddenFilesToggleEnabled() bool {
+func (self Instance) HiddenFilesToggleEnabled() bool { //gd:FileDialog.hidden_files_toggle_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(0))
 }
 
 // SetHiddenFilesToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHiddenFilesToggleEnabled(value bool) Instance {
+func (self Instance) SetHiddenFilesToggleEnabled(value bool) Instance { //gd:FileDialog.hidden_files_toggle_enabled
 	class(self).SetCustomizationFlagEnabled(0, value)
 	return self
 }
@@ -562,12 +562,12 @@ func (self Instance) SetHiddenFilesToggleEnabled(value bool) Instance {
 /*
 If true, shows the toggle file filter button.
 */
-func (self Instance) FileFilterToggleEnabled() bool {
+func (self Instance) FileFilterToggleEnabled() bool { //gd:FileDialog.file_filter_toggle_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(2))
 }
 
 // SetFileFilterToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFileFilterToggleEnabled(value bool) Instance {
+func (self Instance) SetFileFilterToggleEnabled(value bool) Instance { //gd:FileDialog.file_filter_toggle_enabled
 	class(self).SetCustomizationFlagEnabled(2, value)
 	return self
 }
@@ -575,12 +575,12 @@ func (self Instance) SetFileFilterToggleEnabled(value bool) Instance {
 /*
 If true, shows the file sorting options button.
 */
-func (self Instance) FileSortOptionsEnabled() bool {
+func (self Instance) FileSortOptionsEnabled() bool { //gd:FileDialog.file_sort_options_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(3))
 }
 
 // SetFileSortOptionsEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFileSortOptionsEnabled(value bool) Instance {
+func (self Instance) SetFileSortOptionsEnabled(value bool) Instance { //gd:FileDialog.file_sort_options_enabled
 	class(self).SetCustomizationFlagEnabled(3, value)
 	return self
 }
@@ -588,12 +588,12 @@ func (self Instance) SetFileSortOptionsEnabled(value bool) Instance {
 /*
 If true, shows the button for creating new directories (when using [FileModeOpenDir], [FileModeOpenAny], or [FileModeSaveFile]).
 */
-func (self Instance) FolderCreationEnabled() bool {
+func (self Instance) FolderCreationEnabled() bool { //gd:FileDialog.folder_creation_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(1))
 }
 
 // SetFolderCreationEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFolderCreationEnabled(value bool) Instance {
+func (self Instance) SetFolderCreationEnabled(value bool) Instance { //gd:FileDialog.folder_creation_enabled
 	class(self).SetCustomizationFlagEnabled(1, value)
 	return self
 }
@@ -601,12 +601,12 @@ func (self Instance) SetFolderCreationEnabled(value bool) Instance {
 /*
 If true, shows the toggle favorite button and favorite list on the left side of the dialog.
 */
-func (self Instance) FavoritesEnabled() bool {
+func (self Instance) FavoritesEnabled() bool { //gd:FileDialog.favorites_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(4))
 }
 
 // SetFavoritesEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFavoritesEnabled(value bool) Instance {
+func (self Instance) SetFavoritesEnabled(value bool) Instance { //gd:FileDialog.favorites_enabled
 	class(self).SetCustomizationFlagEnabled(4, value)
 	return self
 }
@@ -614,12 +614,12 @@ func (self Instance) SetFavoritesEnabled(value bool) Instance {
 /*
 If true, shows the recent directories list on the left side of the dialog.
 */
-func (self Instance) RecentListEnabled() bool {
+func (self Instance) RecentListEnabled() bool { //gd:FileDialog.recent_list_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(5))
 }
 
 // SetRecentListEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRecentListEnabled(value bool) Instance {
+func (self Instance) SetRecentListEnabled(value bool) Instance { //gd:FileDialog.recent_list_enabled
 	class(self).SetCustomizationFlagEnabled(5, value)
 	return self
 }
@@ -627,12 +627,12 @@ func (self Instance) SetRecentListEnabled(value bool) Instance {
 /*
 If true, shows the layout switch buttons (list/thumbnails).
 */
-func (self Instance) LayoutToggleEnabled() bool {
+func (self Instance) LayoutToggleEnabled() bool { //gd:FileDialog.layout_toggle_enabled
 	return bool(class(self).IsCustomizationFlagEnabled(6))
 }
 
 // SetLayoutToggleEnabled sets the property returned by [IsCustomizationFlagEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayoutToggleEnabled(value bool) Instance {
+func (self Instance) SetLayoutToggleEnabled(value bool) Instance { //gd:FileDialog.layout_toggle_enabled
 	class(self).SetCustomizationFlagEnabled(6, value)
 	return self
 }
@@ -642,12 +642,12 @@ The current working directory of the file dialog.
 
 Note: For native file dialogs, this property is only treated as a hint and may not be respected by specific OS implementations.
 */
-func (self Instance) CurrentDir() string {
+func (self Instance) CurrentDir() string { //gd:FileDialog.current_dir
 	return string(class(self).GetCurrentDir().String())
 }
 
 // SetCurrentDir sets the property returned by [GetCurrentDir]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentDir(value string) Instance {
+func (self Instance) SetCurrentDir(value string) Instance { //gd:FileDialog.current_dir
 	class(self).SetCurrentDir(String.New(value))
 	return self
 }
@@ -655,12 +655,12 @@ func (self Instance) SetCurrentDir(value string) Instance {
 /*
 The currently selected file of the file dialog.
 */
-func (self Instance) CurrentFile() string {
+func (self Instance) CurrentFile() string { //gd:FileDialog.current_file
 	return string(class(self).GetCurrentFile().String())
 }
 
 // SetCurrentFile sets the property returned by [GetCurrentFile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentFile(value string) Instance {
+func (self Instance) SetCurrentFile(value string) Instance { //gd:FileDialog.current_file
 	class(self).SetCurrentFile(String.New(value))
 	return self
 }
@@ -668,12 +668,12 @@ func (self Instance) SetCurrentFile(value string) Instance {
 /*
 The currently selected file path of the file dialog.
 */
-func (self Instance) CurrentPath() string {
+func (self Instance) CurrentPath() string { //gd:FileDialog.current_path
 	return string(class(self).GetCurrentPath().String())
 }
 
 // SetCurrentPath sets the property returned by [GetCurrentPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentPath(value string) Instance {
+func (self Instance) SetCurrentPath(value string) Instance { //gd:FileDialog.current_path
 	class(self).SetCurrentPath(String.New(value))
 	return self
 }

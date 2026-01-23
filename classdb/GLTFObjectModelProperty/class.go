@@ -252,12 +252,12 @@ If set, this [Expression] will be used to convert the property value from the gl
 
 [Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
 */
-func (self Instance) GltfToGodotExpression() Expression.Instance {
+func (self Instance) GltfToGodotExpression() Expression.Instance { //gd:GLTFObjectModelProperty.gltf_to_godot_expression
 	return Expression.Instance(class(self).GetGltfToGodotExpression())
 }
 
 // SetGltfToGodotExpression sets the property returned by [GetGltfToGodotExpression]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGltfToGodotExpression(value Expression.Instance) Instance {
+func (self Instance) SetGltfToGodotExpression(value Expression.Instance) Instance { //gd:GLTFObjectModelProperty.gltf_to_godot_expression
 	class(self).SetGltfToGodotExpression(value)
 	return self
 }
@@ -267,12 +267,12 @@ If set, this [Expression] will be used to convert the property value from the Go
 
 [Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
 */
-func (self Instance) GodotToGltfExpression() Expression.Instance {
+func (self Instance) GodotToGltfExpression() Expression.Instance { //gd:GLTFObjectModelProperty.godot_to_gltf_expression
 	return Expression.Instance(class(self).GetGodotToGltfExpression())
 }
 
 // SetGodotToGltfExpression sets the property returned by [GetGodotToGltfExpression]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGodotToGltfExpression(value Expression.Instance) Instance {
+func (self Instance) SetGodotToGltfExpression(value Expression.Instance) Instance { //gd:GLTFObjectModelProperty.godot_to_gltf_expression
 	class(self).SetGodotToGltfExpression(value)
 	return self
 }
@@ -289,12 +289,12 @@ In most cases [NodePaths] will only have one item, but in some cases a single gl
 [GLTFLight]: https://pkg.go.dev/graphics.gd/classdb/GLTFLight
 [NodePaths]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.NodePaths
 */
-func (self Instance) NodePaths() []string {
+func (self Instance) NodePaths() []string { //gd:GLTFObjectModelProperty.node_paths
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetNodePaths())))
 }
 
 // SetNodePaths sets the property returned by [GetNodePaths]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodePaths(value []string) Instance {
+func (self Instance) SetNodePaths(value []string) Instance { //gd:GLTFObjectModelProperty.node_paths
 	class(self).SetNodePaths(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 	return self
 }
@@ -302,12 +302,12 @@ func (self Instance) SetNodePaths(value []string) Instance {
 /*
 The type of data stored in the glTF file as defined by the object model. This is a superset of the available accessor types, and determines the accessor type.
 */
-func (self Instance) ObjectModelType() GLTFObjectModelType {
+func (self Instance) ObjectModelType() GLTFObjectModelType { //gd:GLTFObjectModelProperty.object_model_type
 	return GLTFObjectModelType(class(self).GetObjectModelType())
 }
 
 // SetObjectModelType sets the property returned by [GetObjectModelType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetObjectModelType(value GLTFObjectModelType) Instance {
+func (self Instance) SetObjectModelType(value GLTFObjectModelType) Instance { //gd:GLTFObjectModelProperty.object_model_type
 	class(self).SetObjectModelType(value)
 	return self
 }
@@ -315,12 +315,12 @@ func (self Instance) SetObjectModelType(value GLTFObjectModelType) Instance {
 /*
 The glTF object model JSON pointers used to identify the property in the glTF object model. In most cases, there will be only one item in this array, but specific cases may require multiple pointers. The items are themselves arrays which represent the JSON pointer split into its components.
 */
-func (self Instance) JsonPointers() [][]string {
+func (self Instance) JsonPointers() [][]string { //gd:GLTFObjectModelProperty.json_pointers
 	return [][]string(gd.ArrayAs[[][]string](gd.InternalArray(class(self).GetJsonPointers())))
 }
 
 // SetJsonPointers sets the property returned by [GetJsonPointers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJsonPointers(value [][]string) Instance {
+func (self Instance) SetJsonPointers(value [][]string) Instance { //gd:GLTFObjectModelProperty.json_pointers
 	class(self).SetJsonPointers(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](value))
 	return self
 }
@@ -330,12 +330,12 @@ The type of data stored in the Godot property. This is the type of the property 
 
 [NodePaths]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty#Instance.NodePaths
 */
-func (self Instance) VariantType() variant.Type {
+func (self Instance) VariantType() variant.Type { //gd:GLTFObjectModelProperty.variant_type
 	return variant.Type(class(self).GetVariantType())
 }
 
 // SetVariantType sets the property returned by [GetVariantType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVariantType(value variant.Type) Instance {
+func (self Instance) SetVariantType(value variant.Type) Instance { //gd:GLTFObjectModelProperty.variant_type
 	class(self).SetVariantType(value)
 	return self
 }

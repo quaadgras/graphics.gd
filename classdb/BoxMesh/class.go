@@ -178,12 +178,12 @@ func New() Instance {
 /*
 The box's width, height and depth.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:BoxMesh.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:BoxMesh.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -191,12 +191,12 @@ func (self Instance) SetSize(value Vector3.XYZ) Instance {
 /*
 Number of extra edge loops inserted along the X axis.
 */
-func (self Instance) SubdivideWidth() int {
+func (self Instance) SubdivideWidth() int { //gd:BoxMesh.subdivide_width
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
 // SetSubdivideWidth sets the property returned by [GetSubdivideWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideWidth(value int) Instance {
+func (self Instance) SetSubdivideWidth(value int) Instance { //gd:BoxMesh.subdivide_width
 	class(self).SetSubdivideWidth(int64(value))
 	return self
 }
@@ -204,12 +204,12 @@ func (self Instance) SetSubdivideWidth(value int) Instance {
 /*
 Number of extra edge loops inserted along the Y axis.
 */
-func (self Instance) SubdivideHeight() int {
+func (self Instance) SubdivideHeight() int { //gd:BoxMesh.subdivide_height
 	return int(int(class(self).GetSubdivideHeight()))
 }
 
 // SetSubdivideHeight sets the property returned by [GetSubdivideHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideHeight(value int) Instance {
+func (self Instance) SetSubdivideHeight(value int) Instance { //gd:BoxMesh.subdivide_height
 	class(self).SetSubdivideHeight(int64(value))
 	return self
 }
@@ -217,12 +217,12 @@ func (self Instance) SetSubdivideHeight(value int) Instance {
 /*
 Number of extra edge loops inserted along the Z axis.
 */
-func (self Instance) SubdivideDepth() int {
+func (self Instance) SubdivideDepth() int { //gd:BoxMesh.subdivide_depth
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
 // SetSubdivideDepth sets the property returned by [GetSubdivideDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideDepth(value int) Instance {
+func (self Instance) SetSubdivideDepth(value int) Instance { //gd:BoxMesh.subdivide_depth
 	class(self).SetSubdivideDepth(int64(value))
 	return self
 }

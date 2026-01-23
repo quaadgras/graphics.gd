@@ -191,12 +191,12 @@ The navigation map [Resource.ID] used in the path query.
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Map() RID.NavigationMap3D {
+func (self Instance) Map() RID.NavigationMap3D { //gd:NavigationPathQueryParameters3D.map
 	return RID.NavigationMap3D(RID.NavigationMap3D(class(self).GetMap()))
 }
 
 // SetMap sets the property returned by [GetMap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMap(value RID.NavigationMap3D) Instance {
+func (self Instance) SetMap(value RID.NavigationMap3D) Instance { //gd:NavigationPathQueryParameters3D.map
 	class(self).SetMap(RID.Any(value))
 	return self
 }
@@ -204,12 +204,12 @@ func (self Instance) SetMap(value RID.NavigationMap3D) Instance {
 /*
 The pathfinding start position in global coordinates.
 */
-func (self Instance) StartPosition() Vector3.XYZ {
+func (self Instance) StartPosition() Vector3.XYZ { //gd:NavigationPathQueryParameters3D.start_position
 	return Vector3.XYZ(class(self).GetStartPosition())
 }
 
 // SetStartPosition sets the property returned by [GetStartPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStartPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetStartPosition(value Vector3.XYZ) Instance { //gd:NavigationPathQueryParameters3D.start_position
 	class(self).SetStartPosition(Vector3.XYZ(value))
 	return self
 }
@@ -217,12 +217,12 @@ func (self Instance) SetStartPosition(value Vector3.XYZ) Instance {
 /*
 The pathfinding target position in global coordinates.
 */
-func (self Instance) TargetPosition() Vector3.XYZ {
+func (self Instance) TargetPosition() Vector3.XYZ { //gd:NavigationPathQueryParameters3D.target_position
 	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance { //gd:NavigationPathQueryParameters3D.target_position
 	class(self).SetTargetPosition(Vector3.XYZ(value))
 	return self
 }
@@ -230,12 +230,12 @@ func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance {
 /*
 The navigation layers the query will use (as a bitmask).
 */
-func (self Instance) NavigationLayers() int {
+func (self Instance) NavigationLayers() int { //gd:NavigationPathQueryParameters3D.navigation_layers
 	return int(int(class(self).GetNavigationLayers()))
 }
 
 // SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationLayers(value int) Instance {
+func (self Instance) SetNavigationLayers(value int) Instance { //gd:NavigationPathQueryParameters3D.navigation_layers
 	class(self).SetNavigationLayers(int64(value))
 	return self
 }
@@ -243,12 +243,12 @@ func (self Instance) SetNavigationLayers(value int) Instance {
 /*
 The pathfinding algorithm used in the path query.
 */
-func (self Instance) PathfindingAlgorithm() PathfindingAlgorithm {
+func (self Instance) PathfindingAlgorithm() PathfindingAlgorithm { //gd:NavigationPathQueryParameters3D.pathfinding_algorithm
 	return PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
 // SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) Instance {
+func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) Instance { //gd:NavigationPathQueryParameters3D.pathfinding_algorithm
 	class(self).SetPathfindingAlgorithm(value)
 	return self
 }
@@ -258,12 +258,12 @@ The path postprocessing applied to the raw path corridor found by the [Pathfindi
 
 [PathfindingAlgorithm]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters3D#Instance.PathfindingAlgorithm
 */
-func (self Instance) PathPostprocessing() PathPostProcessing {
+func (self Instance) PathPostprocessing() PathPostProcessing { //gd:NavigationPathQueryParameters3D.path_postprocessing
 	return PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
 // SetPathPostprocessing sets the property returned by [GetPathPostprocessing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathPostprocessing(value PathPostProcessing) Instance {
+func (self Instance) SetPathPostprocessing(value PathPostProcessing) Instance { //gd:NavigationPathQueryParameters3D.path_postprocessing
 	class(self).SetPathPostprocessing(value)
 	return self
 }
@@ -271,12 +271,12 @@ func (self Instance) SetPathPostprocessing(value PathPostProcessing) Instance {
 /*
 Additional information to include with the navigation path.
 */
-func (self Instance) MetadataFlags() PathMetadataFlags {
+func (self Instance) MetadataFlags() PathMetadataFlags { //gd:NavigationPathQueryParameters3D.metadata_flags
 	return PathMetadataFlags(class(self).GetMetadataFlags())
 }
 
 // SetMetadataFlags sets the property returned by [GetMetadataFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMetadataFlags(value PathMetadataFlags) Instance {
+func (self Instance) SetMetadataFlags(value PathMetadataFlags) Instance { //gd:NavigationPathQueryParameters3D.metadata_flags
 	class(self).SetMetadataFlags(value)
 	return self
 }
@@ -288,12 +288,12 @@ Path simplification can be helpful to mitigate various path following issues tha
 
 [SimplifyEpsilon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters3D#Instance.SimplifyEpsilon
 */
-func (self Instance) SimplifyPath() bool {
+func (self Instance) SimplifyPath() bool { //gd:NavigationPathQueryParameters3D.simplify_path
 	return bool(class(self).GetSimplifyPath())
 }
 
 // SetSimplifyPath sets the property returned by [GetSimplifyPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimplifyPath(value bool) Instance {
+func (self Instance) SetSimplifyPath(value bool) Instance { //gd:NavigationPathQueryParameters3D.simplify_path
 	class(self).SetSimplifyPath(value)
 	return self
 }
@@ -301,12 +301,12 @@ func (self Instance) SetSimplifyPath(value bool) Instance {
 /*
 The path simplification amount in worlds units.
 */
-func (self Instance) SimplifyEpsilon() Float.X {
+func (self Instance) SimplifyEpsilon() Float.X { //gd:NavigationPathQueryParameters3D.simplify_epsilon
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
 // SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimplifyEpsilon(value Float.X) Instance {
+func (self Instance) SetSimplifyEpsilon(value Float.X) Instance { //gd:NavigationPathQueryParameters3D.simplify_epsilon
 	class(self).SetSimplifyEpsilon(float64(value))
 	return self
 }
@@ -320,12 +320,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [NavigationRegion3D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) ExcludedRegions() []RID.Any {
+func (self Instance) ExcludedRegions() []RID.Any { //gd:NavigationPathQueryParameters3D.excluded_regions
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludedRegions())))
 }
 
 // SetExcludedRegions sets the property returned by [GetExcludedRegions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludedRegions(value []RID.Any) Instance {
+func (self Instance) SetExcludedRegions(value []RID.Any) Instance { //gd:NavigationPathQueryParameters3D.excluded_regions
 	class(self).SetExcludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -339,12 +339,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [NavigationRegion3D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion3D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) IncludedRegions() []RID.Any {
+func (self Instance) IncludedRegions() []RID.Any { //gd:NavigationPathQueryParameters3D.included_regions
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetIncludedRegions())))
 }
 
 // SetIncludedRegions sets the property returned by [GetIncludedRegions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIncludedRegions(value []RID.Any) Instance {
+func (self Instance) SetIncludedRegions(value []RID.Any) Instance { //gd:NavigationPathQueryParameters3D.included_regions
 	class(self).SetIncludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -352,12 +352,12 @@ func (self Instance) SetIncludedRegions(value []RID.Any) Instance {
 /*
 The maximum allowed length of the returned path in world units. A path will be clipped when going over this length. A value of 0 or below counts as disabled.
 */
-func (self Instance) PathReturnMaxLength() Float.X {
+func (self Instance) PathReturnMaxLength() Float.X { //gd:NavigationPathQueryParameters3D.path_return_max_length
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
 // SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathReturnMaxLength(value Float.X) Instance {
+func (self Instance) SetPathReturnMaxLength(value Float.X) Instance { //gd:NavigationPathQueryParameters3D.path_return_max_length
 	class(self).SetPathReturnMaxLength(float64(value))
 	return self
 }
@@ -367,12 +367,12 @@ The maximum allowed radius in world units that the returned path can be from the
 
 Note: This will perform a sphere shaped clip operation on the path with the first path position being the sphere's center position.
 */
-func (self Instance) PathReturnMaxRadius() Float.X {
+func (self Instance) PathReturnMaxRadius() Float.X { //gd:NavigationPathQueryParameters3D.path_return_max_radius
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
 // SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
+func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance { //gd:NavigationPathQueryParameters3D.path_return_max_radius
 	class(self).SetPathReturnMaxRadius(float64(value))
 	return self
 }
@@ -380,12 +380,12 @@ func (self Instance) SetPathReturnMaxRadius(value Float.X) Instance {
 /*
 The maximum number of polygons that are searched before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
 */
-func (self Instance) PathSearchMaxPolygons() int {
+func (self Instance) PathSearchMaxPolygons() int { //gd:NavigationPathQueryParameters3D.path_search_max_polygons
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
 // SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
+func (self Instance) SetPathSearchMaxPolygons(value int) Instance { //gd:NavigationPathQueryParameters3D.path_search_max_polygons
 	class(self).SetPathSearchMaxPolygons(int64(value))
 	return self
 }
@@ -393,12 +393,12 @@ func (self Instance) SetPathSearchMaxPolygons(value int) Instance {
 /*
 The maximum distance a searched polygon can be away from the start polygon before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
 */
-func (self Instance) PathSearchMaxDistance() Float.X {
+func (self Instance) PathSearchMaxDistance() Float.X { //gd:NavigationPathQueryParameters3D.path_search_max_distance
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
 // SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance {
+func (self Instance) SetPathSearchMaxDistance(value Float.X) Instance { //gd:NavigationPathQueryParameters3D.path_search_max_distance
 	class(self).SetPathSearchMaxDistance(float64(value))
 	return self
 }

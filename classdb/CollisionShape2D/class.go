@@ -175,12 +175,12 @@ func New() Instance {
 /*
 The actual shape owned by this collision shape.
 */
-func (self Instance) Shape() Shape2D.Instance {
+func (self Instance) Shape() Shape2D.Instance { //gd:CollisionShape2D.shape
 	return Shape2D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape2D.Instance) Instance {
+func (self Instance) SetShape(value Shape2D.Instance) Instance { //gd:CollisionShape2D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -190,12 +190,12 @@ A disabled collision shape has no effect in the world. This property should be c
 
 [Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
 */
-func (self Instance) Disabled() bool {
+func (self Instance) Disabled() bool { //gd:CollisionShape2D.disabled
 	return bool(class(self).IsDisabled())
 }
 
 // SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisabled(value bool) Instance {
+func (self Instance) SetDisabled(value bool) Instance { //gd:CollisionShape2D.disabled
 	class(self).SetDisabled(value)
 	return self
 }
@@ -208,12 +208,12 @@ Note: This property has no effect if this [CollisionShape2D] is a child of an [A
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
 */
-func (self Instance) OneWayCollision() bool {
+func (self Instance) OneWayCollision() bool { //gd:CollisionShape2D.one_way_collision
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
 // SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneWayCollision(value bool) Instance {
+func (self Instance) SetOneWayCollision(value bool) Instance { //gd:CollisionShape2D.one_way_collision
 	class(self).SetOneWayCollision(value)
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetOneWayCollision(value bool) Instance {
 /*
 The margin used for one-way collision (in pixels). Higher values will make the shape thicker, and work better for colliders that enter the shape at a high velocity.
 */
-func (self Instance) OneWayCollisionMargin() Float.X {
+func (self Instance) OneWayCollisionMargin() Float.X { //gd:CollisionShape2D.one_way_collision_margin
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
 // SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance {
+func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance { //gd:CollisionShape2D.one_way_collision_margin
 	class(self).SetOneWayCollisionMargin(float64(value))
 	return self
 }
@@ -238,12 +238,12 @@ Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) DebugColor() Color.RGBA {
+func (self Instance) DebugColor() Color.RGBA { //gd:CollisionShape2D.debug_color
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
 // SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugColor(value Color.RGBA) Instance { //gd:CollisionShape2D.debug_color
 	class(self).SetDebugColor(Color.RGBA(value))
 	return self
 }

@@ -162,12 +162,12 @@ func New() Instance {
 /*
 The function to be computed.
 */
-func (self Instance) Function() Function {
+func (self Instance) Function() Function { //gd:VisualShaderNodeTransformFunc.function
 	return Function(class(self).GetFunction())
 }
 
 // SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunction(value Function) Instance {
+func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNodeTransformFunc.function
 	class(self).SetFunction(value)
 	return self
 }

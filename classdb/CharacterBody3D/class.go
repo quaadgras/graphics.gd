@@ -182,6 +182,8 @@ type Any interface {
 /*
 Moves the body based on [Velocity]. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a [CharacterBody3D] or [RigidBody3D], it will also be affected by the motion of the other body. You can use this to make moving and rotating platforms, or to make nodes push other nodes.
 
+This method should be used in [Node.PhysicsProcess] (or in a method called by [Node.PhysicsProcess]), as it uses the physics step's delta value automatically in calculations. Otherwise, the simulation will run at an incorrect speed.
+
 Modifies [Velocity] if a slide collision occurred. To get the latest collision call [GetLastSlideCollision], for more detailed information about collisions that occurred, use [GetSlideCollision].
 
 When the body touches a moving platform, the platform's velocity is automatically added to the body motion. If a collision occurs due to the platform's motion, it will always be first in the slide collisions.
@@ -191,6 +193,7 @@ Returns true if the body collided, otherwise, returns false.
 [CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
 [GetLastSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetLastSlideCollision
 [GetSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollision
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 [RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
 */
@@ -441,12 +444,12 @@ Sets the motion mode which defines the behavior of [MoveAndSlide].
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) MotionMode() MotionMode {
+func (self Instance) MotionMode() MotionMode { //gd:CharacterBody3D.motion_mode
 	return MotionMode(class(self).GetMotionMode())
 }
 
 // SetMotionMode sets the property returned by [GetMotionMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionMode(value MotionMode) Instance {
+func (self Instance) SetMotionMode(value MotionMode) Instance { //gd:CharacterBody3D.motion_mode
 	class(self).SetMotionMode(value)
 	return self
 }
@@ -457,12 +460,12 @@ Vector pointing upwards, used to determine what is a wall and what is a floor (o
 [MotionMode]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MotionMode
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) UpDirection() Vector3.XYZ {
+func (self Instance) UpDirection() Vector3.XYZ { //gd:CharacterBody3D.up_direction
 	return Vector3.XYZ(class(self).GetUpDirection())
 }
 
 // SetUpDirection sets the property returned by [GetUpDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpDirection(value Vector3.XYZ) Instance {
+func (self Instance) SetUpDirection(value Vector3.XYZ) Instance { //gd:CharacterBody3D.up_direction
 	class(self).SetUpDirection(Vector3.XYZ(value))
 	return self
 }
@@ -470,12 +473,12 @@ func (self Instance) SetUpDirection(value Vector3.XYZ) Instance {
 /*
 If true, during a jump against the ceiling, the body will slide, if false it will be stopped and will fall vertically.
 */
-func (self Instance) SlideOnCeiling() bool {
+func (self Instance) SlideOnCeiling() bool { //gd:CharacterBody3D.slide_on_ceiling
 	return bool(class(self).IsSlideOnCeilingEnabled())
 }
 
 // SetSlideOnCeiling sets the property returned by [IsSlideOnCeilingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSlideOnCeiling(value bool) Instance {
+func (self Instance) SetSlideOnCeiling(value bool) Instance { //gd:CharacterBody3D.slide_on_ceiling
 	class(self).SetSlideOnCeilingEnabled(value)
 	return self
 }
@@ -483,14 +486,16 @@ func (self Instance) SetSlideOnCeiling(value bool) Instance {
 /*
 Current velocity vector (typically meters per second), used and modified during calls to [MoveAndSlide].
 
+This property should not be set to a value multiplied by delta, because this happens internally in [MoveAndSlide]. Otherwise, the simulation will run at an incorrect speed.
+
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) Velocity() Vector3.XYZ {
+func (self Instance) Velocity() Vector3.XYZ { //gd:CharacterBody3D.velocity
 	return Vector3.XYZ(class(self).GetVelocity())
 }
 
 // SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetVelocity(value Vector3.XYZ) Instance { //gd:CharacterBody3D.velocity
 	class(self).SetVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -500,12 +505,12 @@ Maximum number of times the body can change direction before it stops when calli
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) MaxSlides() int {
+func (self Instance) MaxSlides() int { //gd:CharacterBody3D.max_slides
 	return int(int(class(self).GetMaxSlides()))
 }
 
 // SetMaxSlides sets the property returned by [GetMaxSlides]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSlides(value int) Instance {
+func (self Instance) SetMaxSlides(value int) Instance { //gd:CharacterBody3D.max_slides
 	class(self).SetMaxSlides(int64(value))
 	return self
 }
@@ -516,12 +521,12 @@ Minimum angle (in radians) where the body is allowed to slide when it encounters
 [FloorBlockOnWall]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorBlockOnWall
 [MotionMode]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MotionMode
 */
-func (self Instance) WallMinSlideAngle() Angle.Radians {
+func (self Instance) WallMinSlideAngle() Angle.Radians { //gd:CharacterBody3D.wall_min_slide_angle
 	return Angle.Radians(Float.X(class(self).GetWallMinSlideAngle()))
 }
 
 // SetWallMinSlideAngle sets the property returned by [GetWallMinSlideAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWallMinSlideAngle(value Angle.Radians) Instance {
+func (self Instance) SetWallMinSlideAngle(value Angle.Radians) Instance { //gd:CharacterBody3D.wall_min_slide_angle
 	class(self).SetWallMinSlideAngle(float64(value))
 	return self
 }
@@ -534,12 +539,12 @@ If false, the body will slide on floor's slopes when [Velocity] applies a downwa
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
 */
-func (self Instance) FloorStopOnSlope() bool {
+func (self Instance) FloorStopOnSlope() bool { //gd:CharacterBody3D.floor_stop_on_slope
 	return bool(class(self).IsFloorStopOnSlopeEnabled())
 }
 
 // SetFloorStopOnSlope sets the property returned by [IsFloorStopOnSlopeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFloorStopOnSlope(value bool) Instance {
+func (self Instance) SetFloorStopOnSlope(value bool) Instance { //gd:CharacterBody3D.floor_stop_on_slope
 	class(self).SetFloorStopOnSlopeEnabled(value)
 	return self
 }
@@ -551,12 +556,12 @@ If true, the body will always move at the same speed on the ground no matter the
 
 [FloorSnapLength]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorSnapLength
 */
-func (self Instance) FloorConstantSpeed() bool {
+func (self Instance) FloorConstantSpeed() bool { //gd:CharacterBody3D.floor_constant_speed
 	return bool(class(self).IsFloorConstantSpeedEnabled())
 }
 
 // SetFloorConstantSpeed sets the property returned by [IsFloorConstantSpeedEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFloorConstantSpeed(value bool) Instance {
+func (self Instance) SetFloorConstantSpeed(value bool) Instance { //gd:CharacterBody3D.floor_constant_speed
 	class(self).SetFloorConstantSpeedEnabled(value)
 	return self
 }
@@ -564,12 +569,12 @@ func (self Instance) SetFloorConstantSpeed(value bool) Instance {
 /*
 If true, the body will be able to move on the floor only. This option avoids to be able to walk on walls, it will however allow to slide down along them.
 */
-func (self Instance) FloorBlockOnWall() bool {
+func (self Instance) FloorBlockOnWall() bool { //gd:CharacterBody3D.floor_block_on_wall
 	return bool(class(self).IsFloorBlockOnWallEnabled())
 }
 
 // SetFloorBlockOnWall sets the property returned by [IsFloorBlockOnWallEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFloorBlockOnWall(value bool) Instance {
+func (self Instance) SetFloorBlockOnWall(value bool) Instance { //gd:CharacterBody3D.floor_block_on_wall
 	class(self).SetFloorBlockOnWallEnabled(value)
 	return self
 }
@@ -579,12 +584,12 @@ Maximum angle (in radians) where a slope is still considered a floor (or a ceili
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) FloorMaxAngle() Angle.Radians {
+func (self Instance) FloorMaxAngle() Angle.Radians { //gd:CharacterBody3D.floor_max_angle
 	return Angle.Radians(Float.X(class(self).GetFloorMaxAngle()))
 }
 
 // SetFloorMaxAngle sets the property returned by [GetFloorMaxAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFloorMaxAngle(value Angle.Radians) Instance {
+func (self Instance) SetFloorMaxAngle(value Angle.Radians) Instance { //gd:CharacterBody3D.floor_max_angle
 	class(self).SetFloorMaxAngle(float64(value))
 	return self
 }
@@ -598,12 +603,12 @@ As long as the snapping vector is in contact with the ground and the body moves 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 [UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
 */
-func (self Instance) FloorSnapLength() Float.X {
+func (self Instance) FloorSnapLength() Float.X { //gd:CharacterBody3D.floor_snap_length
 	return Float.X(Float.X(class(self).GetFloorSnapLength()))
 }
 
 // SetFloorSnapLength sets the property returned by [GetFloorSnapLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFloorSnapLength(value Float.X) Instance {
+func (self Instance) SetFloorSnapLength(value Float.X) Instance { //gd:CharacterBody3D.floor_snap_length
 	class(self).SetFloorSnapLength(float64(value))
 	return self
 }
@@ -611,12 +616,12 @@ func (self Instance) SetFloorSnapLength(value Float.X) Instance {
 /*
 Sets the behavior to apply when you leave a moving platform. By default, to be physically accurate, when you leave the last platform velocity is applied.
 */
-func (self Instance) PlatformOnLeave() PlatformOnLeave {
+func (self Instance) PlatformOnLeave() PlatformOnLeave { //gd:CharacterBody3D.platform_on_leave
 	return PlatformOnLeave(class(self).GetPlatformOnLeave())
 }
 
 // SetPlatformOnLeave sets the property returned by [GetPlatformOnLeave]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) Instance {
+func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) Instance { //gd:CharacterBody3D.platform_on_leave
 	class(self).SetPlatformOnLeave(value)
 	return self
 }
@@ -626,12 +631,12 @@ Collision layers that will be included for detecting floor bodies that will act 
 
 [CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
 */
-func (self Instance) PlatformFloorLayers() int {
+func (self Instance) PlatformFloorLayers() int { //gd:CharacterBody3D.platform_floor_layers
 	return int(int(class(self).GetPlatformFloorLayers()))
 }
 
 // SetPlatformFloorLayers sets the property returned by [GetPlatformFloorLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlatformFloorLayers(value int) Instance {
+func (self Instance) SetPlatformFloorLayers(value int) Instance { //gd:CharacterBody3D.platform_floor_layers
 	class(self).SetPlatformFloorLayers(int64(value))
 	return self
 }
@@ -641,12 +646,12 @@ Collision layers that will be included for detecting wall bodies that will act a
 
 [CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
 */
-func (self Instance) PlatformWallLayers() int {
+func (self Instance) PlatformWallLayers() int { //gd:CharacterBody3D.platform_wall_layers
 	return int(int(class(self).GetPlatformWallLayers()))
 }
 
 // SetPlatformWallLayers sets the property returned by [GetPlatformWallLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlatformWallLayers(value int) Instance {
+func (self Instance) SetPlatformWallLayers(value int) Instance { //gd:CharacterBody3D.platform_wall_layers
 	class(self).SetPlatformWallLayers(int64(value))
 	return self
 }
@@ -662,18 +667,20 @@ A lower value forces the collision algorithm to use more exact detection, so it 
 
 [MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
 */
-func (self Instance) SafeMargin() Float.X {
+func (self Instance) SafeMargin() Float.X { //gd:CharacterBody3D.safe_margin
 	return Float.X(Float.X(class(self).GetSafeMargin()))
 }
 
 // SetSafeMargin sets the property returned by [GetSafeMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSafeMargin(value Float.X) Instance {
+func (self Instance) SetSafeMargin(value Float.X) Instance { //gd:CharacterBody3D.safe_margin
 	class(self).SetSafeMargin(float64(value))
 	return self
 }
 
 /*
 Moves the body based on [Velocity]. If the body collides with another, it will slide along the other body rather than stop immediately. If the other body is a [CharacterBody3D] or [RigidBody3D], it will also be affected by the motion of the other body. You can use this to make moving and rotating platforms, or to make nodes push other nodes.
+
+This method should be used in [Node.PhysicsProcess] (or in a method called by [Node.PhysicsProcess]), as it uses the physics step's delta value automatically in calculations. Otherwise, the simulation will run at an incorrect speed.
 
 Modifies [Velocity] if a slide collision occurred. To get the latest collision call [GetLastSlideCollision], for more detailed information about collisions that occurred, use [GetSlideCollision].
 
@@ -684,6 +691,7 @@ Returns true if the body collided, otherwise, returns false.
 [CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
 [GetLastSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetLastSlideCollision
 [GetSlideCollision]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.GetSlideCollision
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 [RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
 */

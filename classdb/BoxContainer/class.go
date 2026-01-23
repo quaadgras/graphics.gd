@@ -173,12 +173,12 @@ func New() Instance {
 /*
 The alignment of the container's children (must be one of [AlignmentBegin], [AlignmentCenter], or [AlignmentEnd]).
 */
-func (self Instance) Alignment() AlignmentMode {
+func (self Instance) Alignment() AlignmentMode { //gd:BoxContainer.alignment
 	return AlignmentMode(class(self).GetAlignment())
 }
 
 // SetAlignment sets the property returned by [GetAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value AlignmentMode) Instance {
+func (self Instance) SetAlignment(value AlignmentMode) Instance { //gd:BoxContainer.alignment
 	class(self).SetAlignment(value)
 	return self
 }
@@ -192,12 +192,12 @@ Can't be changed when using [HBoxContainer] and [VBoxContainer].
 [HBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/HBoxContainer
 [VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
 */
-func (self Instance) Vertical() bool {
+func (self Instance) Vertical() bool { //gd:BoxContainer.vertical
 	return bool(class(self).IsVertical())
 }
 
 // SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertical(value bool) Instance {
+func (self Instance) SetVertical(value bool) Instance { //gd:BoxContainer.vertical
 	class(self).SetVertical(value)
 	return self
 }

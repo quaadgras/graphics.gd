@@ -284,12 +284,12 @@ If true, the [SkeletonModifier3D] will be processing.
 
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) Active() bool {
+func (self Instance) Active() bool { //gd:SkeletonModifier3D.active
 	return bool(class(self).IsActive())
 }
 
 // SetActive sets the property returned by [IsActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActive(value bool) Instance {
+func (self Instance) SetActive(value bool) Instance { //gd:SkeletonModifier3D.active
 	class(self).SetActive(value)
 	return self
 }
@@ -302,12 +302,12 @@ Note: This value is used by [Skeleton3D] to blend, so the [SkeletonModifier3D] s
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) Influence() Float.X {
+func (self Instance) Influence() Float.X { //gd:SkeletonModifier3D.influence
 	return Float.X(Float.X(class(self).GetInfluence()))
 }
 
 // SetInfluence sets the property returned by [GetInfluence]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInfluence(value Float.X) Instance {
+func (self Instance) SetInfluence(value Float.X) Instance { //gd:SkeletonModifier3D.influence
 	class(self).SetInfluence(float64(value))
 	return self
 }

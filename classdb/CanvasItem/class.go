@@ -1327,12 +1327,12 @@ Note: For controls that inherit [Popup], the correct way to make them visible is
 [Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
 [VisibilityLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.VisibilityLayer
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:CanvasItem.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:CanvasItem.visible
 	class(self).SetVisible(value)
 	return self
 }
@@ -1343,12 +1343,12 @@ The color applied to this [CanvasItem]. This property does affect child [CanvasI
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [SelfModulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SelfModulate
 */
-func (self Instance) Modulate() Color.RGBA {
+func (self Instance) Modulate() Color.RGBA { //gd:CanvasItem.modulate
 	return Color.RGBA(class(self).GetModulate())
 }
 
 // SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulate(value Color.RGBA) Instance {
+func (self Instance) SetModulate(value Color.RGBA) Instance { //gd:CanvasItem.modulate
 	class(self).SetModulate(Color.RGBA(value))
 	return self
 }
@@ -1364,12 +1364,12 @@ Note: Internal children are also not affected by this property (see the include_
 [Node.AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 [TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
-func (self Instance) SelfModulate() Color.RGBA {
+func (self Instance) SelfModulate() Color.RGBA { //gd:CanvasItem.self_modulate
 	return Color.RGBA(class(self).GetSelfModulate())
 }
 
 // SetSelfModulate sets the property returned by [GetSelfModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelfModulate(value Color.RGBA) Instance {
+func (self Instance) SetSelfModulate(value Color.RGBA) Instance { //gd:CanvasItem.self_modulate
 	class(self).SetSelfModulate(Color.RGBA(value))
 	return self
 }
@@ -1377,12 +1377,12 @@ func (self Instance) SetSelfModulate(value Color.RGBA) Instance {
 /*
 If true, this node draws behind its parent.
 */
-func (self Instance) ShowBehindParent() bool {
+func (self Instance) ShowBehindParent() bool { //gd:CanvasItem.show_behind_parent
 	return bool(class(self).IsDrawBehindParentEnabled())
 }
 
 // SetShowBehindParent sets the property returned by [IsDrawBehindParentEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShowBehindParent(value bool) Instance {
+func (self Instance) SetShowBehindParent(value bool) Instance { //gd:CanvasItem.show_behind_parent
 	class(self).SetDrawBehindParent(value)
 	return self
 }
@@ -1394,12 +1394,12 @@ If true, this [CanvasItem] will not inherit its transform from parent [CanvasIte
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 [TopLevel]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TopLevel
 */
-func (self Instance) TopLevel() bool {
+func (self Instance) TopLevel() bool { //gd:CanvasItem.top_level
 	return bool(class(self).IsSetAsTopLevel())
 }
 
 // SetTopLevel sets the property returned by [IsSetAsTopLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTopLevel(value bool) Instance {
+func (self Instance) SetTopLevel(value bool) Instance { //gd:CanvasItem.top_level
 	class(self).SetAsTopLevel(value)
 	return self
 }
@@ -1411,12 +1411,12 @@ Note: Clipping nodes cannot be nested or placed within a [CanvasGroup]. If an an
 
 [CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
 */
-func (self Instance) ClipChildren() ClipChildrenMode {
+func (self Instance) ClipChildren() ClipChildrenMode { //gd:CanvasItem.clip_children
 	return ClipChildrenMode(class(self).GetClipChildrenMode())
 }
 
 // SetClipChildren sets the property returned by [GetClipChildrenMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipChildren(value ClipChildrenMode) Instance {
+func (self Instance) SetClipChildren(value ClipChildrenMode) Instance { //gd:CanvasItem.clip_children
 	class(self).SetClipChildrenMode(value)
 	return self
 }
@@ -1427,12 +1427,12 @@ The rendering layers in which this [CanvasItem] responds to [Light2D] nodes.
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
-func (self Instance) LightMask() int {
+func (self Instance) LightMask() int { //gd:CanvasItem.light_mask
 	return int(int(class(self).GetLightMask()))
 }
 
 // SetLightMask sets the property returned by [GetLightMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightMask(value int) Instance {
+func (self Instance) SetLightMask(value int) Instance { //gd:CanvasItem.light_mask
 	class(self).SetLightMask(int64(value))
 	return self
 }
@@ -1443,12 +1443,12 @@ The rendering layer in which this [CanvasItem] is rendered by [Viewport] nodes. 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) VisibilityLayer() int {
+func (self Instance) VisibilityLayer() int { //gd:CanvasItem.visibility_layer
 	return int(int(class(self).GetVisibilityLayer()))
 }
 
 // SetVisibilityLayer sets the property returned by [GetVisibilityLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityLayer(value int) Instance {
+func (self Instance) SetVisibilityLayer(value int) Instance { //gd:CanvasItem.visibility_layer
 	class(self).SetVisibilityLayer(int64(value))
 	return self
 }
@@ -1461,12 +1461,12 @@ Note: The Z index does not affect the order in which [CanvasItem] nodes are proc
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self Instance) ZIndex() int {
+func (self Instance) ZIndex() int { //gd:CanvasItem.z_index
 	return int(int(class(self).GetZIndex()))
 }
 
 // SetZIndex sets the property returned by [GetZIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZIndex(value int) Instance {
+func (self Instance) SetZIndex(value int) Instance { //gd:CanvasItem.z_index
 	class(self).SetZIndex(int64(value))
 	return self
 }
@@ -1478,12 +1478,12 @@ For example, if [ZIndex] is 2 and its parent's final Z index is 3, then this nod
 
 [ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
 */
-func (self Instance) ZAsRelative() bool {
+func (self Instance) ZAsRelative() bool { //gd:CanvasItem.z_as_relative
 	return bool(class(self).IsZRelative())
 }
 
 // SetZAsRelative sets the property returned by [IsZRelative]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZAsRelative(value bool) Instance {
+func (self Instance) SetZAsRelative(value bool) Instance { //gd:CanvasItem.z_as_relative
 	class(self).SetZAsRelative(value)
 	return self
 }
@@ -1498,12 +1498,12 @@ Nodes sort relative to each other only if they are on the same [ZIndex].
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
 */
-func (self Instance) YSortEnabled() bool {
+func (self Instance) YSortEnabled() bool { //gd:CanvasItem.y_sort_enabled
 	return bool(class(self).IsYSortEnabled())
 }
 
 // SetYSortEnabled sets the property returned by [IsYSortEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetYSortEnabled(value bool) Instance {
+func (self Instance) SetYSortEnabled(value bool) Instance { //gd:CanvasItem.y_sort_enabled
 	class(self).SetYSortEnabled(value)
 	return self
 }
@@ -1513,12 +1513,12 @@ The filtering mode used to render this [CanvasItem]'s texture(s).
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) TextureFilter() TextureFilter {
+func (self Instance) TextureFilter() TextureFilter { //gd:CanvasItem.texture_filter
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
 // SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureFilter(value TextureFilter) Instance {
+func (self Instance) SetTextureFilter(value TextureFilter) Instance { //gd:CanvasItem.texture_filter
 	class(self).SetTextureFilter(value)
 	return self
 }
@@ -1534,12 +1534,12 @@ Note: [TextureRect] is not affected by [TextureRepeat], as it uses its own textu
 [TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
 [TextureRepeat]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureRepeat
 */
-func (self Instance) TextureRepeat() TextureRepeat {
+func (self Instance) TextureRepeat() TextureRepeat { //gd:CanvasItem.texture_repeat
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
 // SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRepeat(value TextureRepeat) Instance {
+func (self Instance) SetTextureRepeat(value TextureRepeat) Instance { //gd:CanvasItem.texture_repeat
 	class(self).SetTextureRepeat(value)
 	return self
 }
@@ -1549,12 +1549,12 @@ The material applied to this [CanvasItem].
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CanvasItem.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CanvasItem.material
 	class(self).SetMaterial(value)
 	return self
 }
@@ -1565,12 +1565,12 @@ If true, the parent [CanvasItem]'s [Material] is used as this node's material.
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Material]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Material
 */
-func (self Instance) UseParentMaterial() bool {
+func (self Instance) UseParentMaterial() bool { //gd:CanvasItem.use_parent_material
 	return bool(class(self).GetUseParentMaterial())
 }
 
 // SetUseParentMaterial sets the property returned by [GetUseParentMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseParentMaterial(value bool) Instance {
+func (self Instance) SetUseParentMaterial(value bool) Instance { //gd:CanvasItem.use_parent_material
 	class(self).SetUseParentMaterial(value)
 	return self
 }

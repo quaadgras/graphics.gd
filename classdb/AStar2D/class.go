@@ -621,12 +621,12 @@ If true enables the filtering of neighbors via [FilterNeighbor].
 
 [FilterNeighbor]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
-func (self Instance) NeighborFilterEnabled() bool {
+func (self Instance) NeighborFilterEnabled() bool { //gd:AStar2D.neighbor_filter_enabled
 	return bool(class(self).IsNeighborFilterEnabled())
 }
 
 // SetNeighborFilterEnabled sets the property returned by [IsNeighborFilterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNeighborFilterEnabled(value bool) Instance {
+func (self Instance) SetNeighborFilterEnabled(value bool) Instance { //gd:AStar2D.neighbor_filter_enabled
 	class(self).SetNeighborFilterEnabled(value)
 	return self
 }

@@ -270,12 +270,12 @@ func New() Instance {
 /*
 The points of the polyline, interpreted in local 2D coordinates. Segments are drawn between the adjacent points in this array.
 */
-func (self Instance) Points() []Vector2.XY {
+func (self Instance) Points() []Vector2.XY { //gd:Line2D.points
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
 // SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPoints(value []Vector2.XY) Instance {
+func (self Instance) SetPoints(value []Vector2.XY) Instance { //gd:Line2D.points
 	class(self).SetPoints(Packed.New(value...))
 	return self
 }
@@ -290,12 +290,12 @@ Note: The joint between the closing segment and the first segment is drawn first
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Gradient
 [WidthCurve]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.WidthCurve
 */
-func (self Instance) Closed() bool {
+func (self Instance) Closed() bool { //gd:Line2D.closed
 	return bool(class(self).IsClosed())
 }
 
 // SetClosed sets the property returned by [IsClosed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClosed(value bool) Instance {
+func (self Instance) SetClosed(value bool) Instance { //gd:Line2D.closed
 	class(self).SetClosed(value)
 	return self
 }
@@ -303,12 +303,12 @@ func (self Instance) SetClosed(value bool) Instance {
 /*
 The polyline's width.
 */
-func (self Instance) Width() Float.X {
+func (self Instance) Width() Float.X { //gd:Line2D.width
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
 // SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWidth(value Float.X) Instance {
+func (self Instance) SetWidth(value Float.X) Instance { //gd:Line2D.width
 	class(self).SetWidth(float64(value))
 	return self
 }
@@ -318,12 +318,12 @@ The polyline's width curve. The width of the polyline over its length will be eq
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) WidthCurve() Curve.Instance {
+func (self Instance) WidthCurve() Curve.Instance { //gd:Line2D.width_curve
 	return Curve.Instance(class(self).GetCurve())
 }
 
 // SetWidthCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWidthCurve(value Curve.Instance) Instance {
+func (self Instance) SetWidthCurve(value Curve.Instance) Instance { //gd:Line2D.width_curve
 	class(self).SetCurve(value)
 	return self
 }
@@ -331,12 +331,12 @@ func (self Instance) SetWidthCurve(value Curve.Instance) Instance {
 /*
 The color of the polyline. Will not be used if a gradient is set.
 */
-func (self Instance) DefaultColor() Color.RGBA {
+func (self Instance) DefaultColor() Color.RGBA { //gd:Line2D.default_color
 	return Color.RGBA(class(self).GetDefaultColor())
 }
 
 // SetDefaultColor sets the property returned by [GetDefaultColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultColor(value Color.RGBA) Instance {
+func (self Instance) SetDefaultColor(value Color.RGBA) Instance { //gd:Line2D.default_color
 	class(self).SetDefaultColor(Color.RGBA(value))
 	return self
 }
@@ -346,12 +346,12 @@ The gradient is drawn through the whole line from start to finish. The [DefaultC
 
 [DefaultColor]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.DefaultColor
 */
-func (self Instance) Gradient() Gradient.Instance {
+func (self Instance) Gradient() Gradient.Instance { //gd:Line2D.gradient
 	return Gradient.Instance(class(self).GetGradient())
 }
 
 // SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGradient(value Gradient.Instance) Instance {
+func (self Instance) SetGradient(value Gradient.Instance) Instance { //gd:Line2D.gradient
 	class(self).SetGradient(value)
 	return self
 }
@@ -361,12 +361,12 @@ The texture used for the polyline. Uses [TextureMode] for drawing style.
 
 [TextureMode]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.TextureMode
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:Line2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:Line2D.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -376,12 +376,12 @@ The style to render the [Texture] of the polyline.
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Texture
 */
-func (self Instance) TextureMode() LineTextureMode {
+func (self Instance) TextureMode() LineTextureMode { //gd:Line2D.texture_mode
 	return LineTextureMode(class(self).GetTextureMode())
 }
 
 // SetTextureMode sets the property returned by [GetTextureMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMode(value LineTextureMode) Instance {
+func (self Instance) SetTextureMode(value LineTextureMode) Instance { //gd:Line2D.texture_mode
 	class(self).SetTextureMode(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetTextureMode(value LineTextureMode) Instance {
 /*
 The style of the connections between segments of the polyline.
 */
-func (self Instance) JointMode() LineJointMode {
+func (self Instance) JointMode() LineJointMode { //gd:Line2D.joint_mode
 	return LineJointMode(class(self).GetJointMode())
 }
 
 // SetJointMode sets the property returned by [GetJointMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointMode(value LineJointMode) Instance {
+func (self Instance) SetJointMode(value LineJointMode) Instance { //gd:Line2D.joint_mode
 	class(self).SetJointMode(value)
 	return self
 }
@@ -404,12 +404,12 @@ The style of the beginning of the polyline, if [Closed] is false.
 
 [Closed]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Closed
 */
-func (self Instance) BeginCapMode() LineCapMode {
+func (self Instance) BeginCapMode() LineCapMode { //gd:Line2D.begin_cap_mode
 	return LineCapMode(class(self).GetBeginCapMode())
 }
 
 // SetBeginCapMode sets the property returned by [GetBeginCapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBeginCapMode(value LineCapMode) Instance {
+func (self Instance) SetBeginCapMode(value LineCapMode) Instance { //gd:Line2D.begin_cap_mode
 	class(self).SetBeginCapMode(value)
 	return self
 }
@@ -419,12 +419,12 @@ The style of the end of the polyline, if [Closed] is false.
 
 [Closed]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Closed
 */
-func (self Instance) EndCapMode() LineCapMode {
+func (self Instance) EndCapMode() LineCapMode { //gd:Line2D.end_cap_mode
 	return LineCapMode(class(self).GetEndCapMode())
 }
 
 // SetEndCapMode sets the property returned by [GetEndCapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEndCapMode(value LineCapMode) Instance {
+func (self Instance) SetEndCapMode(value LineCapMode) Instance { //gd:Line2D.end_cap_mode
 	class(self).SetEndCapMode(value)
 	return self
 }
@@ -434,12 +434,12 @@ Determines the miter limit of the polyline. Normally, when [JointMode] is set to
 
 [JointMode]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.JointMode
 */
-func (self Instance) SharpLimit() Float.X {
+func (self Instance) SharpLimit() Float.X { //gd:Line2D.sharp_limit
 	return Float.X(Float.X(class(self).GetSharpLimit()))
 }
 
 // SetSharpLimit sets the property returned by [GetSharpLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSharpLimit(value Float.X) Instance {
+func (self Instance) SetSharpLimit(value Float.X) Instance { //gd:Line2D.sharp_limit
 	class(self).SetSharpLimit(float64(value))
 	return self
 }
@@ -447,12 +447,12 @@ func (self Instance) SetSharpLimit(value Float.X) Instance {
 /*
 The smoothness used for rounded joints and caps. Higher values result in smoother corners, but are more demanding to render and update.
 */
-func (self Instance) RoundPrecision() int {
+func (self Instance) RoundPrecision() int { //gd:Line2D.round_precision
 	return int(int(class(self).GetRoundPrecision()))
 }
 
 // SetRoundPrecision sets the property returned by [GetRoundPrecision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRoundPrecision(value int) Instance {
+func (self Instance) SetRoundPrecision(value int) Instance { //gd:Line2D.round_precision
 	class(self).SetRoundPrecision(int64(value))
 	return self
 }
@@ -464,12 +464,12 @@ Note: [Line2D] is not accelerated by batching when being anti-aliased.
 
 [Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
 */
-func (self Instance) Antialiased() bool {
+func (self Instance) Antialiased() bool { //gd:Line2D.antialiased
 	return bool(class(self).GetAntialiased())
 }
 
 // SetAntialiased sets the property returned by [GetAntialiased]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAntialiased(value bool) Instance {
+func (self Instance) SetAntialiased(value bool) Instance { //gd:Line2D.antialiased
 	class(self).SetAntialiased(value)
 	return self
 }

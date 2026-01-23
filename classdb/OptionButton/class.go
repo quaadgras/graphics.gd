@@ -503,7 +503,7 @@ func New() Instance {
 /*
 The index of the currently selected item, or -1 if no item is selected.
 */
-func (self Instance) Selected() int {
+func (self Instance) Selected() int { //gd:OptionButton.selected
 	return int(int(class(self).GetSelected()))
 }
 
@@ -512,12 +512,12 @@ If true, minimum size will be determined by the longest item's text, instead of 
 
 Note: For performance reasons, the minimum size doesn't update immediately when adding, removing or modifying items.
 */
-func (self Instance) FitToLongestItem() bool {
+func (self Instance) FitToLongestItem() bool { //gd:OptionButton.fit_to_longest_item
 	return bool(class(self).IsFitToLongestItem())
 }
 
 // SetFitToLongestItem sets the property returned by [IsFitToLongestItem]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFitToLongestItem(value bool) Instance {
+func (self Instance) SetFitToLongestItem(value bool) Instance { //gd:OptionButton.fit_to_longest_item
 	class(self).SetFitToLongestItem(value)
 	return self
 }
@@ -525,12 +525,12 @@ func (self Instance) SetFitToLongestItem(value bool) Instance {
 /*
 If true, the currently selected item can be selected again.
 */
-func (self Instance) AllowReselect() bool {
+func (self Instance) AllowReselect() bool { //gd:OptionButton.allow_reselect
 	return bool(class(self).GetAllowReselect())
 }
 
 // SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowReselect(value bool) Instance {
+func (self Instance) SetAllowReselect(value bool) Instance { //gd:OptionButton.allow_reselect
 	class(self).SetAllowReselect(value)
 	return self
 }
@@ -538,12 +538,12 @@ func (self Instance) SetAllowReselect(value bool) Instance {
 /*
 The number of items to select from.
 */
-func (self Instance) ItemCount() int {
+func (self Instance) ItemCount() int { //gd:OptionButton.item_count
 	return int(int(class(self).GetItemCount()))
 }
 
 // SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetItemCount(value int) Instance {
+func (self Instance) SetItemCount(value int) Instance { //gd:OptionButton.item_count
 	class(self).SetItemCount(int64(value))
 	return self
 }

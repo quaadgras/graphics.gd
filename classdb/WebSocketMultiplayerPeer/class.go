@@ -255,12 +255,12 @@ The supported WebSocket sub-protocols. See [WebSocketPeer.SupportedProtocols] fo
 
 [WebSocketPeer.SupportedProtocols]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.SupportedProtocols
 */
-func (self Instance) SupportedProtocols() []string {
+func (self Instance) SupportedProtocols() []string { //gd:WebSocketMultiplayerPeer.supported_protocols
 	return []string(class(self).GetSupportedProtocols().Strings())
 }
 
 // SetSupportedProtocols sets the property returned by [GetSupportedProtocols]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSupportedProtocols(value []string) Instance {
+func (self Instance) SetSupportedProtocols(value []string) Instance { //gd:WebSocketMultiplayerPeer.supported_protocols
 	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 	return self
 }
@@ -270,12 +270,12 @@ The extra headers to use during handshake. See [WebSocketPeer.HandshakeHeaders] 
 
 [WebSocketPeer.HandshakeHeaders]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.HandshakeHeaders
 */
-func (self Instance) HandshakeHeaders() []string {
+func (self Instance) HandshakeHeaders() []string { //gd:WebSocketMultiplayerPeer.handshake_headers
 	return []string(class(self).GetHandshakeHeaders().Strings())
 }
 
 // SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandshakeHeaders(value []string) Instance {
+func (self Instance) SetHandshakeHeaders(value []string) Instance { //gd:WebSocketMultiplayerPeer.handshake_headers
 	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 	return self
 }
@@ -285,12 +285,12 @@ The inbound buffer size for connected peers. See [WebSocketPeer.InboundBufferSiz
 
 [WebSocketPeer.InboundBufferSize]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.InboundBufferSize
 */
-func (self Instance) InboundBufferSize() int {
+func (self Instance) InboundBufferSize() int { //gd:WebSocketMultiplayerPeer.inbound_buffer_size
 	return int(int(class(self).GetInboundBufferSize()))
 }
 
 // SetInboundBufferSize sets the property returned by [GetInboundBufferSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInboundBufferSize(value int) Instance {
+func (self Instance) SetInboundBufferSize(value int) Instance { //gd:WebSocketMultiplayerPeer.inbound_buffer_size
 	class(self).SetInboundBufferSize(int64(value))
 	return self
 }
@@ -300,12 +300,12 @@ The outbound buffer size for connected peers. See [WebSocketPeer.OutboundBufferS
 
 [WebSocketPeer.OutboundBufferSize]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.OutboundBufferSize
 */
-func (self Instance) OutboundBufferSize() int {
+func (self Instance) OutboundBufferSize() int { //gd:WebSocketMultiplayerPeer.outbound_buffer_size
 	return int(int(class(self).GetOutboundBufferSize()))
 }
 
 // SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOutboundBufferSize(value int) Instance {
+func (self Instance) SetOutboundBufferSize(value int) Instance { //gd:WebSocketMultiplayerPeer.outbound_buffer_size
 	class(self).SetOutboundBufferSize(int64(value))
 	return self
 }
@@ -313,12 +313,12 @@ func (self Instance) SetOutboundBufferSize(value int) Instance {
 /*
 The maximum time each peer can stay in a connecting state before being dropped.
 */
-func (self Instance) HandshakeTimeout() Float.X {
+func (self Instance) HandshakeTimeout() Float.X { //gd:WebSocketMultiplayerPeer.handshake_timeout
 	return Float.X(Float.X(class(self).GetHandshakeTimeout()))
 }
 
 // SetHandshakeTimeout sets the property returned by [GetHandshakeTimeout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandshakeTimeout(value Float.X) Instance {
+func (self Instance) SetHandshakeTimeout(value Float.X) Instance { //gd:WebSocketMultiplayerPeer.handshake_timeout
 	class(self).SetHandshakeTimeout(float64(value))
 	return self
 }
@@ -328,12 +328,12 @@ The maximum number of queued packets for connected peers. See [WebSocketPeer.Max
 
 [WebSocketPeer.MaxQueuedPackets]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.MaxQueuedPackets
 */
-func (self Instance) MaxQueuedPackets() int {
+func (self Instance) MaxQueuedPackets() int { //gd:WebSocketMultiplayerPeer.max_queued_packets
 	return int(int(class(self).GetMaxQueuedPackets()))
 }
 
 // SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxQueuedPackets(value int) Instance {
+func (self Instance) SetMaxQueuedPackets(value int) Instance { //gd:WebSocketMultiplayerPeer.max_queued_packets
 	class(self).SetMaxQueuedPackets(int64(value))
 	return self
 }

@@ -184,12 +184,12 @@ func New() Instance {
 /*
 Output percent of original sound. At 0, only delayed sounds are output. Value can range from 0 to 1.
 */
-func (self Instance) Dry() Float.X {
+func (self Instance) Dry() Float.X { //gd:AudioEffectDelay.dry
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
 // SetDry sets the property returned by [GetDry]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDry(value Float.X) Instance {
+func (self Instance) SetDry(value Float.X) Instance { //gd:AudioEffectDelay.dry
 	class(self).SetDry(float64(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetDry(value Float.X) Instance {
 /*
 If true, the first tap will be enabled.
 */
-func (self Instance) Tap1Active() bool {
+func (self Instance) Tap1Active() bool { //gd:AudioEffectDelay.tap1_active
 	return bool(class(self).IsTap1Active())
 }
 
 // SetTap1Active sets the property returned by [IsTap1Active]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap1Active(value bool) Instance {
+func (self Instance) SetTap1Active(value bool) Instance { //gd:AudioEffectDelay.tap1_active
 	class(self).SetTap1Active(value)
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetTap1Active(value bool) Instance {
 /*
 First tap delay time in milliseconds.
 */
-func (self Instance) Tap1DelayMs() Float.X {
+func (self Instance) Tap1DelayMs() Float.X { //gd:AudioEffectDelay.tap1_delay_ms
 	return Float.X(Float.X(class(self).GetTap1DelayMs()))
 }
 
 // SetTap1DelayMs sets the property returned by [GetTap1DelayMs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap1DelayMs(value Float.X) Instance {
+func (self Instance) SetTap1DelayMs(value Float.X) Instance { //gd:AudioEffectDelay.tap1_delay_ms
 	class(self).SetTap1DelayMs(float64(value))
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetTap1DelayMs(value Float.X) Instance {
 /*
 Sound level for the first tap.
 */
-func (self Instance) Tap1LevelDb() Float.X {
+func (self Instance) Tap1LevelDb() Float.X { //gd:AudioEffectDelay.tap1_level_db
 	return Float.X(Float.X(class(self).GetTap1LevelDb()))
 }
 
 // SetTap1LevelDb sets the property returned by [GetTap1LevelDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap1LevelDb(value Float.X) Instance {
+func (self Instance) SetTap1LevelDb(value Float.X) Instance { //gd:AudioEffectDelay.tap1_level_db
 	class(self).SetTap1LevelDb(float64(value))
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetTap1LevelDb(value Float.X) Instance {
 /*
 Pan position for the first tap. Value can range from -1 (fully left) to 1 (fully right).
 */
-func (self Instance) Tap1Pan() Float.X {
+func (self Instance) Tap1Pan() Float.X { //gd:AudioEffectDelay.tap1_pan
 	return Float.X(Float.X(class(self).GetTap1Pan()))
 }
 
 // SetTap1Pan sets the property returned by [GetTap1Pan]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap1Pan(value Float.X) Instance {
+func (self Instance) SetTap1Pan(value Float.X) Instance { //gd:AudioEffectDelay.tap1_pan
 	class(self).SetTap1Pan(float64(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetTap1Pan(value Float.X) Instance {
 /*
 If true, the second tap will be enabled.
 */
-func (self Instance) Tap2Active() bool {
+func (self Instance) Tap2Active() bool { //gd:AudioEffectDelay.tap2_active
 	return bool(class(self).IsTap2Active())
 }
 
 // SetTap2Active sets the property returned by [IsTap2Active]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap2Active(value bool) Instance {
+func (self Instance) SetTap2Active(value bool) Instance { //gd:AudioEffectDelay.tap2_active
 	class(self).SetTap2Active(value)
 	return self
 }
@@ -262,12 +262,12 @@ func (self Instance) SetTap2Active(value bool) Instance {
 /*
 Second tap delay time in milliseconds.
 */
-func (self Instance) Tap2DelayMs() Float.X {
+func (self Instance) Tap2DelayMs() Float.X { //gd:AudioEffectDelay.tap2_delay_ms
 	return Float.X(Float.X(class(self).GetTap2DelayMs()))
 }
 
 // SetTap2DelayMs sets the property returned by [GetTap2DelayMs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap2DelayMs(value Float.X) Instance {
+func (self Instance) SetTap2DelayMs(value Float.X) Instance { //gd:AudioEffectDelay.tap2_delay_ms
 	class(self).SetTap2DelayMs(float64(value))
 	return self
 }
@@ -275,12 +275,12 @@ func (self Instance) SetTap2DelayMs(value Float.X) Instance {
 /*
 Sound level for the second tap.
 */
-func (self Instance) Tap2LevelDb() Float.X {
+func (self Instance) Tap2LevelDb() Float.X { //gd:AudioEffectDelay.tap2_level_db
 	return Float.X(Float.X(class(self).GetTap2LevelDb()))
 }
 
 // SetTap2LevelDb sets the property returned by [GetTap2LevelDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap2LevelDb(value Float.X) Instance {
+func (self Instance) SetTap2LevelDb(value Float.X) Instance { //gd:AudioEffectDelay.tap2_level_db
 	class(self).SetTap2LevelDb(float64(value))
 	return self
 }
@@ -288,12 +288,12 @@ func (self Instance) SetTap2LevelDb(value Float.X) Instance {
 /*
 Pan position for the second tap. Value can range from -1 (fully left) to 1 (fully right).
 */
-func (self Instance) Tap2Pan() Float.X {
+func (self Instance) Tap2Pan() Float.X { //gd:AudioEffectDelay.tap2_pan
 	return Float.X(Float.X(class(self).GetTap2Pan()))
 }
 
 // SetTap2Pan sets the property returned by [GetTap2Pan]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTap2Pan(value Float.X) Instance {
+func (self Instance) SetTap2Pan(value Float.X) Instance { //gd:AudioEffectDelay.tap2_pan
 	class(self).SetTap2Pan(float64(value))
 	return self
 }
@@ -301,12 +301,12 @@ func (self Instance) SetTap2Pan(value Float.X) Instance {
 /*
 If true, feedback is enabled.
 */
-func (self Instance) FeedbackActive() bool {
+func (self Instance) FeedbackActive() bool { //gd:AudioEffectDelay.feedback_active
 	return bool(class(self).IsFeedbackActive())
 }
 
 // SetFeedbackActive sets the property returned by [IsFeedbackActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedbackActive(value bool) Instance {
+func (self Instance) SetFeedbackActive(value bool) Instance { //gd:AudioEffectDelay.feedback_active
 	class(self).SetFeedbackActive(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetFeedbackActive(value bool) Instance {
 /*
 Feedback delay time in milliseconds.
 */
-func (self Instance) FeedbackDelayMs() Float.X {
+func (self Instance) FeedbackDelayMs() Float.X { //gd:AudioEffectDelay.feedback_delay_ms
 	return Float.X(Float.X(class(self).GetFeedbackDelayMs()))
 }
 
 // SetFeedbackDelayMs sets the property returned by [GetFeedbackDelayMs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedbackDelayMs(value Float.X) Instance {
+func (self Instance) SetFeedbackDelayMs(value Float.X) Instance { //gd:AudioEffectDelay.feedback_delay_ms
 	class(self).SetFeedbackDelayMs(float64(value))
 	return self
 }
@@ -327,12 +327,12 @@ func (self Instance) SetFeedbackDelayMs(value Float.X) Instance {
 /*
 Sound level for feedback.
 */
-func (self Instance) FeedbackLevelDb() Float.X {
+func (self Instance) FeedbackLevelDb() Float.X { //gd:AudioEffectDelay.feedback_level_db
 	return Float.X(Float.X(class(self).GetFeedbackLevelDb()))
 }
 
 // SetFeedbackLevelDb sets the property returned by [GetFeedbackLevelDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedbackLevelDb(value Float.X) Instance {
+func (self Instance) SetFeedbackLevelDb(value Float.X) Instance { //gd:AudioEffectDelay.feedback_level_db
 	class(self).SetFeedbackLevelDb(float64(value))
 	return self
 }
@@ -340,12 +340,12 @@ func (self Instance) SetFeedbackLevelDb(value Float.X) Instance {
 /*
 Low-pass filter for feedback, in Hz. Frequencies below this value are filtered out of the source signal.
 */
-func (self Instance) FeedbackLowpass() Float.X {
+func (self Instance) FeedbackLowpass() Float.X { //gd:AudioEffectDelay.feedback_lowpass
 	return Float.X(Float.X(class(self).GetFeedbackLowpass()))
 }
 
 // SetFeedbackLowpass sets the property returned by [GetFeedbackLowpass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedbackLowpass(value Float.X) Instance {
+func (self Instance) SetFeedbackLowpass(value Float.X) Instance { //gd:AudioEffectDelay.feedback_lowpass
 	class(self).SetFeedbackLowpass(float64(value))
 	return self
 }

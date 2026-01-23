@@ -345,12 +345,12 @@ func New() Instance {
 /*
 If true, collisions will be reported.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:RayCast2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:RayCast2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -362,12 +362,12 @@ If true, this raycast will not report collisions with its parent node. This prop
 [CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
 [Node.GetParent]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetParent
 */
-func (self Instance) ExcludeParent() bool {
+func (self Instance) ExcludeParent() bool { //gd:RayCast2D.exclude_parent
 	return bool(class(self).GetExcludeParentBody())
 }
 
 // SetExcludeParent sets the property returned by [GetExcludeParentBody]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeParent(value bool) Instance {
+func (self Instance) SetExcludeParent(value bool) Instance { //gd:RayCast2D.exclude_parent
 	class(self).SetExcludeParentBody(value)
 	return self
 }
@@ -377,12 +377,12 @@ The ray's destination point, relative to this raycast's [Node2D.Position].
 
 [Node2D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Position
 */
-func (self Instance) TargetPosition() Vector2.XY {
+func (self Instance) TargetPosition() Vector2.XY { //gd:RayCast2D.target_position
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance { //gd:RayCast2D.target_position
 	class(self).SetTargetPosition(Vector2.XY(value))
 	return self
 }
@@ -392,12 +392,12 @@ The ray's collision mask. Only objects in at least one collision layer enabled i
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:RayCast2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:RayCast2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -405,12 +405,12 @@ func (self Instance) SetCollisionMask(value int) Instance {
 /*
 If true, the ray will detect a hit when starting inside shapes. In this case the collision normal will be Vector2(0, 0). Does not affect concave polygon shapes.
 */
-func (self Instance) HitFromInside() bool {
+func (self Instance) HitFromInside() bool { //gd:RayCast2D.hit_from_inside
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
 // SetHitFromInside sets the property returned by [IsHitFromInsideEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHitFromInside(value bool) Instance {
+func (self Instance) SetHitFromInside(value bool) Instance { //gd:RayCast2D.hit_from_inside
 	class(self).SetHitFromInside(value)
 	return self
 }
@@ -420,12 +420,12 @@ If true, collisions with [Area2D]s will be reported.
 
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:RayCast2D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:RayCast2D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }
@@ -435,12 +435,12 @@ If true, collisions with [PhysicsBody2D]s will be reported.
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:RayCast2D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:RayCast2D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }

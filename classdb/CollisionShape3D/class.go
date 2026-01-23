@@ -195,12 +195,12 @@ func New() Instance {
 /*
 The actual shape owned by this collision shape.
 */
-func (self Instance) Shape() Shape3D.Instance {
+func (self Instance) Shape() Shape3D.Instance { //gd:CollisionShape3D.shape
 	return Shape3D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape3D.Instance) Instance {
+func (self Instance) SetShape(value Shape3D.Instance) Instance { //gd:CollisionShape3D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -210,12 +210,12 @@ A disabled collision shape has no effect in the world. This property should be c
 
 [Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
 */
-func (self Instance) Disabled() bool {
+func (self Instance) Disabled() bool { //gd:CollisionShape3D.disabled
 	return bool(class(self).IsDisabled())
 }
 
 // SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisabled(value bool) Instance {
+func (self Instance) SetDisabled(value bool) Instance { //gd:CollisionShape3D.disabled
 	class(self).SetDisabled(value)
 	return self
 }
@@ -227,12 +227,12 @@ Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) DebugColor() Color.RGBA {
+func (self Instance) DebugColor() Color.RGBA { //gd:CollisionShape3D.debug_color
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
 // SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugColor(value Color.RGBA) Instance { //gd:CollisionShape3D.debug_color
 	class(self).SetDebugColor(Color.RGBA(value))
 	return self
 }
@@ -240,12 +240,12 @@ func (self Instance) SetDebugColor(value Color.RGBA) Instance {
 /*
 If true, when the shape is displayed, it will show a solid fill color in addition to its wireframe.
 */
-func (self Instance) DebugFill() bool {
+func (self Instance) DebugFill() bool { //gd:CollisionShape3D.debug_fill
 	return bool(class(self).GetEnableDebugFill())
 }
 
 // SetDebugFill sets the property returned by [GetEnableDebugFill]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugFill(value bool) Instance {
+func (self Instance) SetDebugFill(value bool) Instance { //gd:CollisionShape3D.debug_fill
 	class(self).SetEnableDebugFill(value)
 	return self
 }

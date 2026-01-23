@@ -207,12 +207,12 @@ func New() Instance {
 /*
 The blend type.
 */
-func (self Instance) MixMode() MixMode {
+func (self Instance) MixMode() MixMode { //gd:AnimationNodeOneShot.mix_mode
 	return MixMode(class(self).GetMixMode())
 }
 
 // SetMixMode sets the property returned by [GetMixMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMixMode(value MixMode) Instance {
+func (self Instance) SetMixMode(value MixMode) Instance { //gd:AnimationNodeOneShot.mix_mode
 	class(self).SetMixMode(value)
 	return self
 }
@@ -224,12 +224,12 @@ Note: [AnimationNodeOneShot] transitions the current state after the fading has 
 
 [AnimationNodeOneShot]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot
 */
-func (self Instance) FadeinTime() Float.X {
+func (self Instance) FadeinTime() Float.X { //gd:AnimationNodeOneShot.fadein_time
 	return Float.X(Float.X(class(self).GetFadeinTime()))
 }
 
 // SetFadeinTime sets the property returned by [GetFadeinTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFadeinTime(value Float.X) Instance {
+func (self Instance) SetFadeinTime(value Float.X) Instance { //gd:AnimationNodeOneShot.fadein_time
 	class(self).SetFadeinTime(float64(value))
 	return self
 }
@@ -239,12 +239,12 @@ Determines how cross-fading between animations is eased. If empty, the transitio
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) FadeinCurve() Curve.Instance {
+func (self Instance) FadeinCurve() Curve.Instance { //gd:AnimationNodeOneShot.fadein_curve
 	return Curve.Instance(class(self).GetFadeinCurve())
 }
 
 // SetFadeinCurve sets the property returned by [GetFadeinCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFadeinCurve(value Curve.Instance) Instance {
+func (self Instance) SetFadeinCurve(value Curve.Instance) Instance { //gd:AnimationNodeOneShot.fadein_curve
 	class(self).SetFadeinCurve(value)
 	return self
 }
@@ -256,12 +256,12 @@ Note: [AnimationNodeOneShot] transitions the current state after the fading has 
 
 [AnimationNodeOneShot]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot
 */
-func (self Instance) FadeoutTime() Float.X {
+func (self Instance) FadeoutTime() Float.X { //gd:AnimationNodeOneShot.fadeout_time
 	return Float.X(Float.X(class(self).GetFadeoutTime()))
 }
 
 // SetFadeoutTime sets the property returned by [GetFadeoutTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFadeoutTime(value Float.X) Instance {
+func (self Instance) SetFadeoutTime(value Float.X) Instance { //gd:AnimationNodeOneShot.fadeout_time
 	class(self).SetFadeoutTime(float64(value))
 	return self
 }
@@ -271,12 +271,12 @@ Determines how cross-fading between animations is eased. If empty, the transitio
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) FadeoutCurve() Curve.Instance {
+func (self Instance) FadeoutCurve() Curve.Instance { //gd:AnimationNodeOneShot.fadeout_curve
 	return Curve.Instance(class(self).GetFadeoutCurve())
 }
 
 // SetFadeoutCurve sets the property returned by [GetFadeoutCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFadeoutCurve(value Curve.Instance) Instance {
+func (self Instance) SetFadeoutCurve(value Curve.Instance) Instance { //gd:AnimationNodeOneShot.fadeout_curve
 	class(self).SetFadeoutCurve(value)
 	return self
 }
@@ -284,12 +284,12 @@ func (self Instance) SetFadeoutCurve(value Curve.Instance) Instance {
 /*
 If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
-func (self Instance) BreakLoopAtEnd() bool {
+func (self Instance) BreakLoopAtEnd() bool { //gd:AnimationNodeOneShot.break_loop_at_end
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
 // SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBreakLoopAtEnd(value bool) Instance {
+func (self Instance) SetBreakLoopAtEnd(value bool) Instance { //gd:AnimationNodeOneShot.break_loop_at_end
 	class(self).SetBreakLoopAtEnd(value)
 	return self
 }
@@ -301,12 +301,12 @@ In other words, to start auto restarting, the animation must be played once with
 
 [Autorestart]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.Autorestart
 */
-func (self Instance) Autorestart() bool {
+func (self Instance) Autorestart() bool { //gd:AnimationNodeOneShot.autorestart
 	return bool(class(self).HasAutorestart())
 }
 
 // SetAutorestart sets the property returned by [HasAutorestart]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutorestart(value bool) Instance {
+func (self Instance) SetAutorestart(value bool) Instance { //gd:AnimationNodeOneShot.autorestart
 	class(self).SetAutorestart(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetAutorestart(value bool) Instance {
 /*
 The delay after which the automatic restart is triggered, in seconds.
 */
-func (self Instance) AutorestartDelay() Float.X {
+func (self Instance) AutorestartDelay() Float.X { //gd:AnimationNodeOneShot.autorestart_delay
 	return Float.X(Float.X(class(self).GetAutorestartDelay()))
 }
 
 // SetAutorestartDelay sets the property returned by [GetAutorestartDelay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutorestartDelay(value Float.X) Instance {
+func (self Instance) SetAutorestartDelay(value Float.X) Instance { //gd:AnimationNodeOneShot.autorestart_delay
 	class(self).SetAutorestartDelay(float64(value))
 	return self
 }
@@ -330,12 +330,12 @@ If [Autorestart] is true, a random additional delay (in seconds) between 0 and t
 [Autorestart]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.Autorestart
 [AutorestartDelay]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.AutorestartDelay
 */
-func (self Instance) AutorestartRandomDelay() Float.X {
+func (self Instance) AutorestartRandomDelay() Float.X { //gd:AnimationNodeOneShot.autorestart_random_delay
 	return Float.X(Float.X(class(self).GetAutorestartRandomDelay()))
 }
 
 // SetAutorestartRandomDelay sets the property returned by [GetAutorestartRandomDelay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutorestartRandomDelay(value Float.X) Instance {
+func (self Instance) SetAutorestartRandomDelay(value Float.X) Instance { //gd:AnimationNodeOneShot.autorestart_random_delay
 	class(self).SetAutorestartRandomDelay(float64(value))
 	return self
 }

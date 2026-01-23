@@ -211,12 +211,12 @@ Sets how frequently the [ReflectionProbe] is updated. Can be [UpdateOnce] or [Up
 
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
-func (self Instance) UpdateMode() UpdateMode {
+func (self Instance) UpdateMode() UpdateMode { //gd:ReflectionProbe.update_mode
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
 // SetUpdateMode sets the property returned by [GetUpdateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpdateMode(value UpdateMode) Instance {
+func (self Instance) SetUpdateMode(value UpdateMode) Instance { //gd:ReflectionProbe.update_mode
 	class(self).SetUpdateMode(value)
 	return self
 }
@@ -224,12 +224,12 @@ func (self Instance) SetUpdateMode(value UpdateMode) Instance {
 /*
 Defines the reflection intensity. Intensity modulates the strength of the reflection.
 */
-func (self Instance) Intensity() Float.X {
+func (self Instance) Intensity() Float.X { //gd:ReflectionProbe.intensity
 	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
 // SetIntensity sets the property returned by [GetIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIntensity(value Float.X) Instance {
+func (self Instance) SetIntensity(value Float.X) Instance { //gd:ReflectionProbe.intensity
 	class(self).SetIntensity(float64(value))
 	return self
 }
@@ -237,12 +237,12 @@ func (self Instance) SetIntensity(value Float.X) Instance {
 /*
 Defines the distance in meters over which a probe blends into the scene.
 */
-func (self Instance) BlendDistance() Float.X {
+func (self Instance) BlendDistance() Float.X { //gd:ReflectionProbe.blend_distance
 	return Float.X(Float.X(class(self).GetBlendDistance()))
 }
 
 // SetBlendDistance sets the property returned by [GetBlendDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendDistance(value Float.X) Instance {
+func (self Instance) SetBlendDistance(value Float.X) Instance { //gd:ReflectionProbe.blend_distance
 	class(self).SetBlendDistance(float64(value))
 	return self
 }
@@ -257,12 +257,12 @@ Note: The maximum reflection distance is always at least equal to the probe's ex
 [Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 [UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
 */
-func (self Instance) MaxDistance() Float.X {
+func (self Instance) MaxDistance() Float.X { //gd:ReflectionProbe.max_distance
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
 // SetMaxDistance sets the property returned by [GetMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDistance(value Float.X) Instance {
+func (self Instance) SetMaxDistance(value Float.X) Instance { //gd:ReflectionProbe.max_distance
 	class(self).SetMaxDistance(float64(value))
 	return self
 }
@@ -274,12 +274,12 @@ Note: To better fit areas that are not aligned to the grid, you can rotate the [
 
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:ReflectionProbe.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:ReflectionProbe.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -290,12 +290,12 @@ Sets the origin offset to be used when this [ReflectionProbe] is in [BoxProjecti
 [BoxProjection]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.BoxProjection
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
-func (self Instance) OriginOffset() Vector3.XYZ {
+func (self Instance) OriginOffset() Vector3.XYZ { //gd:ReflectionProbe.origin_offset
 	return Vector3.XYZ(class(self).GetOriginOffset())
 }
 
 // SetOriginOffset sets the property returned by [GetOriginOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance { //gd:ReflectionProbe.origin_offset
 	class(self).SetOriginOffset(Vector3.XYZ(value))
 	return self
 }
@@ -307,12 +307,12 @@ Note: To better fit rectangle-shaped rooms that are not aligned to the grid, you
 
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
-func (self Instance) BoxProjection() bool {
+func (self Instance) BoxProjection() bool { //gd:ReflectionProbe.box_projection
 	return bool(class(self).IsBoxProjectionEnabled())
 }
 
 // SetBoxProjection sets the property returned by [IsBoxProjectionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoxProjection(value bool) Instance {
+func (self Instance) SetBoxProjection(value bool) Instance { //gd:ReflectionProbe.box_projection
 	class(self).SetEnableBoxProjection(value)
 	return self
 }
@@ -320,12 +320,12 @@ func (self Instance) SetBoxProjection(value bool) Instance {
 /*
 If true, reflections will ignore sky contribution.
 */
-func (self Instance) Interior() bool {
+func (self Instance) Interior() bool { //gd:ReflectionProbe.interior
 	return bool(class(self).IsSetAsInterior())
 }
 
 // SetInterior sets the property returned by [IsSetAsInterior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterior(value bool) Instance {
+func (self Instance) SetInterior(value bool) Instance { //gd:ReflectionProbe.interior
 	class(self).SetAsInterior(value)
 	return self
 }
@@ -335,12 +335,12 @@ If true, computes shadows in the reflection probe. This makes the reflection pro
 
 [UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
 */
-func (self Instance) EnableShadows() bool {
+func (self Instance) EnableShadows() bool { //gd:ReflectionProbe.enable_shadows
 	return bool(class(self).AreShadowsEnabled())
 }
 
 // SetEnableShadows sets the property returned by [AreShadowsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableShadows(value bool) Instance {
+func (self Instance) SetEnableShadows(value bool) Instance { //gd:ReflectionProbe.enable_shadows
 	class(self).SetEnableShadows(value)
 	return self
 }
@@ -353,12 +353,12 @@ This can also be used to prevent an object from reflecting upon itself (for inst
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
-func (self Instance) CullMask() int {
+func (self Instance) CullMask() int { //gd:ReflectionProbe.cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMask(value int) Instance {
+func (self Instance) SetCullMask(value int) Instance { //gd:ReflectionProbe.cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }
@@ -370,12 +370,12 @@ Sets the reflection mask which determines what objects have reflections applied 
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
-func (self Instance) ReflectionMask() int {
+func (self Instance) ReflectionMask() int { //gd:ReflectionProbe.reflection_mask
 	return int(int(class(self).GetReflectionMask()))
 }
 
 // SetReflectionMask sets the property returned by [GetReflectionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReflectionMask(value int) Instance {
+func (self Instance) SetReflectionMask(value int) Instance { //gd:ReflectionProbe.reflection_mask
 	class(self).SetReflectionMask(int64(value))
 	return self
 }
@@ -391,12 +391,12 @@ Note: [MeshLodThreshold] does not affect [GeometryInstance3D] visibility ranges 
 [UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
 [Viewport.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.MeshLodThreshold
 */
-func (self Instance) MeshLodThreshold() Float.X {
+func (self Instance) MeshLodThreshold() Float.X { //gd:ReflectionProbe.mesh_lod_threshold
 	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
 // SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMeshLodThreshold(value Float.X) Instance {
+func (self Instance) SetMeshLodThreshold(value Float.X) Instance { //gd:ReflectionProbe.mesh_lod_threshold
 	class(self).SetMeshLodThreshold(float64(value))
 	return self
 }
@@ -407,12 +407,12 @@ The ambient color to use within the [ReflectionProbe]'s box defined by its [Size
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 */
-func (self Instance) AmbientMode() AmbientMode {
+func (self Instance) AmbientMode() AmbientMode { //gd:ReflectionProbe.ambient_mode
 	return AmbientMode(class(self).GetAmbientMode())
 }
 
 // SetAmbientMode sets the property returned by [GetAmbientMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientMode(value AmbientMode) Instance {
+func (self Instance) SetAmbientMode(value AmbientMode) Instance { //gd:ReflectionProbe.ambient_mode
 	class(self).SetAmbientMode(value)
 	return self
 }
@@ -424,12 +424,12 @@ The custom ambient color to use within the [ReflectionProbe]'s box defined by it
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 */
-func (self Instance) AmbientColor() Color.RGBA {
+func (self Instance) AmbientColor() Color.RGBA { //gd:ReflectionProbe.ambient_color
 	return Color.RGBA(class(self).GetAmbientColor())
 }
 
 // SetAmbientColor sets the property returned by [GetAmbientColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientColor(value Color.RGBA) Instance {
+func (self Instance) SetAmbientColor(value Color.RGBA) Instance { //gd:ReflectionProbe.ambient_color
 	class(self).SetAmbientColor(Color.RGBA(value))
 	return self
 }
@@ -441,12 +441,12 @@ The custom ambient color energy to use within the [ReflectionProbe]'s box define
 [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 */
-func (self Instance) AmbientColorEnergy() Float.X {
+func (self Instance) AmbientColorEnergy() Float.X { //gd:ReflectionProbe.ambient_color_energy
 	return Float.X(Float.X(class(self).GetAmbientColorEnergy()))
 }
 
 // SetAmbientColorEnergy sets the property returned by [GetAmbientColorEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmbientColorEnergy(value Float.X) Instance {
+func (self Instance) SetAmbientColorEnergy(value Float.X) Instance { //gd:ReflectionProbe.ambient_color_energy
 	class(self).SetAmbientColorEnergy(float64(value))
 	return self
 }

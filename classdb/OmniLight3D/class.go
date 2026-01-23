@@ -166,12 +166,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) OmniShadowMode() ShadowMode {
+func (self Instance) OmniShadowMode() ShadowMode { //gd:OmniLight3D.omni_shadow_mode
 	return ShadowMode(class(self).GetShadowMode())
 }
 
 // SetOmniShadowMode sets the property returned by [GetShadowMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOmniShadowMode(value ShadowMode) Instance {
+func (self Instance) SetOmniShadowMode(value ShadowMode) Instance { //gd:OmniLight3D.omni_shadow_mode
 	class(self).SetShadowMode(value)
 	return self
 }

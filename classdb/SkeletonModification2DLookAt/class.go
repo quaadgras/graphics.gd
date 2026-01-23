@@ -267,12 +267,12 @@ The index of the [Bone2D] node that the modification will operate on.
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) BoneIndex() int {
+func (self Instance) BoneIndex() int { //gd:SkeletonModification2DLookAt.bone_index
 	return int(int(class(self).GetBoneIndex()))
 }
 
 // SetBoneIndex sets the property returned by [GetBoneIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneIndex(value int) Instance {
+func (self Instance) SetBoneIndex(value int) Instance { //gd:SkeletonModification2DLookAt.bone_index
 	class(self).SetBoneIndex(int64(value))
 	return self
 }
@@ -282,12 +282,12 @@ The [Bone2D] node that the modification will operate on.
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) Bone2dNode() string {
+func (self Instance) Bone2dNode() string { //gd:SkeletonModification2DLookAt.bone2d_node
 	return string(class(self).GetBone2dNode().String())
 }
 
 // SetBone2dNode sets the property returned by [GetBone2dNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone2dNode(value string) Instance {
+func (self Instance) SetBone2dNode(value string) Instance { //gd:SkeletonModification2DLookAt.bone2d_node
 	class(self).SetBone2dNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -297,12 +297,12 @@ The NodePath to the node that is the target for the LookAt modification. This no
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) TargetNodepath() string {
+func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DLookAt.target_nodepath
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNodepath(value string) Instance {
+func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DLookAt.target_nodepath
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }

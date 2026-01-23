@@ -381,12 +381,12 @@ func New() Instance {
 /*
 Text writing direction.
 */
-func (self Instance) Direction() TextServer.Direction {
+func (self Instance) Direction() TextServer.Direction { //gd:TextLine.direction
 	return TextServer.Direction(class(self).GetDirection())
 }
 
 // SetDirection sets the property returned by [GetDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirection(value TextServer.Direction) Instance {
+func (self Instance) SetDirection(value TextServer.Direction) Instance { //gd:TextLine.direction
 	class(self).SetDirection(value)
 	return self
 }
@@ -394,12 +394,12 @@ func (self Instance) SetDirection(value TextServer.Direction) Instance {
 /*
 Text orientation.
 */
-func (self Instance) Orientation() TextServer.Orientation {
+func (self Instance) Orientation() TextServer.Orientation { //gd:TextLine.orientation
 	return TextServer.Orientation(class(self).GetOrientation())
 }
 
 // SetOrientation sets the property returned by [GetOrientation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrientation(value TextServer.Orientation) Instance {
+func (self Instance) SetOrientation(value TextServer.Orientation) Instance { //gd:TextLine.orientation
 	class(self).SetOrientation(value)
 	return self
 }
@@ -407,12 +407,12 @@ func (self Instance) SetOrientation(value TextServer.Orientation) Instance {
 /*
 If set to true text will display invalid characters.
 */
-func (self Instance) PreserveInvalid() bool {
+func (self Instance) PreserveInvalid() bool { //gd:TextLine.preserve_invalid
 	return bool(class(self).GetPreserveInvalid())
 }
 
 // SetPreserveInvalid sets the property returned by [GetPreserveInvalid]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreserveInvalid(value bool) Instance {
+func (self Instance) SetPreserveInvalid(value bool) Instance { //gd:TextLine.preserve_invalid
 	class(self).SetPreserveInvalid(value)
 	return self
 }
@@ -420,12 +420,12 @@ func (self Instance) SetPreserveInvalid(value bool) Instance {
 /*
 If set to true text will display control characters.
 */
-func (self Instance) PreserveControl() bool {
+func (self Instance) PreserveControl() bool { //gd:TextLine.preserve_control
 	return bool(class(self).GetPreserveControl())
 }
 
 // SetPreserveControl sets the property returned by [GetPreserveControl]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreserveControl(value bool) Instance {
+func (self Instance) SetPreserveControl(value bool) Instance { //gd:TextLine.preserve_control
 	class(self).SetPreserveControl(value)
 	return self
 }
@@ -433,12 +433,12 @@ func (self Instance) SetPreserveControl(value bool) Instance {
 /*
 Text line width.
 */
-func (self Instance) Width() Float.X {
+func (self Instance) Width() Float.X { //gd:TextLine.width
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
 // SetWidth sets the property returned by [GetWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWidth(value Float.X) Instance {
+func (self Instance) SetWidth(value Float.X) Instance { //gd:TextLine.width
 	class(self).SetWidth(float64(value))
 	return self
 }
@@ -446,12 +446,12 @@ func (self Instance) SetWidth(value Float.X) Instance {
 /*
 Sets text alignment within the line as if the line was horizontal.
 */
-func (self Instance) Alignment() GUI.HorizontalAlignment {
+func (self Instance) Alignment() GUI.HorizontalAlignment { //gd:TextLine.alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 // SetAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance { //gd:TextLine.alignment
 	class(self).SetHorizontalAlignment(value)
 	return self
 }
@@ -461,12 +461,12 @@ Line alignment rules. For more info see [TextServer].
 
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self Instance) Flags() TextServer.JustificationFlag {
+func (self Instance) Flags() TextServer.JustificationFlag { //gd:TextLine.flags
 	return TextServer.JustificationFlag(class(self).GetFlags())
 }
 
 // SetFlags sets the property returned by [GetFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlags(value TextServer.JustificationFlag) Instance {
+func (self Instance) SetFlags(value TextServer.JustificationFlag) Instance { //gd:TextLine.flags
 	class(self).SetFlags(value)
 	return self
 }
@@ -474,12 +474,12 @@ func (self Instance) SetFlags(value TextServer.JustificationFlag) Instance {
 /*
 The clipping behavior when the text exceeds the text line's set width.
 */
-func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextLine.text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
 // SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:TextLine.text_overrun_behavior
 	class(self).SetTextOverrunBehavior(value)
 	return self
 }
@@ -487,12 +487,12 @@ func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) In
 /*
 Ellipsis character used for text clipping.
 */
-func (self Instance) EllipsisChar() string {
+func (self Instance) EllipsisChar() string { //gd:TextLine.ellipsis_char
 	return string(class(self).GetEllipsisChar().String())
 }
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEllipsisChar(value string) Instance {
+func (self Instance) SetEllipsisChar(value string) Instance { //gd:TextLine.ellipsis_char
 	class(self).SetEllipsisChar(String.New(value))
 	return self
 }

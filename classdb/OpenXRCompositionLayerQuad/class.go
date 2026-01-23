@@ -163,12 +163,12 @@ func New() Instance {
 /*
 The dimensions of the quad.
 */
-func (self Instance) QuadSize() Vector2.XY {
+func (self Instance) QuadSize() Vector2.XY { //gd:OpenXRCompositionLayerQuad.quad_size
 	return Vector2.XY(class(self).GetQuadSize())
 }
 
 // SetQuadSize sets the property returned by [GetQuadSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetQuadSize(value Vector2.XY) Instance {
+func (self Instance) SetQuadSize(value Vector2.XY) Instance { //gd:OpenXRCompositionLayerQuad.quad_size
 	class(self).SetQuadSize(Vector2.XY(value))
 	return self
 }

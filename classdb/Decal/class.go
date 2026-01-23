@@ -209,12 +209,12 @@ Note: To improve culling efficiency of "hard surface" decals, set their [UpperFa
 [Size]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Size
 [UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:Decal.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:Decal.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }
@@ -231,12 +231,12 @@ Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-materia
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureEmission]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureEmission
 */
-func (self Instance) TextureAlbedo() Texture2D.Instance {
+func (self Instance) TextureAlbedo() Texture2D.Instance { //gd:Decal.texture_albedo
 	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
 // SetTextureAlbedo sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureAlbedo(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureAlbedo(value Texture2D.Instance) Instance { //gd:Decal.texture_albedo
 	class(self).SetTexture(0, value)
 	return self
 }
@@ -255,12 +255,12 @@ Note: Setting this texture alone will not result in a visible decal, as [Texture
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
 */
-func (self Instance) TextureNormal() Texture2D.Instance {
+func (self Instance) TextureNormal() Texture2D.Instance { //gd:Decal.texture_normal
 	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
 // SetTextureNormal sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) Instance { //gd:Decal.texture_normal
 	class(self).SetTexture(1, value)
 	return self
 }
@@ -279,12 +279,12 @@ Note: Setting this texture alone will not result in a visible decal, as [Texture
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
 */
-func (self Instance) TextureOrm() Texture2D.Instance {
+func (self Instance) TextureOrm() Texture2D.Instance { //gd:Decal.texture_orm
 	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
 // SetTextureOrm sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureOrm(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureOrm(value Texture2D.Instance) Instance { //gd:Decal.texture_orm
 	class(self).SetTexture(2, value)
 	return self
 }
@@ -301,12 +301,12 @@ Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-materia
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
 */
-func (self Instance) TextureEmission() Texture2D.Instance {
+func (self Instance) TextureEmission() Texture2D.Instance { //gd:Decal.texture_emission
 	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
 // SetTextureEmission sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureEmission(value Texture2D.Instance) Instance {
+func (self Instance) SetTextureEmission(value Texture2D.Instance) Instance { //gd:Decal.texture_emission
 	class(self).SetTexture(3, value)
 	return self
 }
@@ -316,12 +316,12 @@ Energy multiplier for the emission texture. This will make the decal emit light 
 
 [Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
 */
-func (self Instance) EmissionEnergy() Float.X {
+func (self Instance) EmissionEnergy() Float.X { //gd:Decal.emission_energy
 	return Float.X(Float.X(class(self).GetEmissionEnergy()))
 }
 
 // SetEmissionEnergy sets the property returned by [GetEmissionEnergy]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionEnergy(value Float.X) Instance {
+func (self Instance) SetEmissionEnergy(value Float.X) Instance { //gd:Decal.emission_energy
 	class(self).SetEmissionEnergy(float64(value))
 	return self
 }
@@ -333,12 +333,12 @@ Changes the [Color.RGBA] of the Decal by multiplying the albedo and emission col
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [EmissionEnergy]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.EmissionEnergy
 */
-func (self Instance) Modulate() Color.RGBA {
+func (self Instance) Modulate() Color.RGBA { //gd:Decal.modulate
 	return Color.RGBA(class(self).GetModulate())
 }
 
 // SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulate(value Color.RGBA) Instance {
+func (self Instance) SetModulate(value Color.RGBA) Instance { //gd:Decal.modulate
 	class(self).SetModulate(Color.RGBA(value))
 	return self
 }
@@ -349,12 +349,12 @@ Blends the albedo [Color.RGBA] of the decal with albedo [Color.RGBA] of the unde
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
 */
-func (self Instance) AlbedoMix() Float.X {
+func (self Instance) AlbedoMix() Float.X { //gd:Decal.albedo_mix
 	return Float.X(Float.X(class(self).GetAlbedoMix()))
 }
 
 // SetAlbedoMix sets the property returned by [GetAlbedoMix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlbedoMix(value Float.X) Instance {
+func (self Instance) SetAlbedoMix(value Float.X) Instance { //gd:Decal.albedo_mix
 	class(self).SetAlbedoMix(float64(value))
 	return self
 }
@@ -367,12 +367,12 @@ Note: Setting [NormalFade] to a value greater than 0.0 has a small performance c
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 [NormalFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.NormalFade
 */
-func (self Instance) NormalFade() Float.X {
+func (self Instance) NormalFade() Float.X { //gd:Decal.normal_fade
 	return Float.X(Float.X(class(self).GetNormalFade()))
 }
 
 // SetNormalFade sets the property returned by [GetNormalFade]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalFade(value Float.X) Instance {
+func (self Instance) SetNormalFade(value Float.X) Instance { //gd:Decal.normal_fade
 	class(self).SetNormalFade(float64(value))
 	return self
 }
@@ -383,12 +383,12 @@ Sets the curve over which the decal will fade as the surface gets further from t
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 [LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
 */
-func (self Instance) UpperFade() Float.X {
+func (self Instance) UpperFade() Float.X { //gd:Decal.upper_fade
 	return Float.X(Float.X(class(self).GetUpperFade()))
 }
 
 // SetUpperFade sets the property returned by [GetUpperFade]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpperFade(value Float.X) Instance {
+func (self Instance) SetUpperFade(value Float.X) Instance { //gd:Decal.upper_fade
 	class(self).SetUpperFade(float64(value))
 	return self
 }
@@ -399,12 +399,12 @@ Sets the curve over which the decal will fade as the surface gets further from t
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 [UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
 */
-func (self Instance) LowerFade() Float.X {
+func (self Instance) LowerFade() Float.X { //gd:Decal.lower_fade
 	return Float.X(Float.X(class(self).GetLowerFade()))
 }
 
 // SetLowerFade sets the property returned by [GetLowerFade]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLowerFade(value Float.X) Instance {
+func (self Instance) SetLowerFade(value Float.X) Instance { //gd:Decal.lower_fade
 	class(self).SetLowerFade(float64(value))
 	return self
 }
@@ -416,12 +416,12 @@ If true, decals will smoothly fade away when far from the active [Camera3D] star
 [DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeBegin
 [DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeLength
 */
-func (self Instance) DistanceFadeEnabled() bool {
+func (self Instance) DistanceFadeEnabled() bool { //gd:Decal.distance_fade_enabled
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
 // SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeEnabled(value bool) Instance {
+func (self Instance) SetDistanceFadeEnabled(value bool) Instance { //gd:Decal.distance_fade_enabled
 	class(self).SetEnableDistanceFade(value)
 	return self
 }
@@ -429,12 +429,12 @@ func (self Instance) SetDistanceFadeEnabled(value bool) Instance {
 /*
 The distance from the camera at which the Decal begins to fade away (in 3D units).
 */
-func (self Instance) DistanceFadeBegin() Float.X {
+func (self Instance) DistanceFadeBegin() Float.X { //gd:Decal.distance_fade_begin
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
 // SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeBegin(value Float.X) Instance {
+func (self Instance) SetDistanceFadeBegin(value Float.X) Instance { //gd:Decal.distance_fade_begin
 	class(self).SetDistanceFadeBegin(float64(value))
 	return self
 }
@@ -442,12 +442,12 @@ func (self Instance) SetDistanceFadeBegin(value Float.X) Instance {
 /*
 The distance over which the Decal fades (in 3D units). The Decal becomes slowly more transparent over this distance and is completely invisible at the end. Higher values result in a smoother fade-out transition, which is more suited when the camera moves fast.
 */
-func (self Instance) DistanceFadeLength() Float.X {
+func (self Instance) DistanceFadeLength() Float.X { //gd:Decal.distance_fade_length
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
 // SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeLength(value Float.X) Instance {
+func (self Instance) SetDistanceFadeLength(value Float.X) Instance { //gd:Decal.distance_fade_length
 	class(self).SetDistanceFadeLength(float64(value))
 	return self
 }
@@ -457,12 +457,12 @@ Specifies which [VisualInstance3D.Layers] this decal will project on. By default
 
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) CullMask() int {
+func (self Instance) CullMask() int { //gd:Decal.cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMask(value int) Instance {
+func (self Instance) SetCullMask(value int) Instance { //gd:Decal.cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }

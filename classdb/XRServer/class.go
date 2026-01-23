@@ -273,13 +273,13 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 The scale of the game world compared to the real world. By default, most AR/VR platforms assume that 1 game unit corresponds to 1 real world meter.
 */
-func WorldScale() Float.X {
+func WorldScale() Float.X { //gd:XRServer.world_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
 // SetWorldScale sets the property returned by [GetWorldScale].
-func SetWorldScale(value Float.X) {
+func SetWorldScale(value Float.X) { //gd:XRServer.world_scale
 	once.Do(singleton)
 	class(self).SetWorldScale(float64(value))
 }
@@ -291,13 +291,13 @@ Note: This property is managed by the current [XROrigin3D] node. It is exposed f
 
 [XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
-func WorldOrigin() Transform3D.BasisOrigin {
+func WorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.world_origin
 	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).GetWorldOrigin())
 }
 
 // SetWorldOrigin sets the property returned by [GetWorldOrigin].
-func SetWorldOrigin(value Transform3D.BasisOrigin) {
+func SetWorldOrigin(value Transform3D.BasisOrigin) { //gd:XRServer.world_origin
 	once.Do(singleton)
 	class(self).SetWorldOrigin(Transform3D.BasisOrigin(value))
 }
@@ -309,13 +309,13 @@ Note: This doesn't provide a very comfortable experience for users. This setting
 
 [XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
-func CameraLockedToOrigin() bool {
+func CameraLockedToOrigin() bool { //gd:XRServer.camera_locked_to_origin
 	once.Do(singleton)
 	return bool(class(self).IsCameraLockedToOrigin())
 }
 
 // SetCameraLockedToOrigin sets the property returned by [IsCameraLockedToOrigin].
-func SetCameraLockedToOrigin(value bool) {
+func SetCameraLockedToOrigin(value bool) { //gd:XRServer.camera_locked_to_origin
 	once.Do(singleton)
 	class(self).SetCameraLockedToOrigin(value)
 }
@@ -326,13 +326,13 @@ The primary [XRInterface] currently bound to the [XRServer].
 [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 [XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
-func PrimaryInterface() XRInterface.Instance {
+func PrimaryInterface() XRInterface.Instance { //gd:XRServer.primary_interface
 	once.Do(singleton)
 	return XRInterface.Instance(class(self).GetPrimaryInterface())
 }
 
 // SetPrimaryInterface sets the property returned by [GetPrimaryInterface].
-func SetPrimaryInterface(value XRInterface.Instance) {
+func SetPrimaryInterface(value XRInterface.Instance) { //gd:XRServer.primary_interface
 	once.Do(singleton)
 	class(self).SetPrimaryInterface(value)
 }

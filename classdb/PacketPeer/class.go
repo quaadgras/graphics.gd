@@ -257,12 +257,12 @@ The [PutVar] method allocates memory on the stack, and the buffer used will grow
 [EncodeBufferMaxSize]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.EncodeBufferMaxSize
 [PutVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutVar
 */
-func (self Instance) EncodeBufferMaxSize() int {
+func (self Instance) EncodeBufferMaxSize() int { //gd:PacketPeer.encode_buffer_max_size
 	return int(int(class(self).GetEncodeBufferMaxSize()))
 }
 
 // SetEncodeBufferMaxSize sets the property returned by [GetEncodeBufferMaxSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEncodeBufferMaxSize(value int) Instance {
+func (self Instance) SetEncodeBufferMaxSize(value int) Instance { //gd:PacketPeer.encode_buffer_max_size
 	class(self).SetEncodeBufferMaxSize(int64(value))
 	return self
 }

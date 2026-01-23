@@ -174,12 +174,12 @@ func New() Instance {
 /*
 The node's texture resource.
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:NinePatchRect.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:NinePatchRect.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -187,12 +187,12 @@ func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 /*
 If true, draw the panel's center. Else, only draw the 9-slice's borders.
 */
-func (self Instance) DrawCenter() bool {
+func (self Instance) DrawCenter() bool { //gd:NinePatchRect.draw_center
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
 // SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawCenter(value bool) Instance {
+func (self Instance) SetDrawCenter(value bool) Instance { //gd:NinePatchRect.draw_center
 	class(self).SetDrawCenter(value)
 	return self
 }
@@ -200,12 +200,12 @@ func (self Instance) SetDrawCenter(value bool) Instance {
 /*
 Rectangular region of the texture to sample from. If you're working with an atlas, use this property to define the area the 9-slice should use. All other properties are relative to this one. If the rect is empty, NinePatchRect will use the whole texture.
 */
-func (self Instance) RegionRect() Rect2.PositionSize {
+func (self Instance) RegionRect() Rect2.PositionSize { //gd:NinePatchRect.region_rect
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
 // SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance { //gd:NinePatchRect.region_rect
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
 /*
 The width of the 9-slice's left column. A margin of 16 means the 9-slice's left corners and side will have a width of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
 */
-func (self Instance) PatchMarginLeft() int {
+func (self Instance) PatchMarginLeft() int { //gd:NinePatchRect.patch_margin_left
 	return int(int(class(self).GetPatchMargin(0)))
 }
 
 // SetPatchMarginLeft sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPatchMarginLeft(value int) Instance {
+func (self Instance) SetPatchMarginLeft(value int) Instance { //gd:NinePatchRect.patch_margin_left
 	class(self).SetPatchMargin(0, int64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetPatchMarginLeft(value int) Instance {
 /*
 The height of the 9-slice's top row. A margin of 16 means the 9-slice's top corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
 */
-func (self Instance) PatchMarginTop() int {
+func (self Instance) PatchMarginTop() int { //gd:NinePatchRect.patch_margin_top
 	return int(int(class(self).GetPatchMargin(1)))
 }
 
 // SetPatchMarginTop sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPatchMarginTop(value int) Instance {
+func (self Instance) SetPatchMarginTop(value int) Instance { //gd:NinePatchRect.patch_margin_top
 	class(self).SetPatchMargin(1, int64(value))
 	return self
 }
@@ -239,12 +239,12 @@ func (self Instance) SetPatchMarginTop(value int) Instance {
 /*
 The width of the 9-slice's right column. A margin of 16 means the 9-slice's right corners and side will have a width of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
 */
-func (self Instance) PatchMarginRight() int {
+func (self Instance) PatchMarginRight() int { //gd:NinePatchRect.patch_margin_right
 	return int(int(class(self).GetPatchMargin(2)))
 }
 
 // SetPatchMarginRight sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPatchMarginRight(value int) Instance {
+func (self Instance) SetPatchMarginRight(value int) Instance { //gd:NinePatchRect.patch_margin_right
 	class(self).SetPatchMargin(2, int64(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetPatchMarginRight(value int) Instance {
 /*
 The height of the 9-slice's bottom row. A margin of 16 means the 9-slice's bottom corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
 */
-func (self Instance) PatchMarginBottom() int {
+func (self Instance) PatchMarginBottom() int { //gd:NinePatchRect.patch_margin_bottom
 	return int(int(class(self).GetPatchMargin(3)))
 }
 
 // SetPatchMarginBottom sets the property returned by [GetPatchMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPatchMarginBottom(value int) Instance {
+func (self Instance) SetPatchMarginBottom(value int) Instance { //gd:NinePatchRect.patch_margin_bottom
 	class(self).SetPatchMargin(3, int64(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetPatchMarginBottom(value int) Instance {
 /*
 The stretch mode to use for horizontal stretching/tiling.
 */
-func (self Instance) AxisStretchHorizontal() AxisStretchMode {
+func (self Instance) AxisStretchHorizontal() AxisStretchMode { //gd:NinePatchRect.axis_stretch_horizontal
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
 // SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance { //gd:NinePatchRect.axis_stretch_horizontal
 	class(self).SetHAxisStretchMode(value)
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
 /*
 The stretch mode to use for vertical stretching/tiling.
 */
-func (self Instance) AxisStretchVertical() AxisStretchMode {
+func (self Instance) AxisStretchVertical() AxisStretchMode { //gd:NinePatchRect.axis_stretch_vertical
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
 // SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance {
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance { //gd:NinePatchRect.axis_stretch_vertical
 	class(self).SetVAxisStretchMode(value)
 	return self
 }

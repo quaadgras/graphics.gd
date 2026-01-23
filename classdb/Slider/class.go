@@ -171,12 +171,12 @@ func New() Instance {
 /*
 If true, the slider can be interacted with. If false, the value can be changed only by code.
 */
-func (self Instance) Editable() bool {
+func (self Instance) Editable() bool { //gd:Slider.editable
 	return bool(class(self).IsEditable())
 }
 
 // SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditable(value bool) Instance {
+func (self Instance) SetEditable(value bool) Instance { //gd:Slider.editable
 	class(self).SetEditable(value)
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetEditable(value bool) Instance {
 /*
 If true, the value can be changed using the mouse wheel.
 */
-func (self Instance) Scrollable() bool {
+func (self Instance) Scrollable() bool { //gd:Slider.scrollable
 	return bool(class(self).IsScrollable())
 }
 
 // SetScrollable sets the property returned by [IsScrollable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollable(value bool) Instance {
+func (self Instance) SetScrollable(value bool) Instance { //gd:Slider.scrollable
 	class(self).SetScrollable(value)
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetScrollable(value bool) Instance {
 /*
 Number of ticks displayed on the slider, including border ticks. Ticks are uniformly-distributed value markers.
 */
-func (self Instance) TickCount() int {
+func (self Instance) TickCount() int { //gd:Slider.tick_count
 	return int(int(class(self).GetTicks()))
 }
 
 // SetTickCount sets the property returned by [GetTicks]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTickCount(value int) Instance {
+func (self Instance) SetTickCount(value int) Instance { //gd:Slider.tick_count
 	class(self).SetTicks(int64(value))
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetTickCount(value int) Instance {
 /*
 If true, the slider will display ticks for minimum and maximum values.
 */
-func (self Instance) TicksOnBorders() bool {
+func (self Instance) TicksOnBorders() bool { //gd:Slider.ticks_on_borders
 	return bool(class(self).GetTicksOnBorders())
 }
 
 // SetTicksOnBorders sets the property returned by [GetTicksOnBorders]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTicksOnBorders(value bool) Instance {
+func (self Instance) SetTicksOnBorders(value bool) Instance { //gd:Slider.ticks_on_borders
 	class(self).SetTicksOnBorders(value)
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetTicksOnBorders(value bool) Instance {
 /*
 Sets the position of the ticks. See [TickPosition] for details.
 */
-func (self Instance) TicksPosition() TickPosition {
+func (self Instance) TicksPosition() TickPosition { //gd:Slider.ticks_position
 	return TickPosition(class(self).GetTicksPosition())
 }
 
 // SetTicksPosition sets the property returned by [GetTicksPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTicksPosition(value TickPosition) Instance {
+func (self Instance) SetTicksPosition(value TickPosition) Instance { //gd:Slider.ticks_position
 	class(self).SetTicksPosition(value)
 	return self
 }

@@ -317,12 +317,12 @@ Tip: If your [OneShot] emitter needs to immediately restart emitting particles o
 [OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
 [Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
 */
-func (self Instance) Emitting() bool {
+func (self Instance) Emitting() bool { //gd:GPUParticles3D.emitting
 	return bool(class(self).IsEmitting())
 }
 
 // SetEmitting sets the property returned by [IsEmitting]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmitting(value bool) Instance {
+func (self Instance) SetEmitting(value bool) Instance { //gd:GPUParticles3D.emitting
 	class(self).SetEmitting(value)
 	return self
 }
@@ -334,12 +334,12 @@ Note: Changing this value will cause the particle system to restart. To avoid th
 
 [AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
 */
-func (self Instance) Amount() int {
+func (self Instance) Amount() int { //gd:GPUParticles3D.amount
 	return int(int(class(self).GetAmount()))
 }
 
 // SetAmount sets the property returned by [GetAmount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmount(value int) Instance {
+func (self Instance) SetAmount(value int) Instance { //gd:GPUParticles3D.amount
 	class(self).SetAmount(int64(value))
 	return self
 }
@@ -352,12 +352,12 @@ Note: Reducing the [AmountRatio] has no performance benefit, since resources nee
 [Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
 [AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
 */
-func (self Instance) AmountRatio() Float.X {
+func (self Instance) AmountRatio() Float.X { //gd:GPUParticles3D.amount_ratio
 	return Float.X(Float.X(class(self).GetAmountRatio()))
 }
 
 // SetAmountRatio sets the property returned by [GetAmountRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmountRatio(value Float.X) Instance {
+func (self Instance) SetAmountRatio(value Float.X) Instance { //gd:GPUParticles3D.amount_ratio
 	class(self).SetAmountRatio(float64(value))
 	return self
 }
@@ -371,12 +371,12 @@ Note: When [SubEmitter] is set, the target [GPUParticles3D] node will no longer 
 [ParticleProcessMaterial.SubEmitterMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.SubEmitterMode
 [SubEmitter]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SubEmitter
 */
-func (self Instance) SubEmitter() string {
+func (self Instance) SubEmitter() string { //gd:GPUParticles3D.sub_emitter
 	return string(class(self).GetSubEmitter().String())
 }
 
 // SetSubEmitter sets the property returned by [GetSubEmitter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubEmitter(value string) Instance {
+func (self Instance) SetSubEmitter(value string) Instance { //gd:GPUParticles3D.sub_emitter
 	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
 	return self
 }
@@ -384,12 +384,12 @@ func (self Instance) SetSubEmitter(value string) Instance {
 /*
 The amount of time each particle will exist (in seconds). The effective emission rate is (amount * amount_ratio) / lifetime particles per second.
 */
-func (self Instance) Lifetime() Float.X {
+func (self Instance) Lifetime() Float.X { //gd:GPUParticles3D.lifetime
 	return Float.X(Float.X(class(self).GetLifetime()))
 }
 
 // SetLifetime sets the property returned by [GetLifetime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLifetime(value Float.X) Instance {
+func (self Instance) SetLifetime(value Float.X) Instance { //gd:GPUParticles3D.lifetime
 	class(self).SetLifetime(float64(value))
 	return self
 }
@@ -401,12 +401,12 @@ Note: This only works when used with a [ParticleProcessMaterial]. It needs to be
 
 [ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 */
-func (self Instance) InterpToEnd() Float.X {
+func (self Instance) InterpToEnd() Float.X { //gd:GPUParticles3D.interp_to_end
 	return Float.X(Float.X(class(self).GetInterpToEnd()))
 }
 
 // SetInterpToEnd sets the property returned by [GetInterpToEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterpToEnd(value Float.X) Instance {
+func (self Instance) SetInterpToEnd(value Float.X) Instance { //gd:GPUParticles3D.interp_to_end
 	class(self).SetInterpToEnd(float64(value))
 	return self
 }
@@ -416,12 +416,12 @@ If true, only the number of particles equal to [Amount] will be emitted.
 
 [Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
 */
-func (self Instance) OneShot() bool {
+func (self Instance) OneShot() bool { //gd:GPUParticles3D.one_shot
 	return bool(class(self).GetOneShot())
 }
 
 // SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneShot(value bool) Instance {
+func (self Instance) SetOneShot(value bool) Instance { //gd:GPUParticles3D.one_shot
 	class(self).SetOneShot(value)
 	return self
 }
@@ -433,12 +433,12 @@ Note: This can be very expensive if set to a high number as it requires running 
 
 [FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
 */
-func (self Instance) Preprocess() Float.X {
+func (self Instance) Preprocess() Float.X { //gd:GPUParticles3D.preprocess
 	return Float.X(Float.X(class(self).GetPreProcessTime()))
 }
 
 // SetPreprocess sets the property returned by [GetPreProcessTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreprocess(value Float.X) Instance {
+func (self Instance) SetPreprocess(value Float.X) Instance { //gd:GPUParticles3D.preprocess
 	class(self).SetPreProcessTime(float64(value))
 	return self
 }
@@ -446,12 +446,12 @@ func (self Instance) SetPreprocess(value Float.X) Instance {
 /*
 Speed scaling ratio. A value of 0 can be used to pause the particles.
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:GPUParticles3D.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:GPUParticles3D.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }
@@ -459,12 +459,12 @@ func (self Instance) SetSpeedScale(value Float.X) Instance {
 /*
 Time ratio between each emission. If 0, particles are emitted continuously. If 1, all particles are emitted simultaneously.
 */
-func (self Instance) Explosiveness() Float.X {
+func (self Instance) Explosiveness() Float.X { //gd:GPUParticles3D.explosiveness
 	return Float.X(Float.X(class(self).GetExplosivenessRatio()))
 }
 
 // SetExplosiveness sets the property returned by [GetExplosivenessRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExplosiveness(value Float.X) Instance {
+func (self Instance) SetExplosiveness(value Float.X) Instance { //gd:GPUParticles3D.explosiveness
 	class(self).SetExplosivenessRatio(float64(value))
 	return self
 }
@@ -472,12 +472,12 @@ func (self Instance) SetExplosiveness(value Float.X) Instance {
 /*
 Emission randomness ratio.
 */
-func (self Instance) Randomness() Float.X {
+func (self Instance) Randomness() Float.X { //gd:GPUParticles3D.randomness
 	return Float.X(Float.X(class(self).GetRandomnessRatio()))
 }
 
 // SetRandomness sets the property returned by [GetRandomnessRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRandomness(value Float.X) Instance {
+func (self Instance) SetRandomness(value Float.X) Instance { //gd:GPUParticles3D.randomness
 	class(self).SetRandomnessRatio(float64(value))
 	return self
 }
@@ -487,12 +487,12 @@ If true, particles will use the same seed for every simulation using the seed de
 
 [Seed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Seed
 */
-func (self Instance) UseFixedSeed() bool {
+func (self Instance) UseFixedSeed() bool { //gd:GPUParticles3D.use_fixed_seed
 	return bool(class(self).GetUseFixedSeed())
 }
 
 // SetUseFixedSeed sets the property returned by [GetUseFixedSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseFixedSeed(value bool) Instance {
+func (self Instance) SetUseFixedSeed(value bool) Instance { //gd:GPUParticles3D.use_fixed_seed
 	class(self).SetUseFixedSeed(value)
 	return self
 }
@@ -502,12 +502,12 @@ Sets the random seed used by the particle system. Only effective if [UseFixedSee
 
 [UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.UseFixedSeed
 */
-func (self Instance) Seed() int {
+func (self Instance) Seed() int { //gd:GPUParticles3D.seed
 	return int(int(class(self).GetSeed()))
 }
 
 // SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeed(value int) Instance {
+func (self Instance) SetSeed(value int) Instance { //gd:GPUParticles3D.seed
 	class(self).SetSeed(int64(value))
 	return self
 }
@@ -515,12 +515,12 @@ func (self Instance) SetSeed(value int) Instance {
 /*
 The particle system's frame rate is fixed to a value. For example, changing the value to 2 will make the particles render at 2 frames per second. Note this does not slow down the simulation of the particle system itself.
 */
-func (self Instance) FixedFps() int {
+func (self Instance) FixedFps() int { //gd:GPUParticles3D.fixed_fps
 	return int(int(class(self).GetFixedFps()))
 }
 
 // SetFixedFps sets the property returned by [GetFixedFps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFixedFps(value int) Instance {
+func (self Instance) SetFixedFps(value int) Instance { //gd:GPUParticles3D.fixed_fps
 	class(self).SetFixedFps(int64(value))
 	return self
 }
@@ -530,12 +530,12 @@ Enables particle interpolation, which makes the particle movement smoother when 
 
 [FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
 */
-func (self Instance) Interpolate() bool {
+func (self Instance) Interpolate() bool { //gd:GPUParticles3D.interpolate
 	return bool(class(self).GetInterpolate())
 }
 
 // SetInterpolate sets the property returned by [GetInterpolate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterpolate(value bool) Instance {
+func (self Instance) SetInterpolate(value bool) Instance { //gd:GPUParticles3D.interpolate
 	class(self).SetInterpolate(value)
 	return self
 }
@@ -543,12 +543,12 @@ func (self Instance) SetInterpolate(value bool) Instance {
 /*
 If true, results in fractional delta calculation which has a smoother particles display effect.
 */
-func (self Instance) FractDelta() bool {
+func (self Instance) FractDelta() bool { //gd:GPUParticles3D.fract_delta
 	return bool(class(self).GetFractionalDelta())
 }
 
 // SetFractDelta sets the property returned by [GetFractionalDelta]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractDelta(value bool) Instance {
+func (self Instance) SetFractDelta(value bool) Instance { //gd:GPUParticles3D.fract_delta
 	class(self).SetFractionalDelta(value)
 	return self
 }
@@ -560,12 +560,12 @@ Note: Particles always have a spherical collision shape.
 
 [ParticleProcessMaterial.CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
 */
-func (self Instance) CollisionBaseSize() Float.X {
+func (self Instance) CollisionBaseSize() Float.X { //gd:GPUParticles3D.collision_base_size
 	return Float.X(Float.X(class(self).GetCollisionBaseSize()))
 }
 
 // SetCollisionBaseSize sets the property returned by [GetCollisionBaseSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionBaseSize(value Float.X) Instance {
+func (self Instance) SetCollisionBaseSize(value Float.X) Instance { //gd:GPUParticles3D.collision_base_size
 	class(self).SetCollisionBaseSize(float64(value))
 	return self
 }
@@ -582,12 +582,12 @@ Note: [VisibilityAabb] is overridden by [GeometryInstance3D.CustomAabb] if that 
 [GeometryInstance3D.ExtraCullMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.ExtraCullMargin
 [VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
 */
-func (self Instance) VisibilityAabb() AABB.PositionSize {
+func (self Instance) VisibilityAabb() AABB.PositionSize { //gd:GPUParticles3D.visibility_aabb
 	return AABB.PositionSize(class(self).GetVisibilityAabb())
 }
 
 // SetVisibilityAabb sets the property returned by [GetVisibilityAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetVisibilityAabb(value AABB.PositionSize) Instance { //gd:GPUParticles3D.visibility_aabb
 	class(self).SetVisibilityAabb(AABB.PositionSize(value))
 	return self
 }
@@ -597,12 +597,12 @@ If true, particles use the parent node's coordinate space (known as local coordi
 
 [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
 */
-func (self Instance) LocalCoords() bool {
+func (self Instance) LocalCoords() bool { //gd:GPUParticles3D.local_coords
 	return bool(class(self).GetUseLocalCoordinates())
 }
 
 // SetLocalCoords sets the property returned by [GetUseLocalCoordinates]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocalCoords(value bool) Instance {
+func (self Instance) SetLocalCoords(value bool) Instance { //gd:GPUParticles3D.local_coords
 	class(self).SetUseLocalCoordinates(value)
 	return self
 }
@@ -612,22 +612,22 @@ Particle draw order.
 
 Note: [DrawOrderIndex] is the only option that supports motion vectors for effects like TAA. It is suggested to use this draw order if the particles are opaque to fix ghosting artifacts.
 */
-func (self Instance) DrawOrder() DrawOrder {
+func (self Instance) DrawOrder() DrawOrder { //gd:GPUParticles3D.draw_order
 	return DrawOrder(class(self).GetDrawOrder())
 }
 
 // SetDrawOrder sets the property returned by [GetDrawOrder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawOrder(value DrawOrder) Instance {
+func (self Instance) SetDrawOrder(value DrawOrder) Instance { //gd:GPUParticles3D.draw_order
 	class(self).SetDrawOrder(value)
 	return self
 }
 
-func (self Instance) TransformAlign() TransformAlign {
+func (self Instance) TransformAlign() TransformAlign { //gd:GPUParticles3D.transform_align
 	return TransformAlign(class(self).GetTransformAlign())
 }
 
 // SetTransformAlign sets the property returned by [GetTransformAlign]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransformAlign(value TransformAlign) Instance {
+func (self Instance) SetTransformAlign(value TransformAlign) Instance { //gd:GPUParticles3D.transform_align
 	class(self).SetTransformAlign(value)
 	return self
 }
@@ -645,12 +645,12 @@ Note: Unlike [GPUParticles2D], the number of trail sections and subdivisions is 
 [TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
 [TubeTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh
 */
-func (self Instance) TrailEnabled() bool {
+func (self Instance) TrailEnabled() bool { //gd:GPUParticles3D.trail_enabled
 	return bool(class(self).IsTrailEnabled())
 }
 
 // SetTrailEnabled sets the property returned by [IsTrailEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTrailEnabled(value bool) Instance {
+func (self Instance) SetTrailEnabled(value bool) Instance { //gd:GPUParticles3D.trail_enabled
 	class(self).SetTrailEnabled(value)
 	return self
 }
@@ -660,12 +660,12 @@ The amount of time the particle's trail should represent (in seconds). Only effe
 
 [TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
 */
-func (self Instance) TrailLifetime() Float.X {
+func (self Instance) TrailLifetime() Float.X { //gd:GPUParticles3D.trail_lifetime
 	return Float.X(Float.X(class(self).GetTrailLifetime()))
 }
 
 // SetTrailLifetime sets the property returned by [GetTrailLifetime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTrailLifetime(value Float.X) Instance {
+func (self Instance) SetTrailLifetime(value Float.X) Instance { //gd:GPUParticles3D.trail_lifetime
 	class(self).SetTrailLifetime(float64(value))
 	return self
 }
@@ -677,12 +677,12 @@ func (self Instance) SetTrailLifetime(value Float.X) Instance {
 [ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) ProcessMaterial() Material.Instance {
+func (self Instance) ProcessMaterial() Material.Instance { //gd:GPUParticles3D.process_material
 	return Material.Instance(class(self).GetProcessMaterial())
 }
 
 // SetProcessMaterial sets the property returned by [GetProcessMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessMaterial(value Material.Instance) Instance {
+func (self Instance) SetProcessMaterial(value Material.Instance) Instance { //gd:GPUParticles3D.process_material
 	class(self).SetProcessMaterial(value)
 	return self
 }
@@ -690,12 +690,12 @@ func (self Instance) SetProcessMaterial(value Material.Instance) Instance {
 /*
 The number of draw passes when rendering particles.
 */
-func (self Instance) DrawPasses() int {
+func (self Instance) DrawPasses() int { //gd:GPUParticles3D.draw_passes
 	return int(int(class(self).GetDrawPasses()))
 }
 
 // SetDrawPasses sets the property returned by [GetDrawPasses]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawPasses(value int) Instance {
+func (self Instance) SetDrawPasses(value int) Instance { //gd:GPUParticles3D.draw_passes
 	class(self).SetDrawPasses(int64(value))
 	return self
 }
@@ -705,12 +705,12 @@ func (self Instance) SetDrawPasses(value int) Instance {
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) DrawPass1() Mesh.Instance {
+func (self Instance) DrawPass1() Mesh.Instance { //gd:GPUParticles3D.draw_pass_1
 	return Mesh.Instance(class(self).GetDrawPassMesh(0))
 }
 
 // SetDrawPass1 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawPass1(value Mesh.Instance) Instance {
+func (self Instance) SetDrawPass1(value Mesh.Instance) Instance { //gd:GPUParticles3D.draw_pass_1
 	class(self).SetDrawPassMesh(0, value)
 	return self
 }
@@ -720,12 +720,12 @@ func (self Instance) SetDrawPass1(value Mesh.Instance) Instance {
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) DrawPass2() Mesh.Instance {
+func (self Instance) DrawPass2() Mesh.Instance { //gd:GPUParticles3D.draw_pass_2
 	return Mesh.Instance(class(self).GetDrawPassMesh(1))
 }
 
 // SetDrawPass2 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawPass2(value Mesh.Instance) Instance {
+func (self Instance) SetDrawPass2(value Mesh.Instance) Instance { //gd:GPUParticles3D.draw_pass_2
 	class(self).SetDrawPassMesh(1, value)
 	return self
 }
@@ -735,12 +735,12 @@ func (self Instance) SetDrawPass2(value Mesh.Instance) Instance {
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) DrawPass3() Mesh.Instance {
+func (self Instance) DrawPass3() Mesh.Instance { //gd:GPUParticles3D.draw_pass_3
 	return Mesh.Instance(class(self).GetDrawPassMesh(2))
 }
 
 // SetDrawPass3 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawPass3(value Mesh.Instance) Instance {
+func (self Instance) SetDrawPass3(value Mesh.Instance) Instance { //gd:GPUParticles3D.draw_pass_3
 	class(self).SetDrawPassMesh(2, value)
 	return self
 }
@@ -750,22 +750,22 @@ func (self Instance) SetDrawPass3(value Mesh.Instance) Instance {
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) DrawPass4() Mesh.Instance {
+func (self Instance) DrawPass4() Mesh.Instance { //gd:GPUParticles3D.draw_pass_4
 	return Mesh.Instance(class(self).GetDrawPassMesh(3))
 }
 
 // SetDrawPass4 sets the property returned by [GetDrawPassMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawPass4(value Mesh.Instance) Instance {
+func (self Instance) SetDrawPass4(value Mesh.Instance) Instance { //gd:GPUParticles3D.draw_pass_4
 	class(self).SetDrawPassMesh(3, value)
 	return self
 }
 
-func (self Instance) DrawSkin() Skin.Instance {
+func (self Instance) DrawSkin() Skin.Instance { //gd:GPUParticles3D.draw_skin
 	return Skin.Instance(class(self).GetSkin())
 }
 
 // SetDrawSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawSkin(value Skin.Instance) Instance {
+func (self Instance) SetDrawSkin(value Skin.Instance) Instance { //gd:GPUParticles3D.draw_skin
 	class(self).SetSkin(value)
 	return self
 }

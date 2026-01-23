@@ -164,12 +164,12 @@ func New() Instance {
 /*
 Controls how the object faces the camera.
 */
-func (self Instance) BillboardType() BillboardType {
+func (self Instance) BillboardType() BillboardType { //gd:VisualShaderNodeBillboard.billboard_type
 	return BillboardType(class(self).GetBillboardType())
 }
 
 // SetBillboardType sets the property returned by [GetBillboardType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBillboardType(value BillboardType) Instance {
+func (self Instance) SetBillboardType(value BillboardType) Instance { //gd:VisualShaderNodeBillboard.billboard_type
 	class(self).SetBillboardType(value)
 	return self
 }
@@ -177,12 +177,12 @@ func (self Instance) SetBillboardType(value BillboardType) Instance {
 /*
 If true, the shader will keep the scale set for the mesh. Otherwise, the scale is lost when billboarding.
 */
-func (self Instance) KeepScale() bool {
+func (self Instance) KeepScale() bool { //gd:VisualShaderNodeBillboard.keep_scale
 	return bool(class(self).IsKeepScaleEnabled())
 }
 
 // SetKeepScale sets the property returned by [IsKeepScaleEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepScale(value bool) Instance {
+func (self Instance) SetKeepScale(value bool) Instance { //gd:VisualShaderNodeBillboard.keep_scale
 	class(self).SetKeepScaleEnabled(value)
 	return self
 }

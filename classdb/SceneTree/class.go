@@ -617,12 +617,12 @@ For mobile platforms, see [QuitOnGoBack].
 
 [QuitOnGoBack]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.QuitOnGoBack
 */
-func (self Instance) AutoAcceptQuit() bool {
+func (self Instance) AutoAcceptQuit() bool { //gd:SceneTree.auto_accept_quit
 	return bool(class(self).IsAutoAcceptQuit())
 }
 
 // SetAutoAcceptQuit sets the property returned by [IsAutoAcceptQuit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoAcceptQuit(value bool) Instance {
+func (self Instance) SetAutoAcceptQuit(value bool) Instance { //gd:SceneTree.auto_accept_quit
 	class(self).SetAutoAcceptQuit(value)
 	return self
 }
@@ -632,12 +632,12 @@ If true, the application quits automatically when navigating back (e.g. using th
 
 To handle 'Go Back' button when this option is disabled, use [Displayserver.WindowEventGoBackRequest].
 */
-func (self Instance) QuitOnGoBack() bool {
+func (self Instance) QuitOnGoBack() bool { //gd:SceneTree.quit_on_go_back
 	return bool(class(self).IsQuitOnGoBack())
 }
 
 // SetQuitOnGoBack sets the property returned by [IsQuitOnGoBack]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetQuitOnGoBack(value bool) Instance {
+func (self Instance) SetQuitOnGoBack(value bool) Instance { //gd:SceneTree.quit_on_go_back
 	class(self).SetQuitOnGoBack(value)
 	return self
 }
@@ -649,12 +649,12 @@ Note: This property is not designed to be changed at run-time. Changing the valu
 
 [DebugCollisionsHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugCollisionsHint
 */
-func (self Instance) DebugCollisionsHint() bool {
+func (self Instance) DebugCollisionsHint() bool { //gd:SceneTree.debug_collisions_hint
 	return bool(class(self).IsDebuggingCollisionsHint())
 }
 
 // SetDebugCollisionsHint sets the property returned by [IsDebuggingCollisionsHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugCollisionsHint(value bool) Instance {
+func (self Instance) SetDebugCollisionsHint(value bool) Instance { //gd:SceneTree.debug_collisions_hint
 	class(self).SetDebugCollisionsHint(value)
 	return self
 }
@@ -668,12 +668,12 @@ Note: This property is not designed to be changed at run-time. Changing the valu
 [Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
 [Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
 */
-func (self Instance) DebugPathsHint() bool {
+func (self Instance) DebugPathsHint() bool { //gd:SceneTree.debug_paths_hint
 	return bool(class(self).IsDebuggingPathsHint())
 }
 
 // SetDebugPathsHint sets the property returned by [IsDebuggingPathsHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugPathsHint(value bool) Instance {
+func (self Instance) SetDebugPathsHint(value bool) Instance { //gd:SceneTree.debug_paths_hint
 	class(self).SetDebugPathsHint(value)
 	return self
 }
@@ -685,12 +685,12 @@ Note: This property is not designed to be changed at run-time. Changing the valu
 
 [DebugNavigationHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugNavigationHint
 */
-func (self Instance) DebugNavigationHint() bool {
+func (self Instance) DebugNavigationHint() bool { //gd:SceneTree.debug_navigation_hint
 	return bool(class(self).IsDebuggingNavigationHint())
 }
 
 // SetDebugNavigationHint sets the property returned by [IsDebuggingNavigationHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugNavigationHint(value bool) Instance {
+func (self Instance) SetDebugNavigationHint(value bool) Instance { //gd:SceneTree.debug_navigation_hint
 	class(self).SetDebugNavigationHint(value)
 	return self
 }
@@ -707,12 +707,12 @@ If true, the scene tree is considered paused. This causes the following behavior
 [Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 */
-func (self Instance) Paused() bool {
+func (self Instance) Paused() bool { //gd:SceneTree.paused
 	return bool(class(self).IsPaused())
 }
 
 // SetPaused sets the property returned by [IsPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPaused(value bool) Instance {
+func (self Instance) SetPaused(value bool) Instance { //gd:SceneTree.paused
 	class(self).SetPause(value)
 	return self
 }
@@ -724,12 +724,12 @@ Note: This property does nothing in release builds.
 
 [Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
-func (self Instance) EditedSceneRoot() Node.Instance {
+func (self Instance) EditedSceneRoot() Node.Instance { //gd:SceneTree.edited_scene_root
 	return Node.Instance(class(self).GetEditedSceneRoot())
 }
 
 // SetEditedSceneRoot sets the property returned by [GetEditedSceneRoot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditedSceneRoot(value Node.Instance) Instance {
+func (self Instance) SetEditedSceneRoot(value Node.Instance) Instance { //gd:SceneTree.edited_scene_root
 	class(self).SetEditedSceneRoot(value)
 	return self
 }
@@ -744,12 +744,12 @@ Warning: Setting this property directly may not work as expected, as it does not
 [ReloadCurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ReloadCurrentScene
 [Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
-func (self Instance) CurrentScene() Node.Instance {
+func (self Instance) CurrentScene() Node.Instance { //gd:SceneTree.current_scene
 	return Node.Instance(class(self).GetCurrentScene())
 }
 
 // SetCurrentScene sets the property returned by [GetCurrentScene]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentScene(value Node.Instance) Instance {
+func (self Instance) SetCurrentScene(value Node.Instance) Instance { //gd:SceneTree.current_scene
 	class(self).SetCurrentScene(value)
 	return self
 }
@@ -764,7 +764,7 @@ Warning: Do not delete this node. This will result in unstable behavior, followe
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Root() Window.Instance {
+func (self Instance) Root() Window.Instance { //gd:SceneTree.root
 	return Window.Instance(class(self).GetRoot())
 }
 
@@ -778,12 +778,12 @@ If false, you need to manually call [MultiplayerAPI.Poll] to process network pac
 [Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
 [OnProcessFrame]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnProcessFrame
 */
-func (self Instance) MultiplayerPoll() bool {
+func (self Instance) MultiplayerPoll() bool { //gd:SceneTree.multiplayer_poll
 	return bool(class(self).IsMultiplayerPollEnabled())
 }
 
 // SetMultiplayerPoll sets the property returned by [IsMultiplayerPollEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMultiplayerPoll(value bool) Instance {
+func (self Instance) SetMultiplayerPoll(value bool) Instance { //gd:SceneTree.multiplayer_poll
 	class(self).SetMultiplayerPollEnabled(value)
 	return self
 }
@@ -799,12 +799,12 @@ Note: Although this is a global setting, finer control of individual branches of
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Instance) PhysicsInterpolation() bool {
+func (self Instance) PhysicsInterpolation() bool { //gd:SceneTree.physics_interpolation
 	return bool(class(self).IsPhysicsInterpolationEnabled())
 }
 
 // SetPhysicsInterpolation sets the property returned by [IsPhysicsInterpolationEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsInterpolation(value bool) Instance {
+func (self Instance) SetPhysicsInterpolation(value bool) Instance { //gd:SceneTree.physics_interpolation
 	class(self).SetPhysicsInterpolationEnabled(value)
 	return self
 }

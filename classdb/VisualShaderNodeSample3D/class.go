@@ -160,12 +160,12 @@ func New() Instance {
 /*
 An input source type.
 */
-func (self Instance) Source() Source {
+func (self Instance) Source() Source { //gd:VisualShaderNodeSample3D.source
 	return Source(class(self).GetSource())
 }
 
 // SetSource sets the property returned by [GetSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSource(value Source) Instance {
+func (self Instance) SetSource(value Source) Instance { //gd:VisualShaderNodeSample3D.source
 	class(self).SetSource(value)
 	return self
 }

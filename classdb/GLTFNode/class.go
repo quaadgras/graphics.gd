@@ -241,12 +241,12 @@ func New() Instance {
 /*
 The original name of the node.
 */
-func (self Instance) OriginalName() string {
+func (self Instance) OriginalName() string { //gd:GLTFNode.original_name
 	return string(class(self).GetOriginalName().String())
 }
 
 // SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalName(value string) Instance {
+func (self Instance) SetOriginalName(value string) Instance { //gd:GLTFNode.original_name
 	class(self).SetOriginalName(String.New(value))
 	return self
 }
@@ -256,12 +256,12 @@ The index of the parent node in the [GLTFState]. If -1, this node is a root node
 
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Parent() int {
+func (self Instance) Parent() int { //gd:GLTFNode.parent
 	return int(int(class(self).GetParent()))
 }
 
 // SetParent sets the property returned by [GetParent]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParent(value int) Instance {
+func (self Instance) SetParent(value int) Instance { //gd:GLTFNode.parent
 	class(self).SetParent(int64(value))
 	return self
 }
@@ -269,12 +269,12 @@ func (self Instance) SetParent(value int) Instance {
 /*
 How deep into the node hierarchy this node is. A root node will have a height of 0, its children will have a height of 1, and so on. If -1, the height has not been calculated.
 */
-func (self Instance) Height() int {
+func (self Instance) Height() int { //gd:GLTFNode.height
 	return int(int(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value int) Instance {
+func (self Instance) SetHeight(value int) Instance { //gd:GLTFNode.height
 	class(self).SetHeight(int64(value))
 	return self
 }
@@ -282,12 +282,12 @@ func (self Instance) SetHeight(value int) Instance {
 /*
 The transform of the glTF node relative to its parent. This property is usually unused since the position, rotation, and scale properties are preferred.
 */
-func (self Instance) Xform() Transform3D.BasisOrigin {
+func (self Instance) Xform() Transform3D.BasisOrigin { //gd:GLTFNode.xform
 	return Transform3D.BasisOrigin(class(self).GetXform())
 }
 
 // SetXform sets the property returned by [GetXform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXform(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetXform(value Transform3D.BasisOrigin) Instance { //gd:GLTFNode.xform
 	class(self).SetXform(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -298,12 +298,12 @@ If this glTF node is a mesh, the index of the [GLTFMesh] in the [GLTFState] that
 [GLTFMesh]: https://pkg.go.dev/graphics.gd/classdb/GLTFMesh
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Mesh() int {
+func (self Instance) Mesh() int { //gd:GLTFNode.mesh
 	return int(int(class(self).GetMesh()))
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value int) Instance {
+func (self Instance) SetMesh(value int) Instance { //gd:GLTFNode.mesh
 	class(self).SetMesh(int64(value))
 	return self
 }
@@ -314,12 +314,12 @@ If this glTF node is a camera, the index of the [GLTFCamera] in the [GLTFState] 
 [GLTFCamera]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Camera() int {
+func (self Instance) Camera() int { //gd:GLTFNode.camera
 	return int(int(class(self).GetCamera()))
 }
 
 // SetCamera sets the property returned by [GetCamera]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCamera(value int) Instance {
+func (self Instance) SetCamera(value int) Instance { //gd:GLTFNode.camera
 	class(self).SetCamera(int64(value))
 	return self
 }
@@ -330,12 +330,12 @@ If this glTF node has a skin, the index of the [GLTFSkin] in the [GLTFState] tha
 [GLTFSkin]: https://pkg.go.dev/graphics.gd/classdb/GLTFSkin
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Skin() int {
+func (self Instance) Skin() int { //gd:GLTFNode.skin
 	return int(int(class(self).GetSkin()))
 }
 
 // SetSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkin(value int) Instance {
+func (self Instance) SetSkin(value int) Instance { //gd:GLTFNode.skin
 	class(self).SetSkin(int64(value))
 	return self
 }
@@ -346,12 +346,12 @@ If this glTF node has a skeleton, the index of the [GLTFSkeleton] in the [GLTFSt
 [GLTFSkeleton]: https://pkg.go.dev/graphics.gd/classdb/GLTFSkeleton
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Skeleton() int {
+func (self Instance) Skeleton() int { //gd:GLTFNode.skeleton
 	return int(int(class(self).GetSkeleton()))
 }
 
 // SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeleton(value int) Instance {
+func (self Instance) SetSkeleton(value int) Instance { //gd:GLTFNode.skeleton
 	class(self).SetSkeleton(int64(value))
 	return self
 }
@@ -359,12 +359,12 @@ func (self Instance) SetSkeleton(value int) Instance {
 /*
 The position of the glTF node relative to its parent.
 */
-func (self Instance) Position() Vector3.XYZ {
+func (self Instance) Position() Vector3.XYZ { //gd:GLTFNode.position
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetPosition(value Vector3.XYZ) Instance { //gd:GLTFNode.position
 	class(self).SetPosition(Vector3.XYZ(value))
 	return self
 }
@@ -372,12 +372,12 @@ func (self Instance) SetPosition(value Vector3.XYZ) Instance {
 /*
 The rotation of the glTF node relative to its parent.
 */
-func (self Instance) Rotation() Quaternion.IJKX {
+func (self Instance) Rotation() Quaternion.IJKX { //gd:GLTFNode.rotation
 	return Quaternion.IJKX(class(self).GetRotation())
 }
 
 // SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotation(value Quaternion.IJKX) Instance {
+func (self Instance) SetRotation(value Quaternion.IJKX) Instance { //gd:GLTFNode.rotation
 	class(self).SetRotation(value)
 	return self
 }
@@ -385,12 +385,12 @@ func (self Instance) SetRotation(value Quaternion.IJKX) Instance {
 /*
 The scale of the glTF node relative to its parent.
 */
-func (self Instance) Scale() Vector3.XYZ {
+func (self Instance) Scale() Vector3.XYZ { //gd:GLTFNode.scale
 	return Vector3.XYZ(class(self).GetScale())
 }
 
 // SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScale(value Vector3.XYZ) Instance {
+func (self Instance) SetScale(value Vector3.XYZ) Instance { //gd:GLTFNode.scale
 	class(self).SetScale(Vector3.XYZ(value))
 	return self
 }
@@ -400,12 +400,12 @@ The indices of the child nodes in the [GLTFState]. If this glTF node has no chil
 
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Children() []int32 {
+func (self Instance) Children() []int32 { //gd:GLTFNode.children
 	return []int32(slices.Collect(class(self).GetChildren().Values()))
 }
 
 // SetChildren sets the property returned by [GetChildren]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetChildren(value []int32) Instance {
+func (self Instance) SetChildren(value []int32) Instance { //gd:GLTFNode.children
 	class(self).SetChildren(Packed.New(value...))
 	return self
 }
@@ -416,12 +416,12 @@ If this glTF node is a light, the index of the [GLTFLight] in the [GLTFState] th
 [GLTFLight]: https://pkg.go.dev/graphics.gd/classdb/GLTFLight
 [GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
 */
-func (self Instance) Light() int {
+func (self Instance) Light() int { //gd:GLTFNode.light
 	return int(int(class(self).GetLight()))
 }
 
 // SetLight sets the property returned by [GetLight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLight(value int) Instance {
+func (self Instance) SetLight(value int) Instance { //gd:GLTFNode.light
 	class(self).SetLight(int64(value))
 	return self
 }
@@ -431,12 +431,12 @@ If true, the GLTF node is visible. If false, the GLTF node is not visible. This 
 
 [Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:GLTFNode.visible
 	return bool(class(self).GetVisible())
 }
 
 // SetVisible sets the property returned by [GetVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:GLTFNode.visible
 	class(self).SetVisible(value)
 	return self
 }

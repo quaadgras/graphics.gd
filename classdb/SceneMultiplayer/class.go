@@ -272,12 +272,12 @@ The root path to use for RPCs and replication. Instead of an absolute path, a re
 
 This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
 */
-func (self Instance) RootPath() string {
+func (self Instance) RootPath() string { //gd:SceneMultiplayer.root_path
 	return string(class(self).GetRootPath().String())
 }
 
 // SetRootPath sets the property returned by [GetRootPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootPath(value string) Instance {
+func (self Instance) SetRootPath(value string) Instance { //gd:SceneMultiplayer.root_path
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
 	return self
 }
@@ -287,12 +287,12 @@ The callback to execute when receiving authentication data sent via [SendAuth]. 
 
 [SendAuth]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendAuth
 */
-func (self Instance) AuthCallback() Callable.Function {
+func (self Instance) AuthCallback() Callable.Function { //gd:SceneMultiplayer.auth_callback
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetAuthCallback())))
 }
 
 // SetAuthCallback sets the property returned by [GetAuthCallback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAuthCallback(value Callable.Function) Instance {
+func (self Instance) SetAuthCallback(value Callable.Function) Instance { //gd:SceneMultiplayer.auth_callback
 	class(self).SetAuthCallback(Callable.New(value))
 	return self
 }
@@ -303,12 +303,12 @@ If set to a value greater than 0.0, the maximum duration in seconds peers can st
 [OnPeerAuthenticating]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticating
 [OnPeerAuthenticationFailed]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticationFailed
 */
-func (self Instance) AuthTimeout() Float.X {
+func (self Instance) AuthTimeout() Float.X { //gd:SceneMultiplayer.auth_timeout
 	return Float.X(Float.X(class(self).GetAuthTimeout()))
 }
 
 // SetAuthTimeout sets the property returned by [GetAuthTimeout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAuthTimeout(value Float.X) Instance {
+func (self Instance) SetAuthTimeout(value Float.X) Instance { //gd:SceneMultiplayer.auth_timeout
 	class(self).SetAuthTimeout(float64(value))
 	return self
 }
@@ -318,12 +318,12 @@ If true, the MultiplayerAPI will allow encoding and decoding of object during RP
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threat such as remote code execution.
 */
-func (self Instance) AllowObjectDecoding() bool {
+func (self Instance) AllowObjectDecoding() bool { //gd:SceneMultiplayer.allow_object_decoding
 	return bool(class(self).IsObjectDecodingAllowed())
 }
 
 // SetAllowObjectDecoding sets the property returned by [IsObjectDecodingAllowed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowObjectDecoding(value bool) Instance {
+func (self Instance) SetAllowObjectDecoding(value bool) Instance { //gd:SceneMultiplayer.allow_object_decoding
 	class(self).SetAllowObjectDecoding(value)
 	return self
 }
@@ -333,12 +333,12 @@ If true, the MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] refuses new incom
 
 [MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
 */
-func (self Instance) RefuseNewConnections() bool {
+func (self Instance) RefuseNewConnections() bool { //gd:SceneMultiplayer.refuse_new_connections
 	return bool(class(self).IsRefusingNewConnections())
 }
 
 // SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRefuseNewConnections(value bool) Instance {
+func (self Instance) SetRefuseNewConnections(value bool) Instance { //gd:SceneMultiplayer.refuse_new_connections
 	class(self).SetRefuseNewConnections(value)
 	return self
 }
@@ -353,12 +353,12 @@ Note: Support for this feature may depend on the current [MultiplayerPeer] confi
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer
 [MultiplayerPeer.IsServerRelaySupported]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.IsServerRelaySupported
 */
-func (self Instance) ServerRelay() bool {
+func (self Instance) ServerRelay() bool { //gd:SceneMultiplayer.server_relay
 	return bool(class(self).IsServerRelayEnabled())
 }
 
 // SetServerRelay sets the property returned by [IsServerRelayEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetServerRelay(value bool) Instance {
+func (self Instance) SetServerRelay(value bool) Instance { //gd:SceneMultiplayer.server_relay
 	class(self).SetServerRelayEnabled(value)
 	return self
 }
@@ -368,12 +368,12 @@ Maximum size of each synchronization packet. Higher values increase the chance o
 
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 */
-func (self Instance) MaxSyncPacketSize() int {
+func (self Instance) MaxSyncPacketSize() int { //gd:SceneMultiplayer.max_sync_packet_size
 	return int(int(class(self).GetMaxSyncPacketSize()))
 }
 
 // SetMaxSyncPacketSize sets the property returned by [GetMaxSyncPacketSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSyncPacketSize(value int) Instance {
+func (self Instance) SetMaxSyncPacketSize(value int) Instance { //gd:SceneMultiplayer.max_sync_packet_size
 	class(self).SetMaxSyncPacketSize(int64(value))
 	return self
 }
@@ -383,12 +383,12 @@ Maximum size of each delta packet. Higher values increase the chance of receivin
 
 [MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 */
-func (self Instance) MaxDeltaPacketSize() int {
+func (self Instance) MaxDeltaPacketSize() int { //gd:SceneMultiplayer.max_delta_packet_size
 	return int(int(class(self).GetMaxDeltaPacketSize()))
 }
 
 // SetMaxDeltaPacketSize sets the property returned by [GetMaxDeltaPacketSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDeltaPacketSize(value int) Instance {
+func (self Instance) SetMaxDeltaPacketSize(value int) Instance { //gd:SceneMultiplayer.max_delta_packet_size
 	class(self).SetMaxDeltaPacketSize(int64(value))
 	return self
 }

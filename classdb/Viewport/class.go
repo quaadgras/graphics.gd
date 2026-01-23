@@ -805,12 +805,12 @@ func New() Instance {
 /*
 Disable 3D rendering (but keep 2D rendering).
 */
-func (self Instance) Disable3d() bool {
+func (self Instance) Disable3d() bool { //gd:Viewport.disable_3d
 	return bool(class(self).Is3dDisabled())
 }
 
 // SetDisable3d sets the property returned by [Is3dDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisable3d(value bool) Instance {
+func (self Instance) SetDisable3d(value bool) Instance { //gd:Viewport.disable_3d
 	class(self).SetDisable3d(value)
 	return self
 }
@@ -818,12 +818,12 @@ func (self Instance) SetDisable3d(value bool) Instance {
 /*
 If true, the viewport will use the primary XR interface to render XR output. When applicable this can result in a stereoscopic image and the resulting render being output to a headset.
 */
-func (self Instance) UseXr() bool {
+func (self Instance) UseXr() bool { //gd:Viewport.use_xr
 	return bool(class(self).IsUsingXr())
 }
 
 // SetUseXr sets the property returned by [IsUsingXr]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseXr(value bool) Instance {
+func (self Instance) SetUseXr(value bool) Instance { //gd:Viewport.use_xr
 	class(self).SetUseXr(value)
 	return self
 }
@@ -834,12 +834,12 @@ If true, the viewport will use a unique copy of the [World3D] defined in [World3
 [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 [World3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.World3d
 */
-func (self Instance) OwnWorld3d() bool {
+func (self Instance) OwnWorld3d() bool { //gd:Viewport.own_world_3d
 	return bool(class(self).IsUsingOwnWorld3d())
 }
 
 // SetOwnWorld3d sets the property returned by [IsUsingOwnWorld3d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOwnWorld3d(value bool) Instance {
+func (self Instance) SetOwnWorld3d(value bool) Instance { //gd:Viewport.own_world_3d
 	class(self).SetUseOwnWorld3d(value)
 	return self
 }
@@ -849,12 +849,12 @@ The custom [World3D] which can be used as 3D environment source.
 
 [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
-func (self Instance) World3d() World3D.Instance {
+func (self Instance) World3d() World3D.Instance { //gd:Viewport.world_3d
 	return World3D.Instance(class(self).GetWorld3d())
 }
 
 // SetWorld3d sets the property returned by [GetWorld3d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWorld3d(value World3D.Instance) Instance {
+func (self Instance) SetWorld3d(value World3D.Instance) Instance { //gd:Viewport.world_3d
 	class(self).SetWorld3d(value)
 	return self
 }
@@ -864,25 +864,27 @@ The custom [World2D] which can be used as 2D environment source.
 
 [World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
 */
-func (self Instance) World2d() World2D.Instance {
+func (self Instance) World2d() World2D.Instance { //gd:Viewport.world_2d
 	return World2D.Instance(class(self).GetWorld2d())
 }
 
 // SetWorld2d sets the property returned by [GetWorld2d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWorld2d(value World2D.Instance) Instance {
+func (self Instance) SetWorld2d(value World2D.Instance) Instance { //gd:Viewport.world_2d
 	class(self).SetWorld2d(value)
 	return self
 }
 
 /*
 If true, the viewport should render its background as transparent.
+
+Note: Due to technical limitations, certain rendering features are disabled when a viewport has a transparent background. This currently applies to screen-space reflections, subsurface scattering, and depth of field.
 */
-func (self Instance) TransparentBg() bool {
+func (self Instance) TransparentBg() bool { //gd:Viewport.transparent_bg
 	return bool(class(self).HasTransparentBackground())
 }
 
 // SetTransparentBg sets the property returned by [HasTransparentBackground]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransparentBg(value bool) Instance {
+func (self Instance) SetTransparentBg(value bool) Instance { //gd:Viewport.transparent_bg
 	class(self).SetTransparentBackground(value)
 	return self
 }
@@ -899,12 +901,12 @@ See also [SetInputAsHandled] and [IsInputHandled].
 [SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) HandleInputLocally() bool {
+func (self Instance) HandleInputLocally() bool { //gd:Viewport.handle_input_locally
 	return bool(class(self).IsHandlingInputLocally())
 }
 
 // SetHandleInputLocally sets the property returned by [IsHandlingInputLocally]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandleInputLocally(value bool) Instance {
+func (self Instance) SetHandleInputLocally(value bool) Instance { //gd:Viewport.handle_input_locally
 	class(self).SetHandleInputLocally(value)
 	return self
 }
@@ -915,12 +917,12 @@ If true, [CanvasItem] nodes will internally snap to full pixels. Their position 
 [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) Snap2dTransformsToPixel() bool {
+func (self Instance) Snap2dTransformsToPixel() bool { //gd:Viewport.snap_2d_transforms_to_pixel
 	return bool(class(self).IsSnap2dTransformsToPixelEnabled())
 }
 
 // SetSnap2dTransformsToPixel sets the property returned by [IsSnap2dTransformsToPixelEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap2dTransformsToPixel(value bool) Instance {
+func (self Instance) SetSnap2dTransformsToPixel(value bool) Instance { //gd:Viewport.snap_2d_transforms_to_pixel
 	class(self).SetSnap2dTransformsToPixel(value)
 	return self
 }
@@ -931,12 +933,12 @@ If true, vertices of [CanvasItem] nodes will snap to full pixels. Only affects t
 [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) Snap2dVerticesToPixel() bool {
+func (self Instance) Snap2dVerticesToPixel() bool { //gd:Viewport.snap_2d_vertices_to_pixel
 	return bool(class(self).IsSnap2dVerticesToPixelEnabled())
 }
 
 // SetSnap2dVerticesToPixel sets the property returned by [IsSnap2dVerticesToPixelEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap2dVerticesToPixel(value bool) Instance {
+func (self Instance) SetSnap2dVerticesToPixel(value bool) Instance { //gd:Viewport.snap_2d_vertices_to_pixel
 	class(self).SetSnap2dVerticesToPixel(value)
 	return self
 }
@@ -949,12 +951,12 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" and [Render
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [RenderingServer.ViewportSetMsaa2d]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetMsaa2d
 */
-func (self Instance) Msaa2d() MSAA {
+func (self Instance) Msaa2d() MSAA { //gd:Viewport.msaa_2d
 	return MSAA(class(self).GetMsaa2d())
 }
 
 // SetMsaa2d sets the property returned by [GetMsaa2d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMsaa2d(value MSAA) Instance {
+func (self Instance) SetMsaa2d(value MSAA) Instance { //gd:Viewport.msaa_2d
 	class(self).SetMsaa2d(value)
 	return self
 }
@@ -968,12 +970,12 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" and [Render
 [RenderingServer.ViewportSetMsaa3d]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetMsaa3d
 [Scaling3dMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dMode
 */
-func (self Instance) Msaa3d() MSAA {
+func (self Instance) Msaa3d() MSAA { //gd:Viewport.msaa_3d
 	return MSAA(class(self).GetMsaa3d())
 }
 
 // SetMsaa3d sets the property returned by [GetMsaa3d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMsaa3d(value MSAA) Instance {
+func (self Instance) SetMsaa3d(value MSAA) Instance { //gd:Viewport.msaa_3d
 	class(self).SetMsaa3d(value)
 	return self
 }
@@ -986,12 +988,12 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" and
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [RenderingServer.ViewportSetScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetScreenSpaceAa
 */
-func (self Instance) ScreenSpaceAa() ScreenSpaceAA {
+func (self Instance) ScreenSpaceAa() ScreenSpaceAA { //gd:Viewport.screen_space_aa
 	return ScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
 // SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) Instance {
+func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) Instance { //gd:Viewport.screen_space_aa
 	class(self).SetScreenSpaceAa(value)
 	return self
 }
@@ -1006,12 +1008,12 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/use_taa" and [Render
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [RenderingServer.ViewportSetUseTaa]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetUseTaa
 */
-func (self Instance) UseTaa() bool {
+func (self Instance) UseTaa() bool { //gd:Viewport.use_taa
 	return bool(class(self).IsUsingTaa())
 }
 
 // SetUseTaa sets the property returned by [IsUsingTaa]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseTaa(value bool) Instance {
+func (self Instance) SetUseTaa(value bool) Instance { //gd:Viewport.use_taa
 	class(self).SetUseTaa(value)
 	return self
 }
@@ -1029,12 +1031,12 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" and [
 [UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) UseDebanding() bool {
+func (self Instance) UseDebanding() bool { //gd:Viewport.use_debanding
 	return bool(class(self).IsUsingDebanding())
 }
 
 // SetUseDebanding sets the property returned by [IsUsingDebanding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseDebanding(value bool) Instance {
+func (self Instance) SetUseDebanding(value bool) Instance { //gd:Viewport.use_debanding
 	class(self).SetUseDebanding(value)
 	return self
 }
@@ -1051,12 +1053,12 @@ Note: Due to memory constraints, occlusion culling is not supported by default i
 [OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) UseOcclusionCulling() bool {
+func (self Instance) UseOcclusionCulling() bool { //gd:Viewport.use_occlusion_culling
 	return bool(class(self).IsUsingOcclusionCulling())
 }
 
 // SetUseOcclusionCulling sets the property returned by [IsUsingOcclusionCulling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseOcclusionCulling(value bool) Instance {
+func (self Instance) SetUseOcclusionCulling(value bool) Instance { //gd:Viewport.use_occlusion_culling
 	class(self).SetUseOcclusionCulling(value)
 	return self
 }
@@ -1074,12 +1076,12 @@ Note: [MeshLodThreshold] does not affect [GeometryInstance3D] visibility ranges 
 [ReflectionProbe.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) MeshLodThreshold() Float.X {
+func (self Instance) MeshLodThreshold() Float.X { //gd:Viewport.mesh_lod_threshold
 	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
 // SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMeshLodThreshold(value Float.X) Instance {
+func (self Instance) SetMeshLodThreshold(value Float.X) Instance { //gd:Viewport.mesh_lod_threshold
 	class(self).SetMeshLodThreshold(float64(value))
 	return self
 }
@@ -1087,12 +1089,12 @@ func (self Instance) SetMeshLodThreshold(value Float.X) Instance {
 /*
 The overlay mode for test rendered geometry in debug purposes.
 */
-func (self Instance) DebugDraw() DebugDraw {
+func (self Instance) DebugDraw() DebugDraw { //gd:Viewport.debug_draw
 	return DebugDraw(class(self).GetDebugDraw())
 }
 
 // SetDebugDraw sets the property returned by [GetDebugDraw]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugDraw(value DebugDraw) Instance {
+func (self Instance) SetDebugDraw(value DebugDraw) Instance { //gd:Viewport.debug_draw
 	class(self).SetDebugDraw(value)
 	return self
 }
@@ -1104,12 +1106,12 @@ Additionally, 2D rendering will take place in linear color space and will be con
 
 Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients.
 */
-func (self Instance) UseHdr2d() bool {
+func (self Instance) UseHdr2d() bool { //gd:Viewport.use_hdr_2d
 	return bool(class(self).IsUsingHdr2d())
 }
 
 // SetUseHdr2d sets the property returned by [IsUsingHdr2d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseHdr2d(value bool) Instance {
+func (self Instance) SetUseHdr2d(value bool) Instance { //gd:Viewport.use_hdr_2d
 	class(self).SetUseHdr2d(value)
 	return self
 }
@@ -1121,12 +1123,12 @@ To control this property on the root viewport, set the [ProjectSettings] "render
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) Scaling3dMode() Scaling3DMode {
+func (self Instance) Scaling3dMode() Scaling3DMode { //gd:Viewport.scaling_3d_mode
 	return Scaling3DMode(class(self).GetScaling3dMode())
 }
 
 // SetScaling3dMode sets the property returned by [GetScaling3dMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaling3dMode(value Scaling3DMode) Instance {
+func (self Instance) SetScaling3dMode(value Scaling3DMode) Instance { //gd:Viewport.scaling_3d_mode
 	class(self).SetScaling3dMode(value)
 	return self
 }
@@ -1140,12 +1142,12 @@ To control this property on the root viewport, set the [ProjectSettings] "render
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) Scaling3dScale() Float.X {
+func (self Instance) Scaling3dScale() Float.X { //gd:Viewport.scaling_3d_scale
 	return Float.X(Float.X(class(self).GetScaling3dScale()))
 }
 
 // SetScaling3dScale sets the property returned by [GetScaling3dScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaling3dScale(value Float.X) Instance {
+func (self Instance) SetScaling3dScale(value Float.X) Instance { //gd:Viewport.scaling_3d_scale
 	class(self).SetScaling3dScale(float64(value))
 	return self
 }
@@ -1165,12 +1167,12 @@ To control this property on the root viewport, set the [ProjectSettings] "render
 [TextureMipmapBias]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TextureMipmapBias
 [UseTaa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseTaa
 */
-func (self Instance) TextureMipmapBias() Float.X {
+func (self Instance) TextureMipmapBias() Float.X { //gd:Viewport.texture_mipmap_bias
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
 // SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMipmapBias(value Float.X) Instance {
+func (self Instance) SetTextureMipmapBias(value Float.X) Instance { //gd:Viewport.texture_mipmap_bias
 	class(self).SetTextureMipmapBias(float64(value))
 	return self
 }
@@ -1190,12 +1192,12 @@ Note: In 2D, for this setting to have an effect, set [CanvasItem.TextureFilter] 
 [CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) AnisotropicFilteringLevel() AnisotropicFiltering {
+func (self Instance) AnisotropicFilteringLevel() AnisotropicFiltering { //gd:Viewport.anisotropic_filtering_level
 	return AnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
 // SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) Instance {
+func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) Instance { //gd:Viewport.anisotropic_filtering_level
 	class(self).SetAnisotropicFilteringLevel(value)
 	return self
 }
@@ -1207,12 +1209,12 @@ To control this property on the root viewport, set the [ProjectSettings] "render
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FsrSharpness() Float.X {
+func (self Instance) FsrSharpness() Float.X { //gd:Viewport.fsr_sharpness
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
 // SetFsrSharpness sets the property returned by [GetFsrSharpness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFsrSharpness(value Float.X) Instance {
+func (self Instance) SetFsrSharpness(value Float.X) Instance { //gd:Viewport.fsr_sharpness
 	class(self).SetFsrSharpness(float64(value))
 	return self
 }
@@ -1220,12 +1222,12 @@ func (self Instance) SetFsrSharpness(value Float.X) Instance {
 /*
 The Variable Rate Shading (VRS) mode that is used for this viewport. Note, if hardware does not support VRS this property is ignored.
 */
-func (self Instance) VrsMode() VRSMode {
+func (self Instance) VrsMode() VRSMode { //gd:Viewport.vrs_mode
 	return VRSMode(class(self).GetVrsMode())
 }
 
 // SetVrsMode sets the property returned by [GetVrsMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsMode(value VRSMode) Instance {
+func (self Instance) SetVrsMode(value VRSMode) Instance { //gd:Viewport.vrs_mode
 	class(self).SetVrsMode(value)
 	return self
 }
@@ -1233,12 +1235,12 @@ func (self Instance) SetVrsMode(value VRSMode) Instance {
 /*
 Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requires the input texture to be converted to the format usable by the VRS method supported by the hardware. The update mode defines how often this happens. If the GPU does not support VRS, or VRS is not enabled, this property is ignored.
 */
-func (self Instance) VrsUpdateMode() VRSUpdateMode {
+func (self Instance) VrsUpdateMode() VRSUpdateMode { //gd:Viewport.vrs_update_mode
 	return VRSUpdateMode(class(self).GetVrsUpdateMode())
 }
 
 // SetVrsUpdateMode sets the property returned by [GetVrsUpdateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) Instance {
+func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) Instance { //gd:Viewport.vrs_update_mode
 	class(self).SetVrsUpdateMode(value)
 	return self
 }
@@ -1250,12 +1252,12 @@ The texture must use a lossless compression format so that colors can be matched
 
 [VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
-func (self Instance) VrsTexture() Texture2D.Instance {
+func (self Instance) VrsTexture() Texture2D.Instance { //gd:Viewport.vrs_texture
 	return Texture2D.Instance(class(self).GetVrsTexture())
 }
 
 // SetVrsTexture sets the property returned by [GetVrsTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetVrsTexture(value Texture2D.Instance) Instance { //gd:Viewport.vrs_texture
 	class(self).SetVrsTexture(value)
 	return self
 }
@@ -1265,12 +1267,12 @@ Sets the default filter mode used by [CanvasItem]s in this Viewport.
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) CanvasItemDefaultTextureFilter() DefaultCanvasItemTextureFilter {
+func (self Instance) CanvasItemDefaultTextureFilter() DefaultCanvasItemTextureFilter { //gd:Viewport.canvas_item_default_texture_filter
 	return DefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
 }
 
 // SetCanvasItemDefaultTextureFilter sets the property returned by [GetDefaultCanvasItemTextureFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) Instance {
+func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) Instance { //gd:Viewport.canvas_item_default_texture_filter
 	class(self).SetDefaultCanvasItemTextureFilter(value)
 	return self
 }
@@ -1280,12 +1282,12 @@ Sets the default repeat mode used by [CanvasItem]s in this Viewport.
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) CanvasItemDefaultTextureRepeat() DefaultCanvasItemTextureRepeat {
+func (self Instance) CanvasItemDefaultTextureRepeat() DefaultCanvasItemTextureRepeat { //gd:Viewport.canvas_item_default_texture_repeat
 	return DefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
 }
 
 // SetCanvasItemDefaultTextureRepeat sets the property returned by [GetDefaultCanvasItemTextureRepeat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) Instance {
+func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) Instance { //gd:Viewport.canvas_item_default_texture_repeat
 	class(self).SetDefaultCanvasItemTextureRepeat(value)
 	return self
 }
@@ -1293,12 +1295,12 @@ func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTe
 /*
 If true, the viewport will process 2D audio streams.
 */
-func (self Instance) AudioListenerEnable2d() bool {
+func (self Instance) AudioListenerEnable2d() bool { //gd:Viewport.audio_listener_enable_2d
 	return bool(class(self).IsAudioListener2d())
 }
 
 // SetAudioListenerEnable2d sets the property returned by [IsAudioListener2d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioListenerEnable2d(value bool) Instance {
+func (self Instance) SetAudioListenerEnable2d(value bool) Instance { //gd:Viewport.audio_listener_enable_2d
 	class(self).SetAsAudioListener2d(value)
 	return self
 }
@@ -1306,12 +1308,12 @@ func (self Instance) SetAudioListenerEnable2d(value bool) Instance {
 /*
 If true, the viewport will process 3D audio streams.
 */
-func (self Instance) AudioListenerEnable3d() bool {
+func (self Instance) AudioListenerEnable3d() bool { //gd:Viewport.audio_listener_enable_3d
 	return bool(class(self).IsAudioListener3d())
 }
 
 // SetAudioListenerEnable3d sets the property returned by [IsAudioListener3d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAudioListenerEnable3d(value bool) Instance {
+func (self Instance) SetAudioListenerEnable3d(value bool) Instance { //gd:Viewport.audio_listener_enable_3d
 	class(self).SetAsAudioListener3d(value)
 	return self
 }
@@ -1321,12 +1323,12 @@ If true, the objects rendered by viewport become subjects of mouse picking proce
 
 Note: The number of simultaneously pickable objects is limited to 64 and they are selected in a non-deterministic order, which can be different in each picking process.
 */
-func (self Instance) PhysicsObjectPicking() bool {
+func (self Instance) PhysicsObjectPicking() bool { //gd:Viewport.physics_object_picking
 	return bool(class(self).GetPhysicsObjectPicking())
 }
 
 // SetPhysicsObjectPicking sets the property returned by [GetPhysicsObjectPicking]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsObjectPicking(value bool) Instance {
+func (self Instance) SetPhysicsObjectPicking(value bool) Instance { //gd:Viewport.physics_object_picking
 	class(self).SetPhysicsObjectPicking(value)
 	return self
 }
@@ -1340,12 +1342,12 @@ Note: Sorting happens after selecting the pickable objects. Because of the limit
 
 [CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
 */
-func (self Instance) PhysicsObjectPickingSort() bool {
+func (self Instance) PhysicsObjectPickingSort() bool { //gd:Viewport.physics_object_picking_sort
 	return bool(class(self).GetPhysicsObjectPickingSort())
 }
 
 // SetPhysicsObjectPickingSort sets the property returned by [GetPhysicsObjectPickingSort]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsObjectPickingSort(value bool) Instance {
+func (self Instance) SetPhysicsObjectPickingSort(value bool) Instance { //gd:Viewport.physics_object_picking_sort
 	class(self).SetPhysicsObjectPickingSort(value)
 	return self
 }
@@ -1359,12 +1361,12 @@ This applies to 2D CanvasItem object picking only.
 
 [PhysicsObjectPickingSort]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPickingSort
 */
-func (self Instance) PhysicsObjectPickingFirstOnly() bool {
+func (self Instance) PhysicsObjectPickingFirstOnly() bool { //gd:Viewport.physics_object_picking_first_only
 	return bool(class(self).GetPhysicsObjectPickingFirstOnly())
 }
 
 // SetPhysicsObjectPickingFirstOnly sets the property returned by [GetPhysicsObjectPickingFirstOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) Instance {
+func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) Instance { //gd:Viewport.physics_object_picking_first_only
 	class(self).SetPhysicsObjectPickingFirstOnly(value)
 	return self
 }
@@ -1372,12 +1374,12 @@ func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) Instance {
 /*
 If true, the viewport will not receive input events.
 */
-func (self Instance) GuiDisableInput() bool {
+func (self Instance) GuiDisableInput() bool { //gd:Viewport.gui_disable_input
 	return bool(class(self).IsInputDisabled())
 }
 
 // SetGuiDisableInput sets the property returned by [IsInputDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuiDisableInput(value bool) Instance {
+func (self Instance) SetGuiDisableInput(value bool) Instance { //gd:Viewport.gui_disable_input
 	class(self).SetDisableInput(value)
 	return self
 }
@@ -1385,12 +1387,12 @@ func (self Instance) SetGuiDisableInput(value bool) Instance {
 /*
 If true, the GUI controls on the viewport will lay pixel perfectly.
 */
-func (self Instance) GuiSnapControlsToPixels() bool {
+func (self Instance) GuiSnapControlsToPixels() bool { //gd:Viewport.gui_snap_controls_to_pixels
 	return bool(class(self).IsSnapControlsToPixelsEnabled())
 }
 
 // SetGuiSnapControlsToPixels sets the property returned by [IsSnapControlsToPixelsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuiSnapControlsToPixels(value bool) Instance {
+func (self Instance) SetGuiSnapControlsToPixels(value bool) Instance { //gd:Viewport.gui_snap_controls_to_pixels
 	class(self).SetSnapControlsToPixels(value)
 	return self
 }
@@ -1398,12 +1400,12 @@ func (self Instance) SetGuiSnapControlsToPixels(value bool) Instance {
 /*
 If true, sub-windows (popups and dialogs) will be embedded inside application window as control-like nodes. If false, they will appear as separate windows handled by the operating system.
 */
-func (self Instance) GuiEmbedSubwindows() bool {
+func (self Instance) GuiEmbedSubwindows() bool { //gd:Viewport.gui_embed_subwindows
 	return bool(class(self).IsEmbeddingSubwindows())
 }
 
 // SetGuiEmbedSubwindows sets the property returned by [IsEmbeddingSubwindows]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGuiEmbedSubwindows(value bool) Instance {
+func (self Instance) SetGuiEmbedSubwindows(value bool) Instance { //gd:Viewport.gui_embed_subwindows
 	class(self).SetEmbeddingSubwindows(value)
 	return self
 }
@@ -1417,12 +1419,12 @@ The percentage is added on each axis and on both sides. For example, with the de
 [GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
 [LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
-func (self Instance) SdfOversize() SDFOversize {
+func (self Instance) SdfOversize() SDFOversize { //gd:Viewport.sdf_oversize
 	return SDFOversize(class(self).GetSdfOversize())
 }
 
 // SetSdfOversize sets the property returned by [GetSdfOversize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfOversize(value SDFOversize) Instance {
+func (self Instance) SetSdfOversize(value SDFOversize) Instance { //gd:Viewport.sdf_oversize
 	class(self).SetSdfOversize(value)
 	return self
 }
@@ -1430,12 +1432,12 @@ func (self Instance) SetSdfOversize(value SDFOversize) Instance {
 /*
 The resolution scale to use for the 2D signed distance field. Higher values lead to a more precise and more stable signed distance field as the camera moves, at the cost of performance.
 */
-func (self Instance) SdfScale() SDFScale {
+func (self Instance) SdfScale() SDFScale { //gd:Viewport.sdf_scale
 	return SDFScale(class(self).GetSdfScale())
 }
 
 // SetSdfScale sets the property returned by [GetSdfScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfScale(value SDFScale) Instance {
+func (self Instance) SetSdfScale(value SDFScale) Instance { //gd:Viewport.sdf_scale
 	class(self).SetSdfScale(value)
 	return self
 }
@@ -1445,12 +1447,12 @@ The shadow atlas' resolution (used for omni and spot lights). The value is round
 
 Note: If this is set to 0, no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
 */
-func (self Instance) PositionalShadowAtlasSize() int {
+func (self Instance) PositionalShadowAtlasSize() int { //gd:Viewport.positional_shadow_atlas_size
 	return int(int(class(self).GetPositionalShadowAtlasSize()))
 }
 
 // SetPositionalShadowAtlasSize sets the property returned by [GetPositionalShadowAtlasSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlasSize(value int) Instance {
+func (self Instance) SetPositionalShadowAtlasSize(value int) Instance { //gd:Viewport.positional_shadow_atlas_size
 	class(self).SetPositionalShadowAtlasSize(int64(value))
 	return self
 }
@@ -1458,12 +1460,12 @@ func (self Instance) SetPositionalShadowAtlasSize(value int) Instance {
 /*
 Use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
 */
-func (self Instance) PositionalShadowAtlas16Bits() bool {
+func (self Instance) PositionalShadowAtlas16Bits() bool { //gd:Viewport.positional_shadow_atlas_16_bits
 	return bool(class(self).GetPositionalShadowAtlas16Bits())
 }
 
 // SetPositionalShadowAtlas16Bits sets the property returned by [GetPositionalShadowAtlas16Bits]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlas16Bits(value bool) Instance {
+func (self Instance) SetPositionalShadowAtlas16Bits(value bool) Instance { //gd:Viewport.positional_shadow_atlas_16_bits
 	class(self).SetPositionalShadowAtlas16Bits(value)
 	return self
 }
@@ -1471,12 +1473,12 @@ func (self Instance) SetPositionalShadowAtlas16Bits(value bool) Instance {
 /*
 The subdivision amount of the first quadrant on the shadow atlas.
 */
-func (self Instance) PositionalShadowAtlasQuad0() PositionalShadowAtlasQuadrantSubdiv {
+func (self Instance) PositionalShadowAtlasQuad0() PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.positional_shadow_atlas_quad_0
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
 }
 
 // SetPositionalShadowAtlasQuad0 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) Instance {
+func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) Instance { //gd:Viewport.positional_shadow_atlas_quad_0
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(0, value)
 	return self
 }
@@ -1484,12 +1486,12 @@ func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQu
 /*
 The subdivision amount of the second quadrant on the shadow atlas.
 */
-func (self Instance) PositionalShadowAtlasQuad1() PositionalShadowAtlasQuadrantSubdiv {
+func (self Instance) PositionalShadowAtlasQuad1() PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.positional_shadow_atlas_quad_1
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
 }
 
 // SetPositionalShadowAtlasQuad1 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) Instance {
+func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) Instance { //gd:Viewport.positional_shadow_atlas_quad_1
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(1, value)
 	return self
 }
@@ -1497,12 +1499,12 @@ func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQu
 /*
 The subdivision amount of the third quadrant on the shadow atlas.
 */
-func (self Instance) PositionalShadowAtlasQuad2() PositionalShadowAtlasQuadrantSubdiv {
+func (self Instance) PositionalShadowAtlasQuad2() PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.positional_shadow_atlas_quad_2
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
 }
 
 // SetPositionalShadowAtlasQuad2 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) Instance {
+func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) Instance { //gd:Viewport.positional_shadow_atlas_quad_2
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(2, value)
 	return self
 }
@@ -1510,12 +1512,12 @@ func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQu
 /*
 The subdivision amount of the fourth quadrant on the shadow atlas.
 */
-func (self Instance) PositionalShadowAtlasQuad3() PositionalShadowAtlasQuadrantSubdiv {
+func (self Instance) PositionalShadowAtlasQuad3() PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.positional_shadow_atlas_quad_3
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
 }
 
 // SetPositionalShadowAtlasQuad3 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) Instance {
+func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) Instance { //gd:Viewport.positional_shadow_atlas_quad_3
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
 	return self
 }
@@ -1525,12 +1527,12 @@ The canvas transform of the viewport, useful for changing the on-screen position
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) CanvasTransform() Transform2D.OriginXY {
+func (self Instance) CanvasTransform() Transform2D.OriginXY { //gd:Viewport.canvas_transform
 	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
 // SetCanvasTransform sets the property returned by [GetCanvasTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) Instance { //gd:Viewport.canvas_transform
 	class(self).SetCanvasTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -1538,12 +1540,12 @@ func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) Instance {
 /*
 The global canvas transform of the viewport. The canvas transform is relative to this.
 */
-func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
+func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewport.global_canvas_transform
 	return Transform2D.OriginXY(class(self).GetGlobalCanvasTransform())
 }
 
 // SetGlobalCanvasTransform sets the property returned by [GetGlobalCanvasTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) Instance { //gd:Viewport.global_canvas_transform
 	class(self).SetGlobalCanvasTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -1554,12 +1556,12 @@ The rendering layers in which this [Viewport] renders [CanvasItem] nodes.
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) CanvasCullMask() int {
+func (self Instance) CanvasCullMask() int { //gd:Viewport.canvas_cull_mask
 	return int(int(class(self).GetCanvasCullMask()))
 }
 
 // SetCanvasCullMask sets the property returned by [GetCanvasCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanvasCullMask(value int) Instance {
+func (self Instance) SetCanvasCullMask(value int) Instance { //gd:Viewport.canvas_cull_mask
 	class(self).SetCanvasCullMask(int64(value))
 	return self
 }
@@ -1573,12 +1575,12 @@ If true and one of the following conditions are true: [SubViewport.Size2dOverrid
 [SubViewport.Size2dOverrideStretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewport#Instance.Size2dOverrideStretch
 [Window.ContentScaleFactor]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleFactor
 */
-func (self Instance) Oversampling() bool {
+func (self Instance) Oversampling() bool { //gd:Viewport.oversampling
 	return bool(class(self).IsUsingOversampling())
 }
 
 // SetOversampling sets the property returned by [IsUsingOversampling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOversampling(value bool) Instance {
+func (self Instance) SetOversampling(value bool) Instance { //gd:Viewport.oversampling
 	class(self).SetUseOversampling(value)
 	return self
 }
@@ -1586,12 +1588,12 @@ func (self Instance) SetOversampling(value bool) Instance {
 /*
 If greater than zero, this value is used as the font oversampling factor, otherwise oversampling is equal to viewport scale.
 */
-func (self Instance) OversamplingOverride() Float.X {
+func (self Instance) OversamplingOverride() Float.X { //gd:Viewport.oversampling_override
 	return Float.X(Float.X(class(self).GetOversamplingOverride()))
 }
 
 // SetOversamplingOverride sets the property returned by [GetOversamplingOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOversamplingOverride(value Float.X) Instance {
+func (self Instance) SetOversamplingOverride(value Float.X) Instance { //gd:Viewport.oversampling_override
 	class(self).SetOversamplingOverride(float64(value))
 	return self
 }
