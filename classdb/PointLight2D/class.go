@@ -169,12 +169,12 @@ func New() Instance {
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:PointLight2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:PointLight2D.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -184,12 +184,12 @@ The offset of the light's [Texture].
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:PointLight2D.offset
 	return Vector2.XY(class(self).GetTextureOffset())
 }
 
 // SetOffset sets the property returned by [GetTextureOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:PointLight2D.offset
 	class(self).SetTextureOffset(Vector2.XY(value))
 	return self
 }
@@ -199,12 +199,12 @@ The [Texture]'s scale factor.
 
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
 */
-func (self Instance) TextureScale() Float.X {
+func (self Instance) TextureScale() Float.X { //gd:PointLight2D.texture_scale
 	return Float.X(Float.X(class(self).GetTextureScale()))
 }
 
 // SetTextureScale sets the property returned by [GetTextureScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureScale(value Float.X) Instance {
+func (self Instance) SetTextureScale(value Float.X) Instance { //gd:PointLight2D.texture_scale
 	class(self).SetTextureScale(float64(value))
 	return self
 }

@@ -185,12 +185,12 @@ func New() Instance {
 /*
 Action set for which this dpad binding modifier is active.
 */
-func (self Instance) ActionSet() OpenXRActionSet.Instance {
+func (self Instance) ActionSet() OpenXRActionSet.Instance { //gd:OpenXRDpadBindingModifier.action_set
 	return OpenXRActionSet.Instance(class(self).GetActionSet())
 }
 
 // SetActionSet sets the property returned by [GetActionSet]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActionSet(value OpenXRActionSet.Instance) Instance {
+func (self Instance) SetActionSet(value OpenXRActionSet.Instance) Instance { //gd:OpenXRDpadBindingModifier.action_set
 	class(self).SetActionSet(value)
 	return self
 }
@@ -198,12 +198,12 @@ func (self Instance) SetActionSet(value OpenXRActionSet.Instance) Instance {
 /*
 Input path for this dpad binding modifier.
 */
-func (self Instance) InputPath() string {
+func (self Instance) InputPath() string { //gd:OpenXRDpadBindingModifier.input_path
 	return string(class(self).GetInputPath().String())
 }
 
 // SetInputPath sets the property returned by [GetInputPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInputPath(value string) Instance {
+func (self Instance) SetInputPath(value string) Instance { //gd:OpenXRDpadBindingModifier.input_path
 	class(self).SetInputPath(String.New(value))
 	return self
 }
@@ -213,12 +213,12 @@ When our input value is equal or larger than this value, our dpad in that direct
 
 [ThresholdReleased]: https://pkg.go.dev/graphics.gd/classdb/OpenXRDpadBindingModifier#Instance.ThresholdReleased
 */
-func (self Instance) Threshold() Float.X {
+func (self Instance) Threshold() Float.X { //gd:OpenXRDpadBindingModifier.threshold
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
 // SetThreshold sets the property returned by [GetThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThreshold(value Float.X) Instance {
+func (self Instance) SetThreshold(value Float.X) Instance { //gd:OpenXRDpadBindingModifier.threshold
 	class(self).SetThreshold(float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetThreshold(value Float.X) Instance {
 /*
 When our input value falls below this, our output becomes false.
 */
-func (self Instance) ThresholdReleased() Float.X {
+func (self Instance) ThresholdReleased() Float.X { //gd:OpenXRDpadBindingModifier.threshold_released
 	return Float.X(Float.X(class(self).GetThresholdReleased()))
 }
 
 // SetThresholdReleased sets the property returned by [GetThresholdReleased]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThresholdReleased(value Float.X) Instance {
+func (self Instance) SetThresholdReleased(value Float.X) Instance { //gd:OpenXRDpadBindingModifier.threshold_released
 	class(self).SetThresholdReleased(float64(value))
 	return self
 }
@@ -239,12 +239,12 @@ func (self Instance) SetThresholdReleased(value Float.X) Instance {
 /*
 Center region in which our center position of our dpad return true.
 */
-func (self Instance) CenterRegion() Float.X {
+func (self Instance) CenterRegion() Float.X { //gd:OpenXRDpadBindingModifier.center_region
 	return Float.X(Float.X(class(self).GetCenterRegion()))
 }
 
 // SetCenterRegion sets the property returned by [GetCenterRegion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCenterRegion(value Float.X) Instance {
+func (self Instance) SetCenterRegion(value Float.X) Instance { //gd:OpenXRDpadBindingModifier.center_region
 	class(self).SetCenterRegion(float64(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetCenterRegion(value Float.X) Instance {
 /*
 The angle of each wedge that identifies the 4 directions of the emulated dpad.
 */
-func (self Instance) WedgeAngle() Angle.Radians {
+func (self Instance) WedgeAngle() Angle.Radians { //gd:OpenXRDpadBindingModifier.wedge_angle
 	return Angle.Radians(Float.X(class(self).GetWedgeAngle()))
 }
 
 // SetWedgeAngle sets the property returned by [GetWedgeAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWedgeAngle(value Angle.Radians) Instance {
+func (self Instance) SetWedgeAngle(value Angle.Radians) Instance { //gd:OpenXRDpadBindingModifier.wedge_angle
 	class(self).SetWedgeAngle(float64(value))
 	return self
 }
@@ -267,12 +267,12 @@ If false, when the joystick enters a new dpad zone this becomes true.
 
 If true, when the joystick remains in active dpad zone, this remains true even if we overlap with another zone.
 */
-func (self Instance) IsSticky() bool {
+func (self Instance) IsSticky() bool { //gd:OpenXRDpadBindingModifier.is_sticky
 	return bool(class(self).GetIsSticky())
 }
 
 // SetIsSticky sets the property returned by [GetIsSticky]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIsSticky(value bool) Instance {
+func (self Instance) SetIsSticky(value bool) Instance { //gd:OpenXRDpadBindingModifier.is_sticky
 	class(self).SetIsSticky(value)
 	return self
 }
@@ -280,12 +280,12 @@ func (self Instance) SetIsSticky(value bool) Instance {
 /*
 Haptic pulse to emit when the user presses the input.
 */
-func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
+func (self Instance) OnHaptic() OpenXRHapticBase.Instance { //gd:OpenXRDpadBindingModifier.on_haptic
 	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
 // SetOnHaptic sets the property returned by [GetOnHaptic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
+func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance { //gd:OpenXRDpadBindingModifier.on_haptic
 	class(self).SetOnHaptic(value)
 	return self
 }
@@ -293,12 +293,12 @@ func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
 /*
 Haptic pulse to emit when the user releases the input.
 */
-func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
+func (self Instance) OffHaptic() OpenXRHapticBase.Instance { //gd:OpenXRDpadBindingModifier.off_haptic
 	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
 // SetOffHaptic sets the property returned by [GetOffHaptic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance {
+func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance { //gd:OpenXRDpadBindingModifier.off_haptic
 	class(self).SetOffHaptic(value)
 	return self
 }

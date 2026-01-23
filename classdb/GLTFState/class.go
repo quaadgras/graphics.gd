@@ -380,32 +380,32 @@ func New() Instance {
 /*
 The original raw JSON document corresponding to this GLTFState.
 */
-func (self Instance) Json() map[string]interface{} {
+func (self Instance) Json() map[string]interface{} { //gd:GLTFState.json
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetJson()))
 }
 
 // SetJson sets the property returned by [GetJson]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJson(value map[string]interface{}) Instance {
+func (self Instance) SetJson(value map[string]interface{}) Instance { //gd:GLTFState.json
 	class(self).SetJson(gd.DictionaryFromMap(value))
 	return self
 }
 
-func (self Instance) MajorVersion() int {
+func (self Instance) MajorVersion() int { //gd:GLTFState.major_version
 	return int(int(class(self).GetMajorVersion()))
 }
 
 // SetMajorVersion sets the property returned by [GetMajorVersion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMajorVersion(value int) Instance {
+func (self Instance) SetMajorVersion(value int) Instance { //gd:GLTFState.major_version
 	class(self).SetMajorVersion(int64(value))
 	return self
 }
 
-func (self Instance) MinorVersion() int {
+func (self Instance) MinorVersion() int { //gd:GLTFState.minor_version
 	return int(int(class(self).GetMinorVersion()))
 }
 
 // SetMinorVersion sets the property returned by [GetMinorVersion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinorVersion(value int) Instance {
+func (self Instance) SetMinorVersion(value int) Instance { //gd:GLTFState.minor_version
 	class(self).SetMinorVersion(int64(value))
 	return self
 }
@@ -413,12 +413,12 @@ func (self Instance) SetMinorVersion(value int) Instance {
 /*
 The copyright string in the asset header of the glTF file. This is set during import if present and export if non-empty. See the glTF asset header documentation for more information.
 */
-func (self Instance) Copyright() string {
+func (self Instance) Copyright() string { //gd:GLTFState.copyright
 	return string(class(self).GetCopyright().String())
 }
 
 // SetCopyright sets the property returned by [GetCopyright]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCopyright(value string) Instance {
+func (self Instance) SetCopyright(value string) Instance { //gd:GLTFState.copyright
 	class(self).SetCopyright(String.New(value))
 	return self
 }
@@ -426,82 +426,82 @@ func (self Instance) SetCopyright(value string) Instance {
 /*
 The binary buffer attached to a .glb file.
 */
-func (self Instance) GlbData() []byte {
+func (self Instance) GlbData() []byte { //gd:GLTFState.glb_data
 	return []byte(class(self).GetGlbData().Bytes())
 }
 
 // SetGlbData sets the property returned by [GetGlbData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlbData(value []byte) Instance {
+func (self Instance) SetGlbData(value []byte) Instance { //gd:GLTFState.glb_data
 	class(self).SetGlbData(Packed.BytesFrom(value...))
 	return self
 }
 
-func (self Instance) UseNamedSkinBinds() bool {
+func (self Instance) UseNamedSkinBinds() bool { //gd:GLTFState.use_named_skin_binds
 	return bool(class(self).GetUseNamedSkinBinds())
 }
 
 // SetUseNamedSkinBinds sets the property returned by [GetUseNamedSkinBinds]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseNamedSkinBinds(value bool) Instance {
+func (self Instance) SetUseNamedSkinBinds(value bool) Instance { //gd:GLTFState.use_named_skin_binds
 	class(self).SetUseNamedSkinBinds(value)
 	return self
 }
 
-func (self Instance) Nodes() []GLTFNode.Instance {
+func (self Instance) Nodes() []GLTFNode.Instance { //gd:GLTFState.nodes
 	return []GLTFNode.Instance(gd.ArrayAs[[]GLTFNode.Instance](gd.InternalArray(class(self).GetNodes())))
 }
 
 // SetNodes sets the property returned by [GetNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodes(value []GLTFNode.Instance) Instance {
+func (self Instance) SetNodes(value []GLTFNode.Instance) Instance { //gd:GLTFState.nodes
 	class(self).SetNodes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFNode]](value))
 	return self
 }
 
-func (self Instance) Buffers() [][]byte {
+func (self Instance) Buffers() [][]byte { //gd:GLTFState.buffers
 	return [][]byte(gd.ArrayAs[[][]byte](gd.InternalArray(class(self).GetBuffers())))
 }
 
 // SetBuffers sets the property returned by [GetBuffers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBuffers(value [][]byte) Instance {
+func (self Instance) SetBuffers(value [][]byte) Instance { //gd:GLTFState.buffers
 	class(self).SetBuffers(gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](value))
 	return self
 }
 
-func (self Instance) BufferViews() []GLTFBufferView.Instance {
+func (self Instance) BufferViews() []GLTFBufferView.Instance { //gd:GLTFState.buffer_views
 	return []GLTFBufferView.Instance(gd.ArrayAs[[]GLTFBufferView.Instance](gd.InternalArray(class(self).GetBufferViews())))
 }
 
 // SetBufferViews sets the property returned by [GetBufferViews]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferViews(value []GLTFBufferView.Instance) Instance {
+func (self Instance) SetBufferViews(value []GLTFBufferView.Instance) Instance { //gd:GLTFState.buffer_views
 	class(self).SetBufferViews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFBufferView]](value))
 	return self
 }
 
-func (self Instance) Accessors() []GLTFAccessor.Instance {
+func (self Instance) Accessors() []GLTFAccessor.Instance { //gd:GLTFState.accessors
 	return []GLTFAccessor.Instance(gd.ArrayAs[[]GLTFAccessor.Instance](gd.InternalArray(class(self).GetAccessors())))
 }
 
 // SetAccessors sets the property returned by [GetAccessors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessors(value []GLTFAccessor.Instance) Instance {
+func (self Instance) SetAccessors(value []GLTFAccessor.Instance) Instance { //gd:GLTFState.accessors
 	class(self).SetAccessors(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAccessor]](value))
 	return self
 }
 
-func (self Instance) Meshes() []GLTFMesh.Instance {
+func (self Instance) Meshes() []GLTFMesh.Instance { //gd:GLTFState.meshes
 	return []GLTFMesh.Instance(gd.ArrayAs[[]GLTFMesh.Instance](gd.InternalArray(class(self).GetMeshes())))
 }
 
 // SetMeshes sets the property returned by [GetMeshes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMeshes(value []GLTFMesh.Instance) Instance {
+func (self Instance) SetMeshes(value []GLTFMesh.Instance) Instance { //gd:GLTFState.meshes
 	class(self).SetMeshes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFMesh]](value))
 	return self
 }
 
-func (self Instance) Materials() []Material.Instance {
+func (self Instance) Materials() []Material.Instance { //gd:GLTFState.materials
 	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetMaterials())))
 }
 
 // SetMaterials sets the property returned by [GetMaterials]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterials(value []Material.Instance) Instance {
+func (self Instance) SetMaterials(value []Material.Instance) Instance { //gd:GLTFState.materials
 	class(self).SetMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 	return self
 }
@@ -509,12 +509,12 @@ func (self Instance) SetMaterials(value []Material.Instance) Instance {
 /*
 The name of the scene. When importing, if not specified, this will be the file name. When exporting, if specified, the scene name will be saved to the glTF file.
 */
-func (self Instance) SceneName() string {
+func (self Instance) SceneName() string { //gd:GLTFState.scene_name
 	return string(class(self).GetSceneName().String())
 }
 
 // SetSceneName sets the property returned by [GetSceneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSceneName(value string) Instance {
+func (self Instance) SetSceneName(value string) Instance { //gd:GLTFState.scene_name
 	class(self).SetSceneName(String.New(value))
 	return self
 }
@@ -522,12 +522,12 @@ func (self Instance) SetSceneName(value string) Instance {
 /*
 The folder path associated with this glTF data. This is used to find other files the glTF file references, like images or binary buffers. This will be set during import when appending from a file, and will be set during export when writing to a file.
 */
-func (self Instance) BasePath() string {
+func (self Instance) BasePath() string { //gd:GLTFState.base_path
 	return string(class(self).GetBasePath().String())
 }
 
 // SetBasePath sets the property returned by [GetBasePath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBasePath(value string) Instance {
+func (self Instance) SetBasePath(value string) Instance { //gd:GLTFState.base_path
 	class(self).SetBasePath(String.New(value))
 	return self
 }
@@ -535,12 +535,12 @@ func (self Instance) SetBasePath(value string) Instance {
 /*
 The file name associated with this glTF data. If it ends with .gltf, this is text-based glTF, otherwise this is binary GLB. This will be set during import when appending from a file, and will be set during export when writing to a file. If writing to a buffer, this will be an empty string.
 */
-func (self Instance) Filename() string {
+func (self Instance) Filename() string { //gd:GLTFState.filename
 	return string(class(self).GetFilename().String())
 }
 
 // SetFilename sets the property returned by [GetFilename]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFilename(value string) Instance {
+func (self Instance) SetFilename(value string) Instance { //gd:GLTFState.filename
 	class(self).SetFilename(String.New(value))
 	return self
 }
@@ -548,112 +548,112 @@ func (self Instance) SetFilename(value string) Instance {
 /*
 The root nodes of the glTF file. Typically, a glTF file will only have one scene, and therefore one root node. However, a glTF file may have multiple scenes and therefore multiple root nodes, which will be generated as siblings of each other and as children of the root node of the generated Godot scene.
 */
-func (self Instance) RootNodes() []int32 {
+func (self Instance) RootNodes() []int32 { //gd:GLTFState.root_nodes
 	return []int32(slices.Collect(class(self).GetRootNodes().Values()))
 }
 
 // SetRootNodes sets the property returned by [GetRootNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootNodes(value []int32) Instance {
+func (self Instance) SetRootNodes(value []int32) Instance { //gd:GLTFState.root_nodes
 	class(self).SetRootNodes(Packed.New(value...))
 	return self
 }
 
-func (self Instance) Textures() []GLTFTexture.Instance {
+func (self Instance) Textures() []GLTFTexture.Instance { //gd:GLTFState.textures
 	return []GLTFTexture.Instance(gd.ArrayAs[[]GLTFTexture.Instance](gd.InternalArray(class(self).GetTextures())))
 }
 
 // SetTextures sets the property returned by [GetTextures]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextures(value []GLTFTexture.Instance) Instance {
+func (self Instance) SetTextures(value []GLTFTexture.Instance) Instance { //gd:GLTFState.textures
 	class(self).SetTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTexture]](value))
 	return self
 }
 
-func (self Instance) TextureSamplers() []GLTFTextureSampler.Instance {
+func (self Instance) TextureSamplers() []GLTFTextureSampler.Instance { //gd:GLTFState.texture_samplers
 	return []GLTFTextureSampler.Instance(gd.ArrayAs[[]GLTFTextureSampler.Instance](gd.InternalArray(class(self).GetTextureSamplers())))
 }
 
 // SetTextureSamplers sets the property returned by [GetTextureSamplers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureSamplers(value []GLTFTextureSampler.Instance) Instance {
+func (self Instance) SetTextureSamplers(value []GLTFTextureSampler.Instance) Instance { //gd:GLTFState.texture_samplers
 	class(self).SetTextureSamplers(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTextureSampler]](value))
 	return self
 }
 
-func (self Instance) Images() []Texture2D.Instance {
+func (self Instance) Images() []Texture2D.Instance { //gd:GLTFState.images
 	return []Texture2D.Instance(gd.ArrayAs[[]Texture2D.Instance](gd.InternalArray(class(self).GetImages())))
 }
 
 // SetImages sets the property returned by [GetImages]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetImages(value []Texture2D.Instance) Instance {
+func (self Instance) SetImages(value []Texture2D.Instance) Instance { //gd:GLTFState.images
 	class(self).SetImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Texture2D]](value))
 	return self
 }
 
-func (self Instance) Skins() []GLTFSkin.Instance {
+func (self Instance) Skins() []GLTFSkin.Instance { //gd:GLTFState.skins
 	return []GLTFSkin.Instance(gd.ArrayAs[[]GLTFSkin.Instance](gd.InternalArray(class(self).GetSkins())))
 }
 
 // SetSkins sets the property returned by [GetSkins]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkins(value []GLTFSkin.Instance) Instance {
+func (self Instance) SetSkins(value []GLTFSkin.Instance) Instance { //gd:GLTFState.skins
 	class(self).SetSkins(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkin]](value))
 	return self
 }
 
-func (self Instance) Cameras() []GLTFCamera.Instance {
+func (self Instance) Cameras() []GLTFCamera.Instance { //gd:GLTFState.cameras
 	return []GLTFCamera.Instance(gd.ArrayAs[[]GLTFCamera.Instance](gd.InternalArray(class(self).GetCameras())))
 }
 
 // SetCameras sets the property returned by [GetCameras]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameras(value []GLTFCamera.Instance) Instance {
+func (self Instance) SetCameras(value []GLTFCamera.Instance) Instance { //gd:GLTFState.cameras
 	class(self).SetCameras(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFCamera]](value))
 	return self
 }
 
-func (self Instance) Lights() []GLTFLight.Instance {
+func (self Instance) Lights() []GLTFLight.Instance { //gd:GLTFState.lights
 	return []GLTFLight.Instance(gd.ArrayAs[[]GLTFLight.Instance](gd.InternalArray(class(self).GetLights())))
 }
 
 // SetLights sets the property returned by [GetLights]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLights(value []GLTFLight.Instance) Instance {
+func (self Instance) SetLights(value []GLTFLight.Instance) Instance { //gd:GLTFState.lights
 	class(self).SetLights(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFLight]](value))
 	return self
 }
 
-func (self Instance) UniqueNames() []string {
+func (self Instance) UniqueNames() []string { //gd:GLTFState.unique_names
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
 // SetUniqueNames sets the property returned by [GetUniqueNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUniqueNames(value []string) Instance {
+func (self Instance) SetUniqueNames(value []string) Instance { //gd:GLTFState.unique_names
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
 
-func (self Instance) UniqueAnimationNames() []string {
+func (self Instance) UniqueAnimationNames() []string { //gd:GLTFState.unique_animation_names
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueAnimationNames())))
 }
 
 // SetUniqueAnimationNames sets the property returned by [GetUniqueAnimationNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUniqueAnimationNames(value []string) Instance {
+func (self Instance) SetUniqueAnimationNames(value []string) Instance { //gd:GLTFState.unique_animation_names
 	class(self).SetUniqueAnimationNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
 
-func (self Instance) Skeletons() []GLTFSkeleton.Instance {
+func (self Instance) Skeletons() []GLTFSkeleton.Instance { //gd:GLTFState.skeletons
 	return []GLTFSkeleton.Instance(gd.ArrayAs[[]GLTFSkeleton.Instance](gd.InternalArray(class(self).GetSkeletons())))
 }
 
 // SetSkeletons sets the property returned by [GetSkeletons]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeletons(value []GLTFSkeleton.Instance) Instance {
+func (self Instance) SetSkeletons(value []GLTFSkeleton.Instance) Instance { //gd:GLTFState.skeletons
 	class(self).SetSkeletons(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkeleton]](value))
 	return self
 }
 
-func (self Instance) CreateAnimations() bool {
+func (self Instance) CreateAnimations() bool { //gd:GLTFState.create_animations
 	return bool(class(self).GetCreateAnimations())
 }
 
 // SetCreateAnimations sets the property returned by [GetCreateAnimations]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCreateAnimations(value bool) Instance {
+func (self Instance) SetCreateAnimations(value bool) Instance { //gd:GLTFState.create_animations
 	class(self).SetCreateAnimations(value)
 	return self
 }
@@ -663,32 +663,32 @@ If true, forces all GLTFNodes in the document to be bones of a single [Skeleton3
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) ImportAsSkeletonBones() bool {
+func (self Instance) ImportAsSkeletonBones() bool { //gd:GLTFState.import_as_skeleton_bones
 	return bool(class(self).GetImportAsSkeletonBones())
 }
 
 // SetImportAsSkeletonBones sets the property returned by [GetImportAsSkeletonBones]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetImportAsSkeletonBones(value bool) Instance {
+func (self Instance) SetImportAsSkeletonBones(value bool) Instance { //gd:GLTFState.import_as_skeleton_bones
 	class(self).SetImportAsSkeletonBones(value)
 	return self
 }
 
-func (self Instance) Animations() []GLTFAnimation.Instance {
+func (self Instance) Animations() []GLTFAnimation.Instance { //gd:GLTFState.animations
 	return []GLTFAnimation.Instance(gd.ArrayAs[[]GLTFAnimation.Instance](gd.InternalArray(class(self).GetAnimations())))
 }
 
 // SetAnimations sets the property returned by [GetAnimations]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimations(value []GLTFAnimation.Instance) Instance {
+func (self Instance) SetAnimations(value []GLTFAnimation.Instance) Instance { //gd:GLTFState.animations
 	class(self).SetAnimations(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAnimation]](value))
 	return self
 }
 
-func (self Instance) HandleBinaryImage() BinaryHandler {
+func (self Instance) HandleBinaryImage() BinaryHandler { //gd:GLTFState.handle_binary_image
 	return BinaryHandler(BinaryHandler(class(self).GetHandleBinaryImage()))
 }
 
 // SetHandleBinaryImage sets the property returned by [GetHandleBinaryImage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance {
+func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance { //gd:GLTFState.handle_binary_image
 	class(self).SetHandleBinaryImage(int64(value))
 	return self
 }
@@ -696,12 +696,12 @@ func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance {
 /*
 The baking fps of the animation for either import or export.
 */
-func (self Instance) BakeFps() Float.X {
+func (self Instance) BakeFps() Float.X { //gd:GLTFState.bake_fps
 	return Float.X(Float.X(class(self).GetBakeFps()))
 }
 
 // SetBakeFps sets the property returned by [GetBakeFps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeFps(value Float.X) Instance {
+func (self Instance) SetBakeFps(value Float.X) Instance { //gd:GLTFState.bake_fps
 	class(self).SetBakeFps(float64(value))
 	return self
 }

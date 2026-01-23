@@ -161,12 +161,12 @@ func New() Instance {
 /*
 An integer constant which represents a state of this node.
 */
-func (self Instance) Constant() int {
+func (self Instance) Constant() int { //gd:VisualShaderNodeIntConstant.constant
 	return int(int(class(self).GetConstant()))
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value int) Instance {
+func (self Instance) SetConstant(value int) Instance { //gd:VisualShaderNodeIntConstant.constant
 	class(self).SetConstant(int64(value))
 	return self
 }

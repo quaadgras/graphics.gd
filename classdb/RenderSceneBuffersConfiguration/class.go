@@ -180,12 +180,12 @@ func New() Instance {
 /*
 The render target associated with these buffer.
 */
-func (self Instance) RenderTarget() RID.Framebuffer {
+func (self Instance) RenderTarget() RID.Framebuffer { //gd:RenderSceneBuffersConfiguration.render_target
 	return RID.Framebuffer(RID.Framebuffer(class(self).GetRenderTarget()))
 }
 
 // SetRenderTarget sets the property returned by [GetRenderTarget]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderTarget(value RID.Framebuffer) Instance {
+func (self Instance) SetRenderTarget(value RID.Framebuffer) Instance { //gd:RenderSceneBuffersConfiguration.render_target
 	class(self).SetRenderTarget(RID.Any(value))
 	return self
 }
@@ -193,12 +193,12 @@ func (self Instance) SetRenderTarget(value RID.Framebuffer) Instance {
 /*
 The size of the 3D render buffer used for rendering.
 */
-func (self Instance) InternalSize() Vector2i.XY {
+func (self Instance) InternalSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.internal_size
 	return Vector2i.XY(class(self).GetInternalSize())
 }
 
 // SetInternalSize sets the property returned by [GetInternalSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInternalSize(value Vector2i.XY) Instance {
+func (self Instance) SetInternalSize(value Vector2i.XY) Instance { //gd:RenderSceneBuffersConfiguration.internal_size
 	class(self).SetInternalSize(Vector2i.XY(value))
 	return self
 }
@@ -206,12 +206,12 @@ func (self Instance) SetInternalSize(value Vector2i.XY) Instance {
 /*
 The target (upscale) size if scaling is used.
 */
-func (self Instance) TargetSize() Vector2i.XY {
+func (self Instance) TargetSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.target_size
 	return Vector2i.XY(class(self).GetTargetSize())
 }
 
 // SetTargetSize sets the property returned by [GetTargetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetSize(value Vector2i.XY) Instance {
+func (self Instance) SetTargetSize(value Vector2i.XY) Instance { //gd:RenderSceneBuffersConfiguration.target_size
 	class(self).SetTargetSize(Vector2i.XY(value))
 	return self
 }
@@ -219,12 +219,12 @@ func (self Instance) SetTargetSize(value Vector2i.XY) Instance {
 /*
 The number of views we're rendering.
 */
-func (self Instance) ViewCount() int {
+func (self Instance) ViewCount() int { //gd:RenderSceneBuffersConfiguration.view_count
 	return int(int(class(self).GetViewCount()))
 }
 
 // SetViewCount sets the property returned by [GetViewCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetViewCount(value int) Instance {
+func (self Instance) SetViewCount(value int) Instance { //gd:RenderSceneBuffersConfiguration.view_count
 	class(self).SetViewCount(int64(value))
 	return self
 }
@@ -235,12 +235,12 @@ The requested scaling mode with which we upscale/downscale if [InternalSize] and
 [InternalSize]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersConfiguration#Instance.InternalSize
 [TargetSize]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersConfiguration#Instance.TargetSize
 */
-func (self Instance) Scaling3dMode() RenderingServer.ViewportScaling3DMode {
+func (self Instance) Scaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.scaling_3d_mode
 	return RenderingServer.ViewportScaling3DMode(class(self).GetScaling3dMode())
 }
 
 // SetScaling3dMode sets the property returned by [GetScaling3dMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) Instance {
+func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) Instance { //gd:RenderSceneBuffersConfiguration.scaling_3d_mode
 	class(self).SetScaling3dMode(value)
 	return self
 }
@@ -248,12 +248,12 @@ func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMod
 /*
 The MSAA mode we're using for 3D rendering.
 */
-func (self Instance) Msaa3d() RenderingServer.ViewportMSAA {
+func (self Instance) Msaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersConfiguration.msaa_3d
 	return RenderingServer.ViewportMSAA(class(self).GetMsaa3d())
 }
 
 // SetMsaa3d sets the property returned by [GetMsaa3d]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) Instance {
+func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) Instance { //gd:RenderSceneBuffersConfiguration.msaa_3d
 	class(self).SetMsaa3d(value)
 	return self
 }
@@ -261,12 +261,12 @@ func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) Instance {
 /*
 The requested screen space AA applied in post processing.
 */
-func (self Instance) ScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA {
+func (self Instance) ScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.screen_space_aa
 	return RenderingServer.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
 // SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) Instance {
+func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) Instance { //gd:RenderSceneBuffersConfiguration.screen_space_aa
 	class(self).SetScreenSpaceAa(value)
 	return self
 }
@@ -274,12 +274,12 @@ func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceA
 /*
 FSR Sharpness applicable if FSR upscaling is used.
 */
-func (self Instance) FsrSharpness() Float.X {
+func (self Instance) FsrSharpness() Float.X { //gd:RenderSceneBuffersConfiguration.fsr_sharpness
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
 // SetFsrSharpness sets the property returned by [GetFsrSharpness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFsrSharpness(value Float.X) Instance {
+func (self Instance) SetFsrSharpness(value Float.X) Instance { //gd:RenderSceneBuffersConfiguration.fsr_sharpness
 	class(self).SetFsrSharpness(float64(value))
 	return self
 }
@@ -287,12 +287,12 @@ func (self Instance) SetFsrSharpness(value Float.X) Instance {
 /*
 Bias applied to mipmaps.
 */
-func (self Instance) TextureMipmapBias() Float.X {
+func (self Instance) TextureMipmapBias() Float.X { //gd:RenderSceneBuffersConfiguration.texture_mipmap_bias
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
 // SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMipmapBias(value Float.X) Instance {
+func (self Instance) SetTextureMipmapBias(value Float.X) Instance { //gd:RenderSceneBuffersConfiguration.texture_mipmap_bias
 	class(self).SetTextureMipmapBias(float64(value))
 	return self
 }
@@ -300,12 +300,12 @@ func (self Instance) SetTextureMipmapBias(value Float.X) Instance {
 /*
 Level of the anisotropic filter.
 */
-func (self Instance) AnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering {
+func (self Instance) AnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.anisotropic_filtering_level
 	return RenderingServer.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
 // SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) Instance {
+func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) Instance { //gd:RenderSceneBuffersConfiguration.anisotropic_filtering_level
 	class(self).SetAnisotropicFilteringLevel(value)
 	return self
 }

@@ -221,12 +221,12 @@ When exporting, this will be squashed down to one of "static", "kinematic", or "
 
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
-func (self Instance) BodyType() string {
+func (self Instance) BodyType() string { //gd:GLTFPhysicsBody.body_type
 	return string(class(self).GetBodyType().String())
 }
 
 // SetBodyType sets the property returned by [GetBodyType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodyType(value string) Instance {
+func (self Instance) SetBodyType(value string) Instance { //gd:GLTFPhysicsBody.body_type
 	class(self).SetBodyType(String.New(value))
 	return self
 }
@@ -234,12 +234,12 @@ func (self Instance) SetBodyType(value string) Instance {
 /*
 The mass of the physics body, in kilograms. This is only used when the body type is "rigid" or "vehicle".
 */
-func (self Instance) Mass() Float.X {
+func (self Instance) Mass() Float.X { //gd:GLTFPhysicsBody.mass
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
 // SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMass(value Float.X) Instance {
+func (self Instance) SetMass(value Float.X) Instance { //gd:GLTFPhysicsBody.mass
 	class(self).SetMass(float64(value))
 	return self
 }
@@ -247,12 +247,12 @@ func (self Instance) SetMass(value Float.X) Instance {
 /*
 The linear velocity of the physics body, in meters per second. This is only used when the body type is "rigid" or "vehicle".
 */
-func (self Instance) LinearVelocity() Vector3.XYZ {
+func (self Instance) LinearVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.linear_velocity
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
 // SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance { //gd:GLTFPhysicsBody.linear_velocity
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -260,12 +260,12 @@ func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 /*
 The angular velocity of the physics body, in radians per second. This is only used when the body type is "rigid" or "vehicle".
 */
-func (self Instance) AngularVelocity() Vector3.XYZ {
+func (self Instance) AngularVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.angular_velocity
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
 // SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance { //gd:GLTFPhysicsBody.angular_velocity
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -273,12 +273,12 @@ func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 /*
 The center of mass of the body, in meters. This is in local space relative to the body. By default, the center of the mass is the body's origin.
 */
-func (self Instance) CenterOfMass() Vector3.XYZ {
+func (self Instance) CenterOfMass() Vector3.XYZ { //gd:GLTFPhysicsBody.center_of_mass
 	return Vector3.XYZ(class(self).GetCenterOfMass())
 }
 
 // SetCenterOfMass sets the property returned by [GetCenterOfMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCenterOfMass(value Vector3.XYZ) Instance {
+func (self Instance) SetCenterOfMass(value Vector3.XYZ) Instance { //gd:GLTFPhysicsBody.center_of_mass
 	class(self).SetCenterOfMass(Vector3.XYZ(value))
 	return self
 }
@@ -290,12 +290,12 @@ When converted to a Godot [RigidBody3D] node, if this value is zero, then the in
 
 [RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
 */
-func (self Instance) InertiaDiagonal() Vector3.XYZ {
+func (self Instance) InertiaDiagonal() Vector3.XYZ { //gd:GLTFPhysicsBody.inertia_diagonal
 	return Vector3.XYZ(class(self).GetInertiaDiagonal())
 }
 
 // SetInertiaDiagonal sets the property returned by [GetInertiaDiagonal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) Instance {
+func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) Instance { //gd:GLTFPhysicsBody.inertia_diagonal
 	class(self).SetInertiaDiagonal(Vector3.XYZ(value))
 	return self
 }
@@ -305,12 +305,12 @@ The inertia orientation of the physics body. This defines the rotation of the in
 
 [InertiaDiagonal]: https://pkg.go.dev/graphics.gd/classdb/GLTFPhysicsBody#Instance.InertiaDiagonal
 */
-func (self Instance) InertiaOrientation() Quaternion.IJKX {
+func (self Instance) InertiaOrientation() Quaternion.IJKX { //gd:GLTFPhysicsBody.inertia_orientation
 	return Quaternion.IJKX(class(self).GetInertiaOrientation())
 }
 
 // SetInertiaOrientation sets the property returned by [GetInertiaOrientation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) Instance {
+func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) Instance { //gd:GLTFPhysicsBody.inertia_orientation
 	class(self).SetInertiaOrientation(value)
 	return self
 }
@@ -322,12 +322,12 @@ When converted to a Godot [RigidBody3D] node, if this value is zero, then the in
 
 [RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
 */
-func (self Instance) InertiaTensor() Basis.XYZ {
+func (self Instance) InertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.inertia_tensor
 	return Basis.XYZ(class(self).GetInertiaTensor())
 }
 
 // SetInertiaTensor sets the property returned by [GetInertiaTensor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInertiaTensor(value Basis.XYZ) Instance {
+func (self Instance) SetInertiaTensor(value Basis.XYZ) Instance { //gd:GLTFPhysicsBody.inertia_tensor
 	class(self).SetInertiaTensor(Basis.XYZ(value))
 	return self
 }

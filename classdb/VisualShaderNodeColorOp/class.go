@@ -162,12 +162,12 @@ func New() Instance {
 /*
 An operator to be applied to the inputs.
 */
-func (self Instance) Operator() Operator {
+func (self Instance) Operator() Operator { //gd:VisualShaderNodeColorOp.operator
 	return Operator(class(self).GetOperator())
 }
 
 // SetOperator sets the property returned by [GetOperator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOperator(value Operator) Instance {
+func (self Instance) SetOperator(value Operator) Instance { //gd:VisualShaderNodeColorOp.operator
 	class(self).SetOperator(value)
 	return self
 }

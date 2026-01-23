@@ -176,12 +176,12 @@ Transform in global space where the motion should start. Usually set to [Node2D.
 
 [Node2D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalTransform
 */
-func (self Instance) From() Transform2D.OriginXY {
+func (self Instance) From() Transform2D.OriginXY { //gd:PhysicsTestMotionParameters2D.from
 	return Transform2D.OriginXY(class(self).GetFrom())
 }
 
 // SetFrom sets the property returned by [GetFrom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrom(value Transform2D.OriginXY) Instance {
+func (self Instance) SetFrom(value Transform2D.OriginXY) Instance { //gd:PhysicsTestMotionParameters2D.from
 	class(self).SetFrom(Transform2D.OriginXY(value))
 	return self
 }
@@ -189,12 +189,12 @@ func (self Instance) SetFrom(value Transform2D.OriginXY) Instance {
 /*
 Motion vector to define the length and direction of the motion to test.
 */
-func (self Instance) Motion() Vector2.XY {
+func (self Instance) Motion() Vector2.XY { //gd:PhysicsTestMotionParameters2D.motion
 	return Vector2.XY(class(self).GetMotion())
 }
 
 // SetMotion sets the property returned by [GetMotion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotion(value Vector2.XY) Instance {
+func (self Instance) SetMotion(value Vector2.XY) Instance { //gd:PhysicsTestMotionParameters2D.motion
 	class(self).SetMotion(Vector2.XY(value))
 	return self
 }
@@ -202,12 +202,12 @@ func (self Instance) SetMotion(value Vector2.XY) Instance {
 /*
 Increases the size of the shapes involved in the collision detection.
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:PhysicsTestMotionParameters2D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:PhysicsTestMotionParameters2D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }
@@ -217,12 +217,12 @@ If set to true, shapes of type [Physicsserver2d.ShapeSeparationRay] are used to 
 
 If set to false, shapes of type [Physicsserver2d.ShapeSeparationRay] are only used for separation when overlapping with other bodies. That's the main use for separation ray shapes.
 */
-func (self Instance) CollideSeparationRay() bool {
+func (self Instance) CollideSeparationRay() bool { //gd:PhysicsTestMotionParameters2D.collide_separation_ray
 	return bool(class(self).IsCollideSeparationRayEnabled())
 }
 
 // SetCollideSeparationRay sets the property returned by [IsCollideSeparationRayEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideSeparationRay(value bool) Instance {
+func (self Instance) SetCollideSeparationRay(value bool) Instance { //gd:PhysicsTestMotionParameters2D.collide_separation_ray
 	class(self).SetCollideSeparationRayEnabled(value)
 	return self
 }
@@ -234,12 +234,12 @@ Optional array of body [Resource.ID] to exclude from collision. Use [CollisionOb
 [CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) ExcludeBodies() []RID.Any {
+func (self Instance) ExcludeBodies() []RID.Any { //gd:PhysicsTestMotionParameters2D.exclude_bodies
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludeBodies())))
 }
 
 // SetExcludeBodies sets the property returned by [GetExcludeBodies]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeBodies(value []RID.Any) Instance {
+func (self Instance) SetExcludeBodies(value []RID.Any) Instance { //gd:PhysicsTestMotionParameters2D.exclude_bodies
 	class(self).SetExcludeBodies(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -249,12 +249,12 @@ Optional array of object unique instance ID to exclude from collision. See [Obje
 
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
-func (self Instance) ExcludeObjects() []int {
+func (self Instance) ExcludeObjects() []int { //gd:PhysicsTestMotionParameters2D.exclude_objects
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetExcludeObjects())))
 }
 
 // SetExcludeObjects sets the property returned by [GetExcludeObjects]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeObjects(value []int) Instance {
+func (self Instance) SetExcludeObjects(value []int) Instance { //gd:PhysicsTestMotionParameters2D.exclude_objects
 	class(self).SetExcludeObjects(gd.ArrayFromSlice[Array.Contains[int64]](value))
 	return self
 }
@@ -266,12 +266,12 @@ If set to false, only collisions resulting from the motion are reported, which i
 
 [CharacterBody2D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D
 */
-func (self Instance) RecoveryAsCollision() bool {
+func (self Instance) RecoveryAsCollision() bool { //gd:PhysicsTestMotionParameters2D.recovery_as_collision
 	return bool(class(self).IsRecoveryAsCollisionEnabled())
 }
 
 // SetRecoveryAsCollision sets the property returned by [IsRecoveryAsCollisionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRecoveryAsCollision(value bool) Instance {
+func (self Instance) SetRecoveryAsCollision(value bool) Instance { //gd:PhysicsTestMotionParameters2D.recovery_as_collision
 	class(self).SetRecoveryAsCollisionEnabled(value)
 	return self
 }

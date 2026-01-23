@@ -218,12 +218,12 @@ func New() Instance {
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:Sprite2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:Sprite2D.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -235,12 +235,12 @@ Note: For games with a pixel art aesthetic, textures may appear deformed when ce
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) Centered() bool {
+func (self Instance) Centered() bool { //gd:Sprite2D.centered
 	return bool(class(self).IsCentered())
 }
 
 // SetCentered sets the property returned by [IsCentered]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCentered(value bool) Instance {
+func (self Instance) SetCentered(value bool) Instance { //gd:Sprite2D.centered
 	class(self).SetCentered(value)
 	return self
 }
@@ -252,12 +252,12 @@ Note: When you increase [Offset].y in Sprite2D, the sprite moves downward on scr
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Offset
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:Sprite2D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:Sprite2D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 If true, texture is flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:Sprite2D.flip_h
 	return bool(class(self).IsFlippedH())
 }
 
 // SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:Sprite2D.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, texture is flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:Sprite2D.flip_v
 	return bool(class(self).IsFlippedV())
 }
 
 // SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:Sprite2D.flip_v
 	class(self).SetFlipV(value)
 	return self
 }
@@ -293,12 +293,12 @@ The number of columns in the sprite sheet. When this property is changed, [Frame
 
 [Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
 */
-func (self Instance) Hframes() int {
+func (self Instance) Hframes() int { //gd:Sprite2D.hframes
 	return int(int(class(self).GetHframes()))
 }
 
 // SetHframes sets the property returned by [GetHframes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHframes(value int) Instance {
+func (self Instance) SetHframes(value int) Instance { //gd:Sprite2D.hframes
 	class(self).SetHframes(int64(value))
 	return self
 }
@@ -308,12 +308,12 @@ The number of rows in the sprite sheet. When this property is changed, [Frame] i
 
 [Frame]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Frame
 */
-func (self Instance) Vframes() int {
+func (self Instance) Vframes() int { //gd:Sprite2D.vframes
 	return int(int(class(self).GetVframes()))
 }
 
 // SetVframes sets the property returned by [GetVframes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVframes(value int) Instance {
+func (self Instance) SetVframes(value int) Instance { //gd:Sprite2D.vframes
 	class(self).SetVframes(int64(value))
 	return self
 }
@@ -324,12 +324,12 @@ Current frame to display from sprite sheet. [Hframes] or [Vframes] must be great
 [Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Hframes
 [Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Vframes
 */
-func (self Instance) Frame() int {
+func (self Instance) Frame() int { //gd:Sprite2D.frame
 	return int(int(class(self).GetFrame()))
 }
 
 // SetFrame sets the property returned by [GetFrame]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrame(value int) Instance {
+func (self Instance) SetFrame(value int) Instance { //gd:Sprite2D.frame
 	class(self).SetFrame(int64(value))
 	return self
 }
@@ -341,12 +341,12 @@ Coordinates of the frame to display from sprite sheet. This is as an alias for t
 [Hframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Hframes
 [Vframes]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Vframes
 */
-func (self Instance) FrameCoords() Vector2i.XY {
+func (self Instance) FrameCoords() Vector2i.XY { //gd:Sprite2D.frame_coords
 	return Vector2i.XY(class(self).GetFrameCoords())
 }
 
 // SetFrameCoords sets the property returned by [GetFrameCoords]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrameCoords(value Vector2i.XY) Instance {
+func (self Instance) SetFrameCoords(value Vector2i.XY) Instance { //gd:Sprite2D.frame_coords
 	class(self).SetFrameCoords(Vector2i.XY(value))
 	return self
 }
@@ -361,12 +361,12 @@ Note: When using a custom [Shader] on a [Sprite2D], the UV shader built-in will 
 [Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
-func (self Instance) RegionEnabled() bool {
+func (self Instance) RegionEnabled() bool { //gd:Sprite2D.region_enabled
 	return bool(class(self).IsRegionEnabled())
 }
 
 // SetRegionEnabled sets the property returned by [IsRegionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionEnabled(value bool) Instance {
+func (self Instance) SetRegionEnabled(value bool) Instance { //gd:Sprite2D.region_enabled
 	class(self).SetRegionEnabled(value)
 	return self
 }
@@ -376,12 +376,12 @@ The region of the atlas texture to display. [RegionEnabled] must be true.
 
 [RegionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionEnabled
 */
-func (self Instance) RegionRect() Rect2.PositionSize {
+func (self Instance) RegionRect() Rect2.PositionSize { //gd:Sprite2D.region_rect
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
 // SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance { //gd:Sprite2D.region_rect
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 	return self
 }
@@ -392,12 +392,12 @@ If true, the area outside of the [RegionRect] is clipped to avoid bleeding of th
 [RegionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionEnabled
 [RegionRect]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.RegionRect
 */
-func (self Instance) RegionFilterClipEnabled() bool {
+func (self Instance) RegionFilterClipEnabled() bool { //gd:Sprite2D.region_filter_clip_enabled
 	return bool(class(self).IsRegionFilterClipEnabled())
 }
 
 // SetRegionFilterClipEnabled sets the property returned by [IsRegionFilterClipEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionFilterClipEnabled(value bool) Instance {
+func (self Instance) SetRegionFilterClipEnabled(value bool) Instance { //gd:Sprite2D.region_filter_clip_enabled
 	class(self).SetRegionFilterClipEnabled(value)
 	return self
 }

@@ -161,12 +161,12 @@ func New() Instance {
 /*
 The operator to be used.
 */
-func (self Instance) Operator() Operator {
+func (self Instance) Operator() Operator { //gd:VisualShaderNodeVectorOp.operator
 	return Operator(class(self).GetOperator())
 }
 
 // SetOperator sets the property returned by [GetOperator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOperator(value Operator) Instance {
+func (self Instance) SetOperator(value Operator) Instance { //gd:VisualShaderNodeVectorOp.operator
 	class(self).SetOperator(value)
 	return self
 }

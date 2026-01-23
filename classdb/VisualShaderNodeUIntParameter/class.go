@@ -165,12 +165,12 @@ func New() Instance {
 /*
 If true, the node will have a custom default value.
 */
-func (self Instance) DefaultValueEnabled() bool {
+func (self Instance) DefaultValueEnabled() bool { //gd:VisualShaderNodeUIntParameter.default_value_enabled
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
 // SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValueEnabled(value bool) Instance {
+func (self Instance) SetDefaultValueEnabled(value bool) Instance { //gd:VisualShaderNodeUIntParameter.default_value_enabled
 	class(self).SetDefaultValueEnabled(value)
 	return self
 }
@@ -180,12 +180,12 @@ Default value of this parameter, which will be used if not set externally. [Defa
 
 [DefaultValueEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeUIntParameter#Instance.DefaultValueEnabled
 */
-func (self Instance) DefaultValue() int {
+func (self Instance) DefaultValue() int { //gd:VisualShaderNodeUIntParameter.default_value
 	return int(int(class(self).GetDefaultValue()))
 }
 
 // SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValue(value int) Instance {
+func (self Instance) SetDefaultValue(value int) Instance { //gd:VisualShaderNodeUIntParameter.default_value
 	class(self).SetDefaultValue(int64(value))
 	return self
 }

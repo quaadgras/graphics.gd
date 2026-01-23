@@ -454,12 +454,12 @@ The maximum number of steps that can be stored in the undo/redo history. If the 
 
 [Undo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Undo
 */
-func (self Instance) MaxSteps() int {
+func (self Instance) MaxSteps() int { //gd:UndoRedo.max_steps
 	return int(int(class(self).GetMaxSteps()))
 }
 
 // SetMaxSteps sets the property returned by [GetMaxSteps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSteps(value int) Instance {
+func (self Instance) SetMaxSteps(value int) Instance { //gd:UndoRedo.max_steps
 	class(self).SetMaxSteps(int64(value))
 	return self
 }

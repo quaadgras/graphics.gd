@@ -171,12 +171,12 @@ func New() Instance {
 /*
 The line's color.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:StyleBoxLine.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:StyleBoxLine.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -186,12 +186,12 @@ The number of pixels the line will extend before the [StyleBoxLine]'s bounds. If
 
 [StyleBoxLine]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxLine
 */
-func (self Instance) GrowBegin() Float.X {
+func (self Instance) GrowBegin() Float.X { //gd:StyleBoxLine.grow_begin
 	return Float.X(Float.X(class(self).GetGrowBegin()))
 }
 
 // SetGrowBegin sets the property returned by [GetGrowBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGrowBegin(value Float.X) Instance {
+func (self Instance) SetGrowBegin(value Float.X) Instance { //gd:StyleBoxLine.grow_begin
 	class(self).SetGrowBegin(float64(value))
 	return self
 }
@@ -201,12 +201,12 @@ The number of pixels the line will extend past the [StyleBoxLine]'s bounds. If s
 
 [StyleBoxLine]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxLine
 */
-func (self Instance) GrowEnd() Float.X {
+func (self Instance) GrowEnd() Float.X { //gd:StyleBoxLine.grow_end
 	return Float.X(Float.X(class(self).GetGrowEnd()))
 }
 
 // SetGrowEnd sets the property returned by [GetGrowEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGrowEnd(value Float.X) Instance {
+func (self Instance) SetGrowEnd(value Float.X) Instance { //gd:StyleBoxLine.grow_end
 	class(self).SetGrowEnd(float64(value))
 	return self
 }
@@ -214,12 +214,12 @@ func (self Instance) SetGrowEnd(value Float.X) Instance {
 /*
 The line's thickness in pixels.
 */
-func (self Instance) Thickness() int {
+func (self Instance) Thickness() int { //gd:StyleBoxLine.thickness
 	return int(int(class(self).GetThickness()))
 }
 
 // SetThickness sets the property returned by [GetThickness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThickness(value int) Instance {
+func (self Instance) SetThickness(value int) Instance { //gd:StyleBoxLine.thickness
 	class(self).SetThickness(int64(value))
 	return self
 }
@@ -227,12 +227,12 @@ func (self Instance) SetThickness(value int) Instance {
 /*
 If true, the line will be vertical. If false, the line will be horizontal.
 */
-func (self Instance) Vertical() bool {
+func (self Instance) Vertical() bool { //gd:StyleBoxLine.vertical
 	return bool(class(self).IsVertical())
 }
 
 // SetVertical sets the property returned by [IsVertical]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertical(value bool) Instance {
+func (self Instance) SetVertical(value bool) Instance { //gd:StyleBoxLine.vertical
 	class(self).SetVertical(value)
 	return self
 }

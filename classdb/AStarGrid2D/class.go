@@ -505,12 +505,12 @@ The region of grid cells available for pathfinding. If changed, [Update] needs t
 
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) Region() Rect2i.PositionSize {
+func (self Instance) Region() Rect2i.PositionSize { //gd:AStarGrid2D.region
 	return Rect2i.PositionSize(class(self).GetRegion())
 }
 
 // SetRegion sets the property returned by [GetRegion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegion(value Rect2i.PositionSize) Instance {
+func (self Instance) SetRegion(value Rect2i.PositionSize) Instance { //gd:AStarGrid2D.region
 	class(self).SetRegion(Rect2i.PositionSize(value))
 	return self
 }
@@ -521,12 +521,12 @@ The size of the grid (number of cells of size [CellSize] on each axis). If chang
 [CellSize]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.CellSize
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) Size() Vector2i.XY {
+func (self Instance) Size() Vector2i.XY { //gd:AStarGrid2D.size
 	return Vector2i.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2i.XY) Instance {
+func (self Instance) SetSize(value Vector2i.XY) Instance { //gd:AStarGrid2D.size
 	class(self).SetSize(Vector2i.XY(value))
 	return self
 }
@@ -537,12 +537,12 @@ The offset of the grid which will be applied to calculate the resulting point po
 [GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.GetPointPath
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:AStarGrid2D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:AStarGrid2D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -553,12 +553,12 @@ The size of the point cell which will be applied to calculate the resulting poin
 [GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.GetPointPath
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) CellSize() Vector2.XY {
+func (self Instance) CellSize() Vector2.XY { //gd:AStarGrid2D.cell_size
 	return Vector2.XY(class(self).GetCellSize())
 }
 
 // SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellSize(value Vector2.XY) Instance {
+func (self Instance) SetCellSize(value Vector2.XY) Instance { //gd:AStarGrid2D.cell_size
 	class(self).SetCellSize(Vector2.XY(value))
 	return self
 }
@@ -568,12 +568,12 @@ The cell shape. Affects how the positions are placed in the grid. If changed, [U
 
 [Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
 */
-func (self Instance) CellShape() CellShape {
+func (self Instance) CellShape() CellShape { //gd:AStarGrid2D.cell_shape
 	return CellShape(class(self).GetCellShape())
 }
 
 // SetCellShape sets the property returned by [GetCellShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellShape(value CellShape) Instance {
+func (self Instance) SetCellShape(value CellShape) Instance { //gd:AStarGrid2D.cell_shape
 	class(self).SetCellShape(value)
 	return self
 }
@@ -583,12 +583,12 @@ Enables or disables jumping to skip up the intermediate points and speeds up the
 
 Note: Currently, toggling it on disables the consideration of weight scaling in pathfinding.
 */
-func (self Instance) JumpingEnabled() bool {
+func (self Instance) JumpingEnabled() bool { //gd:AStarGrid2D.jumping_enabled
 	return bool(class(self).IsJumpingEnabled())
 }
 
 // SetJumpingEnabled sets the property returned by [IsJumpingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJumpingEnabled(value bool) Instance {
+func (self Instance) SetJumpingEnabled(value bool) Instance { //gd:AStarGrid2D.jumping_enabled
 	class(self).SetJumpingEnabled(value)
 	return self
 }
@@ -598,12 +598,12 @@ The default [Heuristic] which will be used to calculate the cost between two poi
 
 [ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
 */
-func (self Instance) DefaultComputeHeuristic() Heuristic {
+func (self Instance) DefaultComputeHeuristic() Heuristic { //gd:AStarGrid2D.default_compute_heuristic
 	return Heuristic(class(self).GetDefaultComputeHeuristic())
 }
 
 // SetDefaultComputeHeuristic sets the property returned by [GetDefaultComputeHeuristic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultComputeHeuristic(value Heuristic) Instance {
+func (self Instance) SetDefaultComputeHeuristic(value Heuristic) Instance { //gd:AStarGrid2D.default_compute_heuristic
 	class(self).SetDefaultComputeHeuristic(value)
 	return self
 }
@@ -613,12 +613,12 @@ The default [Heuristic] which will be used to calculate the cost between the poi
 
 [EstimateCost]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Interface
 */
-func (self Instance) DefaultEstimateHeuristic() Heuristic {
+func (self Instance) DefaultEstimateHeuristic() Heuristic { //gd:AStarGrid2D.default_estimate_heuristic
 	return Heuristic(class(self).GetDefaultEstimateHeuristic())
 }
 
 // SetDefaultEstimateHeuristic sets the property returned by [GetDefaultEstimateHeuristic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) Instance {
+func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) Instance { //gd:AStarGrid2D.default_estimate_heuristic
 	class(self).SetDefaultEstimateHeuristic(value)
 	return self
 }
@@ -626,12 +626,12 @@ func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) Instance {
 /*
 A specific [DiagonalMode] mode which will force the path to avoid or accept the specified diagonals.
 */
-func (self Instance) DiagonalMode() DiagonalMode {
+func (self Instance) DiagonalMode() DiagonalMode { //gd:AStarGrid2D.diagonal_mode
 	return DiagonalMode(class(self).GetDiagonalMode())
 }
 
 // SetDiagonalMode sets the property returned by [GetDiagonalMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiagonalMode(value DiagonalMode) Instance {
+func (self Instance) SetDiagonalMode(value DiagonalMode) Instance { //gd:AStarGrid2D.diagonal_mode
 	class(self).SetDiagonalMode(value)
 	return self
 }

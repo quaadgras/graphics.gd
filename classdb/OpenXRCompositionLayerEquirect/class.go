@@ -170,12 +170,12 @@ func New() Instance {
 /*
 The radius of the sphere.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:OpenXRCompositionLayerEquirect.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:OpenXRCompositionLayerEquirect.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -183,12 +183,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The central horizontal angle of the sphere. Used to set the width.
 */
-func (self Instance) CentralHorizontalAngle() Angle.Radians {
+func (self Instance) CentralHorizontalAngle() Angle.Radians { //gd:OpenXRCompositionLayerEquirect.central_horizontal_angle
 	return Angle.Radians(Float.X(class(self).GetCentralHorizontalAngle()))
 }
 
 // SetCentralHorizontalAngle sets the property returned by [GetCentralHorizontalAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) Instance {
+func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) Instance { //gd:OpenXRCompositionLayerEquirect.central_horizontal_angle
 	class(self).SetCentralHorizontalAngle(float64(value))
 	return self
 }
@@ -198,12 +198,12 @@ The upper vertical angle of the sphere. Used (together with [LowerVerticalAngle]
 
 [LowerVerticalAngle]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayerEquirect#Instance.LowerVerticalAngle
 */
-func (self Instance) UpperVerticalAngle() Angle.Radians {
+func (self Instance) UpperVerticalAngle() Angle.Radians { //gd:OpenXRCompositionLayerEquirect.upper_vertical_angle
 	return Angle.Radians(Float.X(class(self).GetUpperVerticalAngle()))
 }
 
 // SetUpperVerticalAngle sets the property returned by [GetUpperVerticalAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUpperVerticalAngle(value Angle.Radians) Instance {
+func (self Instance) SetUpperVerticalAngle(value Angle.Radians) Instance { //gd:OpenXRCompositionLayerEquirect.upper_vertical_angle
 	class(self).SetUpperVerticalAngle(float64(value))
 	return self
 }
@@ -213,12 +213,12 @@ The lower vertical angle of the sphere. Used (together with [UpperVerticalAngle]
 
 [UpperVerticalAngle]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayerEquirect#Instance.UpperVerticalAngle
 */
-func (self Instance) LowerVerticalAngle() Angle.Radians {
+func (self Instance) LowerVerticalAngle() Angle.Radians { //gd:OpenXRCompositionLayerEquirect.lower_vertical_angle
 	return Angle.Radians(Float.X(class(self).GetLowerVerticalAngle()))
 }
 
 // SetLowerVerticalAngle sets the property returned by [GetLowerVerticalAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLowerVerticalAngle(value Angle.Radians) Instance {
+func (self Instance) SetLowerVerticalAngle(value Angle.Radians) Instance { //gd:OpenXRCompositionLayerEquirect.lower_vertical_angle
 	class(self).SetLowerVerticalAngle(float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetLowerVerticalAngle(value Angle.Radians) Instance {
 /*
 The number of segments to use in the fallback mesh.
 */
-func (self Instance) FallbackSegments() int {
+func (self Instance) FallbackSegments() int { //gd:OpenXRCompositionLayerEquirect.fallback_segments
 	return int(int(class(self).GetFallbackSegments()))
 }
 
 // SetFallbackSegments sets the property returned by [GetFallbackSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbackSegments(value int) Instance {
+func (self Instance) SetFallbackSegments(value int) Instance { //gd:OpenXRCompositionLayerEquirect.fallback_segments
 	class(self).SetFallbackSegments(int64(value))
 	return self
 }

@@ -171,12 +171,12 @@ If true, performs the logic operation defined in [LogicOp].
 
 [LogicOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendState#Instance.LogicOp
 */
-func (self Instance) EnableLogicOp() bool {
+func (self Instance) EnableLogicOp() bool { //gd:RDPipelineColorBlendState.enable_logic_op
 	return bool(class(self).GetEnableLogicOp())
 }
 
 // SetEnableLogicOp sets the property returned by [GetEnableLogicOp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableLogicOp(value bool) Instance {
+func (self Instance) SetEnableLogicOp(value bool) Instance { //gd:RDPipelineColorBlendState.enable_logic_op
 	class(self).SetEnableLogicOp(value)
 	return self
 }
@@ -186,12 +186,12 @@ The logic operation to perform for blending. Only effective if [EnableLogicOp] i
 
 [EnableLogicOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendState#Instance.EnableLogicOp
 */
-func (self Instance) LogicOp() Rendering.LogicOperation {
+func (self Instance) LogicOp() Rendering.LogicOperation { //gd:RDPipelineColorBlendState.logic_op
 	return Rendering.LogicOperation(class(self).GetLogicOp())
 }
 
 // SetLogicOp sets the property returned by [GetLogicOp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLogicOp(value Rendering.LogicOperation) Instance {
+func (self Instance) SetLogicOp(value Rendering.LogicOperation) Instance { //gd:RDPipelineColorBlendState.logic_op
 	class(self).SetLogicOp(value)
 	return self
 }
@@ -201,12 +201,12 @@ The constant color to blend with. See also [RenderingDevice.DrawListSetBlendCons
 
 [RenderingDevice.DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.DrawListSetBlendConstants
 */
-func (self Instance) BlendConstant() Color.RGBA {
+func (self Instance) BlendConstant() Color.RGBA { //gd:RDPipelineColorBlendState.blend_constant
 	return Color.RGBA(class(self).GetBlendConstant())
 }
 
 // SetBlendConstant sets the property returned by [GetBlendConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendConstant(value Color.RGBA) Instance {
+func (self Instance) SetBlendConstant(value Color.RGBA) Instance { //gd:RDPipelineColorBlendState.blend_constant
 	class(self).SetBlendConstant(Color.RGBA(value))
 	return self
 }
@@ -214,12 +214,12 @@ func (self Instance) SetBlendConstant(value Color.RGBA) Instance {
 /*
 The attachments that are blended together.
 */
-func (self Instance) Attachments() []RDPipelineColorBlendStateAttachment.Instance {
+func (self Instance) Attachments() []RDPipelineColorBlendStateAttachment.Instance { //gd:RDPipelineColorBlendState.attachments
 	return []RDPipelineColorBlendStateAttachment.Instance(gd.ArrayAs[[]RDPipelineColorBlendStateAttachment.Instance](gd.InternalArray(class(self).GetAttachments())))
 }
 
 // SetAttachments sets the property returned by [GetAttachments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) Instance {
+func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) Instance { //gd:RDPipelineColorBlendState.attachments
 	class(self).SetAttachments(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]](value))
 	return self
 }

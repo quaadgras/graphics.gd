@@ -191,12 +191,12 @@ For example, a value of 1 scrolls at the same speed as the camera. A value great
 
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) ScrollScale() Vector2.XY {
+func (self Instance) ScrollScale() Vector2.XY { //gd:Parallax2D.scroll_scale
 	return Vector2.XY(class(self).GetScrollScale())
 }
 
 // SetScrollScale sets the property returned by [GetScrollScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollScale(value Vector2.XY) Instance {
+func (self Instance) SetScrollScale(value Vector2.XY) Instance { //gd:Parallax2D.scroll_scale
 	class(self).SetScrollScale(Vector2.XY(value))
 	return self
 }
@@ -211,12 +211,12 @@ Note: Values will loop if [RepeatSize] is set higher than 0.
 [RepeatSize]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.RepeatSize
 [ScreenOffset]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.ScreenOffset
 */
-func (self Instance) ScrollOffset() Vector2.XY {
+func (self Instance) ScrollOffset() Vector2.XY { //gd:Parallax2D.scroll_offset
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
 // SetScrollOffset sets the property returned by [GetScrollOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollOffset(value Vector2.XY) Instance {
+func (self Instance) SetScrollOffset(value Vector2.XY) Instance { //gd:Parallax2D.scroll_offset
 	class(self).SetScrollOffset(Vector2.XY(value))
 	return self
 }
@@ -226,12 +226,12 @@ Repeats the [Texture2D] of each of this node's children and offsets them by this
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) RepeatSize() Vector2.XY {
+func (self Instance) RepeatSize() Vector2.XY { //gd:Parallax2D.repeat_size
 	return Vector2.XY(class(self).GetRepeatSize())
 }
 
 // SetRepeatSize sets the property returned by [GetRepeatSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeatSize(value Vector2.XY) Instance {
+func (self Instance) SetRepeatSize(value Vector2.XY) Instance { //gd:Parallax2D.repeat_size
 	class(self).SetRepeatSize(Vector2.XY(value))
 	return self
 }
@@ -239,12 +239,12 @@ func (self Instance) SetRepeatSize(value Vector2.XY) Instance {
 /*
 Velocity at which the offset scrolls automatically, in pixels per second.
 */
-func (self Instance) Autoscroll() Vector2.XY {
+func (self Instance) Autoscroll() Vector2.XY { //gd:Parallax2D.autoscroll
 	return Vector2.XY(class(self).GetAutoscroll())
 }
 
 // SetAutoscroll sets the property returned by [GetAutoscroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoscroll(value Vector2.XY) Instance {
+func (self Instance) SetAutoscroll(value Vector2.XY) Instance { //gd:Parallax2D.autoscroll
 	class(self).SetAutoscroll(Vector2.XY(value))
 	return self
 }
@@ -254,12 +254,12 @@ Overrides the amount of times the texture repeats. Each texture copy spreads eve
 
 [RepeatSize]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.RepeatSize
 */
-func (self Instance) RepeatTimes() int {
+func (self Instance) RepeatTimes() int { //gd:Parallax2D.repeat_times
 	return int(int(class(self).GetRepeatTimes()))
 }
 
 // SetRepeatTimes sets the property returned by [GetRepeatTimes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRepeatTimes(value int) Instance {
+func (self Instance) SetRepeatTimes(value int) Instance { //gd:Parallax2D.repeat_times
 	class(self).SetRepeatTimes(int64(value))
 	return self
 }
@@ -270,12 +270,12 @@ Top-left limits for scrolling to begin. If the camera is outside of this limit, 
 [LimitEnd]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.LimitEnd
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) LimitBegin() Vector2.XY {
+func (self Instance) LimitBegin() Vector2.XY { //gd:Parallax2D.limit_begin
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
 // SetLimitBegin sets the property returned by [GetLimitBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitBegin(value Vector2.XY) Instance {
+func (self Instance) SetLimitBegin(value Vector2.XY) Instance { //gd:Parallax2D.limit_begin
 	class(self).SetLimitBegin(Vector2.XY(value))
 	return self
 }
@@ -286,12 +286,12 @@ Bottom-right limits for scrolling to end. If the camera is outside of this limit
 [LimitBegin]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.LimitBegin
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) LimitEnd() Vector2.XY {
+func (self Instance) LimitEnd() Vector2.XY { //gd:Parallax2D.limit_end
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
 // SetLimitEnd sets the property returned by [GetLimitEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitEnd(value Vector2.XY) Instance {
+func (self Instance) SetLimitEnd(value Vector2.XY) Instance { //gd:Parallax2D.limit_end
 	class(self).SetLimitEnd(Vector2.XY(value))
 	return self
 }
@@ -303,12 +303,12 @@ If true, this [Parallax2D] is offset by the current camera's position. If the [P
 [CanvasLayer.FollowViewportEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportEnabled
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) FollowViewport() bool {
+func (self Instance) FollowViewport() bool { //gd:Parallax2D.follow_viewport
 	return bool(class(self).GetFollowViewport())
 }
 
 // SetFollowViewport sets the property returned by [GetFollowViewport]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowViewport(value bool) Instance {
+func (self Instance) SetFollowViewport(value bool) Instance { //gd:Parallax2D.follow_viewport
 	class(self).SetFollowViewport(value)
 	return self
 }
@@ -318,12 +318,12 @@ If true, [Parallax2D]'s position is not affected by the position of the camera.
 
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) IgnoreCameraScroll() bool {
+func (self Instance) IgnoreCameraScroll() bool { //gd:Parallax2D.ignore_camera_scroll
 	return bool(class(self).IsIgnoreCameraScroll())
 }
 
 // SetIgnoreCameraScroll sets the property returned by [IsIgnoreCameraScroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreCameraScroll(value bool) Instance {
+func (self Instance) SetIgnoreCameraScroll(value bool) Instance { //gd:Parallax2D.ignore_camera_scroll
 	class(self).SetIgnoreCameraScroll(value)
 	return self
 }
@@ -334,12 +334,12 @@ Offset used to scroll this [Parallax2D]. This value is updated automatically unl
 [IgnoreCameraScroll]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.IgnoreCameraScroll
 [Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
 */
-func (self Instance) ScreenOffset() Vector2.XY {
+func (self Instance) ScreenOffset() Vector2.XY { //gd:Parallax2D.screen_offset
 	return Vector2.XY(class(self).GetScreenOffset())
 }
 
 // SetScreenOffset sets the property returned by [GetScreenOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScreenOffset(value Vector2.XY) Instance {
+func (self Instance) SetScreenOffset(value Vector2.XY) Instance { //gd:Parallax2D.screen_offset
 	class(self).SetScreenOffset(Vector2.XY(value))
 	return self
 }

@@ -303,12 +303,12 @@ func New() Instance {
 /*
 Lock the body's linear movement in the X axis.
 */
-func (self Instance) AxisLockLinearX() bool {
+func (self Instance) AxisLockLinearX() bool { //gd:PhysicsBody3D.axis_lock_linear_x
 	return bool(class(self).GetAxisLock(1))
 }
 
 // SetAxisLockLinearX sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockLinearX(value bool) Instance {
+func (self Instance) SetAxisLockLinearX(value bool) Instance { //gd:PhysicsBody3D.axis_lock_linear_x
 	class(self).SetAxisLock(1, value)
 	return self
 }
@@ -316,12 +316,12 @@ func (self Instance) SetAxisLockLinearX(value bool) Instance {
 /*
 Lock the body's linear movement in the Y axis.
 */
-func (self Instance) AxisLockLinearY() bool {
+func (self Instance) AxisLockLinearY() bool { //gd:PhysicsBody3D.axis_lock_linear_y
 	return bool(class(self).GetAxisLock(2))
 }
 
 // SetAxisLockLinearY sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockLinearY(value bool) Instance {
+func (self Instance) SetAxisLockLinearY(value bool) Instance { //gd:PhysicsBody3D.axis_lock_linear_y
 	class(self).SetAxisLock(2, value)
 	return self
 }
@@ -329,12 +329,12 @@ func (self Instance) SetAxisLockLinearY(value bool) Instance {
 /*
 Lock the body's linear movement in the Z axis.
 */
-func (self Instance) AxisLockLinearZ() bool {
+func (self Instance) AxisLockLinearZ() bool { //gd:PhysicsBody3D.axis_lock_linear_z
 	return bool(class(self).GetAxisLock(4))
 }
 
 // SetAxisLockLinearZ sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockLinearZ(value bool) Instance {
+func (self Instance) SetAxisLockLinearZ(value bool) Instance { //gd:PhysicsBody3D.axis_lock_linear_z
 	class(self).SetAxisLock(4, value)
 	return self
 }
@@ -342,12 +342,12 @@ func (self Instance) SetAxisLockLinearZ(value bool) Instance {
 /*
 Lock the body's rotation in the X axis.
 */
-func (self Instance) AxisLockAngularX() bool {
+func (self Instance) AxisLockAngularX() bool { //gd:PhysicsBody3D.axis_lock_angular_x
 	return bool(class(self).GetAxisLock(8))
 }
 
 // SetAxisLockAngularX sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockAngularX(value bool) Instance {
+func (self Instance) SetAxisLockAngularX(value bool) Instance { //gd:PhysicsBody3D.axis_lock_angular_x
 	class(self).SetAxisLock(8, value)
 	return self
 }
@@ -355,12 +355,12 @@ func (self Instance) SetAxisLockAngularX(value bool) Instance {
 /*
 Lock the body's rotation in the Y axis.
 */
-func (self Instance) AxisLockAngularY() bool {
+func (self Instance) AxisLockAngularY() bool { //gd:PhysicsBody3D.axis_lock_angular_y
 	return bool(class(self).GetAxisLock(16))
 }
 
 // SetAxisLockAngularY sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockAngularY(value bool) Instance {
+func (self Instance) SetAxisLockAngularY(value bool) Instance { //gd:PhysicsBody3D.axis_lock_angular_y
 	class(self).SetAxisLock(16, value)
 	return self
 }
@@ -368,12 +368,12 @@ func (self Instance) SetAxisLockAngularY(value bool) Instance {
 /*
 Lock the body's rotation in the Z axis.
 */
-func (self Instance) AxisLockAngularZ() bool {
+func (self Instance) AxisLockAngularZ() bool { //gd:PhysicsBody3D.axis_lock_angular_z
 	return bool(class(self).GetAxisLock(32))
 }
 
 // SetAxisLockAngularZ sets the property returned by [GetAxisLock]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisLockAngularZ(value bool) Instance {
+func (self Instance) SetAxisLockAngularZ(value bool) Instance { //gd:PhysicsBody3D.axis_lock_angular_z
 	class(self).SetAxisLock(32, value)
 	return self
 }

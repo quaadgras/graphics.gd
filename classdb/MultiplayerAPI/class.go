@@ -332,12 +332,12 @@ The peer object to handle the RPC system (effectively enabling networking when s
 
 [IsServer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.IsServer
 */
-func (self Instance) MultiplayerPeer() MultiplayerPeer.Instance {
+func (self Instance) MultiplayerPeer() MultiplayerPeer.Instance { //gd:MultiplayerAPI.multiplayer_peer
 	return MultiplayerPeer.Instance(class(self).GetMultiplayerPeer())
 }
 
 // SetMultiplayerPeer sets the property returned by [GetMultiplayerPeer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) Instance {
+func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) Instance { //gd:MultiplayerAPI.multiplayer_peer
 	class(self).SetMultiplayerPeer(value)
 	return self
 }

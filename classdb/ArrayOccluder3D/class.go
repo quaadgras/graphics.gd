@@ -186,7 +186,7 @@ Note: The occluder is always updated after setting this value. If creating occlu
 [SetArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.SetArrays
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetVertices(value []Vector3.XYZ) Instance {
+func (self Instance) SetVertices(value []Vector3.XYZ) Instance { //gd:ArrayOccluder3D.vertices
 	class(self).SetVertices(Packed.New(value...))
 	return self
 }
@@ -200,7 +200,7 @@ Note: The occluder is always updated after setting this value. If creating occlu
 [Vertices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Vertices
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetIndices(value []int32) Instance {
+func (self Instance) SetIndices(value []int32) Instance { //gd:ArrayOccluder3D.indices
 	class(self).SetIndices(Packed.New(value...))
 	return self
 }

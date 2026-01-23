@@ -183,12 +183,12 @@ Particle collision can also be disabled on a per-process material basis by setti
 [ParticleProcessMaterial.CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) CullMask() int {
+func (self Instance) CullMask() int { //gd:GPUParticlesCollision3D.cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMask(value int) Instance {
+func (self Instance) SetCullMask(value int) Instance { //gd:GPUParticlesCollision3D.cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }

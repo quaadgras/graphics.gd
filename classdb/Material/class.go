@@ -276,12 +276,12 @@ Note: This will not impact how transparent objects are sorted relative to opaque
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
 */
-func (self Instance) RenderPriority() RenderPriority {
+func (self Instance) RenderPriority() RenderPriority { //gd:Material.render_priority
 	return RenderPriority(RenderPriority(class(self).GetRenderPriority()))
 }
 
 // SetRenderPriority sets the property returned by [GetRenderPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderPriority(value RenderPriority) Instance {
+func (self Instance) SetRenderPriority(value RenderPriority) Instance { //gd:Material.render_priority
 	class(self).SetRenderPriority(int64(value))
 	return self
 }
@@ -299,12 +299,12 @@ Note: This only applies to [StandardMaterial3D]s and [ShaderMaterial]s with type
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
 */
-func (self Instance) NextPass() Instance {
+func (self Instance) NextPass() Instance { //gd:Material.next_pass
 	return Instance(class(self).GetNextPass())
 }
 
 // SetNextPass sets the property returned by [GetNextPass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNextPass(value Instance) Instance {
+func (self Instance) SetNextPass(value Instance) Instance { //gd:Material.next_pass
 	class(self).SetNextPass(value)
 	return self
 }

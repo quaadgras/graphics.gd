@@ -166,12 +166,12 @@ A [Vector3.XYZ] constant which represents the state of this node.
 
 [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
-func (self Instance) Constant() Vector3.XYZ {
+func (self Instance) Constant() Vector3.XYZ { //gd:VisualShaderNodeVec3Constant.constant
 	return Vector3.XYZ(class(self).GetConstant())
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value Vector3.XYZ) Instance {
+func (self Instance) SetConstant(value Vector3.XYZ) Instance { //gd:VisualShaderNodeVec3Constant.constant
 	class(self).SetConstant(Vector3.XYZ(value))
 	return self
 }

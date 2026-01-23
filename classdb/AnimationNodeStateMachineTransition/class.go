@@ -188,12 +188,12 @@ Note: [AnimationNodeStateMachine] transitions the current state immediately afte
 [AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
 [XfadeTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.XfadeTime
 */
-func (self Instance) XfadeTime() Float.X {
+func (self Instance) XfadeTime() Float.X { //gd:AnimationNodeStateMachineTransition.xfade_time
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
 // SetXfadeTime sets the property returned by [GetXfadeTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXfadeTime(value Float.X) Instance {
+func (self Instance) SetXfadeTime(value Float.X) Instance { //gd:AnimationNodeStateMachineTransition.xfade_time
 	class(self).SetXfadeTime(float64(value))
 	return self
 }
@@ -203,12 +203,12 @@ Ease curve for better control over cross-fade between this state and the next. S
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) XfadeCurve() Curve.Instance {
+func (self Instance) XfadeCurve() Curve.Instance { //gd:AnimationNodeStateMachineTransition.xfade_curve
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
 // SetXfadeCurve sets the property returned by [GetXfadeCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
+func (self Instance) SetXfadeCurve(value Curve.Instance) Instance { //gd:AnimationNodeStateMachineTransition.xfade_curve
 	class(self).SetXfadeCurve(value)
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
 /*
 If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
-func (self Instance) BreakLoopAtEnd() bool {
+func (self Instance) BreakLoopAtEnd() bool { //gd:AnimationNodeStateMachineTransition.break_loop_at_end
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
 // SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBreakLoopAtEnd(value bool) Instance {
+func (self Instance) SetBreakLoopAtEnd(value bool) Instance { //gd:AnimationNodeStateMachineTransition.break_loop_at_end
 	class(self).SetBreakLoopAtEnd(value)
 	return self
 }
@@ -229,12 +229,12 @@ func (self Instance) SetBreakLoopAtEnd(value bool) Instance {
 /*
 If true, the destination animation is played back from the beginning when switched.
 */
-func (self Instance) Reset() bool {
+func (self Instance) Reset() bool { //gd:AnimationNodeStateMachineTransition.reset
 	return bool(class(self).IsReset())
 }
 
 // SetReset sets the property returned by [IsReset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReset(value bool) Instance {
+func (self Instance) SetReset(value bool) Instance { //gd:AnimationNodeStateMachineTransition.reset
 	class(self).SetReset(value)
 	return self
 }
@@ -245,12 +245,12 @@ Lower priority transitions are preferred when travelling through the tree via [A
 [AdvanceMode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceMode
 [AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
 */
-func (self Instance) Priority() int {
+func (self Instance) Priority() int { //gd:AnimationNodeStateMachineTransition.priority
 	return int(int(class(self).GetPriority()))
 }
 
 // SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPriority(value int) Instance {
+func (self Instance) SetPriority(value int) Instance { //gd:AnimationNodeStateMachineTransition.priority
 	class(self).SetPriority(int64(value))
 	return self
 }
@@ -258,12 +258,12 @@ func (self Instance) SetPriority(value int) Instance {
 /*
 The transition type.
 */
-func (self Instance) SwitchMode() SwitchMode {
+func (self Instance) SwitchMode() SwitchMode { //gd:AnimationNodeStateMachineTransition.switch_mode
 	return SwitchMode(class(self).GetSwitchMode())
 }
 
 // SetSwitchMode sets the property returned by [GetSwitchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwitchMode(value SwitchMode) Instance {
+func (self Instance) SetSwitchMode(value SwitchMode) Instance { //gd:AnimationNodeStateMachineTransition.switch_mode
 	class(self).SetSwitchMode(value)
 	return self
 }
@@ -275,12 +275,12 @@ Determines whether the transition should be disabled, enabled when using [Animat
 [AdvanceExpression]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachineTransition#Instance.AdvanceExpression
 [AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
 */
-func (self Instance) AdvanceMode() AdvanceMode {
+func (self Instance) AdvanceMode() AdvanceMode { //gd:AnimationNodeStateMachineTransition.advance_mode
 	return AdvanceMode(class(self).GetAdvanceMode())
 }
 
 // SetAdvanceMode sets the property returned by [GetAdvanceMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdvanceMode(value AdvanceMode) Instance {
+func (self Instance) SetAdvanceMode(value AdvanceMode) Instance { //gd:AnimationNodeStateMachineTransition.advance_mode
 	class(self).SetAdvanceMode(value)
 	return self
 }
@@ -294,12 +294,12 @@ Turn on auto advance when this condition is set. The provided name will become a
 [AnimationTree.TreeRoot]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.TreeRoot
 [Using AnimationTree]: https://docs.godotengine.org/tutorials/animation/animation_tree.html#controlling-from-code
 */
-func (self Instance) AdvanceCondition() string {
+func (self Instance) AdvanceCondition() string { //gd:AnimationNodeStateMachineTransition.advance_condition
 	return string(class(self).GetAdvanceCondition().String())
 }
 
 // SetAdvanceCondition sets the property returned by [GetAdvanceCondition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdvanceCondition(value string) Instance {
+func (self Instance) SetAdvanceCondition(value string) Instance { //gd:AnimationNodeStateMachineTransition.advance_condition
 	class(self).SetAdvanceCondition(String.Name(String.New(value)))
 	return self
 }
@@ -307,12 +307,12 @@ func (self Instance) SetAdvanceCondition(value string) Instance {
 /*
 Use an expression as a condition for state machine transitions. It is possible to create complex animation advance conditions for switching between states and gives much greater flexibility for creating complex state machines by directly interfacing with the script code.
 */
-func (self Instance) AdvanceExpression() string {
+func (self Instance) AdvanceExpression() string { //gd:AnimationNodeStateMachineTransition.advance_expression
 	return string(class(self).GetAdvanceExpression().String())
 }
 
 // SetAdvanceExpression sets the property returned by [GetAdvanceExpression]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdvanceExpression(value string) Instance {
+func (self Instance) SetAdvanceExpression(value string) Instance { //gd:AnimationNodeStateMachineTransition.advance_expression
 	class(self).SetAdvanceExpression(String.New(value))
 	return self
 }

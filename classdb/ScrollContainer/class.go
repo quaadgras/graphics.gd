@@ -227,12 +227,12 @@ func New() Instance {
 /*
 If true, the ScrollContainer will automatically scroll to focused children (including indirect children) to make sure they are fully visible.
 */
-func (self Instance) FollowFocus() bool {
+func (self Instance) FollowFocus() bool { //gd:ScrollContainer.follow_focus
 	return bool(class(self).IsFollowingFocus())
 }
 
 // SetFollowFocus sets the property returned by [IsFollowingFocus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowFocus(value bool) Instance {
+func (self Instance) SetFollowFocus(value bool) Instance { //gd:ScrollContainer.follow_focus
 	class(self).SetFollowFocus(value)
 	return self
 }
@@ -240,12 +240,12 @@ func (self Instance) SetFollowFocus(value bool) Instance {
 /*
 If true, theme's 'focus' is drawn when the ScrollContainer or one of its descendant nodes is focused.
 */
-func (self Instance) DrawFocusBorder() bool {
+func (self Instance) DrawFocusBorder() bool { //gd:ScrollContainer.draw_focus_border
 	return bool(class(self).GetDrawFocusBorder())
 }
 
 // SetDrawFocusBorder sets the property returned by [GetDrawFocusBorder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawFocusBorder(value bool) Instance {
+func (self Instance) SetDrawFocusBorder(value bool) Instance { //gd:ScrollContainer.draw_focus_border
 	class(self).SetDrawFocusBorder(value)
 	return self
 }
@@ -259,12 +259,12 @@ Note: If you are setting this value in the [Node.Ready] function or earlier, it 
 [Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
 [Range.MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
 */
-func (self Instance) ScrollHorizontal() int {
+func (self Instance) ScrollHorizontal() int { //gd:ScrollContainer.scroll_horizontal
 	return int(int(class(self).GetHScroll()))
 }
 
 // SetScrollHorizontal sets the property returned by [GetHScroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollHorizontal(value int) Instance {
+func (self Instance) SetScrollHorizontal(value int) Instance { //gd:ScrollContainer.scroll_horizontal
 	class(self).SetHScroll(int64(value))
 	return self
 }
@@ -276,12 +276,12 @@ Note: Setting it early needs to be deferred, just like in [ScrollHorizontal].
 
 [ScrollHorizontal]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.ScrollHorizontal
 */
-func (self Instance) ScrollVertical() int {
+func (self Instance) ScrollVertical() int { //gd:ScrollContainer.scroll_vertical
 	return int(int(class(self).GetVScroll()))
 }
 
 // SetScrollVertical sets the property returned by [GetVScroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollVertical(value int) Instance {
+func (self Instance) SetScrollVertical(value int) Instance { //gd:ScrollContainer.scroll_vertical
 	class(self).SetVScroll(int64(value))
 	return self
 }
@@ -292,12 +292,12 @@ Overrides the [ScrollBar.CustomStep] used when clicking the internal scroll bar'
 [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
 [ScrollBar.CustomStep]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar#Instance.CustomStep
 */
-func (self Instance) ScrollHorizontalCustomStep() Float.X {
+func (self Instance) ScrollHorizontalCustomStep() Float.X { //gd:ScrollContainer.scroll_horizontal_custom_step
 	return Float.X(Float.X(class(self).GetHorizontalCustomStep()))
 }
 
 // SetScrollHorizontalCustomStep sets the property returned by [GetHorizontalCustomStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollHorizontalCustomStep(value Float.X) Instance {
+func (self Instance) SetScrollHorizontalCustomStep(value Float.X) Instance { //gd:ScrollContainer.scroll_horizontal_custom_step
 	class(self).SetHorizontalCustomStep(float64(value))
 	return self
 }
@@ -308,12 +308,12 @@ Overrides the [ScrollBar.CustomStep] used when clicking the internal scroll bar'
 [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
 [ScrollBar.CustomStep]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar#Instance.CustomStep
 */
-func (self Instance) ScrollVerticalCustomStep() Float.X {
+func (self Instance) ScrollVerticalCustomStep() Float.X { //gd:ScrollContainer.scroll_vertical_custom_step
 	return Float.X(Float.X(class(self).GetVerticalCustomStep()))
 }
 
 // SetScrollVerticalCustomStep sets the property returned by [GetVerticalCustomStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollVerticalCustomStep(value Float.X) Instance {
+func (self Instance) SetScrollVerticalCustomStep(value Float.X) Instance { //gd:ScrollContainer.scroll_vertical_custom_step
 	class(self).SetVerticalCustomStep(float64(value))
 	return self
 }
@@ -321,12 +321,12 @@ func (self Instance) SetScrollVerticalCustomStep(value Float.X) Instance {
 /*
 Controls whether horizontal scrollbar can be used and when it should be visible.
 */
-func (self Instance) HorizontalScrollMode() ScrollMode {
+func (self Instance) HorizontalScrollMode() ScrollMode { //gd:ScrollContainer.horizontal_scroll_mode
 	return ScrollMode(class(self).GetHorizontalScrollMode())
 }
 
 // SetHorizontalScrollMode sets the property returned by [GetHorizontalScrollMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHorizontalScrollMode(value ScrollMode) Instance {
+func (self Instance) SetHorizontalScrollMode(value ScrollMode) Instance { //gd:ScrollContainer.horizontal_scroll_mode
 	class(self).SetHorizontalScrollMode(value)
 	return self
 }
@@ -334,12 +334,12 @@ func (self Instance) SetHorizontalScrollMode(value ScrollMode) Instance {
 /*
 Controls whether vertical scrollbar can be used and when it should be visible.
 */
-func (self Instance) VerticalScrollMode() ScrollMode {
+func (self Instance) VerticalScrollMode() ScrollMode { //gd:ScrollContainer.vertical_scroll_mode
 	return ScrollMode(class(self).GetVerticalScrollMode())
 }
 
 // SetVerticalScrollMode sets the property returned by [GetVerticalScrollMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticalScrollMode(value ScrollMode) Instance {
+func (self Instance) SetVerticalScrollMode(value ScrollMode) Instance { //gd:ScrollContainer.vertical_scroll_mode
 	class(self).SetVerticalScrollMode(value)
 	return self
 }
@@ -347,12 +347,12 @@ func (self Instance) SetVerticalScrollMode(value ScrollMode) Instance {
 /*
 Deadzone for touch scrolling. Lower deadzone makes the scrolling more sensitive.
 */
-func (self Instance) ScrollDeadzone() int {
+func (self Instance) ScrollDeadzone() int { //gd:ScrollContainer.scroll_deadzone
 	return int(int(class(self).GetDeadzone()))
 }
 
 // SetScrollDeadzone sets the property returned by [GetDeadzone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollDeadzone(value int) Instance {
+func (self Instance) SetScrollDeadzone(value int) Instance { //gd:ScrollContainer.scroll_deadzone
 	class(self).SetDeadzone(int64(value))
 	return self
 }

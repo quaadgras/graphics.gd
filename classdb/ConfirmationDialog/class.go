@@ -188,12 +188,12 @@ The text displayed by the cancel button (see [GetCancelButton]).
 
 [GetCancelButton]: https://pkg.go.dev/graphics.gd/classdb/ConfirmationDialog#Instance.GetCancelButton
 */
-func (self Instance) CancelButtonText() string {
+func (self Instance) CancelButtonText() string { //gd:ConfirmationDialog.cancel_button_text
 	return string(class(self).GetCancelButtonText().String())
 }
 
 // SetCancelButtonText sets the property returned by [GetCancelButtonText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCancelButtonText(value string) Instance {
+func (self Instance) SetCancelButtonText(value string) Instance { //gd:ConfirmationDialog.cancel_button_text
 	class(self).SetCancelButtonText(String.New(value))
 	return self
 }

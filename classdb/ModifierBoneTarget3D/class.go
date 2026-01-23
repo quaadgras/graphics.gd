@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The name of the attached bone.
 */
-func (self Instance) BoneName() string {
+func (self Instance) BoneName() string { //gd:ModifierBoneTarget3D.bone_name
 	return string(class(self).GetBoneName().String())
 }
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneName(value string) Instance {
+func (self Instance) SetBoneName(value string) Instance { //gd:ModifierBoneTarget3D.bone_name
 	class(self).SetBoneName(String.New(value))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetBoneName(value string) Instance {
 /*
 The index of the attached bone.
 */
-func (self Instance) Bone() int {
+func (self Instance) Bone() int { //gd:ModifierBoneTarget3D.bone
 	return int(int(class(self).GetBone()))
 }
 
 // SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone(value int) Instance {
+func (self Instance) SetBone(value int) Instance { //gd:ModifierBoneTarget3D.bone
 	class(self).SetBone(int64(value))
 	return self
 }

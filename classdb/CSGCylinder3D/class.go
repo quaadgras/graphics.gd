@@ -179,12 +179,12 @@ func New() Instance {
 /*
 The radius of the cylinder.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:CSGCylinder3D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:CSGCylinder3D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The height of the cylinder.
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:CSGCylinder3D.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:CSGCylinder3D.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetHeight(value Float.X) Instance {
 /*
 The number of sides of the cylinder, the higher this number the more detail there will be in the cylinder.
 */
-func (self Instance) Sides() int {
+func (self Instance) Sides() int { //gd:CSGCylinder3D.sides
 	return int(int(class(self).GetSides()))
 }
 
 // SetSides sets the property returned by [GetSides]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSides(value int) Instance {
+func (self Instance) SetSides(value int) Instance { //gd:CSGCylinder3D.sides
 	class(self).SetSides(int64(value))
 	return self
 }
@@ -220,12 +220,12 @@ If true a cone is created, the [Radius] will only apply to one side.
 
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/CSGCylinder3D#Instance.Radius
 */
-func (self Instance) Cone() bool {
+func (self Instance) Cone() bool { //gd:CSGCylinder3D.cone
 	return bool(class(self).IsCone())
 }
 
 // SetCone sets the property returned by [IsCone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCone(value bool) Instance {
+func (self Instance) SetCone(value bool) Instance { //gd:CSGCylinder3D.cone
 	class(self).SetCone(value)
 	return self
 }
@@ -233,12 +233,12 @@ func (self Instance) SetCone(value bool) Instance {
 /*
 If true the normals of the cylinder are set to give a smooth effect making the cylinder seem rounded. If false the cylinder will have a flat shaded look.
 */
-func (self Instance) SmoothFaces() bool {
+func (self Instance) SmoothFaces() bool { //gd:CSGCylinder3D.smooth_faces
 	return bool(class(self).GetSmoothFaces())
 }
 
 // SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSmoothFaces(value bool) Instance {
+func (self Instance) SetSmoothFaces(value bool) Instance { //gd:CSGCylinder3D.smooth_faces
 	class(self).SetSmoothFaces(value)
 	return self
 }
@@ -246,12 +246,12 @@ func (self Instance) SetSmoothFaces(value bool) Instance {
 /*
 The material used to render the cylinder.
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGCylinder3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGCylinder3D.material
 	class(self).SetMaterial(value)
 	return self
 }

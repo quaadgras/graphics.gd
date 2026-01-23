@@ -718,12 +718,12 @@ The local transformation of this node, in parent space (relative to the parent n
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
 [Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
 */
-func (self Instance) Transform() Transform3D.BasisOrigin {
+func (self Instance) Transform() Transform3D.BasisOrigin { //gd:Node3D.transform
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance { //gd:Node3D.transform
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -736,12 +736,12 @@ Note: If the node is not inside the tree, getting this property fails and return
 [GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalPosition
 [GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalRotation
 */
-func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
+func (self Instance) GlobalTransform() Transform3D.BasisOrigin { //gd:Node3D.global_transform
 	return Transform3D.BasisOrigin(class(self).GetGlobalTransform())
 }
 
 // SetGlobalTransform sets the property returned by [GetGlobalTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) Instance { //gd:Node3D.global_transform
 	class(self).SetGlobalTransform(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -752,12 +752,12 @@ Position (translation) of this node in parent space (relative to the parent node
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 [Transform3D.Origin]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.Origin
 */
-func (self Instance) Position() Vector3.XYZ {
+func (self Instance) Position() Vector3.XYZ { //gd:Node3D.position
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetPosition(value Vector3.XYZ) Instance { //gd:Node3D.position
 	class(self).SetPosition(Vector3.XYZ(value))
 	return self
 }
@@ -783,12 +783,12 @@ Note: This property is edited in degrees in the inspector. If you want to use de
 [Vector3.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Y
 [Vector3.Z]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Z
 */
-func (self Instance) Rotation() Euler.Radians {
+func (self Instance) Rotation() Euler.Radians { //gd:Node3D.rotation
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetRotation()))
 }
 
 // SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotation(value Euler.Radians) Instance {
+func (self Instance) SetRotation(value Euler.Radians) Instance { //gd:Node3D.rotation
 	class(self).SetRotation(value.Vector3())
 	return self
 }
@@ -800,12 +800,12 @@ Note: This is not the property available in the Inspector dock.
 
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
 */
-func (self Instance) RotationDegrees() Euler.Degrees {
+func (self Instance) RotationDegrees() Euler.Degrees { //gd:Node3D.rotation_degrees
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetRotationDegrees()))
 }
 
 // SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationDegrees(value Euler.Degrees) Instance {
+func (self Instance) SetRotationDegrees(value Euler.Degrees) Instance { //gd:Node3D.rotation_degrees
 	class(self).SetRotationDegrees(value.Vector3())
 	return self
 }
@@ -819,12 +819,12 @@ Note: Quaternions are much more suitable for 3D math but are less intuitive. Set
 [Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
 [Quaternion.Slerp]: https://pkg.go.dev/graphics.gd/classdb/Quaternion#Instance.Slerp
 */
-func (self Instance) Quaternion() Quaternion.IJKX {
+func (self Instance) Quaternion() Quaternion.IJKX { //gd:Node3D.quaternion
 	return Quaternion.IJKX(class(self).GetQuaternion())
 }
 
 // SetQuaternion sets the property returned by [GetQuaternion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetQuaternion(value Quaternion.IJKX) Instance {
+func (self Instance) SetQuaternion(value Quaternion.IJKX) Instance { //gd:Node3D.quaternion
 	class(self).SetQuaternion(value)
 	return self
 }
@@ -834,12 +834,12 @@ Basis of the [Transform] property. Represents the rotation, scale, and shear of 
 
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 */
-func (self Instance) Basis() Basis.XYZ {
+func (self Instance) Basis() Basis.XYZ { //gd:Node3D.basis
 	return Basis.XYZ(class(self).GetBasis())
 }
 
 // SetBasis sets the property returned by [GetBasis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBasis(value Basis.XYZ) Instance {
+func (self Instance) SetBasis(value Basis.XYZ) Instance { //gd:Node3D.basis
 	class(self).SetBasis(Basis.XYZ(value))
 	return self
 }
@@ -856,12 +856,12 @@ Warning: The scale's components must either be all positive or all negative, and
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
-func (self Instance) Scale() Vector3.XYZ {
+func (self Instance) Scale() Vector3.XYZ { //gd:Node3D.scale
 	return Vector3.XYZ(class(self).GetScale())
 }
 
 // SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScale(value Vector3.XYZ) Instance {
+func (self Instance) SetScale(value Vector3.XYZ) Instance { //gd:Node3D.scale
 	class(self).SetScale(Vector3.XYZ(value))
 	return self
 }
@@ -869,12 +869,12 @@ func (self Instance) SetScale(value Vector3.XYZ) Instance {
 /*
 How this node's rotation and scale are displayed in the Inspector dock.
 */
-func (self Instance) RotationEditMode() RotationEditMode {
+func (self Instance) RotationEditMode() RotationEditMode { //gd:Node3D.rotation_edit_mode
 	return RotationEditMode(class(self).GetRotationEditMode())
 }
 
 // SetRotationEditMode sets the property returned by [GetRotationEditMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationEditMode(value RotationEditMode) Instance {
+func (self Instance) SetRotationEditMode(value RotationEditMode) Instance { //gd:Node3D.rotation_edit_mode
 	class(self).SetRotationEditMode(value)
 	return self
 }
@@ -884,12 +884,12 @@ The axis rotation order of the [Rotation] property. The final orientation is cal
 
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
 */
-func (self Instance) RotationOrder() Angle.Order {
+func (self Instance) RotationOrder() Angle.Order { //gd:Node3D.rotation_order
 	return Angle.Order(class(self).GetRotationOrder())
 }
 
 // SetRotationOrder sets the property returned by [GetRotationOrder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationOrder(value Angle.Order) Instance {
+func (self Instance) SetRotationOrder(value Angle.Order) Instance { //gd:Node3D.rotation_order
 	class(self).SetRotationOrder(value)
 	return self
 }
@@ -900,12 +900,12 @@ If true, the node does not inherit its transformations from its parent. As such,
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
 */
-func (self Instance) TopLevel() bool {
+func (self Instance) TopLevel() bool { //gd:Node3D.top_level
 	return bool(class(self).IsSetAsTopLevel())
 }
 
 // SetTopLevel sets the property returned by [IsSetAsTopLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTopLevel(value bool) Instance {
+func (self Instance) SetTopLevel(value bool) Instance { //gd:Node3D.top_level
 	class(self).SetAsTopLevel(value)
 	return self
 }
@@ -918,12 +918,12 @@ Note: If the node is not inside the tree, getting this property fails and return
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 [Transform3D.Origin]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.Origin
 */
-func (self Instance) GlobalPosition() Vector3.XYZ {
+func (self Instance) GlobalPosition() Vector3.XYZ { //gd:Node3D.global_position
 	return Vector3.XYZ(class(self).GetGlobalPosition())
 }
 
 // SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetGlobalPosition(value Vector3.XYZ) Instance { //gd:Node3D.global_position
 	class(self).SetGlobalPosition(Vector3.XYZ(value))
 	return self
 }
@@ -935,12 +935,12 @@ Note: If the node is not inside the tree, getting this property fails and return
 
 [GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 */
-func (self Instance) GlobalBasis() Basis.XYZ {
+func (self Instance) GlobalBasis() Basis.XYZ { //gd:Node3D.global_basis
 	return Basis.XYZ(class(self).GetGlobalBasis())
 }
 
 // SetGlobalBasis sets the property returned by [GetGlobalBasis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalBasis(value Basis.XYZ) Instance {
+func (self Instance) SetGlobalBasis(value Basis.XYZ) Instance { //gd:Node3D.global_basis
 	class(self).SetGlobalBasis(Basis.XYZ(value))
 	return self
 }
@@ -965,12 +965,12 @@ Note: If the node is not inside the tree, getting this property fails and return
 [Vector3.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Y
 [Vector3.Z]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Z
 */
-func (self Instance) GlobalRotation() Euler.Radians {
+func (self Instance) GlobalRotation() Euler.Radians { //gd:Node3D.global_rotation
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetGlobalRotation()))
 }
 
 // SetGlobalRotation sets the property returned by [GetGlobalRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalRotation(value Euler.Radians) Instance {
+func (self Instance) SetGlobalRotation(value Euler.Radians) Instance { //gd:Node3D.global_rotation
 	class(self).SetGlobalRotation(value.Vector3())
 	return self
 }
@@ -982,12 +982,12 @@ Note: If the node is not inside the tree, getting this property fails and return
 
 [GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalRotation
 */
-func (self Instance) GlobalRotationDegrees() Euler.Degrees {
+func (self Instance) GlobalRotationDegrees() Euler.Degrees { //gd:Node3D.global_rotation_degrees
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetGlobalRotationDegrees()))
 }
 
 // SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) Instance {
+func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) Instance { //gd:Node3D.global_rotation_degrees
 	class(self).SetGlobalRotationDegrees(value.Vector3())
 	return self
 }
@@ -997,12 +997,12 @@ If true, this node can be visible. The node is only rendered when all of its anc
 
 [IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.IsVisibleInTree
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:Node3D.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:Node3D.visible
 	class(self).SetVisible(value)
 	return self
 }
@@ -1016,12 +1016,12 @@ Any visual instance will only be visible if the visibility parent (and all of it
 [GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
 [Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */
-func (self Instance) VisibilityParent() string {
+func (self Instance) VisibilityParent() string { //gd:Node3D.visibility_parent
 	return string(class(self).GetVisibilityParent().String())
 }
 
 // SetVisibilityParent sets the property returned by [GetVisibilityParent]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityParent(value string) Instance {
+func (self Instance) SetVisibilityParent(value string) Instance { //gd:Node3D.visibility_parent
 	class(self).SetVisibilityParent(Path.ToNode(String.New(value)))
 	return self
 }

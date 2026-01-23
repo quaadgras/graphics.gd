@@ -434,12 +434,12 @@ func New() Instance {
 /*
 The blend shape mode.
 */
-func (self Instance) BlendShapeMode() Mesh.BlendShapeMode {
+func (self Instance) BlendShapeMode() Mesh.BlendShapeMode { //gd:ArrayMesh.blend_shape_mode
 	return Mesh.BlendShapeMode(class(self).GetBlendShapeMode())
 }
 
 // SetBlendShapeMode sets the property returned by [GetBlendShapeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) Instance {
+func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) Instance { //gd:ArrayMesh.blend_shape_mode
 	class(self).SetBlendShapeMode(value)
 	return self
 }
@@ -449,12 +449,12 @@ Overrides the [AABB.PositionSize] with one defined by user for use with frustum 
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 */
-func (self Instance) CustomAabb() AABB.PositionSize {
+func (self Instance) CustomAabb() AABB.PositionSize { //gd:ArrayMesh.custom_aabb
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
 // SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance { //gd:ArrayMesh.custom_aabb
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 	return self
 }
@@ -464,12 +464,12 @@ An optional mesh which can be used for rendering shadows and the depth prepass. 
 
 Note: This mesh must have exactly the same vertex positions as the source mesh (including the source mesh's LODs, if present). If vertex positions differ, then the mesh will not draw correctly.
 */
-func (self Instance) ShadowMesh() Instance {
+func (self Instance) ShadowMesh() Instance { //gd:ArrayMesh.shadow_mesh
 	return Instance(class(self).GetShadowMesh())
 }
 
 // SetShadowMesh sets the property returned by [GetShadowMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowMesh(value Instance) Instance {
+func (self Instance) SetShadowMesh(value Instance) Instance { //gd:ArrayMesh.shadow_mesh
 	class(self).SetShadowMesh(value)
 	return self
 }

@@ -185,12 +185,12 @@ func New() Instance {
 /*
 The diffuse (color) texture to use. This is the main texture you want to set in most cases.
 */
-func (self Instance) DiffuseTexture() Texture2D.Instance {
+func (self Instance) DiffuseTexture() Texture2D.Instance { //gd:CanvasTexture.diffuse_texture
 	return Texture2D.Instance(class(self).GetDiffuseTexture())
 }
 
 // SetDiffuseTexture sets the property returned by [GetDiffuseTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiffuseTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetDiffuseTexture(value Texture2D.Instance) Instance { //gd:CanvasTexture.diffuse_texture
 	class(self).SetDiffuseTexture(value)
 	return self
 }
@@ -204,12 +204,12 @@ Note: Godot expects the normal map to use X+, Y+, and Z+ coordinates. See [this 
 [Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 [this page]: http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates
 */
-func (self Instance) NormalTexture() Texture2D.Instance {
+func (self Instance) NormalTexture() Texture2D.Instance { //gd:CanvasTexture.normal_texture
 	return Texture2D.Instance(class(self).GetNormalTexture())
 }
 
 // SetNormalTexture sets the property returned by [GetNormalTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetNormalTexture(value Texture2D.Instance) Instance { //gd:CanvasTexture.normal_texture
 	class(self).SetNormalTexture(value)
 	return self
 }
@@ -222,12 +222,12 @@ The specular map to use for [Light2D] specular reflections. This should be a gra
 [SpecularShininess]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularShininess
 [SpecularTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularTexture
 */
-func (self Instance) SpecularTexture() Texture2D.Instance {
+func (self Instance) SpecularTexture() Texture2D.Instance { //gd:CanvasTexture.specular_texture
 	return Texture2D.Instance(class(self).GetSpecularTexture())
 }
 
 // SetSpecularTexture sets the property returned by [GetSpecularTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpecularTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetSpecularTexture(value Texture2D.Instance) Instance { //gd:CanvasTexture.specular_texture
 	class(self).SetSpecularTexture(value)
 	return self
 }
@@ -238,12 +238,12 @@ The multiplier for specular reflection colors. The [Light2D]'s color is also tak
 [CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 [Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
-func (self Instance) SpecularColor() Color.RGBA {
+func (self Instance) SpecularColor() Color.RGBA { //gd:CanvasTexture.specular_color
 	return Color.RGBA(class(self).GetSpecularColor())
 }
 
 // SetSpecularColor sets the property returned by [GetSpecularColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpecularColor(value Color.RGBA) Instance {
+func (self Instance) SetSpecularColor(value Color.RGBA) Instance { //gd:CanvasTexture.specular_color
 	class(self).SetSpecularColor(Color.RGBA(value))
 	return self
 }
@@ -254,12 +254,12 @@ The specular exponent for [Light2D] specular reflections. Higher values result i
 [CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 [Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
-func (self Instance) SpecularShininess() Float.X {
+func (self Instance) SpecularShininess() Float.X { //gd:CanvasTexture.specular_shininess
 	return Float.X(Float.X(class(self).GetSpecularShininess()))
 }
 
 // SetSpecularShininess sets the property returned by [GetSpecularShininess]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpecularShininess(value Float.X) Instance {
+func (self Instance) SetSpecularShininess(value Float.X) Instance { //gd:CanvasTexture.specular_shininess
 	class(self).SetSpecularShininess(float64(value))
 	return self
 }
@@ -269,12 +269,12 @@ The texture filtering mode to use when drawing this [CanvasTexture].
 
 [CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 */
-func (self Instance) TextureFilter() CanvasItem.TextureFilter {
+func (self Instance) TextureFilter() CanvasItem.TextureFilter { //gd:CanvasTexture.texture_filter
 	return CanvasItem.TextureFilter(class(self).GetTextureFilter())
 }
 
 // SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureFilter(value CanvasItem.TextureFilter) Instance {
+func (self Instance) SetTextureFilter(value CanvasItem.TextureFilter) Instance { //gd:CanvasTexture.texture_filter
 	class(self).SetTextureFilter(value)
 	return self
 }
@@ -284,12 +284,12 @@ The texture repeat mode to use when drawing this [CanvasTexture].
 
 [CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 */
-func (self Instance) TextureRepeat() CanvasItem.TextureRepeat {
+func (self Instance) TextureRepeat() CanvasItem.TextureRepeat { //gd:CanvasTexture.texture_repeat
 	return CanvasItem.TextureRepeat(class(self).GetTextureRepeat())
 }
 
 // SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) Instance {
+func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) Instance { //gd:CanvasTexture.texture_repeat
 	class(self).SetTextureRepeat(value)
 	return self
 }

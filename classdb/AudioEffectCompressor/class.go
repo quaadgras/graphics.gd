@@ -184,12 +184,12 @@ func New() Instance {
 /*
 The level above which compression is applied to the audio. Value can range from -60 to 0.
 */
-func (self Instance) Threshold() Float.X {
+func (self Instance) Threshold() Float.X { //gd:AudioEffectCompressor.threshold
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
 // SetThreshold sets the property returned by [GetThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThreshold(value Float.X) Instance {
+func (self Instance) SetThreshold(value Float.X) Instance { //gd:AudioEffectCompressor.threshold
 	class(self).SetThreshold(float64(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetThreshold(value Float.X) Instance {
 /*
 Amount of compression applied to the audio once it passes the threshold level. The higher the ratio, the more the loud parts of the audio will be compressed. Value can range from 1 to 48.
 */
-func (self Instance) Ratio() Float.X {
+func (self Instance) Ratio() Float.X { //gd:AudioEffectCompressor.ratio
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
 // SetRatio sets the property returned by [GetRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRatio(value Float.X) Instance {
+func (self Instance) SetRatio(value Float.X) Instance { //gd:AudioEffectCompressor.ratio
 	class(self).SetRatio(float64(value))
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetRatio(value Float.X) Instance {
 /*
 Gain applied to the output signal.
 */
-func (self Instance) Gain() Float.X {
+func (self Instance) Gain() Float.X { //gd:AudioEffectCompressor.gain
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
 // SetGain sets the property returned by [GetGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGain(value Float.X) Instance {
+func (self Instance) SetGain(value Float.X) Instance { //gd:AudioEffectCompressor.gain
 	class(self).SetGain(float64(value))
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetGain(value Float.X) Instance {
 /*
 Compressor's reaction time when the signal exceeds the threshold, in microseconds. Value can range from 20 to 2000.
 */
-func (self Instance) AttackUs() Float.X {
+func (self Instance) AttackUs() Float.X { //gd:AudioEffectCompressor.attack_us
 	return Float.X(Float.X(class(self).GetAttackUs()))
 }
 
 // SetAttackUs sets the property returned by [GetAttackUs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttackUs(value Float.X) Instance {
+func (self Instance) SetAttackUs(value Float.X) Instance { //gd:AudioEffectCompressor.attack_us
 	class(self).SetAttackUs(float64(value))
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetAttackUs(value Float.X) Instance {
 /*
 Compressor's delay time to stop reducing the signal after the signal level falls below the threshold, in milliseconds. Value can range from 20 to 2000.
 */
-func (self Instance) ReleaseMs() Float.X {
+func (self Instance) ReleaseMs() Float.X { //gd:AudioEffectCompressor.release_ms
 	return Float.X(Float.X(class(self).GetReleaseMs()))
 }
 
 // SetReleaseMs sets the property returned by [GetReleaseMs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetReleaseMs(value Float.X) Instance {
+func (self Instance) SetReleaseMs(value Float.X) Instance { //gd:AudioEffectCompressor.release_ms
 	class(self).SetReleaseMs(float64(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetReleaseMs(value Float.X) Instance {
 /*
 Balance between original signal and effect signal. Value can range from 0 (totally dry) to 1 (totally wet).
 */
-func (self Instance) Mix() Float.X {
+func (self Instance) Mix() Float.X { //gd:AudioEffectCompressor.mix
 	return Float.X(Float.X(class(self).GetMix()))
 }
 
 // SetMix sets the property returned by [GetMix]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMix(value Float.X) Instance {
+func (self Instance) SetMix(value Float.X) Instance { //gd:AudioEffectCompressor.mix
 	class(self).SetMix(float64(value))
 	return self
 }
@@ -262,12 +262,12 @@ func (self Instance) SetMix(value Float.X) Instance {
 /*
 Reduce the sound level using another audio bus for threshold detection.
 */
-func (self Instance) Sidechain() string {
+func (self Instance) Sidechain() string { //gd:AudioEffectCompressor.sidechain
 	return string(class(self).GetSidechain().String())
 }
 
 // SetSidechain sets the property returned by [GetSidechain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSidechain(value string) Instance {
+func (self Instance) SetSidechain(value string) Instance { //gd:AudioEffectCompressor.sidechain
 	class(self).SetSidechain(String.Name(String.New(value)))
 	return self
 }

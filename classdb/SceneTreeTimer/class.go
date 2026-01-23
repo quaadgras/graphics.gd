@@ -188,12 +188,12 @@ func New() Instance {
 /*
 The time remaining (in seconds).
 */
-func (self Instance) TimeLeft() Float.X {
+func (self Instance) TimeLeft() Float.X { //gd:SceneTreeTimer.time_left
 	return Float.X(Float.X(class(self).GetTimeLeft()))
 }
 
 // SetTimeLeft sets the property returned by [GetTimeLeft]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimeLeft(value Float.X) Instance {
+func (self Instance) SetTimeLeft(value Float.X) Instance { //gd:SceneTreeTimer.time_left
 	class(self).SetTimeLeft(float64(value))
 	return self
 }

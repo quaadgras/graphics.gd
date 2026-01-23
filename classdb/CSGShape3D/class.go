@@ -291,12 +291,12 @@ func New() Instance {
 /*
 The operation that is performed on this shape. This is ignored for the first CSG child node as the operation is between this node and the previous child of this nodes parent.
 */
-func (self Instance) Operation() Operation {
+func (self Instance) Operation() Operation { //gd:CSGShape3D.operation
 	return Operation(class(self).GetOperation())
 }
 
 // SetOperation sets the property returned by [GetOperation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOperation(value Operation) Instance {
+func (self Instance) SetOperation(value Operation) Instance { //gd:CSGShape3D.operation
 	class(self).SetOperation(value)
 	return self
 }
@@ -304,12 +304,12 @@ func (self Instance) SetOperation(value Operation) Instance {
 /*
 This property does nothing.
 */
-func (self Instance) Snap() Float.X {
+func (self Instance) Snap() Float.X { //gd:CSGShape3D.snap
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
 // SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap(value Float.X) Instance {
+func (self Instance) SetSnap(value Float.X) Instance { //gd:CSGShape3D.snap
 	class(self).SetSnap(float64(value))
 	return self
 }
@@ -317,12 +317,12 @@ func (self Instance) SetSnap(value Float.X) Instance {
 /*
 Calculate tangents for the CSG shape which allows the use of normal and height maps. This is only applied on the root shape, this setting is ignored on any child. Setting this to false can speed up shape generation slightly.
 */
-func (self Instance) CalculateTangents() bool {
+func (self Instance) CalculateTangents() bool { //gd:CSGShape3D.calculate_tangents
 	return bool(class(self).IsCalculatingTangents())
 }
 
 // SetCalculateTangents sets the property returned by [IsCalculatingTangents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCalculateTangents(value bool) Instance {
+func (self Instance) SetCalculateTangents(value bool) Instance { //gd:CSGShape3D.calculate_tangents
 	class(self).SetCalculateTangents(value)
 	return self
 }
@@ -333,12 +333,12 @@ Adds a collision shape to the physics engine for our CSG shape. This will always
 [CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionMask
 [CollisionPriority]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionPriority
 */
-func (self Instance) UseCollision() bool {
+func (self Instance) UseCollision() bool { //gd:CSGShape3D.use_collision
 	return bool(class(self).IsUsingCollision())
 }
 
 // SetUseCollision sets the property returned by [IsUsingCollision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseCollision(value bool) Instance {
+func (self Instance) SetUseCollision(value bool) Instance { //gd:CSGShape3D.use_collision
 	class(self).SetUseCollision(value)
 	return self
 }
@@ -352,12 +352,12 @@ A contact is detected if object A is in any of the layers that object B scans, o
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionLayer() int {
+func (self Instance) CollisionLayer() int { //gd:CSGShape3D.collision_layer
 	return int(int(class(self).GetCollisionLayer()))
 }
 
 // SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionLayer(value int) Instance {
+func (self Instance) SetCollisionLayer(value int) Instance { //gd:CSGShape3D.collision_layer
 	class(self).SetCollisionLayer(int64(value))
 	return self
 }
@@ -368,12 +368,12 @@ The physics layers this CSG shape scans for collisions. Only effective if [UseCo
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 [UseCollision]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.UseCollision
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:CSGShape3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:CSGShape3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -383,12 +383,12 @@ The priority used to solve colliding when occurring penetration. Only effective 
 
 [UseCollision]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.UseCollision
 */
-func (self Instance) CollisionPriority() Float.X {
+func (self Instance) CollisionPriority() Float.X { //gd:CSGShape3D.collision_priority
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
 // SetCollisionPriority sets the property returned by [GetCollisionPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionPriority(value Float.X) Instance {
+func (self Instance) SetCollisionPriority(value Float.X) Instance { //gd:CSGShape3D.collision_priority
 	class(self).SetCollisionPriority(float64(value))
 	return self
 }

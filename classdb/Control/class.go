@@ -2250,12 +2250,12 @@ Enables whether rendering of [CanvasItem] based children should be clipped to th
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) ClipContents() bool {
+func (self Instance) ClipContents() bool { //gd:Control.clip_contents
 	return bool(class(self).IsClippingContents())
 }
 
 // SetClipContents sets the property returned by [IsClippingContents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipContents(value bool) Instance {
+func (self Instance) SetClipContents(value bool) Instance { //gd:Control.clip_contents
 	class(self).SetClipContents(value)
 	return self
 }
@@ -2267,12 +2267,12 @@ The minimum size of the node's bounding rectangle. If you set it to a value grea
 [GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
 [GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
 */
-func (self Instance) CustomMinimumSize() Vector2.XY {
+func (self Instance) CustomMinimumSize() Vector2.XY { //gd:Control.custom_minimum_size
 	return Vector2.XY(class(self).GetCustomMinimumSize())
 }
 
 // SetCustomMinimumSize sets the property returned by [GetCustomMinimumSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomMinimumSize(value Vector2.XY) Instance {
+func (self Instance) SetCustomMinimumSize(value Vector2.XY) Instance { //gd:Control.custom_minimum_size
 	class(self).SetCustomMinimumSize(Vector2.XY(value))
 	return self
 }
@@ -2282,12 +2282,12 @@ Controls layout direction and text writing direction. Right-to-left layouts are 
 
 [IsLayoutRtl]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.IsLayoutRtl
 */
-func (self Instance) LayoutDirection() LayoutDirection {
+func (self Instance) LayoutDirection() LayoutDirection { //gd:Control.layout_direction
 	return LayoutDirection(class(self).GetLayoutDirection())
 }
 
 // SetLayoutDirection sets the property returned by [GetLayoutDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayoutDirection(value LayoutDirection) Instance {
+func (self Instance) SetLayoutDirection(value LayoutDirection) Instance { //gd:Control.layout_direction
 	class(self).SetLayoutDirection(value)
 	return self
 }
@@ -2295,28 +2295,28 @@ func (self Instance) SetLayoutDirection(value LayoutDirection) Instance {
 /*
 Anchors the left edge of the node to the origin, the center or the end of its parent control. It changes how the left offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
 */
-func (self Instance) AnchorLeft() Float.X {
+func (self Instance) AnchorLeft() Float.X { //gd:Control.anchor_left
 	return Float.X(Float.X(class(self).GetAnchor(0)))
 }
 
 /*
 Anchors the top edge of the node to the origin, the center or the end of its parent control. It changes how the top offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
 */
-func (self Instance) AnchorTop() Float.X {
+func (self Instance) AnchorTop() Float.X { //gd:Control.anchor_top
 	return Float.X(Float.X(class(self).GetAnchor(1)))
 }
 
 /*
 Anchors the right edge of the node to the origin, the center or the end of its parent control. It changes how the right offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
 */
-func (self Instance) AnchorRight() Float.X {
+func (self Instance) AnchorRight() Float.X { //gd:Control.anchor_right
 	return Float.X(Float.X(class(self).GetAnchor(2)))
 }
 
 /*
 Anchors the bottom edge of the node to the origin, the center, or the end of its parent control. It changes how the bottom offset updates when the node moves or changes size. You can use one of the [Anchor] constants for convenience.
 */
-func (self Instance) AnchorBottom() Float.X {
+func (self Instance) AnchorBottom() Float.X { //gd:Control.anchor_bottom
 	return Float.X(Float.X(class(self).GetAnchor(3)))
 }
 
@@ -2328,12 +2328,12 @@ Offsets are often controlled by one or multiple parent [Container] nodes, so you
 [AnchorLeft]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorLeft
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) OffsetLeft() Float.X {
+func (self Instance) OffsetLeft() Float.X { //gd:Control.offset_left
 	return Float.X(Float.X(class(self).GetOffset(0)))
 }
 
 // SetOffsetLeft sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsetLeft(value Float.X) Instance {
+func (self Instance) SetOffsetLeft(value Float.X) Instance { //gd:Control.offset_left
 	class(self).SetOffset(0, float64(value))
 	return self
 }
@@ -2346,12 +2346,12 @@ Offsets are often controlled by one or multiple parent [Container] nodes, so you
 [AnchorTop]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorTop
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) OffsetTop() Float.X {
+func (self Instance) OffsetTop() Float.X { //gd:Control.offset_top
 	return Float.X(Float.X(class(self).GetOffset(1)))
 }
 
 // SetOffsetTop sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsetTop(value Float.X) Instance {
+func (self Instance) SetOffsetTop(value Float.X) Instance { //gd:Control.offset_top
 	class(self).SetOffset(1, float64(value))
 	return self
 }
@@ -2364,12 +2364,12 @@ Offsets are often controlled by one or multiple parent [Container] nodes, so you
 [AnchorRight]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorRight
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) OffsetRight() Float.X {
+func (self Instance) OffsetRight() Float.X { //gd:Control.offset_right
 	return Float.X(Float.X(class(self).GetOffset(2)))
 }
 
 // SetOffsetRight sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsetRight(value Float.X) Instance {
+func (self Instance) SetOffsetRight(value Float.X) Instance { //gd:Control.offset_right
 	class(self).SetOffset(2, float64(value))
 	return self
 }
@@ -2382,12 +2382,12 @@ Offsets are often controlled by one or multiple parent [Container] nodes, so you
 [AnchorBottom]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AnchorBottom
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) OffsetBottom() Float.X {
+func (self Instance) OffsetBottom() Float.X { //gd:Control.offset_bottom
 	return Float.X(Float.X(class(self).GetOffset(3)))
 }
 
 // SetOffsetBottom sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsetBottom(value Float.X) Instance {
+func (self Instance) SetOffsetBottom(value Float.X) Instance { //gd:Control.offset_bottom
 	class(self).SetOffset(3, float64(value))
 	return self
 }
@@ -2395,12 +2395,12 @@ func (self Instance) SetOffsetBottom(value Float.X) Instance {
 /*
 Controls the direction on the horizontal axis in which the control should grow if its horizontal minimum size is changed to be greater than its current size, as the control always has to be at least the minimum size.
 */
-func (self Instance) GrowHorizontal() GrowDirection {
+func (self Instance) GrowHorizontal() GrowDirection { //gd:Control.grow_horizontal
 	return GrowDirection(class(self).GetHGrowDirection())
 }
 
 // SetGrowHorizontal sets the property returned by [GetHGrowDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGrowHorizontal(value GrowDirection) Instance {
+func (self Instance) SetGrowHorizontal(value GrowDirection) Instance { //gd:Control.grow_horizontal
 	class(self).SetHGrowDirection(value)
 	return self
 }
@@ -2408,12 +2408,12 @@ func (self Instance) SetGrowHorizontal(value GrowDirection) Instance {
 /*
 Controls the direction on the vertical axis in which the control should grow if its vertical minimum size is changed to be greater than its current size, as the control always has to be at least the minimum size.
 */
-func (self Instance) GrowVertical() GrowDirection {
+func (self Instance) GrowVertical() GrowDirection { //gd:Control.grow_vertical
 	return GrowDirection(class(self).GetVGrowDirection())
 }
 
 // SetGrowVertical sets the property returned by [GetVGrowDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGrowVertical(value GrowDirection) Instance {
+func (self Instance) SetGrowVertical(value GrowDirection) Instance { //gd:Control.grow_vertical
 	class(self).SetVGrowDirection(value)
 	return self
 }
@@ -2423,7 +2423,7 @@ The size of the node's bounding rectangle, in the node's coordinate system. [Con
 
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) Size() Vector2.XY {
+func (self Instance) Size() Vector2.XY { //gd:Control.size
 	return Vector2.XY(class(self).GetSize())
 }
 
@@ -2432,7 +2432,7 @@ The node's position, relative to its containing node. It corresponds to the rect
 
 [PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:Control.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
@@ -2441,7 +2441,7 @@ The node's global position, relative to the world (usually to the [CanvasLayer])
 
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
-func (self Instance) GlobalPosition() Vector2.XY {
+func (self Instance) GlobalPosition() Vector2.XY { //gd:Control.global_position
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
@@ -2453,12 +2453,12 @@ Note: This property is edited in the inspector in degrees. If you want to use de
 [PivotOffset]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PivotOffset
 [RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.RotationDegrees
 */
-func (self Instance) Rotation() Float.X {
+func (self Instance) Rotation() Float.X { //gd:Control.rotation
 	return Float.X(Float.X(class(self).GetRotation()))
 }
 
 // SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotation(value Float.X) Instance {
+func (self Instance) SetRotation(value Float.X) Instance { //gd:Control.rotation
 	class(self).SetRotation(float64(value))
 	return self
 }
@@ -2468,12 +2468,12 @@ Helper property to access [Rotation] in degrees instead of radians.
 
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Rotation
 */
-func (self Instance) RotationDegrees() Float.X {
+func (self Instance) RotationDegrees() Float.X { //gd:Control.rotation_degrees
 	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
 // SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationDegrees(value Float.X) Instance {
+func (self Instance) SetRotationDegrees(value Float.X) Instance { //gd:Control.rotation_degrees
 	class(self).SetRotationDegrees(float64(value))
 	return self
 }
@@ -2497,12 +2497,12 @@ Note: If the Control node is a child of a [Container] node, the scale will be re
 [SystemFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MultichannelSignedDistanceField
 [documentation]: https://docs.godotengine.org/tutorials/rendering/multiple_resolutions.html
 */
-func (self Instance) Scale() Vector2.XY {
+func (self Instance) Scale() Vector2.XY { //gd:Control.scale
 	return Vector2.XY(class(self).GetScale())
 }
 
 // SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScale(value Vector2.XY) Instance {
+func (self Instance) SetScale(value Vector2.XY) Instance { //gd:Control.scale
 	class(self).SetScale(Vector2.XY(value))
 	return self
 }
@@ -2514,12 +2514,12 @@ By default, the node's pivot is its top-left corner. When you change its [Rotati
 [Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
 [Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
 */
-func (self Instance) PivotOffset() Vector2.XY {
+func (self Instance) PivotOffset() Vector2.XY { //gd:Control.pivot_offset
 	return Vector2.XY(class(self).GetPivotOffset())
 }
 
 // SetPivotOffset sets the property returned by [GetPivotOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPivotOffset(value Vector2.XY) Instance {
+func (self Instance) SetPivotOffset(value Vector2.XY) Instance { //gd:Control.pivot_offset
 	class(self).SetPivotOffset(Vector2.XY(value))
 	return self
 }
@@ -2529,12 +2529,12 @@ Tells the parent [Container] nodes how they should resize and place the node on 
 
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) SizeFlagsHorizontal() SizeFlags {
+func (self Instance) SizeFlagsHorizontal() SizeFlags { //gd:Control.size_flags_horizontal
 	return SizeFlags(class(self).GetHSizeFlags())
 }
 
 // SetSizeFlagsHorizontal sets the property returned by [GetHSizeFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) Instance {
+func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) Instance { //gd:Control.size_flags_horizontal
 	class(self).SetHSizeFlags(value)
 	return self
 }
@@ -2544,12 +2544,12 @@ Tells the parent [Container] nodes how they should resize and place the node on 
 
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) SizeFlagsVertical() SizeFlags {
+func (self Instance) SizeFlagsVertical() SizeFlags { //gd:Control.size_flags_vertical
 	return SizeFlags(class(self).GetVSizeFlags())
 }
 
 // SetSizeFlagsVertical sets the property returned by [GetVSizeFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSizeFlagsVertical(value SizeFlags) Instance {
+func (self Instance) SetSizeFlagsVertical(value SizeFlags) Instance { //gd:Control.size_flags_vertical
 	class(self).SetVSizeFlags(value)
 	return self
 }
@@ -2559,12 +2559,12 @@ If the node and at least one of its neighbors uses the [SizeExpand] size flag, t
 
 [Container]: https://pkg.go.dev/graphics.gd/classdb/Container
 */
-func (self Instance) SizeFlagsStretchRatio() Float.X {
+func (self Instance) SizeFlagsStretchRatio() Float.X { //gd:Control.size_flags_stretch_ratio
 	return Float.X(Float.X(class(self).GetStretchRatio()))
 }
 
 // SetSizeFlagsStretchRatio sets the property returned by [GetStretchRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSizeFlagsStretchRatio(value Float.X) Instance {
+func (self Instance) SetSizeFlagsStretchRatio(value Float.X) Instance { //gd:Control.size_flags_stretch_ratio
 	class(self).SetStretchRatio(float64(value))
 	return self
 }
@@ -2578,12 +2578,12 @@ Note: Numbers within the text are not automatically converted, it can be done ma
 [SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
 [TextServer.FormatNumber]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FormatNumber
 */
-func (self Instance) LocalizeNumeralSystem() bool {
+func (self Instance) LocalizeNumeralSystem() bool { //gd:Control.localize_numeral_system
 	return bool(class(self).IsLocalizingNumeralSystem())
 }
 
 // SetLocalizeNumeralSystem sets the property returned by [IsLocalizingNumeralSystem]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocalizeNumeralSystem(value bool) Instance {
+func (self Instance) SetLocalizeNumeralSystem(value bool) Instance { //gd:Control.localize_numeral_system
 	class(self).SetLocalizeNumeralSystem(value)
 	return self
 }
@@ -2591,12 +2591,12 @@ func (self Instance) SetLocalizeNumeralSystem(value bool) Instance {
 /*
 Toggles if any text should automatically change to its translated version depending on the current locale.
 */
-func (self Instance) AutoTranslate() bool {
+func (self Instance) AutoTranslate() bool { //gd:Control.auto_translate
 	return bool(class(self).IsAutoTranslating())
 }
 
 // SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTranslate(value bool) Instance {
+func (self Instance) SetAutoTranslate(value bool) Instance { //gd:Control.auto_translate
 	class(self).SetAutoTranslate(value)
 	return self
 }
@@ -2616,12 +2616,12 @@ The tooltip popup will use either a default implementation, or a custom one that
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
-func (self Instance) TooltipText() string {
+func (self Instance) TooltipText() string { //gd:Control.tooltip_text
 	return string(class(self).GetTooltipText().String())
 }
 
 // SetTooltipText sets the property returned by [GetTooltipText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTooltipText(value string) Instance {
+func (self Instance) SetTooltipText(value string) Instance { //gd:Control.tooltip_text
 	class(self).SetTooltipText(String.New(value))
 	return self
 }
@@ -2633,12 +2633,12 @@ Note: Tooltips customized using [MakeCustomTooltip] do not use this auto transla
 
 [MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 */
-func (self Instance) TooltipAutoTranslateMode() Node.AutoTranslateMode {
+func (self Instance) TooltipAutoTranslateMode() Node.AutoTranslateMode { //gd:Control.tooltip_auto_translate_mode
 	return Node.AutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
 }
 
 // SetTooltipAutoTranslateMode sets the property returned by [GetTooltipAutoTranslateMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) Instance {
+func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) Instance { //gd:Control.tooltip_auto_translate_mode
 	class(self).SetTooltipAutoTranslateMode(value)
 	return self
 }
@@ -2649,12 +2649,12 @@ Tells Godot which node it should give focus to if the user presses the left arro
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusNeighborLeft() string {
+func (self Instance) FocusNeighborLeft() string { //gd:Control.focus_neighbor_left
 	return string(class(self).GetFocusNeighbor(0).String())
 }
 
 // SetFocusNeighborLeft sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusNeighborLeft(value string) Instance {
+func (self Instance) SetFocusNeighborLeft(value string) Instance { //gd:Control.focus_neighbor_left
 	class(self).SetFocusNeighbor(0, Path.ToNode(String.New(value)))
 	return self
 }
@@ -2665,12 +2665,12 @@ Tells Godot which node it should give focus to if the user presses the top arrow
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusNeighborTop() string {
+func (self Instance) FocusNeighborTop() string { //gd:Control.focus_neighbor_top
 	return string(class(self).GetFocusNeighbor(1).String())
 }
 
 // SetFocusNeighborTop sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusNeighborTop(value string) Instance {
+func (self Instance) SetFocusNeighborTop(value string) Instance { //gd:Control.focus_neighbor_top
 	class(self).SetFocusNeighbor(1, Path.ToNode(String.New(value)))
 	return self
 }
@@ -2681,12 +2681,12 @@ Tells Godot which node it should give focus to if the user presses the right arr
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusNeighborRight() string {
+func (self Instance) FocusNeighborRight() string { //gd:Control.focus_neighbor_right
 	return string(class(self).GetFocusNeighbor(2).String())
 }
 
 // SetFocusNeighborRight sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusNeighborRight(value string) Instance {
+func (self Instance) SetFocusNeighborRight(value string) Instance { //gd:Control.focus_neighbor_right
 	class(self).SetFocusNeighbor(2, Path.ToNode(String.New(value)))
 	return self
 }
@@ -2697,12 +2697,12 @@ Tells Godot which node it should give focus to if the user presses the down arro
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusNeighborBottom() string {
+func (self Instance) FocusNeighborBottom() string { //gd:Control.focus_neighbor_bottom
 	return string(class(self).GetFocusNeighbor(3).String())
 }
 
 // SetFocusNeighborBottom sets the property returned by [GetFocusNeighbor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusNeighborBottom(value string) Instance {
+func (self Instance) SetFocusNeighborBottom(value string) Instance { //gd:Control.focus_neighbor_bottom
 	class(self).SetFocusNeighbor(3, Path.ToNode(String.New(value)))
 	return self
 }
@@ -2714,12 +2714,12 @@ If this property is not set, Godot will select a "best guess" based on surroundi
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusNext() string {
+func (self Instance) FocusNext() string { //gd:Control.focus_next
 	return string(class(self).GetFocusNext().String())
 }
 
 // SetFocusNext sets the property returned by [GetFocusNext]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusNext(value string) Instance {
+func (self Instance) SetFocusNext(value string) Instance { //gd:Control.focus_next
 	class(self).SetFocusNext(Path.ToNode(String.New(value)))
 	return self
 }
@@ -2731,12 +2731,12 @@ If this property is not set, Godot will select a "best guess" based on surroundi
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) FocusPrevious() string {
+func (self Instance) FocusPrevious() string { //gd:Control.focus_previous
 	return string(class(self).GetFocusPrevious().String())
 }
 
 // SetFocusPrevious sets the property returned by [GetFocusPrevious]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusPrevious(value string) Instance {
+func (self Instance) SetFocusPrevious(value string) Instance { //gd:Control.focus_previous
 	class(self).SetFocusPrevious(Path.ToNode(String.New(value)))
 	return self
 }
@@ -2749,12 +2749,12 @@ Determines which controls can be focused. Only one control can be focused at a t
 [GrabFocus]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GrabFocus
 [GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 */
-func (self Instance) FocusMode() FocusMode {
+func (self Instance) FocusMode() FocusMode { //gd:Control.focus_mode
 	return FocusMode(class(self).GetFocusMode())
 }
 
 // SetFocusMode sets the property returned by [GetFocusMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusMode(value FocusMode) Instance {
+func (self Instance) SetFocusMode(value FocusMode) Instance { //gd:Control.focus_mode
 	class(self).SetFocusMode(value)
 	return self
 }
@@ -2765,12 +2765,12 @@ Determines which controls can be focused together with [FocusMode]. See [GetFocu
 [FocusMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.FocusMode
 [GetFocusModeWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetFocusModeWithOverride
 */
-func (self Instance) FocusBehaviorRecursive() FocusBehaviorRecursive {
+func (self Instance) FocusBehaviorRecursive() FocusBehaviorRecursive { //gd:Control.focus_behavior_recursive
 	return FocusBehaviorRecursive(class(self).GetFocusBehaviorRecursive())
 }
 
 // SetFocusBehaviorRecursive sets the property returned by [GetFocusBehaviorRecursive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) Instance {
+func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) Instance { //gd:Control.focus_behavior_recursive
 	class(self).SetFocusBehaviorRecursive(value)
 	return self
 }
@@ -2784,12 +2784,12 @@ Determines which controls will be able to receive mouse button input events thro
 [OnMouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OnMouseEntered
 [OnMouseExited]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OnMouseExited
 */
-func (self Instance) MouseFilter() MouseFilter {
+func (self Instance) MouseFilter() MouseFilter { //gd:Control.mouse_filter
 	return MouseFilter(class(self).GetMouseFilter())
 }
 
 // SetMouseFilter sets the property returned by [GetMouseFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMouseFilter(value MouseFilter) Instance {
+func (self Instance) SetMouseFilter(value MouseFilter) Instance { //gd:Control.mouse_filter
 	class(self).SetMouseFilter(value)
 	return self
 }
@@ -2800,12 +2800,12 @@ Determines which controls can receive mouse input together with [MouseFilter]. S
 [GetMouseFilterWithOverride]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMouseFilterWithOverride
 [MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
 */
-func (self Instance) MouseBehaviorRecursive() MouseBehaviorRecursive {
+func (self Instance) MouseBehaviorRecursive() MouseBehaviorRecursive { //gd:Control.mouse_behavior_recursive
 	return MouseBehaviorRecursive(class(self).GetMouseBehaviorRecursive())
 }
 
 // SetMouseBehaviorRecursive sets the property returned by [GetMouseBehaviorRecursive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) Instance {
+func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) Instance { //gd:Control.mouse_behavior_recursive
 	class(self).SetMouseBehaviorRecursive(value)
 	return self
 }
@@ -2821,12 +2821,12 @@ Note: Because this property defaults to true, this allows nested scrollable cont
 [MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
 [Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
 */
-func (self Instance) MouseForcePassScrollEvents() bool {
+func (self Instance) MouseForcePassScrollEvents() bool { //gd:Control.mouse_force_pass_scroll_events
 	return bool(class(self).IsForcePassScrollEvents())
 }
 
 // SetMouseForcePassScrollEvents sets the property returned by [IsForcePassScrollEvents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMouseForcePassScrollEvents(value bool) Instance {
+func (self Instance) SetMouseForcePassScrollEvents(value bool) Instance { //gd:Control.mouse_force_pass_scroll_events
 	class(self).SetForcePassScrollEvents(value)
 	return self
 }
@@ -2836,12 +2836,12 @@ The default cursor shape for this control. Useful for Godot plugins and applicat
 
 Note: On Linux, shapes may vary depending on the cursor theme of the system.
 */
-func (self Instance) MouseDefaultCursorShape() CursorShape {
+func (self Instance) MouseDefaultCursorShape() CursorShape { //gd:Control.mouse_default_cursor_shape
 	return CursorShape(class(self).GetDefaultCursorShape())
 }
 
 // SetMouseDefaultCursorShape sets the property returned by [GetDefaultCursorShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMouseDefaultCursorShape(value CursorShape) Instance {
+func (self Instance) SetMouseDefaultCursorShape(value CursorShape) Instance { //gd:Control.mouse_default_cursor_shape
 	class(self).SetDefaultCursorShape(value)
 	return self
 }
@@ -2852,12 +2852,12 @@ The [Node] which must be a parent of the focused [Control] for the shortcut to b
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
-func (self Instance) ShortcutContext() Node.Instance {
+func (self Instance) ShortcutContext() Node.Instance { //gd:Control.shortcut_context
 	return Node.Instance(class(self).GetShortcutContext())
 }
 
 // SetShortcutContext sets the property returned by [GetShortcutContext]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcutContext(value Node.Instance) Instance {
+func (self Instance) SetShortcutContext(value Node.Instance) Instance { //gd:Control.shortcut_context
 	class(self).SetShortcutContext(value)
 	return self
 }
@@ -2865,12 +2865,12 @@ func (self Instance) SetShortcutContext(value Node.Instance) Instance {
 /*
 The human-readable node name that is reported to assistive apps.
 */
-func (self Instance) AccessibilityName() string {
+func (self Instance) AccessibilityName() string { //gd:Control.accessibility_name
 	return string(class(self).GetAccessibilityName().String())
 }
 
 // SetAccessibilityName sets the property returned by [GetAccessibilityName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityName(value string) Instance {
+func (self Instance) SetAccessibilityName(value string) Instance { //gd:Control.accessibility_name
 	class(self).SetAccessibilityName(String.New(value))
 	return self
 }
@@ -2878,12 +2878,12 @@ func (self Instance) SetAccessibilityName(value string) Instance {
 /*
 The human-readable node description that is reported to assistive apps.
 */
-func (self Instance) AccessibilityDescription() string {
+func (self Instance) AccessibilityDescription() string { //gd:Control.accessibility_description
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
 // SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityDescription(value string) Instance {
+func (self Instance) SetAccessibilityDescription(value string) Instance { //gd:Control.accessibility_description
 	class(self).SetAccessibilityDescription(String.New(value))
 	return self
 }
@@ -2893,12 +2893,12 @@ The mode with which a live region updates. A live region is a [Node] that is upd
 
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
-func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode {
+func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.accessibility_live
 	return DisplayServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
 }
 
 // SetAccessibilityLive sets the property returned by [GetAccessibilityLive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) Instance {
+func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) Instance { //gd:Control.accessibility_live
 	class(self).SetAccessibilityLive(value)
 	return self
 }
@@ -2906,12 +2906,12 @@ func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveM
 /*
 The paths to the nodes which are controlled by this node.
 */
-func (self Instance) AccessibilityControlsNodes() []string {
+func (self Instance) AccessibilityControlsNodes() []string { //gd:Control.accessibility_controls_nodes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityControlsNodes())))
 }
 
 // SetAccessibilityControlsNodes sets the property returned by [GetAccessibilityControlsNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityControlsNodes(value []string) Instance {
+func (self Instance) SetAccessibilityControlsNodes(value []string) Instance { //gd:Control.accessibility_controls_nodes
 	class(self).SetAccessibilityControlsNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 	return self
 }
@@ -2919,12 +2919,12 @@ func (self Instance) SetAccessibilityControlsNodes(value []string) Instance {
 /*
 The paths to the nodes which are describing this node.
 */
-func (self Instance) AccessibilityDescribedByNodes() []string {
+func (self Instance) AccessibilityDescribedByNodes() []string { //gd:Control.accessibility_described_by_nodes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityDescribedByNodes())))
 }
 
 // SetAccessibilityDescribedByNodes sets the property returned by [GetAccessibilityDescribedByNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityDescribedByNodes(value []string) Instance {
+func (self Instance) SetAccessibilityDescribedByNodes(value []string) Instance { //gd:Control.accessibility_described_by_nodes
 	class(self).SetAccessibilityDescribedByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 	return self
 }
@@ -2932,12 +2932,12 @@ func (self Instance) SetAccessibilityDescribedByNodes(value []string) Instance {
 /*
 The paths to the nodes which label this node.
 */
-func (self Instance) AccessibilityLabeledByNodes() []string {
+func (self Instance) AccessibilityLabeledByNodes() []string { //gd:Control.accessibility_labeled_by_nodes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityLabeledByNodes())))
 }
 
 // SetAccessibilityLabeledByNodes sets the property returned by [GetAccessibilityLabeledByNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityLabeledByNodes(value []string) Instance {
+func (self Instance) SetAccessibilityLabeledByNodes(value []string) Instance { //gd:Control.accessibility_labeled_by_nodes
 	class(self).SetAccessibilityLabeledByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 	return self
 }
@@ -2945,12 +2945,12 @@ func (self Instance) SetAccessibilityLabeledByNodes(value []string) Instance {
 /*
 The paths to the nodes which this node flows into.
 */
-func (self Instance) AccessibilityFlowToNodes() []string {
+func (self Instance) AccessibilityFlowToNodes() []string { //gd:Control.accessibility_flow_to_nodes
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityFlowToNodes())))
 }
 
 // SetAccessibilityFlowToNodes sets the property returned by [GetAccessibilityFlowToNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityFlowToNodes(value []string) Instance {
+func (self Instance) SetAccessibilityFlowToNodes(value []string) Instance { //gd:Control.accessibility_flow_to_nodes
 	class(self).SetAccessibilityFlowToNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 	return self
 }
@@ -2964,12 +2964,12 @@ Note: [Window] styles will have no effect unless the window is embedded.
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
-func (self Instance) Theme() Theme.Instance {
+func (self Instance) Theme() Theme.Instance { //gd:Control.theme
 	return Theme.Instance(class(self).GetTheme())
 }
 
 // SetTheme sets the property returned by [GetTheme]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTheme(value Theme.Instance) Instance {
+func (self Instance) SetTheme(value Theme.Instance) Instance { //gd:Control.theme
 	class(self).SetTheme(value)
 	return self
 }
@@ -2988,12 +2988,12 @@ Note: Theme items are looked for in the tree order, from branch to root, where e
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Theme
 [Theme.SetTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetTypeVariation
 */
-func (self Instance) ThemeTypeVariation() string {
+func (self Instance) ThemeTypeVariation() string { //gd:Control.theme_type_variation
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
 // SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThemeTypeVariation(value string) Instance {
+func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Control.theme_type_variation
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 	return self
 }

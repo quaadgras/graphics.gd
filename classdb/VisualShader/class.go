@@ -332,12 +332,12 @@ func New() Instance {
 /*
 Deprecated.
 */
-func (self Instance) GraphOffset() Vector2.XY {
+func (self Instance) GraphOffset() Vector2.XY { //gd:VisualShader.graph_offset
 	return Vector2.XY(class(self).GetGraphOffset())
 }
 
 // SetGraphOffset sets the property returned by [GetGraphOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGraphOffset(value Vector2.XY) Instance {
+func (self Instance) SetGraphOffset(value Vector2.XY) Instance { //gd:VisualShader.graph_offset
 	class(self).SetGraphOffset(Vector2.XY(value))
 	return self
 }

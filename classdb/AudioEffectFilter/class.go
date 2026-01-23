@@ -168,12 +168,12 @@ func New() Instance {
 /*
 Threshold frequency for the filter, in Hz.
 */
-func (self Instance) CutoffHz() Float.X {
+func (self Instance) CutoffHz() Float.X { //gd:AudioEffectFilter.cutoff_hz
 	return Float.X(Float.X(class(self).GetCutoff()))
 }
 
 // SetCutoffHz sets the property returned by [GetCutoff]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCutoffHz(value Float.X) Instance {
+func (self Instance) SetCutoffHz(value Float.X) Instance { //gd:AudioEffectFilter.cutoff_hz
 	class(self).SetCutoff(float64(value))
 	return self
 }
@@ -181,12 +181,12 @@ func (self Instance) SetCutoffHz(value Float.X) Instance {
 /*
 Amount of boost in the frequency range near the cutoff frequency.
 */
-func (self Instance) Resonance() Float.X {
+func (self Instance) Resonance() Float.X { //gd:AudioEffectFilter.resonance
 	return Float.X(Float.X(class(self).GetResonance()))
 }
 
 // SetResonance sets the property returned by [GetResonance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResonance(value Float.X) Instance {
+func (self Instance) SetResonance(value Float.X) Instance { //gd:AudioEffectFilter.resonance
 	class(self).SetResonance(float64(value))
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetResonance(value Float.X) Instance {
 /*
 Gain amount of the frequencies after the filter.
 */
-func (self Instance) Gain() Float.X {
+func (self Instance) Gain() Float.X { //gd:AudioEffectFilter.gain
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
 // SetGain sets the property returned by [GetGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGain(value Float.X) Instance {
+func (self Instance) SetGain(value Float.X) Instance { //gd:AudioEffectFilter.gain
 	class(self).SetGain(float64(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetGain(value Float.X) Instance {
 /*
 Steepness of the cutoff curve in dB per octave, also known as the order of the filter. Higher orders have a more aggressive cutoff.
 */
-func (self Instance) Db() FilterDB {
+func (self Instance) Db() FilterDB { //gd:AudioEffectFilter.db
 	return FilterDB(class(self).GetDb())
 }
 
 // SetDb sets the property returned by [GetDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDb(value FilterDB) Instance {
+func (self Instance) SetDb(value FilterDB) Instance { //gd:AudioEffectFilter.db
 	class(self).SetDb(value)
 	return self
 }

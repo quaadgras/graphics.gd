@@ -362,12 +362,12 @@ func New() Instance {
 /*
 If true, collisions will be reported.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:RayCast3D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:RayCast3D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -379,12 +379,12 @@ If true, this raycast will not report collisions with its parent node. This prop
 [CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 [Node.GetParent]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetParent
 */
-func (self Instance) ExcludeParent() bool {
+func (self Instance) ExcludeParent() bool { //gd:RayCast3D.exclude_parent
 	return bool(class(self).GetExcludeParentBody())
 }
 
 // SetExcludeParent sets the property returned by [GetExcludeParentBody]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeParent(value bool) Instance {
+func (self Instance) SetExcludeParent(value bool) Instance { //gd:RayCast3D.exclude_parent
 	class(self).SetExcludeParentBody(value)
 	return self
 }
@@ -394,12 +394,12 @@ The ray's destination point, relative to this raycast's [Node3D.Position].
 
 [Node3D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
 */
-func (self Instance) TargetPosition() Vector3.XYZ {
+func (self Instance) TargetPosition() Vector3.XYZ { //gd:RayCast3D.target_position
 	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance { //gd:RayCast3D.target_position
 	class(self).SetTargetPosition(Vector3.XYZ(value))
 	return self
 }
@@ -409,12 +409,12 @@ The ray's collision mask. Only objects in at least one collision layer enabled i
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:RayCast3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:RayCast3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -422,12 +422,12 @@ func (self Instance) SetCollisionMask(value int) Instance {
 /*
 If true, the ray will detect a hit when starting inside shapes. In this case the collision normal will be Vector3(0, 0, 0). Does not affect shapes with no volume like concave polygon or heightmap.
 */
-func (self Instance) HitFromInside() bool {
+func (self Instance) HitFromInside() bool { //gd:RayCast3D.hit_from_inside
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
 // SetHitFromInside sets the property returned by [IsHitFromInsideEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHitFromInside(value bool) Instance {
+func (self Instance) SetHitFromInside(value bool) Instance { //gd:RayCast3D.hit_from_inside
 	class(self).SetHitFromInside(value)
 	return self
 }
@@ -435,12 +435,12 @@ func (self Instance) SetHitFromInside(value bool) Instance {
 /*
 If true, the ray will hit back faces with concave polygon shapes with back face enabled or heightmap shapes.
 */
-func (self Instance) HitBackFaces() bool {
+func (self Instance) HitBackFaces() bool { //gd:RayCast3D.hit_back_faces
 	return bool(class(self).IsHitBackFacesEnabled())
 }
 
 // SetHitBackFaces sets the property returned by [IsHitBackFacesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHitBackFaces(value bool) Instance {
+func (self Instance) SetHitBackFaces(value bool) Instance { //gd:RayCast3D.hit_back_faces
 	class(self).SetHitBackFaces(value)
 	return self
 }
@@ -450,12 +450,12 @@ If true, collisions with [Area3D]s will be reported.
 
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:RayCast3D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:RayCast3D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }
@@ -465,12 +465,12 @@ If true, collisions with [PhysicsBody3D]s will be reported.
 
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:RayCast3D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:RayCast3D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }
@@ -483,12 +483,12 @@ If set to Color(0.0, 0.0, 0.0) (by default), the color set in [ProjectSettings] 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
 */
-func (self Instance) DebugShapeCustomColor() Color.RGBA {
+func (self Instance) DebugShapeCustomColor() Color.RGBA { //gd:RayCast3D.debug_shape_custom_color
 	return Color.RGBA(class(self).GetDebugShapeCustomColor())
 }
 
 // SetDebugShapeCustomColor sets the property returned by [GetDebugShapeCustomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance { //gd:RayCast3D.debug_shape_custom_color
 	class(self).SetDebugShapeCustomColor(Color.RGBA(value))
 	return self
 }
@@ -498,12 +498,12 @@ If set to 1, a line is used as the debug shape. Otherwise, a truncated pyramid i
 
 [RayCast3D]: https://pkg.go.dev/graphics.gd/classdb/RayCast3D
 */
-func (self Instance) DebugShapeThickness() int {
+func (self Instance) DebugShapeThickness() int { //gd:RayCast3D.debug_shape_thickness
 	return int(int(class(self).GetDebugShapeThickness()))
 }
 
 // SetDebugShapeThickness sets the property returned by [GetDebugShapeThickness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugShapeThickness(value int) Instance {
+func (self Instance) SetDebugShapeThickness(value int) Instance { //gd:RayCast3D.debug_shape_thickness
 	class(self).SetDebugShapeThickness(int64(value))
 	return self
 }

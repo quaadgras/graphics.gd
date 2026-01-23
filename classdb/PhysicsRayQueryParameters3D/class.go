@@ -202,12 +202,12 @@ func New() Instance {
 /*
 The starting point of the ray being queried for, in global coordinates.
 */
-func (self Instance) From() Vector3.XYZ {
+func (self Instance) From() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.from
 	return Vector3.XYZ(class(self).GetFrom())
 }
 
 // SetFrom sets the property returned by [GetFrom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrom(value Vector3.XYZ) Instance {
+func (self Instance) SetFrom(value Vector3.XYZ) Instance { //gd:PhysicsRayQueryParameters3D.from
 	class(self).SetFrom(Vector3.XYZ(value))
 	return self
 }
@@ -215,12 +215,12 @@ func (self Instance) SetFrom(value Vector3.XYZ) Instance {
 /*
 The ending point of the ray being queried for, in global coordinates.
 */
-func (self Instance) To() Vector3.XYZ {
+func (self Instance) To() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.to
 	return Vector3.XYZ(class(self).GetTo())
 }
 
 // SetTo sets the property returned by [GetTo]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTo(value Vector3.XYZ) Instance {
+func (self Instance) SetTo(value Vector3.XYZ) Instance { //gd:PhysicsRayQueryParameters3D.to
 	class(self).SetTo(Vector3.XYZ(value))
 	return self
 }
@@ -230,12 +230,12 @@ The physics layers the query will detect (as a bitmask). By default, all collisi
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:PhysicsRayQueryParameters3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:PhysicsRayQueryParameters3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -249,12 +249,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [CollisionObject3D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Exclude() []RID.Body3D {
+func (self Instance) Exclude() []RID.Body3D { //gd:PhysicsRayQueryParameters3D.exclude
 	return []RID.Body3D(gd.ArrayAs[[]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
 }
 
 // SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExclude(value []RID.Body3D) Instance {
+func (self Instance) SetExclude(value []RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.exclude
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -264,12 +264,12 @@ If true, the query will take [PhysicsBody3D]s into account.
 
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:PhysicsRayQueryParameters3D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:PhysicsRayQueryParameters3D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }
@@ -279,12 +279,12 @@ If true, the query will take [Area3D]s into account.
 
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:PhysicsRayQueryParameters3D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:PhysicsRayQueryParameters3D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }
@@ -292,12 +292,12 @@ func (self Instance) SetCollideWithAreas(value bool) Instance {
 /*
 If true, the query will detect a hit when starting inside shapes. In this case the collision normal will be Vector3(0, 0, 0). Does not affect concave polygon shapes or heightmap shapes.
 */
-func (self Instance) HitFromInside() bool {
+func (self Instance) HitFromInside() bool { //gd:PhysicsRayQueryParameters3D.hit_from_inside
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
 // SetHitFromInside sets the property returned by [IsHitFromInsideEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHitFromInside(value bool) Instance {
+func (self Instance) SetHitFromInside(value bool) Instance { //gd:PhysicsRayQueryParameters3D.hit_from_inside
 	class(self).SetHitFromInside(value)
 	return self
 }
@@ -305,12 +305,12 @@ func (self Instance) SetHitFromInside(value bool) Instance {
 /*
 If true, the query will hit back faces with concave polygon shapes with back face enabled or heightmap shapes.
 */
-func (self Instance) HitBackFaces() bool {
+func (self Instance) HitBackFaces() bool { //gd:PhysicsRayQueryParameters3D.hit_back_faces
 	return bool(class(self).IsHitBackFacesEnabled())
 }
 
 // SetHitBackFaces sets the property returned by [IsHitBackFacesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHitBackFaces(value bool) Instance {
+func (self Instance) SetHitBackFaces(value bool) Instance { //gd:PhysicsRayQueryParameters3D.hit_back_faces
 	class(self).SetHitBackFaces(value)
 	return self
 }

@@ -370,12 +370,12 @@ func New() Instance {
 /*
 The minimum domain (x-coordinate) that points can have.
 */
-func (self Instance) MinDomain() Float.X {
+func (self Instance) MinDomain() Float.X { //gd:Curve.min_domain
 	return Float.X(Float.X(class(self).GetMinDomain()))
 }
 
 // SetMinDomain sets the property returned by [GetMinDomain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinDomain(value Float.X) Instance {
+func (self Instance) SetMinDomain(value Float.X) Instance { //gd:Curve.min_domain
 	class(self).SetMinDomain(float64(value))
 	return self
 }
@@ -383,12 +383,12 @@ func (self Instance) SetMinDomain(value Float.X) Instance {
 /*
 The maximum domain (x-coordinate) that points can have.
 */
-func (self Instance) MaxDomain() Float.X {
+func (self Instance) MaxDomain() Float.X { //gd:Curve.max_domain
 	return Float.X(Float.X(class(self).GetMaxDomain()))
 }
 
 // SetMaxDomain sets the property returned by [GetMaxDomain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDomain(value Float.X) Instance {
+func (self Instance) SetMaxDomain(value Float.X) Instance { //gd:Curve.max_domain
 	class(self).SetMaxDomain(float64(value))
 	return self
 }
@@ -396,12 +396,12 @@ func (self Instance) SetMaxDomain(value Float.X) Instance {
 /*
 The minimum value (y-coordinate) that points can have. Tangents can cause lower values between points.
 */
-func (self Instance) MinValue() Float.X {
+func (self Instance) MinValue() Float.X { //gd:Curve.min_value
 	return Float.X(Float.X(class(self).GetMinValue()))
 }
 
 // SetMinValue sets the property returned by [GetMinValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinValue(value Float.X) Instance {
+func (self Instance) SetMinValue(value Float.X) Instance { //gd:Curve.min_value
 	class(self).SetMinValue(float64(value))
 	return self
 }
@@ -409,12 +409,12 @@ func (self Instance) SetMinValue(value Float.X) Instance {
 /*
 The maximum value (y-coordinate) that points can have. Tangents can cause higher values between points.
 */
-func (self Instance) MaxValue() Float.X {
+func (self Instance) MaxValue() Float.X { //gd:Curve.max_value
 	return Float.X(Float.X(class(self).GetMaxValue()))
 }
 
 // SetMaxValue sets the property returned by [GetMaxValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxValue(value Float.X) Instance {
+func (self Instance) SetMaxValue(value Float.X) Instance { //gd:Curve.max_value
 	class(self).SetMaxValue(float64(value))
 	return self
 }
@@ -422,12 +422,12 @@ func (self Instance) SetMaxValue(value Float.X) Instance {
 /*
 The number of points to include in the baked (i.e. cached) curve data.
 */
-func (self Instance) BakeResolution() int {
+func (self Instance) BakeResolution() int { //gd:Curve.bake_resolution
 	return int(int(class(self).GetBakeResolution()))
 }
 
 // SetBakeResolution sets the property returned by [GetBakeResolution]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeResolution(value int) Instance {
+func (self Instance) SetBakeResolution(value int) Instance { //gd:Curve.bake_resolution
 	class(self).SetBakeResolution(int64(value))
 	return self
 }
@@ -435,12 +435,12 @@ func (self Instance) SetBakeResolution(value int) Instance {
 /*
 The number of points describing the curve.
 */
-func (self Instance) PointCount() int {
+func (self Instance) PointCount() int { //gd:Curve.point_count
 	return int(int(class(self).GetPointCount()))
 }
 
 // SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPointCount(value int) Instance {
+func (self Instance) SetPointCount(value int) Instance { //gd:Curve.point_count
 	class(self).SetPointCount(int64(value))
 	return self
 }

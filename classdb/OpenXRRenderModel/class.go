@@ -172,12 +172,12 @@ The render model RID for the render model to load, as returned by [OpenXRRenderM
 [OpenXRRenderModelExtension.RenderModelCreate]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelCreate
 [OpenXRRenderModelExtension.RenderModelGetAll]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelGetAll
 */
-func (self Instance) RenderModel() RID.RenderModel {
+func (self Instance) RenderModel() RID.RenderModel { //gd:OpenXRRenderModel.render_model
 	return RID.RenderModel(RID.RenderModel(class(self).GetRenderModel()))
 }
 
 // SetRenderModel sets the property returned by [GetRenderModel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderModel(value RID.RenderModel) Instance {
+func (self Instance) SetRenderModel(value RID.RenderModel) Instance { //gd:OpenXRRenderModel.render_model
 	class(self).SetRenderModel(RID.Any(value))
 	return self
 }

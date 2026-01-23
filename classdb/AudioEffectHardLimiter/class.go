@@ -164,12 +164,12 @@ func New() Instance {
 /*
 Gain to apply before limiting, in decibels.
 */
-func (self Instance) PreGainDb() Float.X {
+func (self Instance) PreGainDb() Float.X { //gd:AudioEffectHardLimiter.pre_gain_db
 	return Float.X(Float.X(class(self).GetPreGainDb()))
 }
 
 // SetPreGainDb sets the property returned by [GetPreGainDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreGainDb(value Float.X) Instance {
+func (self Instance) SetPreGainDb(value Float.X) Instance { //gd:AudioEffectHardLimiter.pre_gain_db
 	class(self).SetPreGainDb(float64(value))
 	return self
 }
@@ -179,12 +179,12 @@ The waveform's maximum allowed value, in decibels. This value can range from -24
 
 The default value of -0.3 prevents potential inter-sample peaks (ISP) from crossing over 0 dB, which can cause slight distortion on some older hardware.
 */
-func (self Instance) CeilingDb() Float.X {
+func (self Instance) CeilingDb() Float.X { //gd:AudioEffectHardLimiter.ceiling_db
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
 // SetCeilingDb sets the property returned by [GetCeilingDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCeilingDb(value Float.X) Instance {
+func (self Instance) SetCeilingDb(value Float.X) Instance { //gd:AudioEffectHardLimiter.ceiling_db
 	class(self).SetCeilingDb(float64(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetCeilingDb(value Float.X) Instance {
 /*
 Time it takes in seconds for the gain reduction to fully release.
 */
-func (self Instance) Release() Float.X {
+func (self Instance) Release() Float.X { //gd:AudioEffectHardLimiter.release
 	return Float.X(Float.X(class(self).GetRelease()))
 }
 
 // SetRelease sets the property returned by [GetRelease]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRelease(value Float.X) Instance {
+func (self Instance) SetRelease(value Float.X) Instance { //gd:AudioEffectHardLimiter.release
 	class(self).SetRelease(float64(value))
 	return self
 }

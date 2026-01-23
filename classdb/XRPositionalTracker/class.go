@@ -236,12 +236,12 @@ func New() Instance {
 /*
 The profile associated with this tracker, interface dependent but will indicate the type of controller being tracked.
 */
-func (self Instance) Profile() string {
+func (self Instance) Profile() string { //gd:XRPositionalTracker.profile
 	return string(class(self).GetTrackerProfile().String())
 }
 
 // SetProfile sets the property returned by [GetTrackerProfile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProfile(value string) Instance {
+func (self Instance) SetProfile(value string) Instance { //gd:XRPositionalTracker.profile
 	class(self).SetTrackerProfile(String.New(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetProfile(value string) Instance {
 /*
 Defines which hand this tracker relates to.
 */
-func (self Instance) Hand() TrackerHand {
+func (self Instance) Hand() TrackerHand { //gd:XRPositionalTracker.hand
 	return TrackerHand(class(self).GetTrackerHand())
 }
 
 // SetHand sets the property returned by [GetTrackerHand]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHand(value TrackerHand) Instance {
+func (self Instance) SetHand(value TrackerHand) Instance { //gd:XRPositionalTracker.hand
 	class(self).SetTrackerHand(value)
 	return self
 }

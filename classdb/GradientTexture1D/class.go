@@ -172,12 +172,12 @@ The [Gradient] used to fill the texture.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) Gradient() Gradient.Instance {
+func (self Instance) Gradient() Gradient.Instance { //gd:GradientTexture1D.gradient
 	return Gradient.Instance(class(self).GetGradient())
 }
 
 // SetGradient sets the property returned by [GetGradient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGradient(value Gradient.Instance) Instance {
+func (self Instance) SetGradient(value Gradient.Instance) Instance { //gd:GradientTexture1D.gradient
 	class(self).SetGradient(value)
 	return self
 }
@@ -188,7 +188,7 @@ The number of color samples that will be obtained from the [Gradient].
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:GradientTexture1D.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -198,12 +198,12 @@ If true, the generated texture will support high dynamic range ([Image.FormatRgb
 
 [Environment.GlowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowEnabled
 */
-func (self Instance) UseHdr() bool {
+func (self Instance) UseHdr() bool { //gd:GradientTexture1D.use_hdr
 	return bool(class(self).IsUsingHdr())
 }
 
 // SetUseHdr sets the property returned by [IsUsingHdr]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseHdr(value bool) Instance {
+func (self Instance) SetUseHdr(value bool) Instance { //gd:GradientTexture1D.use_hdr
 	class(self).SetUseHdr(value)
 	return self
 }

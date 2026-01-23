@@ -199,12 +199,12 @@ The [Shader] program used to render this material.
 
 [Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
-func (self Instance) Shader() Shader.Instance {
+func (self Instance) Shader() Shader.Instance { //gd:ShaderMaterial.shader
 	return Shader.Instance(class(self).GetShader())
 }
 
 // SetShader sets the property returned by [GetShader]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShader(value Shader.Instance) Instance {
+func (self Instance) SetShader(value Shader.Instance) Instance { //gd:ShaderMaterial.shader
 	class(self).SetShader(value)
 	return self
 }

@@ -316,12 +316,12 @@ func New() Instance {
 /*
 The NodePath to the node that is the target for the CCDIK modification. This node is what the CCDIK chain will attempt to rotate the bone chain to.
 */
-func (self Instance) TargetNodepath() string {
+func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DCCDIK.target_nodepath
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNodepath(value string) Instance {
+func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DCCDIK.target_nodepath
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -331,12 +331,12 @@ The end position of the CCDIK chain. Typically, this should be a child of a [Bon
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) TipNodepath() string {
+func (self Instance) TipNodepath() string { //gd:SkeletonModification2DCCDIK.tip_nodepath
 	return string(class(self).GetTipNode().String())
 }
 
 // SetTipNodepath sets the property returned by [GetTipNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTipNodepath(value string) Instance {
+func (self Instance) SetTipNodepath(value string) Instance { //gd:SkeletonModification2DCCDIK.tip_nodepath
 	class(self).SetTipNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -344,12 +344,12 @@ func (self Instance) SetTipNodepath(value string) Instance {
 /*
 The number of CCDIK joints in the CCDIK modification.
 */
-func (self Instance) CcdikDataChainLength() int {
+func (self Instance) CcdikDataChainLength() int { //gd:SkeletonModification2DCCDIK.ccdik_data_chain_length
 	return int(int(class(self).GetCcdikDataChainLength()))
 }
 
 // SetCcdikDataChainLength sets the property returned by [GetCcdikDataChainLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCcdikDataChainLength(value int) Instance {
+func (self Instance) SetCcdikDataChainLength(value int) Instance { //gd:SkeletonModification2DCCDIK.ccdik_data_chain_length
 	class(self).SetCcdikDataChainLength(int64(value))
 	return self
 }

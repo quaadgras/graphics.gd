@@ -368,12 +368,12 @@ func New() Instance {
 /*
 true if this is the primary interface.
 */
-func (self Instance) InterfaceIsPrimary() bool {
+func (self Instance) InterfaceIsPrimary() bool { //gd:XRInterface.interface_is_primary
 	return bool(class(self).IsPrimary())
 }
 
 // SetInterfaceIsPrimary sets the property returned by [IsPrimary]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterfaceIsPrimary(value bool) Instance {
+func (self Instance) SetInterfaceIsPrimary(value bool) Instance { //gd:XRInterface.interface_is_primary
 	class(self).SetPrimary(value)
 	return self
 }
@@ -381,12 +381,12 @@ func (self Instance) SetInterfaceIsPrimary(value bool) Instance {
 /*
 The play area mode for this interface.
 */
-func (self Instance) XrPlayAreaMode() PlayAreaMode {
+func (self Instance) XrPlayAreaMode() PlayAreaMode { //gd:XRInterface.xr_play_area_mode
 	return PlayAreaMode(class(self).GetPlayAreaMode())
 }
 
 // SetXrPlayAreaMode sets the property returned by [GetPlayAreaMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) Instance {
+func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) Instance { //gd:XRInterface.xr_play_area_mode
 	class(self).SetPlayAreaMode(value)
 	return self
 }
@@ -394,12 +394,12 @@ func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) Instance {
 /*
 Specify how XR should blend in the environment. This is specific to certain AR and passthrough devices where camera images are blended in by the XR compositor.
 */
-func (self Instance) EnvironmentBlendMode() EnvironmentBlendMode {
+func (self Instance) EnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterface.environment_blend_mode
 	return EnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
 }
 
 // SetEnvironmentBlendMode sets the property returned by [GetEnvironmentBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) Instance {
+func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) Instance { //gd:XRInterface.environment_blend_mode
 	class(self).SetEnvironmentBlendMode(value)
 	return self
 }
@@ -407,12 +407,12 @@ func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) Instanc
 /*
 On an AR interface, true if anchor detection is enabled.
 */
-func (self Instance) ArIsAnchorDetectionEnabled() bool {
+func (self Instance) ArIsAnchorDetectionEnabled() bool { //gd:XRInterface.ar_is_anchor_detection_enabled
 	return bool(class(self).GetAnchorDetectionIsEnabled())
 }
 
 // SetArIsAnchorDetectionEnabled sets the property returned by [GetAnchorDetectionIsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetArIsAnchorDetectionEnabled(value bool) Instance {
+func (self Instance) SetArIsAnchorDetectionEnabled(value bool) Instance { //gd:XRInterface.ar_is_anchor_detection_enabled
 	class(self).SetAnchorDetectionIsEnabled(value)
 	return self
 }

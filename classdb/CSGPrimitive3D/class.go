@@ -167,12 +167,12 @@ func New() Instance {
 /*
 If set, the order of the vertices in each triangle are reversed resulting in the backside of the mesh being drawn.
 */
-func (self Instance) FlipFaces() bool {
+func (self Instance) FlipFaces() bool { //gd:CSGPrimitive3D.flip_faces
 	return bool(class(self).GetFlipFaces())
 }
 
 // SetFlipFaces sets the property returned by [GetFlipFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipFaces(value bool) Instance {
+func (self Instance) SetFlipFaces(value bool) Instance { //gd:CSGPrimitive3D.flip_faces
 	class(self).SetFlipFaces(value)
 	return self
 }

@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The segment's first point position.
 */
-func (self Instance) A() Vector2.XY {
+func (self Instance) A() Vector2.XY { //gd:SegmentShape2D.a
 	return Vector2.XY(class(self).GetA())
 }
 
 // SetA sets the property returned by [GetA]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetA(value Vector2.XY) Instance {
+func (self Instance) SetA(value Vector2.XY) Instance { //gd:SegmentShape2D.a
 	class(self).SetA(Vector2.XY(value))
 	return self
 }
@@ -178,12 +178,12 @@ func (self Instance) SetA(value Vector2.XY) Instance {
 /*
 The segment's second point position.
 */
-func (self Instance) B() Vector2.XY {
+func (self Instance) B() Vector2.XY { //gd:SegmentShape2D.b
 	return Vector2.XY(class(self).GetB())
 }
 
 // SetB sets the property returned by [GetB]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetB(value Vector2.XY) Instance {
+func (self Instance) SetB(value Vector2.XY) Instance { //gd:SegmentShape2D.b
 	class(self).SetB(Vector2.XY(value))
 	return self
 }

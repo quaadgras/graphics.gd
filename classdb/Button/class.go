@@ -219,12 +219,12 @@ func New() Instance {
 /*
 The button's text that will be displayed inside the button's area.
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:Button.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:Button.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -236,12 +236,12 @@ To edit margin and spacing of the icon, use theme's 'h_separation' theme propert
 
 [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 */
-func (self Instance) Icon() Texture2D.Instance {
+func (self Instance) Icon() Texture2D.Instance { //gd:Button.icon
 	return Texture2D.Instance(class(self).GetButtonIcon())
 }
 
 // SetIcon sets the property returned by [GetButtonIcon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIcon(value Texture2D.Instance) Instance {
+func (self Instance) SetIcon(value Texture2D.Instance) Instance { //gd:Button.icon
 	class(self).SetButtonIcon(value)
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetIcon(value Texture2D.Instance) Instance {
 /*
 Flat buttons don't display decoration.
 */
-func (self Instance) Flat() bool {
+func (self Instance) Flat() bool { //gd:Button.flat
 	return bool(class(self).IsFlat())
 }
 
 // SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlat(value bool) Instance {
+func (self Instance) SetFlat(value bool) Instance { //gd:Button.flat
 	class(self).SetFlat(value)
 	return self
 }
@@ -262,12 +262,12 @@ func (self Instance) SetFlat(value bool) Instance {
 /*
 Text alignment policy for the button's text.
 */
-func (self Instance) Alignment() GUI.HorizontalAlignment {
+func (self Instance) Alignment() GUI.HorizontalAlignment { //gd:Button.alignment
 	return GUI.HorizontalAlignment(class(self).GetTextAlignment())
 }
 
 // SetAlignment sets the property returned by [GetTextAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance { //gd:Button.alignment
 	class(self).SetTextAlignment(value)
 	return self
 }
@@ -275,12 +275,12 @@ func (self Instance) SetAlignment(value GUI.HorizontalAlignment) Instance {
 /*
 Sets the clipping behavior when the text exceeds the node's bounding rectangle.
 */
-func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:Button.text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
 // SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:Button.text_overrun_behavior
 	class(self).SetTextOverrunBehavior(value)
 	return self
 }
@@ -288,12 +288,12 @@ func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) In
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle.
 */
-func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:Button.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 // SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance { //gd:Button.autowrap_mode
 	class(self).SetAutowrapMode(value)
 	return self
 }
@@ -301,12 +301,12 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 /*
 Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
 */
-func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Button.autowrap_trim_flags
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
 // SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance {
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance { //gd:Button.autowrap_trim_flags
 	class(self).SetAutowrapTrimFlags(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instan
 /*
 If true, text that is too large to fit the button is clipped horizontally. If false, the button will always be wide enough to hold the text. The text is not vertically clipped, and the button's height is not affected by this property.
 */
-func (self Instance) ClipText() bool {
+func (self Instance) ClipText() bool { //gd:Button.clip_text
 	return bool(class(self).GetClipText())
 }
 
 // SetClipText sets the property returned by [GetClipText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipText(value bool) Instance {
+func (self Instance) SetClipText(value bool) Instance { //gd:Button.clip_text
 	class(self).SetClipText(value)
 	return self
 }
@@ -327,12 +327,12 @@ func (self Instance) SetClipText(value bool) Instance {
 /*
 Specifies if the icon should be aligned horizontally to the left, right, or center of a button. Uses the same [HorizontalAlignment] constants as the text alignment. If centered horizontally and vertically, text will draw on top of the icon.
 */
-func (self Instance) IconAlignment() GUI.HorizontalAlignment {
+func (self Instance) IconAlignment() GUI.HorizontalAlignment { //gd:Button.icon_alignment
 	return GUI.HorizontalAlignment(class(self).GetIconAlignment())
 }
 
 // SetIconAlignment sets the property returned by [GetIconAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) Instance { //gd:Button.icon_alignment
 	class(self).SetIconAlignment(value)
 	return self
 }
@@ -340,12 +340,12 @@ func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) Instance {
 /*
 Specifies if the icon should be aligned vertically to the top, bottom, or center of a button. Uses the same [VerticalAlignment] constants as the text alignment. If centered horizontally and vertically, text will draw on top of the icon.
 */
-func (self Instance) VerticalIconAlignment() GUI.VerticalAlignment {
+func (self Instance) VerticalIconAlignment() GUI.VerticalAlignment { //gd:Button.vertical_icon_alignment
 	return GUI.VerticalAlignment(class(self).GetVerticalIconAlignment())
 }
 
 // SetVerticalIconAlignment sets the property returned by [GetVerticalIconAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) Instance {
+func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) Instance { //gd:Button.vertical_icon_alignment
 	class(self).SetVerticalIconAlignment(value)
 	return self
 }
@@ -353,12 +353,12 @@ func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) Insta
 /*
 When enabled, the button's icon will expand/shrink to fit the button's size while keeping its aspect. See also theme's 'icon_max_width'.
 */
-func (self Instance) ExpandIcon() bool {
+func (self Instance) ExpandIcon() bool { //gd:Button.expand_icon
 	return bool(class(self).IsExpandIcon())
 }
 
 // SetExpandIcon sets the property returned by [IsExpandIcon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandIcon(value bool) Instance {
+func (self Instance) SetExpandIcon(value bool) Instance { //gd:Button.expand_icon
 	class(self).SetExpandIcon(value)
 	return self
 }
@@ -366,12 +366,12 @@ func (self Instance) SetExpandIcon(value bool) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:Button.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:Button.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -379,12 +379,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:Button.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:Button.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }

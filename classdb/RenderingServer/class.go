@@ -5373,13 +5373,13 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 If false, disables rendering completely, but the engine logic is still being processed. You can call [ForceDraw] to draw a frame even with rendering disabled.
 */
-func RenderLoopEnabled() bool {
+func RenderLoopEnabled() bool { //gd:RenderingServer.render_loop_enabled
 	once.Do(singleton)
 	return bool(class(self).IsRenderLoopEnabled())
 }
 
 // SetRenderLoopEnabled sets the property returned by [IsRenderLoopEnabled].
-func SetRenderLoopEnabled(value bool) {
+func SetRenderLoopEnabled(value bool) { //gd:RenderingServer.render_loop_enabled
 	once.Do(singleton)
 	class(self).SetRenderLoopEnabled(value)
 }

@@ -209,12 +209,12 @@ func New() Instance {
 /*
 If true this rendering effect is applied to any viewport it is added to.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:CompositorEffect.enabled
 	return bool(class(self).GetEnabled())
 }
 
 // SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:CompositorEffect.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -222,12 +222,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 The type of effect that is implemented, determines at what stage of rendering the callback is called.
 */
-func (self Instance) EffectCallbackType() EffectCallbackType {
+func (self Instance) EffectCallbackType() EffectCallbackType { //gd:CompositorEffect.effect_callback_type
 	return EffectCallbackType(class(self).GetEffectCallbackType())
 }
 
 // SetEffectCallbackType sets the property returned by [GetEffectCallbackType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEffectCallbackType(value EffectCallbackType) Instance {
+func (self Instance) SetEffectCallbackType(value EffectCallbackType) Instance { //gd:CompositorEffect.effect_callback_type
 	class(self).SetEffectCallbackType(value)
 	return self
 }
@@ -239,12 +239,12 @@ Note: In [RenderCallback], to access the resolved buffer use:
 
 [RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
 */
-func (self Instance) AccessResolvedColor() bool {
+func (self Instance) AccessResolvedColor() bool { //gd:CompositorEffect.access_resolved_color
 	return bool(class(self).GetAccessResolvedColor())
 }
 
 // SetAccessResolvedColor sets the property returned by [GetAccessResolvedColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessResolvedColor(value bool) Instance {
+func (self Instance) SetAccessResolvedColor(value bool) Instance { //gd:CompositorEffect.access_resolved_color
 	class(self).SetAccessResolvedColor(value)
 	return self
 }
@@ -256,12 +256,12 @@ Note: In [RenderCallback], to access the resolved buffer use:
 
 [RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
 */
-func (self Instance) AccessResolvedDepth() bool {
+func (self Instance) AccessResolvedDepth() bool { //gd:CompositorEffect.access_resolved_depth
 	return bool(class(self).GetAccessResolvedDepth())
 }
 
 // SetAccessResolvedDepth sets the property returned by [GetAccessResolvedDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessResolvedDepth(value bool) Instance {
+func (self Instance) SetAccessResolvedDepth(value bool) Instance { //gd:CompositorEffect.access_resolved_depth
 	class(self).SetAccessResolvedDepth(value)
 	return self
 }
@@ -273,12 +273,12 @@ Note: In [RenderCallback], to access the motion vector buffer use:
 
 [RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
 */
-func (self Instance) NeedsMotionVectors() bool {
+func (self Instance) NeedsMotionVectors() bool { //gd:CompositorEffect.needs_motion_vectors
 	return bool(class(self).GetNeedsMotionVectors())
 }
 
 // SetNeedsMotionVectors sets the property returned by [GetNeedsMotionVectors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNeedsMotionVectors(value bool) Instance {
+func (self Instance) SetNeedsMotionVectors(value bool) Instance { //gd:CompositorEffect.needs_motion_vectors
 	class(self).SetNeedsMotionVectors(value)
 	return self
 }
@@ -293,12 +293,12 @@ The raw normal and roughness buffer is stored in an optimized format, different 
 [RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
 [here]: https://github.com/godotengine/godot/blob/da5f39889f155658cef7f7ec3cc1abb94e17d815/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered_inc.glsl#L334-L341
 */
-func (self Instance) NeedsNormalRoughness() bool {
+func (self Instance) NeedsNormalRoughness() bool { //gd:CompositorEffect.needs_normal_roughness
 	return bool(class(self).GetNeedsNormalRoughness())
 }
 
 // SetNeedsNormalRoughness sets the property returned by [GetNeedsNormalRoughness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNeedsNormalRoughness(value bool) Instance {
+func (self Instance) SetNeedsNormalRoughness(value bool) Instance { //gd:CompositorEffect.needs_normal_roughness
 	class(self).SetNeedsNormalRoughness(value)
 	return self
 }
@@ -306,12 +306,12 @@ func (self Instance) SetNeedsNormalRoughness(value bool) Instance {
 /*
 If true this triggers specular data being rendered to a separate buffer and combined after effects have been applied, only applicable for the Forward+ renderer.
 */
-func (self Instance) NeedsSeparateSpecular() bool {
+func (self Instance) NeedsSeparateSpecular() bool { //gd:CompositorEffect.needs_separate_specular
 	return bool(class(self).GetNeedsSeparateSpecular())
 }
 
 // SetNeedsSeparateSpecular sets the property returned by [GetNeedsSeparateSpecular]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNeedsSeparateSpecular(value bool) Instance {
+func (self Instance) SetNeedsSeparateSpecular(value bool) Instance { //gd:CompositorEffect.needs_separate_specular
 	class(self).SetNeedsSeparateSpecular(value)
 	return self
 }

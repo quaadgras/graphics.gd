@@ -173,12 +173,12 @@ func New() Instance {
 /*
 The minimum radius around the focal point where full quality is guaranteed if VRS is used as a percentage of screen size.
 */
-func (self Instance) VrsMinRadius() Float.X {
+func (self Instance) VrsMinRadius() Float.X { //gd:XRVRS.vrs_min_radius
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
 // SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsMinRadius(value Float.X) Instance {
+func (self Instance) SetVrsMinRadius(value Float.X) Instance { //gd:XRVRS.vrs_min_radius
 	class(self).SetVrsMinRadius(float64(value))
 	return self
 }
@@ -186,12 +186,12 @@ func (self Instance) SetVrsMinRadius(value Float.X) Instance {
 /*
 The strength used to calculate the VRS density map. The greater this value, the more noticeable VRS is.
 */
-func (self Instance) VrsStrength() Float.X {
+func (self Instance) VrsStrength() Float.X { //gd:XRVRS.vrs_strength
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
 // SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsStrength(value Float.X) Instance {
+func (self Instance) SetVrsStrength(value Float.X) Instance { //gd:XRVRS.vrs_strength
 	class(self).SetVrsStrength(float64(value))
 	return self
 }
@@ -199,12 +199,12 @@ func (self Instance) SetVrsStrength(value Float.X) Instance {
 /*
 The render region that the VRS texture will be scaled to when generated.
 */
-func (self Instance) VrsRenderRegion() Rect2i.PositionSize {
+func (self Instance) VrsRenderRegion() Rect2i.PositionSize { //gd:XRVRS.vrs_render_region
 	return Rect2i.PositionSize(class(self).GetVrsRenderRegion())
 }
 
 // SetVrsRenderRegion sets the property returned by [GetVrsRenderRegion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) Instance {
+func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) Instance { //gd:XRVRS.vrs_render_region
 	class(self).SetVrsRenderRegion(Rect2i.PositionSize(value))
 	return self
 }

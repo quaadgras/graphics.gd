@@ -274,12 +274,12 @@ The [AudioStream] resource to be played. Setting this property stops all current
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 [AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
 */
-func (self Instance) Stream() AudioStream.Instance {
+func (self Instance) Stream() AudioStream.Instance { //gd:AudioStreamPlayer.stream
 	return AudioStream.Instance(class(self).GetStream())
 }
 
 // SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream(value AudioStream.Instance) Instance {
+func (self Instance) SetStream(value AudioStream.Instance) Instance { //gd:AudioStreamPlayer.stream
 	class(self).SetStream(value)
 	return self
 }
@@ -294,12 +294,12 @@ Note: To convert between decibel and linear energy (like most volume sliders do)
 [Stream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Stream
 [VolumeLinear]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.VolumeLinear
 */
-func (self Instance) VolumeDb() Float.X {
+func (self Instance) VolumeDb() Float.X { //gd:AudioStreamPlayer.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
 // SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeDb(value Float.X) Instance {
+func (self Instance) SetVolumeDb(value Float.X) Instance { //gd:AudioStreamPlayer.volume_db
 	class(self).SetVolumeDb(float64(value))
 	return self
 }
@@ -313,12 +313,12 @@ Note: This member modifies [VolumeDb] for convenience. The returned value is equ
 [@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
 [VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.VolumeDb
 */
-func (self Instance) VolumeLinear() Float.X {
+func (self Instance) VolumeLinear() Float.X { //gd:AudioStreamPlayer.volume_linear
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
 // SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeLinear(value Float.X) Instance {
+func (self Instance) SetVolumeLinear(value Float.X) Instance { //gd:AudioStreamPlayer.volume_linear
 	class(self).SetVolumeLinear(float64(value))
 	return self
 }
@@ -328,12 +328,12 @@ The audio's pitch and tempo, as a multiplier of the [Stream]'s sample rate. A va
 
 [Stream]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Stream
 */
-func (self Instance) PitchScale() Float.X {
+func (self Instance) PitchScale() Float.X { //gd:AudioStreamPlayer.pitch_scale
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
 // SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPitchScale(value Float.X) Instance {
+func (self Instance) SetPitchScale(value Float.X) Instance { //gd:AudioStreamPlayer.pitch_scale
 	class(self).SetPitchScale(float64(value))
 	return self
 }
@@ -344,12 +344,12 @@ If true, this node is playing sounds. Setting this property has the same effect 
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Play
 [Stop]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Stop
 */
-func (self Instance) Playing() bool {
+func (self Instance) Playing() bool { //gd:AudioStreamPlayer.playing
 	return bool(class(self).IsPlaying())
 }
 
 // SetPlaying sets the property returned by [IsPlaying]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaying(value bool) Instance {
+func (self Instance) SetPlaying(value bool) Instance { //gd:AudioStreamPlayer.playing
 	class(self).SetPlaying(value)
 	return self
 }
@@ -359,12 +359,12 @@ If true, this node calls [Play] when entering the tree.
 
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Play
 */
-func (self Instance) Autoplay() bool {
+func (self Instance) Autoplay() bool { //gd:AudioStreamPlayer.autoplay
 	return bool(class(self).IsAutoplayEnabled())
 }
 
 // SetAutoplay sets the property returned by [IsAutoplayEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value bool) Instance {
+func (self Instance) SetAutoplay(value bool) Instance { //gd:AudioStreamPlayer.autoplay
 	class(self).SetAutoplay(value)
 	return self
 }
@@ -377,12 +377,12 @@ Note: This property is automatically changed when exiting or entering the tree, 
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 [StreamPaused]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.StreamPaused
 */
-func (self Instance) StreamPaused() bool {
+func (self Instance) StreamPaused() bool { //gd:AudioStreamPlayer.stream_paused
 	return bool(class(self).GetStreamPaused())
 }
 
 // SetStreamPaused sets the property returned by [GetStreamPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamPaused(value bool) Instance {
+func (self Instance) SetStreamPaused(value bool) Instance { //gd:AudioStreamPlayer.stream_paused
 	class(self).SetStreamPaused(value)
 	return self
 }
@@ -390,12 +390,12 @@ func (self Instance) SetStreamPaused(value bool) Instance {
 /*
 The mix target channels. Has no effect when two speakers or less are detected (see [AudioServer.SpeakerMode]).
 */
-func (self Instance) MixTarget() MixTarget {
+func (self Instance) MixTarget() MixTarget { //gd:AudioStreamPlayer.mix_target
 	return MixTarget(class(self).GetMixTarget())
 }
 
 // SetMixTarget sets the property returned by [GetMixTarget]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMixTarget(value MixTarget) Instance {
+func (self Instance) SetMixTarget(value MixTarget) Instance { //gd:AudioStreamPlayer.mix_target
 	class(self).SetMixTarget(value)
 	return self
 }
@@ -405,12 +405,12 @@ The maximum number of sounds this node can play at the same time. Calling [Play]
 
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Play
 */
-func (self Instance) MaxPolyphony() int {
+func (self Instance) MaxPolyphony() int { //gd:AudioStreamPlayer.max_polyphony
 	return int(int(class(self).GetMaxPolyphony()))
 }
 
 // SetMaxPolyphony sets the property returned by [GetMaxPolyphony]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxPolyphony(value int) Instance {
+func (self Instance) SetMaxPolyphony(value int) Instance { //gd:AudioStreamPlayer.max_polyphony
 	class(self).SetMaxPolyphony(int64(value))
 	return self
 }
@@ -422,12 +422,12 @@ Note: At runtime, if no bus with the given name exists, all sounds will fall bac
 
 [AudioServer.GetBusName]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#GetBusName
 */
-func (self Instance) Bus() string {
+func (self Instance) Bus() string { //gd:AudioStreamPlayer.bus
 	return string(class(self).GetBus().String())
 }
 
 // SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBus(value string) Instance {
+func (self Instance) SetBus(value string) Instance { //gd:AudioStreamPlayer.bus
 	class(self).SetBus(String.Name(String.New(value)))
 	return self
 }
@@ -435,12 +435,12 @@ func (self Instance) SetBus(value string) Instance {
 /*
 The playback type of the stream player. If set other than to the default value, it will force that playback type.
 */
-func (self Instance) PlaybackType() AudioServer.PlaybackType {
+func (self Instance) PlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer.playback_type
 	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
 // SetPlaybackType sets the property returned by [GetPlaybackType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance {
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance { //gd:AudioStreamPlayer.playback_type
 	class(self).SetPlaybackType(value)
 	return self
 }

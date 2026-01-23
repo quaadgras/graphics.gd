@@ -204,12 +204,12 @@ Note: In the editor, this path is automatically updated when the target viewport
 [Resource.GetLocalScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.GetLocalScene
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) ViewportPath() string {
+func (self Instance) ViewportPath() string { //gd:ViewportTexture.viewport_path
 	return string(class(self).GetViewportPathInScene().String())
 }
 
 // SetViewportPath sets the property returned by [GetViewportPathInScene]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetViewportPath(value string) Instance {
+func (self Instance) SetViewportPath(value string) Instance { //gd:ViewportTexture.viewport_path
 	class(self).SetViewportPathInScene(Path.ToNode(String.New(value)))
 	return self
 }

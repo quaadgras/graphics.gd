@@ -295,12 +295,12 @@ If true, this [MultiplayerPeer] refuses new connections.
 
 [MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer
 */
-func (self Instance) RefuseNewConnections() bool {
+func (self Instance) RefuseNewConnections() bool { //gd:MultiplayerPeer.refuse_new_connections
 	return bool(class(self).IsRefusingNewConnections())
 }
 
 // SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRefuseNewConnections(value bool) Instance {
+func (self Instance) SetRefuseNewConnections(value bool) Instance { //gd:MultiplayerPeer.refuse_new_connections
 	class(self).SetRefuseNewConnections(value)
 	return self
 }
@@ -310,12 +310,12 @@ The manner in which to send packets to the target peer. See the [SetTargetPeer] 
 
 [SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
 */
-func (self Instance) TransferMode() TransferMode {
+func (self Instance) TransferMode() TransferMode { //gd:MultiplayerPeer.transfer_mode
 	return TransferMode(class(self).GetTransferMode())
 }
 
 // SetTransferMode sets the property returned by [GetTransferMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransferMode(value TransferMode) Instance {
+func (self Instance) SetTransferMode(value TransferMode) Instance { //gd:MultiplayerPeer.transfer_mode
 	class(self).SetTransferMode(value)
 	return self
 }
@@ -325,12 +325,12 @@ The channel to use to send packets. Many network APIs such as ENet and WebRTC al
 
 Note: The default channel (0) actually works as 3 separate channels (one for each [TransferMode]) so that [TransferModeReliable] and [TransferModeUnreliableOrdered] does not interact with each other by default. Refer to the specific network API documentation (e.g. ENet or WebRTC) to learn how to set up channels correctly.
 */
-func (self Instance) TransferChannel() int {
+func (self Instance) TransferChannel() int { //gd:MultiplayerPeer.transfer_channel
 	return int(int(class(self).GetTransferChannel()))
 }
 
 // SetTransferChannel sets the property returned by [GetTransferChannel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransferChannel(value int) Instance {
+func (self Instance) SetTransferChannel(value int) Instance { //gd:MultiplayerPeer.transfer_channel
 	class(self).SetTransferChannel(int64(value))
 	return self
 }

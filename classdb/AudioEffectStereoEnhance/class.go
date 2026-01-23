@@ -164,12 +164,12 @@ func New() Instance {
 /*
 Amplifies the difference between stereo channels, increasing or decreasing existing panning. A value of 0.0 will downmix stereo to mono. Does not affect a mono signal.
 */
-func (self Instance) PanPullout() Float.X {
+func (self Instance) PanPullout() Float.X { //gd:AudioEffectStereoEnhance.pan_pullout
 	return Float.X(Float.X(class(self).GetPanPullout()))
 }
 
 // SetPanPullout sets the property returned by [GetPanPullout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPanPullout(value Float.X) Instance {
+func (self Instance) SetPanPullout(value Float.X) Instance { //gd:AudioEffectStereoEnhance.pan_pullout
 	class(self).SetPanPullout(float64(value))
 	return self
 }
@@ -179,12 +179,12 @@ Widens sound stage through phase shifting in conjunction with [Surround]. Just d
 
 [Surround]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectStereoEnhance#Instance.Surround
 */
-func (self Instance) TimePulloutMs() Float.X {
+func (self Instance) TimePulloutMs() Float.X { //gd:AudioEffectStereoEnhance.time_pullout_ms
 	return Float.X(Float.X(class(self).GetTimePullout()))
 }
 
 // SetTimePulloutMs sets the property returned by [GetTimePullout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimePulloutMs(value Float.X) Instance {
+func (self Instance) SetTimePulloutMs(value Float.X) Instance { //gd:AudioEffectStereoEnhance.time_pullout_ms
 	class(self).SetTimePullout(float64(value))
 	return self
 }
@@ -194,12 +194,12 @@ Widens sound stage through phase shifting in conjunction with [TimePulloutMs]. J
 
 [TimePulloutMs]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectStereoEnhance#Instance.TimePulloutMs
 */
-func (self Instance) Surround() Float.X {
+func (self Instance) Surround() Float.X { //gd:AudioEffectStereoEnhance.surround
 	return Float.X(Float.X(class(self).GetSurround()))
 }
 
 // SetSurround sets the property returned by [GetSurround]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSurround(value Float.X) Instance {
+func (self Instance) SetSurround(value Float.X) Instance { //gd:AudioEffectStereoEnhance.surround
 	class(self).SetSurround(float64(value))
 	return self
 }

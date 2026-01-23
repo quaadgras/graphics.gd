@@ -159,12 +159,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) OpType() OpType {
+func (self Instance) OpType() OpType { //gd:VisualShaderNodeRemap.op_type
 	return OpType(class(self).GetOpType())
 }
 
 // SetOpType sets the property returned by [GetOpType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOpType(value OpType) Instance {
+func (self Instance) SetOpType(value OpType) Instance { //gd:VisualShaderNodeRemap.op_type
 	class(self).SetOpType(value)
 	return self
 }

@@ -165,12 +165,12 @@ func New() Instance {
 /*
 This property only exists to preserve data authored in earlier versions of Godot. It has currently no function.
 */
-func (self Instance) Description() string {
+func (self Instance) Description() string { //gd:VisualShaderNodeComment.description
 	return string(class(self).GetDescription().String())
 }
 
 // SetDescription sets the property returned by [GetDescription]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDescription(value string) Instance {
+func (self Instance) SetDescription(value string) Instance { //gd:VisualShaderNodeComment.description
 	class(self).SetDescription(String.New(value))
 	return self
 }

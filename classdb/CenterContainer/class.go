@@ -165,12 +165,12 @@ If true, centers children relative to the [CenterContainer]'s top left corner.
 
 [CenterContainer]: https://pkg.go.dev/graphics.gd/classdb/CenterContainer
 */
-func (self Instance) UseTopLeft() bool {
+func (self Instance) UseTopLeft() bool { //gd:CenterContainer.use_top_left
 	return bool(class(self).IsUsingTopLeft())
 }
 
 // SetUseTopLeft sets the property returned by [IsUsingTopLeft]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseTopLeft(value bool) Instance {
+func (self Instance) SetUseTopLeft(value bool) Instance { //gd:CenterContainer.use_top_left
 	class(self).SetUseTopLeft(value)
 	return self
 }

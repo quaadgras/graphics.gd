@@ -172,12 +172,12 @@ func New() Instance {
 /*
 The collision box's size in 3D units.
 */
-func (self Instance) Size() Vector3.XYZ {
+func (self Instance) Size() Vector3.XYZ { //gd:GPUParticlesCollisionBox3D.size
 	return Vector3.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3.XYZ) Instance {
+func (self Instance) SetSize(value Vector3.XYZ) Instance { //gd:GPUParticlesCollisionBox3D.size
 	class(self).SetSize(Vector3.XYZ(value))
 	return self
 }

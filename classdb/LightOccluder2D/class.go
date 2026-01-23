@@ -169,12 +169,12 @@ The [OccluderPolygon2D] used to compute the shadow.
 
 [OccluderPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/OccluderPolygon2D
 */
-func (self Instance) Occluder() OccluderPolygon2D.Instance {
+func (self Instance) Occluder() OccluderPolygon2D.Instance { //gd:LightOccluder2D.occluder
 	return OccluderPolygon2D.Instance(class(self).GetOccluderPolygon())
 }
 
 // SetOccluder sets the property returned by [GetOccluderPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) Instance {
+func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) Instance { //gd:LightOccluder2D.occluder
 	class(self).SetOccluderPolygon(value)
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) Instance {
 /*
 If enabled, the occluder will be part of a real-time generated signed distance field that can be used in custom shaders.
 */
-func (self Instance) SdfCollision() bool {
+func (self Instance) SdfCollision() bool { //gd:LightOccluder2D.sdf_collision
 	return bool(class(self).IsSetAsSdfCollision())
 }
 
 // SetSdfCollision sets the property returned by [IsSetAsSdfCollision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSdfCollision(value bool) Instance {
+func (self Instance) SetSdfCollision(value bool) Instance { //gd:LightOccluder2D.sdf_collision
 	class(self).SetAsSdfCollision(value)
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetSdfCollision(value bool) Instance {
 /*
 The LightOccluder2D's occluder light mask. The LightOccluder2D will cast shadows only from Light2D(s) that have the same light mask(s).
 */
-func (self Instance) OccluderLightMask() int {
+func (self Instance) OccluderLightMask() int { //gd:LightOccluder2D.occluder_light_mask
 	return int(int(class(self).GetOccluderLightMask()))
 }
 
 // SetOccluderLightMask sets the property returned by [GetOccluderLightMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOccluderLightMask(value int) Instance {
+func (self Instance) SetOccluderLightMask(value int) Instance { //gd:LightOccluder2D.occluder_light_mask
 	class(self).SetOccluderLightMask(int64(value))
 	return self
 }

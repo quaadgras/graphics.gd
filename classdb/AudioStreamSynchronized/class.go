@@ -198,12 +198,12 @@ func New() Instance {
 /*
 Set the total amount of streams that will be played back synchronized.
 */
-func (self Instance) StreamCount() int {
+func (self Instance) StreamCount() int { //gd:AudioStreamSynchronized.stream_count
 	return int(int(class(self).GetStreamCount()))
 }
 
 // SetStreamCount sets the property returned by [GetStreamCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamCount(value int) Instance {
+func (self Instance) SetStreamCount(value int) Instance { //gd:AudioStreamSynchronized.stream_count
 	class(self).SetStreamCount(int64(value))
 	return self
 }

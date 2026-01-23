@@ -170,12 +170,12 @@ func New() Instance {
 /*
 The texture's size (in pixels).
 */
-func (self Instance) Size() Vector3i.XYZ {
+func (self Instance) Size() Vector3i.XYZ { //gd:PlaceholderTexture3D.size
 	return Vector3i.XYZ(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector3i.XYZ) Instance {
+func (self Instance) SetSize(value Vector3i.XYZ) Instance { //gd:PlaceholderTexture3D.size
 	class(self).SetSize(Vector3i.XYZ(value))
 	return self
 }

@@ -238,12 +238,12 @@ Note: The layer index should be between [Renderingserver.CanvasLayerMin] and [Re
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
-func (self Instance) Layer() int {
+func (self Instance) Layer() int { //gd:CanvasLayer.layer
 	return int(int(class(self).GetLayer()))
 }
 
 // SetLayer sets the property returned by [GetLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayer(value int) Instance {
+func (self Instance) SetLayer(value int) Instance { //gd:CanvasLayer.layer
 	class(self).SetLayer(int64(value))
 	return self
 }
@@ -257,12 +257,12 @@ Unlike [CanvasItem.Visible], visibility of a [CanvasLayer] isn't propagated to u
 [CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:CanvasLayer.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:CanvasLayer.visible
 	class(self).SetVisible(value)
 	return self
 }
@@ -270,12 +270,12 @@ func (self Instance) SetVisible(value bool) Instance {
 /*
 The layer's base offset.
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:CanvasLayer.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:CanvasLayer.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 The layer's rotation in radians.
 */
-func (self Instance) Rotation() Angle.Radians {
+func (self Instance) Rotation() Angle.Radians { //gd:CanvasLayer.rotation
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
 // SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotation(value Angle.Radians) Instance {
+func (self Instance) SetRotation(value Angle.Radians) Instance { //gd:CanvasLayer.rotation
 	class(self).SetRotation(float64(value))
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetRotation(value Angle.Radians) Instance {
 /*
 The layer's scale.
 */
-func (self Instance) Scale() Vector2.XY {
+func (self Instance) Scale() Vector2.XY { //gd:CanvasLayer.scale
 	return Vector2.XY(class(self).GetScale())
 }
 
 // SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScale(value Vector2.XY) Instance {
+func (self Instance) SetScale(value Vector2.XY) Instance { //gd:CanvasLayer.scale
 	class(self).SetScale(Vector2.XY(value))
 	return self
 }
@@ -309,12 +309,12 @@ func (self Instance) SetScale(value Vector2.XY) Instance {
 /*
 The layer's transform.
 */
-func (self Instance) Transform() Transform2D.OriginXY {
+func (self Instance) Transform() Transform2D.OriginXY { //gd:CanvasLayer.transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance { //gd:CanvasLayer.transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -325,12 +325,12 @@ The custom [Viewport] node assigned to the [CanvasLayer]. If null, uses the defa
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) CustomViewport() Node.Instance {
+func (self Instance) CustomViewport() Node.Instance { //gd:CanvasLayer.custom_viewport
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
 // SetCustomViewport sets the property returned by [GetCustomViewport]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomViewport(value Node.Instance) Instance {
+func (self Instance) SetCustomViewport(value Node.Instance) Instance { //gd:CanvasLayer.custom_viewport
 	class(self).SetCustomViewport(value)
 	return self
 }
@@ -343,12 +343,12 @@ Together with [FollowViewportScale], this can be used for a pseudo-3D effect.
 [CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 [FollowViewportScale]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportScale
 */
-func (self Instance) FollowViewportEnabled() bool {
+func (self Instance) FollowViewportEnabled() bool { //gd:CanvasLayer.follow_viewport_enabled
 	return bool(class(self).IsFollowingViewport())
 }
 
 // SetFollowViewportEnabled sets the property returned by [IsFollowingViewport]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowViewportEnabled(value bool) Instance {
+func (self Instance) SetFollowViewportEnabled(value bool) Instance { //gd:CanvasLayer.follow_viewport_enabled
 	class(self).SetFollowViewport(value)
 	return self
 }
@@ -358,12 +358,12 @@ Scales the layer when using [FollowViewportEnabled]. Layers moving into the fore
 
 [FollowViewportEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportEnabled
 */
-func (self Instance) FollowViewportScale() Float.X {
+func (self Instance) FollowViewportScale() Float.X { //gd:CanvasLayer.follow_viewport_scale
 	return Float.X(Float.X(class(self).GetFollowViewportScale()))
 }
 
 // SetFollowViewportScale sets the property returned by [GetFollowViewportScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowViewportScale(value Float.X) Instance {
+func (self Instance) SetFollowViewportScale(value Float.X) Instance { //gd:CanvasLayer.follow_viewport_scale
 	class(self).SetFollowViewportScale(float64(value))
 	return self
 }

@@ -264,12 +264,12 @@ The blend space's axis's lower limit for the points' position. See [AddBlendPoin
 
 [AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D#Instance.AddBlendPoint
 */
-func (self Instance) MinSpace() Float.X {
+func (self Instance) MinSpace() Float.X { //gd:AnimationNodeBlendSpace1D.min_space
 	return Float.X(Float.X(class(self).GetMinSpace()))
 }
 
 // SetMinSpace sets the property returned by [GetMinSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinSpace(value Float.X) Instance {
+func (self Instance) SetMinSpace(value Float.X) Instance { //gd:AnimationNodeBlendSpace1D.min_space
 	class(self).SetMinSpace(float64(value))
 	return self
 }
@@ -279,12 +279,12 @@ The blend space's axis's upper limit for the points' position. See [AddBlendPoin
 
 [AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D#Instance.AddBlendPoint
 */
-func (self Instance) MaxSpace() Float.X {
+func (self Instance) MaxSpace() Float.X { //gd:AnimationNodeBlendSpace1D.max_space
 	return Float.X(Float.X(class(self).GetMaxSpace()))
 }
 
 // SetMaxSpace sets the property returned by [GetMaxSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSpace(value Float.X) Instance {
+func (self Instance) SetMaxSpace(value Float.X) Instance { //gd:AnimationNodeBlendSpace1D.max_space
 	class(self).SetMaxSpace(float64(value))
 	return self
 }
@@ -292,12 +292,12 @@ func (self Instance) SetMaxSpace(value Float.X) Instance {
 /*
 Position increment to snap to when moving a point on the axis.
 */
-func (self Instance) Snap() Float.X {
+func (self Instance) Snap() Float.X { //gd:AnimationNodeBlendSpace1D.snap
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
 // SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap(value Float.X) Instance {
+func (self Instance) SetSnap(value Float.X) Instance { //gd:AnimationNodeBlendSpace1D.snap
 	class(self).SetSnap(float64(value))
 	return self
 }
@@ -305,12 +305,12 @@ func (self Instance) SetSnap(value Float.X) Instance {
 /*
 Label of the virtual axis of the blend space.
 */
-func (self Instance) ValueLabel() string {
+func (self Instance) ValueLabel() string { //gd:AnimationNodeBlendSpace1D.value_label
 	return string(class(self).GetValueLabel().String())
 }
 
 // SetValueLabel sets the property returned by [GetValueLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetValueLabel(value string) Instance {
+func (self Instance) SetValueLabel(value string) Instance { //gd:AnimationNodeBlendSpace1D.value_label
 	class(self).SetValueLabel(String.New(value))
 	return self
 }
@@ -318,12 +318,12 @@ func (self Instance) SetValueLabel(value string) Instance {
 /*
 Controls the interpolation between animations.
 */
-func (self Instance) BlendMode() BlendMode {
+func (self Instance) BlendMode() BlendMode { //gd:AnimationNodeBlendSpace1D.blend_mode
 	return BlendMode(class(self).GetBlendMode())
 }
 
 // SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendMode(value BlendMode) Instance {
+func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:AnimationNodeBlendSpace1D.blend_mode
 	class(self).SetBlendMode(value)
 	return self
 }
@@ -333,12 +333,12 @@ If false, the blended animations' frame are stopped when the blend value is 0.
 
 If true, forcing the blended animations to advance frame.
 */
-func (self Instance) Sync() bool {
+func (self Instance) Sync() bool { //gd:AnimationNodeBlendSpace1D.sync
 	return bool(class(self).IsUsingSync())
 }
 
 // SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSync(value bool) Instance {
+func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeBlendSpace1D.sync
 	class(self).SetUseSync(value)
 	return self
 }

@@ -254,12 +254,12 @@ func New() Instance {
 /*
 The algorithm used to interpolate between points of the gradient.
 */
-func (self Instance) InterpolationMode() InterpolationMode {
+func (self Instance) InterpolationMode() InterpolationMode { //gd:Gradient.interpolation_mode
 	return InterpolationMode(class(self).GetInterpolationMode())
 }
 
 // SetInterpolationMode sets the property returned by [GetInterpolationMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterpolationMode(value InterpolationMode) Instance {
+func (self Instance) SetInterpolationMode(value InterpolationMode) Instance { //gd:Gradient.interpolation_mode
 	class(self).SetInterpolationMode(value)
 	return self
 }
@@ -271,12 +271,12 @@ Note: This setting has no effect when [InterpolationMode] is set to [GradientInt
 
 [InterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.InterpolationMode
 */
-func (self Instance) InterpolationColorSpace() ColorSpace {
+func (self Instance) InterpolationColorSpace() ColorSpace { //gd:Gradient.interpolation_color_space
 	return ColorSpace(class(self).GetInterpolationColorSpace())
 }
 
 // SetInterpolationColorSpace sets the property returned by [GetInterpolationColorSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInterpolationColorSpace(value ColorSpace) Instance {
+func (self Instance) SetInterpolationColorSpace(value ColorSpace) Instance { //gd:Gradient.interpolation_color_space
 	class(self).SetInterpolationColorSpace(value)
 	return self
 }
@@ -288,12 +288,12 @@ Note: Setting this property updates all offsets at once. To update any offset in
 
 [SetOffset]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.SetOffset
 */
-func (self Instance) Offsets() []float32 {
+func (self Instance) Offsets() []float32 { //gd:Gradient.offsets
 	return []float32(slices.Collect(class(self).GetOffsets().Values()))
 }
 
 // SetOffsets sets the property returned by [GetOffsets]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsets(value []float32) Instance {
+func (self Instance) SetOffsets(value []float32) Instance { //gd:Gradient.offsets
 	class(self).SetOffsets(Packed.New(value...))
 	return self
 }
@@ -306,12 +306,12 @@ Note: Setting this property updates all colors at once. To update any color indi
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [SetColor]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.SetColor
 */
-func (self Instance) Colors() []Color.RGBA {
+func (self Instance) Colors() []Color.RGBA { //gd:Gradient.colors
 	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
 // SetColors sets the property returned by [GetColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColors(value []Color.RGBA) Instance {
+func (self Instance) SetColors(value []Color.RGBA) Instance { //gd:Gradient.colors
 	class(self).SetColors(Packed.New(value...))
 	return self
 }

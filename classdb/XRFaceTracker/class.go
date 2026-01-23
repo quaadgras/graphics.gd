@@ -184,12 +184,12 @@ func New() Instance {
 /*
 The array of face blend shape weights with indices corresponding to the [BlendShapeEntry] enum.
 */
-func (self Instance) BlendShapes() []float32 {
+func (self Instance) BlendShapes() []float32 { //gd:XRFaceTracker.blend_shapes
 	return []float32(slices.Collect(class(self).GetBlendShapes().Values()))
 }
 
 // SetBlendShapes sets the property returned by [GetBlendShapes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendShapes(value []float32) Instance {
+func (self Instance) SetBlendShapes(value []float32) Instance { //gd:XRFaceTracker.blend_shapes
 	class(self).SetBlendShapes(Packed.New(value...))
 	return self
 }

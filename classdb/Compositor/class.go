@@ -164,12 +164,12 @@ The custom [CompositorEffect]s that are applied during rendering of viewports us
 
 [CompositorEffect]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect
 */
-func (self Instance) CompositorEffects() []CompositorEffect.Instance {
+func (self Instance) CompositorEffects() []CompositorEffect.Instance { //gd:Compositor.compositor_effects
 	return []CompositorEffect.Instance(gd.ArrayAs[[]CompositorEffect.Instance](gd.InternalArray(class(self).GetCompositorEffects())))
 }
 
 // SetCompositorEffects sets the property returned by [GetCompositorEffects]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) Instance {
+func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) Instance { //gd:Compositor.compositor_effects
 	class(self).SetCompositorEffects(gd.ArrayFromSlice[Array.Contains[[1]gdclass.CompositorEffect]](value))
 	return self
 }

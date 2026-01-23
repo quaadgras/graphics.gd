@@ -165,12 +165,12 @@ The name of the class this resource was supposed to be (see [Object.GetClass]).
 
 [Object.GetClass]: https://pkg.go.dev/graphics.gd/variant/Object#GetClass
 */
-func (self Instance) OriginalClass() string {
+func (self Instance) OriginalClass() string { //gd:MissingResource.original_class
 	return string(class(self).GetOriginalClass().String())
 }
 
 // SetOriginalClass sets the property returned by [GetOriginalClass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalClass(value string) Instance {
+func (self Instance) SetOriginalClass(value string) Instance { //gd:MissingResource.original_class
 	class(self).SetOriginalClass(String.New(value))
 	return self
 }
@@ -180,12 +180,12 @@ If set to true, allows new properties to be added on top of the existing ones wi
 
 [Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
 */
-func (self Instance) RecordingProperties() bool {
+func (self Instance) RecordingProperties() bool { //gd:MissingResource.recording_properties
 	return bool(class(self).IsRecordingProperties())
 }
 
 // SetRecordingProperties sets the property returned by [IsRecordingProperties]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRecordingProperties(value bool) Instance {
+func (self Instance) SetRecordingProperties(value bool) Instance { //gd:MissingResource.recording_properties
 	class(self).SetRecordingProperties(value)
 	return self
 }

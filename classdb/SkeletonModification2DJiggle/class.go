@@ -377,12 +377,12 @@ func New() Instance {
 /*
 The NodePath to the node that is the target for the Jiggle modification. This node is what the Jiggle chain will attempt to rotate the bone chain to.
 */
-func (self Instance) TargetNodepath() string {
+func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DJiggle.target_nodepath
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNodepath(value string) Instance {
+func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DJiggle.target_nodepath
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -390,12 +390,12 @@ func (self Instance) SetTargetNodepath(value string) Instance {
 /*
 The amount of Jiggle joints in the Jiggle modification.
 */
-func (self Instance) JiggleDataChainLength() int {
+func (self Instance) JiggleDataChainLength() int { //gd:SkeletonModification2DJiggle.jiggle_data_chain_length
 	return int(int(class(self).GetJiggleDataChainLength()))
 }
 
 // SetJiggleDataChainLength sets the property returned by [GetJiggleDataChainLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJiggleDataChainLength(value int) Instance {
+func (self Instance) SetJiggleDataChainLength(value int) Instance { //gd:SkeletonModification2DJiggle.jiggle_data_chain_length
 	class(self).SetJiggleDataChainLength(int64(value))
 	return self
 }
@@ -403,12 +403,12 @@ func (self Instance) SetJiggleDataChainLength(value int) Instance {
 /*
 The default amount of stiffness assigned to the Jiggle joints, if they are not overridden. Higher values act more like springs, quickly moving into the correct position.
 */
-func (self Instance) Stiffness() Float.X {
+func (self Instance) Stiffness() Float.X { //gd:SkeletonModification2DJiggle.stiffness
 	return Float.X(Float.X(class(self).GetStiffness()))
 }
 
 // SetStiffness sets the property returned by [GetStiffness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStiffness(value Float.X) Instance {
+func (self Instance) SetStiffness(value Float.X) Instance { //gd:SkeletonModification2DJiggle.stiffness
 	class(self).SetStiffness(float64(value))
 	return self
 }
@@ -416,12 +416,12 @@ func (self Instance) SetStiffness(value Float.X) Instance {
 /*
 The default amount of mass assigned to the Jiggle joints, if they are not overridden. Higher values lead to faster movements and more overshooting.
 */
-func (self Instance) Mass() Float.X {
+func (self Instance) Mass() Float.X { //gd:SkeletonModification2DJiggle.mass
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
 // SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMass(value Float.X) Instance {
+func (self Instance) SetMass(value Float.X) Instance { //gd:SkeletonModification2DJiggle.mass
 	class(self).SetMass(float64(value))
 	return self
 }
@@ -429,12 +429,12 @@ func (self Instance) SetMass(value Float.X) Instance {
 /*
 The default amount of damping applied to the Jiggle joints, if they are not overridden. Higher values lead to more of the calculated velocity being applied.
 */
-func (self Instance) Damping() Float.X {
+func (self Instance) Damping() Float.X { //gd:SkeletonModification2DJiggle.damping
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
 // SetDamping sets the property returned by [GetDamping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDamping(value Float.X) Instance {
+func (self Instance) SetDamping(value Float.X) Instance { //gd:SkeletonModification2DJiggle.damping
 	class(self).SetDamping(float64(value))
 	return self
 }
@@ -444,12 +444,12 @@ Whether the gravity vector, [Gravity], should be applied to the Jiggle joints, a
 
 [Gravity]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2DJiggle#Instance.Gravity
 */
-func (self Instance) UseGravity() bool {
+func (self Instance) UseGravity() bool { //gd:SkeletonModification2DJiggle.use_gravity
 	return bool(class(self).GetUseGravity())
 }
 
 // SetUseGravity sets the property returned by [GetUseGravity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseGravity(value bool) Instance {
+func (self Instance) SetUseGravity(value bool) Instance { //gd:SkeletonModification2DJiggle.use_gravity
 	class(self).SetUseGravity(value)
 	return self
 }
@@ -457,12 +457,12 @@ func (self Instance) SetUseGravity(value bool) Instance {
 /*
 The default amount of gravity applied to the Jiggle joints, if they are not overridden.
 */
-func (self Instance) Gravity() Vector2.XY {
+func (self Instance) Gravity() Vector2.XY { //gd:SkeletonModification2DJiggle.gravity
 	return Vector2.XY(class(self).GetGravity())
 }
 
 // SetGravity sets the property returned by [GetGravity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravity(value Vector2.XY) Instance {
+func (self Instance) SetGravity(value Vector2.XY) Instance { //gd:SkeletonModification2DJiggle.gravity
 	class(self).SetGravity(Vector2.XY(value))
 	return self
 }

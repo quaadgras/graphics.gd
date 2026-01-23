@@ -289,12 +289,12 @@ The [AudioStream] resource to be played.
 
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Instance) Stream() AudioStream.Instance {
+func (self Instance) Stream() AudioStream.Instance { //gd:AudioStreamPlayer3D.stream
 	return AudioStream.Instance(class(self).GetStream())
 }
 
 // SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream(value AudioStream.Instance) Instance {
+func (self Instance) SetStream(value AudioStream.Instance) Instance { //gd:AudioStreamPlayer3D.stream
 	class(self).SetStream(value)
 	return self
 }
@@ -302,12 +302,12 @@ func (self Instance) SetStream(value AudioStream.Instance) Instance {
 /*
 Decides if audio should get quieter with distance linearly, quadratically, logarithmically, or not be affected by distance, effectively disabling attenuation.
 */
-func (self Instance) AttenuationModel() AttenuationModel {
+func (self Instance) AttenuationModel() AttenuationModel { //gd:AudioStreamPlayer3D.attenuation_model
 	return AttenuationModel(class(self).GetAttenuationModel())
 }
 
 // SetAttenuationModel sets the property returned by [GetAttenuationModel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttenuationModel(value AttenuationModel) Instance {
+func (self Instance) SetAttenuationModel(value AttenuationModel) Instance { //gd:AudioStreamPlayer3D.attenuation_model
 	class(self).SetAttenuationModel(value)
 	return self
 }
@@ -315,12 +315,12 @@ func (self Instance) SetAttenuationModel(value AttenuationModel) Instance {
 /*
 The base sound level before attenuation, in decibels.
 */
-func (self Instance) VolumeDb() Float.X {
+func (self Instance) VolumeDb() Float.X { //gd:AudioStreamPlayer3D.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
 // SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeDb(value Float.X) Instance {
+func (self Instance) SetVolumeDb(value Float.X) Instance { //gd:AudioStreamPlayer3D.volume_db
 	class(self).SetVolumeDb(float64(value))
 	return self
 }
@@ -334,12 +334,12 @@ Note: This member modifies [VolumeDb] for convenience. The returned value is equ
 [@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
 [VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.VolumeDb
 */
-func (self Instance) VolumeLinear() Float.X {
+func (self Instance) VolumeLinear() Float.X { //gd:AudioStreamPlayer3D.volume_linear
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
 // SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeLinear(value Float.X) Instance {
+func (self Instance) SetVolumeLinear(value Float.X) Instance { //gd:AudioStreamPlayer3D.volume_linear
 	class(self).SetVolumeLinear(float64(value))
 	return self
 }
@@ -347,12 +347,12 @@ func (self Instance) SetVolumeLinear(value Float.X) Instance {
 /*
 The factor for the attenuation effect. Higher values make the sound audible over a larger distance.
 */
-func (self Instance) UnitSize() Float.X {
+func (self Instance) UnitSize() Float.X { //gd:AudioStreamPlayer3D.unit_size
 	return Float.X(Float.X(class(self).GetUnitSize()))
 }
 
 // SetUnitSize sets the property returned by [GetUnitSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnitSize(value Float.X) Instance {
+func (self Instance) SetUnitSize(value Float.X) Instance { //gd:AudioStreamPlayer3D.unit_size
 	class(self).SetUnitSize(float64(value))
 	return self
 }
@@ -360,12 +360,12 @@ func (self Instance) SetUnitSize(value Float.X) Instance {
 /*
 Sets the absolute maximum of the sound level, in decibels.
 */
-func (self Instance) MaxDb() Float.X {
+func (self Instance) MaxDb() Float.X { //gd:AudioStreamPlayer3D.max_db
 	return Float.X(Float.X(class(self).GetMaxDb()))
 }
 
 // SetMaxDb sets the property returned by [GetMaxDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDb(value Float.X) Instance {
+func (self Instance) SetMaxDb(value Float.X) Instance { //gd:AudioStreamPlayer3D.max_db
 	class(self).SetMaxDb(float64(value))
 	return self
 }
@@ -373,12 +373,12 @@ func (self Instance) SetMaxDb(value Float.X) Instance {
 /*
 The pitch and the tempo of the audio, as a multiplier of the audio sample's sample rate.
 */
-func (self Instance) PitchScale() Float.X {
+func (self Instance) PitchScale() Float.X { //gd:AudioStreamPlayer3D.pitch_scale
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
 // SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPitchScale(value Float.X) Instance {
+func (self Instance) SetPitchScale(value Float.X) Instance { //gd:AudioStreamPlayer3D.pitch_scale
 	class(self).SetPitchScale(float64(value))
 	return self
 }
@@ -388,12 +388,12 @@ If true, audio is playing or is queued to be played (see [Play]).
 
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.Play
 */
-func (self Instance) Playing() bool {
+func (self Instance) Playing() bool { //gd:AudioStreamPlayer3D.playing
 	return bool(class(self).IsPlaying())
 }
 
 // SetPlaying sets the property returned by [IsPlaying]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaying(value bool) Instance {
+func (self Instance) SetPlaying(value bool) Instance { //gd:AudioStreamPlayer3D.playing
 	class(self).SetPlaying(value)
 	return self
 }
@@ -401,12 +401,12 @@ func (self Instance) SetPlaying(value bool) Instance {
 /*
 If true, audio plays when the AudioStreamPlayer3D node is added to scene tree.
 */
-func (self Instance) Autoplay() bool {
+func (self Instance) Autoplay() bool { //gd:AudioStreamPlayer3D.autoplay
 	return bool(class(self).IsAutoplayEnabled())
 }
 
 // SetAutoplay sets the property returned by [IsAutoplayEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value bool) Instance {
+func (self Instance) SetAutoplay(value bool) Instance { //gd:AudioStreamPlayer3D.autoplay
 	class(self).SetAutoplay(value)
 	return self
 }
@@ -416,12 +416,12 @@ If true, the playback is paused. You can resume it by setting [StreamPaused] to 
 
 [StreamPaused]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.StreamPaused
 */
-func (self Instance) StreamPaused() bool {
+func (self Instance) StreamPaused() bool { //gd:AudioStreamPlayer3D.stream_paused
 	return bool(class(self).GetStreamPaused())
 }
 
 // SetStreamPaused sets the property returned by [GetStreamPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamPaused(value bool) Instance {
+func (self Instance) SetStreamPaused(value bool) Instance { //gd:AudioStreamPlayer3D.stream_paused
 	class(self).SetStreamPaused(value)
 	return self
 }
@@ -434,12 +434,12 @@ The distance past which the sound can no longer be heard at all. Only has an eff
 [MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.MaxDistance
 [UnitSize]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.UnitSize
 */
-func (self Instance) MaxDistance() Float.X {
+func (self Instance) MaxDistance() Float.X { //gd:AudioStreamPlayer3D.max_distance
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
 // SetMaxDistance sets the property returned by [GetMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDistance(value Float.X) Instance {
+func (self Instance) SetMaxDistance(value Float.X) Instance { //gd:AudioStreamPlayer3D.max_distance
 	class(self).SetMaxDistance(float64(value))
 	return self
 }
@@ -447,12 +447,12 @@ func (self Instance) SetMaxDistance(value Float.X) Instance {
 /*
 The maximum number of sounds this node can play at the same time. Playing additional sounds after this value is reached will cut off the oldest sounds.
 */
-func (self Instance) MaxPolyphony() int {
+func (self Instance) MaxPolyphony() int { //gd:AudioStreamPlayer3D.max_polyphony
 	return int(int(class(self).GetMaxPolyphony()))
 }
 
 // SetMaxPolyphony sets the property returned by [GetMaxPolyphony]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxPolyphony(value int) Instance {
+func (self Instance) SetMaxPolyphony(value int) Instance { //gd:AudioStreamPlayer3D.max_polyphony
 	class(self).SetMaxPolyphony(int64(value))
 	return self
 }
@@ -467,12 +467,12 @@ For other speaker arrangements such as the 5.1 and 7.1 the SPCAP (Speaker-Placem
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [WebAudio standard for StereoPannerNode Panning]: https://webaudio.github.io/web-audio-api/#stereopanner-algorithm
 */
-func (self Instance) PanningStrength() Float.X {
+func (self Instance) PanningStrength() Float.X { //gd:AudioStreamPlayer3D.panning_strength
 	return Float.X(Float.X(class(self).GetPanningStrength()))
 }
 
 // SetPanningStrength sets the property returned by [GetPanningStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPanningStrength(value Float.X) Instance {
+func (self Instance) SetPanningStrength(value Float.X) Instance { //gd:AudioStreamPlayer3D.panning_strength
 	class(self).SetPanningStrength(float64(value))
 	return self
 }
@@ -482,12 +482,12 @@ The bus on which this audio is playing.
 
 Note: When setting this property, keep in mind that no validation is performed to see if the given name matches an existing bus. This is because audio bus layouts might be loaded after this property is set. If this given name can't be resolved at runtime, it will fall back to "Master".
 */
-func (self Instance) Bus() string {
+func (self Instance) Bus() string { //gd:AudioStreamPlayer3D.bus
 	return string(class(self).GetBus().String())
 }
 
 // SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBus(value string) Instance {
+func (self Instance) SetBus(value string) Instance { //gd:AudioStreamPlayer3D.bus
 	class(self).SetBus(String.Name(String.New(value)))
 	return self
 }
@@ -498,12 +498,12 @@ Determines which [Area3D] layers affect the sound for reverb and audio bus effec
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Instance) AreaMask() int {
+func (self Instance) AreaMask() int { //gd:AudioStreamPlayer3D.area_mask
 	return int(int(class(self).GetAreaMask()))
 }
 
 // SetAreaMask sets the property returned by [GetAreaMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAreaMask(value int) Instance {
+func (self Instance) SetAreaMask(value int) Instance { //gd:AudioStreamPlayer3D.area_mask
 	class(self).SetAreaMask(int64(value))
 	return self
 }
@@ -511,12 +511,12 @@ func (self Instance) SetAreaMask(value int) Instance {
 /*
 The playback type of the stream player. If set other than to the default value, it will force that playback type.
 */
-func (self Instance) PlaybackType() AudioServer.PlaybackType {
+func (self Instance) PlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer3D.playback_type
 	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
 // SetPlaybackType sets the property returned by [GetPlaybackType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance {
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance { //gd:AudioStreamPlayer3D.playback_type
 	class(self).SetPlaybackType(value)
 	return self
 }
@@ -524,12 +524,12 @@ func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance {
 /*
 If true, the audio should be attenuated according to the direction of the sound.
 */
-func (self Instance) EmissionAngleEnabled() bool {
+func (self Instance) EmissionAngleEnabled() bool { //gd:AudioStreamPlayer3D.emission_angle_enabled
 	return bool(class(self).IsEmissionAngleEnabled())
 }
 
 // SetEmissionAngleEnabled sets the property returned by [IsEmissionAngleEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionAngleEnabled(value bool) Instance {
+func (self Instance) SetEmissionAngleEnabled(value bool) Instance { //gd:AudioStreamPlayer3D.emission_angle_enabled
 	class(self).SetEmissionAngleEnabled(value)
 	return self
 }
@@ -537,12 +537,12 @@ func (self Instance) SetEmissionAngleEnabled(value bool) Instance {
 /*
 The angle in which the audio reaches a listener unattenuated.
 */
-func (self Instance) EmissionAngleDegrees() Angle.Radians {
+func (self Instance) EmissionAngleDegrees() Angle.Radians { //gd:AudioStreamPlayer3D.emission_angle_degrees
 	return Angle.Radians(Float.X(class(self).GetEmissionAngle()))
 }
 
 // SetEmissionAngleDegrees sets the property returned by [GetEmissionAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionAngleDegrees(value Angle.Radians) Instance {
+func (self Instance) SetEmissionAngleDegrees(value Angle.Radians) Instance { //gd:AudioStreamPlayer3D.emission_angle_degrees
 	class(self).SetEmissionAngle(float64(value))
 	return self
 }
@@ -553,12 +553,12 @@ Attenuation factor used if listener is outside of [EmissionAngleDegrees] and [Em
 [EmissionAngleDegrees]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.EmissionAngleDegrees
 [EmissionAngleEnabled]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.EmissionAngleEnabled
 */
-func (self Instance) EmissionAngleFilterAttenuationDb() Angle.Radians {
+func (self Instance) EmissionAngleFilterAttenuationDb() Angle.Radians { //gd:AudioStreamPlayer3D.emission_angle_filter_attenuation_db
 	return Angle.Radians(Float.X(class(self).GetEmissionAngleFilterAttenuationDb()))
 }
 
 // SetEmissionAngleFilterAttenuationDb sets the property returned by [GetEmissionAngleFilterAttenuationDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmissionAngleFilterAttenuationDb(value Angle.Radians) Instance {
+func (self Instance) SetEmissionAngleFilterAttenuationDb(value Angle.Radians) Instance { //gd:AudioStreamPlayer3D.emission_angle_filter_attenuation_db
 	class(self).SetEmissionAngleFilterAttenuationDb(float64(value))
 	return self
 }
@@ -566,12 +566,12 @@ func (self Instance) SetEmissionAngleFilterAttenuationDb(value Angle.Radians) In
 /*
 The cutoff frequency of the attenuation low-pass filter, in Hz. A sound above this frequency is attenuated more than a sound below this frequency. To disable this effect, set this to 20500 as this frequency is above the human hearing limit.
 */
-func (self Instance) AttenuationFilterCutoffHz() Float.X {
+func (self Instance) AttenuationFilterCutoffHz() Float.X { //gd:AudioStreamPlayer3D.attenuation_filter_cutoff_hz
 	return Float.X(Float.X(class(self).GetAttenuationFilterCutoffHz()))
 }
 
 // SetAttenuationFilterCutoffHz sets the property returned by [GetAttenuationFilterCutoffHz]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttenuationFilterCutoffHz(value Float.X) Instance {
+func (self Instance) SetAttenuationFilterCutoffHz(value Float.X) Instance { //gd:AudioStreamPlayer3D.attenuation_filter_cutoff_hz
 	class(self).SetAttenuationFilterCutoffHz(float64(value))
 	return self
 }
@@ -579,12 +579,12 @@ func (self Instance) SetAttenuationFilterCutoffHz(value Float.X) Instance {
 /*
 Amount how much the filter affects the loudness, in decibels.
 */
-func (self Instance) AttenuationFilterDb() Float.X {
+func (self Instance) AttenuationFilterDb() Float.X { //gd:AudioStreamPlayer3D.attenuation_filter_db
 	return Float.X(Float.X(class(self).GetAttenuationFilterDb()))
 }
 
 // SetAttenuationFilterDb sets the property returned by [GetAttenuationFilterDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttenuationFilterDb(value Float.X) Instance {
+func (self Instance) SetAttenuationFilterDb(value Float.X) Instance { //gd:AudioStreamPlayer3D.attenuation_filter_db
 	class(self).SetAttenuationFilterDb(float64(value))
 	return self
 }
@@ -599,12 +599,12 @@ Note: If [DopplerTracking] is not [DopplerTrackingDisabled] but the current [Cam
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [DopplerTracking]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.DopplerTracking
 */
-func (self Instance) DopplerTracking() DopplerTracking {
+func (self Instance) DopplerTracking() DopplerTracking { //gd:AudioStreamPlayer3D.doppler_tracking
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
 // SetDopplerTracking sets the property returned by [GetDopplerTracking]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
+func (self Instance) SetDopplerTracking(value DopplerTracking) Instance { //gd:AudioStreamPlayer3D.doppler_tracking
 	class(self).SetDopplerTracking(value)
 	return self
 }

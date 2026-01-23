@@ -450,12 +450,12 @@ Note: [Device] can be negative for special use cases that don't refer to devices
 
 [Device]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.Device
 */
-func (self Instance) Device() int {
+func (self Instance) Device() int { //gd:InputEvent.device
 	return int(int(class(self).GetDevice()))
 }
 
 // SetDevice sets the property returned by [GetDevice]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDevice(value int) Instance {
+func (self Instance) SetDevice(value int) Instance { //gd:InputEvent.device
 	class(self).SetDevice(int64(value))
 	return self
 }

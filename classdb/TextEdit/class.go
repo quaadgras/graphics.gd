@@ -2394,12 +2394,12 @@ String value of the [TextEdit].
 
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:TextEdit.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:TextEdit.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -2410,12 +2410,12 @@ Text shown when the [TextEdit] is empty. It is not the [TextEdit]'s default valu
 [Text]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Text
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) PlaceholderText() string {
+func (self Instance) PlaceholderText() string { //gd:TextEdit.placeholder_text
 	return string(class(self).GetPlaceholder().String())
 }
 
 // SetPlaceholderText sets the property returned by [GetPlaceholder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaceholderText(value string) Instance {
+func (self Instance) SetPlaceholderText(value string) Instance { //gd:TextEdit.placeholder_text
 	class(self).SetPlaceholder(String.New(value))
 	return self
 }
@@ -2423,12 +2423,12 @@ func (self Instance) SetPlaceholderText(value string) Instance {
 /*
 If false, existing text cannot be modified and new text cannot be added.
 */
-func (self Instance) Editable() bool {
+func (self Instance) Editable() bool { //gd:TextEdit.editable
 	return bool(class(self).IsEditable())
 }
 
 // SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditable(value bool) Instance {
+func (self Instance) SetEditable(value bool) Instance { //gd:TextEdit.editable
 	class(self).SetEditable(value)
 	return self
 }
@@ -2436,12 +2436,12 @@ func (self Instance) SetEditable(value bool) Instance {
 /*
 If true, a right-click displays the context menu.
 */
-func (self Instance) ContextMenuEnabled() bool {
+func (self Instance) ContextMenuEnabled() bool { //gd:TextEdit.context_menu_enabled
 	return bool(class(self).IsContextMenuEnabled())
 }
 
 // SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContextMenuEnabled(value bool) Instance {
+func (self Instance) SetContextMenuEnabled(value bool) Instance { //gd:TextEdit.context_menu_enabled
 	class(self).SetContextMenuEnabled(value)
 	return self
 }
@@ -2449,12 +2449,12 @@ func (self Instance) SetContextMenuEnabled(value bool) Instance {
 /*
 If true, "Emoji and Symbols" menu is enabled.
 */
-func (self Instance) EmojiMenuEnabled() bool {
+func (self Instance) EmojiMenuEnabled() bool { //gd:TextEdit.emoji_menu_enabled
 	return bool(class(self).IsEmojiMenuEnabled())
 }
 
 // SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmojiMenuEnabled(value bool) Instance {
+func (self Instance) SetEmojiMenuEnabled(value bool) Instance { //gd:TextEdit.emoji_menu_enabled
 	class(self).SetEmojiMenuEnabled(value)
 	return self
 }
@@ -2464,12 +2464,12 @@ If true and [CaretMidGrapheme] is false, backspace deletes an entire composite c
 
 [CaretMidGrapheme]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.CaretMidGrapheme
 */
-func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
+func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool { //gd:TextEdit.backspace_deletes_composite_character_enabled
 	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
 }
 
 // SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) Instance {
+func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) Instance { //gd:TextEdit.backspace_deletes_composite_character_enabled
 	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
 	return self
 }
@@ -2477,12 +2477,12 @@ func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) In
 /*
 If true, shortcut keys for context menu items are enabled, even if the context menu is disabled.
 */
-func (self Instance) ShortcutKeysEnabled() bool {
+func (self Instance) ShortcutKeysEnabled() bool { //gd:TextEdit.shortcut_keys_enabled
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
 // SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
+func (self Instance) SetShortcutKeysEnabled(value bool) Instance { //gd:TextEdit.shortcut_keys_enabled
 	class(self).SetShortcutKeysEnabled(value)
 	return self
 }
@@ -2495,12 +2495,12 @@ If false, text can not be selected by the user or by the [Select] or [SelectAll]
 [Select]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Select
 [SelectAll]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SelectAll
 */
-func (self Instance) SelectingEnabled() bool {
+func (self Instance) SelectingEnabled() bool { //gd:TextEdit.selecting_enabled
 	return bool(class(self).IsSelectingEnabled())
 }
 
 // SetSelectingEnabled sets the property returned by [IsSelectingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectingEnabled(value bool) Instance {
+func (self Instance) SetSelectingEnabled(value bool) Instance { //gd:TextEdit.selecting_enabled
 	class(self).SetSelectingEnabled(value)
 	return self
 }
@@ -2508,12 +2508,12 @@ func (self Instance) SetSelectingEnabled(value bool) Instance {
 /*
 If true, the selected text will be deselected when focus is lost.
 */
-func (self Instance) DeselectOnFocusLossEnabled() bool {
+func (self Instance) DeselectOnFocusLossEnabled() bool { //gd:TextEdit.deselect_on_focus_loss_enabled
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
 // SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
+func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance { //gd:TextEdit.deselect_on_focus_loss_enabled
 	class(self).SetDeselectOnFocusLossEnabled(value)
 	return self
 }
@@ -2521,12 +2521,12 @@ func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
 /*
 If true, allow drag and drop of selected text. Text can still be dropped from other sources.
 */
-func (self Instance) DragAndDropSelectionEnabled() bool {
+func (self Instance) DragAndDropSelectionEnabled() bool { //gd:TextEdit.drag_and_drop_selection_enabled
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
 // SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
+func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance { //gd:TextEdit.drag_and_drop_selection_enabled
 	class(self).SetDragAndDropSelectionEnabled(value)
 	return self
 }
@@ -2534,12 +2534,12 @@ func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
 /*
 If true, the native virtual keyboard is enabled on platforms that support it.
 */
-func (self Instance) VirtualKeyboardEnabled() bool {
+func (self Instance) VirtualKeyboardEnabled() bool { //gd:TextEdit.virtual_keyboard_enabled
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
 // SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance {
+func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance { //gd:TextEdit.virtual_keyboard_enabled
 	class(self).SetVirtualKeyboardEnabled(value)
 	return self
 }
@@ -2547,12 +2547,12 @@ func (self Instance) SetVirtualKeyboardEnabled(value bool) Instance {
 /*
 If true, the native virtual keyboard is shown on focus events on platforms that support it.
 */
-func (self Instance) VirtualKeyboardShowOnFocus() bool {
+func (self Instance) VirtualKeyboardShowOnFocus() bool { //gd:TextEdit.virtual_keyboard_show_on_focus
 	return bool(class(self).GetVirtualKeyboardShowOnFocus())
 }
 
 // SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance {
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) Instance { //gd:TextEdit.virtual_keyboard_show_on_focus
 	class(self).SetVirtualKeyboardShowOnFocus(value)
 	return self
 }
@@ -2562,12 +2562,12 @@ If false, using middle mouse button to paste clipboard will be disabled.
 
 Note: This method is only implemented on Linux.
 */
-func (self Instance) MiddleMousePasteEnabled() bool {
+func (self Instance) MiddleMousePasteEnabled() bool { //gd:TextEdit.middle_mouse_paste_enabled
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
 // SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMiddleMousePasteEnabled(value bool) Instance {
+func (self Instance) SetMiddleMousePasteEnabled(value bool) Instance { //gd:TextEdit.middle_mouse_paste_enabled
 	class(self).SetMiddleMousePasteEnabled(value)
 	return self
 }
@@ -2575,12 +2575,12 @@ func (self Instance) SetMiddleMousePasteEnabled(value bool) Instance {
 /*
 If true, copying or cutting without a selection is performed on all lines with a caret. Otherwise, copy and cut require a selection.
 */
-func (self Instance) EmptySelectionClipboardEnabled() bool {
+func (self Instance) EmptySelectionClipboardEnabled() bool { //gd:TextEdit.empty_selection_clipboard_enabled
 	return bool(class(self).IsEmptySelectionClipboardEnabled())
 }
 
 // SetEmptySelectionClipboardEnabled sets the property returned by [IsEmptySelectionClipboardEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmptySelectionClipboardEnabled(value bool) Instance {
+func (self Instance) SetEmptySelectionClipboardEnabled(value bool) Instance { //gd:TextEdit.empty_selection_clipboard_enabled
 	class(self).SetEmptySelectionClipboardEnabled(value)
 	return self
 }
@@ -2588,12 +2588,12 @@ func (self Instance) SetEmptySelectionClipboardEnabled(value bool) Instance {
 /*
 Sets the line wrapping mode to use.
 */
-func (self Instance) WrapMode() LineWrappingMode {
+func (self Instance) WrapMode() LineWrappingMode { //gd:TextEdit.wrap_mode
 	return LineWrappingMode(class(self).GetLineWrappingMode())
 }
 
 // SetWrapMode sets the property returned by [GetLineWrappingMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWrapMode(value LineWrappingMode) Instance {
+func (self Instance) SetWrapMode(value LineWrappingMode) Instance { //gd:TextEdit.wrap_mode
 	class(self).SetLineWrappingMode(value)
 	return self
 }
@@ -2603,12 +2603,12 @@ If [WrapMode] is set to [LineWrappingBoundary], sets text wrapping mode.
 
 [WrapMode]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.WrapMode
 */
-func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:TextEdit.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 // SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance { //gd:TextEdit.autowrap_mode
 	class(self).SetAutowrapMode(value)
 	return self
 }
@@ -2616,12 +2616,12 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 /*
 If true, all wrapped lines are indented to the same amount as the unwrapped line.
 */
-func (self Instance) IndentWrappedLines() bool {
+func (self Instance) IndentWrappedLines() bool { //gd:TextEdit.indent_wrapped_lines
 	return bool(class(self).IsIndentWrappedLines())
 }
 
 // SetIndentWrappedLines sets the property returned by [IsIndentWrappedLines]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndentWrappedLines(value bool) Instance {
+func (self Instance) SetIndentWrappedLines(value bool) Instance { //gd:TextEdit.indent_wrapped_lines
 	class(self).SetIndentWrappedLines(value)
 	return self
 }
@@ -2632,12 +2632,12 @@ If true, [ProjectSettings] "input/ui_text_indent" input Tab character, otherwise
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) TabInputMode() bool {
+func (self Instance) TabInputMode() bool { //gd:TextEdit.tab_input_mode
 	return bool(class(self).GetTabInputMode())
 }
 
 // SetTabInputMode sets the property returned by [GetTabInputMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabInputMode(value bool) Instance {
+func (self Instance) SetTabInputMode(value bool) Instance { //gd:TextEdit.tab_input_mode
 	class(self).SetTabInputMode(value)
 	return self
 }
@@ -2645,12 +2645,12 @@ func (self Instance) SetTabInputMode(value bool) Instance {
 /*
 Scroll smoothly over the text rather than jumping to the next location.
 */
-func (self Instance) ScrollSmooth() bool {
+func (self Instance) ScrollSmooth() bool { //gd:TextEdit.scroll_smooth
 	return bool(class(self).IsSmoothScrollEnabled())
 }
 
 // SetScrollSmooth sets the property returned by [IsSmoothScrollEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollSmooth(value bool) Instance {
+func (self Instance) SetScrollSmooth(value bool) Instance { //gd:TextEdit.scroll_smooth
 	class(self).SetSmoothScrollEnabled(value)
 	return self
 }
@@ -2660,12 +2660,12 @@ Sets the scroll speed with the minimap or when [ScrollSmooth] is enabled.
 
 [ScrollSmooth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollSmooth
 */
-func (self Instance) ScrollVScrollSpeed() Float.X {
+func (self Instance) ScrollVScrollSpeed() Float.X { //gd:TextEdit.scroll_v_scroll_speed
 	return Float.X(Float.X(class(self).GetVScrollSpeed()))
 }
 
 // SetScrollVScrollSpeed sets the property returned by [GetVScrollSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollVScrollSpeed(value Float.X) Instance {
+func (self Instance) SetScrollVScrollSpeed(value Float.X) Instance { //gd:TextEdit.scroll_v_scroll_speed
 	class(self).SetVScrollSpeed(float64(value))
 	return self
 }
@@ -2673,12 +2673,12 @@ func (self Instance) SetScrollVScrollSpeed(value Float.X) Instance {
 /*
 Allow scrolling past the last line into "virtual" space.
 */
-func (self Instance) ScrollPastEndOfFile() bool {
+func (self Instance) ScrollPastEndOfFile() bool { //gd:TextEdit.scroll_past_end_of_file
 	return bool(class(self).IsScrollPastEndOfFileEnabled())
 }
 
 // SetScrollPastEndOfFile sets the property returned by [IsScrollPastEndOfFileEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollPastEndOfFile(value bool) Instance {
+func (self Instance) SetScrollPastEndOfFile(value bool) Instance { //gd:TextEdit.scroll_past_end_of_file
 	class(self).SetScrollPastEndOfFileEnabled(value)
 	return self
 }
@@ -2686,12 +2686,12 @@ func (self Instance) SetScrollPastEndOfFile(value bool) Instance {
 /*
 If there is a vertical scrollbar, this determines the current vertical scroll value in line numbers, starting at 0 for the top line.
 */
-func (self Instance) ScrollVertical() Float.X {
+func (self Instance) ScrollVertical() Float.X { //gd:TextEdit.scroll_vertical
 	return Float.X(Float.X(class(self).GetVScroll()))
 }
 
 // SetScrollVertical sets the property returned by [GetVScroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollVertical(value Float.X) Instance {
+func (self Instance) SetScrollVertical(value Float.X) Instance { //gd:TextEdit.scroll_vertical
 	class(self).SetVScroll(float64(value))
 	return self
 }
@@ -2699,12 +2699,12 @@ func (self Instance) SetScrollVertical(value Float.X) Instance {
 /*
 If there is a horizontal scrollbar, this determines the current horizontal scroll value in pixels.
 */
-func (self Instance) ScrollHorizontal() int {
+func (self Instance) ScrollHorizontal() int { //gd:TextEdit.scroll_horizontal
 	return int(int(class(self).GetHScroll()))
 }
 
 // SetScrollHorizontal sets the property returned by [GetHScroll]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollHorizontal(value int) Instance {
+func (self Instance) SetScrollHorizontal(value int) Instance { //gd:TextEdit.scroll_horizontal
 	class(self).SetHScroll(int64(value))
 	return self
 }
@@ -2715,12 +2715,12 @@ If true, [TextEdit] will disable vertical scroll and fit minimum height to the n
 [ScrollFitContentWidth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentWidth
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) ScrollFitContentHeight() bool {
+func (self Instance) ScrollFitContentHeight() bool { //gd:TextEdit.scroll_fit_content_height
 	return bool(class(self).IsFitContentHeightEnabled())
 }
 
 // SetScrollFitContentHeight sets the property returned by [IsFitContentHeightEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollFitContentHeight(value bool) Instance {
+func (self Instance) SetScrollFitContentHeight(value bool) Instance { //gd:TextEdit.scroll_fit_content_height
 	class(self).SetFitContentHeightEnabled(value)
 	return self
 }
@@ -2731,12 +2731,12 @@ If true, [TextEdit] will disable horizontal scroll and fit minimum width to the 
 [ScrollFitContentHeight]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentHeight
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
-func (self Instance) ScrollFitContentWidth() bool {
+func (self Instance) ScrollFitContentWidth() bool { //gd:TextEdit.scroll_fit_content_width
 	return bool(class(self).IsFitContentWidthEnabled())
 }
 
 // SetScrollFitContentWidth sets the property returned by [IsFitContentWidthEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollFitContentWidth(value bool) Instance {
+func (self Instance) SetScrollFitContentWidth(value bool) Instance { //gd:TextEdit.scroll_fit_content_width
 	class(self).SetFitContentWidthEnabled(value)
 	return self
 }
@@ -2744,12 +2744,12 @@ func (self Instance) SetScrollFitContentWidth(value bool) Instance {
 /*
 If true, a minimap is shown, providing an outline of your source code. The minimap uses a fixed-width text size.
 */
-func (self Instance) MinimapDraw() bool {
+func (self Instance) MinimapDraw() bool { //gd:TextEdit.minimap_draw
 	return bool(class(self).IsDrawingMinimap())
 }
 
 // SetMinimapDraw sets the property returned by [IsDrawingMinimap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimapDraw(value bool) Instance {
+func (self Instance) SetMinimapDraw(value bool) Instance { //gd:TextEdit.minimap_draw
 	class(self).SetDrawMinimap(value)
 	return self
 }
@@ -2757,12 +2757,12 @@ func (self Instance) SetMinimapDraw(value bool) Instance {
 /*
 The width, in pixels, of the minimap.
 */
-func (self Instance) MinimapWidth() int {
+func (self Instance) MinimapWidth() int { //gd:TextEdit.minimap_width
 	return int(int(class(self).GetMinimapWidth()))
 }
 
 // SetMinimapWidth sets the property returned by [GetMinimapWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinimapWidth(value int) Instance {
+func (self Instance) SetMinimapWidth(value int) Instance { //gd:TextEdit.minimap_width
 	class(self).SetMinimapWidth(int64(value))
 	return self
 }
@@ -2770,12 +2770,12 @@ func (self Instance) SetMinimapWidth(value int) Instance {
 /*
 Set the type of caret to draw.
 */
-func (self Instance) CaretType() CaretType {
+func (self Instance) CaretType() CaretType { //gd:TextEdit.caret_type
 	return CaretType(class(self).GetCaretType())
 }
 
 // SetCaretType sets the property returned by [GetCaretType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretType(value CaretType) Instance {
+func (self Instance) SetCaretType(value CaretType) Instance { //gd:TextEdit.caret_type
 	class(self).SetCaretType(value)
 	return self
 }
@@ -2783,12 +2783,12 @@ func (self Instance) SetCaretType(value CaretType) Instance {
 /*
 If true, makes the caret blink.
 */
-func (self Instance) CaretBlink() bool {
+func (self Instance) CaretBlink() bool { //gd:TextEdit.caret_blink
 	return bool(class(self).IsCaretBlinkEnabled())
 }
 
 // SetCaretBlink sets the property returned by [IsCaretBlinkEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretBlink(value bool) Instance {
+func (self Instance) SetCaretBlink(value bool) Instance { //gd:TextEdit.caret_blink
 	class(self).SetCaretBlinkEnabled(value)
 	return self
 }
@@ -2796,12 +2796,12 @@ func (self Instance) SetCaretBlink(value bool) Instance {
 /*
 The interval at which the caret blinks (in seconds).
 */
-func (self Instance) CaretBlinkInterval() Float.X {
+func (self Instance) CaretBlinkInterval() Float.X { //gd:TextEdit.caret_blink_interval
 	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
 // SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretBlinkInterval(value Float.X) Instance {
+func (self Instance) SetCaretBlinkInterval(value Float.X) Instance { //gd:TextEdit.caret_blink_interval
 	class(self).SetCaretBlinkInterval(float64(value))
 	return self
 }
@@ -2811,12 +2811,12 @@ If true, caret will be visible when [Editable] is disabled.
 
 [Editable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Editable
 */
-func (self Instance) CaretDrawWhenEditableDisabled() bool {
+func (self Instance) CaretDrawWhenEditableDisabled() bool { //gd:TextEdit.caret_draw_when_editable_disabled
 	return bool(class(self).IsDrawingCaretWhenEditableDisabled())
 }
 
 // SetCaretDrawWhenEditableDisabled sets the property returned by [IsDrawingCaretWhenEditableDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretDrawWhenEditableDisabled(value bool) Instance {
+func (self Instance) SetCaretDrawWhenEditableDisabled(value bool) Instance { //gd:TextEdit.caret_draw_when_editable_disabled
 	class(self).SetDrawCaretWhenEditableDisabled(value)
 	return self
 }
@@ -2826,12 +2826,12 @@ If true, a right-click moves the caret at the mouse position before displaying t
 
 If false, the context menu ignores mouse location.
 */
-func (self Instance) CaretMoveOnRightClick() bool {
+func (self Instance) CaretMoveOnRightClick() bool { //gd:TextEdit.caret_move_on_right_click
 	return bool(class(self).IsMoveCaretOnRightClickEnabled())
 }
 
 // SetCaretMoveOnRightClick sets the property returned by [IsMoveCaretOnRightClickEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretMoveOnRightClick(value bool) Instance {
+func (self Instance) SetCaretMoveOnRightClick(value bool) Instance { //gd:TextEdit.caret_move_on_right_click
 	class(self).SetMoveCaretOnRightClickEnabled(value)
 	return self
 }
@@ -2841,12 +2841,12 @@ Allow moving caret, selecting and removing the individual composite character co
 
 Note: Backspace is always removing individual composite character components.
 */
-func (self Instance) CaretMidGrapheme() bool {
+func (self Instance) CaretMidGrapheme() bool { //gd:TextEdit.caret_mid_grapheme
 	return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
 // SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretMidGrapheme(value bool) Instance {
+func (self Instance) SetCaretMidGrapheme(value bool) Instance { //gd:TextEdit.caret_mid_grapheme
 	class(self).SetCaretMidGraphemeEnabled(value)
 	return self
 }
@@ -2857,12 +2857,12 @@ If true, multiple carets are allowed. Left-clicking with Alt adds a new caret. S
 [AddCaret]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.AddCaret
 [GetCaretCount]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.GetCaretCount
 */
-func (self Instance) CaretMultiple() bool {
+func (self Instance) CaretMultiple() bool { //gd:TextEdit.caret_multiple
 	return bool(class(self).IsMultipleCaretsEnabled())
 }
 
 // SetCaretMultiple sets the property returned by [IsMultipleCaretsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCaretMultiple(value bool) Instance {
+func (self Instance) SetCaretMultiple(value bool) Instance { //gd:TextEdit.caret_multiple
 	class(self).SetMultipleCaretsEnabled(value)
 	return self
 }
@@ -2870,12 +2870,12 @@ func (self Instance) SetCaretMultiple(value bool) Instance {
 /*
 If false, using Ctrl + Left or Ctrl + Right (Cmd + Left or Cmd + Right on macOS) bindings will stop moving caret only if a space or punctuation is detected. If true, it will also stop the caret if a character is part of !"#$%&'()*+,-./:;<=>?@[\]^`{|}~, the Unicode General Punctuation table, or the Unicode CJK Punctuation table. Useful for subword moving. This behavior also will be applied to the behavior of text selection.
 */
-func (self Instance) UseDefaultWordSeparators() bool {
+func (self Instance) UseDefaultWordSeparators() bool { //gd:TextEdit.use_default_word_separators
 	return bool(class(self).IsDefaultWordSeparatorsEnabled())
 }
 
 // SetUseDefaultWordSeparators sets the property returned by [IsDefaultWordSeparatorsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseDefaultWordSeparators(value bool) Instance {
+func (self Instance) SetUseDefaultWordSeparators(value bool) Instance { //gd:TextEdit.use_default_word_separators
 	class(self).SetUseDefaultWordSeparators(value)
 	return self
 }
@@ -2886,12 +2886,12 @@ If false, using Ctrl + Left or Ctrl + Right (Cmd + Left or Cmd + Right on macOS)
 [CustomWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.CustomWordSeparators
 [UseDefaultWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.UseDefaultWordSeparators
 */
-func (self Instance) UseCustomWordSeparators() bool {
+func (self Instance) UseCustomWordSeparators() bool { //gd:TextEdit.use_custom_word_separators
 	return bool(class(self).IsCustomWordSeparatorsEnabled())
 }
 
 // SetUseCustomWordSeparators sets the property returned by [IsCustomWordSeparatorsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseCustomWordSeparators(value bool) Instance {
+func (self Instance) SetUseCustomWordSeparators(value bool) Instance { //gd:TextEdit.use_custom_word_separators
 	class(self).SetUseCustomWordSeparators(value)
 	return self
 }
@@ -2901,12 +2901,12 @@ The characters to consider as word delimiters if [UseCustomWordSeparators] is tr
 
 [UseCustomWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.UseCustomWordSeparators
 */
-func (self Instance) CustomWordSeparators() string {
+func (self Instance) CustomWordSeparators() string { //gd:TextEdit.custom_word_separators
 	return string(class(self).GetCustomWordSeparators().String())
 }
 
 // SetCustomWordSeparators sets the property returned by [GetCustomWordSeparators]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomWordSeparators(value string) Instance {
+func (self Instance) SetCustomWordSeparators(value string) Instance { //gd:TextEdit.custom_word_separators
 	class(self).SetCustomWordSeparators(String.New(value))
 	return self
 }
@@ -2914,12 +2914,12 @@ func (self Instance) SetCustomWordSeparators(value string) Instance {
 /*
 If true, all occurrences of the selected text will be highlighted.
 */
-func (self Instance) HighlightAllOccurrences() bool {
+func (self Instance) HighlightAllOccurrences() bool { //gd:TextEdit.highlight_all_occurrences
 	return bool(class(self).IsHighlightAllOccurrencesEnabled())
 }
 
 // SetHighlightAllOccurrences sets the property returned by [IsHighlightAllOccurrencesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHighlightAllOccurrences(value bool) Instance {
+func (self Instance) SetHighlightAllOccurrences(value bool) Instance { //gd:TextEdit.highlight_all_occurrences
 	class(self).SetHighlightAllOccurrences(value)
 	return self
 }
@@ -2927,12 +2927,12 @@ func (self Instance) SetHighlightAllOccurrences(value bool) Instance {
 /*
 If true, the line containing the cursor is highlighted.
 */
-func (self Instance) HighlightCurrentLine() bool {
+func (self Instance) HighlightCurrentLine() bool { //gd:TextEdit.highlight_current_line
 	return bool(class(self).IsHighlightCurrentLineEnabled())
 }
 
 // SetHighlightCurrentLine sets the property returned by [IsHighlightCurrentLineEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHighlightCurrentLine(value bool) Instance {
+func (self Instance) SetHighlightCurrentLine(value bool) Instance { //gd:TextEdit.highlight_current_line
 	class(self).SetHighlightCurrentLine(value)
 	return self
 }
@@ -2940,12 +2940,12 @@ func (self Instance) SetHighlightCurrentLine(value bool) Instance {
 /*
 If true, control characters are displayed.
 */
-func (self Instance) DrawControlChars() bool {
+func (self Instance) DrawControlChars() bool { //gd:TextEdit.draw_control_chars
 	return bool(class(self).GetDrawControlChars())
 }
 
 // SetDrawControlChars sets the property returned by [GetDrawControlChars]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawControlChars(value bool) Instance {
+func (self Instance) SetDrawControlChars(value bool) Instance { //gd:TextEdit.draw_control_chars
 	class(self).SetDrawControlChars(value)
 	return self
 }
@@ -2953,12 +2953,12 @@ func (self Instance) SetDrawControlChars(value bool) Instance {
 /*
 If true, the "tab" character will have a visible representation.
 */
-func (self Instance) DrawTabs() bool {
+func (self Instance) DrawTabs() bool { //gd:TextEdit.draw_tabs
 	return bool(class(self).IsDrawingTabs())
 }
 
 // SetDrawTabs sets the property returned by [IsDrawingTabs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawTabs(value bool) Instance {
+func (self Instance) SetDrawTabs(value bool) Instance { //gd:TextEdit.draw_tabs
 	class(self).SetDrawTabs(value)
 	return self
 }
@@ -2966,12 +2966,12 @@ func (self Instance) SetDrawTabs(value bool) Instance {
 /*
 If true, the "space" character will have a visible representation.
 */
-func (self Instance) DrawSpaces() bool {
+func (self Instance) DrawSpaces() bool { //gd:TextEdit.draw_spaces
 	return bool(class(self).IsDrawingSpaces())
 }
 
 // SetDrawSpaces sets the property returned by [IsDrawingSpaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawSpaces(value bool) Instance {
+func (self Instance) SetDrawSpaces(value bool) Instance { //gd:TextEdit.draw_spaces
 	class(self).SetDrawSpaces(value)
 	return self
 }
@@ -2979,12 +2979,12 @@ func (self Instance) SetDrawSpaces(value bool) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:TextEdit.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:TextEdit.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -2992,12 +2992,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:TextEdit.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:TextEdit.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }
@@ -3005,12 +3005,12 @@ func (self Instance) SetLanguage(value string) Instance {
 /*
 Set BiDi algorithm override for the structured text.
 */
-func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextEdit.structured_text_bidi_override
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 // SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance { //gd:TextEdit.structured_text_bidi_override
 	class(self).SetStructuredTextBidiOverride(value)
 	return self
 }
@@ -3018,12 +3018,12 @@ func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTe
 /*
 Set additional options for BiDi override.
 */
-func (self Instance) StructuredTextBidiOverrideOptions() []any {
+func (self Instance) StructuredTextBidiOverrideOptions() []any { //gd:TextEdit.structured_text_bidi_override_options
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 // SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance { //gd:TextEdit.structured_text_bidi_override_options
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 	return self
 }

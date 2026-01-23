@@ -242,12 +242,12 @@ Generally the [InputEvent] used is an [InputEventKey], though it can be any [Inp
 [InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
 [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
 */
-func (self Instance) Events() []InputEvent.Instance {
+func (self Instance) Events() []InputEvent.Instance { //gd:Shortcut.events
 	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(class(self).GetEvents())))
 }
 
 // SetEvents sets the property returned by [GetEvents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEvents(value []InputEvent.Instance) Instance {
+func (self Instance) SetEvents(value []InputEvent.Instance) Instance { //gd:Shortcut.events
 	class(self).SetEvents(gd.EngineArrayFromSlice(value))
 	return self
 }

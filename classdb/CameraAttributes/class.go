@@ -189,12 +189,12 @@ Note: Only available when [ProjectSettings] "rendering/lights_and_shadows/use_ph
 [AutoExposureEnabled]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes#Instance.AutoExposureEnabled
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) ExposureSensitivity() Float.X {
+func (self Instance) ExposureSensitivity() Float.X { //gd:CameraAttributes.exposure_sensitivity
 	return Float.X(Float.X(class(self).GetExposureSensitivity()))
 }
 
 // SetExposureSensitivity sets the property returned by [GetExposureSensitivity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExposureSensitivity(value Float.X) Instance {
+func (self Instance) SetExposureSensitivity(value Float.X) Instance { //gd:CameraAttributes.exposure_sensitivity
 	class(self).SetExposureSensitivity(float64(value))
 	return self
 }
@@ -202,12 +202,12 @@ func (self Instance) SetExposureSensitivity(value Float.X) Instance {
 /*
 Multiplier for the exposure amount. A higher value results in a brighter image.
 */
-func (self Instance) ExposureMultiplier() Float.X {
+func (self Instance) ExposureMultiplier() Float.X { //gd:CameraAttributes.exposure_multiplier
 	return Float.X(Float.X(class(self).GetExposureMultiplier()))
 }
 
 // SetExposureMultiplier sets the property returned by [GetExposureMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExposureMultiplier(value Float.X) Instance {
+func (self Instance) SetExposureMultiplier(value Float.X) Instance { //gd:CameraAttributes.exposure_multiplier
 	class(self).SetExposureMultiplier(float64(value))
 	return self
 }
@@ -215,12 +215,12 @@ func (self Instance) SetExposureMultiplier(value Float.X) Instance {
 /*
 If true, enables the tonemapping auto exposure mode of the scene renderer. If true, the renderer will automatically determine the exposure setting to adapt to the scene's illumination and the observed light.
 */
-func (self Instance) AutoExposureEnabled() bool {
+func (self Instance) AutoExposureEnabled() bool { //gd:CameraAttributes.auto_exposure_enabled
 	return bool(class(self).IsAutoExposureEnabled())
 }
 
 // SetAutoExposureEnabled sets the property returned by [IsAutoExposureEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureEnabled(value bool) Instance {
+func (self Instance) SetAutoExposureEnabled(value bool) Instance { //gd:CameraAttributes.auto_exposure_enabled
 	class(self).SetAutoExposureEnabled(value)
 	return self
 }
@@ -228,12 +228,12 @@ func (self Instance) SetAutoExposureEnabled(value bool) Instance {
 /*
 The scale of the auto exposure effect. Affects the intensity of auto exposure.
 */
-func (self Instance) AutoExposureScale() Float.X {
+func (self Instance) AutoExposureScale() Float.X { //gd:CameraAttributes.auto_exposure_scale
 	return Float.X(Float.X(class(self).GetAutoExposureScale()))
 }
 
 // SetAutoExposureScale sets the property returned by [GetAutoExposureScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureScale(value Float.X) Instance {
+func (self Instance) SetAutoExposureScale(value Float.X) Instance { //gd:CameraAttributes.auto_exposure_scale
 	class(self).SetAutoExposureScale(float64(value))
 	return self
 }
@@ -241,12 +241,12 @@ func (self Instance) SetAutoExposureScale(value Float.X) Instance {
 /*
 The speed of the auto exposure effect. Affects the time needed for the camera to perform auto exposure.
 */
-func (self Instance) AutoExposureSpeed() Float.X {
+func (self Instance) AutoExposureSpeed() Float.X { //gd:CameraAttributes.auto_exposure_speed
 	return Float.X(Float.X(class(self).GetAutoExposureSpeed()))
 }
 
 // SetAutoExposureSpeed sets the property returned by [GetAutoExposureSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureSpeed(value Float.X) Instance {
+func (self Instance) SetAutoExposureSpeed(value Float.X) Instance { //gd:CameraAttributes.auto_exposure_speed
 	class(self).SetAutoExposureSpeed(float64(value))
 	return self
 }

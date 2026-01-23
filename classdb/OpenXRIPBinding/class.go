@@ -222,12 +222,12 @@ func New() Instance {
 [BindingPath]: https://pkg.go.dev/graphics.gd/classdb/OpenXRIPBinding#Instance.BindingPath
 [OpenXRAction]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAction
 */
-func (self Instance) Action() OpenXRAction.Instance {
+func (self Instance) Action() OpenXRAction.Instance { //gd:OpenXRIPBinding.action
 	return OpenXRAction.Instance(class(self).GetAction())
 }
 
 // SetAction sets the property returned by [GetAction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAction(value OpenXRAction.Instance) Instance {
+func (self Instance) SetAction(value OpenXRAction.Instance) Instance { //gd:OpenXRIPBinding.action
 	class(self).SetAction(value)
 	return self
 }
@@ -239,12 +239,12 @@ Note: Binding paths are suggestions, an XR runtime may choose to bind the action
 
 [Action]: https://pkg.go.dev/graphics.gd/classdb/OpenXRIPBinding#Instance.Action
 */
-func (self Instance) BindingPath() string {
+func (self Instance) BindingPath() string { //gd:OpenXRIPBinding.binding_path
 	return string(class(self).GetBindingPath().String())
 }
 
 // SetBindingPath sets the property returned by [GetBindingPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBindingPath(value string) Instance {
+func (self Instance) SetBindingPath(value string) Instance { //gd:OpenXRIPBinding.binding_path
 	class(self).SetBindingPath(String.New(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetBindingPath(value string) Instance {
 /*
 Binding modifiers for this binding.
 */
-func (self Instance) BindingModifiers() []OpenXRActionBindingModifier.Instance {
+func (self Instance) BindingModifiers() []OpenXRActionBindingModifier.Instance { //gd:OpenXRIPBinding.binding_modifiers
 	return []OpenXRActionBindingModifier.Instance(gd.ArrayAs[[]OpenXRActionBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
 // SetBindingModifiers sets the property returned by [GetBindingModifiers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) Instance {
+func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) Instance { //gd:OpenXRIPBinding.binding_modifiers
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Ins
 /*
 Paths that define the inputs or outputs bound on the device.
 */
-func (self Instance) Paths() []string {
+func (self Instance) Paths() []string { //gd:OpenXRIPBinding.paths
 	return []string(class(self).GetPaths().Strings())
 }
 
 // SetPaths sets the property returned by [GetPaths]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPaths(value []string) Instance {
+func (self Instance) SetPaths(value []string) Instance { //gd:OpenXRIPBinding.paths
 	class(self).SetPaths(Packed.MakeStrings(value...))
 	return self
 }

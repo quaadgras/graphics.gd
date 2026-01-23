@@ -243,12 +243,12 @@ func New() Instance {
 /*
 The currently selected color.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:ColorPicker.color
 	return Color.RGBA(class(self).GetPickColor())
 }
 
 // SetColor sets the property returned by [GetPickColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:ColorPicker.color
 	class(self).SetPickColor(Color.RGBA(value))
 	return self
 }
@@ -256,12 +256,12 @@ func (self Instance) SetColor(value Color.RGBA) Instance {
 /*
 If true, shows an alpha channel slider (opacity).
 */
-func (self Instance) EditAlpha() bool {
+func (self Instance) EditAlpha() bool { //gd:ColorPicker.edit_alpha
 	return bool(class(self).IsEditingAlpha())
 }
 
 // SetEditAlpha sets the property returned by [IsEditingAlpha]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditAlpha(value bool) Instance {
+func (self Instance) SetEditAlpha(value bool) Instance { //gd:ColorPicker.edit_alpha
 	class(self).SetEditAlpha(value)
 	return self
 }
@@ -269,12 +269,12 @@ func (self Instance) SetEditAlpha(value bool) Instance {
 /*
 If true, shows an intensity slider. The intensity is applied as follows: multiply the color by 2 ** intensity in linear RGB space, and then convert it back to sRGB.
 */
-func (self Instance) EditIntensity() bool {
+func (self Instance) EditIntensity() bool { //gd:ColorPicker.edit_intensity
 	return bool(class(self).IsEditingIntensity())
 }
 
 // SetEditIntensity sets the property returned by [IsEditingIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditIntensity(value bool) Instance {
+func (self Instance) SetEditIntensity(value bool) Instance { //gd:ColorPicker.edit_intensity
 	class(self).SetEditIntensity(value)
 	return self
 }
@@ -282,12 +282,12 @@ func (self Instance) SetEditIntensity(value bool) Instance {
 /*
 The currently selected color mode.
 */
-func (self Instance) ColorMode() ColorModeType {
+func (self Instance) ColorMode() ColorModeType { //gd:ColorPicker.color_mode
 	return ColorModeType(class(self).GetColorMode())
 }
 
 // SetColorMode sets the property returned by [GetColorMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorMode(value ColorModeType) Instance {
+func (self Instance) SetColorMode(value ColorModeType) Instance { //gd:ColorPicker.color_mode
 	class(self).SetColorMode(value)
 	return self
 }
@@ -295,12 +295,12 @@ func (self Instance) SetColorMode(value ColorModeType) Instance {
 /*
 If true, the color will apply only after the user releases the mouse button, otherwise it will apply immediately even in mouse motion event (which can cause performance issues).
 */
-func (self Instance) DeferredMode() bool {
+func (self Instance) DeferredMode() bool { //gd:ColorPicker.deferred_mode
 	return bool(class(self).IsDeferredMode())
 }
 
 // SetDeferredMode sets the property returned by [IsDeferredMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeferredMode(value bool) Instance {
+func (self Instance) SetDeferredMode(value bool) Instance { //gd:ColorPicker.deferred_mode
 	class(self).SetDeferredMode(value)
 	return self
 }
@@ -308,12 +308,12 @@ func (self Instance) SetDeferredMode(value bool) Instance {
 /*
 The shape of the color space view.
 */
-func (self Instance) PickerShape() PickerShapeType {
+func (self Instance) PickerShape() PickerShapeType { //gd:ColorPicker.picker_shape
 	return PickerShapeType(class(self).GetPickerShape())
 }
 
 // SetPickerShape sets the property returned by [GetPickerShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPickerShape(value PickerShapeType) Instance {
+func (self Instance) SetPickerShape(value PickerShapeType) Instance { //gd:ColorPicker.picker_shape
 	class(self).SetPickerShape(value)
 	return self
 }
@@ -321,12 +321,12 @@ func (self Instance) SetPickerShape(value PickerShapeType) Instance {
 /*
 If true, it's possible to add presets under Swatches. If false, the button to add presets is disabled.
 */
-func (self Instance) CanAddSwatches() bool {
+func (self Instance) CanAddSwatches() bool { //gd:ColorPicker.can_add_swatches
 	return bool(class(self).AreSwatchesEnabled())
 }
 
 // SetCanAddSwatches sets the property returned by [AreSwatchesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanAddSwatches(value bool) Instance {
+func (self Instance) SetCanAddSwatches(value bool) Instance { //gd:ColorPicker.can_add_swatches
 	class(self).SetCanAddSwatches(value)
 	return self
 }
@@ -334,12 +334,12 @@ func (self Instance) SetCanAddSwatches(value bool) Instance {
 /*
 If true, the color sampler and color preview are visible.
 */
-func (self Instance) SamplerVisible() bool {
+func (self Instance) SamplerVisible() bool { //gd:ColorPicker.sampler_visible
 	return bool(class(self).IsSamplerVisible())
 }
 
 // SetSamplerVisible sets the property returned by [IsSamplerVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSamplerVisible(value bool) Instance {
+func (self Instance) SetSamplerVisible(value bool) Instance { //gd:ColorPicker.sampler_visible
 	class(self).SetSamplerVisible(value)
 	return self
 }
@@ -347,12 +347,12 @@ func (self Instance) SetSamplerVisible(value bool) Instance {
 /*
 If true, the color mode buttons are visible.
 */
-func (self Instance) ColorModesVisible() bool {
+func (self Instance) ColorModesVisible() bool { //gd:ColorPicker.color_modes_visible
 	return bool(class(self).AreModesVisible())
 }
 
 // SetColorModesVisible sets the property returned by [AreModesVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorModesVisible(value bool) Instance {
+func (self Instance) SetColorModesVisible(value bool) Instance { //gd:ColorPicker.color_modes_visible
 	class(self).SetModesVisible(value)
 	return self
 }
@@ -360,12 +360,12 @@ func (self Instance) SetColorModesVisible(value bool) Instance {
 /*
 If true, the color sliders are visible.
 */
-func (self Instance) SlidersVisible() bool {
+func (self Instance) SlidersVisible() bool { //gd:ColorPicker.sliders_visible
 	return bool(class(self).AreSlidersVisible())
 }
 
 // SetSlidersVisible sets the property returned by [AreSlidersVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSlidersVisible(value bool) Instance {
+func (self Instance) SetSlidersVisible(value bool) Instance { //gd:ColorPicker.sliders_visible
 	class(self).SetSlidersVisible(value)
 	return self
 }
@@ -373,12 +373,12 @@ func (self Instance) SetSlidersVisible(value bool) Instance {
 /*
 If true, the hex color code input field is visible.
 */
-func (self Instance) HexVisible() bool {
+func (self Instance) HexVisible() bool { //gd:ColorPicker.hex_visible
 	return bool(class(self).IsHexVisible())
 }
 
 // SetHexVisible sets the property returned by [IsHexVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHexVisible(value bool) Instance {
+func (self Instance) SetHexVisible(value bool) Instance { //gd:ColorPicker.hex_visible
 	class(self).SetHexVisible(value)
 	return self
 }
@@ -386,12 +386,12 @@ func (self Instance) SetHexVisible(value bool) Instance {
 /*
 If true, the Swatches and Recent Colors presets are visible.
 */
-func (self Instance) PresetsVisible() bool {
+func (self Instance) PresetsVisible() bool { //gd:ColorPicker.presets_visible
 	return bool(class(self).ArePresetsVisible())
 }
 
 // SetPresetsVisible sets the property returned by [ArePresetsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPresetsVisible(value bool) Instance {
+func (self Instance) SetPresetsVisible(value bool) Instance { //gd:ColorPicker.presets_visible
 	class(self).SetPresetsVisible(value)
 	return self
 }

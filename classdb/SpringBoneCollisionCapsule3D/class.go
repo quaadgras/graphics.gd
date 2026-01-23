@@ -173,12 +173,12 @@ Note: The [Radius] of a capsule cannot be greater than half of its [Height]. Oth
 [Height]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollisionCapsule3D#Instance.Height
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollisionCapsule3D#Instance.Radius
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:SpringBoneCollisionCapsule3D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:SpringBoneCollisionCapsule3D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -191,12 +191,12 @@ Note: The [Height] of a capsule must be at least twice its [Radius]. Otherwise, 
 [Height]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollisionCapsule3D#Instance.Height
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollisionCapsule3D#Instance.Radius
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:SpringBoneCollisionCapsule3D.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:SpringBoneCollisionCapsule3D.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -206,12 +206,12 @@ The capsule's height, excluding the hemispheres. This is the height of the centr
 
 [Height]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollisionCapsule3D#Instance.Height
 */
-func (self Instance) MidHeight() Float.X {
+func (self Instance) MidHeight() Float.X { //gd:SpringBoneCollisionCapsule3D.mid_height
 	return Float.X(Float.X(class(self).GetMidHeight()))
 }
 
 // SetMidHeight sets the property returned by [GetMidHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMidHeight(value Float.X) Instance {
+func (self Instance) SetMidHeight(value Float.X) Instance { //gd:SpringBoneCollisionCapsule3D.mid_height
 	class(self).SetMidHeight(float64(value))
 	return self
 }
@@ -219,12 +219,12 @@ func (self Instance) SetMidHeight(value Float.X) Instance {
 /*
 If true, the collision acts to trap the joint within the collision.
 */
-func (self Instance) Inside() bool {
+func (self Instance) Inside() bool { //gd:SpringBoneCollisionCapsule3D.inside
 	return bool(class(self).IsInside())
 }
 
 // SetInside sets the property returned by [IsInside]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInside(value bool) Instance {
+func (self Instance) SetInside(value bool) Instance { //gd:SpringBoneCollisionCapsule3D.inside
 	class(self).SetInside(value)
 	return self
 }

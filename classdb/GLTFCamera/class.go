@@ -208,12 +208,12 @@ If true, the camera is in perspective mode. Otherwise, the camera is in orthogra
 
 [Camera3D.Projection]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Projection
 */
-func (self Instance) Perspective() bool {
+func (self Instance) Perspective() bool { //gd:GLTFCamera.perspective
 	return bool(class(self).GetPerspective())
 }
 
 // SetPerspective sets the property returned by [GetPerspective]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPerspective(value bool) Instance {
+func (self Instance) SetPerspective(value bool) Instance { //gd:GLTFCamera.perspective
 	class(self).SetPerspective(value)
 	return self
 }
@@ -223,12 +223,12 @@ The FOV of the camera. This class and glTF define the camera FOV in radians, whi
 
 [Perspective]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera#Instance.Perspective
 */
-func (self Instance) Fov() Float.X {
+func (self Instance) Fov() Float.X { //gd:GLTFCamera.fov
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
 // SetFov sets the property returned by [GetFov]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFov(value Float.X) Instance {
+func (self Instance) SetFov(value Float.X) Instance { //gd:GLTFCamera.fov
 	class(self).SetFov(float64(value))
 	return self
 }
@@ -238,12 +238,12 @@ The size of the camera. This class and glTF define the camera size magnitude as 
 
 [Perspective]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera#Instance.Perspective
 */
-func (self Instance) SizeMag() Float.X {
+func (self Instance) SizeMag() Float.X { //gd:GLTFCamera.size_mag
 	return Float.X(Float.X(class(self).GetSizeMag()))
 }
 
 // SetSizeMag sets the property returned by [GetSizeMag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSizeMag(value Float.X) Instance {
+func (self Instance) SetSizeMag(value Float.X) Instance { //gd:GLTFCamera.size_mag
 	class(self).SetSizeMag(float64(value))
 	return self
 }
@@ -251,12 +251,12 @@ func (self Instance) SetSizeMag(value Float.X) Instance {
 /*
 The distance to the far culling boundary for this camera relative to its local Z axis, in meters. This maps to glTF's zfar property.
 */
-func (self Instance) DepthFar() Float.X {
+func (self Instance) DepthFar() Float.X { //gd:GLTFCamera.depth_far
 	return Float.X(Float.X(class(self).GetDepthFar()))
 }
 
 // SetDepthFar sets the property returned by [GetDepthFar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthFar(value Float.X) Instance {
+func (self Instance) SetDepthFar(value Float.X) Instance { //gd:GLTFCamera.depth_far
 	class(self).SetDepthFar(float64(value))
 	return self
 }
@@ -264,12 +264,12 @@ func (self Instance) SetDepthFar(value Float.X) Instance {
 /*
 The distance to the near culling boundary for this camera relative to its local Z axis, in meters. This maps to glTF's znear property.
 */
-func (self Instance) DepthNear() Float.X {
+func (self Instance) DepthNear() Float.X { //gd:GLTFCamera.depth_near
 	return Float.X(Float.X(class(self).GetDepthNear()))
 }
 
 // SetDepthNear sets the property returned by [GetDepthNear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthNear(value Float.X) Instance {
+func (self Instance) SetDepthNear(value Float.X) Instance { //gd:GLTFCamera.depth_near
 	class(self).SetDepthNear(float64(value))
 	return self
 }

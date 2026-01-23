@@ -541,12 +541,12 @@ func New() Instance {
 /*
 The atlas texture.
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:TileSetAtlasSource.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:TileSetAtlasSource.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -554,12 +554,12 @@ func (self Instance) SetTexture(value Texture2D.Instance) Instance {
 /*
 Margins, in pixels, to offset the origin of the grid in the texture.
 */
-func (self Instance) Margins() Vector2i.XY {
+func (self Instance) Margins() Vector2i.XY { //gd:TileSetAtlasSource.margins
 	return Vector2i.XY(class(self).GetMargins())
 }
 
 // SetMargins sets the property returned by [GetMargins]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargins(value Vector2i.XY) Instance {
+func (self Instance) SetMargins(value Vector2i.XY) Instance { //gd:TileSetAtlasSource.margins
 	class(self).SetMargins(Vector2i.XY(value))
 	return self
 }
@@ -567,12 +567,12 @@ func (self Instance) SetMargins(value Vector2i.XY) Instance {
 /*
 Separation, in pixels, between each tile texture region of the grid.
 */
-func (self Instance) Separation() Vector2i.XY {
+func (self Instance) Separation() Vector2i.XY { //gd:TileSetAtlasSource.separation
 	return Vector2i.XY(class(self).GetSeparation())
 }
 
 // SetSeparation sets the property returned by [GetSeparation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeparation(value Vector2i.XY) Instance {
+func (self Instance) SetSeparation(value Vector2i.XY) Instance { //gd:TileSetAtlasSource.separation
 	class(self).SetSeparation(Vector2i.XY(value))
 	return self
 }
@@ -580,12 +580,12 @@ func (self Instance) SetSeparation(value Vector2i.XY) Instance {
 /*
 The base tile size in the texture (in pixel). This size must be bigger than or equal to the TileSet's tile_size value.
 */
-func (self Instance) TextureRegionSize() Vector2i.XY {
+func (self Instance) TextureRegionSize() Vector2i.XY { //gd:TileSetAtlasSource.texture_region_size
 	return Vector2i.XY(class(self).GetTextureRegionSize())
 }
 
 // SetTextureRegionSize sets the property returned by [GetTextureRegionSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRegionSize(value Vector2i.XY) Instance {
+func (self Instance) SetTextureRegionSize(value Vector2i.XY) Instance { //gd:TileSetAtlasSource.texture_region_size
 	class(self).SetTextureRegionSize(Vector2i.XY(value))
 	return self
 }
@@ -595,12 +595,12 @@ If true, generates an internal texture with an additional one pixel padding arou
 
 Disabling this setting might lead a small performance improvement, as generating the internal texture requires both memory and processing time when the TileSetAtlasSource resource is modified.
 */
-func (self Instance) UseTexturePadding() bool {
+func (self Instance) UseTexturePadding() bool { //gd:TileSetAtlasSource.use_texture_padding
 	return bool(class(self).GetUseTexturePadding())
 }
 
 // SetUseTexturePadding sets the property returned by [GetUseTexturePadding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseTexturePadding(value bool) Instance {
+func (self Instance) SetUseTexturePadding(value bool) Instance { //gd:TileSetAtlasSource.use_texture_padding
 	class(self).SetUseTexturePadding(value)
 	return self
 }

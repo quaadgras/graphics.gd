@@ -202,12 +202,12 @@ For [VideoStreamTheora], this filename should be an Ogg Theora video file with t
 [VideoStream]: https://pkg.go.dev/graphics.gd/classdb/VideoStream
 [VideoStreamTheora]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamTheora
 */
-func (self Instance) File() string {
+func (self Instance) File() string { //gd:VideoStream.file
 	return string(class(self).GetFile().String())
 }
 
 // SetFile sets the property returned by [GetFile]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFile(value string) Instance {
+func (self Instance) SetFile(value string) Instance { //gd:VideoStream.file
 	class(self).SetFile(String.New(value))
 	return self
 }

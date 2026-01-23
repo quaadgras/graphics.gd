@@ -328,12 +328,12 @@ func New() Instance {
 /*
 Format of transform used to transform mesh, either 2D or 3D.
 */
-func (self Instance) TransformFormat() TransformFormat {
+func (self Instance) TransformFormat() TransformFormat { //gd:MultiMesh.transform_format
 	return TransformFormat(class(self).GetTransformFormat())
 }
 
 // SetTransformFormat sets the property returned by [GetTransformFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransformFormat(value TransformFormat) Instance {
+func (self Instance) SetTransformFormat(value TransformFormat) Instance { //gd:MultiMesh.transform_format
 	class(self).SetTransformFormat(value)
 	return self
 }
@@ -345,12 +345,12 @@ If true, the [MultiMesh] will use color data (see [SetInstanceColor]). Can only 
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
 */
-func (self Instance) UseColors() bool {
+func (self Instance) UseColors() bool { //gd:MultiMesh.use_colors
 	return bool(class(self).IsUsingColors())
 }
 
 // SetUseColors sets the property returned by [IsUsingColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseColors(value bool) Instance {
+func (self Instance) SetUseColors(value bool) Instance { //gd:MultiMesh.use_colors
 	class(self).SetUseColors(value)
 	return self
 }
@@ -362,12 +362,12 @@ If true, the [MultiMesh] will use custom data (see [SetInstanceCustomData]). Can
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
 */
-func (self Instance) UseCustomData() bool {
+func (self Instance) UseCustomData() bool { //gd:MultiMesh.use_custom_data
 	return bool(class(self).IsUsingCustomData())
 }
 
 // SetUseCustomData sets the property returned by [IsUsingCustomData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseCustomData(value bool) Instance {
+func (self Instance) SetUseCustomData(value bool) Instance { //gd:MultiMesh.use_custom_data
 	class(self).SetUseCustomData(value)
 	return self
 }
@@ -375,12 +375,12 @@ func (self Instance) SetUseCustomData(value bool) Instance {
 /*
 Custom AABB for this MultiMesh resource. Setting this manually prevents costly runtime AABB recalculations.
 */
-func (self Instance) CustomAabb() AABB.PositionSize {
+func (self Instance) CustomAabb() AABB.PositionSize { //gd:MultiMesh.custom_aabb
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
 // SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance { //gd:MultiMesh.custom_aabb
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 	return self
 }
@@ -392,12 +392,12 @@ By default, all instances are drawn but you can limit this with [VisibleInstance
 
 [VisibleInstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.VisibleInstanceCount
 */
-func (self Instance) InstanceCount() int {
+func (self Instance) InstanceCount() int { //gd:MultiMesh.instance_count
 	return int(int(class(self).GetInstanceCount()))
 }
 
 // SetInstanceCount sets the property returned by [GetInstanceCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInstanceCount(value int) Instance {
+func (self Instance) SetInstanceCount(value int) Instance { //gd:MultiMesh.instance_count
 	class(self).SetInstanceCount(int64(value))
 	return self
 }
@@ -405,12 +405,12 @@ func (self Instance) SetInstanceCount(value int) Instance {
 /*
 Limits the number of instances drawn, -1 draws all instances. Changing this does not change the sizes of the buffers.
 */
-func (self Instance) VisibleInstanceCount() int {
+func (self Instance) VisibleInstanceCount() int { //gd:MultiMesh.visible_instance_count
 	return int(int(class(self).GetVisibleInstanceCount()))
 }
 
 // SetVisibleInstanceCount sets the property returned by [GetVisibleInstanceCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleInstanceCount(value int) Instance {
+func (self Instance) SetVisibleInstanceCount(value int) Instance { //gd:MultiMesh.visible_instance_count
 	class(self).SetVisibleInstanceCount(int64(value))
 	return self
 }
@@ -424,22 +424,22 @@ The looks of the individual instances can be modified using [SetInstanceColor] a
 [SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
 [SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:MultiMesh.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:MultiMesh.mesh
 	class(self).SetMesh(value)
 	return self
 }
 
-func (self Instance) Buffer() []float32 {
+func (self Instance) Buffer() []float32 { //gd:MultiMesh.buffer
 	return []float32(slices.Collect(class(self).GetBuffer().Values()))
 }
 
 // SetBuffer sets the property returned by [GetBuffer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBuffer(value []float32) Instance {
+func (self Instance) SetBuffer(value []float32) Instance { //gd:MultiMesh.buffer
 	class(self).SetBuffer(Packed.New(value...))
 	return self
 }
@@ -451,12 +451,12 @@ When using low physics tick rates (typically below 20) or high rates of object r
 
 Note: Fast quality does not equate to low quality. Except in the special cases mentioned above, the quality should be comparable to high quality.
 */
-func (self Instance) PhysicsInterpolationQuality() PhysicsInterpolationQuality {
+func (self Instance) PhysicsInterpolationQuality() PhysicsInterpolationQuality { //gd:MultiMesh.physics_interpolation_quality
 	return PhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
 }
 
 // SetPhysicsInterpolationQuality sets the property returned by [GetPhysicsInterpolationQuality]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) Instance {
+func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) Instance { //gd:MultiMesh.physics_interpolation_quality
 	class(self).SetPhysicsInterpolationQuality(value)
 	return self
 }

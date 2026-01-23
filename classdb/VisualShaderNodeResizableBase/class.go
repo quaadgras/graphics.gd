@@ -161,12 +161,12 @@ func New() Instance {
 /*
 The size of the node in the visual shader graph.
 */
-func (self Instance) Size() Vector2.XY {
+func (self Instance) Size() Vector2.XY { //gd:VisualShaderNodeResizableBase.size
 	return Vector2.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2.XY) Instance {
+func (self Instance) SetSize(value Vector2.XY) Instance { //gd:VisualShaderNodeResizableBase.size
 	class(self).SetSize(Vector2.XY(value))
 	return self
 }

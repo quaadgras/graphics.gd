@@ -364,12 +364,12 @@ func New() Instance {
 /*
 This property can define the process of transitions for different use cases. See also [AnimationNodeStateMachine.StateMachineType].
 */
-func (self Instance) StateMachineType() StateMachineType {
+func (self Instance) StateMachineType() StateMachineType { //gd:AnimationNodeStateMachine.state_machine_type
 	return StateMachineType(class(self).GetStateMachineType())
 }
 
 // SetStateMachineType sets the property returned by [GetStateMachineType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStateMachineType(value StateMachineType) Instance {
+func (self Instance) SetStateMachineType(value StateMachineType) Instance { //gd:AnimationNodeStateMachine.state_machine_type
 	class(self).SetStateMachineType(value)
 	return self
 }
@@ -379,12 +379,12 @@ If true, allows teleport to the self state with [AnimationNodeStateMachinePlayba
 
 [AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
 */
-func (self Instance) AllowTransitionToSelf() bool {
+func (self Instance) AllowTransitionToSelf() bool { //gd:AnimationNodeStateMachine.allow_transition_to_self
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
 // SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowTransitionToSelf(value bool) Instance {
+func (self Instance) SetAllowTransitionToSelf(value bool) Instance { //gd:AnimationNodeStateMachine.allow_transition_to_self
 	class(self).SetAllowTransitionToSelf(value)
 	return self
 }
@@ -396,12 +396,12 @@ In most cases, when additional cross-fades are performed in the parent [Animatio
 
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
-func (self Instance) ResetEnds() bool {
+func (self Instance) ResetEnds() bool { //gd:AnimationNodeStateMachine.reset_ends
 	return bool(class(self).AreEndsReset())
 }
 
 // SetResetEnds sets the property returned by [AreEndsReset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResetEnds(value bool) Instance {
+func (self Instance) SetResetEnds(value bool) Instance { //gd:AnimationNodeStateMachine.reset_ends
 	class(self).SetResetEnds(value)
 	return self
 }

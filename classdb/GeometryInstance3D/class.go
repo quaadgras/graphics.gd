@@ -223,12 +223,12 @@ The material override for the whole geometry.
 
 If a material is assigned to this property, it will be used instead of any material set in any material slot of the mesh.
 */
-func (self Instance) MaterialOverride() Material.Instance {
+func (self Instance) MaterialOverride() Material.Instance { //gd:GeometryInstance3D.material_override
 	return Material.Instance(class(self).GetMaterialOverride())
 }
 
 // SetMaterialOverride sets the property returned by [GetMaterialOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterialOverride(value Material.Instance) Instance {
+func (self Instance) SetMaterialOverride(value Material.Instance) Instance { //gd:GeometryInstance3D.material_override
 	class(self).SetMaterialOverride(value)
 	return self
 }
@@ -238,12 +238,12 @@ The material overlay for the whole geometry.
 
 If a material is assigned to this property, it will be rendered on top of any other active material for all the surfaces.
 */
-func (self Instance) MaterialOverlay() Material.Instance {
+func (self Instance) MaterialOverlay() Material.Instance { //gd:GeometryInstance3D.material_overlay
 	return Material.Instance(class(self).GetMaterialOverlay())
 }
 
 // SetMaterialOverlay sets the property returned by [GetMaterialOverlay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterialOverlay(value Material.Instance) Instance {
+func (self Instance) SetMaterialOverlay(value Material.Instance) Instance { //gd:GeometryInstance3D.material_overlay
 	class(self).SetMaterialOverlay(value)
 	return self
 }
@@ -259,12 +259,12 @@ Note: Only supported when using the Forward+ rendering method. When using the Mo
 
 [Transparency]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.Transparency
 */
-func (self Instance) Transparency() Float.X {
+func (self Instance) Transparency() Float.X { //gd:GeometryInstance3D.transparency
 	return Float.X(Float.X(class(self).GetTransparency()))
 }
 
 // SetTransparency sets the property returned by [GetTransparency]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransparency(value Float.X) Instance {
+func (self Instance) SetTransparency(value Float.X) Instance { //gd:GeometryInstance3D.transparency
 	class(self).SetTransparency(float64(value))
 	return self
 }
@@ -272,12 +272,12 @@ func (self Instance) SetTransparency(value Float.X) Instance {
 /*
 The selected shadow casting flag.
 */
-func (self Instance) CastShadow() ShadowCastingSetting {
+func (self Instance) CastShadow() ShadowCastingSetting { //gd:GeometryInstance3D.cast_shadow
 	return ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
 // SetCastShadow sets the property returned by [GetCastShadowsSetting]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCastShadow(value ShadowCastingSetting) Instance {
+func (self Instance) SetCastShadow(value ShadowCastingSetting) Instance { //gd:GeometryInstance3D.cast_shadow
 	class(self).SetCastShadowsSetting(value)
 	return self
 }
@@ -287,12 +287,12 @@ The extra distance added to the GeometryInstance3D's bounding box ([AABB.Positio
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 */
-func (self Instance) ExtraCullMargin() Float.X {
+func (self Instance) ExtraCullMargin() Float.X { //gd:GeometryInstance3D.extra_cull_margin
 	return Float.X(Float.X(class(self).GetExtraCullMargin()))
 }
 
 // SetExtraCullMargin sets the property returned by [GetExtraCullMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExtraCullMargin(value Float.X) Instance {
+func (self Instance) SetExtraCullMargin(value Float.X) Instance { //gd:GeometryInstance3D.extra_cull_margin
 	class(self).SetExtraCullMargin(float64(value))
 	return self
 }
@@ -307,12 +307,12 @@ Overrides the bounding box of this node with a custom one. This can be used to a
 [RenderingServer.InstanceSetIgnoreCulling]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#InstanceSetIgnoreCulling
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) CustomAabb() AABB.PositionSize {
+func (self Instance) CustomAabb() AABB.PositionSize { //gd:GeometryInstance3D.custom_aabb
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
 // SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance { //gd:GeometryInstance3D.custom_aabb
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 	return self
 }
@@ -322,12 +322,12 @@ Changes how quickly the mesh transitions to a lower level of detail. A value of 
 
 Useful for testing level of detail transitions in the editor.
 */
-func (self Instance) LodBias() Float.X {
+func (self Instance) LodBias() Float.X { //gd:GeometryInstance3D.lod_bias
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
 // SetLodBias sets the property returned by [GetLodBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLodBias(value Float.X) Instance {
+func (self Instance) SetLodBias(value Float.X) Instance { //gd:GeometryInstance3D.lod_bias
 	class(self).SetLodBias(float64(value))
 	return self
 }
@@ -340,12 +340,12 @@ Note: [IgnoreOcclusionCulling] does not affect frustum culling (which is what ha
 [CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
 [IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
 */
-func (self Instance) IgnoreOcclusionCulling() bool {
+func (self Instance) IgnoreOcclusionCulling() bool { //gd:GeometryInstance3D.ignore_occlusion_culling
 	return bool(class(self).IsIgnoringOcclusionCulling())
 }
 
 // SetIgnoreOcclusionCulling sets the property returned by [IsIgnoringOcclusionCulling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreOcclusionCulling(value bool) Instance {
+func (self Instance) SetIgnoreOcclusionCulling(value bool) Instance { //gd:GeometryInstance3D.ignore_occlusion_culling
 	class(self).SetIgnoreOcclusionCulling(value)
 	return self
 }
@@ -357,12 +357,12 @@ Note: Lights' bake mode will also affect the global illumination rendering. See 
 
 [Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
 */
-func (self Instance) GiMode() GIMode {
+func (self Instance) GiMode() GIMode { //gd:GeometryInstance3D.gi_mode
 	return GIMode(class(self).GetGiMode())
 }
 
 // SetGiMode sets the property returned by [GetGiMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGiMode(value GIMode) Instance {
+func (self Instance) SetGiMode(value GIMode) Instance { //gd:GeometryInstance3D.gi_mode
 	class(self).SetGiMode(value)
 	return self
 }
@@ -375,12 +375,12 @@ For example, doubling [GiLightmapTexelScale] doubles the lightmap texture resolu
 [GiLightmapTexelScale]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiLightmapTexelScale
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
-func (self Instance) GiLightmapTexelScale() Float.X {
+func (self Instance) GiLightmapTexelScale() Float.X { //gd:GeometryInstance3D.gi_lightmap_texel_scale
 	return Float.X(Float.X(class(self).GetLightmapTexelScale()))
 }
 
 // SetGiLightmapTexelScale sets the property returned by [GetLightmapTexelScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGiLightmapTexelScale(value Float.X) Instance {
+func (self Instance) SetGiLightmapTexelScale(value Float.X) Instance { //gd:GeometryInstance3D.gi_lightmap_texel_scale
 	class(self).SetLightmapTexelScale(float64(value))
 	return self
 }
@@ -390,12 +390,12 @@ The texel density to use for lightmapping in [LightmapGI].
 
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
-func (self Instance) GiLightmapScale() LightmapScale {
+func (self Instance) GiLightmapScale() LightmapScale { //gd:GeometryInstance3D.gi_lightmap_scale
 	return LightmapScale(class(self).GetLightmapScale())
 }
 
 // SetGiLightmapScale sets the property returned by [GetLightmapScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGiLightmapScale(value LightmapScale) Instance {
+func (self Instance) SetGiLightmapScale(value LightmapScale) Instance { //gd:GeometryInstance3D.gi_lightmap_scale
 	class(self).SetLightmapScale(value)
 	return self
 }
@@ -405,12 +405,12 @@ Starting distance from which the GeometryInstance3D will be visible, taking [Vis
 
 [VisibilityRangeBeginMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBeginMargin
 */
-func (self Instance) VisibilityRangeBegin() Float.X {
+func (self Instance) VisibilityRangeBegin() Float.X { //gd:GeometryInstance3D.visibility_range_begin
 	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
 // SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeBegin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeBegin(value Float.X) Instance { //gd:GeometryInstance3D.visibility_range_begin
 	class(self).SetVisibilityRangeBegin(float64(value))
 	return self
 }
@@ -423,12 +423,12 @@ If [VisibilityRangeFadeMode] is [VisibilityRangeFadeDisabled], this acts as a hy
 [VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
 [VisibilityRangeFadeMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeFadeMode
 */
-func (self Instance) VisibilityRangeBeginMargin() Float.X {
+func (self Instance) VisibilityRangeBeginMargin() Float.X { //gd:GeometryInstance3D.visibility_range_begin_margin
 	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
 // SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) Instance { //gd:GeometryInstance3D.visibility_range_begin_margin
 	class(self).SetVisibilityRangeBeginMargin(float64(value))
 	return self
 }
@@ -438,12 +438,12 @@ Distance from which the GeometryInstance3D will be hidden, taking [VisibilityRan
 
 [VisibilityRangeEndMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeEndMargin
 */
-func (self Instance) VisibilityRangeEnd() Float.X {
+func (self Instance) VisibilityRangeEnd() Float.X { //gd:GeometryInstance3D.visibility_range_end
 	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
 // SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeEnd(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeEnd(value Float.X) Instance { //gd:GeometryInstance3D.visibility_range_end
 	class(self).SetVisibilityRangeEnd(float64(value))
 	return self
 }
@@ -456,12 +456,12 @@ If [VisibilityRangeFadeMode] is [VisibilityRangeFadeDisabled], this acts as a hy
 [VisibilityRangeEnd]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeEnd
 [VisibilityRangeFadeMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeFadeMode
 */
-func (self Instance) VisibilityRangeEndMargin() Float.X {
+func (self Instance) VisibilityRangeEndMargin() Float.X { //gd:GeometryInstance3D.visibility_range_end_margin
 	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
 // SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance { //gd:GeometryInstance3D.visibility_range_end_margin
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 	return self
 }
@@ -469,12 +469,12 @@ func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance {
 /*
 Controls which instances will be faded when approaching the limits of the visibility range.
 */
-func (self Instance) VisibilityRangeFadeMode() VisibilityRangeFadeMode {
+func (self Instance) VisibilityRangeFadeMode() VisibilityRangeFadeMode { //gd:GeometryInstance3D.visibility_range_fade_mode
 	return VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
 // SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) Instance {
+func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) Instance { //gd:GeometryInstance3D.visibility_range_fade_mode
 	class(self).SetVisibilityRangeFadeMode(value)
 	return self
 }

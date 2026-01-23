@@ -528,68 +528,68 @@ func New() Instance {
 /*
 The timestep (delta) used for the simulation.
 */
-func (self Instance) Step() Float.X {
+func (self Instance) Step() Float.X { //gd:PhysicsDirectBodyState2D.step
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
 /*
 The inverse of the mass of the body.
 */
-func (self Instance) InverseMass() Float.X {
+func (self Instance) InverseMass() Float.X { //gd:PhysicsDirectBodyState2D.inverse_mass
 	return Float.X(Float.X(class(self).GetInverseMass()))
 }
 
 /*
 The inverse of the inertia of the body.
 */
-func (self Instance) InverseInertia() Float.X {
+func (self Instance) InverseInertia() Float.X { //gd:PhysicsDirectBodyState2D.inverse_inertia
 	return Float.X(Float.X(class(self).GetInverseInertia()))
 }
 
 /*
 The rate at which the body stops rotating, if there are not any other forces moving it.
 */
-func (self Instance) TotalAngularDamp() Float.X {
+func (self Instance) TotalAngularDamp() Float.X { //gd:PhysicsDirectBodyState2D.total_angular_damp
 	return Float.X(Float.X(class(self).GetTotalAngularDamp()))
 }
 
 /*
 The rate at which the body stops moving, if there are not any other forces moving it.
 */
-func (self Instance) TotalLinearDamp() Float.X {
+func (self Instance) TotalLinearDamp() Float.X { //gd:PhysicsDirectBodyState2D.total_linear_damp
 	return Float.X(Float.X(class(self).GetTotalLinearDamp()))
 }
 
 /*
 The total gravity vector being currently applied to this body.
 */
-func (self Instance) TotalGravity() Vector2.XY {
+func (self Instance) TotalGravity() Vector2.XY { //gd:PhysicsDirectBodyState2D.total_gravity
 	return Vector2.XY(class(self).GetTotalGravity())
 }
 
 /*
 The body's center of mass position relative to the body's center in the global coordinate system.
 */
-func (self Instance) CenterOfMass() Vector2.XY {
+func (self Instance) CenterOfMass() Vector2.XY { //gd:PhysicsDirectBodyState2D.center_of_mass
 	return Vector2.XY(class(self).GetCenterOfMass())
 }
 
 /*
 The body's center of mass position in the body's local coordinate system.
 */
-func (self Instance) CenterOfMassLocal() Vector2.XY {
+func (self Instance) CenterOfMassLocal() Vector2.XY { //gd:PhysicsDirectBodyState2D.center_of_mass_local
 	return Vector2.XY(class(self).GetCenterOfMassLocal())
 }
 
 /*
 The body's rotational velocity in radians per second.
 */
-func (self Instance) AngularVelocity() Float.X {
+func (self Instance) AngularVelocity() Float.X { //gd:PhysicsDirectBodyState2D.angular_velocity
 	return Float.X(Float.X(class(self).GetAngularVelocity()))
 }
 
 // SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocity(value Float.X) Instance {
+func (self Instance) SetAngularVelocity(value Float.X) Instance { //gd:PhysicsDirectBodyState2D.angular_velocity
 	class(self).SetAngularVelocity(float64(value))
 	return self
 }
@@ -597,12 +597,12 @@ func (self Instance) SetAngularVelocity(value Float.X) Instance {
 /*
 The body's linear velocity in pixels per second.
 */
-func (self Instance) LinearVelocity() Vector2.XY {
+func (self Instance) LinearVelocity() Vector2.XY { //gd:PhysicsDirectBodyState2D.linear_velocity
 	return Vector2.XY(class(self).GetLinearVelocity())
 }
 
 // SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearVelocity(value Vector2.XY) Instance {
+func (self Instance) SetLinearVelocity(value Vector2.XY) Instance { //gd:PhysicsDirectBodyState2D.linear_velocity
 	class(self).SetLinearVelocity(Vector2.XY(value))
 	return self
 }
@@ -610,12 +610,12 @@ func (self Instance) SetLinearVelocity(value Vector2.XY) Instance {
 /*
 If true, this body is currently sleeping (not active).
 */
-func (self Instance) Sleeping() bool {
+func (self Instance) Sleeping() bool { //gd:PhysicsDirectBodyState2D.sleeping
 	return bool(class(self).IsSleeping())
 }
 
 // SetSleeping sets the property returned by [IsSleeping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSleeping(value bool) Instance {
+func (self Instance) SetSleeping(value bool) Instance { //gd:PhysicsDirectBodyState2D.sleeping
 	class(self).SetSleepState(value)
 	return self
 }
@@ -623,12 +623,12 @@ func (self Instance) SetSleeping(value bool) Instance {
 /*
 The body's collision layer.
 */
-func (self Instance) CollisionLayer() int {
+func (self Instance) CollisionLayer() int { //gd:PhysicsDirectBodyState2D.collision_layer
 	return int(int(class(self).GetCollisionLayer()))
 }
 
 // SetCollisionLayer sets the property returned by [GetCollisionLayer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionLayer(value int) Instance {
+func (self Instance) SetCollisionLayer(value int) Instance { //gd:PhysicsDirectBodyState2D.collision_layer
 	class(self).SetCollisionLayer(int64(value))
 	return self
 }
@@ -636,12 +636,12 @@ func (self Instance) SetCollisionLayer(value int) Instance {
 /*
 The body's collision mask.
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:PhysicsDirectBodyState2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:PhysicsDirectBodyState2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -649,12 +649,12 @@ func (self Instance) SetCollisionMask(value int) Instance {
 /*
 The body's transformation matrix.
 */
-func (self Instance) Transform() Transform2D.OriginXY {
+func (self Instance) Transform() Transform2D.OriginXY { //gd:PhysicsDirectBodyState2D.transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance { //gd:PhysicsDirectBodyState2D.transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }

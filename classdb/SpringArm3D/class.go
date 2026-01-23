@@ -210,12 +210,12 @@ The layers against which the collision check shall be done. See [Collision layer
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:SpringArm3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:SpringArm3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -227,12 +227,12 @@ When the shape is set, the SpringArm3D will cast the [Shape3D] on its z axis ins
 
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Instance) Shape() Shape3D.Instance {
+func (self Instance) Shape() Shape3D.Instance { //gd:SpringArm3D.shape
 	return Shape3D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape3D.Instance) Instance {
+func (self Instance) SetShape(value Shape3D.Instance) Instance { //gd:SpringArm3D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -244,12 +244,12 @@ To know more about how to perform a shape cast or a ray cast, please consult the
 
 [PhysicsDirectSpaceState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState3D
 */
-func (self Instance) SpringLength() Float.X {
+func (self Instance) SpringLength() Float.X { //gd:SpringArm3D.spring_length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // SetSpringLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpringLength(value Float.X) Instance {
+func (self Instance) SetSpringLength(value Float.X) Instance { //gd:SpringArm3D.spring_length
 	class(self).SetLength(float64(value))
 	return self
 }
@@ -263,12 +263,12 @@ This margin is useful for when the SpringArm3D has a [Camera3D] as a child node:
 
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:SpringArm3D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:SpringArm3D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }

@@ -191,12 +191,12 @@ func New() Instance {
 /*
 The index of the buffer view this accessor is referencing. If -1, this accessor is not referencing any buffer view.
 */
-func (self Instance) BufferView() int {
+func (self Instance) BufferView() int { //gd:GLTFAccessor.buffer_view
 	return int(int(class(self).GetBufferView()))
 }
 
 // SetBufferView sets the property returned by [GetBufferView]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferView(value int) Instance {
+func (self Instance) SetBufferView(value int) Instance { //gd:GLTFAccessor.buffer_view
 	class(self).SetBufferView(int64(value))
 	return self
 }
@@ -204,12 +204,12 @@ func (self Instance) SetBufferView(value int) Instance {
 /*
 The offset relative to the start of the buffer view in bytes.
 */
-func (self Instance) ByteOffset() int {
+func (self Instance) ByteOffset() int { //gd:GLTFAccessor.byte_offset
 	return int(int(class(self).GetByteOffset()))
 }
 
 // SetByteOffset sets the property returned by [GetByteOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetByteOffset(value int) Instance {
+func (self Instance) SetByteOffset(value int) Instance { //gd:GLTFAccessor.byte_offset
 	class(self).SetByteOffset(int64(value))
 	return self
 }
@@ -217,12 +217,12 @@ func (self Instance) SetByteOffset(value int) Instance {
 /*
 The glTF component type as an enum. See [GLTFComponentType] for possible values. Within the core glTF specification, a value of 5125 or "UNSIGNED_INT" must not be used for any accessor that is not referenced by mesh.primitive.indices.
 */
-func (self Instance) ComponentType() GLTFComponentType {
+func (self Instance) ComponentType() GLTFComponentType { //gd:GLTFAccessor.component_type
 	return GLTFComponentType(class(self).GetComponentType())
 }
 
 // SetComponentType sets the property returned by [GetComponentType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetComponentType(value GLTFComponentType) Instance {
+func (self Instance) SetComponentType(value GLTFComponentType) Instance { //gd:GLTFAccessor.component_type
 	class(self).SetComponentType(value)
 	return self
 }
@@ -230,12 +230,12 @@ func (self Instance) SetComponentType(value GLTFComponentType) Instance {
 /*
 Specifies whether integer data values are normalized before usage.
 */
-func (self Instance) Normalized() bool {
+func (self Instance) Normalized() bool { //gd:GLTFAccessor.normalized
 	return bool(class(self).GetNormalized())
 }
 
 // SetNormalized sets the property returned by [GetNormalized]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalized(value bool) Instance {
+func (self Instance) SetNormalized(value bool) Instance { //gd:GLTFAccessor.normalized
 	class(self).SetNormalized(value)
 	return self
 }
@@ -243,12 +243,12 @@ func (self Instance) SetNormalized(value bool) Instance {
 /*
 The number of elements referenced by this accessor.
 */
-func (self Instance) Count() int {
+func (self Instance) Count() int { //gd:GLTFAccessor.count
 	return int(int(class(self).GetCount()))
 }
 
 // SetCount sets the property returned by [GetCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCount(value int) Instance {
+func (self Instance) SetCount(value int) Instance { //gd:GLTFAccessor.count
 	class(self).SetCount(int64(value))
 	return self
 }
@@ -256,12 +256,12 @@ func (self Instance) SetCount(value int) Instance {
 /*
 The glTF accessor type, as an enum.
 */
-func (self Instance) AccessorType() GLTFAccessorType {
+func (self Instance) AccessorType() GLTFAccessorType { //gd:GLTFAccessor.accessor_type
 	return GLTFAccessorType(class(self).GetAccessorType())
 }
 
 // SetAccessorType sets the property returned by [GetAccessorType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessorType(value GLTFAccessorType) Instance {
+func (self Instance) SetAccessorType(value GLTFAccessorType) Instance { //gd:GLTFAccessor.accessor_type
 	class(self).SetAccessorType(value)
 	return self
 }
@@ -269,12 +269,12 @@ func (self Instance) SetAccessorType(value GLTFAccessorType) Instance {
 /*
 The glTF accessor type, as an int. Possible values are 0 for "SCALAR", 1 for "VEC2", 2 for "VEC3", 3 for "VEC4", 4 for "MAT2", 5 for "MAT3", and 6 for "MAT4".
 */
-func (self Instance) Type() int {
+func (self Instance) Type() int { //gd:GLTFAccessor.type
 	return int(int(class(self).GetType()))
 }
 
 // SetType sets the property returned by [GetType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetType(value int) Instance {
+func (self Instance) SetType(value int) Instance { //gd:GLTFAccessor.type
 	class(self).SetType(int64(value))
 	return self
 }
@@ -282,12 +282,12 @@ func (self Instance) SetType(value int) Instance {
 /*
 Minimum value of each component in this accessor.
 */
-func (self Instance) Min() []float64 {
+func (self Instance) Min() []float64 { //gd:GLTFAccessor.min
 	return []float64(slices.Collect(class(self).GetMin().Values()))
 }
 
 // SetMin sets the property returned by [GetMin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMin(value []float64) Instance {
+func (self Instance) SetMin(value []float64) Instance { //gd:GLTFAccessor.min
 	class(self).SetMin(Packed.New(value...))
 	return self
 }
@@ -295,12 +295,12 @@ func (self Instance) SetMin(value []float64) Instance {
 /*
 Maximum value of each component in this accessor.
 */
-func (self Instance) Max() []float64 {
+func (self Instance) Max() []float64 { //gd:GLTFAccessor.max
 	return []float64(slices.Collect(class(self).GetMax().Values()))
 }
 
 // SetMax sets the property returned by [GetMax]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMax(value []float64) Instance {
+func (self Instance) SetMax(value []float64) Instance { //gd:GLTFAccessor.max
 	class(self).SetMax(Packed.New(value...))
 	return self
 }
@@ -308,12 +308,12 @@ func (self Instance) SetMax(value []float64) Instance {
 /*
 Number of deviating accessor values stored in the sparse array.
 */
-func (self Instance) SparseCount() int {
+func (self Instance) SparseCount() int { //gd:GLTFAccessor.sparse_count
 	return int(int(class(self).GetSparseCount()))
 }
 
 // SetSparseCount sets the property returned by [GetSparseCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseCount(value int) Instance {
+func (self Instance) SetSparseCount(value int) Instance { //gd:GLTFAccessor.sparse_count
 	class(self).SetSparseCount(int64(value))
 	return self
 }
@@ -321,12 +321,12 @@ func (self Instance) SetSparseCount(value int) Instance {
 /*
 The index of the buffer view with sparse indices. The referenced buffer view MUST NOT have its target or byteStride properties defined. The buffer view and the optional byteOffset MUST be aligned to the componentType byte length.
 */
-func (self Instance) SparseIndicesBufferView() int {
+func (self Instance) SparseIndicesBufferView() int { //gd:GLTFAccessor.sparse_indices_buffer_view
 	return int(int(class(self).GetSparseIndicesBufferView()))
 }
 
 // SetSparseIndicesBufferView sets the property returned by [GetSparseIndicesBufferView]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseIndicesBufferView(value int) Instance {
+func (self Instance) SetSparseIndicesBufferView(value int) Instance { //gd:GLTFAccessor.sparse_indices_buffer_view
 	class(self).SetSparseIndicesBufferView(int64(value))
 	return self
 }
@@ -334,12 +334,12 @@ func (self Instance) SetSparseIndicesBufferView(value int) Instance {
 /*
 The offset relative to the start of the buffer view in bytes.
 */
-func (self Instance) SparseIndicesByteOffset() int {
+func (self Instance) SparseIndicesByteOffset() int { //gd:GLTFAccessor.sparse_indices_byte_offset
 	return int(int(class(self).GetSparseIndicesByteOffset()))
 }
 
 // SetSparseIndicesByteOffset sets the property returned by [GetSparseIndicesByteOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseIndicesByteOffset(value int) Instance {
+func (self Instance) SetSparseIndicesByteOffset(value int) Instance { //gd:GLTFAccessor.sparse_indices_byte_offset
 	class(self).SetSparseIndicesByteOffset(int64(value))
 	return self
 }
@@ -347,12 +347,12 @@ func (self Instance) SetSparseIndicesByteOffset(value int) Instance {
 /*
 The indices component data type as an enum. Possible values are 5121 for "UNSIGNED_BYTE", 5123 for "UNSIGNED_SHORT", and 5125 for "UNSIGNED_INT".
 */
-func (self Instance) SparseIndicesComponentType() GLTFComponentType {
+func (self Instance) SparseIndicesComponentType() GLTFComponentType { //gd:GLTFAccessor.sparse_indices_component_type
 	return GLTFComponentType(class(self).GetSparseIndicesComponentType())
 }
 
 // SetSparseIndicesComponentType sets the property returned by [GetSparseIndicesComponentType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) Instance {
+func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) Instance { //gd:GLTFAccessor.sparse_indices_component_type
 	class(self).SetSparseIndicesComponentType(value)
 	return self
 }
@@ -360,12 +360,12 @@ func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) Inst
 /*
 The index of the bufferView with sparse values. The referenced buffer view MUST NOT have its target or byteStride properties defined.
 */
-func (self Instance) SparseValuesBufferView() int {
+func (self Instance) SparseValuesBufferView() int { //gd:GLTFAccessor.sparse_values_buffer_view
 	return int(int(class(self).GetSparseValuesBufferView()))
 }
 
 // SetSparseValuesBufferView sets the property returned by [GetSparseValuesBufferView]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseValuesBufferView(value int) Instance {
+func (self Instance) SetSparseValuesBufferView(value int) Instance { //gd:GLTFAccessor.sparse_values_buffer_view
 	class(self).SetSparseValuesBufferView(int64(value))
 	return self
 }
@@ -373,12 +373,12 @@ func (self Instance) SetSparseValuesBufferView(value int) Instance {
 /*
 The offset relative to the start of the bufferView in bytes.
 */
-func (self Instance) SparseValuesByteOffset() int {
+func (self Instance) SparseValuesByteOffset() int { //gd:GLTFAccessor.sparse_values_byte_offset
 	return int(int(class(self).GetSparseValuesByteOffset()))
 }
 
 // SetSparseValuesByteOffset sets the property returned by [GetSparseValuesByteOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSparseValuesByteOffset(value int) Instance {
+func (self Instance) SetSparseValuesByteOffset(value int) Instance { //gd:GLTFAccessor.sparse_values_byte_offset
 	class(self).SetSparseValuesByteOffset(int64(value))
 	return self
 }

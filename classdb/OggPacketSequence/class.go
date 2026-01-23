@@ -171,12 +171,12 @@ func New() Instance {
 /*
 Contains the raw packets that make up this OggPacketSequence.
 */
-func (self Instance) PacketData() [][][]interface{} {
+func (self Instance) PacketData() [][][]interface{} { //gd:OggPacketSequence.packet_data
 	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(class(self).GetPacketData())))
 }
 
 // SetPacketData sets the property returned by [GetPacketData]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPacketData(value [][][]interface{}) Instance {
+func (self Instance) SetPacketData(value [][][]interface{}) Instance { //gd:OggPacketSequence.packet_data
 	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetPacketData(value [][][]interface{}) Instance {
 /*
 Contains the granule positions for each page in this packet sequence.
 */
-func (self Instance) GranulePositions() []int64 {
+func (self Instance) GranulePositions() []int64 { //gd:OggPacketSequence.granule_positions
 	return []int64(slices.Collect(class(self).GetPacketGranulePositions().Values()))
 }
 
 // SetGranulePositions sets the property returned by [GetPacketGranulePositions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGranulePositions(value []int64) Instance {
+func (self Instance) SetGranulePositions(value []int64) Instance { //gd:OggPacketSequence.granule_positions
 	class(self).SetPacketGranulePositions(Packed.New(value...))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetGranulePositions(value []int64) Instance {
 /*
 Holds sample rate information about this sequence. Must be set by another class that actually understands the codec.
 */
-func (self Instance) SamplingRate() Float.X {
+func (self Instance) SamplingRate() Float.X { //gd:OggPacketSequence.sampling_rate
 	return Float.X(Float.X(class(self).GetSamplingRate()))
 }
 
 // SetSamplingRate sets the property returned by [GetSamplingRate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSamplingRate(value Float.X) Instance {
+func (self Instance) SetSamplingRate(value Float.X) Instance { //gd:OggPacketSequence.sampling_rate
 	class(self).SetSamplingRate(float64(value))
 	return self
 }

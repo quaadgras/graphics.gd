@@ -190,12 +190,12 @@ Controls the strength of the [Rayleigh scattering]. Rayleigh scattering results 
 
 [Rayleigh scattering]: https://en.wikipedia.org/wiki/Rayleigh_scattering
 */
-func (self Instance) RayleighCoefficient() Float.X {
+func (self Instance) RayleighCoefficient() Float.X { //gd:PhysicalSkyMaterial.rayleigh_coefficient
 	return Float.X(Float.X(class(self).GetRayleighCoefficient()))
 }
 
 // SetRayleighCoefficient sets the property returned by [GetRayleighCoefficient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRayleighCoefficient(value Float.X) Instance {
+func (self Instance) SetRayleighCoefficient(value Float.X) Instance { //gd:PhysicalSkyMaterial.rayleigh_coefficient
 	class(self).SetRayleighCoefficient(float64(value))
 	return self
 }
@@ -206,12 +206,12 @@ Controls the [Color.RGBA] of the [Rayleigh scattering]. While not physically acc
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [Rayleigh scattering]: https://en.wikipedia.org/wiki/Rayleigh_scattering
 */
-func (self Instance) RayleighColor() Color.RGBA {
+func (self Instance) RayleighColor() Color.RGBA { //gd:PhysicalSkyMaterial.rayleigh_color
 	return Color.RGBA(class(self).GetRayleighColor())
 }
 
 // SetRayleighColor sets the property returned by [GetRayleighColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRayleighColor(value Color.RGBA) Instance {
+func (self Instance) SetRayleighColor(value Color.RGBA) Instance { //gd:PhysicalSkyMaterial.rayleigh_color
 	class(self).SetRayleighColor(Color.RGBA(value))
 	return self
 }
@@ -221,12 +221,12 @@ Controls the strength of [Mie scattering] for the sky. Mie scattering results fr
 
 [Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
 */
-func (self Instance) MieCoefficient() Float.X {
+func (self Instance) MieCoefficient() Float.X { //gd:PhysicalSkyMaterial.mie_coefficient
 	return Float.X(Float.X(class(self).GetMieCoefficient()))
 }
 
 // SetMieCoefficient sets the property returned by [GetMieCoefficient]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMieCoefficient(value Float.X) Instance {
+func (self Instance) SetMieCoefficient(value Float.X) Instance { //gd:PhysicalSkyMaterial.mie_coefficient
 	class(self).SetMieCoefficient(float64(value))
 	return self
 }
@@ -236,12 +236,12 @@ Controls the direction of the [Mie scattering]. A value of 1 means that when lig
 
 [Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
 */
-func (self Instance) MieEccentricity() Float.X {
+func (self Instance) MieEccentricity() Float.X { //gd:PhysicalSkyMaterial.mie_eccentricity
 	return Float.X(Float.X(class(self).GetMieEccentricity()))
 }
 
 // SetMieEccentricity sets the property returned by [GetMieEccentricity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMieEccentricity(value Float.X) Instance {
+func (self Instance) SetMieEccentricity(value Float.X) Instance { //gd:PhysicalSkyMaterial.mie_eccentricity
 	class(self).SetMieEccentricity(float64(value))
 	return self
 }
@@ -252,12 +252,12 @@ Controls the [Color.RGBA] of the [Mie scattering] effect. While not physically a
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
 */
-func (self Instance) MieColor() Color.RGBA {
+func (self Instance) MieColor() Color.RGBA { //gd:PhysicalSkyMaterial.mie_color
 	return Color.RGBA(class(self).GetMieColor())
 }
 
 // SetMieColor sets the property returned by [GetMieColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMieColor(value Color.RGBA) Instance {
+func (self Instance) SetMieColor(value Color.RGBA) Instance { //gd:PhysicalSkyMaterial.mie_color
 	class(self).SetMieColor(Color.RGBA(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetMieColor(value Color.RGBA) Instance {
 /*
 Sets the thickness of the atmosphere. High turbidity creates a foggy-looking atmosphere, while a low turbidity results in a clearer atmosphere.
 */
-func (self Instance) Turbidity() Float.X {
+func (self Instance) Turbidity() Float.X { //gd:PhysicalSkyMaterial.turbidity
 	return Float.X(Float.X(class(self).GetTurbidity()))
 }
 
 // SetTurbidity sets the property returned by [GetTurbidity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTurbidity(value Float.X) Instance {
+func (self Instance) SetTurbidity(value Float.X) Instance { //gd:PhysicalSkyMaterial.turbidity
 	class(self).SetTurbidity(float64(value))
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetTurbidity(value Float.X) Instance {
 /*
 Sets the size of the sun disk. Default value is based on Sol's perceived size from Earth.
 */
-func (self Instance) SunDiskScale() Float.X {
+func (self Instance) SunDiskScale() Float.X { //gd:PhysicalSkyMaterial.sun_disk_scale
 	return Float.X(Float.X(class(self).GetSunDiskScale()))
 }
 
 // SetSunDiskScale sets the property returned by [GetSunDiskScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSunDiskScale(value Float.X) Instance {
+func (self Instance) SetSunDiskScale(value Float.X) Instance { //gd:PhysicalSkyMaterial.sun_disk_scale
 	class(self).SetSunDiskScale(float64(value))
 	return self
 }
@@ -293,12 +293,12 @@ Modulates the [Color.RGBA] on the bottom half of the sky to represent the ground
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) GroundColor() Color.RGBA {
+func (self Instance) GroundColor() Color.RGBA { //gd:PhysicalSkyMaterial.ground_color
 	return Color.RGBA(class(self).GetGroundColor())
 }
 
 // SetGroundColor sets the property returned by [GetGroundColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGroundColor(value Color.RGBA) Instance {
+func (self Instance) SetGroundColor(value Color.RGBA) Instance { //gd:PhysicalSkyMaterial.ground_color
 	class(self).SetGroundColor(Color.RGBA(value))
 	return self
 }
@@ -306,12 +306,12 @@ func (self Instance) SetGroundColor(value Color.RGBA) Instance {
 /*
 The sky's overall brightness multiplier. Higher values result in a brighter sky.
 */
-func (self Instance) EnergyMultiplier() Float.X {
+func (self Instance) EnergyMultiplier() Float.X { //gd:PhysicalSkyMaterial.energy_multiplier
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
 // SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
+func (self Instance) SetEnergyMultiplier(value Float.X) Instance { //gd:PhysicalSkyMaterial.energy_multiplier
 	class(self).SetEnergyMultiplier(float64(value))
 	return self
 }
@@ -319,12 +319,12 @@ func (self Instance) SetEnergyMultiplier(value Float.X) Instance {
 /*
 If true, enables debanding. Debanding adds a small amount of noise which helps reduce banding that appears from the smooth changes in color in the sky.
 */
-func (self Instance) UseDebanding() bool {
+func (self Instance) UseDebanding() bool { //gd:PhysicalSkyMaterial.use_debanding
 	return bool(class(self).GetUseDebanding())
 }
 
 // SetUseDebanding sets the property returned by [GetUseDebanding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseDebanding(value bool) Instance {
+func (self Instance) SetUseDebanding(value bool) Instance { //gd:PhysicalSkyMaterial.use_debanding
 	class(self).SetUseDebanding(value)
 	return self
 }
@@ -334,12 +334,12 @@ func (self Instance) SetUseDebanding(value bool) Instance {
 
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) NightSky() Texture2D.Instance {
+func (self Instance) NightSky() Texture2D.Instance { //gd:PhysicalSkyMaterial.night_sky
 	return Texture2D.Instance(class(self).GetNightSky())
 }
 
 // SetNightSky sets the property returned by [GetNightSky]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNightSky(value Texture2D.Instance) Instance {
+func (self Instance) SetNightSky(value Texture2D.Instance) Instance { //gd:PhysicalSkyMaterial.night_sky
 	class(self).SetNightSky(value)
 	return self
 }

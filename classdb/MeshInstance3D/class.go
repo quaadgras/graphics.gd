@@ -426,12 +426,12 @@ The [Mesh] resource for the instance.
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:MeshInstance3D.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:MeshInstance3D.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -441,12 +441,12 @@ The [Skin] to be used by this instance.
 
 [Skin]: https://pkg.go.dev/graphics.gd/classdb/Skin
 */
-func (self Instance) Skin() Skin.Instance {
+func (self Instance) Skin() Skin.Instance { //gd:MeshInstance3D.skin
 	return Skin.Instance(class(self).GetSkin())
 }
 
 // SetSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkin(value Skin.Instance) Instance {
+func (self Instance) SetSkin(value Skin.Instance) Instance { //gd:MeshInstance3D.skin
 	class(self).SetSkin(value)
 	return self
 }
@@ -456,12 +456,12 @@ node path to the [Skeleton3D] associated with the instance.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) Skeleton() string {
+func (self Instance) Skeleton() string { //gd:MeshInstance3D.skeleton
 	return string(class(self).GetSkeletonPath().String())
 }
 
 // SetSkeleton sets the property returned by [GetSkeletonPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeleton(value string) Instance {
+func (self Instance) SetSkeleton(value string) Instance { //gd:MeshInstance3D.skeleton
 	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 	return self
 }

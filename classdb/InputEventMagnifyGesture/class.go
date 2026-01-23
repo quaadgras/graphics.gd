@@ -167,12 +167,12 @@ func New() Instance {
 /*
 The amount (or delta) of the event. This value is closer to 1.0 the slower the gesture is performed.
 */
-func (self Instance) Factor() Float.X {
+func (self Instance) Factor() Float.X { //gd:InputEventMagnifyGesture.factor
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
 // SetFactor sets the property returned by [GetFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFactor(value Float.X) Instance {
+func (self Instance) SetFactor(value Float.X) Instance { //gd:InputEventMagnifyGesture.factor
 	class(self).SetFactor(float64(value))
 	return self
 }

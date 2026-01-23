@@ -168,12 +168,12 @@ func New() Instance {
 /*
 Determines the minimum frequency affected by the LFO modulations, in Hz. Value can range from 10 to 10000.
 */
-func (self Instance) RangeMinHz() Float.X {
+func (self Instance) RangeMinHz() Float.X { //gd:AudioEffectPhaser.range_min_hz
 	return Float.X(Float.X(class(self).GetRangeMinHz()))
 }
 
 // SetRangeMinHz sets the property returned by [GetRangeMinHz]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeMinHz(value Float.X) Instance {
+func (self Instance) SetRangeMinHz(value Float.X) Instance { //gd:AudioEffectPhaser.range_min_hz
 	class(self).SetRangeMinHz(float64(value))
 	return self
 }
@@ -181,12 +181,12 @@ func (self Instance) SetRangeMinHz(value Float.X) Instance {
 /*
 Determines the maximum frequency affected by the LFO modulations, in Hz. Value can range from 10 to 10000.
 */
-func (self Instance) RangeMaxHz() Float.X {
+func (self Instance) RangeMaxHz() Float.X { //gd:AudioEffectPhaser.range_max_hz
 	return Float.X(Float.X(class(self).GetRangeMaxHz()))
 }
 
 // SetRangeMaxHz sets the property returned by [GetRangeMaxHz]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRangeMaxHz(value Float.X) Instance {
+func (self Instance) SetRangeMaxHz(value Float.X) Instance { //gd:AudioEffectPhaser.range_max_hz
 	class(self).SetRangeMaxHz(float64(value))
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetRangeMaxHz(value Float.X) Instance {
 /*
 Adjusts the rate in Hz at which the effect sweeps up and down across the frequency range.
 */
-func (self Instance) RateHz() Float.X {
+func (self Instance) RateHz() Float.X { //gd:AudioEffectPhaser.rate_hz
 	return Float.X(Float.X(class(self).GetRateHz()))
 }
 
 // SetRateHz sets the property returned by [GetRateHz]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRateHz(value Float.X) Instance {
+func (self Instance) SetRateHz(value Float.X) Instance { //gd:AudioEffectPhaser.rate_hz
 	class(self).SetRateHz(float64(value))
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetRateHz(value Float.X) Instance {
 /*
 Output percent of modified sound. Value can range from 0.1 to 0.9.
 */
-func (self Instance) Feedback() Float.X {
+func (self Instance) Feedback() Float.X { //gd:AudioEffectPhaser.feedback
 	return Float.X(Float.X(class(self).GetFeedback()))
 }
 
 // SetFeedback sets the property returned by [GetFeedback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFeedback(value Float.X) Instance {
+func (self Instance) SetFeedback(value Float.X) Instance { //gd:AudioEffectPhaser.feedback
 	class(self).SetFeedback(float64(value))
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetFeedback(value Float.X) Instance {
 /*
 Determines how high the filter frequencies sweep. Low value will primarily affect bass frequencies. High value can sweep high into the treble. Value can range from 0.1 to 4.0.
 */
-func (self Instance) Depth() Float.X {
+func (self Instance) Depth() Float.X { //gd:AudioEffectPhaser.depth
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 // SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepth(value Float.X) Instance {
+func (self Instance) SetDepth(value Float.X) Instance { //gd:AudioEffectPhaser.depth
 	class(self).SetDepth(float64(value))
 	return self
 }

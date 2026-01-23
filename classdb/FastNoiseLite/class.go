@@ -203,12 +203,12 @@ func New() Instance {
 /*
 The noise algorithm used.
 */
-func (self Instance) NoiseType() NoiseType {
+func (self Instance) NoiseType() NoiseType { //gd:FastNoiseLite.noise_type
 	return NoiseType(class(self).GetNoiseType())
 }
 
 // SetNoiseType sets the property returned by [GetNoiseType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNoiseType(value NoiseType) Instance {
+func (self Instance) SetNoiseType(value NoiseType) Instance { //gd:FastNoiseLite.noise_type
 	class(self).SetNoiseType(value)
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetNoiseType(value NoiseType) Instance {
 /*
 The random number seed for all noise types.
 */
-func (self Instance) Seed() int {
+func (self Instance) Seed() int { //gd:FastNoiseLite.seed
 	return int(int(class(self).GetSeed()))
 }
 
 // SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeed(value int) Instance {
+func (self Instance) SetSeed(value int) Instance { //gd:FastNoiseLite.seed
 	class(self).SetSeed(int64(value))
 	return self
 }
@@ -229,12 +229,12 @@ func (self Instance) SetSeed(value int) Instance {
 /*
 The frequency for all noise types. Low frequency results in smooth noise while high frequency results in rougher, more granular noise.
 */
-func (self Instance) Frequency() Float.X {
+func (self Instance) Frequency() Float.X { //gd:FastNoiseLite.frequency
 	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
 // SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrequency(value Float.X) Instance {
+func (self Instance) SetFrequency(value Float.X) Instance { //gd:FastNoiseLite.frequency
 	class(self).SetFrequency(float64(value))
 	return self
 }
@@ -244,12 +244,12 @@ Translate the noise input coordinates by the given [Vector3.XYZ].
 
 [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
-func (self Instance) Offset() Vector3.XYZ {
+func (self Instance) Offset() Vector3.XYZ { //gd:FastNoiseLite.offset
 	return Vector3.XYZ(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetOffset(value Vector3.XYZ) Instance { //gd:FastNoiseLite.offset
 	class(self).SetOffset(Vector3.XYZ(value))
 	return self
 }
@@ -257,12 +257,12 @@ func (self Instance) SetOffset(value Vector3.XYZ) Instance {
 /*
 The method for combining octaves into a fractal.
 */
-func (self Instance) FractalType() FractalType {
+func (self Instance) FractalType() FractalType { //gd:FastNoiseLite.fractal_type
 	return FractalType(class(self).GetFractalType())
 }
 
 // SetFractalType sets the property returned by [GetFractalType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalType(value FractalType) Instance {
+func (self Instance) SetFractalType(value FractalType) Instance { //gd:FastNoiseLite.fractal_type
 	class(self).SetFractalType(value)
 	return self
 }
@@ -270,12 +270,12 @@ func (self Instance) SetFractalType(value FractalType) Instance {
 /*
 The number of noise layers that are sampled to get the final value for fractal noise types.
 */
-func (self Instance) FractalOctaves() int {
+func (self Instance) FractalOctaves() int { //gd:FastNoiseLite.fractal_octaves
 	return int(int(class(self).GetFractalOctaves()))
 }
 
 // SetFractalOctaves sets the property returned by [GetFractalOctaves]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalOctaves(value int) Instance {
+func (self Instance) SetFractalOctaves(value int) Instance { //gd:FastNoiseLite.fractal_octaves
 	class(self).SetFractalOctaves(int64(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetFractalOctaves(value int) Instance {
 /*
 Frequency multiplier between subsequent octaves. Increasing this value results in higher octaves producing noise with finer details and a rougher appearance.
 */
-func (self Instance) FractalLacunarity() Float.X {
+func (self Instance) FractalLacunarity() Float.X { //gd:FastNoiseLite.fractal_lacunarity
 	return Float.X(Float.X(class(self).GetFractalLacunarity()))
 }
 
 // SetFractalLacunarity sets the property returned by [GetFractalLacunarity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalLacunarity(value Float.X) Instance {
+func (self Instance) SetFractalLacunarity(value Float.X) Instance { //gd:FastNoiseLite.fractal_lacunarity
 	class(self).SetFractalLacunarity(float64(value))
 	return self
 }
@@ -298,12 +298,12 @@ Determines the strength of each subsequent layer of noise in fractal noise.
 
 A low value places more emphasis on the lower frequency base layers, while a high value puts more emphasis on the higher frequency layers.
 */
-func (self Instance) FractalGain() Float.X {
+func (self Instance) FractalGain() Float.X { //gd:FastNoiseLite.fractal_gain
 	return Float.X(Float.X(class(self).GetFractalGain()))
 }
 
 // SetFractalGain sets the property returned by [GetFractalGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalGain(value Float.X) Instance {
+func (self Instance) SetFractalGain(value Float.X) Instance { //gd:FastNoiseLite.fractal_gain
 	class(self).SetFractalGain(float64(value))
 	return self
 }
@@ -311,12 +311,12 @@ func (self Instance) SetFractalGain(value Float.X) Instance {
 /*
 Higher weighting means higher octaves have less impact if lower octaves have a large impact.
 */
-func (self Instance) FractalWeightedStrength() Float.X {
+func (self Instance) FractalWeightedStrength() Float.X { //gd:FastNoiseLite.fractal_weighted_strength
 	return Float.X(Float.X(class(self).GetFractalWeightedStrength()))
 }
 
 // SetFractalWeightedStrength sets the property returned by [GetFractalWeightedStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalWeightedStrength(value Float.X) Instance {
+func (self Instance) SetFractalWeightedStrength(value Float.X) Instance { //gd:FastNoiseLite.fractal_weighted_strength
 	class(self).SetFractalWeightedStrength(float64(value))
 	return self
 }
@@ -324,12 +324,12 @@ func (self Instance) SetFractalWeightedStrength(value Float.X) Instance {
 /*
 Sets the strength of the fractal ping pong type.
 */
-func (self Instance) FractalPingPongStrength() Float.X {
+func (self Instance) FractalPingPongStrength() Float.X { //gd:FastNoiseLite.fractal_ping_pong_strength
 	return Float.X(Float.X(class(self).GetFractalPingPongStrength()))
 }
 
 // SetFractalPingPongStrength sets the property returned by [GetFractalPingPongStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFractalPingPongStrength(value Float.X) Instance {
+func (self Instance) SetFractalPingPongStrength(value Float.X) Instance { //gd:FastNoiseLite.fractal_ping_pong_strength
 	class(self).SetFractalPingPongStrength(float64(value))
 	return self
 }
@@ -337,12 +337,12 @@ func (self Instance) SetFractalPingPongStrength(value Float.X) Instance {
 /*
 Determines how the distance to the nearest/second-nearest point is computed.
 */
-func (self Instance) CellularDistanceFunction() CellularDistanceFunction {
+func (self Instance) CellularDistanceFunction() CellularDistanceFunction { //gd:FastNoiseLite.cellular_distance_function
 	return CellularDistanceFunction(class(self).GetCellularDistanceFunction())
 }
 
 // SetCellularDistanceFunction sets the property returned by [GetCellularDistanceFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction) Instance {
+func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction) Instance { //gd:FastNoiseLite.cellular_distance_function
 	class(self).SetCellularDistanceFunction(value)
 	return self
 }
@@ -350,12 +350,12 @@ func (self Instance) SetCellularDistanceFunction(value CellularDistanceFunction)
 /*
 Maximum distance a point can move off of its grid position. Set to 0 for an even grid.
 */
-func (self Instance) CellularJitter() Float.X {
+func (self Instance) CellularJitter() Float.X { //gd:FastNoiseLite.cellular_jitter
 	return Float.X(Float.X(class(self).GetCellularJitter()))
 }
 
 // SetCellularJitter sets the property returned by [GetCellularJitter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellularJitter(value Float.X) Instance {
+func (self Instance) SetCellularJitter(value Float.X) Instance { //gd:FastNoiseLite.cellular_jitter
 	class(self).SetCellularJitter(float64(value))
 	return self
 }
@@ -363,12 +363,12 @@ func (self Instance) SetCellularJitter(value Float.X) Instance {
 /*
 Return type from cellular noise calculations.
 */
-func (self Instance) CellularReturnType() CellularReturnType {
+func (self Instance) CellularReturnType() CellularReturnType { //gd:FastNoiseLite.cellular_return_type
 	return CellularReturnType(class(self).GetCellularReturnType())
 }
 
 // SetCellularReturnType sets the property returned by [GetCellularReturnType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellularReturnType(value CellularReturnType) Instance {
+func (self Instance) SetCellularReturnType(value CellularReturnType) Instance { //gd:FastNoiseLite.cellular_return_type
 	class(self).SetCellularReturnType(value)
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetCellularReturnType(value CellularReturnType) Instance {
 /*
 If enabled, another FastNoiseLite instance is used to warp the space, resulting in a distortion of the noise.
 */
-func (self Instance) DomainWarpEnabled() bool {
+func (self Instance) DomainWarpEnabled() bool { //gd:FastNoiseLite.domain_warp_enabled
 	return bool(class(self).IsDomainWarpEnabled())
 }
 
 // SetDomainWarpEnabled sets the property returned by [IsDomainWarpEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpEnabled(value bool) Instance {
+func (self Instance) SetDomainWarpEnabled(value bool) Instance { //gd:FastNoiseLite.domain_warp_enabled
 	class(self).SetDomainWarpEnabled(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetDomainWarpEnabled(value bool) Instance {
 /*
 The warp algorithm.
 */
-func (self Instance) DomainWarpType() DomainWarpType {
+func (self Instance) DomainWarpType() DomainWarpType { //gd:FastNoiseLite.domain_warp_type
 	return DomainWarpType(class(self).GetDomainWarpType())
 }
 
 // SetDomainWarpType sets the property returned by [GetDomainWarpType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpType(value DomainWarpType) Instance {
+func (self Instance) SetDomainWarpType(value DomainWarpType) Instance { //gd:FastNoiseLite.domain_warp_type
 	class(self).SetDomainWarpType(value)
 	return self
 }
@@ -402,12 +402,12 @@ func (self Instance) SetDomainWarpType(value DomainWarpType) Instance {
 /*
 Sets the maximum warp distance from the origin.
 */
-func (self Instance) DomainWarpAmplitude() Float.X {
+func (self Instance) DomainWarpAmplitude() Float.X { //gd:FastNoiseLite.domain_warp_amplitude
 	return Float.X(Float.X(class(self).GetDomainWarpAmplitude()))
 }
 
 // SetDomainWarpAmplitude sets the property returned by [GetDomainWarpAmplitude]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpAmplitude(value Float.X) Instance {
+func (self Instance) SetDomainWarpAmplitude(value Float.X) Instance { //gd:FastNoiseLite.domain_warp_amplitude
 	class(self).SetDomainWarpAmplitude(float64(value))
 	return self
 }
@@ -415,12 +415,12 @@ func (self Instance) SetDomainWarpAmplitude(value Float.X) Instance {
 /*
 Frequency of the noise which warps the space. Low frequency results in smooth noise while high frequency results in rougher, more granular noise.
 */
-func (self Instance) DomainWarpFrequency() Float.X {
+func (self Instance) DomainWarpFrequency() Float.X { //gd:FastNoiseLite.domain_warp_frequency
 	return Float.X(Float.X(class(self).GetDomainWarpFrequency()))
 }
 
 // SetDomainWarpFrequency sets the property returned by [GetDomainWarpFrequency]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpFrequency(value Float.X) Instance {
+func (self Instance) SetDomainWarpFrequency(value Float.X) Instance { //gd:FastNoiseLite.domain_warp_frequency
 	class(self).SetDomainWarpFrequency(float64(value))
 	return self
 }
@@ -428,12 +428,12 @@ func (self Instance) SetDomainWarpFrequency(value Float.X) Instance {
 /*
 The method for combining octaves into a fractal which is used to warp the space.
 */
-func (self Instance) DomainWarpFractalType() DomainWarpFractalType {
+func (self Instance) DomainWarpFractalType() DomainWarpFractalType { //gd:FastNoiseLite.domain_warp_fractal_type
 	return DomainWarpFractalType(class(self).GetDomainWarpFractalType())
 }
 
 // SetDomainWarpFractalType sets the property returned by [GetDomainWarpFractalType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) Instance {
+func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) Instance { //gd:FastNoiseLite.domain_warp_fractal_type
 	class(self).SetDomainWarpFractalType(value)
 	return self
 }
@@ -441,12 +441,12 @@ func (self Instance) SetDomainWarpFractalType(value DomainWarpFractalType) Insta
 /*
 The number of noise layers that are sampled to get the final value for the fractal noise which warps the space.
 */
-func (self Instance) DomainWarpFractalOctaves() int {
+func (self Instance) DomainWarpFractalOctaves() int { //gd:FastNoiseLite.domain_warp_fractal_octaves
 	return int(int(class(self).GetDomainWarpFractalOctaves()))
 }
 
 // SetDomainWarpFractalOctaves sets the property returned by [GetDomainWarpFractalOctaves]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpFractalOctaves(value int) Instance {
+func (self Instance) SetDomainWarpFractalOctaves(value int) Instance { //gd:FastNoiseLite.domain_warp_fractal_octaves
 	class(self).SetDomainWarpFractalOctaves(int64(value))
 	return self
 }
@@ -454,12 +454,12 @@ func (self Instance) SetDomainWarpFractalOctaves(value int) Instance {
 /*
 The change in frequency between octaves, also known as "lacunarity", of the fractal noise which warps the space. Increasing this value results in higher octaves, producing noise with finer details and a rougher appearance.
 */
-func (self Instance) DomainWarpFractalLacunarity() Float.X {
+func (self Instance) DomainWarpFractalLacunarity() Float.X { //gd:FastNoiseLite.domain_warp_fractal_lacunarity
 	return Float.X(Float.X(class(self).GetDomainWarpFractalLacunarity()))
 }
 
 // SetDomainWarpFractalLacunarity sets the property returned by [GetDomainWarpFractalLacunarity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) Instance {
+func (self Instance) SetDomainWarpFractalLacunarity(value Float.X) Instance { //gd:FastNoiseLite.domain_warp_fractal_lacunarity
 	class(self).SetDomainWarpFractalLacunarity(float64(value))
 	return self
 }
@@ -469,12 +469,12 @@ Determines the strength of each subsequent layer of the noise which is used to w
 
 A low value places more emphasis on the lower frequency base layers, while a high value puts more emphasis on the higher frequency layers.
 */
-func (self Instance) DomainWarpFractalGain() Float.X {
+func (self Instance) DomainWarpFractalGain() Float.X { //gd:FastNoiseLite.domain_warp_fractal_gain
 	return Float.X(Float.X(class(self).GetDomainWarpFractalGain()))
 }
 
 // SetDomainWarpFractalGain sets the property returned by [GetDomainWarpFractalGain]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDomainWarpFractalGain(value Float.X) Instance {
+func (self Instance) SetDomainWarpFractalGain(value Float.X) Instance { //gd:FastNoiseLite.domain_warp_fractal_gain
 	class(self).SetDomainWarpFractalGain(float64(value))
 	return self
 }

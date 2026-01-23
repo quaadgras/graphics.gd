@@ -211,12 +211,12 @@ Note: If true, this will prohibit changing [SubViewport.Size] of its children ma
 
 [SubViewport.Size]: https://pkg.go.dev/graphics.gd/classdb/SubViewport#Instance.Size
 */
-func (self Instance) Stretch() bool {
+func (self Instance) Stretch() bool { //gd:SubViewportContainer.stretch
 	return bool(class(self).IsStretchEnabled())
 }
 
 // SetStretch sets the property returned by [IsStretchEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretch(value bool) Instance {
+func (self Instance) SetStretch(value bool) Instance { //gd:SubViewportContainer.stretch
 	class(self).SetStretch(value)
 	return self
 }
@@ -231,12 +231,12 @@ Note: [Stretch] must be true for this property to work.
 [Stretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.Stretch
 [StretchShrink]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.StretchShrink
 */
-func (self Instance) StretchShrink() int {
+func (self Instance) StretchShrink() int { //gd:SubViewportContainer.stretch_shrink
 	return int(int(class(self).GetStretchShrink()))
 }
 
 // SetStretchShrink sets the property returned by [GetStretchShrink]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchShrink(value int) Instance {
+func (self Instance) SetStretchShrink(value int) Instance { //gd:SubViewportContainer.stretch_shrink
 	class(self).SetStretchShrink(int64(value))
 	return self
 }
@@ -252,12 +252,12 @@ If true, the [SubViewportContainer] itself will be considered as a target.
 [SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
 [SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
 */
-func (self Instance) MouseTarget() bool {
+func (self Instance) MouseTarget() bool { //gd:SubViewportContainer.mouse_target
 	return bool(class(self).IsMouseTargetEnabled())
 }
 
 // SetMouseTarget sets the property returned by [IsMouseTargetEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMouseTarget(value bool) Instance {
+func (self Instance) SetMouseTarget(value bool) Instance { //gd:SubViewportContainer.mouse_target
 	class(self).SetMouseTarget(value)
 	return self
 }

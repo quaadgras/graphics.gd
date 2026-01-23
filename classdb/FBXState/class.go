@@ -160,12 +160,12 @@ func New() Instance {
 /*
 If true, the import process used auxiliary nodes called geometry helper nodes. These nodes help preserve the pivots and transformations of the original 3D model during import.
 */
-func (self Instance) AllowGeometryHelperNodes() bool {
+func (self Instance) AllowGeometryHelperNodes() bool { //gd:FBXState.allow_geometry_helper_nodes
 	return bool(class(self).GetAllowGeometryHelperNodes())
 }
 
 // SetAllowGeometryHelperNodes sets the property returned by [GetAllowGeometryHelperNodes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowGeometryHelperNodes(value bool) Instance {
+func (self Instance) SetAllowGeometryHelperNodes(value bool) Instance { //gd:FBXState.allow_geometry_helper_nodes
 	class(self).SetAllowGeometryHelperNodes(value)
 	return self
 }

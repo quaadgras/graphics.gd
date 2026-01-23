@@ -1390,13 +1390,13 @@ Note: On start-up, this is the same as [ProjectSettings] "application/run/low_pr
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func LowProcessorUsageMode() bool {
+func LowProcessorUsageMode() bool { //gd:OS.low_processor_usage_mode
 	once.Do(singleton)
 	return bool(class(self).IsInLowProcessorUsageMode())
 }
 
 // SetLowProcessorUsageMode sets the property returned by [IsInLowProcessorUsageMode].
-func SetLowProcessorUsageMode(value bool) {
+func SetLowProcessorUsageMode(value bool) { //gd:OS.low_processor_usage_mode
 	once.Do(singleton)
 	class(self).SetLowProcessorUsageMode(value)
 }
@@ -1408,13 +1408,13 @@ Note: On start-up, this is the same as [ProjectSettings] "application/run/low_pr
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func LowProcessorUsageModeSleepUsec() int {
+func LowProcessorUsageModeSleepUsec() int { //gd:OS.low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
 	return int(int(class(self).GetLowProcessorUsageModeSleepUsec()))
 }
 
 // SetLowProcessorUsageModeSleepUsec sets the property returned by [GetLowProcessorUsageModeSleepUsec].
-func SetLowProcessorUsageModeSleepUsec(value int) {
+func SetLowProcessorUsageModeSleepUsec(value int) { //gd:OS.low_processor_usage_mode_sleep_usec
 	once.Do(singleton)
 	class(self).SetLowProcessorUsageModeSleepUsec(int64(value))
 }
@@ -1426,13 +1426,13 @@ Note: On start-up, this is the same as [ProjectSettings] "application/run/delta_
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func DeltaSmoothing() bool {
+func DeltaSmoothing() bool { //gd:OS.delta_smoothing
 	once.Do(singleton)
 	return bool(class(self).IsDeltaSmoothingEnabled())
 }
 
 // SetDeltaSmoothing sets the property returned by [IsDeltaSmoothingEnabled].
-func SetDeltaSmoothing(value bool) {
+func SetDeltaSmoothing(value bool) { //gd:OS.delta_smoothing
 	once.Do(singleton)
 	class(self).SetDeltaSmoothing(value)
 }

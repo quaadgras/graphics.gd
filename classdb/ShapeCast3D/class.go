@@ -374,12 +374,12 @@ func New() Instance {
 /*
 If true, collisions will be reported.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:ShapeCast3D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:ShapeCast3D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -387,12 +387,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 The shape to be used for collision queries.
 */
-func (self Instance) Shape() Shape3D.Instance {
+func (self Instance) Shape() Shape3D.Instance { //gd:ShapeCast3D.shape
 	return Shape3D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape3D.Instance) Instance {
+func (self Instance) SetShape(value Shape3D.Instance) Instance { //gd:ShapeCast3D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -400,12 +400,12 @@ func (self Instance) SetShape(value Shape3D.Instance) Instance {
 /*
 If true, the parent node will be excluded from collision detection.
 */
-func (self Instance) ExcludeParent() bool {
+func (self Instance) ExcludeParent() bool { //gd:ShapeCast3D.exclude_parent
 	return bool(class(self).GetExcludeParentBody())
 }
 
 // SetExcludeParent sets the property returned by [GetExcludeParentBody]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeParent(value bool) Instance {
+func (self Instance) SetExcludeParent(value bool) Instance { //gd:ShapeCast3D.exclude_parent
 	class(self).SetExcludeParentBody(value)
 	return self
 }
@@ -415,12 +415,12 @@ The shape's destination point, relative to this node's [Node3D.Position].
 
 [Node3D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
 */
-func (self Instance) TargetPosition() Vector3.XYZ {
+func (self Instance) TargetPosition() Vector3.XYZ { //gd:ShapeCast3D.target_position
 	return Vector3.XYZ(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance {
+func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance { //gd:ShapeCast3D.target_position
 	class(self).SetTargetPosition(Vector3.XYZ(value))
 	return self
 }
@@ -428,12 +428,12 @@ func (self Instance) SetTargetPosition(value Vector3.XYZ) Instance {
 /*
 The collision margin for the shape. A larger margin helps detecting collisions more consistently, at the cost of precision.
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:ShapeCast3D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:ShapeCast3D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }
@@ -441,12 +441,12 @@ func (self Instance) SetMargin(value Float.X) Instance {
 /*
 The number of intersections can be limited with this parameter, to reduce the processing time.
 */
-func (self Instance) MaxResults() int {
+func (self Instance) MaxResults() int { //gd:ShapeCast3D.max_results
 	return int(int(class(self).GetMaxResults()))
 }
 
 // SetMaxResults sets the property returned by [GetMaxResults]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxResults(value int) Instance {
+func (self Instance) SetMaxResults(value int) Instance { //gd:ShapeCast3D.max_results
 	class(self).SetMaxResults(int64(value))
 	return self
 }
@@ -456,12 +456,12 @@ The shape's collision mask. Only objects in at least one collision layer enabled
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:ShapeCast3D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:ShapeCast3D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -471,7 +471,7 @@ Returns the complete collision information from the collision sweep. The data re
 
 [PhysicsDirectSpaceState3D.GetRestInfo]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState3D#Instance.GetRestInfo
 */
-func (self Instance) CollisionResult() []PhysicsDirectSpaceState3D_RestInfo {
+func (self Instance) CollisionResult() []PhysicsDirectSpaceState3D_RestInfo { //gd:ShapeCast3D.collision_result
 	return []PhysicsDirectSpaceState3D_RestInfo(gd.ArrayAs[[]PhysicsDirectSpaceState3D_RestInfo](gd.InternalArray(class(self).GetCollisionResult())))
 }
 
@@ -480,12 +480,12 @@ If true, collisions with [Area3D]s will be reported.
 
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:ShapeCast3D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:ShapeCast3D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }
@@ -495,12 +495,12 @@ If true, collisions with [PhysicsBody3D]s will be reported.
 
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:ShapeCast3D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:ShapeCast3D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }
@@ -513,12 +513,12 @@ If set to Color(0.0, 0.0, 0.0) (by default), the color set in [ProjectSettings] 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [ShapeCast3D]: https://pkg.go.dev/graphics.gd/classdb/ShapeCast3D
 */
-func (self Instance) DebugShapeCustomColor() Color.RGBA {
+func (self Instance) DebugShapeCustomColor() Color.RGBA { //gd:ShapeCast3D.debug_shape_custom_color
 	return Color.RGBA(class(self).GetDebugShapeCustomColor())
 }
 
 // SetDebugShapeCustomColor sets the property returned by [GetDebugShapeCustomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance { //gd:ShapeCast3D.debug_shape_custom_color
 	class(self).SetDebugShapeCustomColor(Color.RGBA(value))
 	return self
 }

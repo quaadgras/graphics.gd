@@ -309,12 +309,12 @@ The [NavigationPolygon] resource to use.
 
 [NavigationPolygon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon
 */
-func (self Instance) NavigationPolygon() NavigationPolygon.Instance {
+func (self Instance) NavigationPolygon() NavigationPolygon.Instance { //gd:NavigationRegion2D.navigation_polygon
 	return NavigationPolygon.Instance(class(self).GetNavigationPolygon())
 }
 
 // SetNavigationPolygon sets the property returned by [GetNavigationPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationPolygon(value NavigationPolygon.Instance) Instance {
+func (self Instance) SetNavigationPolygon(value NavigationPolygon.Instance) Instance { //gd:NavigationRegion2D.navigation_polygon
 	class(self).SetNavigationPolygon(value)
 	return self
 }
@@ -324,12 +324,12 @@ Determines if the [NavigationRegion2D] is enabled or disabled.
 
 [NavigationRegion2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:NavigationRegion2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:NavigationRegion2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -337,12 +337,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 If enabled the navigation region will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func (self Instance) UseEdgeConnections() bool {
+func (self Instance) UseEdgeConnections() bool { //gd:NavigationRegion2D.use_edge_connections
 	return bool(class(self).GetUseEdgeConnections())
 }
 
 // SetUseEdgeConnections sets the property returned by [GetUseEdgeConnections]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseEdgeConnections(value bool) Instance {
+func (self Instance) SetUseEdgeConnections(value bool) Instance { //gd:NavigationRegion2D.use_edge_connections
 	class(self).SetUseEdgeConnections(value)
 	return self
 }
@@ -352,12 +352,12 @@ A bitfield determining all navigation layers the region belongs to. These naviga
 
 [NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
 */
-func (self Instance) NavigationLayers() int {
+func (self Instance) NavigationLayers() int { //gd:NavigationRegion2D.navigation_layers
 	return int(int(class(self).GetNavigationLayers()))
 }
 
 // SetNavigationLayers sets the property returned by [GetNavigationLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNavigationLayers(value int) Instance {
+func (self Instance) SetNavigationLayers(value int) Instance { //gd:NavigationRegion2D.navigation_layers
 	class(self).SetNavigationLayers(int64(value))
 	return self
 }
@@ -367,12 +367,12 @@ When pathfinding enters this region's navigation mesh from another regions navig
 
 [EnterCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D#Instance.EnterCost
 */
-func (self Instance) EnterCost() Float.X {
+func (self Instance) EnterCost() Float.X { //gd:NavigationRegion2D.enter_cost
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
 // SetEnterCost sets the property returned by [GetEnterCost]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnterCost(value Float.X) Instance {
+func (self Instance) SetEnterCost(value Float.X) Instance { //gd:NavigationRegion2D.enter_cost
 	class(self).SetEnterCost(float64(value))
 	return self
 }
@@ -382,12 +382,12 @@ When pathfinding moves inside this region's navigation mesh the traveled distanc
 
 [TravelCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D#Instance.TravelCost
 */
-func (self Instance) TravelCost() Float.X {
+func (self Instance) TravelCost() Float.X { //gd:NavigationRegion2D.travel_cost
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
 // SetTravelCost sets the property returned by [GetTravelCost]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTravelCost(value Float.X) Instance {
+func (self Instance) SetTravelCost(value Float.X) Instance { //gd:NavigationRegion2D.travel_cost
 	class(self).SetTravelCost(float64(value))
 	return self
 }

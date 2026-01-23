@@ -244,32 +244,32 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TraversableOutlines() [][]Vector2.XY {
+func (self Instance) TraversableOutlines() [][]Vector2.XY { //gd:NavigationMeshSourceGeometryData2D.traversable_outlines
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetTraversableOutlines())))
 }
 
 // SetTraversableOutlines sets the property returned by [GetTraversableOutlines]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) Instance {
+func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) Instance { //gd:NavigationMeshSourceGeometryData2D.traversable_outlines
 	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 	return self
 }
 
-func (self Instance) ObstructionOutlines() [][]Vector2.XY {
+func (self Instance) ObstructionOutlines() [][]Vector2.XY { //gd:NavigationMeshSourceGeometryData2D.obstruction_outlines
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetObstructionOutlines())))
 }
 
 // SetObstructionOutlines sets the property returned by [GetObstructionOutlines]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) Instance {
+func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) Instance { //gd:NavigationMeshSourceGeometryData2D.obstruction_outlines
 	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 	return self
 }
 
-func (self Instance) ProjectedObstructions() []ProjectedObstruction2D {
+func (self Instance) ProjectedObstructions() []ProjectedObstruction2D { //gd:NavigationMeshSourceGeometryData2D.projected_obstructions
 	return []ProjectedObstruction2D(gd.ArrayAs[[]ProjectedObstruction2D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
 // SetProjectedObstructions sets the property returned by [GetProjectedObstructions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) Instance {
+func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) Instance { //gd:NavigationMeshSourceGeometryData2D.projected_obstructions
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 	return self
 }

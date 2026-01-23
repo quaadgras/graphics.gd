@@ -981,12 +981,12 @@ The total length of the animation (in seconds).
 
 Note: Length is not delimited by the last key, as this one may be before or after the end to ensure correct interpolation and looping.
 */
-func (self Instance) Length() Float.X {
+func (self Instance) Length() Float.X { //gd:Animation.length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLength(value Float.X) Instance {
+func (self Instance) SetLength(value Float.X) Instance { //gd:Animation.length
 	class(self).SetLength(float64(value))
 	return self
 }
@@ -994,12 +994,12 @@ func (self Instance) SetLength(value Float.X) Instance {
 /*
 Determines the behavior of both ends of the animation timeline during animation playback. This indicates whether and how the animation should be restarted, and is also used to correctly interpolate animation cycles.
 */
-func (self Instance) LoopMode() LoopMode {
+func (self Instance) LoopMode() LoopMode { //gd:Animation.loop_mode
 	return LoopMode(class(self).GetLoopMode())
 }
 
 // SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopMode(value LoopMode) Instance {
+func (self Instance) SetLoopMode(value LoopMode) Instance { //gd:Animation.loop_mode
 	class(self).SetLoopMode(value)
 	return self
 }
@@ -1007,12 +1007,12 @@ func (self Instance) SetLoopMode(value LoopMode) Instance {
 /*
 The animation step value.
 */
-func (self Instance) Step() Float.X {
+func (self Instance) Step() Float.X { //gd:Animation.step
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
 // SetStep sets the property returned by [GetStep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStep(value Float.X) Instance {
+func (self Instance) SetStep(value Float.X) Instance { //gd:Animation.step
 	class(self).SetStep(float64(value))
 	return self
 }
@@ -1020,7 +1020,7 @@ func (self Instance) SetStep(value Float.X) Instance {
 /*
 Returns true if the capture track is included. This is a cached readonly value for performance.
 */
-func (self Instance) CaptureIncluded() bool {
+func (self Instance) CaptureIncluded() bool { //gd:Animation.capture_included
 	return bool(class(self).IsCaptureIncluded())
 }
 

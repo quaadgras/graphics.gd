@@ -173,12 +173,12 @@ The name of the [XRHandTracker] registered with [XRServer] to obtain the hand tr
 [XRHandTracker]: https://pkg.go.dev/graphics.gd/classdb/XRHandTracker
 [XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
-func (self Instance) HandTracker() string {
+func (self Instance) HandTracker() string { //gd:XRHandModifier3D.hand_tracker
 	return string(class(self).GetHandTracker().String())
 }
 
 // SetHandTracker sets the property returned by [GetHandTracker]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandTracker(value string) Instance {
+func (self Instance) SetHandTracker(value string) Instance { //gd:XRHandModifier3D.hand_tracker
 	class(self).SetHandTracker(String.Name(String.New(value)))
 	return self
 }
@@ -186,12 +186,12 @@ func (self Instance) SetHandTracker(value string) Instance {
 /*
 Specifies the type of updates to perform on the bones.
 */
-func (self Instance) BoneUpdate() BoneUpdate {
+func (self Instance) BoneUpdate() BoneUpdate { //gd:XRHandModifier3D.bone_update
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
 // SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance { //gd:XRHandModifier3D.bone_update
 	class(self).SetBoneUpdate(value)
 	return self
 }

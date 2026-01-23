@@ -283,12 +283,12 @@ Rest transform of the bone. You can reset the node's transforms to this value us
 
 [ApplyRest]: https://pkg.go.dev/graphics.gd/classdb/Bone2D#Instance.ApplyRest
 */
-func (self Instance) Rest() Transform2D.OriginXY {
+func (self Instance) Rest() Transform2D.OriginXY { //gd:Bone2D.rest
 	return Transform2D.OriginXY(class(self).GetRest())
 }
 
 // SetRest sets the property returned by [GetRest]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRest(value Transform2D.OriginXY) Instance {
+func (self Instance) SetRest(value Transform2D.OriginXY) Instance { //gd:Bone2D.rest
 	class(self).SetRest(Transform2D.OriginXY(value))
 	return self
 }

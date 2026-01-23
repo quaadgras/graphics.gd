@@ -252,12 +252,12 @@ func New() Instance {
 /*
 Texture scale. 1.0 is the original SVG size. Higher values result in a larger image.
 */
-func (self Instance) BaseScale() Float.X {
+func (self Instance) BaseScale() Float.X { //gd:DPITexture.base_scale
 	return Float.X(Float.X(class(self).GetBaseScale()))
 }
 
 // SetBaseScale sets the property returned by [GetBaseScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaseScale(value Float.X) Instance {
+func (self Instance) SetBaseScale(value Float.X) Instance { //gd:DPITexture.base_scale
 	class(self).SetBaseScale(float64(value))
 	return self
 }
@@ -265,12 +265,12 @@ func (self Instance) SetBaseScale(value Float.X) Instance {
 /*
 Overrides texture saturation.
 */
-func (self Instance) Saturation() Float.X {
+func (self Instance) Saturation() Float.X { //gd:DPITexture.saturation
 	return Float.X(Float.X(class(self).GetSaturation()))
 }
 
 // SetSaturation sets the property returned by [GetSaturation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSaturation(value Float.X) Instance {
+func (self Instance) SetSaturation(value Float.X) Instance { //gd:DPITexture.saturation
 	class(self).SetSaturation(float64(value))
 	return self
 }
@@ -290,7 +290,7 @@ func (self Instance) ColorMap() map[struct {
 	G float32
 	B float32
 	A float32
-} {
+} { //gd:DPITexture.color_map
 	return map[struct {
 		R float32
 		G float32
@@ -325,7 +325,7 @@ func (self Instance) SetColorMap(value map[struct {
 	G float32
 	B float32
 	A float32
-}) Instance {
+}) Instance { //gd:DPITexture.color_map
 	class(self).SetColorMap(gd.DictionaryFromMap(value))
 	return self
 }

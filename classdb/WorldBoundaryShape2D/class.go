@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The line's normal, typically a unit vector. Its direction indicates the non-colliding half-plane. Can be of any length but zero. Defaults to [Vector2.Up].
 */
-func (self Instance) Normal() Vector2.XY {
+func (self Instance) Normal() Vector2.XY { //gd:WorldBoundaryShape2D.normal
 	return Vector2.XY(class(self).GetNormal())
 }
 
 // SetNormal sets the property returned by [GetNormal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormal(value Vector2.XY) Instance {
+func (self Instance) SetNormal(value Vector2.XY) Instance { //gd:WorldBoundaryShape2D.normal
 	class(self).SetNormal(Vector2.XY(value))
 	return self
 }
@@ -182,12 +182,12 @@ In the scalar equation of the line ax + by = d, this is d, while the (a, b) coor
 
 [Normal]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape2D#Instance.Normal
 */
-func (self Instance) Distance() Float.X {
+func (self Instance) Distance() Float.X { //gd:WorldBoundaryShape2D.distance
 	return Float.X(Float.X(class(self).GetDistance()))
 }
 
 // SetDistance sets the property returned by [GetDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistance(value Float.X) Instance {
+func (self Instance) SetDistance(value Float.X) Instance { //gd:WorldBoundaryShape2D.distance
 	class(self).SetDistance(float64(value))
 	return self
 }

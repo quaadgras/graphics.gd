@@ -185,13 +185,13 @@ See also [Theme.DefaultBaseScale].
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Theme.DefaultBaseScale]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultBaseScale
 */
-func FallbackBaseScale() Float.X {
+func FallbackBaseScale() Float.X { //gd:ThemeDB.fallback_base_scale
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetFallbackBaseScale()))
 }
 
 // SetFallbackBaseScale sets the property returned by [GetFallbackBaseScale].
-func SetFallbackBaseScale(value Float.X) {
+func SetFallbackBaseScale(value Float.X) { //gd:ThemeDB.fallback_base_scale
 	once.Do(singleton)
 	class(self).SetFallbackBaseScale(float64(value))
 }
@@ -205,13 +205,13 @@ See also [Theme.DefaultFont].
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Theme.DefaultFont]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFont
 */
-func FallbackFont() Font.Instance {
+func FallbackFont() Font.Instance { //gd:ThemeDB.fallback_font
 	once.Do(singleton)
 	return Font.Instance(class(self).GetFallbackFont())
 }
 
 // SetFallbackFont sets the property returned by [GetFallbackFont].
-func SetFallbackFont(value Font.Instance) {
+func SetFallbackFont(value Font.Instance) { //gd:ThemeDB.fallback_font
 	once.Do(singleton)
 	class(self).SetFallbackFont(value)
 }
@@ -225,13 +225,13 @@ See also [Theme.DefaultFontSize].
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 [Theme.DefaultFontSize]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.DefaultFontSize
 */
-func FallbackFontSize() int {
+func FallbackFontSize() int { //gd:ThemeDB.fallback_font_size
 	once.Do(singleton)
 	return int(int(class(self).GetFallbackFontSize()))
 }
 
 // SetFallbackFontSize sets the property returned by [GetFallbackFontSize].
-func SetFallbackFontSize(value int) {
+func SetFallbackFontSize(value int) { //gd:ThemeDB.fallback_font_size
 	once.Do(singleton)
 	class(self).SetFallbackFontSize(int64(value))
 }
@@ -242,13 +242,13 @@ The fallback icon of every [Control] node and [Theme] resource. Used when no oth
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
-func FallbackIcon() Texture2D.Instance {
+func FallbackIcon() Texture2D.Instance { //gd:ThemeDB.fallback_icon
 	once.Do(singleton)
 	return Texture2D.Instance(class(self).GetFallbackIcon())
 }
 
 // SetFallbackIcon sets the property returned by [GetFallbackIcon].
-func SetFallbackIcon(value Texture2D.Instance) {
+func SetFallbackIcon(value Texture2D.Instance) { //gd:ThemeDB.fallback_icon
 	once.Do(singleton)
 	class(self).SetFallbackIcon(value)
 }
@@ -259,13 +259,13 @@ The fallback stylebox of every [Control] node and [Theme] resource. Used when no
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
-func FallbackStylebox() StyleBox.Instance {
+func FallbackStylebox() StyleBox.Instance { //gd:ThemeDB.fallback_stylebox
 	once.Do(singleton)
 	return StyleBox.Instance(class(self).GetFallbackStylebox())
 }
 
 // SetFallbackStylebox sets the property returned by [GetFallbackStylebox].
-func SetFallbackStylebox(value StyleBox.Instance) {
+func SetFallbackStylebox(value StyleBox.Instance) { //gd:ThemeDB.fallback_stylebox
 	once.Do(singleton)
 	class(self).SetFallbackStylebox(value)
 }

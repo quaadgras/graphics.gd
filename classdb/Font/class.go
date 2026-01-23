@@ -695,12 +695,12 @@ If this array is empty in a [FontVariation], the [FontVariation.BaseFont]'s fall
 [FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
 [FontVariation.BaseFont]: https://pkg.go.dev/graphics.gd/classdb/FontVariation#Instance.BaseFont
 */
-func (self Instance) Fallbacks() []Instance {
+func (self Instance) Fallbacks() []Instance { //gd:Font.fallbacks
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(class(self).GetFallbacks())))
 }
 
 // SetFallbacks sets the property returned by [GetFallbacks]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbacks(value []Instance) Instance {
+func (self Instance) SetFallbacks(value []Instance) Instance { //gd:Font.fallbacks
 	class(self).SetFallbacks(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Font]](value))
 	return self
 }

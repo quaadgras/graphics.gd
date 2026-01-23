@@ -664,12 +664,12 @@ func New() Instance {
 /*
 The number of columns.
 */
-func (self Instance) Columns() int {
+func (self Instance) Columns() int { //gd:Tree.columns
 	return int(int(class(self).GetColumns()))
 }
 
 // SetColumns sets the property returned by [GetColumns]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColumns(value int) Instance {
+func (self Instance) SetColumns(value int) Instance { //gd:Tree.columns
 	class(self).SetColumns(int64(value))
 	return self
 }
@@ -677,12 +677,12 @@ func (self Instance) SetColumns(value int) Instance {
 /*
 If true, column titles are visible.
 */
-func (self Instance) ColumnTitlesVisible() bool {
+func (self Instance) ColumnTitlesVisible() bool { //gd:Tree.column_titles_visible
 	return bool(class(self).AreColumnTitlesVisible())
 }
 
 // SetColumnTitlesVisible sets the property returned by [AreColumnTitlesVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColumnTitlesVisible(value bool) Instance {
+func (self Instance) SetColumnTitlesVisible(value bool) Instance { //gd:Tree.column_titles_visible
 	class(self).SetColumnTitlesVisible(value)
 	return self
 }
@@ -690,12 +690,12 @@ func (self Instance) SetColumnTitlesVisible(value bool) Instance {
 /*
 If true, the currently selected cell may be selected again.
 */
-func (self Instance) AllowReselect() bool {
+func (self Instance) AllowReselect() bool { //gd:Tree.allow_reselect
 	return bool(class(self).GetAllowReselect())
 }
 
 // SetAllowReselect sets the property returned by [GetAllowReselect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowReselect(value bool) Instance {
+func (self Instance) SetAllowReselect(value bool) Instance { //gd:Tree.allow_reselect
 	class(self).SetAllowReselect(value)
 	return self
 }
@@ -703,12 +703,12 @@ func (self Instance) SetAllowReselect(value bool) Instance {
 /*
 If true, a right mouse button click can select items.
 */
-func (self Instance) AllowRmbSelect() bool {
+func (self Instance) AllowRmbSelect() bool { //gd:Tree.allow_rmb_select
 	return bool(class(self).GetAllowRmbSelect())
 }
 
 // SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowRmbSelect(value bool) Instance {
+func (self Instance) SetAllowRmbSelect(value bool) Instance { //gd:Tree.allow_rmb_select
 	class(self).SetAllowRmbSelect(value)
 	return self
 }
@@ -718,12 +718,12 @@ If true, allows navigating the [Tree] with letter keys through incremental searc
 
 [Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
 */
-func (self Instance) AllowSearch() bool {
+func (self Instance) AllowSearch() bool { //gd:Tree.allow_search
 	return bool(class(self).GetAllowSearch())
 }
 
 // SetAllowSearch sets the property returned by [GetAllowSearch]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowSearch(value bool) Instance {
+func (self Instance) SetAllowSearch(value bool) Instance { //gd:Tree.allow_search
 	class(self).SetAllowSearch(value)
 	return self
 }
@@ -731,12 +731,12 @@ func (self Instance) SetAllowSearch(value bool) Instance {
 /*
 If true, the folding arrow is hidden.
 */
-func (self Instance) HideFolding() bool {
+func (self Instance) HideFolding() bool { //gd:Tree.hide_folding
 	return bool(class(self).IsFoldingHidden())
 }
 
 // SetHideFolding sets the property returned by [IsFoldingHidden]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideFolding(value bool) Instance {
+func (self Instance) SetHideFolding(value bool) Instance { //gd:Tree.hide_folding
 	class(self).SetHideFolding(value)
 	return self
 }
@@ -747,12 +747,12 @@ If true, recursive folding is enabled for this [Tree]. Holding down Shift while 
 [Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
-func (self Instance) EnableRecursiveFolding() bool {
+func (self Instance) EnableRecursiveFolding() bool { //gd:Tree.enable_recursive_folding
 	return bool(class(self).IsRecursiveFoldingEnabled())
 }
 
 // SetEnableRecursiveFolding sets the property returned by [IsRecursiveFoldingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableRecursiveFolding(value bool) Instance {
+func (self Instance) SetEnableRecursiveFolding(value bool) Instance { //gd:Tree.enable_recursive_folding
 	class(self).SetEnableRecursiveFolding(value)
 	return self
 }
@@ -760,12 +760,12 @@ func (self Instance) SetEnableRecursiveFolding(value bool) Instance {
 /*
 If true, the tree's root is hidden.
 */
-func (self Instance) HideRoot() bool {
+func (self Instance) HideRoot() bool { //gd:Tree.hide_root
 	return bool(class(self).IsRootHidden())
 }
 
 // SetHideRoot sets the property returned by [IsRootHidden]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideRoot(value bool) Instance {
+func (self Instance) SetHideRoot(value bool) Instance { //gd:Tree.hide_root
 	class(self).SetHideRoot(value)
 	return self
 }
@@ -777,12 +777,12 @@ This controls the drop sections, i.e. the decision and drawing of possible drop 
 
 [Control.CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CanDropData
 */
-func (self Instance) DropModeFlags() int {
+func (self Instance) DropModeFlags() int { //gd:Tree.drop_mode_flags
 	return int(int(class(self).GetDropModeFlags()))
 }
 
 // SetDropModeFlags sets the property returned by [GetDropModeFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDropModeFlags(value int) Instance {
+func (self Instance) SetDropModeFlags(value int) Instance { //gd:Tree.drop_mode_flags
 	class(self).SetDropModeFlags(int64(value))
 	return self
 }
@@ -790,12 +790,12 @@ func (self Instance) SetDropModeFlags(value int) Instance {
 /*
 Allows single or multiple selection. See the [SelectMode] constants.
 */
-func (self Instance) SelectMode() SelectMode {
+func (self Instance) SelectMode() SelectMode { //gd:Tree.select_mode
 	return SelectMode(class(self).GetSelectMode())
 }
 
 // SetSelectMode sets the property returned by [GetSelectMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectMode(value SelectMode) Instance {
+func (self Instance) SetSelectMode(value SelectMode) Instance { //gd:Tree.select_mode
 	class(self).SetSelectMode(value)
 	return self
 }
@@ -803,12 +803,12 @@ func (self Instance) SetSelectMode(value SelectMode) Instance {
 /*
 If true, enables horizontal scrolling.
 */
-func (self Instance) ScrollHorizontalEnabled() bool {
+func (self Instance) ScrollHorizontalEnabled() bool { //gd:Tree.scroll_horizontal_enabled
 	return bool(class(self).IsHScrollEnabled())
 }
 
 // SetScrollHorizontalEnabled sets the property returned by [IsHScrollEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollHorizontalEnabled(value bool) Instance {
+func (self Instance) SetScrollHorizontalEnabled(value bool) Instance { //gd:Tree.scroll_horizontal_enabled
 	class(self).SetHScrollEnabled(value)
 	return self
 }
@@ -816,12 +816,12 @@ func (self Instance) SetScrollHorizontalEnabled(value bool) Instance {
 /*
 If true, enables vertical scrolling.
 */
-func (self Instance) ScrollVerticalEnabled() bool {
+func (self Instance) ScrollVerticalEnabled() bool { //gd:Tree.scroll_vertical_enabled
 	return bool(class(self).IsVScrollEnabled())
 }
 
 // SetScrollVerticalEnabled sets the property returned by [IsVScrollEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollVerticalEnabled(value bool) Instance {
+func (self Instance) SetScrollVerticalEnabled(value bool) Instance { //gd:Tree.scroll_vertical_enabled
 	class(self).SetVScrollEnabled(value)
 	return self
 }
@@ -832,12 +832,12 @@ If true, tree items with no tooltip assigned display their text as their tooltip
 [TreeItem.GetButtonTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetButtonTooltipText
 [TreeItem.GetTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetTooltipText
 */
-func (self Instance) AutoTooltip() bool {
+func (self Instance) AutoTooltip() bool { //gd:Tree.auto_tooltip
 	return bool(class(self).IsAutoTooltipEnabled())
 }
 
 // SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTooltip(value bool) Instance {
+func (self Instance) SetAutoTooltip(value bool) Instance { //gd:Tree.auto_tooltip
 	class(self).SetAutoTooltip(value)
 	return self
 }

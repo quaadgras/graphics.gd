@@ -242,12 +242,12 @@ When set to 0, the default value from [ProjectSettings] "physics/2d/solver/defau
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) CustomSolverBias() Float.X {
+func (self Instance) CustomSolverBias() Float.X { //gd:Shape2D.custom_solver_bias
 	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
 // SetCustomSolverBias sets the property returned by [GetCustomSolverBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomSolverBias(value Float.X) Instance {
+func (self Instance) SetCustomSolverBias(value Float.X) Instance { //gd:Shape2D.custom_solver_bias
 	class(self).SetCustomSolverBias(float64(value))
 	return self
 }

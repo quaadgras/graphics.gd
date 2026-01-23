@@ -166,12 +166,12 @@ The pitch scale to use. 1.0 is the default pitch and plays sounds unaffected. [P
 
 [PitchScale]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectPitchShift#Instance.PitchScale
 */
-func (self Instance) PitchScale() Float.X {
+func (self Instance) PitchScale() Float.X { //gd:AudioEffectPitchShift.pitch_scale
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
 // SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPitchScale(value Float.X) Instance {
+func (self Instance) SetPitchScale(value Float.X) Instance { //gd:AudioEffectPitchShift.pitch_scale
 	class(self).SetPitchScale(float64(value))
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetPitchScale(value Float.X) Instance {
 /*
 The oversampling factor to use. Higher values result in better quality, but are more demanding on the CPU and may cause audio cracking if the CPU can't keep up.
 */
-func (self Instance) Oversampling() int {
+func (self Instance) Oversampling() int { //gd:AudioEffectPitchShift.oversampling
 	return int(int(class(self).GetOversampling()))
 }
 
 // SetOversampling sets the property returned by [GetOversampling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOversampling(value int) Instance {
+func (self Instance) SetOversampling(value int) Instance { //gd:AudioEffectPitchShift.oversampling
 	class(self).SetOversampling(int64(value))
 	return self
 }
@@ -194,12 +194,12 @@ The size of the [Fast Fourier transform] buffer. Higher values smooth out the ef
 
 [Fast Fourier transform]: https://en.wikipedia.org/wiki/Fast_Fourier_transform
 */
-func (self Instance) FftSize() FFTSize {
+func (self Instance) FftSize() FFTSize { //gd:AudioEffectPitchShift.fft_size
 	return FFTSize(class(self).GetFftSize())
 }
 
 // SetFftSize sets the property returned by [GetFftSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFftSize(value FFTSize) Instance {
+func (self Instance) SetFftSize(value FFTSize) Instance { //gd:AudioEffectPitchShift.fft_size
 	class(self).SetFftSize(value)
 	return self
 }

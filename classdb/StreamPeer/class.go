@@ -506,12 +506,12 @@ If true, this [StreamPeer] will using big-endian format for encoding and decodin
 
 [StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
-func (self Instance) BigEndian() bool {
+func (self Instance) BigEndian() bool { //gd:StreamPeer.big_endian
 	return bool(class(self).IsBigEndianEnabled())
 }
 
 // SetBigEndian sets the property returned by [IsBigEndianEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBigEndian(value bool) Instance {
+func (self Instance) SetBigEndian(value bool) Instance { //gd:StreamPeer.big_endian
 	class(self).SetBigEndian(value)
 	return self
 }

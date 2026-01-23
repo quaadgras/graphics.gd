@@ -168,12 +168,12 @@ A [Color.RGBA] constant which represents a state of this node.
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) Constant() Color.RGBA {
+func (self Instance) Constant() Color.RGBA { //gd:VisualShaderNodeColorConstant.constant
 	return Color.RGBA(class(self).GetConstant())
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value Color.RGBA) Instance {
+func (self Instance) SetConstant(value Color.RGBA) Instance { //gd:VisualShaderNodeColorConstant.constant
 	class(self).SetConstant(Color.RGBA(value))
 	return self
 }

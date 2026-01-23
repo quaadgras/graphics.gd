@@ -166,12 +166,12 @@ Enables usage of the [DefaultValue].
 
 [DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeVec3Parameter#Instance.DefaultValue
 */
-func (self Instance) DefaultValueEnabled() bool {
+func (self Instance) DefaultValueEnabled() bool { //gd:VisualShaderNodeVec3Parameter.default_value_enabled
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
 // SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValueEnabled(value bool) Instance {
+func (self Instance) SetDefaultValueEnabled(value bool) Instance { //gd:VisualShaderNodeVec3Parameter.default_value_enabled
 	class(self).SetDefaultValueEnabled(value)
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetDefaultValueEnabled(value bool) Instance {
 /*
 A default value to be assigned within the shader.
 */
-func (self Instance) DefaultValue() Vector3.XYZ {
+func (self Instance) DefaultValue() Vector3.XYZ { //gd:VisualShaderNodeVec3Parameter.default_value
 	return Vector3.XYZ(class(self).GetDefaultValue())
 }
 
 // SetDefaultValue sets the property returned by [GetDefaultValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDefaultValue(value Vector3.XYZ) Instance {
+func (self Instance) SetDefaultValue(value Vector3.XYZ) Instance { //gd:VisualShaderNodeVec3Parameter.default_value
 	class(self).SetDefaultValue(Vector3.XYZ(value))
 	return self
 }

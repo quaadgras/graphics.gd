@@ -373,12 +373,12 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Vertices() []Vector2.XY {
+func (self Instance) Vertices() []Vector2.XY { //gd:NavigationPolygon.vertices
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
 // SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertices(value []Vector2.XY) Instance {
+func (self Instance) SetVertices(value []Vector2.XY) Instance { //gd:NavigationPolygon.vertices
 	class(self).SetVertices(Packed.New(value...))
 	return self
 }
@@ -386,12 +386,12 @@ func (self Instance) SetVertices(value []Vector2.XY) Instance {
 /*
 Partitioning algorithm for creating the navigation mesh polys.
 */
-func (self Instance) SamplePartitionType() SamplePartitionType {
+func (self Instance) SamplePartitionType() SamplePartitionType { //gd:NavigationPolygon.sample_partition_type
 	return SamplePartitionType(class(self).GetSamplePartitionType())
 }
 
 // SetSamplePartitionType sets the property returned by [GetSamplePartitionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance {
+func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance { //gd:NavigationPolygon.sample_partition_type
 	class(self).SetSamplePartitionType(value)
 	return self
 }
@@ -399,12 +399,12 @@ func (self Instance) SetSamplePartitionType(value SamplePartitionType) Instance 
 /*
 Determines which type of nodes will be parsed as geometry.
 */
-func (self Instance) ParsedGeometryType() ParsedGeometryType {
+func (self Instance) ParsedGeometryType() ParsedGeometryType { //gd:NavigationPolygon.parsed_geometry_type
 	return ParsedGeometryType(class(self).GetParsedGeometryType())
 }
 
 // SetParsedGeometryType sets the property returned by [GetParsedGeometryType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParsedGeometryType(value ParsedGeometryType) Instance {
+func (self Instance) SetParsedGeometryType(value ParsedGeometryType) Instance { //gd:NavigationPolygon.parsed_geometry_type
 	class(self).SetParsedGeometryType(value)
 	return self
 }
@@ -416,12 +416,12 @@ Only used when [ParsedGeometryType] is [ParsedGeometryStaticColliders] or [Parse
 
 [ParsedGeometryType]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.ParsedGeometryType
 */
-func (self Instance) ParsedCollisionMask() int {
+func (self Instance) ParsedCollisionMask() int { //gd:NavigationPolygon.parsed_collision_mask
 	return int(int(class(self).GetParsedCollisionMask()))
 }
 
 // SetParsedCollisionMask sets the property returned by [GetParsedCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParsedCollisionMask(value int) Instance {
+func (self Instance) SetParsedCollisionMask(value int) Instance { //gd:NavigationPolygon.parsed_collision_mask
 	class(self).SetParsedCollisionMask(int64(value))
 	return self
 }
@@ -429,12 +429,12 @@ func (self Instance) SetParsedCollisionMask(value int) Instance {
 /*
 The source of the geometry used when baking.
 */
-func (self Instance) SourceGeometryMode() SourceGeometryMode {
+func (self Instance) SourceGeometryMode() SourceGeometryMode { //gd:NavigationPolygon.source_geometry_mode
 	return SourceGeometryMode(class(self).GetSourceGeometryMode())
 }
 
 // SetSourceGeometryMode sets the property returned by [GetSourceGeometryMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceGeometryMode(value SourceGeometryMode) Instance {
+func (self Instance) SetSourceGeometryMode(value SourceGeometryMode) Instance { //gd:NavigationPolygon.source_geometry_mode
 	class(self).SetSourceGeometryMode(value)
 	return self
 }
@@ -446,12 +446,12 @@ Only used when [SourceGeometryMode] is [SourceGeometryGroupsWithChildren] or [So
 
 [SourceGeometryMode]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.SourceGeometryMode
 */
-func (self Instance) SourceGeometryGroupName() string {
+func (self Instance) SourceGeometryGroupName() string { //gd:NavigationPolygon.source_geometry_group_name
 	return string(class(self).GetSourceGeometryGroupName().String())
 }
 
 // SetSourceGeometryGroupName sets the property returned by [GetSourceGeometryGroupName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceGeometryGroupName(value string) Instance {
+func (self Instance) SetSourceGeometryGroupName(value string) Instance { //gd:NavigationPolygon.source_geometry_group_name
 	class(self).SetSourceGeometryGroupName(String.Name(String.New(value)))
 	return self
 }
@@ -459,12 +459,12 @@ func (self Instance) SetSourceGeometryGroupName(value string) Instance {
 /*
 The cell size used to rasterize the navigation mesh vertices. Must match with the cell size on the navigation map.
 */
-func (self Instance) CellSize() Float.X {
+func (self Instance) CellSize() Float.X { //gd:NavigationPolygon.cell_size
 	return Float.X(Float.X(class(self).GetCellSize()))
 }
 
 // SetCellSize sets the property returned by [GetCellSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCellSize(value Float.X) Instance {
+func (self Instance) SetCellSize(value Float.X) Instance { //gd:NavigationPolygon.cell_size
 	class(self).SetCellSize(float64(value))
 	return self
 }
@@ -478,12 +478,12 @@ In conjunction with the [BakingRect] the border size can be used to bake tile al
 [BakingRect]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.BakingRect
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
-func (self Instance) BorderSize() Float.X {
+func (self Instance) BorderSize() Float.X { //gd:NavigationPolygon.border_size
 	return Float.X(Float.X(class(self).GetBorderSize()))
 }
 
 // SetBorderSize sets the property returned by [GetBorderSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBorderSize(value Float.X) Instance {
+func (self Instance) SetBorderSize(value Float.X) Instance { //gd:NavigationPolygon.border_size
 	class(self).SetBorderSize(float64(value))
 	return self
 }
@@ -493,12 +493,12 @@ The distance to erode/shrink the walkable surface when baking the navigation mes
 
 Note: The radius must be equal or higher than 0.0. If the radius is 0.0, it won't be possible to fix invalid outline overlaps and other precision errors during the baking process. As a result, some obstacles may be excluded incorrectly from the final navigation mesh, or may delete the navigation mesh's polygons.
 */
-func (self Instance) AgentRadius() Float.X {
+func (self Instance) AgentRadius() Float.X { //gd:NavigationPolygon.agent_radius
 	return Float.X(Float.X(class(self).GetAgentRadius()))
 }
 
 // SetAgentRadius sets the property returned by [GetAgentRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAgentRadius(value Float.X) Instance {
+func (self Instance) SetAgentRadius(value Float.X) Instance { //gd:NavigationPolygon.agent_radius
 	class(self).SetAgentRadius(float64(value))
 	return self
 }
@@ -508,12 +508,12 @@ If the baking [Rect2.PositionSize] has an area the navigation mesh baking will b
 
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
-func (self Instance) BakingRect() Rect2.PositionSize {
+func (self Instance) BakingRect() Rect2.PositionSize { //gd:NavigationPolygon.baking_rect
 	return Rect2.PositionSize(class(self).GetBakingRect())
 }
 
 // SetBakingRect sets the property returned by [GetBakingRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakingRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetBakingRect(value Rect2.PositionSize) Instance { //gd:NavigationPolygon.baking_rect
 	class(self).SetBakingRect(Rect2.PositionSize(value))
 	return self
 }
@@ -524,12 +524,12 @@ The position offset applied to the [BakingRect] [Rect2.PositionSize].
 [BakingRect]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.BakingRect
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
-func (self Instance) BakingRectOffset() Vector2.XY {
+func (self Instance) BakingRectOffset() Vector2.XY { //gd:NavigationPolygon.baking_rect_offset
 	return Vector2.XY(class(self).GetBakingRectOffset())
 }
 
 // SetBakingRectOffset sets the property returned by [GetBakingRectOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakingRectOffset(value Vector2.XY) Instance {
+func (self Instance) SetBakingRectOffset(value Vector2.XY) Instance { //gd:NavigationPolygon.baking_rect_offset
 	class(self).SetBakingRectOffset(Vector2.XY(value))
 	return self
 }

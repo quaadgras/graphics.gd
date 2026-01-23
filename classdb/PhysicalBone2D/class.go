@@ -208,12 +208,12 @@ The node path to the [Bone2D] that this [PhysicalBone2D] should simulate.
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 [PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
 */
-func (self Instance) Bone2dNodepath() string {
+func (self Instance) Bone2dNodepath() string { //gd:PhysicalBone2D.bone2d_nodepath
 	return string(class(self).GetBone2dNodepath().String())
 }
 
 // SetBone2dNodepath sets the property returned by [GetBone2dNodepath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone2dNodepath(value string) Instance {
+func (self Instance) SetBone2dNodepath(value string) Instance { //gd:PhysicalBone2D.bone2d_nodepath
 	class(self).SetBone2dNodepath(Path.ToNode(String.New(value)))
 	return self
 }
@@ -224,12 +224,12 @@ The index of the [Bone2D] that this [PhysicalBone2D] should simulate.
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 [PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
 */
-func (self Instance) Bone2dIndex() int {
+func (self Instance) Bone2dIndex() int { //gd:PhysicalBone2D.bone2d_index
 	return int(int(class(self).GetBone2dIndex()))
 }
 
 // SetBone2dIndex sets the property returned by [GetBone2dIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone2dIndex(value int) Instance {
+func (self Instance) SetBone2dIndex(value int) Instance { //gd:PhysicalBone2D.bone2d_index
 	class(self).SetBone2dIndex(int64(value))
 	return self
 }
@@ -240,12 +240,12 @@ If true, the [PhysicalBone2D] will automatically configure the first [Joint2D] c
 [Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 [PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
 */
-func (self Instance) AutoConfigureJoint() bool {
+func (self Instance) AutoConfigureJoint() bool { //gd:PhysicalBone2D.auto_configure_joint
 	return bool(class(self).GetAutoConfigureJoint())
 }
 
 // SetAutoConfigureJoint sets the property returned by [GetAutoConfigureJoint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoConfigureJoint(value bool) Instance {
+func (self Instance) SetAutoConfigureJoint(value bool) Instance { //gd:PhysicalBone2D.auto_configure_joint
 	class(self).SetAutoConfigureJoint(value)
 	return self
 }
@@ -260,12 +260,12 @@ Note: To have the [Bone2D]s visually follow the [PhysicalBone2D], use a [Skeleto
 [Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
 [SkeletonModification2DPhysicalBones]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModification2DPhysicalBones
 */
-func (self Instance) SimulatePhysics() bool {
+func (self Instance) SimulatePhysics() bool { //gd:PhysicalBone2D.simulate_physics
 	return bool(class(self).GetSimulatePhysics())
 }
 
 // SetSimulatePhysics sets the property returned by [GetSimulatePhysics]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSimulatePhysics(value bool) Instance {
+func (self Instance) SetSimulatePhysics(value bool) Instance { //gd:PhysicalBone2D.simulate_physics
 	class(self).SetSimulatePhysics(value)
 	return self
 }
@@ -275,12 +275,12 @@ If true, the [PhysicalBone2D] will keep the transform of the bone it is bound to
 
 [PhysicalBone2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone2D
 */
-func (self Instance) FollowBoneWhenSimulating() bool {
+func (self Instance) FollowBoneWhenSimulating() bool { //gd:PhysicalBone2D.follow_bone_when_simulating
 	return bool(class(self).GetFollowBoneWhenSimulating())
 }
 
 // SetFollowBoneWhenSimulating sets the property returned by [GetFollowBoneWhenSimulating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFollowBoneWhenSimulating(value bool) Instance {
+func (self Instance) SetFollowBoneWhenSimulating(value bool) Instance { //gd:PhysicalBone2D.follow_bone_when_simulating
 	class(self).SetFollowBoneWhenSimulating(value)
 	return self
 }

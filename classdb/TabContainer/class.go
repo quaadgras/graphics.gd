@@ -462,12 +462,12 @@ func New() Instance {
 /*
 The position at which tabs will be placed.
 */
-func (self Instance) TabAlignment() TabBar.AlignmentMode {
+func (self Instance) TabAlignment() TabBar.AlignmentMode { //gd:TabContainer.tab_alignment
 	return TabBar.AlignmentMode(class(self).GetTabAlignment())
 }
 
 // SetTabAlignment sets the property returned by [GetTabAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) Instance {
+func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) Instance { //gd:TabContainer.tab_alignment
 	class(self).SetTabAlignment(value)
 	return self
 }
@@ -479,12 +479,12 @@ A value of -1 means that no tab is selected.
 
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self Instance) CurrentTab() int {
+func (self Instance) CurrentTab() int { //gd:TabContainer.current_tab
 	return int(int(class(self).GetCurrentTab()))
 }
 
 // SetCurrentTab sets the property returned by [GetCurrentTab]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentTab(value int) Instance {
+func (self Instance) SetCurrentTab(value int) Instance { //gd:TabContainer.current_tab
 	class(self).SetCurrentTab(int64(value))
 	return self
 }
@@ -492,12 +492,12 @@ func (self Instance) SetCurrentTab(value int) Instance {
 /*
 The position of the tab bar.
 */
-func (self Instance) TabsPosition() TabPosition {
+func (self Instance) TabsPosition() TabPosition { //gd:TabContainer.tabs_position
 	return TabPosition(class(self).GetTabsPosition())
 }
 
 // SetTabsPosition sets the property returned by [GetTabsPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabsPosition(value TabPosition) Instance {
+func (self Instance) SetTabsPosition(value TabPosition) Instance { //gd:TabContainer.tabs_position
 	class(self).SetTabsPosition(value)
 	return self
 }
@@ -505,12 +505,12 @@ func (self Instance) SetTabsPosition(value TabPosition) Instance {
 /*
 If true, tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.
 */
-func (self Instance) ClipTabs() bool {
+func (self Instance) ClipTabs() bool { //gd:TabContainer.clip_tabs
 	return bool(class(self).GetClipTabs())
 }
 
 // SetClipTabs sets the property returned by [GetClipTabs]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipTabs(value bool) Instance {
+func (self Instance) SetClipTabs(value bool) Instance { //gd:TabContainer.clip_tabs
 	class(self).SetClipTabs(value)
 	return self
 }
@@ -518,12 +518,12 @@ func (self Instance) SetClipTabs(value bool) Instance {
 /*
 If true, tabs are visible. If false, tabs' content and titles are hidden.
 */
-func (self Instance) TabsVisible() bool {
+func (self Instance) TabsVisible() bool { //gd:TabContainer.tabs_visible
 	return bool(class(self).AreTabsVisible())
 }
 
 // SetTabsVisible sets the property returned by [AreTabsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabsVisible(value bool) Instance {
+func (self Instance) SetTabsVisible(value bool) Instance { //gd:TabContainer.tabs_visible
 	class(self).SetTabsVisible(value)
 	return self
 }
@@ -531,12 +531,12 @@ func (self Instance) SetTabsVisible(value bool) Instance {
 /*
 If true, all tabs are drawn in front of the panel. If false, inactive tabs are drawn behind the panel.
 */
-func (self Instance) AllTabsInFront() bool {
+func (self Instance) AllTabsInFront() bool { //gd:TabContainer.all_tabs_in_front
 	return bool(class(self).IsAllTabsInFront())
 }
 
 // SetAllTabsInFront sets the property returned by [IsAllTabsInFront]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllTabsInFront(value bool) Instance {
+func (self Instance) SetAllTabsInFront(value bool) Instance { //gd:TabContainer.all_tabs_in_front
 	class(self).SetAllTabsInFront(value)
 	return self
 }
@@ -544,12 +544,12 @@ func (self Instance) SetAllTabsInFront(value bool) Instance {
 /*
 If true, tabs can be rearranged with mouse drag.
 */
-func (self Instance) DragToRearrangeEnabled() bool {
+func (self Instance) DragToRearrangeEnabled() bool { //gd:TabContainer.drag_to_rearrange_enabled
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
 // SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragToRearrangeEnabled(value bool) Instance {
+func (self Instance) SetDragToRearrangeEnabled(value bool) Instance { //gd:TabContainer.drag_to_rearrange_enabled
 	class(self).SetDragToRearrangeEnabled(value)
 	return self
 }
@@ -562,12 +562,12 @@ Setting this to -1 will disable rearranging between [TabContainer]s.
 [DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.DragToRearrangeEnabled
 [TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
-func (self Instance) TabsRearrangeGroup() int {
+func (self Instance) TabsRearrangeGroup() int { //gd:TabContainer.tabs_rearrange_group
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
 // SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabsRearrangeGroup(value int) Instance {
+func (self Instance) SetTabsRearrangeGroup(value int) Instance { //gd:TabContainer.tabs_rearrange_group
 	class(self).SetTabsRearrangeGroup(int64(value))
 	return self
 }
@@ -577,12 +577,12 @@ If true, child [Control] nodes that are hidden have their minimum size take into
 
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
-func (self Instance) UseHiddenTabsForMinSize() bool {
+func (self Instance) UseHiddenTabsForMinSize() bool { //gd:TabContainer.use_hidden_tabs_for_min_size
 	return bool(class(self).GetUseHiddenTabsForMinSize())
 }
 
 // SetUseHiddenTabsForMinSize sets the property returned by [GetUseHiddenTabsForMinSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseHiddenTabsForMinSize(value bool) Instance {
+func (self Instance) SetUseHiddenTabsForMinSize(value bool) Instance { //gd:TabContainer.use_hidden_tabs_for_min_size
 	class(self).SetUseHiddenTabsForMinSize(value)
 	return self
 }
@@ -592,12 +592,12 @@ The focus access mode for the internal [TabBar] node.
 
 [TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
 */
-func (self Instance) TabFocusMode() Control.FocusMode {
+func (self Instance) TabFocusMode() Control.FocusMode { //gd:TabContainer.tab_focus_mode
 	return Control.FocusMode(class(self).GetTabFocusMode())
 }
 
 // SetTabFocusMode sets the property returned by [GetTabFocusMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabFocusMode(value Control.FocusMode) Instance {
+func (self Instance) SetTabFocusMode(value Control.FocusMode) Instance { //gd:TabContainer.tab_focus_mode
 	class(self).SetTabFocusMode(value)
 	return self
 }
@@ -609,12 +609,12 @@ Only the tab header will be shown if no tabs are selected.
 
 [CurrentTab]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.CurrentTab
 */
-func (self Instance) DeselectEnabled() bool {
+func (self Instance) DeselectEnabled() bool { //gd:TabContainer.deselect_enabled
 	return bool(class(self).GetDeselectEnabled())
 }
 
 // SetDeselectEnabled sets the property returned by [GetDeselectEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeselectEnabled(value bool) Instance {
+func (self Instance) SetDeselectEnabled(value bool) Instance { //gd:TabContainer.deselect_enabled
 	class(self).SetDeselectEnabled(value)
 	return self
 }

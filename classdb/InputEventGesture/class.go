@@ -167,12 +167,12 @@ The local gesture position relative to the [Viewport]. If used in [Control.GuiIn
 [Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:InputEventGesture.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2.XY) Instance {
+func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:InputEventGesture.position
 	class(self).SetPosition(Vector2.XY(value))
 	return self
 }

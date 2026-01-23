@@ -188,12 +188,12 @@ func New() Instance {
 /*
 The current transform of the current glyph. It can be overridden (for example, by driving the position and rotation from a curve). You can also alter the existing value to apply transforms on top of other effects.
 */
-func (self Instance) Transform() Transform2D.OriginXY {
+func (self Instance) Transform() Transform2D.OriginXY { //gd:CharFXTransform.transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance { //gd:CharFXTransform.transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -203,12 +203,12 @@ Absolute character range in the string, corresponding to the glyph.
 
 Note: Read-only. Setting this property won't affect drawing.
 */
-func (self Instance) Range() Vector2i.XY {
+func (self Instance) Range() Vector2i.XY { //gd:CharFXTransform.range
 	return Vector2i.XY(class(self).GetRange())
 }
 
 // SetRange sets the property returned by [GetRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRange(value Vector2i.XY) Instance {
+func (self Instance) SetRange(value Vector2i.XY) Instance { //gd:CharFXTransform.range
 	class(self).SetRange(Vector2i.XY(value))
 	return self
 }
@@ -221,12 +221,12 @@ Note: Time still passes while the [RichTextLabel] is hidden.
 [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 [RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
 */
-func (self Instance) ElapsedTime() Float.X {
+func (self Instance) ElapsedTime() Float.X { //gd:CharFXTransform.elapsed_time
 	return Float.X(Float.X(class(self).GetElapsedTime()))
 }
 
 // SetElapsedTime sets the property returned by [GetElapsedTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetElapsedTime(value Float.X) Instance {
+func (self Instance) SetElapsedTime(value Float.X) Instance { //gd:CharFXTransform.elapsed_time
 	class(self).SetElapsedTime(float64(value))
 	return self
 }
@@ -236,12 +236,12 @@ If true, the character will be drawn. If false, the character will be hidden. Ch
 
 [Color]: https://pkg.go.dev/graphics.gd/classdb/CharFXTransform#Instance.Color
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:CharFXTransform.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:CharFXTransform.visible
 	class(self).SetVisibility(value)
 	return self
 }
@@ -251,12 +251,12 @@ If true, FX transform is called for outline drawing.
 
 Note: Read-only. Setting this property won't affect drawing.
 */
-func (self Instance) Outline() bool {
+func (self Instance) Outline() bool { //gd:CharFXTransform.outline
 	return bool(class(self).IsOutline())
 }
 
 // SetOutline sets the property returned by [IsOutline]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOutline(value bool) Instance {
+func (self Instance) SetOutline(value bool) Instance { //gd:CharFXTransform.outline
 	class(self).SetOutline(value)
 	return self
 }
@@ -264,12 +264,12 @@ func (self Instance) SetOutline(value bool) Instance {
 /*
 The position offset the character will be drawn with (in pixels).
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:CharFXTransform.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:CharFXTransform.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -277,12 +277,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 The color the character will be drawn with.
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:CharFXTransform.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:CharFXTransform.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -295,12 +295,12 @@ For example, the opening BBCode tag [example foo=hello bar=true baz=42 color=#ff
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 */
-func (self Instance) Env() map[any]any {
+func (self Instance) Env() map[any]any { //gd:CharFXTransform.env
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetEnvironment()))
 }
 
 // SetEnv sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnv(value map[any]any) Instance {
+func (self Instance) SetEnv(value map[any]any) Instance { //gd:CharFXTransform.env
 	class(self).SetEnvironment(gd.DictionaryFromMap(value))
 	return self
 }
@@ -311,12 +311,12 @@ Glyph index specific to the [Font]. If you want to replace this glyph, use [Text
 [Font]: https://pkg.go.dev/graphics.gd/classdb/CharFXTransform#Instance.Font
 [TextServer.FontGetGlyphIndex]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FontGetGlyphIndex
 */
-func (self Instance) GlyphIndex() int {
+func (self Instance) GlyphIndex() int { //gd:CharFXTransform.glyph_index
 	return int(int(class(self).GetGlyphIndex()))
 }
 
 // SetGlyphIndex sets the property returned by [GetGlyphIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlyphIndex(value int) Instance {
+func (self Instance) SetGlyphIndex(value int) Instance { //gd:CharFXTransform.glyph_index
 	class(self).SetGlyphIndex(int64(value))
 	return self
 }
@@ -326,12 +326,12 @@ Number of glyphs in the grapheme cluster. This value is set in the first glyph o
 
 Note: Read-only. Setting this property won't affect drawing.
 */
-func (self Instance) GlyphCount() int {
+func (self Instance) GlyphCount() int { //gd:CharFXTransform.glyph_count
 	return int(int(class(self).GetGlyphCount()))
 }
 
 // SetGlyphCount sets the property returned by [GetGlyphCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlyphCount(value int) Instance {
+func (self Instance) SetGlyphCount(value int) Instance { //gd:CharFXTransform.glyph_count
 	class(self).SetGlyphCount(int64(value))
 	return self
 }
@@ -341,12 +341,12 @@ Glyph flags. See [TextServer.GraphemeFlag] for more info.
 
 Note: Read-only. Setting this property won't affect drawing.
 */
-func (self Instance) GlyphFlags() int {
+func (self Instance) GlyphFlags() int { //gd:CharFXTransform.glyph_flags
 	return int(int(class(self).GetGlyphFlags()))
 }
 
 // SetGlyphFlags sets the property returned by [GetGlyphFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlyphFlags(value int) Instance {
+func (self Instance) SetGlyphFlags(value int) Instance { //gd:CharFXTransform.glyph_flags
 	class(self).SetGlyphFlags(int64(value))
 	return self
 }
@@ -358,12 +358,12 @@ Note: Read-only. Setting this property won't affect drawing.
 
 [RichTextEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextEffect
 */
-func (self Instance) RelativeIndex() int {
+func (self Instance) RelativeIndex() int { //gd:CharFXTransform.relative_index
 	return int(int(class(self).GetRelativeIndex()))
 }
 
 // SetRelativeIndex sets the property returned by [GetRelativeIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRelativeIndex(value int) Instance {
+func (self Instance) SetRelativeIndex(value int) Instance { //gd:CharFXTransform.relative_index
 	class(self).SetRelativeIndex(int64(value))
 	return self
 }
@@ -375,12 +375,12 @@ Note: Read-only. Setting this property won't affect drawing.
 
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self Instance) Font() RID.Font {
+func (self Instance) Font() RID.Font { //gd:CharFXTransform.font
 	return RID.Font(RID.Font(class(self).GetFont()))
 }
 
 // SetFont sets the property returned by [GetFont]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFont(value RID.Font) Instance {
+func (self Instance) SetFont(value RID.Font) Instance { //gd:CharFXTransform.font
 	class(self).SetFont(RID.Any(value))
 	return self
 }

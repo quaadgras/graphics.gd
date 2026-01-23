@@ -160,12 +160,12 @@ The index of the image associated with this texture, see [GLTFState.GetImages]. 
 
 [GLTFState.GetImages]: https://pkg.go.dev/graphics.gd/classdb/GLTFState#Instance.GetImages
 */
-func (self Instance) SrcImage() int {
+func (self Instance) SrcImage() int { //gd:GLTFTexture.src_image
 	return int(int(class(self).GetSrcImage()))
 }
 
 // SetSrcImage sets the property returned by [GetSrcImage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSrcImage(value int) Instance {
+func (self Instance) SetSrcImage(value int) Instance { //gd:GLTFTexture.src_image
 	class(self).SetSrcImage(int64(value))
 	return self
 }
@@ -173,12 +173,12 @@ func (self Instance) SetSrcImage(value int) Instance {
 /*
 ID of the texture sampler to use when sampling the image. If -1, then the default texture sampler is used (linear filtering, and repeat wrapping in both axes).
 */
-func (self Instance) Sampler() int {
+func (self Instance) Sampler() int { //gd:GLTFTexture.sampler
 	return int(int(class(self).GetSampler()))
 }
 
 // SetSampler sets the property returned by [GetSampler]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSampler(value int) Instance {
+func (self Instance) SetSampler(value int) Instance { //gd:GLTFTexture.sampler
 	class(self).SetSampler(int64(value))
 	return self
 }

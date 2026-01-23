@@ -363,12 +363,12 @@ func New() Instance {
 /*
 If true, collisions will be reported.
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:ShapeCast2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:ShapeCast2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetEnabled(value bool) Instance {
 /*
 The shape to be used for collision queries.
 */
-func (self Instance) Shape() Shape2D.Instance {
+func (self Instance) Shape() Shape2D.Instance { //gd:ShapeCast2D.shape
 	return Shape2D.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Shape2D.Instance) Instance {
+func (self Instance) SetShape(value Shape2D.Instance) Instance { //gd:ShapeCast2D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetShape(value Shape2D.Instance) Instance {
 /*
 If true, the parent node will be excluded from collision detection.
 */
-func (self Instance) ExcludeParent() bool {
+func (self Instance) ExcludeParent() bool { //gd:ShapeCast2D.exclude_parent
 	return bool(class(self).GetExcludeParentBody())
 }
 
 // SetExcludeParent sets the property returned by [GetExcludeParentBody]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeParent(value bool) Instance {
+func (self Instance) SetExcludeParent(value bool) Instance { //gd:ShapeCast2D.exclude_parent
 	class(self).SetExcludeParentBody(value)
 	return self
 }
@@ -404,12 +404,12 @@ The shape's destination point, relative to this node's [Node2D.Position].
 
 [Node2D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Position
 */
-func (self Instance) TargetPosition() Vector2.XY {
+func (self Instance) TargetPosition() Vector2.XY { //gd:ShapeCast2D.target_position
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
 // SetTargetPosition sets the property returned by [GetTargetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
+func (self Instance) SetTargetPosition(value Vector2.XY) Instance { //gd:ShapeCast2D.target_position
 	class(self).SetTargetPosition(Vector2.XY(value))
 	return self
 }
@@ -417,12 +417,12 @@ func (self Instance) SetTargetPosition(value Vector2.XY) Instance {
 /*
 The collision margin for the shape. A larger margin helps detecting collisions more consistently, at the cost of precision.
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:ShapeCast2D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:ShapeCast2D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }
@@ -430,12 +430,12 @@ func (self Instance) SetMargin(value Float.X) Instance {
 /*
 The number of intersections can be limited with this parameter, to reduce the processing time.
 */
-func (self Instance) MaxResults() int {
+func (self Instance) MaxResults() int { //gd:ShapeCast2D.max_results
 	return int(int(class(self).GetMaxResults()))
 }
 
 // SetMaxResults sets the property returned by [GetMaxResults]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxResults(value int) Instance {
+func (self Instance) SetMaxResults(value int) Instance { //gd:ShapeCast2D.max_results
 	class(self).SetMaxResults(int64(value))
 	return self
 }
@@ -445,12 +445,12 @@ The shape's collision mask. Only objects in at least one collision layer enabled
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:ShapeCast2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:ShapeCast2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -460,7 +460,7 @@ Returns the complete collision information from the collision sweep. The data re
 
 [PhysicsDirectSpaceState2D.GetRestInfo]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.GetRestInfo
 */
-func (self Instance) CollisionResult() []PhysicsDirectSpaceState2D_RestInfo {
+func (self Instance) CollisionResult() []PhysicsDirectSpaceState2D_RestInfo { //gd:ShapeCast2D.collision_result
 	return []PhysicsDirectSpaceState2D_RestInfo(gd.ArrayAs[[]PhysicsDirectSpaceState2D_RestInfo](gd.InternalArray(class(self).GetCollisionResult())))
 }
 
@@ -469,12 +469,12 @@ If true, collisions with [Area2D]s will be reported.
 
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:ShapeCast2D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:ShapeCast2D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }
@@ -484,12 +484,12 @@ If true, collisions with [PhysicsBody2D]s will be reported.
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:ShapeCast2D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:ShapeCast2D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }

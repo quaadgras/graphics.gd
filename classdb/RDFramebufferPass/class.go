@@ -172,12 +172,12 @@ func New() Instance {
 /*
 Color attachments in order starting from 0. If this attachment is not used by the shader, pass ATTACHMENT_UNUSED to skip.
 */
-func (self Instance) ColorAttachments() []int32 {
+func (self Instance) ColorAttachments() []int32 { //gd:RDFramebufferPass.color_attachments
 	return []int32(slices.Collect(class(self).GetColorAttachments().Values()))
 }
 
 // SetColorAttachments sets the property returned by [GetColorAttachments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorAttachments(value []int32) Instance {
+func (self Instance) SetColorAttachments(value []int32) Instance { //gd:RDFramebufferPass.color_attachments
 	class(self).SetColorAttachments(Packed.New(value...))
 	return self
 }
@@ -187,12 +187,12 @@ Used for multipass framebuffers (more than one render pass). Converts an attachm
 
 [RDUniform]: https://pkg.go.dev/graphics.gd/classdb/RDUniform
 */
-func (self Instance) InputAttachments() []int32 {
+func (self Instance) InputAttachments() []int32 { //gd:RDFramebufferPass.input_attachments
 	return []int32(slices.Collect(class(self).GetInputAttachments().Values()))
 }
 
 // SetInputAttachments sets the property returned by [GetInputAttachments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInputAttachments(value []int32) Instance {
+func (self Instance) SetInputAttachments(value []int32) Instance { //gd:RDFramebufferPass.input_attachments
 	class(self).SetInputAttachments(Packed.New(value...))
 	return self
 }
@@ -200,12 +200,12 @@ func (self Instance) SetInputAttachments(value []int32) Instance {
 /*
 If the color attachments are multisampled, non-multisampled resolve attachments can be provided.
 */
-func (self Instance) ResolveAttachments() []int32 {
+func (self Instance) ResolveAttachments() []int32 { //gd:RDFramebufferPass.resolve_attachments
 	return []int32(slices.Collect(class(self).GetResolveAttachments().Values()))
 }
 
 // SetResolveAttachments sets the property returned by [GetResolveAttachments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResolveAttachments(value []int32) Instance {
+func (self Instance) SetResolveAttachments(value []int32) Instance { //gd:RDFramebufferPass.resolve_attachments
 	class(self).SetResolveAttachments(Packed.New(value...))
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetResolveAttachments(value []int32) Instance {
 /*
 Attachments to preserve in this pass (otherwise they are erased).
 */
-func (self Instance) PreserveAttachments() []int32 {
+func (self Instance) PreserveAttachments() []int32 { //gd:RDFramebufferPass.preserve_attachments
 	return []int32(slices.Collect(class(self).GetPreserveAttachments().Values()))
 }
 
 // SetPreserveAttachments sets the property returned by [GetPreserveAttachments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreserveAttachments(value []int32) Instance {
+func (self Instance) SetPreserveAttachments(value []int32) Instance { //gd:RDFramebufferPass.preserve_attachments
 	class(self).SetPreserveAttachments(Packed.New(value...))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetPreserveAttachments(value []int32) Instance {
 /*
 Depth attachment. ATTACHMENT_UNUSED should be used if no depth buffer is required for this pass.
 */
-func (self Instance) DepthAttachment() int {
+func (self Instance) DepthAttachment() int { //gd:RDFramebufferPass.depth_attachment
 	return int(int(class(self).GetDepthAttachment()))
 }
 
 // SetDepthAttachment sets the property returned by [GetDepthAttachment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthAttachment(value int) Instance {
+func (self Instance) SetDepthAttachment(value int) Instance { //gd:RDFramebufferPass.depth_attachment
 	class(self).SetDepthAttachment(int64(value))
 	return self
 }

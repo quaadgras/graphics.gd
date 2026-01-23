@@ -193,12 +193,12 @@ func New() Instance {
 /*
 The name of the attached bone.
 */
-func (self Instance) BoneName() string {
+func (self Instance) BoneName() string { //gd:SpringBoneCollision3D.bone_name
 	return string(class(self).GetBoneName().String())
 }
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneName(value string) Instance {
+func (self Instance) SetBoneName(value string) Instance { //gd:SpringBoneCollision3D.bone_name
 	class(self).SetBoneName(String.New(value))
 	return self
 }
@@ -206,12 +206,12 @@ func (self Instance) SetBoneName(value string) Instance {
 /*
 The index of the attached bone.
 */
-func (self Instance) Bone() int {
+func (self Instance) Bone() int { //gd:SpringBoneCollision3D.bone
 	return int(int(class(self).GetBone()))
 }
 
 // SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone(value int) Instance {
+func (self Instance) SetBone(value int) Instance { //gd:SpringBoneCollision3D.bone
 	class(self).SetBone(int64(value))
 	return self
 }
@@ -222,12 +222,12 @@ The offset of the position from [Skeleton3D]'s [Bone] pose position.
 [Bone]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D#Instance.Bone
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) PositionOffset() Vector3.XYZ {
+func (self Instance) PositionOffset() Vector3.XYZ { //gd:SpringBoneCollision3D.position_offset
 	return Vector3.XYZ(class(self).GetPositionOffset())
 }
 
 // SetPositionOffset sets the property returned by [GetPositionOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetPositionOffset(value Vector3.XYZ) Instance { //gd:SpringBoneCollision3D.position_offset
 	class(self).SetPositionOffset(Vector3.XYZ(value))
 	return self
 }
@@ -238,12 +238,12 @@ The offset of the rotation from [Skeleton3D]'s [Bone] pose rotation.
 [Bone]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneCollision3D#Instance.Bone
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) RotationOffset() Quaternion.IJKX {
+func (self Instance) RotationOffset() Quaternion.IJKX { //gd:SpringBoneCollision3D.rotation_offset
 	return Quaternion.IJKX(class(self).GetRotationOffset())
 }
 
 // SetRotationOffset sets the property returned by [GetRotationOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationOffset(value Quaternion.IJKX) Instance {
+func (self Instance) SetRotationOffset(value Quaternion.IJKX) Instance { //gd:SpringBoneCollision3D.rotation_offset
 	class(self).SetRotationOffset(value)
 	return self
 }

@@ -164,12 +164,12 @@ A 4D vector (represented as a [Quaternion.IJKX]) constant which represents the s
 
 [Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
 */
-func (self Instance) Constant() Quaternion.IJKX {
+func (self Instance) Constant() Quaternion.IJKX { //gd:VisualShaderNodeVec4Constant.constant
 	return Quaternion.IJKX(class(self).GetConstant())
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value Quaternion.IJKX) Instance {
+func (self Instance) SetConstant(value Quaternion.IJKX) Instance { //gd:VisualShaderNodeVec4Constant.constant
 	class(self).SetConstant(value)
 	return self
 }

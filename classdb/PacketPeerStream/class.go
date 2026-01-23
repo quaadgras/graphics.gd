@@ -163,22 +163,22 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) InputBufferMaxSize() int {
+func (self Instance) InputBufferMaxSize() int { //gd:PacketPeerStream.input_buffer_max_size
 	return int(int(class(self).GetInputBufferMaxSize()))
 }
 
 // SetInputBufferMaxSize sets the property returned by [GetInputBufferMaxSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInputBufferMaxSize(value int) Instance {
+func (self Instance) SetInputBufferMaxSize(value int) Instance { //gd:PacketPeerStream.input_buffer_max_size
 	class(self).SetInputBufferMaxSize(int64(value))
 	return self
 }
 
-func (self Instance) OutputBufferMaxSize() int {
+func (self Instance) OutputBufferMaxSize() int { //gd:PacketPeerStream.output_buffer_max_size
 	return int(int(class(self).GetOutputBufferMaxSize()))
 }
 
 // SetOutputBufferMaxSize sets the property returned by [GetOutputBufferMaxSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOutputBufferMaxSize(value int) Instance {
+func (self Instance) SetOutputBufferMaxSize(value int) Instance { //gd:PacketPeerStream.output_buffer_max_size
 	class(self).SetOutputBufferMaxSize(int64(value))
 	return self
 }
@@ -188,12 +188,12 @@ The wrapped [StreamPeer] object.
 
 [StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
-func (self Instance) StreamPeer() StreamPeer.Instance {
+func (self Instance) StreamPeer() StreamPeer.Instance { //gd:PacketPeerStream.stream_peer
 	return StreamPeer.Instance(class(self).GetStreamPeer())
 }
 
 // SetStreamPeer sets the property returned by [GetStreamPeer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamPeer(value StreamPeer.Instance) Instance {
+func (self Instance) SetStreamPeer(value StreamPeer.Instance) Instance { //gd:PacketPeerStream.stream_peer
 	class(self).SetStreamPeer(value)
 	return self
 }

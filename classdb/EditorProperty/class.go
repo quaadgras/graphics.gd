@@ -356,12 +356,12 @@ func New() Instance {
 /*
 Set this property to change the label (if you want to show one).
 */
-func (self Instance) Label() string {
+func (self Instance) Label() string { //gd:EditorProperty.label
 	return string(class(self).GetLabel().String())
 }
 
 // SetLabel sets the property returned by [GetLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLabel(value string) Instance {
+func (self Instance) SetLabel(value string) Instance { //gd:EditorProperty.label
 	class(self).SetLabel(String.New(value))
 	return self
 }
@@ -369,19 +369,19 @@ func (self Instance) SetLabel(value string) Instance {
 /*
 Used by the inspector, set to true when the property is read-only.
 */
-func (self Instance) ReadOnly() bool {
+func (self Instance) ReadOnly() bool { //gd:EditorProperty.read_only
 	return bool(class(self).IsReadOnly())
 }
 
 /*
 Used by the inspector, set to true when the property label is drawn.
 */
-func (self Instance) DrawLabel() bool {
+func (self Instance) DrawLabel() bool { //gd:EditorProperty.draw_label
 	return bool(class(self).IsDrawLabel())
 }
 
 // SetDrawLabel sets the property returned by [IsDrawLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawLabel(value bool) Instance {
+func (self Instance) SetDrawLabel(value bool) Instance { //gd:EditorProperty.draw_label
 	class(self).SetDrawLabel(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetDrawLabel(value bool) Instance {
 /*
 Used by the inspector, set to true when the property background is drawn.
 */
-func (self Instance) DrawBackground() bool {
+func (self Instance) DrawBackground() bool { //gd:EditorProperty.draw_background
 	return bool(class(self).IsDrawBackground())
 }
 
 // SetDrawBackground sets the property returned by [IsDrawBackground]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawBackground(value bool) Instance {
+func (self Instance) SetDrawBackground(value bool) Instance { //gd:EditorProperty.draw_background
 	class(self).SetDrawBackground(value)
 	return self
 }
@@ -402,12 +402,12 @@ func (self Instance) SetDrawBackground(value bool) Instance {
 /*
 Used by the inspector, set to true when the property is checkable.
 */
-func (self Instance) Checkable() bool {
+func (self Instance) Checkable() bool { //gd:EditorProperty.checkable
 	return bool(class(self).IsCheckable())
 }
 
 // SetCheckable sets the property returned by [IsCheckable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCheckable(value bool) Instance {
+func (self Instance) SetCheckable(value bool) Instance { //gd:EditorProperty.checkable
 	class(self).SetCheckable(value)
 	return self
 }
@@ -415,12 +415,12 @@ func (self Instance) SetCheckable(value bool) Instance {
 /*
 Used by the inspector, set to true when the property is checked.
 */
-func (self Instance) Checked() bool {
+func (self Instance) Checked() bool { //gd:EditorProperty.checked
 	return bool(class(self).IsChecked())
 }
 
 // SetChecked sets the property returned by [IsChecked]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetChecked(value bool) Instance {
+func (self Instance) SetChecked(value bool) Instance { //gd:EditorProperty.checked
 	class(self).SetChecked(value)
 	return self
 }
@@ -428,12 +428,12 @@ func (self Instance) SetChecked(value bool) Instance {
 /*
 Used by the inspector, set to true when the property is drawn with the editor theme's warning color. This is used for editable children's properties.
 */
-func (self Instance) DrawWarning() bool {
+func (self Instance) DrawWarning() bool { //gd:EditorProperty.draw_warning
 	return bool(class(self).IsDrawWarning())
 }
 
 // SetDrawWarning sets the property returned by [IsDrawWarning]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawWarning(value bool) Instance {
+func (self Instance) SetDrawWarning(value bool) Instance { //gd:EditorProperty.draw_warning
 	class(self).SetDrawWarning(value)
 	return self
 }
@@ -441,12 +441,12 @@ func (self Instance) SetDrawWarning(value bool) Instance {
 /*
 Used by the inspector, set to true when the property can add keys for animation.
 */
-func (self Instance) Keying() bool {
+func (self Instance) Keying() bool { //gd:EditorProperty.keying
 	return bool(class(self).IsKeying())
 }
 
 // SetKeying sets the property returned by [IsKeying]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeying(value bool) Instance {
+func (self Instance) SetKeying(value bool) Instance { //gd:EditorProperty.keying
 	class(self).SetKeying(value)
 	return self
 }
@@ -454,12 +454,12 @@ func (self Instance) SetKeying(value bool) Instance {
 /*
 Used by the inspector, set to true when the property can be deleted by the user.
 */
-func (self Instance) Deletable() bool {
+func (self Instance) Deletable() bool { //gd:EditorProperty.deletable
 	return bool(class(self).IsDeletable())
 }
 
 // SetDeletable sets the property returned by [IsDeletable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeletable(value bool) Instance {
+func (self Instance) SetDeletable(value bool) Instance { //gd:EditorProperty.deletable
 	class(self).SetDeletable(value)
 	return self
 }
@@ -467,12 +467,12 @@ func (self Instance) SetDeletable(value bool) Instance {
 /*
 Used by the inspector, set to true when the property is selectable.
 */
-func (self Instance) Selectable() bool {
+func (self Instance) Selectable() bool { //gd:EditorProperty.selectable
 	return bool(class(self).IsSelectable())
 }
 
 // SetSelectable sets the property returned by [IsSelectable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectable(value bool) Instance {
+func (self Instance) SetSelectable(value bool) Instance { //gd:EditorProperty.selectable
 	class(self).SetSelectable(value)
 	return self
 }
@@ -480,12 +480,12 @@ func (self Instance) SetSelectable(value bool) Instance {
 /*
 Used by the inspector, set to true when the property is using folding.
 */
-func (self Instance) UseFolding() bool {
+func (self Instance) UseFolding() bool { //gd:EditorProperty.use_folding
 	return bool(class(self).IsUsingFolding())
 }
 
 // SetUseFolding sets the property returned by [IsUsingFolding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseFolding(value bool) Instance {
+func (self Instance) SetUseFolding(value bool) Instance { //gd:EditorProperty.use_folding
 	class(self).SetUseFolding(value)
 	return self
 }
@@ -493,12 +493,12 @@ func (self Instance) SetUseFolding(value bool) Instance {
 /*
 Space distribution ratio between the label and the editing field.
 */
-func (self Instance) NameSplitRatio() Float.X {
+func (self Instance) NameSplitRatio() Float.X { //gd:EditorProperty.name_split_ratio
 	return Float.X(Float.X(class(self).GetNameSplitRatio()))
 }
 
 // SetNameSplitRatio sets the property returned by [GetNameSplitRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNameSplitRatio(value Float.X) Instance {
+func (self Instance) SetNameSplitRatio(value Float.X) Instance { //gd:EditorProperty.name_split_ratio
 	class(self).SetNameSplitRatio(float64(value))
 	return self
 }

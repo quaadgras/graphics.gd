@@ -170,12 +170,12 @@ The number of columns in the [GridContainer]. If modified, [GridContainer] reord
 
 [GridContainer]: https://pkg.go.dev/graphics.gd/classdb/GridContainer
 */
-func (self Instance) Columns() int {
+func (self Instance) Columns() int { //gd:GridContainer.columns
 	return int(int(class(self).GetColumns()))
 }
 
 // SetColumns sets the property returned by [GetColumns]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColumns(value int) Instance {
+func (self Instance) SetColumns(value int) Instance { //gd:GridContainer.columns
 	class(self).SetColumns(int64(value))
 	return self
 }

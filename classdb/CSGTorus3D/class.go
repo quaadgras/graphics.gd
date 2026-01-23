@@ -179,12 +179,12 @@ func New() Instance {
 /*
 The inner radius of the torus.
 */
-func (self Instance) InnerRadius() Float.X {
+func (self Instance) InnerRadius() Float.X { //gd:CSGTorus3D.inner_radius
 	return Float.X(Float.X(class(self).GetInnerRadius()))
 }
 
 // SetInnerRadius sets the property returned by [GetInnerRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInnerRadius(value Float.X) Instance {
+func (self Instance) SetInnerRadius(value Float.X) Instance { //gd:CSGTorus3D.inner_radius
 	class(self).SetInnerRadius(float64(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetInnerRadius(value Float.X) Instance {
 /*
 The outer radius of the torus.
 */
-func (self Instance) OuterRadius() Float.X {
+func (self Instance) OuterRadius() Float.X { //gd:CSGTorus3D.outer_radius
 	return Float.X(Float.X(class(self).GetOuterRadius()))
 }
 
 // SetOuterRadius sets the property returned by [GetOuterRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOuterRadius(value Float.X) Instance {
+func (self Instance) SetOuterRadius(value Float.X) Instance { //gd:CSGTorus3D.outer_radius
 	class(self).SetOuterRadius(float64(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetOuterRadius(value Float.X) Instance {
 /*
 The number of slices the torus is constructed of.
 */
-func (self Instance) Sides() int {
+func (self Instance) Sides() int { //gd:CSGTorus3D.sides
 	return int(int(class(self).GetSides()))
 }
 
 // SetSides sets the property returned by [GetSides]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSides(value int) Instance {
+func (self Instance) SetSides(value int) Instance { //gd:CSGTorus3D.sides
 	class(self).SetSides(int64(value))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetSides(value int) Instance {
 /*
 The number of edges each ring of the torus is constructed of.
 */
-func (self Instance) RingSides() int {
+func (self Instance) RingSides() int { //gd:CSGTorus3D.ring_sides
 	return int(int(class(self).GetRingSides()))
 }
 
 // SetRingSides sets the property returned by [GetRingSides]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRingSides(value int) Instance {
+func (self Instance) SetRingSides(value int) Instance { //gd:CSGTorus3D.ring_sides
 	class(self).SetRingSides(int64(value))
 	return self
 }
@@ -231,12 +231,12 @@ func (self Instance) SetRingSides(value int) Instance {
 /*
 If true the normals of the torus are set to give a smooth effect making the torus seem rounded. If false the torus will have a flat shaded look.
 */
-func (self Instance) SmoothFaces() bool {
+func (self Instance) SmoothFaces() bool { //gd:CSGTorus3D.smooth_faces
 	return bool(class(self).GetSmoothFaces())
 }
 
 // SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSmoothFaces(value bool) Instance {
+func (self Instance) SetSmoothFaces(value bool) Instance { //gd:CSGTorus3D.smooth_faces
 	class(self).SetSmoothFaces(value)
 	return self
 }
@@ -244,12 +244,12 @@ func (self Instance) SetSmoothFaces(value bool) Instance {
 /*
 The material used to render the torus.
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGTorus3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGTorus3D.material
 	class(self).SetMaterial(value)
 	return self
 }

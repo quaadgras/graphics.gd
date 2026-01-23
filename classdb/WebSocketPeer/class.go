@@ -438,12 +438,12 @@ func New() Instance {
 /*
 The WebSocket sub-protocols allowed during the WebSocket handshake.
 */
-func (self Instance) SupportedProtocols() []string {
+func (self Instance) SupportedProtocols() []string { //gd:WebSocketPeer.supported_protocols
 	return []string(class(self).GetSupportedProtocols().Strings())
 }
 
 // SetSupportedProtocols sets the property returned by [GetSupportedProtocols]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSupportedProtocols(value []string) Instance {
+func (self Instance) SetSupportedProtocols(value []string) Instance { //gd:WebSocketPeer.supported_protocols
 	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 	return self
 }
@@ -453,12 +453,12 @@ The extra HTTP headers to be sent during the WebSocket handshake.
 
 Note: Not supported in Web exports due to browsers' restrictions.
 */
-func (self Instance) HandshakeHeaders() []string {
+func (self Instance) HandshakeHeaders() []string { //gd:WebSocketPeer.handshake_headers
 	return []string(class(self).GetHandshakeHeaders().Strings())
 }
 
 // SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandshakeHeaders(value []string) Instance {
+func (self Instance) SetHandshakeHeaders(value []string) Instance { //gd:WebSocketPeer.handshake_headers
 	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 	return self
 }
@@ -466,12 +466,12 @@ func (self Instance) SetHandshakeHeaders(value []string) Instance {
 /*
 The size of the input buffer in bytes (roughly the maximum amount of memory that will be allocated for the inbound packets).
 */
-func (self Instance) InboundBufferSize() int {
+func (self Instance) InboundBufferSize() int { //gd:WebSocketPeer.inbound_buffer_size
 	return int(int(class(self).GetInboundBufferSize()))
 }
 
 // SetInboundBufferSize sets the property returned by [GetInboundBufferSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInboundBufferSize(value int) Instance {
+func (self Instance) SetInboundBufferSize(value int) Instance { //gd:WebSocketPeer.inbound_buffer_size
 	class(self).SetInboundBufferSize(int64(value))
 	return self
 }
@@ -479,12 +479,12 @@ func (self Instance) SetInboundBufferSize(value int) Instance {
 /*
 The size of the input buffer in bytes (roughly the maximum amount of memory that will be allocated for the outbound packets).
 */
-func (self Instance) OutboundBufferSize() int {
+func (self Instance) OutboundBufferSize() int { //gd:WebSocketPeer.outbound_buffer_size
 	return int(int(class(self).GetOutboundBufferSize()))
 }
 
 // SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOutboundBufferSize(value int) Instance {
+func (self Instance) SetOutboundBufferSize(value int) Instance { //gd:WebSocketPeer.outbound_buffer_size
 	class(self).SetOutboundBufferSize(int64(value))
 	return self
 }
@@ -492,12 +492,12 @@ func (self Instance) SetOutboundBufferSize(value int) Instance {
 /*
 The maximum amount of packets that will be allowed in the queues (both inbound and outbound).
 */
-func (self Instance) MaxQueuedPackets() int {
+func (self Instance) MaxQueuedPackets() int { //gd:WebSocketPeer.max_queued_packets
 	return int(int(class(self).GetMaxQueuedPackets()))
 }
 
 // SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxQueuedPackets(value int) Instance {
+func (self Instance) SetMaxQueuedPackets(value int) Instance { //gd:WebSocketPeer.max_queued_packets
 	class(self).SetMaxQueuedPackets(int64(value))
 	return self
 }
@@ -507,12 +507,12 @@ The interval (in seconds) at which the peer will automatically send WebSocket "p
 
 Note: Has no effect in Web exports due to browser restrictions.
 */
-func (self Instance) HeartbeatInterval() Float.X {
+func (self Instance) HeartbeatInterval() Float.X { //gd:WebSocketPeer.heartbeat_interval
 	return Float.X(Float.X(class(self).GetHeartbeatInterval()))
 }
 
 // SetHeartbeatInterval sets the property returned by [GetHeartbeatInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeartbeatInterval(value Float.X) Instance {
+func (self Instance) SetHeartbeatInterval(value Float.X) Instance { //gd:WebSocketPeer.heartbeat_interval
 	class(self).SetHeartbeatInterval(float64(value))
 	return self
 }

@@ -165,12 +165,12 @@ func New() Instance {
 /*
 Determines the source for the lookup.
 */
-func (self Instance) Source() Source {
+func (self Instance) Source() Source { //gd:VisualShaderNodeTexture.source
 	return Source(class(self).GetSource())
 }
 
 // SetSource sets the property returned by [GetSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSource(value Source) Instance {
+func (self Instance) SetSource(value Source) Instance { //gd:VisualShaderNodeTexture.source
 	class(self).SetSource(value)
 	return self
 }
@@ -180,12 +180,12 @@ The source texture, if needed for the selected [Source].
 
 [Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeTexture#Instance.Source
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:VisualShaderNodeTexture.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:VisualShaderNodeTexture.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -195,12 +195,12 @@ Specifies the type of the texture if [Source] is set to [SourceTexture].
 
 [Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeTexture#Instance.Source
 */
-func (self Instance) TextureType() TextureType {
+func (self Instance) TextureType() TextureType { //gd:VisualShaderNodeTexture.texture_type
 	return TextureType(class(self).GetTextureType())
 }
 
 // SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureType(value TextureType) Instance {
+func (self Instance) SetTextureType(value TextureType) Instance { //gd:VisualShaderNodeTexture.texture_type
 	class(self).SetTextureType(value)
 	return self
 }

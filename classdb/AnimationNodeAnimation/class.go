@@ -182,12 +182,12 @@ Animation to use as an output. It is one of the animations provided by [Animatio
 
 [AnimationTree.AnimPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.AnimPlayer
 */
-func (self Instance) Animation() string {
+func (self Instance) Animation() string { //gd:AnimationNodeAnimation.animation
 	return string(class(self).GetAnimation().String())
 }
 
 // SetAnimation sets the property returned by [GetAnimation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimation(value string) Instance {
+func (self Instance) SetAnimation(value string) Instance { //gd:AnimationNodeAnimation.animation
 	class(self).SetAnimation(String.Name(String.New(value)))
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetAnimation(value string) Instance {
 /*
 Determines the playback direction of the animation.
 */
-func (self Instance) PlayMode() PlayMode {
+func (self Instance) PlayMode() PlayMode { //gd:AnimationNodeAnimation.play_mode
 	return PlayMode(class(self).GetPlayMode())
 }
 
 // SetPlayMode sets the property returned by [GetPlayMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlayMode(value PlayMode) Instance {
+func (self Instance) SetPlayMode(value PlayMode) Instance { //gd:AnimationNodeAnimation.play_mode
 	class(self).SetPlayMode(value)
 	return self
 }
@@ -212,12 +212,12 @@ See also the notes of [AnimationPlayer.Play].
 
 [AnimationPlayer.Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
 */
-func (self Instance) AdvanceOnStart() bool {
+func (self Instance) AdvanceOnStart() bool { //gd:AnimationNodeAnimation.advance_on_start
 	return bool(class(self).IsAdvanceOnStart())
 }
 
 // SetAdvanceOnStart sets the property returned by [IsAdvanceOnStart]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAdvanceOnStart(value bool) Instance {
+func (self Instance) SetAdvanceOnStart(value bool) Instance { //gd:AnimationNodeAnimation.advance_on_start
 	class(self).SetAdvanceOnStart(value)
 	return self
 }
@@ -228,12 +228,12 @@ If true, [AnimationNode] provides an animation based on the [Animation] resource
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 [AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
 */
-func (self Instance) UseCustomTimeline() bool {
+func (self Instance) UseCustomTimeline() bool { //gd:AnimationNodeAnimation.use_custom_timeline
 	return bool(class(self).IsUsingCustomTimeline())
 }
 
 // SetUseCustomTimeline sets the property returned by [IsUsingCustomTimeline]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseCustomTimeline(value bool) Instance {
+func (self Instance) SetUseCustomTimeline(value bool) Instance { //gd:AnimationNodeAnimation.use_custom_timeline
 	class(self).SetUseCustomTimeline(value)
 	return self
 }
@@ -243,12 +243,12 @@ If [UseCustomTimeline] is true, offset the start position of the animation.
 
 [UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
 */
-func (self Instance) TimelineLength() Float.X {
+func (self Instance) TimelineLength() Float.X { //gd:AnimationNodeAnimation.timeline_length
 	return Float.X(Float.X(class(self).GetTimelineLength()))
 }
 
 // SetTimelineLength sets the property returned by [GetTimelineLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTimelineLength(value Float.X) Instance {
+func (self Instance) SetTimelineLength(value Float.X) Instance { //gd:AnimationNodeAnimation.timeline_length
 	class(self).SetTimelineLength(float64(value))
 	return self
 }
@@ -263,12 +263,12 @@ If false, the original animation length is respected. If you set the loop to [Lo
 [LoopMode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.LoopMode
 [TimelineLength]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.TimelineLength
 */
-func (self Instance) StretchTimeScale() bool {
+func (self Instance) StretchTimeScale() bool { //gd:AnimationNodeAnimation.stretch_time_scale
 	return bool(class(self).IsStretchingTimeScale())
 }
 
 // SetStretchTimeScale sets the property returned by [IsStretchingTimeScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchTimeScale(value bool) Instance {
+func (self Instance) SetStretchTimeScale(value bool) Instance { //gd:AnimationNodeAnimation.stretch_time_scale
 	class(self).SetStretchTimeScale(value)
 	return self
 }
@@ -280,12 +280,12 @@ This is useful for adjusting which foot steps first in 3D walking animations.
 
 [UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
 */
-func (self Instance) StartOffset() Float.X {
+func (self Instance) StartOffset() Float.X { //gd:AnimationNodeAnimation.start_offset
 	return Float.X(Float.X(class(self).GetStartOffset()))
 }
 
 // SetStartOffset sets the property returned by [GetStartOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStartOffset(value Float.X) Instance {
+func (self Instance) SetStartOffset(value Float.X) Instance { //gd:AnimationNodeAnimation.start_offset
 	class(self).SetStartOffset(float64(value))
 	return self
 }
@@ -300,12 +300,12 @@ Note: If the [Animation.LoopMode] isn't set to looping, the [Animation.TrackSetI
 [Animation.TrackSetInterpolationLoopWrap]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackSetInterpolationLoopWrap
 [UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
 */
-func (self Instance) LoopMode() Animation.LoopMode {
+func (self Instance) LoopMode() Animation.LoopMode { //gd:AnimationNodeAnimation.loop_mode
 	return Animation.LoopMode(class(self).GetLoopMode())
 }
 
 // SetLoopMode sets the property returned by [GetLoopMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoopMode(value Animation.LoopMode) Instance {
+func (self Instance) SetLoopMode(value Animation.LoopMode) Instance { //gd:AnimationNodeAnimation.loop_mode
 	class(self).SetLoopMode(value)
 	return self
 }

@@ -208,7 +208,7 @@ func New() Instance {
 Width of the generated texture (in pixels).
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:NoiseTexture2D.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -217,7 +217,7 @@ func (self Instance) SetWidth(value int) Instance {
 Height of the generated texture (in pixels).
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetHeight(value int) Instance {
+func (self Instance) SetHeight(value int) Instance { //gd:NoiseTexture2D.height
 	class(self).SetHeight(int64(value))
 	return self
 }
@@ -230,12 +230,12 @@ Note: [GenerateMipmaps] requires mipmap filtering to be enabled on the material 
 [GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D#Instance.GenerateMipmaps
 [NoiseTexture2D]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D
 */
-func (self Instance) GenerateMipmaps() bool {
+func (self Instance) GenerateMipmaps() bool { //gd:NoiseTexture2D.generate_mipmaps
 	return bool(class(self).IsGeneratingMipmaps())
 }
 
 // SetGenerateMipmaps sets the property returned by [IsGeneratingMipmaps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGenerateMipmaps(value bool) Instance {
+func (self Instance) SetGenerateMipmaps(value bool) Instance { //gd:NoiseTexture2D.generate_mipmaps
 	class(self).SetGenerateMipmaps(value)
 	return self
 }
@@ -245,12 +245,12 @@ The instance of the [Noise] object.
 
 [Noise]: https://pkg.go.dev/graphics.gd/classdb/Noise
 */
-func (self Instance) Noise() Noise.Instance {
+func (self Instance) Noise() Noise.Instance { //gd:NoiseTexture2D.noise
 	return Noise.Instance(class(self).GetNoise())
 }
 
 // SetNoise sets the property returned by [GetNoise]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNoise(value Noise.Instance) Instance {
+func (self Instance) SetNoise(value Noise.Instance) Instance { //gd:NoiseTexture2D.noise
 	class(self).SetNoise(value)
 	return self
 }
@@ -260,12 +260,12 @@ A [Gradient] which is used to map the luminance of each pixel to a color value.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) ColorRamp() Gradient.Instance {
+func (self Instance) ColorRamp() Gradient.Instance { //gd:NoiseTexture2D.color_ramp
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
 // SetColorRamp sets the property returned by [GetColorRamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorRamp(value Gradient.Instance) Instance {
+func (self Instance) SetColorRamp(value Gradient.Instance) Instance { //gd:NoiseTexture2D.color_ramp
 	class(self).SetColorRamp(value)
 	return self
 }
@@ -283,12 +283,12 @@ Note: The default [FastNoiseLite] implementation uses the fallback path for seam
 [SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D#Instance.SeamlessBlendSkirt
 [Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D#Instance.Width
 */
-func (self Instance) Seamless() bool {
+func (self Instance) Seamless() bool { //gd:NoiseTexture2D.seamless
 	return bool(class(self).GetSeamless())
 }
 
 // SetSeamless sets the property returned by [GetSeamless]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeamless(value bool) Instance {
+func (self Instance) SetSeamless(value bool) Instance { //gd:NoiseTexture2D.seamless
 	class(self).SetSeamless(value)
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetSeamless(value bool) Instance {
 /*
 If true, inverts the noise texture. White becomes black, black becomes white.
 */
-func (self Instance) Invert() bool {
+func (self Instance) Invert() bool { //gd:NoiseTexture2D.invert
 	return bool(class(self).GetInvert())
 }
 
 // SetInvert sets the property returned by [GetInvert]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInvert(value bool) Instance {
+func (self Instance) SetInvert(value bool) Instance { //gd:NoiseTexture2D.invert
 	class(self).SetInvert(value)
 	return self
 }
@@ -309,12 +309,12 @@ func (self Instance) SetInvert(value bool) Instance {
 /*
 Determines whether the noise image is calculated in 3D space. May result in reduced contrast.
 */
-func (self Instance) In3dSpace() bool {
+func (self Instance) In3dSpace() bool { //gd:NoiseTexture2D.in_3d_space
 	return bool(class(self).IsIn3dSpace())
 }
 
 // SetIn3dSpace sets the property returned by [IsIn3dSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIn3dSpace(value bool) Instance {
+func (self Instance) SetIn3dSpace(value bool) Instance { //gd:NoiseTexture2D.in_3d_space
 	class(self).SetIn3dSpace(value)
 	return self
 }
@@ -322,12 +322,12 @@ func (self Instance) SetIn3dSpace(value bool) Instance {
 /*
 If true, the resulting texture contains a normal map created from the original noise interpreted as a bump map.
 */
-func (self Instance) AsNormalMap() bool {
+func (self Instance) AsNormalMap() bool { //gd:NoiseTexture2D.as_normal_map
 	return bool(class(self).IsNormalMap())
 }
 
 // SetAsNormalMap sets the property returned by [IsNormalMap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAsNormalMap(value bool) Instance {
+func (self Instance) SetAsNormalMap(value bool) Instance { //gd:NoiseTexture2D.as_normal_map
 	class(self).SetAsNormalMap(value)
 	return self
 }
@@ -337,12 +337,12 @@ If true, the noise image coming from the noise generator is normalized to the ra
 
 Turning normalization off can affect the contrast and allows you to generate non repeating tileable noise textures.
 */
-func (self Instance) Normalize() bool {
+func (self Instance) Normalize() bool { //gd:NoiseTexture2D.normalize
 	return bool(class(self).IsNormalized())
 }
 
 // SetNormalize sets the property returned by [IsNormalized]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalize(value bool) Instance {
+func (self Instance) SetNormalize(value bool) Instance { //gd:NoiseTexture2D.normalize
 	class(self).SetNormalize(value)
 	return self
 }
@@ -357,12 +357,12 @@ Note: If using a [Width] or [Height] lower than the default, you may need to inc
 [SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D#Instance.SeamlessBlendSkirt
 [Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture2D#Instance.Width
 */
-func (self Instance) SeamlessBlendSkirt() Float.X {
+func (self Instance) SeamlessBlendSkirt() Float.X { //gd:NoiseTexture2D.seamless_blend_skirt
 	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
 // SetSeamlessBlendSkirt sets the property returned by [GetSeamlessBlendSkirt]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance {
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance { //gd:NoiseTexture2D.seamless_blend_skirt
 	class(self).SetSeamlessBlendSkirt(float64(value))
 	return self
 }
@@ -370,12 +370,12 @@ func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance {
 /*
 Strength of the bump maps used in this texture. A higher value will make the bump maps appear larger while a lower value will make them appear softer.
 */
-func (self Instance) BumpStrength() Float.X {
+func (self Instance) BumpStrength() Float.X { //gd:NoiseTexture2D.bump_strength
 	return Float.X(Float.X(class(self).GetBumpStrength()))
 }
 
 // SetBumpStrength sets the property returned by [GetBumpStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBumpStrength(value Float.X) Instance {
+func (self Instance) SetBumpStrength(value Float.X) Instance { //gd:NoiseTexture2D.bump_strength
 	class(self).SetBumpStrength(float64(value))
 	return self
 }

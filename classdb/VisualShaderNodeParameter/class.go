@@ -166,12 +166,12 @@ Name of the parameter, by which it can be accessed through the [ShaderMaterial] 
 
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) ParameterName() string {
+func (self Instance) ParameterName() string { //gd:VisualShaderNodeParameter.parameter_name
 	return string(class(self).GetParameterName().String())
 }
 
 // SetParameterName sets the property returned by [GetParameterName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParameterName(value string) Instance {
+func (self Instance) SetParameterName(value string) Instance { //gd:VisualShaderNodeParameter.parameter_name
 	class(self).SetParameterName(String.New(value))
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetParameterName(value string) Instance {
 /*
 Defines the scope of the parameter.
 */
-func (self Instance) Qualifier() Qualifier {
+func (self Instance) Qualifier() Qualifier { //gd:VisualShaderNodeParameter.qualifier
 	return Qualifier(class(self).GetQualifier())
 }
 
 // SetQualifier sets the property returned by [GetQualifier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetQualifier(value Qualifier) Instance {
+func (self Instance) SetQualifier(value Qualifier) Instance { //gd:VisualShaderNodeParameter.qualifier
 	class(self).SetQualifier(value)
 	return self
 }

@@ -265,12 +265,12 @@ The NodePath to the node that is the target for the TwoBoneIK modification. This
 
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 */
-func (self Instance) TargetNodepath() string {
+func (self Instance) TargetNodepath() string { //gd:SkeletonModification2DTwoBoneIK.target_nodepath
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNodepath sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNodepath(value string) Instance {
+func (self Instance) SetTargetNodepath(value string) Instance { //gd:SkeletonModification2DTwoBoneIK.target_nodepath
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -278,12 +278,12 @@ func (self Instance) SetTargetNodepath(value string) Instance {
 /*
 The minimum distance the target can be at. If the target is closer than this distance, the modification will solve as if it's at this minimum distance. When set to 0, the modification will solve without distance constraints.
 */
-func (self Instance) TargetMinimumDistance() Float.X {
+func (self Instance) TargetMinimumDistance() Float.X { //gd:SkeletonModification2DTwoBoneIK.target_minimum_distance
 	return Float.X(Float.X(class(self).GetTargetMinimumDistance()))
 }
 
 // SetTargetMinimumDistance sets the property returned by [GetTargetMinimumDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetMinimumDistance(value Float.X) Instance {
+func (self Instance) SetTargetMinimumDistance(value Float.X) Instance { //gd:SkeletonModification2DTwoBoneIK.target_minimum_distance
 	class(self).SetTargetMinimumDistance(float64(value))
 	return self
 }
@@ -291,12 +291,12 @@ func (self Instance) SetTargetMinimumDistance(value Float.X) Instance {
 /*
 The maximum distance the target can be at. If the target is farther than this distance, the modification will solve as if it's at this maximum distance. When set to 0, the modification will solve without distance constraints.
 */
-func (self Instance) TargetMaximumDistance() Float.X {
+func (self Instance) TargetMaximumDistance() Float.X { //gd:SkeletonModification2DTwoBoneIK.target_maximum_distance
 	return Float.X(Float.X(class(self).GetTargetMaximumDistance()))
 }
 
 // SetTargetMaximumDistance sets the property returned by [GetTargetMaximumDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetMaximumDistance(value Float.X) Instance {
+func (self Instance) SetTargetMaximumDistance(value Float.X) Instance { //gd:SkeletonModification2DTwoBoneIK.target_maximum_distance
 	class(self).SetTargetMaximumDistance(float64(value))
 	return self
 }
@@ -304,12 +304,12 @@ func (self Instance) SetTargetMaximumDistance(value Float.X) Instance {
 /*
 If true, the bones in the modification will bend outward as opposed to inwards when contracting. If false, the bones will bend inwards when contracting.
 */
-func (self Instance) FlipBendDirection() bool {
+func (self Instance) FlipBendDirection() bool { //gd:SkeletonModification2DTwoBoneIK.flip_bend_direction
 	return bool(class(self).GetFlipBendDirection())
 }
 
 // SetFlipBendDirection sets the property returned by [GetFlipBendDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipBendDirection(value bool) Instance {
+func (self Instance) SetFlipBendDirection(value bool) Instance { //gd:SkeletonModification2DTwoBoneIK.flip_bend_direction
 	class(self).SetFlipBendDirection(value)
 	return self
 }

@@ -301,12 +301,12 @@ func New() Instance {
 /*
 Sets the joint type.
 */
-func (self Instance) JointType() JointType {
+func (self Instance) JointType() JointType { //gd:PhysicalBone3D.joint_type
 	return JointType(class(self).GetJointType())
 }
 
 // SetJointType sets the property returned by [GetJointType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointType(value JointType) Instance {
+func (self Instance) SetJointType(value JointType) Instance { //gd:PhysicalBone3D.joint_type
 	class(self).SetJointType(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetJointType(value JointType) Instance {
 /*
 Sets the joint's transform.
 */
-func (self Instance) JointOffset() Transform3D.BasisOrigin {
+func (self Instance) JointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.joint_offset
 	return Transform3D.BasisOrigin(class(self).GetJointOffset())
 }
 
 // SetJointOffset sets the property returned by [GetJointOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) Instance { //gd:PhysicalBone3D.joint_offset
 	class(self).SetJointOffset(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -327,12 +327,12 @@ func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) Instance {
 /*
 Sets the joint's rotation in radians.
 */
-func (self Instance) JointRotation() Vector3.XYZ {
+func (self Instance) JointRotation() Vector3.XYZ { //gd:PhysicalBone3D.joint_rotation
 	return Vector3.XYZ(class(self).GetJointRotation())
 }
 
 // SetJointRotation sets the property returned by [GetJointRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointRotation(value Vector3.XYZ) Instance {
+func (self Instance) SetJointRotation(value Vector3.XYZ) Instance { //gd:PhysicalBone3D.joint_rotation
 	class(self).SetJointRotation(Vector3.XYZ(value))
 	return self
 }
@@ -340,12 +340,12 @@ func (self Instance) SetJointRotation(value Vector3.XYZ) Instance {
 /*
 Sets the body's transform.
 */
-func (self Instance) BodyOffset() Transform3D.BasisOrigin {
+func (self Instance) BodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.body_offset
 	return Transform3D.BasisOrigin(class(self).GetBodyOffset())
 }
 
 // SetBodyOffset sets the property returned by [GetBodyOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) Instance {
+func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) Instance { //gd:PhysicalBone3D.body_offset
 	class(self).SetBodyOffset(Transform3D.BasisOrigin(value))
 	return self
 }
@@ -353,12 +353,12 @@ func (self Instance) SetBodyOffset(value Transform3D.BasisOrigin) Instance {
 /*
 The body's mass.
 */
-func (self Instance) Mass() Float.X {
+func (self Instance) Mass() Float.X { //gd:PhysicalBone3D.mass
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
 // SetMass sets the property returned by [GetMass]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMass(value Float.X) Instance {
+func (self Instance) SetMass(value Float.X) Instance { //gd:PhysicalBone3D.mass
 	class(self).SetMass(float64(value))
 	return self
 }
@@ -366,12 +366,12 @@ func (self Instance) SetMass(value Float.X) Instance {
 /*
 The body's friction, from 0 (frictionless) to 1 (max friction).
 */
-func (self Instance) Friction() Float.X {
+func (self Instance) Friction() Float.X { //gd:PhysicalBone3D.friction
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
 // SetFriction sets the property returned by [GetFriction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFriction(value Float.X) Instance {
+func (self Instance) SetFriction(value Float.X) Instance { //gd:PhysicalBone3D.friction
 	class(self).SetFriction(float64(value))
 	return self
 }
@@ -388,12 +388,12 @@ Note: Even with [Bounce] set to 1.0, some energy will be lost over time due to l
 [LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDampMode
 [PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
 */
-func (self Instance) Bounce() Float.X {
+func (self Instance) Bounce() Float.X { //gd:PhysicalBone3D.bounce
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
 // SetBounce sets the property returned by [GetBounce]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBounce(value Float.X) Instance {
+func (self Instance) SetBounce(value Float.X) Instance { //gd:PhysicalBone3D.bounce
 	class(self).SetBounce(float64(value))
 	return self
 }
@@ -403,12 +403,12 @@ This is multiplied by [ProjectSettings] "physics/3d/default_gravity" to produce 
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) GravityScale() Float.X {
+func (self Instance) GravityScale() Float.X { //gd:PhysicalBone3D.gravity_scale
 	return Float.X(Float.X(class(self).GetGravityScale()))
 }
 
 // SetGravityScale sets the property returned by [GetGravityScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGravityScale(value Float.X) Instance {
+func (self Instance) SetGravityScale(value Float.X) Instance { //gd:PhysicalBone3D.gravity_scale
 	class(self).SetGravityScale(float64(value))
 	return self
 }
@@ -421,12 +421,12 @@ Setting this property will call the method [PhysicsServer3D.BodySetOmitForceInte
 [IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Interface
 [PhysicsServer3D.BodySetOmitForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D#BodySetOmitForceIntegration
 */
-func (self Instance) CustomIntegrator() bool {
+func (self Instance) CustomIntegrator() bool { //gd:PhysicalBone3D.custom_integrator
 	return bool(class(self).IsUsingCustomIntegrator())
 }
 
 // SetCustomIntegrator sets the property returned by [IsUsingCustomIntegrator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomIntegrator(value bool) Instance {
+func (self Instance) SetCustomIntegrator(value bool) Instance { //gd:PhysicalBone3D.custom_integrator
 	class(self).SetUseCustomIntegrator(value)
 	return self
 }
@@ -436,12 +436,12 @@ Defines how [LinearDamp] is applied.
 
 [LinearDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDamp
 */
-func (self Instance) LinearDampMode() DampMode {
+func (self Instance) LinearDampMode() DampMode { //gd:PhysicalBone3D.linear_damp_mode
 	return DampMode(class(self).GetLinearDampMode())
 }
 
 // SetLinearDampMode sets the property returned by [GetLinearDampMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDampMode(value DampMode) Instance {
+func (self Instance) SetLinearDampMode(value DampMode) Instance { //gd:PhysicalBone3D.linear_damp_mode
 	class(self).SetLinearDampMode(value)
 	return self
 }
@@ -456,12 +456,12 @@ See [ProjectSettings] "physics/3d/default_linear_damp" for more details about da
 [LinearDampMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.LinearDampMode
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) LinearDamp() Float.X {
+func (self Instance) LinearDamp() Float.X { //gd:PhysicalBone3D.linear_damp
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
 // SetLinearDamp sets the property returned by [GetLinearDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearDamp(value Float.X) Instance {
+func (self Instance) SetLinearDamp(value Float.X) Instance { //gd:PhysicalBone3D.linear_damp
 	class(self).SetLinearDamp(float64(value))
 	return self
 }
@@ -471,12 +471,12 @@ Defines how [AngularDamp] is applied.
 
 [AngularDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.AngularDamp
 */
-func (self Instance) AngularDampMode() DampMode {
+func (self Instance) AngularDampMode() DampMode { //gd:PhysicalBone3D.angular_damp_mode
 	return DampMode(class(self).GetAngularDampMode())
 }
 
 // SetAngularDampMode sets the property returned by [GetAngularDampMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDampMode(value DampMode) Instance {
+func (self Instance) SetAngularDampMode(value DampMode) Instance { //gd:PhysicalBone3D.angular_damp_mode
 	class(self).SetAngularDampMode(value)
 	return self
 }
@@ -491,12 +491,12 @@ See [ProjectSettings] "physics/3d/default_angular_damp" for more details about d
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) AngularDamp() Float.X {
+func (self Instance) AngularDamp() Float.X { //gd:PhysicalBone3D.angular_damp
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
 // SetAngularDamp sets the property returned by [GetAngularDamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularDamp(value Float.X) Instance {
+func (self Instance) SetAngularDamp(value Float.X) Instance { //gd:PhysicalBone3D.angular_damp
 	class(self).SetAngularDamp(float64(value))
 	return self
 }
@@ -506,12 +506,12 @@ The body's linear velocity in units per second. Can be used sporadically, but do
 
 [IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Interface
 */
-func (self Instance) LinearVelocity() Vector3.XYZ {
+func (self Instance) LinearVelocity() Vector3.XYZ { //gd:PhysicalBone3D.linear_velocity
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
 // SetLinearVelocity sets the property returned by [GetLinearVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance { //gd:PhysicalBone3D.linear_velocity
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -519,12 +519,12 @@ func (self Instance) SetLinearVelocity(value Vector3.XYZ) Instance {
 /*
 The PhysicalBone3D's rotational velocity in radians per second.
 */
-func (self Instance) AngularVelocity() Vector3.XYZ {
+func (self Instance) AngularVelocity() Vector3.XYZ { //gd:PhysicalBone3D.angular_velocity
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
 // SetAngularVelocity sets the property returned by [GetAngularVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
+func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance { //gd:PhysicalBone3D.angular_velocity
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 	return self
 }
@@ -532,12 +532,12 @@ func (self Instance) SetAngularVelocity(value Vector3.XYZ) Instance {
 /*
 If true, the body is deactivated when there is no movement, so it will not take part in the simulation until it is awakened by an external force.
 */
-func (self Instance) CanSleep() bool {
+func (self Instance) CanSleep() bool { //gd:PhysicalBone3D.can_sleep
 	return bool(class(self).IsAbleToSleep())
 }
 
 // SetCanSleep sets the property returned by [IsAbleToSleep]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCanSleep(value bool) Instance {
+func (self Instance) SetCanSleep(value bool) Instance { //gd:PhysicalBone3D.can_sleep
 	class(self).SetCanSleep(value)
 	return self
 }

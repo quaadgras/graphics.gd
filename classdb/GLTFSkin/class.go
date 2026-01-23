@@ -173,102 +173,102 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SkinRoot() int {
+func (self Instance) SkinRoot() int { //gd:GLTFSkin.skin_root
 	return int(int(class(self).GetSkinRoot()))
 }
 
 // SetSkinRoot sets the property returned by [GetSkinRoot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkinRoot(value int) Instance {
+func (self Instance) SetSkinRoot(value int) Instance { //gd:GLTFSkin.skin_root
 	class(self).SetSkinRoot(int64(value))
 	return self
 }
 
-func (self Instance) JointsOriginal() []int32 {
+func (self Instance) JointsOriginal() []int32 { //gd:GLTFSkin.joints_original
 	return []int32(slices.Collect(class(self).GetJointsOriginal().Values()))
 }
 
 // SetJointsOriginal sets the property returned by [GetJointsOriginal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointsOriginal(value []int32) Instance {
+func (self Instance) SetJointsOriginal(value []int32) Instance { //gd:GLTFSkin.joints_original
 	class(self).SetJointsOriginal(Packed.New(value...))
 	return self
 }
 
-func (self Instance) InverseBinds() []Transform3D.BasisOrigin {
+func (self Instance) InverseBinds() []Transform3D.BasisOrigin { //gd:GLTFSkin.inverse_binds
 	return []Transform3D.BasisOrigin(gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(class(self).GetInverseBinds())))
 }
 
 // SetInverseBinds sets the property returned by [GetInverseBinds]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) Instance {
+func (self Instance) SetInverseBinds(value []Transform3D.BasisOrigin) Instance { //gd:GLTFSkin.inverse_binds
 	class(self).SetInverseBinds(gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](value))
 	return self
 }
 
-func (self Instance) Joints() []int32 {
+func (self Instance) Joints() []int32 { //gd:GLTFSkin.joints
 	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
 // SetJoints sets the property returned by [GetJoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJoints(value []int32) Instance {
+func (self Instance) SetJoints(value []int32) Instance { //gd:GLTFSkin.joints
 	class(self).SetJoints(Packed.New(value...))
 	return self
 }
 
-func (self Instance) NonJoints() []int32 {
+func (self Instance) NonJoints() []int32 { //gd:GLTFSkin.non_joints
 	return []int32(slices.Collect(class(self).GetNonJoints().Values()))
 }
 
 // SetNonJoints sets the property returned by [GetNonJoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNonJoints(value []int32) Instance {
+func (self Instance) SetNonJoints(value []int32) Instance { //gd:GLTFSkin.non_joints
 	class(self).SetNonJoints(Packed.New(value...))
 	return self
 }
 
-func (self Instance) Roots() []int32 {
+func (self Instance) Roots() []int32 { //gd:GLTFSkin.roots
 	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
 // SetRoots sets the property returned by [GetRoots]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRoots(value []int32) Instance {
+func (self Instance) SetRoots(value []int32) Instance { //gd:GLTFSkin.roots
 	class(self).SetRoots(Packed.New(value...))
 	return self
 }
 
-func (self Instance) Skeleton() int {
+func (self Instance) Skeleton() int { //gd:GLTFSkin.skeleton
 	return int(int(class(self).GetSkeleton()))
 }
 
 // SetSkeleton sets the property returned by [GetSkeleton]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeleton(value int) Instance {
+func (self Instance) SetSkeleton(value int) Instance { //gd:GLTFSkin.skeleton
 	class(self).SetSkeleton(int64(value))
 	return self
 }
 
-func (self Instance) JointIToBoneI() map[int]int {
+func (self Instance) JointIToBoneI() map[int]int { //gd:GLTFSkin.joint_i_to_bone_i
 	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetJointIToBoneI()))
 }
 
 // SetJointIToBoneI sets the property returned by [GetJointIToBoneI]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointIToBoneI(value map[int]int) Instance {
+func (self Instance) SetJointIToBoneI(value map[int]int) Instance { //gd:GLTFSkin.joint_i_to_bone_i
 	class(self).SetJointIToBoneI(gd.DictionaryFromMap(value))
 	return self
 }
 
-func (self Instance) JointIToName() map[int]string {
+func (self Instance) JointIToName() map[int]string { //gd:GLTFSkin.joint_i_to_name
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetJointIToName()))
 }
 
 // SetJointIToName sets the property returned by [GetJointIToName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJointIToName(value map[int]string) Instance {
+func (self Instance) SetJointIToName(value map[int]string) Instance { //gd:GLTFSkin.joint_i_to_name
 	class(self).SetJointIToName(gd.DictionaryFromMap(value))
 	return self
 }
 
-func (self Instance) GodotSkin() Skin.Instance {
+func (self Instance) GodotSkin() Skin.Instance { //gd:GLTFSkin.godot_skin
 	return Skin.Instance(class(self).GetGodotSkin())
 }
 
 // SetGodotSkin sets the property returned by [GetGodotSkin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGodotSkin(value Skin.Instance) Instance {
+func (self Instance) SetGodotSkin(value Skin.Instance) Instance { //gd:GLTFSkin.godot_skin
 	class(self).SetGodotSkin(value)
 	return self
 }

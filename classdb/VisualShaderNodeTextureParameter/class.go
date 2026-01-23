@@ -169,12 +169,12 @@ func New() Instance {
 /*
 Defines the type of data provided by the source texture.
 */
-func (self Instance) TextureType() TextureType {
+func (self Instance) TextureType() TextureType { //gd:VisualShaderNodeTextureParameter.texture_type
 	return TextureType(class(self).GetTextureType())
 }
 
 // SetTextureType sets the property returned by [GetTextureType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureType(value TextureType) Instance {
+func (self Instance) SetTextureType(value TextureType) Instance { //gd:VisualShaderNodeTextureParameter.texture_type
 	class(self).SetTextureType(value)
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetTextureType(value TextureType) Instance {
 /*
 Sets the default color if no texture is assigned to the uniform.
 */
-func (self Instance) ColorDefault() ColorDefault {
+func (self Instance) ColorDefault() ColorDefault { //gd:VisualShaderNodeTextureParameter.color_default
 	return ColorDefault(class(self).GetColorDefault())
 }
 
 // SetColorDefault sets the property returned by [GetColorDefault]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorDefault(value ColorDefault) Instance {
+func (self Instance) SetColorDefault(value ColorDefault) Instance { //gd:VisualShaderNodeTextureParameter.color_default
 	class(self).SetColorDefault(value)
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetColorDefault(value ColorDefault) Instance {
 /*
 Sets the texture filtering mode.
 */
-func (self Instance) TextureFilter() TextureFilter {
+func (self Instance) TextureFilter() TextureFilter { //gd:VisualShaderNodeTextureParameter.texture_filter
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
 // SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureFilter(value TextureFilter) Instance {
+func (self Instance) SetTextureFilter(value TextureFilter) Instance { //gd:VisualShaderNodeTextureParameter.texture_filter
 	class(self).SetTextureFilter(value)
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetTextureFilter(value TextureFilter) Instance {
 /*
 Sets the texture repeating mode.
 */
-func (self Instance) TextureRepeat() TextureRepeat {
+func (self Instance) TextureRepeat() TextureRepeat { //gd:VisualShaderNodeTextureParameter.texture_repeat
 	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
 // SetTextureRepeat sets the property returned by [GetTextureRepeat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureRepeat(value TextureRepeat) Instance {
+func (self Instance) SetTextureRepeat(value TextureRepeat) Instance { //gd:VisualShaderNodeTextureParameter.texture_repeat
 	class(self).SetTextureRepeat(value)
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetTextureRepeat(value TextureRepeat) Instance {
 /*
 Sets the texture source mode. Used for reading from the screen, depth, or normal_roughness texture.
 */
-func (self Instance) TextureSource() TextureSource {
+func (self Instance) TextureSource() TextureSource { //gd:VisualShaderNodeTextureParameter.texture_source
 	return TextureSource(class(self).GetTextureSource())
 }
 
 // SetTextureSource sets the property returned by [GetTextureSource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureSource(value TextureSource) Instance {
+func (self Instance) SetTextureSource(value TextureSource) Instance { //gd:VisualShaderNodeTextureParameter.texture_source
 	class(self).SetTextureSource(value)
 	return self
 }

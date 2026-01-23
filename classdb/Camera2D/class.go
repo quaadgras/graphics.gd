@@ -315,12 +315,12 @@ The camera's relative offset. Useful for looking around or camera shake animatio
 [LimitRight]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitRight
 [LimitTop]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitTop
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:Camera2D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:Camera2D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -328,12 +328,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 The Camera2D's anchor point.
 */
-func (self Instance) AnchorMode() AnchorMode {
+func (self Instance) AnchorMode() AnchorMode { //gd:Camera2D.anchor_mode
 	return AnchorMode(class(self).GetAnchorMode())
 }
 
 // SetAnchorMode sets the property returned by [GetAnchorMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnchorMode(value AnchorMode) Instance {
+func (self Instance) SetAnchorMode(value AnchorMode) Instance { //gd:Camera2D.anchor_mode
 	class(self).SetAnchorMode(value)
 	return self
 }
@@ -344,12 +344,12 @@ If true, the camera's rendered view is not affected by its [Node2D.Rotation] and
 [Node2D.GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
 [Node2D.Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
 */
-func (self Instance) IgnoreRotation() bool {
+func (self Instance) IgnoreRotation() bool { //gd:Camera2D.ignore_rotation
 	return bool(class(self).IsIgnoringRotation())
 }
 
 // SetIgnoreRotation sets the property returned by [IsIgnoringRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIgnoreRotation(value bool) Instance {
+func (self Instance) SetIgnoreRotation(value bool) Instance { //gd:Camera2D.ignore_rotation
 	class(self).SetIgnoreRotation(value)
 	return self
 }
@@ -363,12 +363,12 @@ When the camera is currently active and [Enabled] is set to false, the next enab
 [Enabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Enabled
 [Viewport.GetCamera2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetCamera2d
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:Camera2D.enabled
 	return bool(class(self).IsEnabled())
 }
 
 // SetEnabled sets the property returned by [IsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:Camera2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -384,12 +384,12 @@ Note: [FontFile.Oversampling] does not take [Camera2D] zoom into account. This m
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [SystemFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MultichannelSignedDistanceField
 */
-func (self Instance) Zoom() Vector2.XY {
+func (self Instance) Zoom() Vector2.XY { //gd:Camera2D.zoom
 	return Vector2.XY(class(self).GetZoom())
 }
 
 // SetZoom sets the property returned by [GetZoom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetZoom(value Vector2.XY) Instance {
+func (self Instance) SetZoom(value Vector2.XY) Instance { //gd:Camera2D.zoom
 	class(self).SetZoom(Vector2.XY(value))
 	return self
 }
@@ -400,12 +400,12 @@ The custom [Viewport] node attached to the [Camera2D]. If null or not a [Viewpor
 [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) CustomViewport() Node.Instance {
+func (self Instance) CustomViewport() Node.Instance { //gd:Camera2D.custom_viewport
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
 // SetCustomViewport sets the property returned by [GetCustomViewport]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomViewport(value Node.Instance) Instance {
+func (self Instance) SetCustomViewport(value Node.Instance) Instance { //gd:Camera2D.custom_viewport
 	class(self).SetCustomViewport(value)
 	return self
 }
@@ -413,12 +413,12 @@ func (self Instance) SetCustomViewport(value Node.Instance) Instance {
 /*
 The camera's process callback.
 */
-func (self Instance) ProcessCallback() Camera2DProcessCallback {
+func (self Instance) ProcessCallback() Camera2DProcessCallback { //gd:Camera2D.process_callback
 	return Camera2DProcessCallback(class(self).GetProcessCallback())
 }
 
 // SetProcessCallback sets the property returned by [GetProcessCallback]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProcessCallback(value Camera2DProcessCallback) Instance {
+func (self Instance) SetProcessCallback(value Camera2DProcessCallback) Instance { //gd:Camera2D.process_callback
 	class(self).SetProcessCallback(value)
 	return self
 }
@@ -426,12 +426,12 @@ func (self Instance) SetProcessCallback(value Camera2DProcessCallback) Instance 
 /*
 If true, the limits will be enabled. Disabling this will allow the camera to focus anywhere, when the four limit_* properties will not work.
 */
-func (self Instance) LimitEnabled() bool {
+func (self Instance) LimitEnabled() bool { //gd:Camera2D.limit_enabled
 	return bool(class(self).IsLimitEnabled())
 }
 
 // SetLimitEnabled sets the property returned by [IsLimitEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitEnabled(value bool) Instance {
+func (self Instance) SetLimitEnabled(value bool) Instance { //gd:Camera2D.limit_enabled
 	class(self).SetLimitEnabled(value)
 	return self
 }
@@ -441,12 +441,12 @@ Left scroll limit in pixels. The camera stops moving when reaching this value, b
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
 */
-func (self Instance) LimitLeft() int {
+func (self Instance) LimitLeft() int { //gd:Camera2D.limit_left
 	return int(int(class(self).GetLimit(0)))
 }
 
 // SetLimitLeft sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitLeft(value int) Instance {
+func (self Instance) SetLimitLeft(value int) Instance { //gd:Camera2D.limit_left
 	class(self).SetLimit(0, int64(value))
 	return self
 }
@@ -456,12 +456,12 @@ Top scroll limit in pixels. The camera stops moving when reaching this value, bu
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
 */
-func (self Instance) LimitTop() int {
+func (self Instance) LimitTop() int { //gd:Camera2D.limit_top
 	return int(int(class(self).GetLimit(1)))
 }
 
 // SetLimitTop sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitTop(value int) Instance {
+func (self Instance) SetLimitTop(value int) Instance { //gd:Camera2D.limit_top
 	class(self).SetLimit(1, int64(value))
 	return self
 }
@@ -471,12 +471,12 @@ Right scroll limit in pixels. The camera stops moving when reaching this value, 
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
 */
-func (self Instance) LimitRight() int {
+func (self Instance) LimitRight() int { //gd:Camera2D.limit_right
 	return int(int(class(self).GetLimit(2)))
 }
 
 // SetLimitRight sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitRight(value int) Instance {
+func (self Instance) SetLimitRight(value int) Instance { //gd:Camera2D.limit_right
 	class(self).SetLimit(2, int64(value))
 	return self
 }
@@ -486,12 +486,12 @@ Bottom scroll limit in pixels. The camera stops moving when reaching this value,
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
 */
-func (self Instance) LimitBottom() int {
+func (self Instance) LimitBottom() int { //gd:Camera2D.limit_bottom
 	return int(int(class(self).GetLimit(3)))
 }
 
 // SetLimitBottom sets the property returned by [GetLimit]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitBottom(value int) Instance {
+func (self Instance) SetLimitBottom(value int) Instance { //gd:Camera2D.limit_bottom
 	class(self).SetLimit(3, int64(value))
 	return self
 }
@@ -506,12 +506,12 @@ Note: To immediately update the camera's position to be within limits without sm
 [PositionSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingEnabled
 [ResetSmoothing]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.ResetSmoothing
 */
-func (self Instance) LimitSmoothed() bool {
+func (self Instance) LimitSmoothed() bool { //gd:Camera2D.limit_smoothed
 	return bool(class(self).IsLimitSmoothingEnabled())
 }
 
 // SetLimitSmoothed sets the property returned by [IsLimitSmoothingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLimitSmoothed(value bool) Instance {
+func (self Instance) SetLimitSmoothed(value bool) Instance { //gd:Camera2D.limit_smoothed
 	class(self).SetLimitSmoothingEnabled(value)
 	return self
 }
@@ -521,12 +521,12 @@ If true, the camera's view smoothly moves towards its target position at [Positi
 
 [PositionSmoothingSpeed]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingSpeed
 */
-func (self Instance) PositionSmoothingEnabled() bool {
+func (self Instance) PositionSmoothingEnabled() bool { //gd:Camera2D.position_smoothing_enabled
 	return bool(class(self).IsPositionSmoothingEnabled())
 }
 
 // SetPositionSmoothingEnabled sets the property returned by [IsPositionSmoothingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionSmoothingEnabled(value bool) Instance {
+func (self Instance) SetPositionSmoothingEnabled(value bool) Instance { //gd:Camera2D.position_smoothing_enabled
 	class(self).SetPositionSmoothingEnabled(value)
 	return self
 }
@@ -536,12 +536,12 @@ Speed in pixels per second of the camera's smoothing effect when [PositionSmooth
 
 [PositionSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingEnabled
 */
-func (self Instance) PositionSmoothingSpeed() Float.X {
+func (self Instance) PositionSmoothingSpeed() Float.X { //gd:Camera2D.position_smoothing_speed
 	return Float.X(Float.X(class(self).GetPositionSmoothingSpeed()))
 }
 
 // SetPositionSmoothingSpeed sets the property returned by [GetPositionSmoothingSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPositionSmoothingSpeed(value Float.X) Instance {
+func (self Instance) SetPositionSmoothingSpeed(value Float.X) Instance { //gd:Camera2D.position_smoothing_speed
 	class(self).SetPositionSmoothingSpeed(float64(value))
 	return self
 }
@@ -554,12 +554,12 @@ Note: This property has no effect if [IgnoreRotation] is true.
 [IgnoreRotation]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.IgnoreRotation
 [RotationSmoothingSpeed]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.RotationSmoothingSpeed
 */
-func (self Instance) RotationSmoothingEnabled() bool {
+func (self Instance) RotationSmoothingEnabled() bool { //gd:Camera2D.rotation_smoothing_enabled
 	return bool(class(self).IsRotationSmoothingEnabled())
 }
 
 // SetRotationSmoothingEnabled sets the property returned by [IsRotationSmoothingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationSmoothingEnabled(value bool) Instance {
+func (self Instance) SetRotationSmoothingEnabled(value bool) Instance { //gd:Camera2D.rotation_smoothing_enabled
 	class(self).SetRotationSmoothingEnabled(value)
 	return self
 }
@@ -569,12 +569,12 @@ The angular, asymptotic speed of the camera's rotation smoothing effect when [Ro
 
 [RotationSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.RotationSmoothingEnabled
 */
-func (self Instance) RotationSmoothingSpeed() Float.X {
+func (self Instance) RotationSmoothingSpeed() Float.X { //gd:Camera2D.rotation_smoothing_speed
 	return Float.X(Float.X(class(self).GetRotationSmoothingSpeed()))
 }
 
 // SetRotationSmoothingSpeed sets the property returned by [GetRotationSmoothingSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationSmoothingSpeed(value Float.X) Instance {
+func (self Instance) SetRotationSmoothingSpeed(value Float.X) Instance { //gd:Camera2D.rotation_smoothing_speed
 	class(self).SetRotationSmoothingSpeed(float64(value))
 	return self
 }
@@ -582,12 +582,12 @@ func (self Instance) SetRotationSmoothingSpeed(value Float.X) Instance {
 /*
 If true, the camera only moves when reaching the horizontal (left and right) drag margins. If false, the camera moves horizontally regardless of margins.
 */
-func (self Instance) DragHorizontalEnabled() bool {
+func (self Instance) DragHorizontalEnabled() bool { //gd:Camera2D.drag_horizontal_enabled
 	return bool(class(self).IsDragHorizontalEnabled())
 }
 
 // SetDragHorizontalEnabled sets the property returned by [IsDragHorizontalEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragHorizontalEnabled(value bool) Instance {
+func (self Instance) SetDragHorizontalEnabled(value bool) Instance { //gd:Camera2D.drag_horizontal_enabled
 	class(self).SetDragHorizontalEnabled(value)
 	return self
 }
@@ -595,12 +595,12 @@ func (self Instance) SetDragHorizontalEnabled(value bool) Instance {
 /*
 If true, the camera only moves when reaching the vertical (top and bottom) drag margins. If false, the camera moves vertically regardless of the drag margins.
 */
-func (self Instance) DragVerticalEnabled() bool {
+func (self Instance) DragVerticalEnabled() bool { //gd:Camera2D.drag_vertical_enabled
 	return bool(class(self).IsDragVerticalEnabled())
 }
 
 // SetDragVerticalEnabled sets the property returned by [IsDragVerticalEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragVerticalEnabled(value bool) Instance {
+func (self Instance) SetDragVerticalEnabled(value bool) Instance { //gd:Camera2D.drag_vertical_enabled
 	class(self).SetDragVerticalEnabled(value)
 	return self
 }
@@ -612,12 +612,12 @@ Note: Used to set the initial horizontal drag offset; determine the current offs
 
 [DragHorizontalEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.DragHorizontalEnabled
 */
-func (self Instance) DragHorizontalOffset() Float.X {
+func (self Instance) DragHorizontalOffset() Float.X { //gd:Camera2D.drag_horizontal_offset
 	return Float.X(Float.X(class(self).GetDragHorizontalOffset()))
 }
 
 // SetDragHorizontalOffset sets the property returned by [GetDragHorizontalOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragHorizontalOffset(value Float.X) Instance {
+func (self Instance) SetDragHorizontalOffset(value Float.X) Instance { //gd:Camera2D.drag_horizontal_offset
 	class(self).SetDragHorizontalOffset(float64(value))
 	return self
 }
@@ -629,12 +629,12 @@ Note: Used to set the initial vertical drag offset; determine the current offset
 
 [DragVerticalEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.DragVerticalEnabled
 */
-func (self Instance) DragVerticalOffset() Float.X {
+func (self Instance) DragVerticalOffset() Float.X { //gd:Camera2D.drag_vertical_offset
 	return Float.X(Float.X(class(self).GetDragVerticalOffset()))
 }
 
 // SetDragVerticalOffset sets the property returned by [GetDragVerticalOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragVerticalOffset(value Float.X) Instance {
+func (self Instance) SetDragVerticalOffset(value Float.X) Instance { //gd:Camera2D.drag_vertical_offset
 	class(self).SetDragVerticalOffset(float64(value))
 	return self
 }
@@ -642,12 +642,12 @@ func (self Instance) SetDragVerticalOffset(value Float.X) Instance {
 /*
 Left margin needed to drag the camera. A value of 1 makes the camera move only when reaching the left edge of the screen.
 */
-func (self Instance) DragLeftMargin() Float.X {
+func (self Instance) DragLeftMargin() Float.X { //gd:Camera2D.drag_left_margin
 	return Float.X(Float.X(class(self).GetDragMargin(0)))
 }
 
 // SetDragLeftMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragLeftMargin(value Float.X) Instance {
+func (self Instance) SetDragLeftMargin(value Float.X) Instance { //gd:Camera2D.drag_left_margin
 	class(self).SetDragMargin(0, float64(value))
 	return self
 }
@@ -655,12 +655,12 @@ func (self Instance) SetDragLeftMargin(value Float.X) Instance {
 /*
 Top margin needed to drag the camera. A value of 1 makes the camera move only when reaching the top edge of the screen.
 */
-func (self Instance) DragTopMargin() Float.X {
+func (self Instance) DragTopMargin() Float.X { //gd:Camera2D.drag_top_margin
 	return Float.X(Float.X(class(self).GetDragMargin(1)))
 }
 
 // SetDragTopMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragTopMargin(value Float.X) Instance {
+func (self Instance) SetDragTopMargin(value Float.X) Instance { //gd:Camera2D.drag_top_margin
 	class(self).SetDragMargin(1, float64(value))
 	return self
 }
@@ -668,12 +668,12 @@ func (self Instance) SetDragTopMargin(value Float.X) Instance {
 /*
 Right margin needed to drag the camera. A value of 1 makes the camera move only when reaching the right edge of the screen.
 */
-func (self Instance) DragRightMargin() Float.X {
+func (self Instance) DragRightMargin() Float.X { //gd:Camera2D.drag_right_margin
 	return Float.X(Float.X(class(self).GetDragMargin(2)))
 }
 
 // SetDragRightMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragRightMargin(value Float.X) Instance {
+func (self Instance) SetDragRightMargin(value Float.X) Instance { //gd:Camera2D.drag_right_margin
 	class(self).SetDragMargin(2, float64(value))
 	return self
 }
@@ -681,12 +681,12 @@ func (self Instance) SetDragRightMargin(value Float.X) Instance {
 /*
 Bottom margin needed to drag the camera. A value of 1 makes the camera move only when reaching the bottom edge of the screen.
 */
-func (self Instance) DragBottomMargin() Float.X {
+func (self Instance) DragBottomMargin() Float.X { //gd:Camera2D.drag_bottom_margin
 	return Float.X(Float.X(class(self).GetDragMargin(3)))
 }
 
 // SetDragBottomMargin sets the property returned by [GetDragMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragBottomMargin(value Float.X) Instance {
+func (self Instance) SetDragBottomMargin(value Float.X) Instance { //gd:Camera2D.drag_bottom_margin
 	class(self).SetDragMargin(3, float64(value))
 	return self
 }
@@ -694,12 +694,12 @@ func (self Instance) SetDragBottomMargin(value Float.X) Instance {
 /*
 If true, draws the camera's screen rectangle in the editor.
 */
-func (self Instance) EditorDrawScreen() bool {
+func (self Instance) EditorDrawScreen() bool { //gd:Camera2D.editor_draw_screen
 	return bool(class(self).IsScreenDrawingEnabled())
 }
 
 // SetEditorDrawScreen sets the property returned by [IsScreenDrawingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorDrawScreen(value bool) Instance {
+func (self Instance) SetEditorDrawScreen(value bool) Instance { //gd:Camera2D.editor_draw_screen
 	class(self).SetScreenDrawingEnabled(value)
 	return self
 }
@@ -707,12 +707,12 @@ func (self Instance) SetEditorDrawScreen(value bool) Instance {
 /*
 If true, draws the camera's limits rectangle in the editor.
 */
-func (self Instance) EditorDrawLimits() bool {
+func (self Instance) EditorDrawLimits() bool { //gd:Camera2D.editor_draw_limits
 	return bool(class(self).IsLimitDrawingEnabled())
 }
 
 // SetEditorDrawLimits sets the property returned by [IsLimitDrawingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorDrawLimits(value bool) Instance {
+func (self Instance) SetEditorDrawLimits(value bool) Instance { //gd:Camera2D.editor_draw_limits
 	class(self).SetLimitDrawingEnabled(value)
 	return self
 }
@@ -720,12 +720,12 @@ func (self Instance) SetEditorDrawLimits(value bool) Instance {
 /*
 If true, draws the camera's drag margin rectangle in the editor.
 */
-func (self Instance) EditorDrawDragMargin() bool {
+func (self Instance) EditorDrawDragMargin() bool { //gd:Camera2D.editor_draw_drag_margin
 	return bool(class(self).IsMarginDrawingEnabled())
 }
 
 // SetEditorDrawDragMargin sets the property returned by [IsMarginDrawingEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorDrawDragMargin(value bool) Instance {
+func (self Instance) SetEditorDrawDragMargin(value bool) Instance { //gd:Camera2D.editor_draw_drag_margin
 	class(self).SetMarginDrawingEnabled(value)
 	return self
 }

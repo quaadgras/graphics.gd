@@ -240,12 +240,12 @@ func New() Instance {
 /*
 Sets the avoidance radius for the obstacle.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:NavigationObstacle2D.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:NavigationObstacle2D.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -253,12 +253,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 The outline vertices of the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out. Outlines can not be crossed or overlap. Should the vertices using obstacle be warped to a new position agent's can not predict this movement and may get trapped inside the obstacle.
 */
-func (self Instance) Vertices() []Vector2.XY {
+func (self Instance) Vertices() []Vector2.XY { //gd:NavigationObstacle2D.vertices
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
 // SetVertices sets the property returned by [GetVertices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVertices(value []Vector2.XY) Instance {
+func (self Instance) SetVertices(value []Vector2.XY) Instance { //gd:NavigationObstacle2D.vertices
 	class(self).SetVertices(Packed.New(value...))
 	return self
 }
@@ -268,12 +268,12 @@ If enabled and parsed in a navigation mesh baking process the obstacle will disc
 
 [Vertices]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.Vertices
 */
-func (self Instance) AffectNavigationMesh() bool {
+func (self Instance) AffectNavigationMesh() bool { //gd:NavigationObstacle2D.affect_navigation_mesh
 	return bool(class(self).GetAffectNavigationMesh())
 }
 
 // SetAffectNavigationMesh sets the property returned by [GetAffectNavigationMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAffectNavigationMesh(value bool) Instance {
+func (self Instance) SetAffectNavigationMesh(value bool) Instance { //gd:NavigationObstacle2D.affect_navigation_mesh
 	class(self).SetAffectNavigationMesh(value)
 	return self
 }
@@ -287,12 +287,12 @@ Requires [AffectNavigationMesh] to be enabled.
 
 [AffectNavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.AffectNavigationMesh
 */
-func (self Instance) CarveNavigationMesh() bool {
+func (self Instance) CarveNavigationMesh() bool { //gd:NavigationObstacle2D.carve_navigation_mesh
 	return bool(class(self).GetCarveNavigationMesh())
 }
 
 // SetCarveNavigationMesh sets the property returned by [GetCarveNavigationMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCarveNavigationMesh(value bool) Instance {
+func (self Instance) SetCarveNavigationMesh(value bool) Instance { //gd:NavigationObstacle2D.carve_navigation_mesh
 	class(self).SetCarveNavigationMesh(value)
 	return self
 }
@@ -300,12 +300,12 @@ func (self Instance) SetCarveNavigationMesh(value bool) Instance {
 /*
 If true the obstacle affects avoidance using agents.
 */
-func (self Instance) AvoidanceEnabled() bool {
+func (self Instance) AvoidanceEnabled() bool { //gd:NavigationObstacle2D.avoidance_enabled
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
 // SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidanceEnabled(value bool) Instance {
+func (self Instance) SetAvoidanceEnabled(value bool) Instance { //gd:NavigationObstacle2D.avoidance_enabled
 	class(self).SetAvoidanceEnabled(value)
 	return self
 }
@@ -315,12 +315,12 @@ Sets the wanted velocity for the obstacle so other agent's can better predict th
 
 [Radius]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.Radius
 */
-func (self Instance) Velocity() Vector2.XY {
+func (self Instance) Velocity() Vector2.XY { //gd:NavigationObstacle2D.velocity
 	return Vector2.XY(class(self).GetVelocity())
 }
 
 // SetVelocity sets the property returned by [GetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVelocity(value Vector2.XY) Instance {
+func (self Instance) SetVelocity(value Vector2.XY) Instance { //gd:NavigationObstacle2D.velocity
 	class(self).SetVelocity(Vector2.XY(value))
 	return self
 }
@@ -328,12 +328,12 @@ func (self Instance) SetVelocity(value Vector2.XY) Instance {
 /*
 A bitfield determining the avoidance layers for this obstacle. Agents with a matching bit on the their avoidance mask will avoid this obstacle.
 */
-func (self Instance) AvoidanceLayers() int {
+func (self Instance) AvoidanceLayers() int { //gd:NavigationObstacle2D.avoidance_layers
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
 // SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAvoidanceLayers(value int) Instance {
+func (self Instance) SetAvoidanceLayers(value int) Instance { //gd:NavigationObstacle2D.avoidance_layers
 	class(self).SetAvoidanceLayers(int64(value))
 	return self
 }

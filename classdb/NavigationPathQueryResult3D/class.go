@@ -179,12 +179,12 @@ The resulting path array from the navigation query. All path array positions are
 
 [NavigationServer3D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D#MapGetPath
 */
-func (self Instance) Path() []Vector3.XYZ {
+func (self Instance) Path() []Vector3.XYZ { //gd:NavigationPathQueryResult3D.path
 	return []Vector3.XYZ(slices.Collect(class(self).GetPath().Values()))
 }
 
 // SetPath sets the property returned by [GetPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPath(value []Vector3.XYZ) Instance {
+func (self Instance) SetPath(value []Vector3.XYZ) Instance { //gd:NavigationPathQueryResult3D.path
 	class(self).SetPath(Packed.New(value...))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetPath(value []Vector3.XYZ) Instance {
 /*
 The type of navigation primitive (region or link) that each point of the path goes through.
 */
-func (self Instance) PathTypes() []int32 {
+func (self Instance) PathTypes() []int32 { //gd:NavigationPathQueryResult3D.path_types
 	return []int32(slices.Collect(class(self).GetPathTypes().Values()))
 }
 
 // SetPathTypes sets the property returned by [GetPathTypes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathTypes(value []int32) Instance {
+func (self Instance) SetPathTypes(value []int32) Instance { //gd:NavigationPathQueryResult3D.path_types
 	class(self).SetPathTypes(Packed.New(value...))
 	return self
 }
@@ -207,12 +207,12 @@ The [Resource.ID]s of the regions and links that each point of the path goes thr
 
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) PathRids() []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D] {
+func (self Instance) PathRids() []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D] { //gd:NavigationPathQueryResult3D.path_rids
 	return []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D](gd.ArrayAs[[]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]](gd.InternalArray(class(self).GetPathRids())))
 }
 
 // SetPathRids sets the property returned by [GetPathRids]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathRids(value []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]) Instance {
+func (self Instance) SetPathRids(value []RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]) Instance { //gd:NavigationPathQueryResult3D.path_rids
 	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -222,12 +222,12 @@ The ObjectIDs of the [Object]s which manage the regions and links each point of 
 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
-func (self Instance) PathOwnerIds() []int64 {
+func (self Instance) PathOwnerIds() []int64 { //gd:NavigationPathQueryResult3D.path_owner_ids
 	return []int64(slices.Collect(class(self).GetPathOwnerIds().Values()))
 }
 
 // SetPathOwnerIds sets the property returned by [GetPathOwnerIds]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathOwnerIds(value []int64) Instance {
+func (self Instance) SetPathOwnerIds(value []int64) Instance { //gd:NavigationPathQueryResult3D.path_owner_ids
 	class(self).SetPathOwnerIds(Packed.New(value...))
 	return self
 }
@@ -235,12 +235,12 @@ func (self Instance) SetPathOwnerIds(value []int64) Instance {
 /*
 Returns the length of the path.
 */
-func (self Instance) PathLength() Float.X {
+func (self Instance) PathLength() Float.X { //gd:NavigationPathQueryResult3D.path_length
 	return Float.X(Float.X(class(self).GetPathLength()))
 }
 
 // SetPathLength sets the property returned by [GetPathLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathLength(value Float.X) Instance {
+func (self Instance) SetPathLength(value Float.X) Instance { //gd:NavigationPathQueryResult3D.path_length
 	class(self).SetPathLength(float64(value))
 	return self
 }

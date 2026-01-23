@@ -169,12 +169,12 @@ The aspect ratio to enforce on child controls. This is the width divided by the 
 
 [StretchMode]: https://pkg.go.dev/graphics.gd/classdb/AspectRatioContainer#Instance.StretchMode
 */
-func (self Instance) Ratio() Float.X {
+func (self Instance) Ratio() Float.X { //gd:AspectRatioContainer.ratio
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
 // SetRatio sets the property returned by [GetRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRatio(value Float.X) Instance {
+func (self Instance) SetRatio(value Float.X) Instance { //gd:AspectRatioContainer.ratio
 	class(self).SetRatio(float64(value))
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetRatio(value Float.X) Instance {
 /*
 The stretch mode used to align child controls.
 */
-func (self Instance) StretchMode() StretchMode {
+func (self Instance) StretchMode() StretchMode { //gd:AspectRatioContainer.stretch_mode
 	return StretchMode(class(self).GetStretchMode())
 }
 
 // SetStretchMode sets the property returned by [GetStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStretchMode(value StretchMode) Instance {
+func (self Instance) SetStretchMode(value StretchMode) Instance { //gd:AspectRatioContainer.stretch_mode
 	class(self).SetStretchMode(value)
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetStretchMode(value StretchMode) Instance {
 /*
 Specifies the horizontal relative position of child controls.
 */
-func (self Instance) AlignmentHorizontal() AlignmentMode {
+func (self Instance) AlignmentHorizontal() AlignmentMode { //gd:AspectRatioContainer.alignment_horizontal
 	return AlignmentMode(class(self).GetAlignmentHorizontal())
 }
 
 // SetAlignmentHorizontal sets the property returned by [GetAlignmentHorizontal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignmentHorizontal(value AlignmentMode) Instance {
+func (self Instance) SetAlignmentHorizontal(value AlignmentMode) Instance { //gd:AspectRatioContainer.alignment_horizontal
 	class(self).SetAlignmentHorizontal(value)
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetAlignmentHorizontal(value AlignmentMode) Instance {
 /*
 Specifies the vertical relative position of child controls.
 */
-func (self Instance) AlignmentVertical() AlignmentMode {
+func (self Instance) AlignmentVertical() AlignmentMode { //gd:AspectRatioContainer.alignment_vertical
 	return AlignmentMode(class(self).GetAlignmentVertical())
 }
 
 // SetAlignmentVertical sets the property returned by [GetAlignmentVertical]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlignmentVertical(value AlignmentMode) Instance {
+func (self Instance) SetAlignmentVertical(value AlignmentMode) Instance { //gd:AspectRatioContainer.alignment_vertical
 	class(self).SetAlignmentVertical(value)
 	return self
 }

@@ -165,7 +165,7 @@ The [Resource.ID] of this world's canvas resource. Used by the [RenderingServer]
 [RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Canvas() RID.Canvas {
+func (self Instance) Canvas() RID.Canvas { //gd:World2D.canvas
 	return RID.Canvas(RID.Canvas(class(self).GetCanvas()))
 }
 
@@ -175,7 +175,7 @@ The [Resource.ID] of this world's navigation map. Used by the [NavigationServer2
 [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) NavigationMap() RID.NavigationMap2D {
+func (self Instance) NavigationMap() RID.NavigationMap2D { //gd:World2D.navigation_map
 	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetNavigationMap()))
 }
 
@@ -185,7 +185,7 @@ The [Resource.ID] of this world's physics space resource. Used by the [PhysicsSe
 [PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Space() RID.Space2D {
+func (self Instance) Space() RID.Space2D { //gd:World2D.space
 	return RID.Space2D(RID.Space2D(class(self).GetSpace()))
 }
 
@@ -194,7 +194,7 @@ Direct access to the world's physics 2D space state. Used for querying current a
 
 [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 */
-func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {
+func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance { //gd:World2D.direct_space_state
 	return PhysicsDirectSpaceState2D.Instance(class(self).GetDirectSpaceState())
 }
 

@@ -160,12 +160,12 @@ func New() Instance {
 /*
 Pan position. Value can range from -1 (fully left) to 1 (fully right).
 */
-func (self Instance) Pan() Float.X {
+func (self Instance) Pan() Float.X { //gd:AudioEffectPanner.pan
 	return Float.X(Float.X(class(self).GetPan()))
 }
 
 // SetPan sets the property returned by [GetPan]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPan(value Float.X) Instance {
+func (self Instance) SetPan(value Float.X) Instance { //gd:AudioEffectPanner.pan
 	class(self).SetPan(float64(value))
 	return self
 }

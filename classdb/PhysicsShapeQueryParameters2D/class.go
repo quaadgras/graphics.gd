@@ -181,12 +181,12 @@ The physics layers the query will detect (as a bitmask). By default, all collisi
 
 [Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
 */
-func (self Instance) CollisionMask() int {
+func (self Instance) CollisionMask() int { //gd:PhysicsShapeQueryParameters2D.collision_mask
 	return int(int(class(self).GetCollisionMask()))
 }
 
 // SetCollisionMask sets the property returned by [GetCollisionMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollisionMask(value int) Instance {
+func (self Instance) SetCollisionMask(value int) Instance { //gd:PhysicsShapeQueryParameters2D.collision_mask
 	class(self).SetCollisionMask(int64(value))
 	return self
 }
@@ -200,12 +200,12 @@ Note: The returned array is copied and any changes to it will not update the ori
 [CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) Exclude() []RID.Body2D {
+func (self Instance) Exclude() []RID.Body2D { //gd:PhysicsShapeQueryParameters2D.exclude
 	return []RID.Body2D(gd.ArrayAs[[]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
 // SetExclude sets the property returned by [GetExclude]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExclude(value []RID.Body2D) Instance {
+func (self Instance) SetExclude(value []RID.Body2D) Instance { //gd:PhysicsShapeQueryParameters2D.exclude
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetExclude(value []RID.Body2D) Instance {
 /*
 The collision margin for the shape.
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:PhysicsShapeQueryParameters2D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:PhysicsShapeQueryParameters2D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ func (self Instance) SetMargin(value Float.X) Instance {
 /*
 The motion of the shape being queried for.
 */
-func (self Instance) Motion() Vector2.XY {
+func (self Instance) Motion() Vector2.XY { //gd:PhysicsShapeQueryParameters2D.motion
 	return Vector2.XY(class(self).GetMotion())
 }
 
 // SetMotion sets the property returned by [GetMotion]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotion(value Vector2.XY) Instance {
+func (self Instance) SetMotion(value Vector2.XY) Instance { //gd:PhysicsShapeQueryParameters2D.motion
 	class(self).SetMotion(Vector2.XY(value))
 	return self
 }
@@ -242,12 +242,12 @@ The [Shape2D] that will be used for collision/intersection queries. This stores 
 [Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
 [ShapeRid]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D#Instance.ShapeRid
 */
-func (self Instance) Shape() Resource.Instance {
+func (self Instance) Shape() Resource.Instance { //gd:PhysicsShapeQueryParameters2D.shape
 	return Resource.Instance(class(self).GetShape())
 }
 
 // SetShape sets the property returned by [GetShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShape(value Resource.Instance) Instance {
+func (self Instance) SetShape(value Resource.Instance) Instance { //gd:PhysicsShapeQueryParameters2D.shape
 	class(self).SetShape(value)
 	return self
 }
@@ -258,12 +258,12 @@ The queried shape's [Resource.ID] that will be used for collision/intersection q
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [Shape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D#Instance.Shape
 */
-func (self Instance) ShapeRid() RID.Any {
+func (self Instance) ShapeRid() RID.Any { //gd:PhysicsShapeQueryParameters2D.shape_rid
 	return RID.Any(RID.Any(class(self).GetShapeRid()))
 }
 
 // SetShapeRid sets the property returned by [GetShapeRid]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShapeRid(value RID.Any) Instance {
+func (self Instance) SetShapeRid(value RID.Any) Instance { //gd:PhysicsShapeQueryParameters2D.shape_rid
 	class(self).SetShapeRid(RID.Any(value))
 	return self
 }
@@ -271,12 +271,12 @@ func (self Instance) SetShapeRid(value RID.Any) Instance {
 /*
 The queried shape's transform matrix.
 */
-func (self Instance) Transform() Transform2D.OriginXY {
+func (self Instance) Transform() Transform2D.OriginXY { //gd:PhysicsShapeQueryParameters2D.transform
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
 // SetTransform sets the property returned by [GetTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance { //gd:PhysicsShapeQueryParameters2D.transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -286,12 +286,12 @@ If true, the query will take [PhysicsBody2D]s into account.
 
 [PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
 */
-func (self Instance) CollideWithBodies() bool {
+func (self Instance) CollideWithBodies() bool { //gd:PhysicsShapeQueryParameters2D.collide_with_bodies
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
 // SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithBodies(value bool) Instance {
+func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:PhysicsShapeQueryParameters2D.collide_with_bodies
 	class(self).SetCollideWithBodies(value)
 	return self
 }
@@ -301,12 +301,12 @@ If true, the query will take [Area2D]s into account.
 
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 */
-func (self Instance) CollideWithAreas() bool {
+func (self Instance) CollideWithAreas() bool { //gd:PhysicsShapeQueryParameters2D.collide_with_areas
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
 // SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCollideWithAreas(value bool) Instance {
+func (self Instance) SetCollideWithAreas(value bool) Instance { //gd:PhysicsShapeQueryParameters2D.collide_with_areas
 	class(self).SetCollideWithAreas(value)
 	return self
 }

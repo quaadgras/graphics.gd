@@ -267,12 +267,12 @@ Note: The default value of this property is pseudo-random, and changes when call
 [Randomize]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Randomize
 [State]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.State
 */
-func (self Instance) Seed() int {
+func (self Instance) Seed() int { //gd:RandomNumberGenerator.seed
 	return int(int(class(self).GetSeed()))
 }
 
 // SetSeed sets the property returned by [GetSeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeed(value int) Instance {
+func (self Instance) SetSeed(value int) Instance { //gd:RandomNumberGenerator.seed
 	class(self).SetSeed(int64(value))
 	return self
 }
@@ -287,12 +287,12 @@ Note: The default value of this property is pseudo-random, and changes when call
 [Randomize]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Randomize
 [Seed]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Seed
 */
-func (self Instance) State() int {
+func (self Instance) State() int { //gd:RandomNumberGenerator.state
 	return int(int(class(self).GetState()))
 }
 
 // SetState sets the property returned by [GetState]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetState(value int) Instance {
+func (self Instance) SetState(value int) Instance { //gd:RandomNumberGenerator.state
 	class(self).SetState(int64(value))
 	return self
 }

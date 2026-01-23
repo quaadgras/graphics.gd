@@ -362,12 +362,12 @@ func New() Instance {
 /*
 The display refresh rate for the current HMD. Only functional if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
-func (self Instance) DisplayRefreshRate() Float.X {
+func (self Instance) DisplayRefreshRate() Float.X { //gd:OpenXRInterface.display_refresh_rate
 	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
 // SetDisplayRefreshRate sets the property returned by [GetDisplayRefreshRate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisplayRefreshRate(value Float.X) Instance {
+func (self Instance) SetDisplayRefreshRate(value Float.X) Instance { //gd:OpenXRInterface.display_refresh_rate
 	class(self).SetDisplayRefreshRate(float64(value))
 	return self
 }
@@ -375,12 +375,12 @@ func (self Instance) SetDisplayRefreshRate(value Float.X) Instance {
 /*
 The render size multiplier for the current HMD. Must be set before the interface has been initialized.
 */
-func (self Instance) RenderTargetSizeMultiplier() Float.X {
+func (self Instance) RenderTargetSizeMultiplier() Float.X { //gd:OpenXRInterface.render_target_size_multiplier
 	return Float.X(Float.X(class(self).GetRenderTargetSizeMultiplier()))
 }
 
 // SetRenderTargetSizeMultiplier sets the property returned by [GetRenderTargetSizeMultiplier]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) Instance {
+func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) Instance { //gd:OpenXRInterface.render_target_size_multiplier
 	class(self).SetRenderTargetSizeMultiplier(float64(value))
 	return self
 }
@@ -390,12 +390,12 @@ Set foveation level from 0 (off) to 3 (high), the interface must be initialized 
 
 Note: Only works on the Compatibility renderer.
 */
-func (self Instance) FoveationLevel() int {
+func (self Instance) FoveationLevel() int { //gd:OpenXRInterface.foveation_level
 	return int(int(class(self).GetFoveationLevel()))
 }
 
 // SetFoveationLevel sets the property returned by [GetFoveationLevel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFoveationLevel(value int) Instance {
+func (self Instance) SetFoveationLevel(value int) Instance { //gd:OpenXRInterface.foveation_level
 	class(self).SetFoveationLevel(int64(value))
 	return self
 }
@@ -407,12 +407,12 @@ Note: Only works on the Compatibility renderer.
 
 [FoveationLevel]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInterface#Instance.FoveationLevel
 */
-func (self Instance) FoveationDynamic() bool {
+func (self Instance) FoveationDynamic() bool { //gd:OpenXRInterface.foveation_dynamic
 	return bool(class(self).GetFoveationDynamic())
 }
 
 // SetFoveationDynamic sets the property returned by [GetFoveationDynamic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFoveationDynamic(value bool) Instance {
+func (self Instance) SetFoveationDynamic(value bool) Instance { //gd:OpenXRInterface.foveation_dynamic
 	class(self).SetFoveationDynamic(value)
 	return self
 }
@@ -424,12 +424,12 @@ Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set 
 
 [Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
-func (self Instance) VrsMinRadius() Float.X {
+func (self Instance) VrsMinRadius() Float.X { //gd:OpenXRInterface.vrs_min_radius
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
 // SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsMinRadius(value Float.X) Instance {
+func (self Instance) SetVrsMinRadius(value Float.X) Instance { //gd:OpenXRInterface.vrs_min_radius
 	class(self).SetVrsMinRadius(float64(value))
 	return self
 }
@@ -441,12 +441,12 @@ Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set 
 
 [Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
-func (self Instance) VrsStrength() Float.X {
+func (self Instance) VrsStrength() Float.X { //gd:OpenXRInterface.vrs_strength
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
 // SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsStrength(value Float.X) Instance {
+func (self Instance) SetVrsStrength(value Float.X) Instance { //gd:OpenXRInterface.vrs_strength
 	class(self).SetVrsStrength(float64(value))
 	return self
 }

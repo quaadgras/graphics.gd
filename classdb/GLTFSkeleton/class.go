@@ -174,42 +174,42 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Joints() []int32 {
+func (self Instance) Joints() []int32 { //gd:GLTFSkeleton.joints
 	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
 // SetJoints sets the property returned by [GetJoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJoints(value []int32) Instance {
+func (self Instance) SetJoints(value []int32) Instance { //gd:GLTFSkeleton.joints
 	class(self).SetJoints(Packed.New(value...))
 	return self
 }
 
-func (self Instance) Roots() []int32 {
+func (self Instance) Roots() []int32 { //gd:GLTFSkeleton.roots
 	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
 // SetRoots sets the property returned by [GetRoots]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRoots(value []int32) Instance {
+func (self Instance) SetRoots(value []int32) Instance { //gd:GLTFSkeleton.roots
 	class(self).SetRoots(Packed.New(value...))
 	return self
 }
 
-func (self Instance) UniqueNames() []string {
+func (self Instance) UniqueNames() []string { //gd:GLTFSkeleton.unique_names
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
 // SetUniqueNames sets the property returned by [GetUniqueNames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUniqueNames(value []string) Instance {
+func (self Instance) SetUniqueNames(value []string) Instance { //gd:GLTFSkeleton.unique_names
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 	return self
 }
 
-func (self Instance) GodotBoneNode() map[int]int {
+func (self Instance) GodotBoneNode() map[int]int { //gd:GLTFSkeleton.godot_bone_node
 	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetGodotBoneNode()))
 }
 
 // SetGodotBoneNode sets the property returned by [GetGodotBoneNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGodotBoneNode(value map[int]int) Instance {
+func (self Instance) SetGodotBoneNode(value map[int]int) Instance { //gd:GLTFSkeleton.godot_bone_node
 	class(self).SetGodotBoneNode(gd.DictionaryFromMap(value))
 	return self
 }

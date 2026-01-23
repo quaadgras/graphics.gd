@@ -171,12 +171,12 @@ The [Mesh] that defines emission shape.
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:VisualShaderNodeParticleMeshEmitter.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:VisualShaderNodeParticleMeshEmitter.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetMesh(value Mesh.Instance) Instance {
 /*
 If true, the particles will emit from all surfaces of the mesh.
 */
-func (self Instance) UseAllSurfaces() bool {
+func (self Instance) UseAllSurfaces() bool { //gd:VisualShaderNodeParticleMeshEmitter.use_all_surfaces
 	return bool(class(self).IsUseAllSurfaces())
 }
 
 // SetUseAllSurfaces sets the property returned by [IsUseAllSurfaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseAllSurfaces(value bool) Instance {
+func (self Instance) SetUseAllSurfaces(value bool) Instance { //gd:VisualShaderNodeParticleMeshEmitter.use_all_surfaces
 	class(self).SetUseAllSurfaces(value)
 	return self
 }
@@ -199,12 +199,12 @@ Index of the surface that emits particles. [UseAllSurfaces] must be false for th
 
 [UseAllSurfaces]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeParticleMeshEmitter#Instance.UseAllSurfaces
 */
-func (self Instance) SurfaceIndex() int {
+func (self Instance) SurfaceIndex() int { //gd:VisualShaderNodeParticleMeshEmitter.surface_index
 	return int(int(class(self).GetSurfaceIndex()))
 }
 
 // SetSurfaceIndex sets the property returned by [GetSurfaceIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSurfaceIndex(value int) Instance {
+func (self Instance) SetSurfaceIndex(value int) Instance { //gd:VisualShaderNodeParticleMeshEmitter.surface_index
 	class(self).SetSurfaceIndex(int64(value))
 	return self
 }

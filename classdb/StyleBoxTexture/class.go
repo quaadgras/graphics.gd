@@ -202,12 +202,12 @@ func New() Instance {
 /*
 The texture to use when drawing this style box.
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:StyleBoxTexture.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:StyleBoxTexture.texture
 	class(self).SetTexture(value)
 	return self
 }
@@ -221,12 +221,12 @@ This is also the value used as fallback for [StyleBox.ContentMarginLeft] if it i
 
 [StyleBox.ContentMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginLeft
 */
-func (self Instance) TextureMarginLeft() Float.X {
+func (self Instance) TextureMarginLeft() Float.X { //gd:StyleBoxTexture.texture_margin_left
 	return Float.X(Float.X(class(self).GetTextureMargin(0)))
 }
 
 // SetTextureMarginLeft sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMarginLeft(value Float.X) Instance {
+func (self Instance) SetTextureMarginLeft(value Float.X) Instance { //gd:StyleBoxTexture.texture_margin_left
 	class(self).SetTextureMargin(0, float64(value))
 	return self
 }
@@ -240,12 +240,12 @@ This is also the value used as fallback for [StyleBox.ContentMarginTop] if it is
 
 [StyleBox.ContentMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginTop
 */
-func (self Instance) TextureMarginTop() Float.X {
+func (self Instance) TextureMarginTop() Float.X { //gd:StyleBoxTexture.texture_margin_top
 	return Float.X(Float.X(class(self).GetTextureMargin(1)))
 }
 
 // SetTextureMarginTop sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMarginTop(value Float.X) Instance {
+func (self Instance) SetTextureMarginTop(value Float.X) Instance { //gd:StyleBoxTexture.texture_margin_top
 	class(self).SetTextureMargin(1, float64(value))
 	return self
 }
@@ -259,12 +259,12 @@ This is also the value used as fallback for [StyleBox.ContentMarginRight] if it 
 
 [StyleBox.ContentMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginRight
 */
-func (self Instance) TextureMarginRight() Float.X {
+func (self Instance) TextureMarginRight() Float.X { //gd:StyleBoxTexture.texture_margin_right
 	return Float.X(Float.X(class(self).GetTextureMargin(2)))
 }
 
 // SetTextureMarginRight sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMarginRight(value Float.X) Instance {
+func (self Instance) SetTextureMarginRight(value Float.X) Instance { //gd:StyleBoxTexture.texture_margin_right
 	class(self).SetTextureMargin(2, float64(value))
 	return self
 }
@@ -278,12 +278,12 @@ This is also the value used as fallback for [StyleBox.ContentMarginBottom] if it
 
 [StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
 */
-func (self Instance) TextureMarginBottom() Float.X {
+func (self Instance) TextureMarginBottom() Float.X { //gd:StyleBoxTexture.texture_margin_bottom
 	return Float.X(Float.X(class(self).GetTextureMargin(3)))
 }
 
 // SetTextureMarginBottom sets the property returned by [GetTextureMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureMarginBottom(value Float.X) Instance {
+func (self Instance) SetTextureMarginBottom(value Float.X) Instance { //gd:StyleBoxTexture.texture_margin_bottom
 	class(self).SetTextureMargin(3, float64(value))
 	return self
 }
@@ -291,12 +291,12 @@ func (self Instance) SetTextureMarginBottom(value Float.X) Instance {
 /*
 Expands the left margin of this style box when drawing, causing it to be drawn larger than requested.
 */
-func (self Instance) ExpandMarginLeft() Float.X {
+func (self Instance) ExpandMarginLeft() Float.X { //gd:StyleBoxTexture.expand_margin_left
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
 // SetExpandMarginLeft sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginLeft(value Float.X) Instance {
+func (self Instance) SetExpandMarginLeft(value Float.X) Instance { //gd:StyleBoxTexture.expand_margin_left
 	class(self).SetExpandMargin(0, float64(value))
 	return self
 }
@@ -304,12 +304,12 @@ func (self Instance) SetExpandMarginLeft(value Float.X) Instance {
 /*
 Expands the top margin of this style box when drawing, causing it to be drawn larger than requested.
 */
-func (self Instance) ExpandMarginTop() Float.X {
+func (self Instance) ExpandMarginTop() Float.X { //gd:StyleBoxTexture.expand_margin_top
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
 // SetExpandMarginTop sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginTop(value Float.X) Instance {
+func (self Instance) SetExpandMarginTop(value Float.X) Instance { //gd:StyleBoxTexture.expand_margin_top
 	class(self).SetExpandMargin(1, float64(value))
 	return self
 }
@@ -317,12 +317,12 @@ func (self Instance) SetExpandMarginTop(value Float.X) Instance {
 /*
 Expands the right margin of this style box when drawing, causing it to be drawn larger than requested.
 */
-func (self Instance) ExpandMarginRight() Float.X {
+func (self Instance) ExpandMarginRight() Float.X { //gd:StyleBoxTexture.expand_margin_right
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
 // SetExpandMarginRight sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginRight(value Float.X) Instance {
+func (self Instance) SetExpandMarginRight(value Float.X) Instance { //gd:StyleBoxTexture.expand_margin_right
 	class(self).SetExpandMargin(2, float64(value))
 	return self
 }
@@ -330,12 +330,12 @@ func (self Instance) SetExpandMarginRight(value Float.X) Instance {
 /*
 Expands the bottom margin of this style box when drawing, causing it to be drawn larger than requested.
 */
-func (self Instance) ExpandMarginBottom() Float.X {
+func (self Instance) ExpandMarginBottom() Float.X { //gd:StyleBoxTexture.expand_margin_bottom
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
 // SetExpandMarginBottom sets the property returned by [GetExpandMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExpandMarginBottom(value Float.X) Instance {
+func (self Instance) SetExpandMarginBottom(value Float.X) Instance { //gd:StyleBoxTexture.expand_margin_bottom
 	class(self).SetExpandMargin(3, float64(value))
 	return self
 }
@@ -343,12 +343,12 @@ func (self Instance) SetExpandMarginBottom(value Float.X) Instance {
 /*
 Controls how the stylebox's texture will be stretched or tiled horizontally.
 */
-func (self Instance) AxisStretchHorizontal() AxisStretchMode {
+func (self Instance) AxisStretchHorizontal() AxisStretchMode { //gd:StyleBoxTexture.axis_stretch_horizontal
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
 // SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance { //gd:StyleBoxTexture.axis_stretch_horizontal
 	class(self).SetHAxisStretchMode(value)
 	return self
 }
@@ -356,12 +356,12 @@ func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) Instance {
 /*
 Controls how the stylebox's texture will be stretched or tiled vertically.
 */
-func (self Instance) AxisStretchVertical() AxisStretchMode {
+func (self Instance) AxisStretchVertical() AxisStretchMode { //gd:StyleBoxTexture.axis_stretch_vertical
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
 // SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance {
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) Instance { //gd:StyleBoxTexture.axis_stretch_vertical
 	class(self).SetVAxisStretchMode(value)
 	return self
 }
@@ -376,12 +376,12 @@ If empty (Rect2(0, 0, 0, 0)), the whole [Texture] is used.
 [AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
 [Texture]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxTexture#Instance.Texture
 */
-func (self Instance) RegionRect() Rect2.PositionSize {
+func (self Instance) RegionRect() Rect2.PositionSize { //gd:StyleBoxTexture.region_rect
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
 // SetRegionRect sets the property returned by [GetRegionRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance { //gd:StyleBoxTexture.region_rect
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetRegionRect(value Rect2.PositionSize) Instance {
 /*
 Modulates the color of the texture when this style box is drawn.
 */
-func (self Instance) ModulateColor() Color.RGBA {
+func (self Instance) ModulateColor() Color.RGBA { //gd:StyleBoxTexture.modulate_color
 	return Color.RGBA(class(self).GetModulate())
 }
 
 // SetModulateColor sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulateColor(value Color.RGBA) Instance {
+func (self Instance) SetModulateColor(value Color.RGBA) Instance { //gd:StyleBoxTexture.modulate_color
 	class(self).SetModulate(Color.RGBA(value))
 	return self
 }
@@ -402,12 +402,12 @@ func (self Instance) SetModulateColor(value Color.RGBA) Instance {
 /*
 If true, the nine-patch texture's center tile will be drawn.
 */
-func (self Instance) DrawCenter() bool {
+func (self Instance) DrawCenter() bool { //gd:StyleBoxTexture.draw_center
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
 // SetDrawCenter sets the property returned by [IsDrawCenterEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDrawCenter(value bool) Instance {
+func (self Instance) SetDrawCenter(value bool) Instance { //gd:StyleBoxTexture.draw_center
 	class(self).SetDrawCenter(value)
 	return self
 }

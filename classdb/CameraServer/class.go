@@ -197,13 +197,13 @@ This has a performance cost, so only set it to true when you're actively accessi
 
 Note: After setting it to true, you can receive updated camera feeds through the [OnCameraFeedsUpdated] signal.
 */
-func MonitoringFeeds() bool {
+func MonitoringFeeds() bool { //gd:CameraServer.monitoring_feeds
 	once.Do(singleton)
 	return bool(class(self).IsMonitoringFeeds())
 }
 
 // SetMonitoringFeeds sets the property returned by [IsMonitoringFeeds].
-func SetMonitoringFeeds(value bool) {
+func SetMonitoringFeeds(value bool) { //gd:CameraServer.monitoring_feeds
 	once.Do(singleton)
 	class(self).SetMonitoringFeeds(value)
 }

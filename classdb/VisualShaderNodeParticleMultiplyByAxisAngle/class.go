@@ -160,12 +160,12 @@ func New() Instance {
 /*
 If true, the angle will be interpreted in degrees instead of radians.
 */
-func (self Instance) DegreesMode() bool {
+func (self Instance) DegreesMode() bool { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.degrees_mode
 	return bool(class(self).IsDegreesMode())
 }
 
 // SetDegreesMode sets the property returned by [IsDegreesMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDegreesMode(value bool) Instance {
+func (self Instance) SetDegreesMode(value bool) Instance { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.degrees_mode
 	class(self).SetDegreesMode(value)
 	return self
 }

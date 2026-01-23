@@ -359,13 +359,13 @@ If true, enables the use of pseudolocalization on the main translation domain. S
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func PseudolocalizationEnabled() bool {
+func PseudolocalizationEnabled() bool { //gd:TranslationServer.pseudolocalization_enabled
 	once.Do(singleton)
 	return bool(class(self).IsPseudolocalizationEnabled())
 }
 
 // SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled].
-func SetPseudolocalizationEnabled(value bool) {
+func SetPseudolocalizationEnabled(value bool) { //gd:TranslationServer.pseudolocalization_enabled
 	once.Do(singleton)
 	class(self).SetPseudolocalizationEnabled(value)
 }

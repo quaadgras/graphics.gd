@@ -172,12 +172,12 @@ func New() Instance {
 /*
 Multiplies the ParallaxLayer's motion. If an axis is set to 0, it will not scroll.
 */
-func (self Instance) MotionScale() Vector2.XY {
+func (self Instance) MotionScale() Vector2.XY { //gd:ParallaxLayer.motion_scale
 	return Vector2.XY(class(self).GetMotionScale())
 }
 
 // SetMotionScale sets the property returned by [GetMotionScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionScale(value Vector2.XY) Instance {
+func (self Instance) SetMotionScale(value Vector2.XY) Instance { //gd:ParallaxLayer.motion_scale
 	class(self).SetMotionScale(Vector2.XY(value))
 	return self
 }
@@ -187,12 +187,12 @@ The ParallaxLayer's offset relative to the parent ParallaxBackground's [Parallax
 
 [ParallaxBackground.ScrollOffset]: https://pkg.go.dev/graphics.gd/classdb/ParallaxBackground#Instance.ScrollOffset
 */
-func (self Instance) MotionOffset() Vector2.XY {
+func (self Instance) MotionOffset() Vector2.XY { //gd:ParallaxLayer.motion_offset
 	return Vector2.XY(class(self).GetMotionOffset())
 }
 
 // SetMotionOffset sets the property returned by [GetMotionOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionOffset(value Vector2.XY) Instance {
+func (self Instance) SetMotionOffset(value Vector2.XY) Instance { //gd:ParallaxLayer.motion_offset
 	class(self).SetMotionOffset(Vector2.XY(value))
 	return self
 }
@@ -212,12 +212,12 @@ Note: Despite the name, the layer will not be mirrored, it will only be repeated
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) MotionMirroring() Vector2.XY {
+func (self Instance) MotionMirroring() Vector2.XY { //gd:ParallaxLayer.motion_mirroring
 	return Vector2.XY(class(self).GetMirroring())
 }
 
 // SetMotionMirroring sets the property returned by [GetMirroring]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotionMirroring(value Vector2.XY) Instance {
+func (self Instance) SetMotionMirroring(value Vector2.XY) Instance { //gd:ParallaxLayer.motion_mirroring
 	class(self).SetMirroring(Vector2.XY(value))
 	return self
 }

@@ -173,12 +173,12 @@ The [MultiMesh] that will be drawn by the [MultiMeshInstance2D].
 [MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 [MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
 */
-func (self Instance) Multimesh() MultiMesh.Instance {
+func (self Instance) Multimesh() MultiMesh.Instance { //gd:MultiMeshInstance2D.multimesh
 	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
 // SetMultimesh sets the property returned by [GetMultimesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance {
+func (self Instance) SetMultimesh(value MultiMesh.Instance) Instance { //gd:MultiMeshInstance2D.multimesh
 	class(self).SetMultimesh(value)
 	return self
 }
@@ -189,12 +189,12 @@ The [Texture2D] that will be used if using the default [CanvasItemMaterial]. Can
 [CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) Texture() Texture2D.Instance {
+func (self Instance) Texture() Texture2D.Instance { //gd:MultiMeshInstance2D.texture
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetTexture(value Texture2D.Instance) Instance { //gd:MultiMeshInstance2D.texture
 	class(self).SetTexture(value)
 	return self
 }

@@ -806,13 +806,13 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Controls the mouse mode.
 */
-func MouseMode() MouseModeValue {
+func MouseMode() MouseModeValue { //gd:Input.mouse_mode
 	once.Do(singleton)
 	return MouseModeValue(class(self).GetMouseMode())
 }
 
 // SetMouseMode sets the property returned by [GetMouseMode].
-func SetMouseMode(value MouseModeValue) {
+func SetMouseMode(value MouseModeValue) { //gd:Input.mouse_mode
 	once.Do(singleton)
 	class(self).SetMouseMode(value)
 }
@@ -824,13 +824,13 @@ Input accumulation can be disabled to get slightly more precise/reactive input a
 
 Note: Input accumulation is enabled by default.
 */
-func UseAccumulatedInput() bool {
+func UseAccumulatedInput() bool { //gd:Input.use_accumulated_input
 	once.Do(singleton)
 	return bool(class(self).IsUsingAccumulatedInput())
 }
 
 // SetUseAccumulatedInput sets the property returned by [IsUsingAccumulatedInput].
-func SetUseAccumulatedInput(value bool) {
+func SetUseAccumulatedInput(value bool) { //gd:Input.use_accumulated_input
 	once.Do(singleton)
 	class(self).SetUseAccumulatedInput(value)
 }
@@ -840,13 +840,13 @@ If true, sends mouse input events when tapping or swiping on the touchscreen. Se
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func EmulateMouseFromTouch() bool {
+func EmulateMouseFromTouch() bool { //gd:Input.emulate_mouse_from_touch
 	once.Do(singleton)
 	return bool(class(self).IsEmulatingMouseFromTouch())
 }
 
 // SetEmulateMouseFromTouch sets the property returned by [IsEmulatingMouseFromTouch].
-func SetEmulateMouseFromTouch(value bool) {
+func SetEmulateMouseFromTouch(value bool) { //gd:Input.emulate_mouse_from_touch
 	once.Do(singleton)
 	class(self).SetEmulateMouseFromTouch(value)
 }
@@ -856,13 +856,13 @@ If true, sends touch input events when clicking or dragging the mouse. See also 
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func EmulateTouchFromMouse() bool {
+func EmulateTouchFromMouse() bool { //gd:Input.emulate_touch_from_mouse
 	once.Do(singleton)
 	return bool(class(self).IsEmulatingTouchFromMouse())
 }
 
 // SetEmulateTouchFromMouse sets the property returned by [IsEmulatingTouchFromMouse].
-func SetEmulateTouchFromMouse(value bool) {
+func SetEmulateTouchFromMouse(value bool) { //gd:Input.emulate_touch_from_mouse
 	once.Do(singleton)
 	class(self).SetEmulateTouchFromMouse(value)
 }

@@ -236,12 +236,12 @@ Number of frames to use in the animation. While you can create the frames indepe
 
 [SetFrameTexture]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.SetFrameTexture
 */
-func (self Instance) Frames() int {
+func (self Instance) Frames() int { //gd:AnimatedTexture.frames
 	return int(int(class(self).GetFrames()))
 }
 
 // SetFrames sets the property returned by [GetFrames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrames(value int) Instance {
+func (self Instance) SetFrames(value int) Instance { //gd:AnimatedTexture.frames
 	class(self).SetFrames(int64(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetFrames(value int) Instance {
 /*
 Sets the currently visible frame of the texture. Setting this frame while playing resets the current frame time, so the newly selected frame plays for its whole configured frame duration.
 */
-func (self Instance) CurrentFrame() int {
+func (self Instance) CurrentFrame() int { //gd:AnimatedTexture.current_frame
 	return int(int(class(self).GetCurrentFrame()))
 }
 
 // SetCurrentFrame sets the property returned by [GetCurrentFrame]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrentFrame(value int) Instance {
+func (self Instance) SetCurrentFrame(value int) Instance { //gd:AnimatedTexture.current_frame
 	class(self).SetCurrentFrame(int64(value))
 	return self
 }
@@ -264,12 +264,12 @@ If true, the animation will pause where it currently is (i.e. at [CurrentFrame])
 
 [CurrentFrame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.CurrentFrame
 */
-func (self Instance) Pause() bool {
+func (self Instance) Pause() bool { //gd:AnimatedTexture.pause
 	return bool(class(self).GetPause())
 }
 
 // SetPause sets the property returned by [GetPause]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPause(value bool) Instance {
+func (self Instance) SetPause(value bool) Instance { //gd:AnimatedTexture.pause
 	class(self).SetPause(value)
 	return self
 }
@@ -279,12 +279,12 @@ If true, the animation will only play once and will not loop back to the first f
 
 [Pause]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.Pause
 */
-func (self Instance) OneShot() bool {
+func (self Instance) OneShot() bool { //gd:AnimatedTexture.one_shot
 	return bool(class(self).GetOneShot())
 }
 
 // SetOneShot sets the property returned by [GetOneShot]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneShot(value bool) Instance {
+func (self Instance) SetOneShot(value bool) Instance { //gd:AnimatedTexture.one_shot
 	class(self).SetOneShot(value)
 	return self
 }
@@ -292,12 +292,12 @@ func (self Instance) SetOneShot(value bool) Instance {
 /*
 The animation speed is multiplied by this value. If set to a negative value, the animation is played in reverse.
 */
-func (self Instance) SpeedScale() Float.X {
+func (self Instance) SpeedScale() Float.X { //gd:AnimatedTexture.speed_scale
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
 // SetSpeedScale sets the property returned by [GetSpeedScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpeedScale(value Float.X) Instance {
+func (self Instance) SetSpeedScale(value Float.X) Instance { //gd:AnimatedTexture.speed_scale
 	class(self).SetSpeedScale(float64(value))
 	return self
 }

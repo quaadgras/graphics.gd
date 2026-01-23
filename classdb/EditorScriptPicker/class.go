@@ -174,12 +174,12 @@ The owner [Node] of the script property that holds the edited resource.
 
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
-func (self Instance) ScriptOwner() Node.Instance {
+func (self Instance) ScriptOwner() Node.Instance { //gd:EditorScriptPicker.script_owner
 	return Node.Instance(class(self).GetScriptOwner())
 }
 
 // SetScriptOwner sets the property returned by [GetScriptOwner]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScriptOwner(value Node.Instance) Instance {
+func (self Instance) SetScriptOwner(value Node.Instance) Instance { //gd:EditorScriptPicker.script_owner
 	class(self).SetScriptOwner(value)
 	return self
 }

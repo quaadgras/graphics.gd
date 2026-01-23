@@ -203,12 +203,12 @@ Distance from camera of object that will be in focus, measured in meters. Intern
 
 [FrustumFocalLength]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPhysical#Instance.FrustumFocalLength
 */
-func (self Instance) FrustumFocusDistance() Float.X {
+func (self Instance) FrustumFocusDistance() Float.X { //gd:CameraAttributesPhysical.frustum_focus_distance
 	return Float.X(Float.X(class(self).GetFocusDistance()))
 }
 
 // SetFrustumFocusDistance sets the property returned by [GetFocusDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrustumFocusDistance(value Float.X) Instance {
+func (self Instance) SetFrustumFocusDistance(value Float.X) Instance { //gd:CameraAttributesPhysical.frustum_focus_distance
 	class(self).SetFocusDistance(float64(value))
 	return self
 }
@@ -221,12 +221,12 @@ Distance between camera lens and camera aperture, measured in millimeters. Contr
 [Camera3D.Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
 [Camera3D.KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
 */
-func (self Instance) FrustumFocalLength() Float.X {
+func (self Instance) FrustumFocalLength() Float.X { //gd:CameraAttributesPhysical.frustum_focal_length
 	return Float.X(Float.X(class(self).GetFocalLength()))
 }
 
 // SetFrustumFocalLength sets the property returned by [GetFocalLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrustumFocalLength(value Float.X) Instance {
+func (self Instance) SetFrustumFocalLength(value Float.X) Instance { //gd:CameraAttributesPhysical.frustum_focal_length
 	class(self).SetFocalLength(float64(value))
 	return self
 }
@@ -238,12 +238,12 @@ Override value for [Camera3D.Near]. Used internally when calculating depth of fi
 [Camera3D.Attributes]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Attributes
 [Camera3D.Near]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Near
 */
-func (self Instance) FrustumNear() Float.X {
+func (self Instance) FrustumNear() Float.X { //gd:CameraAttributesPhysical.frustum_near
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
 // SetFrustumNear sets the property returned by [GetNear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrustumNear(value Float.X) Instance {
+func (self Instance) SetFrustumNear(value Float.X) Instance { //gd:CameraAttributesPhysical.frustum_near
 	class(self).SetNear(float64(value))
 	return self
 }
@@ -255,12 +255,12 @@ Override value for [Camera3D.Far]. Used internally when calculating depth of fie
 [Camera3D.Attributes]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Attributes
 [Camera3D.Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
 */
-func (self Instance) FrustumFar() Float.X {
+func (self Instance) FrustumFar() Float.X { //gd:CameraAttributesPhysical.frustum_far
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
 // SetFrustumFar sets the property returned by [GetFar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrustumFar(value Float.X) Instance {
+func (self Instance) SetFrustumFar(value Float.X) Instance { //gd:CameraAttributesPhysical.frustum_far
 	class(self).SetFar(float64(value))
 	return self
 }
@@ -273,12 +273,12 @@ Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical
 [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) ExposureAperture() Float.X {
+func (self Instance) ExposureAperture() Float.X { //gd:CameraAttributesPhysical.exposure_aperture
 	return Float.X(Float.X(class(self).GetAperture()))
 }
 
 // SetExposureAperture sets the property returned by [GetAperture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExposureAperture(value Float.X) Instance {
+func (self Instance) SetExposureAperture(value Float.X) Instance { //gd:CameraAttributesPhysical.exposure_aperture
 	class(self).SetAperture(float64(value))
 	return self
 }
@@ -290,12 +290,12 @@ Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) ExposureShutterSpeed() Float.X {
+func (self Instance) ExposureShutterSpeed() Float.X { //gd:CameraAttributesPhysical.exposure_shutter_speed
 	return Float.X(Float.X(class(self).GetShutterSpeed()))
 }
 
 // SetExposureShutterSpeed sets the property returned by [GetShutterSpeed]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExposureShutterSpeed(value Float.X) Instance {
+func (self Instance) SetExposureShutterSpeed(value Float.X) Instance { //gd:CameraAttributesPhysical.exposure_shutter_speed
 	class(self).SetShutterSpeed(float64(value))
 	return self
 }
@@ -303,12 +303,12 @@ func (self Instance) SetExposureShutterSpeed(value Float.X) Instance {
 /*
 The minimum luminance (in EV100) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing above a certain brightness, resulting in a cut off point where the scene will remain dark.
 */
-func (self Instance) AutoExposureMinExposureValue() Float.X {
+func (self Instance) AutoExposureMinExposureValue() Float.X { //gd:CameraAttributesPhysical.auto_exposure_min_exposure_value
 	return Float.X(Float.X(class(self).GetAutoExposureMinExposureValue()))
 }
 
 // SetAutoExposureMinExposureValue sets the property returned by [GetAutoExposureMinExposureValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureMinExposureValue(value Float.X) Instance {
+func (self Instance) SetAutoExposureMinExposureValue(value Float.X) Instance { //gd:CameraAttributesPhysical.auto_exposure_min_exposure_value
 	class(self).SetAutoExposureMinExposureValue(float64(value))
 	return self
 }
@@ -316,12 +316,12 @@ func (self Instance) SetAutoExposureMinExposureValue(value Float.X) Instance {
 /*
 The maximum luminance (in EV100) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing below a certain brightness, resulting in a cut off point where the scene will remain bright.
 */
-func (self Instance) AutoExposureMaxExposureValue() Float.X {
+func (self Instance) AutoExposureMaxExposureValue() Float.X { //gd:CameraAttributesPhysical.auto_exposure_max_exposure_value
 	return Float.X(Float.X(class(self).GetAutoExposureMaxExposureValue()))
 }
 
 // SetAutoExposureMaxExposureValue sets the property returned by [GetAutoExposureMaxExposureValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) Instance {
+func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) Instance { //gd:CameraAttributesPhysical.auto_exposure_max_exposure_value
 	class(self).SetAutoExposureMaxExposureValue(float64(value))
 	return self
 }

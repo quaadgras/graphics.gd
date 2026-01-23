@@ -165,12 +165,12 @@ func New() Instance {
 /*
 Texture's magnification filter, used when texture appears larger on screen than the source image.
 */
-func (self Instance) MagFilter() int {
+func (self Instance) MagFilter() int { //gd:GLTFTextureSampler.mag_filter
 	return int(int(class(self).GetMagFilter()))
 }
 
 // SetMagFilter sets the property returned by [GetMagFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMagFilter(value int) Instance {
+func (self Instance) SetMagFilter(value int) Instance { //gd:GLTFTextureSampler.mag_filter
 	class(self).SetMagFilter(int64(value))
 	return self
 }
@@ -178,12 +178,12 @@ func (self Instance) SetMagFilter(value int) Instance {
 /*
 Texture's minification filter, used when the texture appears smaller on screen than the source image.
 */
-func (self Instance) MinFilter() int {
+func (self Instance) MinFilter() int { //gd:GLTFTextureSampler.min_filter
 	return int(int(class(self).GetMinFilter()))
 }
 
 // SetMinFilter sets the property returned by [GetMinFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinFilter(value int) Instance {
+func (self Instance) SetMinFilter(value int) Instance { //gd:GLTFTextureSampler.min_filter
 	class(self).SetMinFilter(int64(value))
 	return self
 }
@@ -191,12 +191,12 @@ func (self Instance) SetMinFilter(value int) Instance {
 /*
 Wrapping mode to use for S-axis (horizontal) texture coordinates.
 */
-func (self Instance) WrapS() int {
+func (self Instance) WrapS() int { //gd:GLTFTextureSampler.wrap_s
 	return int(int(class(self).GetWrapS()))
 }
 
 // SetWrapS sets the property returned by [GetWrapS]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWrapS(value int) Instance {
+func (self Instance) SetWrapS(value int) Instance { //gd:GLTFTextureSampler.wrap_s
 	class(self).SetWrapS(int64(value))
 	return self
 }
@@ -204,12 +204,12 @@ func (self Instance) SetWrapS(value int) Instance {
 /*
 Wrapping mode to use for T-axis (vertical) texture coordinates.
 */
-func (self Instance) WrapT() int {
+func (self Instance) WrapT() int { //gd:GLTFTextureSampler.wrap_t
 	return int(int(class(self).GetWrapT()))
 }
 
 // SetWrapT sets the property returned by [GetWrapT]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWrapT(value int) Instance {
+func (self Instance) SetWrapT(value int) Instance { //gd:GLTFTextureSampler.wrap_t
 	class(self).SetWrapT(int64(value))
 	return self
 }

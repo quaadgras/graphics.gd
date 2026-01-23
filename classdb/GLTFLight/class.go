@@ -223,12 +223,12 @@ This value is linear to match glTF, but will be converted to nonlinear sRGB when
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
-func (self Instance) Color() Color.RGBA {
+func (self Instance) Color() Color.RGBA { //gd:GLTFLight.color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColor(value Color.RGBA) Instance {
+func (self Instance) SetColor(value Color.RGBA) Instance { //gd:GLTFLight.color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetColor(value Color.RGBA) Instance {
 /*
 The intensity of the light. This is expressed in candelas (lumens per steradian) for point and spot lights, and lux (lumens per m²) for directional lights. When creating a Godot light, this value is converted to a unitless multiplier.
 */
-func (self Instance) Intensity() Float.X {
+func (self Instance) Intensity() Float.X { //gd:GLTFLight.intensity
 	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
 // SetIntensity sets the property returned by [GetIntensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIntensity(value Float.X) Instance {
+func (self Instance) SetIntensity(value Float.X) Instance { //gd:GLTFLight.intensity
 	class(self).SetIntensity(float64(value))
 	return self
 }
@@ -253,12 +253,12 @@ The type of the light. The values accepted by Godot are "point", "spot", and "di
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) LightType() string {
+func (self Instance) LightType() string { //gd:GLTFLight.light_type
 	return string(class(self).GetLightType().String())
 }
 
 // SetLightType sets the property returned by [GetLightType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightType(value string) Instance {
+func (self Instance) SetLightType(value string) Instance { //gd:GLTFLight.light_type
 	class(self).SetLightType(String.New(value))
 	return self
 }
@@ -266,12 +266,12 @@ func (self Instance) SetLightType(value string) Instance {
 /*
 The range of the light, beyond which the light has no effect. glTF lights with no range defined behave like physical lights (which have infinite range). When creating a Godot light, the range is clamped to 4096.0.
 */
-func (self Instance) Range() Float.X {
+func (self Instance) Range() Float.X { //gd:GLTFLight.range
 	return Float.X(Float.X(class(self).GetRange()))
 }
 
 // SetRange sets the property returned by [GetRange]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRange(value Float.X) Instance {
+func (self Instance) SetRange(value Float.X) Instance { //gd:GLTFLight.range
 	class(self).SetRange(float64(value))
 	return self
 }
@@ -283,12 +283,12 @@ Within this angle, the light is at full brightness. Between the inner and outer 
 
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) InnerConeAngle() Angle.Radians {
+func (self Instance) InnerConeAngle() Angle.Radians { //gd:GLTFLight.inner_cone_angle
 	return Angle.Radians(Float.X(class(self).GetInnerConeAngle()))
 }
 
 // SetInnerConeAngle sets the property returned by [GetInnerConeAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInnerConeAngle(value Angle.Radians) Instance {
+func (self Instance) SetInnerConeAngle(value Angle.Radians) Instance { //gd:GLTFLight.inner_cone_angle
 	class(self).SetInnerConeAngle(float64(value))
 	return self
 }
@@ -300,12 +300,12 @@ At this angle, the light drops off to zero brightness. Between the inner and out
 
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) OuterConeAngle() Angle.Radians {
+func (self Instance) OuterConeAngle() Angle.Radians { //gd:GLTFLight.outer_cone_angle
 	return Angle.Radians(Float.X(class(self).GetOuterConeAngle()))
 }
 
 // SetOuterConeAngle sets the property returned by [GetOuterConeAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOuterConeAngle(value Angle.Radians) Instance {
+func (self Instance) SetOuterConeAngle(value Angle.Radians) Instance { //gd:GLTFLight.outer_cone_angle
 	class(self).SetOuterConeAngle(float64(value))
 	return self
 }

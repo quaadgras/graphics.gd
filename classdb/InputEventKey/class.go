@@ -263,7 +263,7 @@ func New() Instance {
 If true, the key's state is pressed. If false, the key's state is released.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) Instance {
+func (self Instance) SetPressed(value bool) Instance { //gd:InputEventKey.pressed
 	class(self).SetPressed(value)
 	return self
 }
@@ -275,12 +275,12 @@ To get a human-readable representation of the [InputEventKey], use OS.get_keycod
 
 [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
 */
-func (self Instance) Keycode() Input.Key {
+func (self Instance) Keycode() Input.Key { //gd:InputEventKey.keycode
 	return Input.Key(class(self).GetKeycode())
 }
 
 // SetKeycode sets the property returned by [GetKeycode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeycode(value Input.Key) Instance {
+func (self Instance) SetKeycode(value Input.Key) Instance { //gd:InputEventKey.keycode
 	class(self).SetKeycode(value)
 	return self
 }
@@ -294,12 +294,12 @@ To get a human-readable representation of the [InputEventKey], use [OS.GetKeycod
 [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
 [OS.GetKeycodeString]: https://pkg.go.dev/graphics.gd/classdb/OS#GetKeycodeString
 */
-func (self Instance) PhysicalKeycode() Input.Key {
+func (self Instance) PhysicalKeycode() Input.Key { //gd:InputEventKey.physical_keycode
 	return Input.Key(class(self).GetPhysicalKeycode())
 }
 
 // SetPhysicalKeycode sets the property returned by [GetPhysicalKeycode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPhysicalKeycode(value Input.Key) Instance {
+func (self Instance) SetPhysicalKeycode(value Input.Key) Instance { //gd:InputEventKey.physical_keycode
 	class(self).SetPhysicalKeycode(value)
 	return self
 }
@@ -314,12 +314,12 @@ To get a human-readable representation of the [InputEventKey], use OS.get_keycod
 [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
 [Keycode]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey#Instance.Keycode
 */
-func (self Instance) KeyLabel() Input.Key {
+func (self Instance) KeyLabel() Input.Key { //gd:InputEventKey.key_label
 	return Input.Key(class(self).GetKeyLabel())
 }
 
 // SetKeyLabel sets the property returned by [GetKeyLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeyLabel(value Input.Key) Instance {
+func (self Instance) SetKeyLabel(value Input.Key) Instance { //gd:InputEventKey.key_label
 	class(self).SetKeyLabel(value)
 	return self
 }
@@ -329,12 +329,12 @@ The key Unicode character code (when relevant), shifted by modifier keys. Unicod
 
 [Window.SetImeActive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetImeActive
 */
-func (self Instance) Unicode() int {
+func (self Instance) Unicode() int { //gd:InputEventKey.unicode
 	return int(int(class(self).GetUnicode()))
 }
 
 // SetUnicode sets the property returned by [GetUnicode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUnicode(value int) Instance {
+func (self Instance) SetUnicode(value int) Instance { //gd:InputEventKey.unicode
 	class(self).SetUnicode(int64(value))
 	return self
 }
@@ -342,12 +342,12 @@ func (self Instance) SetUnicode(value int) Instance {
 /*
 Represents the location of a key which has both left and right versions, such as Shift or Alt.
 */
-func (self Instance) Location() Input.KeyLocation {
+func (self Instance) Location() Input.KeyLocation { //gd:InputEventKey.location
 	return Input.KeyLocation(class(self).GetLocation())
 }
 
 // SetLocation sets the property returned by [GetLocation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocation(value Input.KeyLocation) Instance {
+func (self Instance) SetLocation(value Input.KeyLocation) Instance { //gd:InputEventKey.location
 	class(self).SetLocation(value)
 	return self
 }
@@ -358,7 +358,7 @@ If true, the key was already pressed before this event. An echo event is a repea
 Note: The rate at which echo events are sent is typically around 20 events per second (after holding down the key for roughly half a second). However, the key repeat delay/speed can be changed by the user or disabled entirely in the operating system settings. To ensure your project works correctly on all configurations, do not assume the user has a specific key repeat configuration in your project's behavior.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetEcho(value bool) Instance {
+func (self Instance) SetEcho(value bool) Instance { //gd:InputEventKey.echo
 	class(self).SetEcho(value)
 	return self
 }

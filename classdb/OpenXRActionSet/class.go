@@ -190,12 +190,12 @@ func New() Instance {
 /*
 The localized name of this action set.
 */
-func (self Instance) LocalizedName() string {
+func (self Instance) LocalizedName() string { //gd:OpenXRActionSet.localized_name
 	return string(class(self).GetLocalizedName().String())
 }
 
 // SetLocalizedName sets the property returned by [GetLocalizedName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocalizedName(value string) Instance {
+func (self Instance) SetLocalizedName(value string) Instance { //gd:OpenXRActionSet.localized_name
 	class(self).SetLocalizedName(String.New(value))
 	return self
 }
@@ -203,12 +203,12 @@ func (self Instance) SetLocalizedName(value string) Instance {
 /*
 The priority for this action set.
 */
-func (self Instance) Priority() int {
+func (self Instance) Priority() int { //gd:OpenXRActionSet.priority
 	return int(int(class(self).GetPriority()))
 }
 
 // SetPriority sets the property returned by [GetPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPriority(value int) Instance {
+func (self Instance) SetPriority(value int) Instance { //gd:OpenXRActionSet.priority
 	class(self).SetPriority(int64(value))
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetPriority(value int) Instance {
 /*
 Collection of actions for this action set.
 */
-func (self Instance) Actions() []OpenXRAction.Instance {
+func (self Instance) Actions() []OpenXRAction.Instance { //gd:OpenXRActionSet.actions
 	return []OpenXRAction.Instance(gd.ArrayAs[[]OpenXRAction.Instance](gd.InternalArray(class(self).GetActions())))
 }
 
 // SetActions sets the property returned by [GetActions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetActions(value []OpenXRAction.Instance) Instance {
+func (self Instance) SetActions(value []OpenXRAction.Instance) Instance { //gd:OpenXRActionSet.actions
 	class(self).SetActions(gd.EngineArrayFromSlice(value))
 	return self
 }

@@ -172,12 +172,12 @@ The World3D's [Environment].
 
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
-func (self Instance) Environment() Environment.Instance {
+func (self Instance) Environment() Environment.Instance { //gd:World3D.environment
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
 // SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironment(value Environment.Instance) Instance {
+func (self Instance) SetEnvironment(value Environment.Instance) Instance { //gd:World3D.environment
 	class(self).SetEnvironment(value)
 	return self
 }
@@ -187,12 +187,12 @@ The World3D's fallback environment will be used if [Environment] fails or is mis
 
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/World3D#Instance.Environment
 */
-func (self Instance) FallbackEnvironment() Environment.Instance {
+func (self Instance) FallbackEnvironment() Environment.Instance { //gd:World3D.fallback_environment
 	return Environment.Instance(class(self).GetFallbackEnvironment())
 }
 
 // SetFallbackEnvironment sets the property returned by [GetFallbackEnvironment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbackEnvironment(value Environment.Instance) Instance {
+func (self Instance) SetFallbackEnvironment(value Environment.Instance) Instance { //gd:World3D.fallback_environment
 	class(self).SetFallbackEnvironment(value)
 	return self
 }
@@ -203,12 +203,12 @@ The default [CameraAttributes] resource to use if none set on the [Camera3D].
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
-func (self Instance) CameraAttributes() CameraAttributes.Instance {
+func (self Instance) CameraAttributes() CameraAttributes.Instance { //gd:World3D.camera_attributes
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
 // SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance { //gd:World3D.camera_attributes
 	class(self).SetCameraAttributes(value)
 	return self
 }
@@ -216,7 +216,7 @@ func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instan
 /*
 The World3D's physics space.
 */
-func (self Instance) Space() RID.Space3D {
+func (self Instance) Space() RID.Space3D { //gd:World3D.space
 	return RID.Space3D(RID.Space3D(class(self).GetSpace()))
 }
 
@@ -226,14 +226,14 @@ The [Resource.ID] of this world's navigation map. Used by the [NavigationServer3
 [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) NavigationMap() RID.NavigationMap3D {
+func (self Instance) NavigationMap() RID.NavigationMap3D { //gd:World3D.navigation_map
 	return RID.NavigationMap3D(RID.NavigationMap3D(class(self).GetNavigationMap()))
 }
 
 /*
 The World3D's visual scenario.
 */
-func (self Instance) Scenario() RID.Scenario {
+func (self Instance) Scenario() RID.Scenario { //gd:World3D.scenario
 	return RID.Scenario(RID.Scenario(class(self).GetScenario()))
 }
 
@@ -242,7 +242,7 @@ Direct access to the world's physics 3D space state. Used for querying current a
 
 [Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
 */
-func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {
+func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance { //gd:World3D.direct_space_state
 	return PhysicsDirectSpaceState3D.Instance(class(self).GetDirectSpaceState())
 }
 

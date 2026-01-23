@@ -331,12 +331,12 @@ func New() Instance {
 /*
 The script source code or an empty string if source code is not available. When set, does not reload the class implementation automatically.
 */
-func (self Instance) SourceCode() string {
+func (self Instance) SourceCode() string { //gd:Script.source_code
 	return string(class(self).GetSourceCode().String())
 }
 
 // SetSourceCode sets the property returned by [GetSourceCode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSourceCode(value string) Instance {
+func (self Instance) SetSourceCode(value string) Instance { //gd:Script.source_code
 	class(self).SetSourceCode(String.New(value))
 	return self
 }

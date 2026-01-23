@@ -201,12 +201,12 @@ Base font used to create a variation. If not set, default [Theme] font is used.
 
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
 */
-func (self Instance) BaseFont() Font.Instance {
+func (self Instance) BaseFont() Font.Instance { //gd:FontVariation.base_font
 	return Font.Instance(class(self).GetBaseFont())
 }
 
 // SetBaseFont sets the property returned by [GetBaseFont]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaseFont(value Font.Instance) Instance {
+func (self Instance) SetBaseFont(value Font.Instance) Instance { //gd:FontVariation.base_font
 	class(self).SetBaseFont(value)
 	return self
 }
@@ -223,12 +223,12 @@ Note: To get available variation axes of a font, use [Font.GetSupportedVariation
 [TextServer.NameToTag]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.NameToTag
 [TextServer.TagToName]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.TagToName
 */
-func (self Instance) VariationOpentype() map[any]any {
+func (self Instance) VariationOpentype() map[any]any { //gd:FontVariation.variation_opentype
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetVariationOpentype()))
 }
 
 // SetVariationOpentype sets the property returned by [GetVariationOpentype]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVariationOpentype(value map[any]any) Instance {
+func (self Instance) SetVariationOpentype(value map[any]any) Instance { //gd:FontVariation.variation_opentype
 	class(self).SetVariationOpentype(gd.DictionaryFromMap(value))
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetVariationOpentype(value map[any]any) Instance {
 /*
 Active face index in the TrueType / OpenType collection file.
 */
-func (self Instance) VariationFaceIndex() int {
+func (self Instance) VariationFaceIndex() int { //gd:FontVariation.variation_face_index
 	return int(int(class(self).GetVariationFaceIndex()))
 }
 
 // SetVariationFaceIndex sets the property returned by [GetVariationFaceIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVariationFaceIndex(value int) Instance {
+func (self Instance) SetVariationFaceIndex(value int) Instance { //gd:FontVariation.variation_face_index
 	class(self).SetVariationFaceIndex(int64(value))
 	return self
 }
@@ -253,12 +253,12 @@ Note: Emboldened fonts might have self-intersecting outlines, which will prevent
 
 [TextMesh]: https://pkg.go.dev/graphics.gd/classdb/TextMesh
 */
-func (self Instance) VariationEmbolden() Float.X {
+func (self Instance) VariationEmbolden() Float.X { //gd:FontVariation.variation_embolden
 	return Float.X(Float.X(class(self).GetVariationEmbolden()))
 }
 
 // SetVariationEmbolden sets the property returned by [GetVariationEmbolden]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVariationEmbolden(value Float.X) Instance {
+func (self Instance) SetVariationEmbolden(value Float.X) Instance { //gd:FontVariation.variation_embolden
 	class(self).SetVariationEmbolden(float64(value))
 	return self
 }
@@ -268,12 +268,12 @@ func (self Instance) SetVariationEmbolden(value Float.X) Instance {
 
 For example, to simulate italic typeface by slanting, apply the following transform Transform2D(1.0, slant, 0.0, 1.0, 0.0, 0.0).
 */
-func (self Instance) VariationTransform() Transform2D.OriginXY {
+func (self Instance) VariationTransform() Transform2D.OriginXY { //gd:FontVariation.variation_transform
 	return Transform2D.OriginXY(class(self).GetVariationTransform())
 }
 
 // SetVariationTransform sets the property returned by [GetVariationTransform]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVariationTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetVariationTransform(value Transform2D.OriginXY) Instance { //gd:FontVariation.variation_transform
 	class(self).SetVariationTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -284,7 +284,7 @@ A set of OpenType feature tags. More info: [OpenType feature tags].
 [OpenType feature tags]: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetOpentypeFeatures(value map[any]any) Instance {
+func (self Instance) SetOpentypeFeatures(value map[any]any) Instance { //gd:FontVariation.opentype_features
 	class(self).SetOpentypeFeatures(gd.DictionaryFromMap(value))
 	return self
 }
@@ -293,7 +293,7 @@ func (self Instance) SetOpentypeFeatures(value map[any]any) Instance {
 Extra spacing between graphical glyphs.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingGlyph(value int) Instance {
+func (self Instance) SetSpacingGlyph(value int) Instance { //gd:FontVariation.spacing_glyph
 	class(self).SetSpacing(0, int64(value))
 	return self
 }
@@ -302,7 +302,7 @@ func (self Instance) SetSpacingGlyph(value int) Instance {
 Extra width of the space glyphs.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingSpace(value int) Instance {
+func (self Instance) SetSpacingSpace(value int) Instance { //gd:FontVariation.spacing_space
 	class(self).SetSpacing(1, int64(value))
 	return self
 }
@@ -311,7 +311,7 @@ func (self Instance) SetSpacingSpace(value int) Instance {
 Extra spacing at the top of the line in pixels.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingTop(value int) Instance {
+func (self Instance) SetSpacingTop(value int) Instance { //gd:FontVariation.spacing_top
 	class(self).SetSpacing(2, int64(value))
 	return self
 }
@@ -320,7 +320,7 @@ func (self Instance) SetSpacingTop(value int) Instance {
 Extra spacing at the bottom of the line in pixels.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetSpacingBottom(value int) Instance {
+func (self Instance) SetSpacingBottom(value int) Instance { //gd:FontVariation.spacing_bottom
 	class(self).SetSpacing(3, int64(value))
 	return self
 }
@@ -328,12 +328,12 @@ func (self Instance) SetSpacingBottom(value int) Instance {
 /*
 Extra baseline offset (as a fraction of font height).
 */
-func (self Instance) BaselineOffset() Float.X {
+func (self Instance) BaselineOffset() Float.X { //gd:FontVariation.baseline_offset
 	return Float.X(Float.X(class(self).GetBaselineOffset()))
 }
 
 // SetBaselineOffset sets the property returned by [GetBaselineOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaselineOffset(value Float.X) Instance {
+func (self Instance) SetBaselineOffset(value Float.X) Instance { //gd:FontVariation.baseline_offset
 	class(self).SetBaselineOffset(float64(value))
 	return self
 }

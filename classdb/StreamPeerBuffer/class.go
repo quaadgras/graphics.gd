@@ -223,12 +223,12 @@ func New() Instance {
 /*
 The underlying data buffer. Setting this value resets the cursor.
 */
-func (self Instance) DataArray() []byte {
+func (self Instance) DataArray() []byte { //gd:StreamPeerBuffer.data_array
 	return []byte(class(self).GetDataArray().Bytes())
 }
 
 // SetDataArray sets the property returned by [GetDataArray]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDataArray(value []byte) Instance {
+func (self Instance) SetDataArray(value []byte) Instance { //gd:StreamPeerBuffer.data_array
 	class(self).SetDataArray(Packed.BytesFrom(value...))
 	return self
 }

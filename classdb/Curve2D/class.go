@@ -441,12 +441,12 @@ The distance in pixels between two adjacent cached points. Changing it forces th
 [GetBakedLength]: https://pkg.go.dev/graphics.gd/classdb/Curve2D#Instance.GetBakedLength
 [GetBakedPoints]: https://pkg.go.dev/graphics.gd/classdb/Curve2D#Instance.GetBakedPoints
 */
-func (self Instance) BakeInterval() Float.X {
+func (self Instance) BakeInterval() Float.X { //gd:Curve2D.bake_interval
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
 
 // SetBakeInterval sets the property returned by [GetBakeInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeInterval(value Float.X) Instance {
+func (self Instance) SetBakeInterval(value Float.X) Instance { //gd:Curve2D.bake_interval
 	class(self).SetBakeInterval(float64(value))
 	return self
 }
@@ -454,12 +454,12 @@ func (self Instance) SetBakeInterval(value Float.X) Instance {
 /*
 The number of points describing the curve.
 */
-func (self Instance) PointCount() int {
+func (self Instance) PointCount() int { //gd:Curve2D.point_count
 	return int(int(class(self).GetPointCount()))
 }
 
 // SetPointCount sets the property returned by [GetPointCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPointCount(value int) Instance {
+func (self Instance) SetPointCount(value int) Instance { //gd:Curve2D.point_count
 	class(self).SetPointCount(int64(value))
 	return self
 }

@@ -187,22 +187,22 @@ func New() Instance {
 /*
 The original name of the animation.
 */
-func (self Instance) OriginalName() string {
+func (self Instance) OriginalName() string { //gd:GLTFAnimation.original_name
 	return string(class(self).GetOriginalName().String())
 }
 
 // SetOriginalName sets the property returned by [GetOriginalName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginalName(value string) Instance {
+func (self Instance) SetOriginalName(value string) Instance { //gd:GLTFAnimation.original_name
 	class(self).SetOriginalName(String.New(value))
 	return self
 }
 
-func (self Instance) Loop() bool {
+func (self Instance) Loop() bool { //gd:GLTFAnimation.loop
 	return bool(class(self).GetLoop())
 }
 
 // SetLoop sets the property returned by [GetLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoop(value bool) Instance {
+func (self Instance) SetLoop(value bool) Instance { //gd:GLTFAnimation.loop
 	class(self).SetLoop(value)
 	return self
 }

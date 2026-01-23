@@ -172,22 +172,22 @@ func New() Instance {
 /*
 The length of the buffer to keep (in seconds). Higher values keep data around for longer, but require more memory.
 */
-func (self Instance) BufferLength() Float.X {
+func (self Instance) BufferLength() Float.X { //gd:AudioEffectSpectrumAnalyzer.buffer_length
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
 // SetBufferLength sets the property returned by [GetBufferLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBufferLength(value Float.X) Instance {
+func (self Instance) SetBufferLength(value Float.X) Instance { //gd:AudioEffectSpectrumAnalyzer.buffer_length
 	class(self).SetBufferLength(float64(value))
 	return self
 }
 
-func (self Instance) TapBackPos() Float.X {
+func (self Instance) TapBackPos() Float.X { //gd:AudioEffectSpectrumAnalyzer.tap_back_pos
 	return Float.X(Float.X(class(self).GetTapBackPos()))
 }
 
 // SetTapBackPos sets the property returned by [GetTapBackPos]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTapBackPos(value Float.X) Instance {
+func (self Instance) SetTapBackPos(value Float.X) Instance { //gd:AudioEffectSpectrumAnalyzer.tap_back_pos
 	class(self).SetTapBackPos(float64(value))
 	return self
 }
@@ -197,12 +197,12 @@ The size of the [Fast Fourier transform] buffer. Higher values smooth out the sp
 
 [Fast Fourier transform]: https://en.wikipedia.org/wiki/Fast_Fourier_transform
 */
-func (self Instance) FftSize() FFTSize {
+func (self Instance) FftSize() FFTSize { //gd:AudioEffectSpectrumAnalyzer.fft_size
 	return FFTSize(class(self).GetFftSize())
 }
 
 // SetFftSize sets the property returned by [GetFftSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFftSize(value FFTSize) Instance {
+func (self Instance) SetFftSize(value FFTSize) Instance { //gd:AudioEffectSpectrumAnalyzer.fft_size
 	class(self).SetFftSize(value)
 	return self
 }

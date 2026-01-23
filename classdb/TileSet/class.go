@@ -1007,12 +1007,12 @@ func New() Instance {
 /*
 The tile shape.
 */
-func (self Instance) TileShape() TileShape {
+func (self Instance) TileShape() TileShape { //gd:TileSet.tile_shape
 	return TileShape(class(self).GetTileShape())
 }
 
 // SetTileShape sets the property returned by [GetTileShape]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileShape(value TileShape) Instance {
+func (self Instance) SetTileShape(value TileShape) Instance { //gd:TileSet.tile_shape
 	class(self).SetTileShape(value)
 	return self
 }
@@ -1022,12 +1022,12 @@ For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), change
 
 [TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
 */
-func (self Instance) TileLayout() TileLayout {
+func (self Instance) TileLayout() TileLayout { //gd:TileSet.tile_layout
 	return TileLayout(class(self).GetTileLayout())
 }
 
 // SetTileLayout sets the property returned by [GetTileLayout]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileLayout(value TileLayout) Instance {
+func (self Instance) SetTileLayout(value TileLayout) Instance { //gd:TileSet.tile_layout
 	class(self).SetTileLayout(value)
 	return self
 }
@@ -1035,12 +1035,12 @@ func (self Instance) SetTileLayout(value TileLayout) Instance {
 /*
 For all half-offset shapes (Isometric, Hexagonal and Half-Offset square), determines the offset axis.
 */
-func (self Instance) TileOffsetAxis() TileOffsetAxis {
+func (self Instance) TileOffsetAxis() TileOffsetAxis { //gd:TileSet.tile_offset_axis
 	return TileOffsetAxis(class(self).GetTileOffsetAxis())
 }
 
 // SetTileOffsetAxis sets the property returned by [GetTileOffsetAxis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) Instance {
+func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) Instance { //gd:TileSet.tile_offset_axis
 	class(self).SetTileOffsetAxis(value)
 	return self
 }
@@ -1048,12 +1048,12 @@ func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) Instance {
 /*
 The tile size, in pixels. For all tile shapes, this size corresponds to the encompassing rectangle of the tile shape. This is thus the minimal cell size required in an atlas.
 */
-func (self Instance) TileSize() Vector2i.XY {
+func (self Instance) TileSize() Vector2i.XY { //gd:TileSet.tile_size
 	return Vector2i.XY(class(self).GetTileSize())
 }
 
 // SetTileSize sets the property returned by [GetTileSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTileSize(value Vector2i.XY) Instance {
+func (self Instance) SetTileSize(value Vector2i.XY) Instance { //gd:TileSet.tile_size
 	class(self).SetTileSize(Vector2i.XY(value))
 	return self
 }
@@ -1061,12 +1061,12 @@ func (self Instance) SetTileSize(value Vector2i.XY) Instance {
 /*
 Enables/Disable uv clipping when rendering the tiles.
 */
-func (self Instance) UvClipping() bool {
+func (self Instance) UvClipping() bool { //gd:TileSet.uv_clipping
 	return bool(class(self).IsUvClipping())
 }
 
 // SetUvClipping sets the property returned by [IsUvClipping]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUvClipping(value bool) Instance {
+func (self Instance) SetUvClipping(value bool) Instance { //gd:TileSet.uv_clipping
 	class(self).SetUvClipping(value)
 	return self
 }

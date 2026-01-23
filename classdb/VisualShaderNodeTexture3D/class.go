@@ -164,12 +164,12 @@ A source texture. Used if [VisualShaderNodeSample3D.Source] is set to [Visualsha
 
 [VisualShaderNodeSample3D.Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeSample3D#Instance.Source
 */
-func (self Instance) Texture() Texture3D.Instance {
+func (self Instance) Texture() Texture3D.Instance { //gd:VisualShaderNodeTexture3D.texture
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
 // SetTexture sets the property returned by [GetTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTexture(value Texture3D.Instance) Instance {
+func (self Instance) SetTexture(value Texture3D.Instance) Instance { //gd:VisualShaderNodeTexture3D.texture
 	class(self).SetTexture(value)
 	return self
 }

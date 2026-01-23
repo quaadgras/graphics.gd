@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The ray's length.
 */
-func (self Instance) Length() Float.X {
+func (self Instance) Length() Float.X { //gd:SeparationRayShape2D.length
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
 // SetLength sets the property returned by [GetLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLength(value Float.X) Instance {
+func (self Instance) SetLength(value Float.X) Instance { //gd:SeparationRayShape2D.length
 	class(self).SetLength(float64(value))
 	return self
 }
@@ -180,12 +180,12 @@ If false (default), the shape always separates and returns a normal along its ow
 
 If true, the shape can return the correct normal and separate in any direction, allowing sliding motion on slopes.
 */
-func (self Instance) SlideOnSlope() bool {
+func (self Instance) SlideOnSlope() bool { //gd:SeparationRayShape2D.slide_on_slope
 	return bool(class(self).GetSlideOnSlope())
 }
 
 // SetSlideOnSlope sets the property returned by [GetSlideOnSlope]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSlideOnSlope(value bool) Instance {
+func (self Instance) SetSlideOnSlope(value bool) Instance { //gd:SeparationRayShape2D.slide_on_slope
 	class(self).SetSlideOnSlope(value)
 	return self
 }

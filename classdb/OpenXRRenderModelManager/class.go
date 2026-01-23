@@ -167,12 +167,12 @@ func New() Instance {
 /*
 Limits render models to the specified tracker. Include: 0 = All render models, 1 = Render models not related to a tracker, 2 = Render models related to the left hand tracker, 3 = Render models related to the right hand tracker.
 */
-func (self Instance) Tracker() RenderModelTracker {
+func (self Instance) Tracker() RenderModelTracker { //gd:OpenXRRenderModelManager.tracker
 	return RenderModelTracker(class(self).GetTracker())
 }
 
 // SetTracker sets the property returned by [GetTracker]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTracker(value RenderModelTracker) Instance {
+func (self Instance) SetTracker(value RenderModelTracker) Instance { //gd:OpenXRRenderModelManager.tracker
 	class(self).SetTracker(value)
 	return self
 }
@@ -180,12 +180,12 @@ func (self Instance) SetTracker(value RenderModelTracker) Instance {
 /*
 Position render models local to this pose (this will adjust the position of the render models container node).
 */
-func (self Instance) MakeLocalToPose() string {
+func (self Instance) MakeLocalToPose() string { //gd:OpenXRRenderModelManager.make_local_to_pose
 	return string(class(self).GetMakeLocalToPose().String())
 }
 
 // SetMakeLocalToPose sets the property returned by [GetMakeLocalToPose]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMakeLocalToPose(value string) Instance {
+func (self Instance) SetMakeLocalToPose(value string) Instance { //gd:OpenXRRenderModelManager.make_local_to_pose
 	class(self).SetMakeLocalToPose(String.New(value))
 	return self
 }

@@ -168,12 +168,12 @@ func New() Instance {
 /*
 The waveform's maximum allowed value, in decibels. Value can range from -20 to -0.1.
 */
-func (self Instance) CeilingDb() Float.X {
+func (self Instance) CeilingDb() Float.X { //gd:AudioEffectLimiter.ceiling_db
 	return Float.X(Float.X(class(self).GetCeilingDb()))
 }
 
 // SetCeilingDb sets the property returned by [GetCeilingDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCeilingDb(value Float.X) Instance {
+func (self Instance) SetCeilingDb(value Float.X) Instance { //gd:AudioEffectLimiter.ceiling_db
 	class(self).SetCeilingDb(float64(value))
 	return self
 }
@@ -181,12 +181,12 @@ func (self Instance) SetCeilingDb(value Float.X) Instance {
 /*
 Threshold from which the limiter begins to be active, in decibels. Value can range from -30 to 0.
 */
-func (self Instance) ThresholdDb() Float.X {
+func (self Instance) ThresholdDb() Float.X { //gd:AudioEffectLimiter.threshold_db
 	return Float.X(Float.X(class(self).GetThresholdDb()))
 }
 
 // SetThresholdDb sets the property returned by [GetThresholdDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThresholdDb(value Float.X) Instance {
+func (self Instance) SetThresholdDb(value Float.X) Instance { //gd:AudioEffectLimiter.threshold_db
 	class(self).SetThresholdDb(float64(value))
 	return self
 }
@@ -194,22 +194,22 @@ func (self Instance) SetThresholdDb(value Float.X) Instance {
 /*
 Applies a gain to the limited waves, in decibels. Value can range from 0 to 6.
 */
-func (self Instance) SoftClipDb() Float.X {
+func (self Instance) SoftClipDb() Float.X { //gd:AudioEffectLimiter.soft_clip_db
 	return Float.X(Float.X(class(self).GetSoftClipDb()))
 }
 
 // SetSoftClipDb sets the property returned by [GetSoftClipDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSoftClipDb(value Float.X) Instance {
+func (self Instance) SetSoftClipDb(value Float.X) Instance { //gd:AudioEffectLimiter.soft_clip_db
 	class(self).SetSoftClipDb(float64(value))
 	return self
 }
 
-func (self Instance) SoftClipRatio() Float.X {
+func (self Instance) SoftClipRatio() Float.X { //gd:AudioEffectLimiter.soft_clip_ratio
 	return Float.X(Float.X(class(self).GetSoftClipRatio()))
 }
 
 // SetSoftClipRatio sets the property returned by [GetSoftClipRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSoftClipRatio(value Float.X) Instance {
+func (self Instance) SetSoftClipRatio(value Float.X) Instance { //gd:AudioEffectLimiter.soft_clip_ratio
 	class(self).SetSoftClipRatio(float64(value))
 	return self
 }

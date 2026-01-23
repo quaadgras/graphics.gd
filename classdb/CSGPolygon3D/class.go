@@ -207,12 +207,12 @@ Note: If only 1 or 2 points are defined in [Polygon], no mesh will be generated.
 
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:CSGPolygon3D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:CSGPolygon3D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }
@@ -223,12 +223,12 @@ The [Mode] used to extrude the [Polygon].
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) Mode() Mode {
+func (self Instance) Mode() Mode { //gd:CSGPolygon3D.mode
 	return Mode(class(self).GetMode())
 }
 
 // SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode(value Mode) Instance {
+func (self Instance) SetMode(value Mode) Instance { //gd:CSGPolygon3D.mode
 	class(self).SetMode(value)
 	return self
 }
@@ -238,12 +238,12 @@ When [Mode] is [ModeDepth], the depth of the extrusion.
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) Depth() Float.X {
+func (self Instance) Depth() Float.X { //gd:CSGPolygon3D.depth
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 // SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepth(value Float.X) Instance {
+func (self Instance) SetDepth(value Float.X) Instance { //gd:CSGPolygon3D.depth
 	class(self).SetDepth(float64(value))
 	return self
 }
@@ -254,12 +254,12 @@ When [Mode] is [ModeSpin], the total number of degrees the [Polygon] is rotated 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) SpinDegrees() Float.X {
+func (self Instance) SpinDegrees() Float.X { //gd:CSGPolygon3D.spin_degrees
 	return Float.X(Float.X(class(self).GetSpinDegrees()))
 }
 
 // SetSpinDegrees sets the property returned by [GetSpinDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpinDegrees(value Float.X) Instance {
+func (self Instance) SetSpinDegrees(value Float.X) Instance { //gd:CSGPolygon3D.spin_degrees
 	class(self).SetSpinDegrees(float64(value))
 	return self
 }
@@ -269,12 +269,12 @@ When [Mode] is [ModeSpin], the number of extrusions made.
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) SpinSides() int {
+func (self Instance) SpinSides() int { //gd:CSGPolygon3D.spin_sides
 	return int(int(class(self).GetSpinSides()))
 }
 
 // SetSpinSides sets the property returned by [GetSpinSides]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpinSides(value int) Instance {
+func (self Instance) SetSpinSides(value int) Instance { //gd:CSGPolygon3D.spin_sides
 	class(self).SetSpinSides(int64(value))
 	return self
 }
@@ -286,12 +286,12 @@ When [Mode] is [ModePath], the location of the [Path3D] object used to extrude t
 [Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) PathNode() string {
+func (self Instance) PathNode() string { //gd:CSGPolygon3D.path_node
 	return string(class(self).GetPathNode().String())
 }
 
 // SetPathNode sets the property returned by [GetPathNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathNode(value string) Instance {
+func (self Instance) SetPathNode(value string) Instance { //gd:CSGPolygon3D.path_node
 	class(self).SetPathNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -301,12 +301,12 @@ When [Mode] is [ModePath], this will determine if the interval should be by dist
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathIntervalType() PathIntervalType {
+func (self Instance) PathIntervalType() PathIntervalType { //gd:CSGPolygon3D.path_interval_type
 	return PathIntervalType(class(self).GetPathIntervalType())
 }
 
 // SetPathIntervalType sets the property returned by [GetPathIntervalType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathIntervalType(value PathIntervalType) Instance {
+func (self Instance) SetPathIntervalType(value PathIntervalType) Instance { //gd:CSGPolygon3D.path_interval_type
 	class(self).SetPathIntervalType(value)
 	return self
 }
@@ -316,12 +316,12 @@ When [Mode] is [ModePath], the path interval or ratio of path points to extrusio
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathInterval() Float.X {
+func (self Instance) PathInterval() Float.X { //gd:CSGPolygon3D.path_interval
 	return Float.X(Float.X(class(self).GetPathInterval()))
 }
 
 // SetPathInterval sets the property returned by [GetPathInterval]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathInterval(value Float.X) Instance {
+func (self Instance) SetPathInterval(value Float.X) Instance { //gd:CSGPolygon3D.path_interval
 	class(self).SetPathInterval(float64(value))
 	return self
 }
@@ -331,12 +331,12 @@ When [Mode] is [ModePath], extrusions that are less than this angle, will be mer
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathSimplifyAngle() Angle.Radians {
+func (self Instance) PathSimplifyAngle() Angle.Radians { //gd:CSGPolygon3D.path_simplify_angle
 	return Angle.Radians(Float.X(class(self).GetPathSimplifyAngle()))
 }
 
 // SetPathSimplifyAngle sets the property returned by [GetPathSimplifyAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathSimplifyAngle(value Angle.Radians) Instance {
+func (self Instance) SetPathSimplifyAngle(value Angle.Radians) Instance { //gd:CSGPolygon3D.path_simplify_angle
 	class(self).SetPathSimplifyAngle(float64(value))
 	return self
 }
@@ -347,12 +347,12 @@ When [Mode] is [ModePath], the path rotation method used to rotate the [Polygon]
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) PathRotation() PathRotation {
+func (self Instance) PathRotation() PathRotation { //gd:CSGPolygon3D.path_rotation
 	return PathRotation(class(self).GetPathRotation())
 }
 
 // SetPathRotation sets the property returned by [GetPathRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathRotation(value PathRotation) Instance {
+func (self Instance) SetPathRotation(value PathRotation) Instance { //gd:CSGPolygon3D.path_rotation
 	class(self).SetPathRotation(value)
 	return self
 }
@@ -362,12 +362,12 @@ When [Mode] is [ModePath], if true the polygon will be rotated according to the 
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathRotationAccurate() bool {
+func (self Instance) PathRotationAccurate() bool { //gd:CSGPolygon3D.path_rotation_accurate
 	return bool(class(self).GetPathRotationAccurate())
 }
 
 // SetPathRotationAccurate sets the property returned by [GetPathRotationAccurate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathRotationAccurate(value bool) Instance {
+func (self Instance) SetPathRotationAccurate(value bool) Instance { //gd:CSGPolygon3D.path_rotation_accurate
 	class(self).SetPathRotationAccurate(value)
 	return self
 }
@@ -380,12 +380,12 @@ When [Mode] is [ModePath], if true the [Transform3D.BasisOrigin] of the [CSGPoly
 [PathNode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.PathNode
 [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
-func (self Instance) PathLocal() bool {
+func (self Instance) PathLocal() bool { //gd:CSGPolygon3D.path_local
 	return bool(class(self).IsPathLocal())
 }
 
 // SetPathLocal sets the property returned by [IsPathLocal]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathLocal(value bool) Instance {
+func (self Instance) SetPathLocal(value bool) Instance { //gd:CSGPolygon3D.path_local
 	class(self).SetPathLocal(value)
 	return self
 }
@@ -396,12 +396,12 @@ When [Mode] is [ModePath], by default, the top half of the [Material] is stretch
 [Material]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Material
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathContinuousU() bool {
+func (self Instance) PathContinuousU() bool { //gd:CSGPolygon3D.path_continuous_u
 	return bool(class(self).IsPathContinuousU())
 }
 
 // SetPathContinuousU sets the property returned by [IsPathContinuousU]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathContinuousU(value bool) Instance {
+func (self Instance) SetPathContinuousU(value bool) Instance { //gd:CSGPolygon3D.path_continuous_u
 	class(self).SetPathContinuousU(value)
 	return self
 }
@@ -411,12 +411,12 @@ When [Mode] is [ModePath], this is the distance along the path, in meters, the t
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathUDistance() Float.X {
+func (self Instance) PathUDistance() Float.X { //gd:CSGPolygon3D.path_u_distance
 	return Float.X(Float.X(class(self).GetPathUDistance()))
 }
 
 // SetPathUDistance sets the property returned by [GetPathUDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathUDistance(value Float.X) Instance {
+func (self Instance) SetPathUDistance(value Float.X) Instance { //gd:CSGPolygon3D.path_u_distance
 	class(self).SetPathUDistance(float64(value))
 	return self
 }
@@ -426,12 +426,12 @@ When [Mode] is [ModePath], if true the ends of the path are joined, by adding an
 
 [Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
 */
-func (self Instance) PathJoined() bool {
+func (self Instance) PathJoined() bool { //gd:CSGPolygon3D.path_joined
 	return bool(class(self).IsPathJoined())
 }
 
 // SetPathJoined sets the property returned by [IsPathJoined]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPathJoined(value bool) Instance {
+func (self Instance) SetPathJoined(value bool) Instance { //gd:CSGPolygon3D.path_joined
 	class(self).SetPathJoined(value)
 	return self
 }
@@ -439,12 +439,12 @@ func (self Instance) SetPathJoined(value bool) Instance {
 /*
 If true, applies smooth shading to the extrusions.
 */
-func (self Instance) SmoothFaces() bool {
+func (self Instance) SmoothFaces() bool { //gd:CSGPolygon3D.smooth_faces
 	return bool(class(self).GetSmoothFaces())
 }
 
 // SetSmoothFaces sets the property returned by [GetSmoothFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSmoothFaces(value bool) Instance {
+func (self Instance) SetSmoothFaces(value bool) Instance { //gd:CSGPolygon3D.smooth_faces
 	class(self).SetSmoothFaces(value)
 	return self
 }
@@ -454,12 +454,12 @@ Material to use for the resulting mesh. The UV maps the top half of the material
 
 [Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:CSGPolygon3D.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGPolygon3D.material
 	class(self).SetMaterial(value)
 	return self
 }

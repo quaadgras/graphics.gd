@@ -219,12 +219,12 @@ func New() Instance {
 /*
 If true, texture will be centered.
 */
-func (self Instance) Centered() bool {
+func (self Instance) Centered() bool { //gd:SpriteBase3D.centered
 	return bool(class(self).IsCentered())
 }
 
 // SetCentered sets the property returned by [IsCentered]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCentered(value bool) Instance {
+func (self Instance) SetCentered(value bool) Instance { //gd:SpriteBase3D.centered
 	class(self).SetCentered(value)
 	return self
 }
@@ -236,12 +236,12 @@ Note: When you increase [Offset].y in Sprite3D, the sprite moves upward in world
 
 [Offset]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D#Instance.Offset
 */
-func (self Instance) Offset() Vector2.XY {
+func (self Instance) Offset() Vector2.XY { //gd:SpriteBase3D.offset
 	return Vector2.XY(class(self).GetOffset())
 }
 
 // SetOffset sets the property returned by [GetOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffset(value Vector2.XY) Instance {
+func (self Instance) SetOffset(value Vector2.XY) Instance { //gd:SpriteBase3D.offset
 	class(self).SetOffset(Vector2.XY(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetOffset(value Vector2.XY) Instance {
 /*
 If true, texture is flipped horizontally.
 */
-func (self Instance) FlipH() bool {
+func (self Instance) FlipH() bool { //gd:SpriteBase3D.flip_h
 	return bool(class(self).IsFlippedH())
 }
 
 // SetFlipH sets the property returned by [IsFlippedH]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipH(value bool) Instance {
+func (self Instance) SetFlipH(value bool) Instance { //gd:SpriteBase3D.flip_h
 	class(self).SetFlipH(value)
 	return self
 }
@@ -262,12 +262,12 @@ func (self Instance) SetFlipH(value bool) Instance {
 /*
 If true, texture is flipped vertically.
 */
-func (self Instance) FlipV() bool {
+func (self Instance) FlipV() bool { //gd:SpriteBase3D.flip_v
 	return bool(class(self).IsFlippedV())
 }
 
 // SetFlipV sets the property returned by [IsFlippedV]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipV(value bool) Instance {
+func (self Instance) SetFlipV(value bool) Instance { //gd:SpriteBase3D.flip_v
 	class(self).SetFlipV(value)
 	return self
 }
@@ -287,12 +287,12 @@ Note: If a [GeometryInstance3D.MaterialOverride] is defined on the [SpriteBase3D
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 [SpriteBase3D]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D
 */
-func (self Instance) Modulate() Color.RGBA {
+func (self Instance) Modulate() Color.RGBA { //gd:SpriteBase3D.modulate
 	return Color.RGBA(class(self).GetModulate())
 }
 
 // SetModulate sets the property returned by [GetModulate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModulate(value Color.RGBA) Instance {
+func (self Instance) SetModulate(value Color.RGBA) Instance { //gd:SpriteBase3D.modulate
 	class(self).SetModulate(Color.RGBA(value))
 	return self
 }
@@ -300,12 +300,12 @@ func (self Instance) SetModulate(value Color.RGBA) Instance {
 /*
 The size of one pixel's width on the sprite to scale it in 3D.
 */
-func (self Instance) PixelSize() Float.X {
+func (self Instance) PixelSize() Float.X { //gd:SpriteBase3D.pixel_size
 	return Float.X(Float.X(class(self).GetPixelSize()))
 }
 
 // SetPixelSize sets the property returned by [GetPixelSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPixelSize(value Float.X) Instance {
+func (self Instance) SetPixelSize(value Float.X) Instance { //gd:SpriteBase3D.pixel_size
 	class(self).SetPixelSize(float64(value))
 	return self
 }
@@ -313,12 +313,12 @@ func (self Instance) SetPixelSize(value Float.X) Instance {
 /*
 The direction in which the front of the texture faces.
 */
-func (self Instance) Axis() Vector3.Axis {
+func (self Instance) Axis() Vector3.Axis { //gd:SpriteBase3D.axis
 	return Vector3.Axis(class(self).GetAxis())
 }
 
 // SetAxis sets the property returned by [GetAxis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxis(value Vector3.Axis) Instance {
+func (self Instance) SetAxis(value Vector3.Axis) Instance { //gd:SpriteBase3D.axis
 	class(self).SetAxis(value)
 	return self
 }
@@ -330,12 +330,12 @@ Note: When billboarding is enabled and the material also casts shadows, billboar
 
 [GitHub Pull Request #72638]: https://github.com/godotengine/godot/pull/72638
 */
-func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
+func (self Instance) Billboard() BaseMaterial3D.BillboardMode { //gd:SpriteBase3D.billboard
 	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
 // SetBillboard sets the property returned by [GetBillboardMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) Instance {
+func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) Instance { //gd:SpriteBase3D.billboard
 	class(self).SetBillboardMode(value)
 	return self
 }
@@ -343,12 +343,12 @@ func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) Instance {
 /*
 If true, the texture's transparency and the opacity are used to make those parts of the sprite invisible.
 */
-func (self Instance) Transparent() bool {
+func (self Instance) Transparent() bool { //gd:SpriteBase3D.transparent
 	return bool(class(self).GetDrawFlag(0))
 }
 
 // SetTransparent sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransparent(value bool) Instance {
+func (self Instance) SetTransparent(value bool) Instance { //gd:SpriteBase3D.transparent
 	class(self).SetDrawFlag(0, value)
 	return self
 }
@@ -359,12 +359,12 @@ If true, the [Light3D] in the [Environment] has effects on the sprite.
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 [Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
-func (self Instance) Shaded() bool {
+func (self Instance) Shaded() bool { //gd:SpriteBase3D.shaded
 	return bool(class(self).GetDrawFlag(1))
 }
 
 // SetShaded sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShaded(value bool) Instance {
+func (self Instance) SetShaded(value bool) Instance { //gd:SpriteBase3D.shaded
 	class(self).SetDrawFlag(1, value)
 	return self
 }
@@ -372,12 +372,12 @@ func (self Instance) SetShaded(value bool) Instance {
 /*
 If true, texture can be seen from the back as well, if false, it is invisible when looking at it from behind.
 */
-func (self Instance) DoubleSided() bool {
+func (self Instance) DoubleSided() bool { //gd:SpriteBase3D.double_sided
 	return bool(class(self).GetDrawFlag(2))
 }
 
 // SetDoubleSided sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDoubleSided(value bool) Instance {
+func (self Instance) SetDoubleSided(value bool) Instance { //gd:SpriteBase3D.double_sided
 	class(self).SetDrawFlag(2, value)
 	return self
 }
@@ -385,12 +385,12 @@ func (self Instance) SetDoubleSided(value bool) Instance {
 /*
 If true, depth testing is disabled and the object will be drawn in render order.
 */
-func (self Instance) NoDepthTest() bool {
+func (self Instance) NoDepthTest() bool { //gd:SpriteBase3D.no_depth_test
 	return bool(class(self).GetDrawFlag(3))
 }
 
 // SetNoDepthTest sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNoDepthTest(value bool) Instance {
+func (self Instance) SetNoDepthTest(value bool) Instance { //gd:SpriteBase3D.no_depth_test
 	class(self).SetDrawFlag(3, value)
 	return self
 }
@@ -401,12 +401,12 @@ If true, the texture is rendered at the same size regardless of distance. The te
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [Camera3D.Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
 */
-func (self Instance) FixedSize() bool {
+func (self Instance) FixedSize() bool { //gd:SpriteBase3D.fixed_size
 	return bool(class(self).GetDrawFlag(4))
 }
 
 // SetFixedSize sets the property returned by [GetDrawFlag]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFixedSize(value bool) Instance {
+func (self Instance) SetFixedSize(value bool) Instance { //gd:SpriteBase3D.fixed_size
 	class(self).SetDrawFlag(4, value)
 	return self
 }
@@ -414,12 +414,12 @@ func (self Instance) SetFixedSize(value bool) Instance {
 /*
 The alpha cutting mode to use for the sprite.
 */
-func (self Instance) AlphaCut() AlphaCutMode {
+func (self Instance) AlphaCut() AlphaCutMode { //gd:SpriteBase3D.alpha_cut
 	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
 // SetAlphaCut sets the property returned by [GetAlphaCutMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaCut(value AlphaCutMode) Instance {
+func (self Instance) SetAlphaCut(value AlphaCutMode) Instance { //gd:SpriteBase3D.alpha_cut
 	class(self).SetAlphaCutMode(value)
 	return self
 }
@@ -427,12 +427,12 @@ func (self Instance) SetAlphaCut(value AlphaCutMode) Instance {
 /*
 Threshold at which the alpha scissor will discard values.
 */
-func (self Instance) AlphaScissorThreshold() Float.X {
+func (self Instance) AlphaScissorThreshold() Float.X { //gd:SpriteBase3D.alpha_scissor_threshold
 	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
 // SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaScissorThreshold(value Float.X) Instance {
+func (self Instance) SetAlphaScissorThreshold(value Float.X) Instance { //gd:SpriteBase3D.alpha_scissor_threshold
 	class(self).SetAlphaScissorThreshold(float64(value))
 	return self
 }
@@ -440,12 +440,12 @@ func (self Instance) SetAlphaScissorThreshold(value Float.X) Instance {
 /*
 The hashing scale for Alpha Hash. Recommended values between 0 and 2.
 */
-func (self Instance) AlphaHashScale() Float.X {
+func (self Instance) AlphaHashScale() Float.X { //gd:SpriteBase3D.alpha_hash_scale
 	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
 // SetAlphaHashScale sets the property returned by [GetAlphaHashScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaHashScale(value Float.X) Instance {
+func (self Instance) SetAlphaHashScale(value Float.X) Instance { //gd:SpriteBase3D.alpha_hash_scale
 	class(self).SetAlphaHashScale(float64(value))
 	return self
 }
@@ -453,12 +453,12 @@ func (self Instance) SetAlphaHashScale(value Float.X) Instance {
 /*
 The type of alpha antialiasing to apply.
 */
-func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
+func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing { //gd:SpriteBase3D.alpha_antialiasing_mode
 	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
 // SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) Instance {
+func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) Instance { //gd:SpriteBase3D.alpha_antialiasing_mode
 	class(self).SetAlphaAntialiasing(value)
 	return self
 }
@@ -466,12 +466,12 @@ func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAlia
 /*
 Threshold at which antialiasing will be applied on the alpha channel.
 */
-func (self Instance) AlphaAntialiasingEdge() Float.X {
+func (self Instance) AlphaAntialiasingEdge() Float.X { //gd:SpriteBase3D.alpha_antialiasing_edge
 	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
 // SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaAntialiasingEdge(value Float.X) Instance {
+func (self Instance) SetAlphaAntialiasingEdge(value Float.X) Instance { //gd:SpriteBase3D.alpha_antialiasing_edge
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 	return self
 }
@@ -481,12 +481,12 @@ Filter flags for the texture.
 
 Note: Linear filtering may cause artifacts around the edges, which are especially noticeable on opaque textures. To prevent this, use textures with transparent or identical colors around the edges.
 */
-func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
+func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter { //gd:SpriteBase3D.texture_filter
 	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
 // SetTextureFilter sets the property returned by [GetTextureFilter]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) Instance {
+func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) Instance { //gd:SpriteBase3D.texture_filter
 	class(self).SetTextureFilter(value)
 	return self
 }
@@ -500,12 +500,12 @@ Note: This only applies to sorting of transparent objects. This will not impact 
 
 [AlphaCut]: https://pkg.go.dev/graphics.gd/classdb/SpriteBase3D#Instance.AlphaCut
 */
-func (self Instance) RenderPriority() int {
+func (self Instance) RenderPriority() int { //gd:SpriteBase3D.render_priority
 	return int(int(class(self).GetRenderPriority()))
 }
 
 // SetRenderPriority sets the property returned by [GetRenderPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRenderPriority(value int) Instance {
+func (self Instance) SetRenderPriority(value int) Instance { //gd:SpriteBase3D.render_priority
 	class(self).SetRenderPriority(int64(value))
 	return self
 }

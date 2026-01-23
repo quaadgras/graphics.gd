@@ -174,12 +174,12 @@ func New() Instance {
 /*
 The manner in which a material's rendering is applied to underlying textures.
 */
-func (self Instance) BlendMode() BlendMode {
+func (self Instance) BlendMode() BlendMode { //gd:CanvasItemMaterial.blend_mode
 	return BlendMode(class(self).GetBlendMode())
 }
 
 // SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendMode(value BlendMode) Instance {
+func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:CanvasItemMaterial.blend_mode
 	class(self).SetBlendMode(value)
 	return self
 }
@@ -187,12 +187,12 @@ func (self Instance) SetBlendMode(value BlendMode) Instance {
 /*
 The manner in which material reacts to lighting.
 */
-func (self Instance) LightMode() LightMode {
+func (self Instance) LightMode() LightMode { //gd:CanvasItemMaterial.light_mode
 	return LightMode(class(self).GetLightMode())
 }
 
 // SetLightMode sets the property returned by [GetLightMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightMode(value LightMode) Instance {
+func (self Instance) SetLightMode(value LightMode) Instance { //gd:CanvasItemMaterial.light_mode
 	class(self).SetLightMode(value)
 	return self
 }
@@ -207,12 +207,12 @@ This property (and other particles_anim_* properties that depend on it) has no e
 [GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
 [ParticleProcessMaterial.AnimSpeedMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AnimSpeedMax
 */
-func (self Instance) ParticlesAnimation() bool {
+func (self Instance) ParticlesAnimation() bool { //gd:CanvasItemMaterial.particles_animation
 	return bool(class(self).GetParticlesAnimation())
 }
 
 // SetParticlesAnimation sets the property returned by [GetParticlesAnimation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParticlesAnimation(value bool) Instance {
+func (self Instance) SetParticlesAnimation(value bool) Instance { //gd:CanvasItemMaterial.particles_animation
 	class(self).SetParticlesAnimation(value)
 	return self
 }
@@ -227,12 +227,12 @@ Note: This property is only used and visible in the editor if [ParticlesAnimatio
 [ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) ParticlesAnimHFrames() int {
+func (self Instance) ParticlesAnimHFrames() int { //gd:CanvasItemMaterial.particles_anim_h_frames
 	return int(int(class(self).GetParticlesAnimHFrames()))
 }
 
 // SetParticlesAnimHFrames sets the property returned by [GetParticlesAnimHFrames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParticlesAnimHFrames(value int) Instance {
+func (self Instance) SetParticlesAnimHFrames(value int) Instance { //gd:CanvasItemMaterial.particles_anim_h_frames
 	class(self).SetParticlesAnimHFrames(int64(value))
 	return self
 }
@@ -247,12 +247,12 @@ Note: This property is only used and visible in the editor if [ParticlesAnimatio
 [ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) ParticlesAnimVFrames() int {
+func (self Instance) ParticlesAnimVFrames() int { //gd:CanvasItemMaterial.particles_anim_v_frames
 	return int(int(class(self).GetParticlesAnimVFrames()))
 }
 
 // SetParticlesAnimVFrames sets the property returned by [GetParticlesAnimVFrames]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParticlesAnimVFrames(value int) Instance {
+func (self Instance) SetParticlesAnimVFrames(value int) Instance { //gd:CanvasItemMaterial.particles_anim_v_frames
 	class(self).SetParticlesAnimVFrames(int64(value))
 	return self
 }
@@ -264,12 +264,12 @@ Note: This property is only used and visible in the editor if [ParticlesAnimatio
 
 [ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
 */
-func (self Instance) ParticlesAnimLoop() bool {
+func (self Instance) ParticlesAnimLoop() bool { //gd:CanvasItemMaterial.particles_anim_loop
 	return bool(class(self).GetParticlesAnimLoop())
 }
 
 // SetParticlesAnimLoop sets the property returned by [GetParticlesAnimLoop]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParticlesAnimLoop(value bool) Instance {
+func (self Instance) SetParticlesAnimLoop(value bool) Instance { //gd:CanvasItemMaterial.particles_anim_loop
 	class(self).SetParticlesAnimLoop(value)
 	return self
 }

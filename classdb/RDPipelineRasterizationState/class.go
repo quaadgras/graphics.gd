@@ -181,12 +181,12 @@ func New() Instance {
 /*
 If true, clamps depth values according to the minimum and maximum depth of the associated viewport.
 */
-func (self Instance) EnableDepthClamp() bool {
+func (self Instance) EnableDepthClamp() bool { //gd:RDPipelineRasterizationState.enable_depth_clamp
 	return bool(class(self).GetEnableDepthClamp())
 }
 
 // SetEnableDepthClamp sets the property returned by [GetEnableDepthClamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableDepthClamp(value bool) Instance {
+func (self Instance) SetEnableDepthClamp(value bool) Instance { //gd:RDPipelineRasterizationState.enable_depth_clamp
 	class(self).SetEnableDepthClamp(value)
 	return self
 }
@@ -194,12 +194,12 @@ func (self Instance) SetEnableDepthClamp(value bool) Instance {
 /*
 If true, primitives are discarded immediately before the rasterization stage.
 */
-func (self Instance) DiscardPrimitives() bool {
+func (self Instance) DiscardPrimitives() bool { //gd:RDPipelineRasterizationState.discard_primitives
 	return bool(class(self).GetDiscardPrimitives())
 }
 
 // SetDiscardPrimitives sets the property returned by [GetDiscardPrimitives]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiscardPrimitives(value bool) Instance {
+func (self Instance) SetDiscardPrimitives(value bool) Instance { //gd:RDPipelineRasterizationState.discard_primitives
 	class(self).SetDiscardPrimitives(value)
 	return self
 }
@@ -207,12 +207,12 @@ func (self Instance) SetDiscardPrimitives(value bool) Instance {
 /*
 If true, performs wireframe rendering for triangles instead of flat or textured rendering.
 */
-func (self Instance) Wireframe() bool {
+func (self Instance) Wireframe() bool { //gd:RDPipelineRasterizationState.wireframe
 	return bool(class(self).GetWireframe())
 }
 
 // SetWireframe sets the property returned by [GetWireframe]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWireframe(value bool) Instance {
+func (self Instance) SetWireframe(value bool) Instance { //gd:RDPipelineRasterizationState.wireframe
 	class(self).SetWireframe(value)
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetWireframe(value bool) Instance {
 /*
 The cull mode to use when drawing polygons, which determines whether front faces or backfaces are hidden.
 */
-func (self Instance) CullMode() Rendering.PolygonCullMode {
+func (self Instance) CullMode() Rendering.PolygonCullMode { //gd:RDPipelineRasterizationState.cull_mode
 	return Rendering.PolygonCullMode(class(self).GetCullMode())
 }
 
 // SetCullMode sets the property returned by [GetCullMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMode(value Rendering.PolygonCullMode) Instance {
+func (self Instance) SetCullMode(value Rendering.PolygonCullMode) Instance { //gd:RDPipelineRasterizationState.cull_mode
 	class(self).SetCullMode(value)
 	return self
 }
@@ -233,12 +233,12 @@ func (self Instance) SetCullMode(value Rendering.PolygonCullMode) Instance {
 /*
 The winding order to use to determine which face of a triangle is considered its front face.
 */
-func (self Instance) FrontFace() Rendering.PolygonFrontFace {
+func (self Instance) FrontFace() Rendering.PolygonFrontFace { //gd:RDPipelineRasterizationState.front_face
 	return Rendering.PolygonFrontFace(class(self).GetFrontFace())
 }
 
 // SetFrontFace sets the property returned by [GetFrontFace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrontFace(value Rendering.PolygonFrontFace) Instance {
+func (self Instance) SetFrontFace(value Rendering.PolygonFrontFace) Instance { //gd:RDPipelineRasterizationState.front_face
 	class(self).SetFrontFace(value)
 	return self
 }
@@ -249,12 +249,12 @@ If true, each generated depth value will by offset by some amount. The specific 
 [DepthBiasConstantFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasConstantFactor
 [DepthBiasSlopeFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasSlopeFactor
 */
-func (self Instance) DepthBiasEnabled() bool {
+func (self Instance) DepthBiasEnabled() bool { //gd:RDPipelineRasterizationState.depth_bias_enabled
 	return bool(class(self).GetDepthBiasEnabled())
 }
 
 // SetDepthBiasEnabled sets the property returned by [GetDepthBiasEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthBiasEnabled(value bool) Instance {
+func (self Instance) SetDepthBiasEnabled(value bool) Instance { //gd:RDPipelineRasterizationState.depth_bias_enabled
 	class(self).SetDepthBiasEnabled(value)
 	return self
 }
@@ -264,12 +264,12 @@ A constant offset added to each depth value. Applied after [DepthBiasSlopeFactor
 
 [DepthBiasSlopeFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasSlopeFactor
 */
-func (self Instance) DepthBiasConstantFactor() Float.X {
+func (self Instance) DepthBiasConstantFactor() Float.X { //gd:RDPipelineRasterizationState.depth_bias_constant_factor
 	return Float.X(Float.X(class(self).GetDepthBiasConstantFactor()))
 }
 
 // SetDepthBiasConstantFactor sets the property returned by [GetDepthBiasConstantFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthBiasConstantFactor(value Float.X) Instance {
+func (self Instance) SetDepthBiasConstantFactor(value Float.X) Instance { //gd:RDPipelineRasterizationState.depth_bias_constant_factor
 	class(self).SetDepthBiasConstantFactor(float64(value))
 	return self
 }
@@ -277,12 +277,12 @@ func (self Instance) SetDepthBiasConstantFactor(value Float.X) Instance {
 /*
 A limit for how much each depth value can be offset. If negative, it serves as a minimum value, but if positive, it serves as a maximum value.
 */
-func (self Instance) DepthBiasClamp() Float.X {
+func (self Instance) DepthBiasClamp() Float.X { //gd:RDPipelineRasterizationState.depth_bias_clamp
 	return Float.X(Float.X(class(self).GetDepthBiasClamp()))
 }
 
 // SetDepthBiasClamp sets the property returned by [GetDepthBiasClamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthBiasClamp(value Float.X) Instance {
+func (self Instance) SetDepthBiasClamp(value Float.X) Instance { //gd:RDPipelineRasterizationState.depth_bias_clamp
 	class(self).SetDepthBiasClamp(float64(value))
 	return self
 }
@@ -292,12 +292,12 @@ A constant scale applied to the slope of each polygons' depth. Applied before [D
 
 [DepthBiasConstantFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineRasterizationState#Instance.DepthBiasConstantFactor
 */
-func (self Instance) DepthBiasSlopeFactor() Float.X {
+func (self Instance) DepthBiasSlopeFactor() Float.X { //gd:RDPipelineRasterizationState.depth_bias_slope_factor
 	return Float.X(Float.X(class(self).GetDepthBiasSlopeFactor()))
 }
 
 // SetDepthBiasSlopeFactor sets the property returned by [GetDepthBiasSlopeFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepthBiasSlopeFactor(value Float.X) Instance {
+func (self Instance) SetDepthBiasSlopeFactor(value Float.X) Instance { //gd:RDPipelineRasterizationState.depth_bias_slope_factor
 	class(self).SetDepthBiasSlopeFactor(float64(value))
 	return self
 }
@@ -305,12 +305,12 @@ func (self Instance) SetDepthBiasSlopeFactor(value Float.X) Instance {
 /*
 The line width to use when drawing lines (in pixels). Thick lines may not be supported on all hardware.
 */
-func (self Instance) LineWidth() Float.X {
+func (self Instance) LineWidth() Float.X { //gd:RDPipelineRasterizationState.line_width
 	return Float.X(Float.X(class(self).GetLineWidth()))
 }
 
 // SetLineWidth sets the property returned by [GetLineWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLineWidth(value Float.X) Instance {
+func (self Instance) SetLineWidth(value Float.X) Instance { //gd:RDPipelineRasterizationState.line_width
 	class(self).SetLineWidth(float64(value))
 	return self
 }
@@ -318,12 +318,12 @@ func (self Instance) SetLineWidth(value Float.X) Instance {
 /*
 The number of control points to use when drawing a patch with tessellation enabled. Higher values result in higher quality at the cost of performance.
 */
-func (self Instance) PatchControlPoints() int {
+func (self Instance) PatchControlPoints() int { //gd:RDPipelineRasterizationState.patch_control_points
 	return int(int(class(self).GetPatchControlPoints()))
 }
 
 // SetPatchControlPoints sets the property returned by [GetPatchControlPoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPatchControlPoints(value int) Instance {
+func (self Instance) SetPatchControlPoints(value int) Instance { //gd:RDPipelineRasterizationState.patch_control_points
 	class(self).SetPatchControlPoints(int64(value))
 	return self
 }

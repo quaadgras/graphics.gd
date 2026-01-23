@@ -256,12 +256,12 @@ func New() Instance {
 /*
 The base type of allowed resource types. Can be a comma-separated list of several options.
 */
-func (self Instance) BaseType() string {
+func (self Instance) BaseType() string { //gd:EditorResourcePicker.base_type
 	return string(class(self).GetBaseType().String())
 }
 
 // SetBaseType sets the property returned by [GetBaseType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaseType(value string) Instance {
+func (self Instance) SetBaseType(value string) Instance { //gd:EditorResourcePicker.base_type
 	class(self).SetBaseType(String.New(value))
 	return self
 }
@@ -269,12 +269,12 @@ func (self Instance) SetBaseType(value string) Instance {
 /*
 The edited resource value.
 */
-func (self Instance) EditedResource() Resource.Instance {
+func (self Instance) EditedResource() Resource.Instance { //gd:EditorResourcePicker.edited_resource
 	return Resource.Instance(class(self).GetEditedResource())
 }
 
 // SetEditedResource sets the property returned by [GetEditedResource]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditedResource(value Resource.Instance) Instance {
+func (self Instance) SetEditedResource(value Resource.Instance) Instance { //gd:EditorResourcePicker.edited_resource
 	class(self).SetEditedResource(value)
 	return self
 }
@@ -282,12 +282,12 @@ func (self Instance) SetEditedResource(value Resource.Instance) Instance {
 /*
 If true, the value can be selected and edited.
 */
-func (self Instance) Editable() bool {
+func (self Instance) Editable() bool { //gd:EditorResourcePicker.editable
 	return bool(class(self).IsEditable())
 }
 
 // SetEditable sets the property returned by [IsEditable]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditable(value bool) Instance {
+func (self Instance) SetEditable(value bool) Instance { //gd:EditorResourcePicker.editable
 	class(self).SetEditable(value)
 	return self
 }
@@ -297,12 +297,12 @@ If true, the main button with the resource preview works in the toggle mode. Use
 
 [SetTogglePressed]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.SetTogglePressed
 */
-func (self Instance) ToggleMode() bool {
+func (self Instance) ToggleMode() bool { //gd:EditorResourcePicker.toggle_mode
 	return bool(class(self).IsToggleMode())
 }
 
 // SetToggleMode sets the property returned by [IsToggleMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetToggleMode(value bool) Instance {
+func (self Instance) SetToggleMode(value bool) Instance { //gd:EditorResourcePicker.toggle_mode
 	class(self).SetToggleMode(value)
 	return self
 }

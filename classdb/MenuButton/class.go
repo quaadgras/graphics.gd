@@ -208,12 +208,12 @@ If true, when the cursor hovers above another [MenuButton] within the same paren
 [MenuButton]: https://pkg.go.dev/graphics.gd/classdb/MenuButton
 [SwitchOnHover]: https://pkg.go.dev/graphics.gd/classdb/MenuButton#Instance.SwitchOnHover
 */
-func (self Instance) SwitchOnHover() bool {
+func (self Instance) SwitchOnHover() bool { //gd:MenuButton.switch_on_hover
 	return bool(class(self).IsSwitchOnHover())
 }
 
 // SetSwitchOnHover sets the property returned by [IsSwitchOnHover]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwitchOnHover(value bool) Instance {
+func (self Instance) SetSwitchOnHover(value bool) Instance { //gd:MenuButton.switch_on_hover
 	class(self).SetSwitchOnHover(value)
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetSwitchOnHover(value bool) Instance {
 /*
 The number of items currently in the list.
 */
-func (self Instance) ItemCount() int {
+func (self Instance) ItemCount() int { //gd:MenuButton.item_count
 	return int(int(class(self).GetItemCount()))
 }
 
 // SetItemCount sets the property returned by [GetItemCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetItemCount(value int) Instance {
+func (self Instance) SetItemCount(value int) Instance { //gd:MenuButton.item_count
 	class(self).SetItemCount(int64(value))
 	return self
 }

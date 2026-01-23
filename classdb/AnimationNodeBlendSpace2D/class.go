@@ -311,12 +311,12 @@ If true, the blend space is triangulated automatically. The mesh updates every t
 [AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
 [RemoveBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.RemoveBlendPoint
 */
-func (self Instance) AutoTriangles() bool {
+func (self Instance) AutoTriangles() bool { //gd:AnimationNodeBlendSpace2D.auto_triangles
 	return bool(class(self).GetAutoTriangles())
 }
 
 // SetAutoTriangles sets the property returned by [GetAutoTriangles]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTriangles(value bool) Instance {
+func (self Instance) SetAutoTriangles(value bool) Instance { //gd:AnimationNodeBlendSpace2D.auto_triangles
 	class(self).SetAutoTriangles(value)
 	return self
 }
@@ -326,12 +326,12 @@ The blend space's X and Y axes' lower limit for the points' position. See [AddBl
 
 [AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
 */
-func (self Instance) MinSpace() Vector2.XY {
+func (self Instance) MinSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.min_space
 	return Vector2.XY(class(self).GetMinSpace())
 }
 
 // SetMinSpace sets the property returned by [GetMinSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinSpace(value Vector2.XY) Instance {
+func (self Instance) SetMinSpace(value Vector2.XY) Instance { //gd:AnimationNodeBlendSpace2D.min_space
 	class(self).SetMinSpace(Vector2.XY(value))
 	return self
 }
@@ -341,12 +341,12 @@ The blend space's X and Y axes' upper limit for the points' position. See [AddBl
 
 [AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D#Instance.AddBlendPoint
 */
-func (self Instance) MaxSpace() Vector2.XY {
+func (self Instance) MaxSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.max_space
 	return Vector2.XY(class(self).GetMaxSpace())
 }
 
 // SetMaxSpace sets the property returned by [GetMaxSpace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxSpace(value Vector2.XY) Instance {
+func (self Instance) SetMaxSpace(value Vector2.XY) Instance { //gd:AnimationNodeBlendSpace2D.max_space
 	class(self).SetMaxSpace(Vector2.XY(value))
 	return self
 }
@@ -354,12 +354,12 @@ func (self Instance) SetMaxSpace(value Vector2.XY) Instance {
 /*
 Position increment to snap to when moving a point.
 */
-func (self Instance) Snap() Vector2.XY {
+func (self Instance) Snap() Vector2.XY { //gd:AnimationNodeBlendSpace2D.snap
 	return Vector2.XY(class(self).GetSnap())
 }
 
 // SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap(value Vector2.XY) Instance {
+func (self Instance) SetSnap(value Vector2.XY) Instance { //gd:AnimationNodeBlendSpace2D.snap
 	class(self).SetSnap(Vector2.XY(value))
 	return self
 }
@@ -367,12 +367,12 @@ func (self Instance) SetSnap(value Vector2.XY) Instance {
 /*
 Name of the blend space's X axis.
 */
-func (self Instance) XLabel() string {
+func (self Instance) XLabel() string { //gd:AnimationNodeBlendSpace2D.x_label
 	return string(class(self).GetXLabel().String())
 }
 
 // SetXLabel sets the property returned by [GetXLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXLabel(value string) Instance {
+func (self Instance) SetXLabel(value string) Instance { //gd:AnimationNodeBlendSpace2D.x_label
 	class(self).SetXLabel(String.New(value))
 	return self
 }
@@ -380,12 +380,12 @@ func (self Instance) SetXLabel(value string) Instance {
 /*
 Name of the blend space's Y axis.
 */
-func (self Instance) YLabel() string {
+func (self Instance) YLabel() string { //gd:AnimationNodeBlendSpace2D.y_label
 	return string(class(self).GetYLabel().String())
 }
 
 // SetYLabel sets the property returned by [GetYLabel]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetYLabel(value string) Instance {
+func (self Instance) SetYLabel(value string) Instance { //gd:AnimationNodeBlendSpace2D.y_label
 	class(self).SetYLabel(String.New(value))
 	return self
 }
@@ -393,12 +393,12 @@ func (self Instance) SetYLabel(value string) Instance {
 /*
 Controls the interpolation between animations.
 */
-func (self Instance) BlendMode() BlendMode {
+func (self Instance) BlendMode() BlendMode { //gd:AnimationNodeBlendSpace2D.blend_mode
 	return BlendMode(class(self).GetBlendMode())
 }
 
 // SetBlendMode sets the property returned by [GetBlendMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBlendMode(value BlendMode) Instance {
+func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:AnimationNodeBlendSpace2D.blend_mode
 	class(self).SetBlendMode(value)
 	return self
 }
@@ -408,12 +408,12 @@ If false, the blended animations' frame are stopped when the blend value is 0.
 
 If true, forcing the blended animations to advance frame.
 */
-func (self Instance) Sync() bool {
+func (self Instance) Sync() bool { //gd:AnimationNodeBlendSpace2D.sync
 	return bool(class(self).IsUsingSync())
 }
 
 // SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSync(value bool) Instance {
+func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeBlendSpace2D.sync
 	class(self).SetUseSync(value)
 	return self
 }

@@ -163,12 +163,12 @@ func New() Instance {
 /*
 Name of the variable. Must be unique.
 */
-func (self Instance) VaryingName() string {
+func (self Instance) VaryingName() string { //gd:VisualShaderNodeVarying.varying_name
 	return string(class(self).GetVaryingName().String())
 }
 
 // SetVaryingName sets the property returned by [GetVaryingName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVaryingName(value string) Instance {
+func (self Instance) SetVaryingName(value string) Instance { //gd:VisualShaderNodeVarying.varying_name
 	class(self).SetVaryingName(String.New(value))
 	return self
 }
@@ -176,12 +176,12 @@ func (self Instance) SetVaryingName(value string) Instance {
 /*
 Type of the variable. Determines where the variable can be accessed.
 */
-func (self Instance) VaryingType() VisualShader.VaryingType {
+func (self Instance) VaryingType() VisualShader.VaryingType { //gd:VisualShaderNodeVarying.varying_type
 	return VisualShader.VaryingType(class(self).GetVaryingType())
 }
 
 // SetVaryingType sets the property returned by [GetVaryingType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVaryingType(value VisualShader.VaryingType) Instance {
+func (self Instance) SetVaryingType(value VisualShader.VaryingType) Instance { //gd:VisualShaderNodeVarying.varying_type
 	class(self).SetVaryingType(value)
 	return self
 }

@@ -163,12 +163,12 @@ func New() Instance {
 /*
 A function to be applied to the input color.
 */
-func (self Instance) Function() Function {
+func (self Instance) Function() Function { //gd:VisualShaderNodeColorFunc.function
 	return Function(class(self).GetFunction())
 }
 
 // SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunction(value Function) Instance {
+func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNodeColorFunc.function
 	class(self).SetFunction(value)
 	return self
 }

@@ -265,7 +265,7 @@ The underlying [ENetConnection] created after [CreateClient] and [CreateServer].
 [CreateServer]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.CreateServer
 [ENetConnection]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection
 */
-func (self Instance) Host() ENetConnection.Instance {
+func (self Instance) Host() ENetConnection.Instance { //gd:ENetMultiplayerPeer.host
 	return ENetConnection.Instance(class(self).GetHost())
 }
 

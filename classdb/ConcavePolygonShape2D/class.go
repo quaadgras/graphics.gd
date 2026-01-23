@@ -179,12 +179,12 @@ The array of points that make up the [ConcavePolygonShape2D]'s line segments. Th
 
 [ConcavePolygonShape2D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape2D
 */
-func (self Instance) Segments() []Vector2.XY {
+func (self Instance) Segments() []Vector2.XY { //gd:ConcavePolygonShape2D.segments
 	return []Vector2.XY(slices.Collect(class(self).GetSegments().Values()))
 }
 
 // SetSegments sets the property returned by [GetSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSegments(value []Vector2.XY) Instance {
+func (self Instance) SetSegments(value []Vector2.XY) Instance { //gd:ConcavePolygonShape2D.segments
 	class(self).SetSegments(Packed.New(value...))
 	return self
 }

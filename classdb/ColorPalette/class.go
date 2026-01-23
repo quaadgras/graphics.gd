@@ -165,12 +165,12 @@ A [][Color.RGBA] containing the colors in the palette.
 
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
-func (self Instance) Colors() []Color.RGBA {
+func (self Instance) Colors() []Color.RGBA { //gd:ColorPalette.colors
 	return []Color.RGBA(slices.Collect(class(self).GetColors().Values()))
 }
 
 // SetColors sets the property returned by [GetColors]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColors(value []Color.RGBA) Instance {
+func (self Instance) SetColors(value []Color.RGBA) Instance { //gd:ColorPalette.colors
 	class(self).SetColors(Packed.New(value...))
 	return self
 }

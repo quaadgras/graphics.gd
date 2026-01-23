@@ -160,12 +160,12 @@ func New() Instance {
 /*
 Defines in what manner the particles will be accelerated.
 */
-func (self Instance) Mode() Mode {
+func (self Instance) Mode() Mode { //gd:VisualShaderNodeParticleAccelerator.mode
 	return Mode(class(self).GetMode())
 }
 
 // SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode(value Mode) Instance {
+func (self Instance) SetMode(value Mode) Instance { //gd:VisualShaderNodeParticleAccelerator.mode
 	class(self).SetMode(value)
 	return self
 }

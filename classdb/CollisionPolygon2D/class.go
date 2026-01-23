@@ -177,12 +177,12 @@ func New() Instance {
 /*
 Collision build mode.
 */
-func (self Instance) BuildMode() BuildMode {
+func (self Instance) BuildMode() BuildMode { //gd:CollisionPolygon2D.build_mode
 	return BuildMode(class(self).GetBuildMode())
 }
 
 // SetBuildMode sets the property returned by [GetBuildMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBuildMode(value BuildMode) Instance {
+func (self Instance) SetBuildMode(value BuildMode) Instance { //gd:CollisionPolygon2D.build_mode
 	class(self).SetBuildMode(value)
 	return self
 }
@@ -194,12 +194,12 @@ Note: The returned vertices are in the local coordinate space of the given [Coll
 
 [CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:CollisionPolygon2D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:CollisionPolygon2D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }
@@ -209,12 +209,12 @@ If true, no collisions will be detected. This property should be changed with [O
 
 [Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
 */
-func (self Instance) Disabled() bool {
+func (self Instance) Disabled() bool { //gd:CollisionPolygon2D.disabled
 	return bool(class(self).IsDisabled())
 }
 
 // SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisabled(value bool) Instance {
+func (self Instance) SetDisabled(value bool) Instance { //gd:CollisionPolygon2D.disabled
 	class(self).SetDisabled(value)
 	return self
 }
@@ -227,12 +227,12 @@ Note: This property has no effect if this [CollisionPolygon2D] is a child of an 
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
 */
-func (self Instance) OneWayCollision() bool {
+func (self Instance) OneWayCollision() bool { //gd:CollisionPolygon2D.one_way_collision
 	return bool(class(self).IsOneWayCollisionEnabled())
 }
 
 // SetOneWayCollision sets the property returned by [IsOneWayCollisionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneWayCollision(value bool) Instance {
+func (self Instance) SetOneWayCollision(value bool) Instance { //gd:CollisionPolygon2D.one_way_collision
 	class(self).SetOneWayCollision(value)
 	return self
 }
@@ -240,12 +240,12 @@ func (self Instance) SetOneWayCollision(value bool) Instance {
 /*
 The margin used for one-way collision (in pixels). Higher values will make the shape thicker, and work better for colliders that enter the polygon at a high velocity.
 */
-func (self Instance) OneWayCollisionMargin() Float.X {
+func (self Instance) OneWayCollisionMargin() Float.X { //gd:CollisionPolygon2D.one_way_collision_margin
 	return Float.X(Float.X(class(self).GetOneWayCollisionMargin()))
 }
 
 // SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance {
+func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance { //gd:CollisionPolygon2D.one_way_collision_margin
 	class(self).SetOneWayCollisionMargin(float64(value))
 	return self
 }

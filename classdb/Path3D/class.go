@@ -170,12 +170,12 @@ A [Curve3D] describing the path.
 
 [Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
 */
-func (self Instance) Curve() Curve3D.Instance {
+func (self Instance) Curve() Curve3D.Instance { //gd:Path3D.curve
 	return Curve3D.Instance(class(self).GetCurve())
 }
 
 // SetCurve sets the property returned by [GetCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurve(value Curve3D.Instance) Instance {
+func (self Instance) SetCurve(value Curve3D.Instance) Instance { //gd:Path3D.curve
 	class(self).SetCurve(value)
 	return self
 }
@@ -185,12 +185,12 @@ The custom color to use to draw the shape in the editor.
 
 If set to Color(0.0, 0.0, 0.0) (by default), the color set in EditorSettings is used.
 */
-func (self Instance) DebugCustomColor() Color.RGBA {
+func (self Instance) DebugCustomColor() Color.RGBA { //gd:Path3D.debug_custom_color
 	return Color.RGBA(class(self).GetDebugCustomColor())
 }
 
 // SetDebugCustomColor sets the property returned by [GetDebugCustomColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugCustomColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugCustomColor(value Color.RGBA) Instance { //gd:Path3D.debug_custom_color
 	class(self).SetDebugCustomColor(Color.RGBA(value))
 	return self
 }

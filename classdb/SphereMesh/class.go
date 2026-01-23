@@ -171,12 +171,12 @@ func New() Instance {
 /*
 Radius of sphere.
 */
-func (self Instance) Radius() Float.X {
+func (self Instance) Radius() Float.X { //gd:SphereMesh.radius
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
 // SetRadius sets the property returned by [GetRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadius(value Float.X) Instance {
+func (self Instance) SetRadius(value Float.X) Instance { //gd:SphereMesh.radius
 	class(self).SetRadius(float64(value))
 	return self
 }
@@ -184,12 +184,12 @@ func (self Instance) SetRadius(value Float.X) Instance {
 /*
 Full height of the sphere.
 */
-func (self Instance) Height() Float.X {
+func (self Instance) Height() Float.X { //gd:SphereMesh.height
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
 // SetHeight sets the property returned by [GetHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeight(value Float.X) Instance {
+func (self Instance) SetHeight(value Float.X) Instance { //gd:SphereMesh.height
 	class(self).SetHeight(float64(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetHeight(value Float.X) Instance {
 /*
 Number of radial segments on the sphere.
 */
-func (self Instance) RadialSegments() int {
+func (self Instance) RadialSegments() int { //gd:SphereMesh.radial_segments
 	return int(int(class(self).GetRadialSegments()))
 }
 
 // SetRadialSegments sets the property returned by [GetRadialSegments]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRadialSegments(value int) Instance {
+func (self Instance) SetRadialSegments(value int) Instance { //gd:SphereMesh.radial_segments
 	class(self).SetRadialSegments(int64(value))
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetRadialSegments(value int) Instance {
 /*
 Number of segments along the height of the sphere.
 */
-func (self Instance) Rings() int {
+func (self Instance) Rings() int { //gd:SphereMesh.rings
 	return int(int(class(self).GetRings()))
 }
 
 // SetRings sets the property returned by [GetRings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRings(value int) Instance {
+func (self Instance) SetRings(value int) Instance { //gd:SphereMesh.rings
 	class(self).SetRings(int64(value))
 	return self
 }
@@ -225,12 +225,12 @@ If true, a hemisphere is created rather than a full sphere.
 
 Note: To get a regular hemisphere, the height and radius of the sphere must be equal.
 */
-func (self Instance) IsHemisphere() bool {
+func (self Instance) IsHemisphere() bool { //gd:SphereMesh.is_hemisphere
 	return bool(class(self).GetIsHemisphere())
 }
 
 // SetIsHemisphere sets the property returned by [GetIsHemisphere]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIsHemisphere(value bool) Instance {
+func (self Instance) SetIsHemisphere(value bool) Instance { //gd:SphereMesh.is_hemisphere
 	class(self).SetIsHemisphere(value)
 	return self
 }

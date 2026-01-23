@@ -210,12 +210,12 @@ Sets the size of a margin used to expand the drawable rect of this [CanvasGroup]
 [CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
 [FitMargin]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup#Instance.FitMargin
 */
-func (self Instance) FitMargin() Float.X {
+func (self Instance) FitMargin() Float.X { //gd:CanvasGroup.fit_margin
 	return Float.X(Float.X(class(self).GetFitMargin()))
 }
 
 // SetFitMargin sets the property returned by [GetFitMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFitMargin(value Float.X) Instance {
+func (self Instance) SetFitMargin(value Float.X) Instance { //gd:CanvasGroup.fit_margin
 	class(self).SetFitMargin(float64(value))
 	return self
 }
@@ -226,12 +226,12 @@ Sets the size of the margin used to expand the clearing rect of this [CanvasGrou
 [CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
 [UseMipmaps]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup#Instance.UseMipmaps
 */
-func (self Instance) ClearMargin() Float.X {
+func (self Instance) ClearMargin() Float.X { //gd:CanvasGroup.clear_margin
 	return Float.X(Float.X(class(self).GetClearMargin()))
 }
 
 // SetClearMargin sets the property returned by [GetClearMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClearMargin(value Float.X) Instance {
+func (self Instance) SetClearMargin(value Float.X) Instance { //gd:CanvasGroup.clear_margin
 	class(self).SetClearMargin(float64(value))
 	return self
 }
@@ -242,12 +242,12 @@ If true, calculates mipmaps for the backbuffer before drawing the [CanvasGroup] 
 [CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
 [ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Instance) UseMipmaps() bool {
+func (self Instance) UseMipmaps() bool { //gd:CanvasGroup.use_mipmaps
 	return bool(class(self).IsUsingMipmaps())
 }
 
 // SetUseMipmaps sets the property returned by [IsUsingMipmaps]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseMipmaps(value bool) Instance {
+func (self Instance) SetUseMipmaps(value bool) Instance { //gd:CanvasGroup.use_mipmaps
 	class(self).SetUseMipmaps(value)
 	return self
 }

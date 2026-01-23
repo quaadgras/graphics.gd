@@ -234,12 +234,12 @@ The current [Material] of the primitive mesh.
 
 [Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 */
-func (self Instance) Material() Material.Instance {
+func (self Instance) Material() Material.Instance { //gd:PrimitiveMesh.material
 	return Material.Instance(class(self).GetMaterial())
 }
 
 // SetMaterial sets the property returned by [GetMaterial]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaterial(value Material.Instance) Instance {
+func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:PrimitiveMesh.material
 	class(self).SetMaterial(value)
 	return self
 }
@@ -249,12 +249,12 @@ Overrides the [AABB.PositionSize] with one defined by user for use with frustum 
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 */
-func (self Instance) CustomAabb() AABB.PositionSize {
+func (self Instance) CustomAabb() AABB.PositionSize { //gd:PrimitiveMesh.custom_aabb
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
 // SetCustomAabb sets the property returned by [GetCustomAabb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance {
+func (self Instance) SetCustomAabb(value AABB.PositionSize) Instance { //gd:PrimitiveMesh.custom_aabb
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 	return self
 }
@@ -266,12 +266,12 @@ This gives the same result as using [Basematerial3d.CullFront] in [BaseMaterial3
 
 [BaseMaterial3D.CullMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.CullMode
 */
-func (self Instance) FlipFaces() bool {
+func (self Instance) FlipFaces() bool { //gd:PrimitiveMesh.flip_faces
 	return bool(class(self).GetFlipFaces())
 }
 
 // SetFlipFaces sets the property returned by [GetFlipFaces]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlipFaces(value bool) Instance {
+func (self Instance) SetFlipFaces(value bool) Instance { //gd:PrimitiveMesh.flip_faces
 	class(self).SetFlipFaces(value)
 	return self
 }
@@ -281,12 +281,12 @@ If set, generates UV2 UV coordinates applying a padding using the [Uv2Padding] s
 
 [Uv2Padding]: https://pkg.go.dev/graphics.gd/classdb/PrimitiveMesh#Instance.Uv2Padding
 */
-func (self Instance) AddUv2() bool {
+func (self Instance) AddUv2() bool { //gd:PrimitiveMesh.add_uv2
 	return bool(class(self).GetAddUv2())
 }
 
 // SetAddUv2 sets the property returned by [GetAddUv2]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAddUv2(value bool) Instance {
+func (self Instance) SetAddUv2(value bool) Instance { //gd:PrimitiveMesh.add_uv2
 	class(self).SetAddUv2(value)
 	return self
 }
@@ -298,12 +298,12 @@ If the size of the lightmap texture can't be determined when generating the mesh
 
 [AddUv2]: https://pkg.go.dev/graphics.gd/classdb/PrimitiveMesh#Instance.AddUv2
 */
-func (self Instance) Uv2Padding() Float.X {
+func (self Instance) Uv2Padding() Float.X { //gd:PrimitiveMesh.uv2_padding
 	return Float.X(Float.X(class(self).GetUv2Padding()))
 }
 
 // SetUv2Padding sets the property returned by [GetUv2Padding]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUv2Padding(value Float.X) Instance {
+func (self Instance) SetUv2Padding(value Float.X) Instance { //gd:PrimitiveMesh.uv2_padding
 	class(self).SetUv2Padding(float64(value))
 	return self
 }

@@ -258,12 +258,12 @@ func New() Instance {
 /*
 The node path to the node that is the target for the look at modification. This node is what the modification will rotate the bone to.
 */
-func (self Instance) TargetNode() string {
+func (self Instance) TargetNode() string { //gd:LookAtModifier3D.target_node
 	return string(class(self).GetTargetNode().String())
 }
 
 // SetTargetNode sets the property returned by [GetTargetNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTargetNode(value string) Instance {
+func (self Instance) SetTargetNode(value string) Instance { //gd:LookAtModifier3D.target_node
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -273,12 +273,12 @@ The bone name of the [Skeleton3D] that the modification will operate on.
 
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) BoneName() string {
+func (self Instance) BoneName() string { //gd:LookAtModifier3D.bone_name
 	return string(class(self).GetBoneName().String())
 }
 
 // SetBoneName sets the property returned by [GetBoneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneName(value string) Instance {
+func (self Instance) SetBoneName(value string) Instance { //gd:LookAtModifier3D.bone_name
 	class(self).SetBoneName(String.New(value))
 	return self
 }
@@ -289,12 +289,12 @@ Index of the [BoneName] in the parent [Skeleton3D].
 [BoneName]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.BoneName
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) Bone() int {
+func (self Instance) Bone() int { //gd:LookAtModifier3D.bone
 	return int(int(class(self).GetBone()))
 }
 
 // SetBone sets the property returned by [GetBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBone(value int) Instance {
+func (self Instance) SetBone(value int) Instance { //gd:LookAtModifier3D.bone
 	class(self).SetBone(int64(value))
 	return self
 }
@@ -305,12 +305,12 @@ The forward axis of the bone. This [SkeletonModifier3D] modifies the bone so tha
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 [TargetNode]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.TargetNode
 */
-func (self Instance) ForwardAxis() SkeletonModifier3D.BoneAxis {
+func (self Instance) ForwardAxis() SkeletonModifier3D.BoneAxis { //gd:LookAtModifier3D.forward_axis
 	return SkeletonModifier3D.BoneAxis(class(self).GetForwardAxis())
 }
 
 // SetForwardAxis sets the property returned by [GetForwardAxis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetForwardAxis(value SkeletonModifier3D.BoneAxis) Instance {
+func (self Instance) SetForwardAxis(value SkeletonModifier3D.BoneAxis) Instance { //gd:LookAtModifier3D.forward_axis
 	class(self).SetForwardAxis(value)
 	return self
 }
@@ -321,12 +321,12 @@ The axis of the first rotation. This [SkeletonModifier3D] works by compositing t
 [ForwardAxis]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.ForwardAxis
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
-func (self Instance) PrimaryRotationAxis() Vector3.Axis {
+func (self Instance) PrimaryRotationAxis() Vector3.Axis { //gd:LookAtModifier3D.primary_rotation_axis
 	return Vector3.Axis(class(self).GetPrimaryRotationAxis())
 }
 
 // SetPrimaryRotationAxis sets the property returned by [GetPrimaryRotationAxis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) Instance {
+func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) Instance { //gd:LookAtModifier3D.primary_rotation_axis
 	class(self).SetPrimaryRotationAxis(value)
 	return self
 }
@@ -334,12 +334,12 @@ func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) Instance {
 /*
 If true, provides rotation by two axes.
 */
-func (self Instance) UseSecondaryRotation() bool {
+func (self Instance) UseSecondaryRotation() bool { //gd:LookAtModifier3D.use_secondary_rotation
 	return bool(class(self).IsUsingSecondaryRotation())
 }
 
 // SetUseSecondaryRotation sets the property returned by [IsUsingSecondaryRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseSecondaryRotation(value bool) Instance {
+func (self Instance) SetUseSecondaryRotation(value bool) Instance { //gd:LookAtModifier3D.use_secondary_rotation
 	class(self).SetUseSecondaryRotation(value)
 	return self
 }
@@ -347,12 +347,12 @@ func (self Instance) SetUseSecondaryRotation(value bool) Instance {
 /*
 This value determines from what origin is retrieved for use in the calculation of the forward vector.
 */
-func (self Instance) OriginFrom() OriginFrom {
+func (self Instance) OriginFrom() OriginFrom { //gd:LookAtModifier3D.origin_from
 	return OriginFrom(class(self).GetOriginFrom())
 }
 
 // SetOriginFrom sets the property returned by [GetOriginFrom]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginFrom(value OriginFrom) Instance {
+func (self Instance) SetOriginFrom(value OriginFrom) Instance { //gd:LookAtModifier3D.origin_from
 	class(self).SetOriginFrom(value)
 	return self
 }
@@ -362,12 +362,12 @@ If [OriginFrom] is [OriginFromSpecificBone], the bone global pose position speci
 
 [OriginFrom]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.OriginFrom
 */
-func (self Instance) OriginBoneName() string {
+func (self Instance) OriginBoneName() string { //gd:LookAtModifier3D.origin_bone_name
 	return string(class(self).GetOriginBoneName().String())
 }
 
 // SetOriginBoneName sets the property returned by [GetOriginBoneName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginBoneName(value string) Instance {
+func (self Instance) SetOriginBoneName(value string) Instance { //gd:LookAtModifier3D.origin_bone_name
 	class(self).SetOriginBoneName(String.New(value))
 	return self
 }
@@ -378,12 +378,12 @@ Index of the [OriginBoneName] in the parent [Skeleton3D].
 [OriginBoneName]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.OriginBoneName
 [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
 */
-func (self Instance) OriginBone() int {
+func (self Instance) OriginBone() int { //gd:LookAtModifier3D.origin_bone
 	return int(int(class(self).GetOriginBone()))
 }
 
 // SetOriginBone sets the property returned by [GetOriginBone]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginBone(value int) Instance {
+func (self Instance) SetOriginBone(value int) Instance { //gd:LookAtModifier3D.origin_bone
 	class(self).SetOriginBone(int64(value))
 	return self
 }
@@ -394,12 +394,12 @@ If [OriginFrom] is [OriginFromExternalNode], the global position of the [Node3D]
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 [OriginFrom]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.OriginFrom
 */
-func (self Instance) OriginExternalNode() string {
+func (self Instance) OriginExternalNode() string { //gd:LookAtModifier3D.origin_external_node
 	return string(class(self).GetOriginExternalNode().String())
 }
 
 // SetOriginExternalNode sets the property returned by [GetOriginExternalNode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginExternalNode(value string) Instance {
+func (self Instance) SetOriginExternalNode(value string) Instance { //gd:LookAtModifier3D.origin_external_node
 	class(self).SetOriginExternalNode(Path.ToNode(String.New(value)))
 	return self
 }
@@ -411,12 +411,12 @@ Note: This value indicates the local position of the object set in [OriginFrom].
 
 [OriginFrom]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.OriginFrom
 */
-func (self Instance) OriginOffset() Vector3.XYZ {
+func (self Instance) OriginOffset() Vector3.XYZ { //gd:LookAtModifier3D.origin_offset
 	return Vector3.XYZ(class(self).GetOriginOffset())
 }
 
 // SetOriginOffset sets the property returned by [GetOriginOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance { //gd:LookAtModifier3D.origin_offset
 	class(self).SetOriginOffset(Vector3.XYZ(value))
 	return self
 }
@@ -424,12 +424,12 @@ func (self Instance) SetOriginOffset(value Vector3.XYZ) Instance {
 /*
 If the target passes through too close to the origin than this value, time-based interpolation is used even if the target is within the angular limitations, to prevent the angular velocity from becoming too high.
 */
-func (self Instance) OriginSafeMargin() Float.X {
+func (self Instance) OriginSafeMargin() Float.X { //gd:LookAtModifier3D.origin_safe_margin
 	return Float.X(Float.X(class(self).GetOriginSafeMargin()))
 }
 
 // SetOriginSafeMargin sets the property returned by [GetOriginSafeMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOriginSafeMargin(value Float.X) Instance {
+func (self Instance) SetOriginSafeMargin(value Float.X) Instance { //gd:LookAtModifier3D.origin_safe_margin
 	class(self).SetOriginSafeMargin(float64(value))
 	return self
 }
@@ -446,12 +446,12 @@ Note: The flipping occurs when the target is outside the angle limitation and th
 [ForwardAxis]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.ForwardAxis
 [PrimaryRotationAxis]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.PrimaryRotationAxis
 */
-func (self Instance) Duration() Float.X {
+func (self Instance) Duration() Float.X { //gd:LookAtModifier3D.duration
 	return Float.X(Float.X(class(self).GetDuration()))
 }
 
 // SetDuration sets the property returned by [GetDuration]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDuration(value Float.X) Instance {
+func (self Instance) SetDuration(value Float.X) Instance { //gd:LookAtModifier3D.duration
 	class(self).SetDuration(float64(value))
 	return self
 }
@@ -459,12 +459,12 @@ func (self Instance) SetDuration(value Float.X) Instance {
 /*
 The transition type of the time-based interpolation. See also [Tween.TransitionType].
 */
-func (self Instance) TransitionType() Tween.TransitionType {
+func (self Instance) TransitionType() Tween.TransitionType { //gd:LookAtModifier3D.transition_type
 	return Tween.TransitionType(class(self).GetTransitionType())
 }
 
 // SetTransitionType sets the property returned by [GetTransitionType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTransitionType(value Tween.TransitionType) Instance {
+func (self Instance) SetTransitionType(value Tween.TransitionType) Instance { //gd:LookAtModifier3D.transition_type
 	class(self).SetTransitionType(value)
 	return self
 }
@@ -472,12 +472,12 @@ func (self Instance) SetTransitionType(value Tween.TransitionType) Instance {
 /*
 The ease type of the time-based interpolation. See also [Tween.EaseType].
 */
-func (self Instance) EaseType() Tween.EaseType {
+func (self Instance) EaseType() Tween.EaseType { //gd:LookAtModifier3D.ease_type
 	return Tween.EaseType(class(self).GetEaseType())
 }
 
 // SetEaseType sets the property returned by [GetEaseType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEaseType(value Tween.EaseType) Instance {
+func (self Instance) SetEaseType(value Tween.EaseType) Instance { //gd:LookAtModifier3D.ease_type
 	class(self).SetEaseType(value)
 	return self
 }
@@ -493,12 +493,12 @@ Note: Some values for [TransitionType] (such as [Tween.TransBack], [Tween.TransE
 [Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [TransitionType]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.TransitionType
 */
-func (self Instance) UseAngleLimitation() bool {
+func (self Instance) UseAngleLimitation() bool { //gd:LookAtModifier3D.use_angle_limitation
 	return bool(class(self).IsUsingAngleLimitation())
 }
 
 // SetUseAngleLimitation sets the property returned by [IsUsingAngleLimitation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUseAngleLimitation(value bool) Instance {
+func (self Instance) SetUseAngleLimitation(value bool) Instance { //gd:LookAtModifier3D.use_angle_limitation
 	class(self).SetUseAngleLimitation(value)
 	return self
 }
@@ -508,12 +508,12 @@ If true, the limitations are spread from the bone symmetrically.
 
 If false, the limitation can be specified separately for each side of the bone rest.
 */
-func (self Instance) SymmetryLimitation() bool {
+func (self Instance) SymmetryLimitation() bool { //gd:LookAtModifier3D.symmetry_limitation
 	return bool(class(self).IsLimitationSymmetry())
 }
 
 // SetSymmetryLimitation sets the property returned by [IsLimitationSymmetry]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSymmetryLimitation(value bool) Instance {
+func (self Instance) SetSymmetryLimitation(value bool) Instance { //gd:LookAtModifier3D.symmetry_limitation
 	class(self).SetSymmetryLimitation(value)
 	return self
 }
@@ -523,12 +523,12 @@ The limit angle of the primary rotation when [SymmetryLimitation] is true.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) PrimaryLimitAngle() Angle.Radians {
+func (self Instance) PrimaryLimitAngle() Angle.Radians { //gd:LookAtModifier3D.primary_limit_angle
 	return Angle.Radians(Float.X(class(self).GetPrimaryLimitAngle()))
 }
 
 // SetPrimaryLimitAngle sets the property returned by [GetPrimaryLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetPrimaryLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.primary_limit_angle
 	class(self).SetPrimaryLimitAngle(float64(value))
 	return self
 }
@@ -540,12 +540,12 @@ If 1.0, no damping is performed. If 0.0, damping is always performed.
 
 [PrimaryLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.PrimaryLimitAngle
 */
-func (self Instance) PrimaryDampThreshold() Float.X {
+func (self Instance) PrimaryDampThreshold() Float.X { //gd:LookAtModifier3D.primary_damp_threshold
 	return Float.X(Float.X(class(self).GetPrimaryDampThreshold()))
 }
 
 // SetPrimaryDampThreshold sets the property returned by [GetPrimaryDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryDampThreshold(value Float.X) Instance {
+func (self Instance) SetPrimaryDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.primary_damp_threshold
 	class(self).SetPrimaryDampThreshold(float64(value))
 	return self
 }
@@ -555,12 +555,12 @@ The limit angle of positive side of the primary rotation when [SymmetryLimitatio
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) PrimaryPositiveLimitAngle() Angle.Radians {
+func (self Instance) PrimaryPositiveLimitAngle() Angle.Radians { //gd:LookAtModifier3D.primary_positive_limit_angle
 	return Angle.Radians(Float.X(class(self).GetPrimaryPositiveLimitAngle()))
 }
 
 // SetPrimaryPositiveLimitAngle sets the property returned by [GetPrimaryPositiveLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryPositiveLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetPrimaryPositiveLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.primary_positive_limit_angle
 	class(self).SetPrimaryPositiveLimitAngle(float64(value))
 	return self
 }
@@ -570,12 +570,12 @@ The threshold to start damping for [PrimaryPositiveLimitAngle].
 
 [PrimaryPositiveLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.PrimaryPositiveLimitAngle
 */
-func (self Instance) PrimaryPositiveDampThreshold() Float.X {
+func (self Instance) PrimaryPositiveDampThreshold() Float.X { //gd:LookAtModifier3D.primary_positive_damp_threshold
 	return Float.X(Float.X(class(self).GetPrimaryPositiveDampThreshold()))
 }
 
 // SetPrimaryPositiveDampThreshold sets the property returned by [GetPrimaryPositiveDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) Instance {
+func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.primary_positive_damp_threshold
 	class(self).SetPrimaryPositiveDampThreshold(float64(value))
 	return self
 }
@@ -585,12 +585,12 @@ The limit angle of negative side of the primary rotation when [SymmetryLimitatio
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) PrimaryNegativeLimitAngle() Angle.Radians {
+func (self Instance) PrimaryNegativeLimitAngle() Angle.Radians { //gd:LookAtModifier3D.primary_negative_limit_angle
 	return Angle.Radians(Float.X(class(self).GetPrimaryNegativeLimitAngle()))
 }
 
 // SetPrimaryNegativeLimitAngle sets the property returned by [GetPrimaryNegativeLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryNegativeLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetPrimaryNegativeLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.primary_negative_limit_angle
 	class(self).SetPrimaryNegativeLimitAngle(float64(value))
 	return self
 }
@@ -600,12 +600,12 @@ The threshold to start damping for [PrimaryNegativeLimitAngle].
 
 [PrimaryNegativeLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.PrimaryNegativeLimitAngle
 */
-func (self Instance) PrimaryNegativeDampThreshold() Float.X {
+func (self Instance) PrimaryNegativeDampThreshold() Float.X { //gd:LookAtModifier3D.primary_negative_damp_threshold
 	return Float.X(Float.X(class(self).GetPrimaryNegativeDampThreshold()))
 }
 
 // SetPrimaryNegativeDampThreshold sets the property returned by [GetPrimaryNegativeDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) Instance {
+func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.primary_negative_damp_threshold
 	class(self).SetPrimaryNegativeDampThreshold(float64(value))
 	return self
 }
@@ -615,12 +615,12 @@ The limit angle of the secondary rotation when [SymmetryLimitation] is true.
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) SecondaryLimitAngle() Angle.Radians {
+func (self Instance) SecondaryLimitAngle() Angle.Radians { //gd:LookAtModifier3D.secondary_limit_angle
 	return Angle.Radians(Float.X(class(self).GetSecondaryLimitAngle()))
 }
 
 // SetSecondaryLimitAngle sets the property returned by [GetSecondaryLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetSecondaryLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.secondary_limit_angle
 	class(self).SetSecondaryLimitAngle(float64(value))
 	return self
 }
@@ -630,12 +630,12 @@ The threshold to start damping for [SecondaryLimitAngle].
 
 [SecondaryLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SecondaryLimitAngle
 */
-func (self Instance) SecondaryDampThreshold() Float.X {
+func (self Instance) SecondaryDampThreshold() Float.X { //gd:LookAtModifier3D.secondary_damp_threshold
 	return Float.X(Float.X(class(self).GetSecondaryDampThreshold()))
 }
 
 // SetSecondaryDampThreshold sets the property returned by [GetSecondaryDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryDampThreshold(value Float.X) Instance {
+func (self Instance) SetSecondaryDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.secondary_damp_threshold
 	class(self).SetSecondaryDampThreshold(float64(value))
 	return self
 }
@@ -645,12 +645,12 @@ The limit angle of positive side of the secondary rotation when [SymmetryLimitat
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) SecondaryPositiveLimitAngle() Angle.Radians {
+func (self Instance) SecondaryPositiveLimitAngle() Angle.Radians { //gd:LookAtModifier3D.secondary_positive_limit_angle
 	return Angle.Radians(Float.X(class(self).GetSecondaryPositiveLimitAngle()))
 }
 
 // SetSecondaryPositiveLimitAngle sets the property returned by [GetSecondaryPositiveLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryPositiveLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetSecondaryPositiveLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.secondary_positive_limit_angle
 	class(self).SetSecondaryPositiveLimitAngle(float64(value))
 	return self
 }
@@ -660,12 +660,12 @@ The threshold to start damping for [SecondaryPositiveLimitAngle].
 
 [SecondaryPositiveLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SecondaryPositiveLimitAngle
 */
-func (self Instance) SecondaryPositiveDampThreshold() Float.X {
+func (self Instance) SecondaryPositiveDampThreshold() Float.X { //gd:LookAtModifier3D.secondary_positive_damp_threshold
 	return Float.X(Float.X(class(self).GetSecondaryPositiveDampThreshold()))
 }
 
 // SetSecondaryPositiveDampThreshold sets the property returned by [GetSecondaryPositiveDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) Instance {
+func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.secondary_positive_damp_threshold
 	class(self).SetSecondaryPositiveDampThreshold(float64(value))
 	return self
 }
@@ -675,12 +675,12 @@ The limit angle of negative side of the secondary rotation when [SymmetryLimitat
 
 [SymmetryLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SymmetryLimitation
 */
-func (self Instance) SecondaryNegativeLimitAngle() Angle.Radians {
+func (self Instance) SecondaryNegativeLimitAngle() Angle.Radians { //gd:LookAtModifier3D.secondary_negative_limit_angle
 	return Angle.Radians(Float.X(class(self).GetSecondaryNegativeLimitAngle()))
 }
 
 // SetSecondaryNegativeLimitAngle sets the property returned by [GetSecondaryNegativeLimitAngle]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryNegativeLimitAngle(value Angle.Radians) Instance {
+func (self Instance) SetSecondaryNegativeLimitAngle(value Angle.Radians) Instance { //gd:LookAtModifier3D.secondary_negative_limit_angle
 	class(self).SetSecondaryNegativeLimitAngle(float64(value))
 	return self
 }
@@ -690,12 +690,12 @@ The threshold to start damping for [SecondaryNegativeLimitAngle].
 
 [SecondaryNegativeLimitAngle]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.SecondaryNegativeLimitAngle
 */
-func (self Instance) SecondaryNegativeDampThreshold() Float.X {
+func (self Instance) SecondaryNegativeDampThreshold() Float.X { //gd:LookAtModifier3D.secondary_negative_damp_threshold
 	return Float.X(Float.X(class(self).GetSecondaryNegativeDampThreshold()))
 }
 
 // SetSecondaryNegativeDampThreshold sets the property returned by [GetSecondaryNegativeDampThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) Instance {
+func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) Instance { //gd:LookAtModifier3D.secondary_negative_damp_threshold
 	class(self).SetSecondaryNegativeDampThreshold(float64(value))
 	return self
 }

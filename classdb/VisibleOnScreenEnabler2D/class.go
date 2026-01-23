@@ -172,12 +172,12 @@ func New() Instance {
 /*
 Determines how the target node is enabled. Corresponds to [Node.ProcessMode]. When the node is disabled, it always uses [Node.ProcessModeDisabled].
 */
-func (self Instance) EnableMode() EnableMode {
+func (self Instance) EnableMode() EnableMode { //gd:VisibleOnScreenEnabler2D.enable_mode
 	return EnableMode(class(self).GetEnableMode())
 }
 
 // SetEnableMode sets the property returned by [GetEnableMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableMode(value EnableMode) Instance {
+func (self Instance) SetEnableMode(value EnableMode) Instance { //gd:VisibleOnScreenEnabler2D.enable_mode
 	class(self).SetEnableMode(value)
 	return self
 }
@@ -187,12 +187,12 @@ The path to the target node, relative to the [VisibleOnScreenEnabler2D]. The tar
 
 [VisibleOnScreenEnabler2D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenEnabler2D
 */
-func (self Instance) EnableNodePath() string {
+func (self Instance) EnableNodePath() string { //gd:VisibleOnScreenEnabler2D.enable_node_path
 	return string(class(self).GetEnableNodePath().String())
 }
 
 // SetEnableNodePath sets the property returned by [GetEnableNodePath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableNodePath(value string) Instance {
+func (self Instance) SetEnableNodePath(value string) Instance { //gd:VisibleOnScreenEnabler2D.enable_node_path
 	class(self).SetEnableNodePath(Path.ToNode(String.New(value)))
 	return self
 }

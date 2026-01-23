@@ -205,12 +205,12 @@ The height at which the camera is placed in relation to the ground (i.e. [XROrig
 
 [XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
-func (self Instance) EyeHeight() Float.X {
+func (self Instance) EyeHeight() Float.X { //gd:MobileVRInterface.eye_height
 	return Float.X(Float.X(class(self).GetEyeHeight()))
 }
 
 // SetEyeHeight sets the property returned by [GetEyeHeight]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEyeHeight(value Float.X) Instance {
+func (self Instance) SetEyeHeight(value Float.X) Instance { //gd:MobileVRInterface.eye_height
 	class(self).SetEyeHeight(float64(value))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetEyeHeight(value Float.X) Instance {
 /*
 The interocular distance, also known as the interpupillary distance. The distance between the pupils of the left and right eye.
 */
-func (self Instance) Iod() Float.X {
+func (self Instance) Iod() Float.X { //gd:MobileVRInterface.iod
 	return Float.X(Float.X(class(self).GetIod()))
 }
 
 // SetIod sets the property returned by [GetIod]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIod(value Float.X) Instance {
+func (self Instance) SetIod(value Float.X) Instance { //gd:MobileVRInterface.iod
 	class(self).SetIod(float64(value))
 	return self
 }
@@ -231,12 +231,12 @@ func (self Instance) SetIod(value Float.X) Instance {
 /*
 The width of the display in centimeters.
 */
-func (self Instance) DisplayWidth() Float.X {
+func (self Instance) DisplayWidth() Float.X { //gd:MobileVRInterface.display_width
 	return Float.X(Float.X(class(self).GetDisplayWidth()))
 }
 
 // SetDisplayWidth sets the property returned by [GetDisplayWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisplayWidth(value Float.X) Instance {
+func (self Instance) SetDisplayWidth(value Float.X) Instance { //gd:MobileVRInterface.display_width
 	class(self).SetDisplayWidth(float64(value))
 	return self
 }
@@ -244,12 +244,12 @@ func (self Instance) SetDisplayWidth(value Float.X) Instance {
 /*
 The distance between the display and the lenses inside of the device in centimeters.
 */
-func (self Instance) DisplayToLens() Float.X {
+func (self Instance) DisplayToLens() Float.X { //gd:MobileVRInterface.display_to_lens
 	return Float.X(Float.X(class(self).GetDisplayToLens()))
 }
 
 // SetDisplayToLens sets the property returned by [GetDisplayToLens]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisplayToLens(value Float.X) Instance {
+func (self Instance) SetDisplayToLens(value Float.X) Instance { //gd:MobileVRInterface.display_to_lens
 	class(self).SetDisplayToLens(float64(value))
 	return self
 }
@@ -257,12 +257,12 @@ func (self Instance) SetDisplayToLens(value Float.X) Instance {
 /*
 Set the offset rect relative to the area being rendered. A length of 1 represents the whole rendering area on that axis.
 */
-func (self Instance) OffsetRect() Rect2.PositionSize {
+func (self Instance) OffsetRect() Rect2.PositionSize { //gd:MobileVRInterface.offset_rect
 	return Rect2.PositionSize(class(self).GetOffsetRect())
 }
 
 // SetOffsetRect sets the property returned by [GetOffsetRect]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffsetRect(value Rect2.PositionSize) Instance {
+func (self Instance) SetOffsetRect(value Rect2.PositionSize) Instance { //gd:MobileVRInterface.offset_rect
 	class(self).SetOffsetRect(Rect2.PositionSize(value))
 	return self
 }
@@ -270,12 +270,12 @@ func (self Instance) SetOffsetRect(value Rect2.PositionSize) Instance {
 /*
 The oversample setting. Because of the lens distortion we have to render our buffers at a higher resolution then the screen can natively handle. A value between 1.5 and 2.0 often provides good results but at the cost of performance.
 */
-func (self Instance) Oversample() Float.X {
+func (self Instance) Oversample() Float.X { //gd:MobileVRInterface.oversample
 	return Float.X(Float.X(class(self).GetOversample()))
 }
 
 // SetOversample sets the property returned by [GetOversample]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOversample(value Float.X) Instance {
+func (self Instance) SetOversample(value Float.X) Instance { //gd:MobileVRInterface.oversample
 	class(self).SetOversample(float64(value))
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetOversample(value Float.X) Instance {
 /*
 The k1 lens factor is one of the two constants that define the strength of the lens used and directly influences the lens distortion effect.
 */
-func (self Instance) K1() Float.X {
+func (self Instance) K1() Float.X { //gd:MobileVRInterface.k1
 	return Float.X(Float.X(class(self).GetK1()))
 }
 
 // SetK1 sets the property returned by [GetK1]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetK1(value Float.X) Instance {
+func (self Instance) SetK1(value Float.X) Instance { //gd:MobileVRInterface.k1
 	class(self).SetK1(float64(value))
 	return self
 }
@@ -296,12 +296,12 @@ func (self Instance) SetK1(value Float.X) Instance {
 /*
 The k2 lens factor, see k1.
 */
-func (self Instance) K2() Float.X {
+func (self Instance) K2() Float.X { //gd:MobileVRInterface.k2
 	return Float.X(Float.X(class(self).GetK2()))
 }
 
 // SetK2 sets the property returned by [GetK2]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetK2(value Float.X) Instance {
+func (self Instance) SetK2(value Float.X) Instance { //gd:MobileVRInterface.k2
 	class(self).SetK2(float64(value))
 	return self
 }
@@ -313,12 +313,12 @@ Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set 
 
 [Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
-func (self Instance) VrsMinRadius() Float.X {
+func (self Instance) VrsMinRadius() Float.X { //gd:MobileVRInterface.vrs_min_radius
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
 // SetVrsMinRadius sets the property returned by [GetVrsMinRadius]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsMinRadius(value Float.X) Instance {
+func (self Instance) SetVrsMinRadius(value Float.X) Instance { //gd:MobileVRInterface.vrs_min_radius
 	class(self).SetVrsMinRadius(float64(value))
 	return self
 }
@@ -330,12 +330,12 @@ Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set 
 
 [Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
-func (self Instance) VrsStrength() Float.X {
+func (self Instance) VrsStrength() Float.X { //gd:MobileVRInterface.vrs_strength
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
 // SetVrsStrength sets the property returned by [GetVrsStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVrsStrength(value Float.X) Instance {
+func (self Instance) SetVrsStrength(value Float.X) Instance { //gd:MobileVRInterface.vrs_strength
 	class(self).SetVrsStrength(float64(value))
 	return self
 }

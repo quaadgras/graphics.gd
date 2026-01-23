@@ -179,12 +179,12 @@ func New() Instance {
 /*
 Size of the generated plane.
 */
-func (self Instance) Size() Vector2.XY {
+func (self Instance) Size() Vector2.XY { //gd:PlaneMesh.size
 	return Vector2.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2.XY) Instance {
+func (self Instance) SetSize(value Vector2.XY) Instance { //gd:PlaneMesh.size
 	class(self).SetSize(Vector2.XY(value))
 	return self
 }
@@ -192,12 +192,12 @@ func (self Instance) SetSize(value Vector2.XY) Instance {
 /*
 Number of subdivision along the X axis.
 */
-func (self Instance) SubdivideWidth() int {
+func (self Instance) SubdivideWidth() int { //gd:PlaneMesh.subdivide_width
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
 // SetSubdivideWidth sets the property returned by [GetSubdivideWidth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideWidth(value int) Instance {
+func (self Instance) SetSubdivideWidth(value int) Instance { //gd:PlaneMesh.subdivide_width
 	class(self).SetSubdivideWidth(int64(value))
 	return self
 }
@@ -205,12 +205,12 @@ func (self Instance) SetSubdivideWidth(value int) Instance {
 /*
 Number of subdivision along the Z axis.
 */
-func (self Instance) SubdivideDepth() int {
+func (self Instance) SubdivideDepth() int { //gd:PlaneMesh.subdivide_depth
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
 // SetSubdivideDepth sets the property returned by [GetSubdivideDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSubdivideDepth(value int) Instance {
+func (self Instance) SetSubdivideDepth(value int) Instance { //gd:PlaneMesh.subdivide_depth
 	class(self).SetSubdivideDepth(int64(value))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetSubdivideDepth(value int) Instance {
 /*
 Offset of the generated plane. Useful for particles.
 */
-func (self Instance) CenterOffset() Vector3.XYZ {
+func (self Instance) CenterOffset() Vector3.XYZ { //gd:PlaneMesh.center_offset
 	return Vector3.XYZ(class(self).GetCenterOffset())
 }
 
 // SetCenterOffset sets the property returned by [GetCenterOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCenterOffset(value Vector3.XYZ) Instance {
+func (self Instance) SetCenterOffset(value Vector3.XYZ) Instance { //gd:PlaneMesh.center_offset
 	class(self).SetCenterOffset(Vector3.XYZ(value))
 	return self
 }
@@ -233,12 +233,12 @@ Direction that the [PlaneMesh] is facing.
 
 [PlaneMesh]: https://pkg.go.dev/graphics.gd/classdb/PlaneMesh
 */
-func (self Instance) Orientation() Orientation {
+func (self Instance) Orientation() Orientation { //gd:PlaneMesh.orientation
 	return Orientation(class(self).GetOrientation())
 }
 
 // SetOrientation sets the property returned by [GetOrientation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOrientation(value Orientation) Instance {
+func (self Instance) SetOrientation(value Orientation) Instance { //gd:PlaneMesh.orientation
 	class(self).SetOrientation(value)
 	return self
 }

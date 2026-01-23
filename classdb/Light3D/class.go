@@ -211,12 +211,12 @@ A typical household lightbulb can range from around 600 lumens to 1,200 lumens, 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) LightIntensityLumens() Float.X {
+func (self Instance) LightIntensityLumens() Float.X { //gd:Light3D.light_intensity_lumens
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
 // SetLightIntensityLumens sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightIntensityLumens(value Float.X) Instance {
+func (self Instance) SetLightIntensityLumens(value Float.X) Instance { //gd:Light3D.light_intensity_lumens
 	class(self).SetParam(20, float64(value))
 	return self
 }
@@ -229,12 +229,12 @@ On a clear sunny day a surface in direct sunlight may be approximately 100,000 l
 [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) LightIntensityLux() Float.X {
+func (self Instance) LightIntensityLux() Float.X { //gd:Light3D.light_intensity_lux
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
 // SetLightIntensityLux sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightIntensityLux(value Float.X) Instance {
+func (self Instance) SetLightIntensityLux(value Float.X) Instance { //gd:Light3D.light_intensity_lux
 	class(self).SetParam(20, float64(value))
 	return self
 }
@@ -246,12 +246,12 @@ The sun on a cloudy day is approximately 6500 Kelvin, on a clear day it is betwe
 
 [LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
 */
-func (self Instance) LightTemperature() Float.X {
+func (self Instance) LightTemperature() Float.X { //gd:Light3D.light_temperature
 	return Float.X(Float.X(class(self).GetTemperature()))
 }
 
 // SetLightTemperature sets the property returned by [GetTemperature]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightTemperature(value Float.X) Instance {
+func (self Instance) SetLightTemperature(value Float.X) Instance { //gd:Light3D.light_temperature
 	class(self).SetTemperature(float64(value))
 	return self
 }
@@ -261,12 +261,12 @@ The light's color in the nonlinear sRGB color space. An overbright color can be 
 
 [LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
 */
-func (self Instance) LightColor() Color.RGBA {
+func (self Instance) LightColor() Color.RGBA { //gd:Light3D.light_color
 	return Color.RGBA(class(self).GetColor())
 }
 
 // SetLightColor sets the property returned by [GetColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightColor(value Color.RGBA) Instance {
+func (self Instance) SetLightColor(value Color.RGBA) Instance { //gd:Light3D.light_color
 	class(self).SetColor(Color.RGBA(value))
 	return self
 }
@@ -277,12 +277,12 @@ The light's strength multiplier (this is not a physical unit). For [OmniLight3D]
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) LightEnergy() Float.X {
+func (self Instance) LightEnergy() Float.X { //gd:Light3D.light_energy
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
 // SetLightEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightEnergy(value Float.X) Instance {
+func (self Instance) SetLightEnergy(value Float.X) Instance { //gd:Light3D.light_energy
 	class(self).SetParam(0, float64(value))
 	return self
 }
@@ -296,12 +296,12 @@ Note: This property is ignored if [LightEnergy] is equal to 0.0, as the light wo
 [LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) LightIndirectEnergy() Float.X {
+func (self Instance) LightIndirectEnergy() Float.X { //gd:Light3D.light_indirect_energy
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
 // SetLightIndirectEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightIndirectEnergy(value Float.X) Instance {
+func (self Instance) SetLightIndirectEnergy(value Float.X) Instance { //gd:Light3D.light_indirect_energy
 	class(self).SetParam(1, float64(value))
 	return self
 }
@@ -316,12 +316,12 @@ Note: To prevent short-lived dynamic light effects from poorly interacting with 
 [LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
 [LightVolumetricFogEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightVolumetricFogEnergy
 */
-func (self Instance) LightVolumetricFogEnergy() Float.X {
+func (self Instance) LightVolumetricFogEnergy() Float.X { //gd:Light3D.light_volumetric_fog_energy
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
 // SetLightVolumetricFogEnergy sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightVolumetricFogEnergy(value Float.X) Instance {
+func (self Instance) SetLightVolumetricFogEnergy(value Float.X) Instance { //gd:Light3D.light_volumetric_fog_energy
 	class(self).SetParam(2, float64(value))
 	return self
 }
@@ -338,12 +338,12 @@ Note: Light projector textures are only supported in the Forward+ and Mobile ren
 [ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
-func (self Instance) LightProjector() Texture2D.Instance {
+func (self Instance) LightProjector() Texture2D.Instance { //gd:Light3D.light_projector
 	return Texture2D.Instance(class(self).GetProjector())
 }
 
 // SetLightProjector sets the property returned by [GetProjector]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightProjector(value Texture2D.Instance) Instance {
+func (self Instance) SetLightProjector(value Texture2D.Instance) Instance { //gd:Light3D.light_projector
 	class(self).SetProjector(value)
 	return self
 }
@@ -360,12 +360,12 @@ Note: PCSS for positional lights is only supported in the Forward+ and Mobile re
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) LightSize() Float.X {
+func (self Instance) LightSize() Float.X { //gd:Light3D.light_size
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
 // SetLightSize sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightSize(value Float.X) Instance {
+func (self Instance) SetLightSize(value Float.X) Instance { //gd:Light3D.light_size
 	class(self).SetParam(5, float64(value))
 	return self
 }
@@ -381,12 +381,12 @@ Note: PCSS for directional lights is only supported in the Forward+ rendering me
 [LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
 [Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
 */
-func (self Instance) LightAngularDistance() Float.X {
+func (self Instance) LightAngularDistance() Float.X { //gd:Light3D.light_angular_distance
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
 // SetLightAngularDistance sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightAngularDistance(value Float.X) Instance {
+func (self Instance) SetLightAngularDistance(value Float.X) Instance { //gd:Light3D.light_angular_distance
 	class(self).SetParam(5, float64(value))
 	return self
 }
@@ -394,12 +394,12 @@ func (self Instance) SetLightAngularDistance(value Float.X) Instance {
 /*
 If true, the light's effect is reversed, darkening areas and casting bright shadows.
 */
-func (self Instance) LightNegative() bool {
+func (self Instance) LightNegative() bool { //gd:Light3D.light_negative
 	return bool(class(self).IsNegative())
 }
 
 // SetLightNegative sets the property returned by [IsNegative]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightNegative(value bool) Instance {
+func (self Instance) SetLightNegative(value bool) Instance { //gd:Light3D.light_negative
 	class(self).SetNegative(value)
 	return self
 }
@@ -407,12 +407,12 @@ func (self Instance) SetLightNegative(value bool) Instance {
 /*
 The intensity of the specular blob in objects affected by the light. At 0, the light becomes a pure diffuse light. When not baking emission, this can be used to avoid unrealistic reflections when placing lights above an emissive surface.
 */
-func (self Instance) LightSpecular() Float.X {
+func (self Instance) LightSpecular() Float.X { //gd:Light3D.light_specular
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
 // SetLightSpecular sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightSpecular(value Float.X) Instance {
+func (self Instance) SetLightSpecular(value Float.X) Instance { //gd:Light3D.light_specular
 	class(self).SetParam(3, float64(value))
 	return self
 }
@@ -424,25 +424,31 @@ Note: Meshes' global illumination mode will also affect the global illumination 
 
 [GeometryInstance3D.GiMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiMode
 */
-func (self Instance) LightBakeMode() BakeMode {
+func (self Instance) LightBakeMode() BakeMode { //gd:Light3D.light_bake_mode
 	return BakeMode(class(self).GetBakeMode())
 }
 
 // SetLightBakeMode sets the property returned by [GetBakeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightBakeMode(value BakeMode) Instance {
+func (self Instance) SetLightBakeMode(value BakeMode) Instance { //gd:Light3D.light_bake_mode
 	class(self).SetBakeMode(value)
 	return self
 }
 
 /*
 The light will affect objects in the selected layers.
+
+Note: The light cull mask is ignored by [VoxelGI], SDFGI, [LightmapGI], and volumetric fog. These will always render lights in a way that ignores the cull mask. See also [VisualInstance3D.Layers].
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) LightCullMask() int {
+func (self Instance) LightCullMask() int { //gd:Light3D.light_cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetLightCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightCullMask(value int) Instance {
+func (self Instance) SetLightCullMask(value int) Instance { //gd:Light3D.light_cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }
@@ -453,12 +459,12 @@ If true, the light will cast real-time shadows. This has a significant performan
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeEnabled
 */
-func (self Instance) ShadowEnabled() bool {
+func (self Instance) ShadowEnabled() bool { //gd:Light3D.shadow_enabled
 	return bool(class(self).HasShadow())
 }
 
 // SetShadowEnabled sets the property returned by [HasShadow]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowEnabled(value bool) Instance {
+func (self Instance) SetShadowEnabled(value bool) Instance { //gd:Light3D.shadow_enabled
 	class(self).SetShadow(value)
 	return self
 }
@@ -466,12 +472,12 @@ func (self Instance) SetShadowEnabled(value bool) Instance {
 /*
 Used to adjust shadow appearance. Too small a value results in self-shadowing ("shadow acne"), while too large a value causes shadows to separate from casters ("peter-panning"). Adjust as needed.
 */
-func (self Instance) ShadowBias() Float.X {
+func (self Instance) ShadowBias() Float.X { //gd:Light3D.shadow_bias
 	return Float.X(Float.X(class(self).GetParam(15)))
 }
 
 // SetShadowBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowBias(value Float.X) Instance {
+func (self Instance) SetShadowBias(value Float.X) Instance { //gd:Light3D.shadow_bias
 	class(self).SetParam(15, float64(value))
 	return self
 }
@@ -481,12 +487,12 @@ Offsets the lookup into the shadow map by the object's normal. This can be used 
 
 [ShadowBias]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBias
 */
-func (self Instance) ShadowNormalBias() Float.X {
+func (self Instance) ShadowNormalBias() Float.X { //gd:Light3D.shadow_normal_bias
 	return Float.X(Float.X(class(self).GetParam(14)))
 }
 
 // SetShadowNormalBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowNormalBias(value Float.X) Instance {
+func (self Instance) SetShadowNormalBias(value Float.X) Instance { //gd:Light3D.shadow_normal_bias
 	class(self).SetParam(14, float64(value))
 	return self
 }
@@ -494,22 +500,22 @@ func (self Instance) SetShadowNormalBias(value Float.X) Instance {
 /*
 If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [Geometryinstance3d.ShadowCastingSettingDoubleSided].
 */
-func (self Instance) ShadowReverseCullFace() bool {
+func (self Instance) ShadowReverseCullFace() bool { //gd:Light3D.shadow_reverse_cull_face
 	return bool(class(self).GetShadowReverseCullFace())
 }
 
 // SetShadowReverseCullFace sets the property returned by [GetShadowReverseCullFace]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowReverseCullFace(value bool) Instance {
+func (self Instance) SetShadowReverseCullFace(value bool) Instance { //gd:Light3D.shadow_reverse_cull_face
 	class(self).SetShadowReverseCullFace(value)
 	return self
 }
 
-func (self Instance) ShadowTransmittanceBias() Float.X {
+func (self Instance) ShadowTransmittanceBias() Float.X { //gd:Light3D.shadow_transmittance_bias
 	return Float.X(Float.X(class(self).GetParam(19)))
 }
 
 // SetShadowTransmittanceBias sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowTransmittanceBias(value Float.X) Instance {
+func (self Instance) SetShadowTransmittanceBias(value Float.X) Instance { //gd:Light3D.shadow_transmittance_bias
 	class(self).SetParam(19, float64(value))
 	return self
 }
@@ -517,12 +523,12 @@ func (self Instance) SetShadowTransmittanceBias(value Float.X) Instance {
 /*
 The opacity to use when rendering the light's shadow map. Values lower than 1.0 make the light appear through shadows. This can be used to fake global illumination at a low performance cost.
 */
-func (self Instance) ShadowOpacity() Float.X {
+func (self Instance) ShadowOpacity() Float.X { //gd:Light3D.shadow_opacity
 	return Float.X(Float.X(class(self).GetParam(17)))
 }
 
 // SetShadowOpacity sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowOpacity(value Float.X) Instance {
+func (self Instance) SetShadowOpacity(value Float.X) Instance { //gd:Light3D.shadow_opacity
 	class(self).SetParam(17, float64(value))
 	return self
 }
@@ -530,12 +536,12 @@ func (self Instance) SetShadowOpacity(value Float.X) Instance {
 /*
 Blurs the edges of the shadow. Can be used to hide pixel artifacts in low-resolution shadow maps. A high value can impact performance, make shadows appear grainy and can cause other unwanted artifacts. Try to keep as near default as possible.
 */
-func (self Instance) ShadowBlur() Float.X {
+func (self Instance) ShadowBlur() Float.X { //gd:Light3D.shadow_blur
 	return Float.X(Float.X(class(self).GetParam(18)))
 }
 
 // SetShadowBlur sets the property returned by [GetParam]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowBlur(value Float.X) Instance {
+func (self Instance) SetShadowBlur(value Float.X) Instance { //gd:Light3D.shadow_blur
 	class(self).SetParam(18, float64(value))
 	return self
 }
@@ -543,12 +549,12 @@ func (self Instance) SetShadowBlur(value Float.X) Instance {
 /*
 The light will only cast shadows using objects in the selected layers.
 */
-func (self Instance) ShadowCasterMask() int {
+func (self Instance) ShadowCasterMask() int { //gd:Light3D.shadow_caster_mask
 	return int(int(class(self).GetShadowCasterMask()))
 }
 
 // SetShadowCasterMask sets the property returned by [GetShadowCasterMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShadowCasterMask(value int) Instance {
+func (self Instance) SetShadowCasterMask(value int) Instance { //gd:Light3D.shadow_caster_mask
 	class(self).SetShadowCasterMask(int64(value))
 	return self
 }
@@ -564,12 +570,12 @@ Note: Only effective for [OmniLight3D] and [SpotLight3D].
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) DistanceFadeEnabled() bool {
+func (self Instance) DistanceFadeEnabled() bool { //gd:Light3D.distance_fade_enabled
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
 // SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeEnabled(value bool) Instance {
+func (self Instance) SetDistanceFadeEnabled(value bool) Instance { //gd:Light3D.distance_fade_enabled
 	class(self).SetEnableDistanceFade(value)
 	return self
 }
@@ -582,12 +588,12 @@ Note: Only effective for [OmniLight3D] and [SpotLight3D].
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) DistanceFadeBegin() Float.X {
+func (self Instance) DistanceFadeBegin() Float.X { //gd:Light3D.distance_fade_begin
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
 // SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeBegin(value Float.X) Instance {
+func (self Instance) SetDistanceFadeBegin(value Float.X) Instance { //gd:Light3D.distance_fade_begin
 	class(self).SetDistanceFadeBegin(float64(value))
 	return self
 }
@@ -603,12 +609,12 @@ Note: Only effective for [OmniLight3D] and [SpotLight3D], and only when [ShadowE
 [ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) DistanceFadeShadow() Float.X {
+func (self Instance) DistanceFadeShadow() Float.X { //gd:Light3D.distance_fade_shadow
 	return Float.X(Float.X(class(self).GetDistanceFadeShadow()))
 }
 
 // SetDistanceFadeShadow sets the property returned by [GetDistanceFadeShadow]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeShadow(value Float.X) Instance {
+func (self Instance) SetDistanceFadeShadow(value Float.X) Instance { //gd:Light3D.distance_fade_shadow
 	class(self).SetDistanceFadeShadow(float64(value))
 	return self
 }
@@ -621,12 +627,12 @@ Note: Only effective for [OmniLight3D] and [SpotLight3D].
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 */
-func (self Instance) DistanceFadeLength() Float.X {
+func (self Instance) DistanceFadeLength() Float.X { //gd:Light3D.distance_fade_length
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
 // SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDistanceFadeLength(value Float.X) Instance {
+func (self Instance) SetDistanceFadeLength(value Float.X) Instance { //gd:Light3D.distance_fade_length
 	class(self).SetDistanceFadeLength(float64(value))
 	return self
 }
@@ -637,12 +643,12 @@ If true, the light only appears in the editor and will not be visible at runtime
 [LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
-func (self Instance) EditorOnly() bool {
+func (self Instance) EditorOnly() bool { //gd:Light3D.editor_only
 	return bool(class(self).IsEditorOnly())
 }
 
 // SetEditorOnly sets the property returned by [IsEditorOnly]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEditorOnly(value bool) Instance {
+func (self Instance) SetEditorOnly(value bool) Instance { //gd:Light3D.editor_only
 	class(self).SetEditorOnly(value)
 	return self
 }

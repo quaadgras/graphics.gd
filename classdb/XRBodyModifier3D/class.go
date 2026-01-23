@@ -175,12 +175,12 @@ The name of the [XRBodyTracker] registered with [XRServer] to obtain the body tr
 [XRBodyTracker]: https://pkg.go.dev/graphics.gd/classdb/XRBodyTracker
 [XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
-func (self Instance) BodyTracker() string {
+func (self Instance) BodyTracker() string { //gd:XRBodyModifier3D.body_tracker
 	return string(class(self).GetBodyTracker().String())
 }
 
 // SetBodyTracker sets the property returned by [GetBodyTracker]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodyTracker(value string) Instance {
+func (self Instance) SetBodyTracker(value string) Instance { //gd:XRBodyModifier3D.body_tracker
 	class(self).SetBodyTracker(String.Name(String.New(value)))
 	return self
 }
@@ -188,12 +188,12 @@ func (self Instance) SetBodyTracker(value string) Instance {
 /*
 Specifies the body parts to update.
 */
-func (self Instance) BodyUpdate() BodyUpdate {
+func (self Instance) BodyUpdate() BodyUpdate { //gd:XRBodyModifier3D.body_update
 	return BodyUpdate(class(self).GetBodyUpdate())
 }
 
 // SetBodyUpdate sets the property returned by [GetBodyUpdate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBodyUpdate(value BodyUpdate) Instance {
+func (self Instance) SetBodyUpdate(value BodyUpdate) Instance { //gd:XRBodyModifier3D.body_update
 	class(self).SetBodyUpdate(value)
 	return self
 }
@@ -201,12 +201,12 @@ func (self Instance) SetBodyUpdate(value BodyUpdate) Instance {
 /*
 Specifies the type of updates to perform on the bones.
 */
-func (self Instance) BoneUpdate() BoneUpdate {
+func (self Instance) BoneUpdate() BoneUpdate { //gd:XRBodyModifier3D.bone_update
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
 // SetBoneUpdate sets the property returned by [GetBoneUpdate]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBoneUpdate(value BoneUpdate) Instance {
+func (self Instance) SetBoneUpdate(value BoneUpdate) Instance { //gd:XRBodyModifier3D.bone_update
 	class(self).SetBoneUpdate(value)
 	return self
 }

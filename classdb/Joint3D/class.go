@@ -186,12 +186,12 @@ If left empty and [NodeB] is set, the body is attached to a fixed [StaticBody3D]
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 [StaticBody3D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody3D
 */
-func (self Instance) NodeA() string {
+func (self Instance) NodeA() string { //gd:Joint3D.node_a
 	return string(class(self).GetNodeA().String())
 }
 
 // SetNodeA sets the property returned by [GetNodeA]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodeA(value string) Instance {
+func (self Instance) SetNodeA(value string) Instance { //gd:Joint3D.node_a
 	class(self).SetNodeA(Path.ToNode(String.New(value)))
 	return self
 }
@@ -205,12 +205,12 @@ If left empty and [NodeA] is set, the body is attached to a fixed [StaticBody3D]
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 [StaticBody3D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody3D
 */
-func (self Instance) NodeB() string {
+func (self Instance) NodeB() string { //gd:Joint3D.node_b
 	return string(class(self).GetNodeB().String())
 }
 
 // SetNodeB sets the property returned by [GetNodeB]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNodeB(value string) Instance {
+func (self Instance) SetNodeB(value string) Instance { //gd:Joint3D.node_b
 	class(self).SetNodeB(Path.ToNode(String.New(value)))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetNodeB(value string) Instance {
 /*
 The priority used to define which solver is executed first for multiple joints. The lower the value, the higher the priority.
 */
-func (self Instance) SolverPriority() int {
+func (self Instance) SolverPriority() int { //gd:Joint3D.solver_priority
 	return int(int(class(self).GetSolverPriority()))
 }
 
 // SetSolverPriority sets the property returned by [GetSolverPriority]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSolverPriority(value int) Instance {
+func (self Instance) SetSolverPriority(value int) Instance { //gd:Joint3D.solver_priority
 	class(self).SetSolverPriority(int64(value))
 	return self
 }
@@ -231,12 +231,12 @@ func (self Instance) SetSolverPriority(value int) Instance {
 /*
 If true, the two bodies bound together do not collide with each other.
 */
-func (self Instance) ExcludeNodesFromCollision() bool {
+func (self Instance) ExcludeNodesFromCollision() bool { //gd:Joint3D.exclude_nodes_from_collision
 	return bool(class(self).GetExcludeNodesFromCollision())
 }
 
 // SetExcludeNodesFromCollision sets the property returned by [GetExcludeNodesFromCollision]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetExcludeNodesFromCollision(value bool) Instance {
+func (self Instance) SetExcludeNodesFromCollision(value bool) Instance { //gd:Joint3D.exclude_nodes_from_collision
 	class(self).SetExcludeNodesFromCollision(value)
 	return self
 }

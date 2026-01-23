@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The path the texture should be loaded from.
 */
-func (self Instance) LoadPath() string {
+func (self Instance) LoadPath() string { //gd:CompressedTextureLayered.load_path
 	return string(class(self).GetLoadPath().String())
 }
 
 // SetLoadPath sets the property returned by [GetLoadPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLoadPath(value string) Instance {
+func (self Instance) SetLoadPath(value string) Instance { //gd:CompressedTextureLayered.load_path
 	class(self).Load(String.New(value))
 	return self
 }

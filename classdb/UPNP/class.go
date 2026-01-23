@@ -430,12 +430,12 @@ func New() Instance {
 /*
 Multicast interface to use for discovery. Uses the default multicast interface if empty.
 */
-func (self Instance) DiscoverMulticastIf() string {
+func (self Instance) DiscoverMulticastIf() string { //gd:UPNP.discover_multicast_if
 	return string(class(self).GetDiscoverMulticastIf().String())
 }
 
 // SetDiscoverMulticastIf sets the property returned by [GetDiscoverMulticastIf]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiscoverMulticastIf(value string) Instance {
+func (self Instance) SetDiscoverMulticastIf(value string) Instance { //gd:UPNP.discover_multicast_if
 	class(self).SetDiscoverMulticastIf(String.New(value))
 	return self
 }
@@ -443,12 +443,12 @@ func (self Instance) SetDiscoverMulticastIf(value string) Instance {
 /*
 If 0, the local port to use for discovery is chosen automatically by the system. If 1, discovery will be done from the source port 1900 (same as destination port). Otherwise, the value will be used as the port.
 */
-func (self Instance) DiscoverLocalPort() int {
+func (self Instance) DiscoverLocalPort() int { //gd:UPNP.discover_local_port
 	return int(int(class(self).GetDiscoverLocalPort()))
 }
 
 // SetDiscoverLocalPort sets the property returned by [GetDiscoverLocalPort]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiscoverLocalPort(value int) Instance {
+func (self Instance) SetDiscoverLocalPort(value int) Instance { //gd:UPNP.discover_local_port
 	class(self).SetDiscoverLocalPort(int64(value))
 	return self
 }
@@ -458,12 +458,12 @@ If true, IPv6 is used for [UPNPDevice] discovery.
 
 [UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
 */
-func (self Instance) DiscoverIpv6() bool {
+func (self Instance) DiscoverIpv6() bool { //gd:UPNP.discover_ipv6
 	return bool(class(self).IsDiscoverIpv6())
 }
 
 // SetDiscoverIpv6 sets the property returned by [IsDiscoverIpv6]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiscoverIpv6(value bool) Instance {
+func (self Instance) SetDiscoverIpv6(value bool) Instance { //gd:UPNP.discover_ipv6
 	class(self).SetDiscoverIpv6(value)
 	return self
 }

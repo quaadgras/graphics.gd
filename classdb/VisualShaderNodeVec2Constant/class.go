@@ -166,12 +166,12 @@ A [Vector2.XY] constant which represents the state of this node.
 
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
-func (self Instance) Constant() Vector2.XY {
+func (self Instance) Constant() Vector2.XY { //gd:VisualShaderNodeVec2Constant.constant
 	return Vector2.XY(class(self).GetConstant())
 }
 
 // SetConstant sets the property returned by [GetConstant]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConstant(value Vector2.XY) Instance {
+func (self Instance) SetConstant(value Vector2.XY) Instance { //gd:VisualShaderNodeVec2Constant.constant
 	class(self).SetConstant(Vector2.XY(value))
 	return self
 }

@@ -174,12 +174,12 @@ func New() Instance {
 /*
 Status indicator tooltip.
 */
-func (self Instance) Tooltip() string {
+func (self Instance) Tooltip() string { //gd:StatusIndicator.tooltip
 	return string(class(self).GetTooltip().String())
 }
 
 // SetTooltip sets the property returned by [GetTooltip]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTooltip(value string) Instance {
+func (self Instance) SetTooltip(value string) Instance { //gd:StatusIndicator.tooltip
 	class(self).SetTooltip(String.New(value))
 	return self
 }
@@ -187,12 +187,12 @@ func (self Instance) SetTooltip(value string) Instance {
 /*
 Status indicator icon.
 */
-func (self Instance) Icon() Texture2D.Instance {
+func (self Instance) Icon() Texture2D.Instance { //gd:StatusIndicator.icon
 	return Texture2D.Instance(class(self).GetIcon())
 }
 
 // SetIcon sets the property returned by [GetIcon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIcon(value Texture2D.Instance) Instance {
+func (self Instance) SetIcon(value Texture2D.Instance) Instance { //gd:StatusIndicator.icon
 	class(self).SetIcon(value)
 	return self
 }
@@ -205,12 +205,12 @@ Note: Native popup is only supported if [NativeMenu] supports [Nativemenu.Featur
 [NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
 [OnPressed]: https://pkg.go.dev/graphics.gd/classdb/StatusIndicator#Instance.OnPressed
 */
-func (self Instance) Menu() string {
+func (self Instance) Menu() string { //gd:StatusIndicator.menu
 	return string(class(self).GetMenu().String())
 }
 
 // SetMenu sets the property returned by [GetMenu]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMenu(value string) Instance {
+func (self Instance) SetMenu(value string) Instance { //gd:StatusIndicator.menu
 	class(self).SetMenu(Path.ToNode(String.New(value)))
 	return self
 }
@@ -218,12 +218,12 @@ func (self Instance) SetMenu(value string) Instance {
 /*
 If true, the status indicator is visible.
 */
-func (self Instance) Visible() bool {
+func (self Instance) Visible() bool { //gd:StatusIndicator.visible
 	return bool(class(self).IsVisible())
 }
 
 // SetVisible sets the property returned by [IsVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisible(value bool) Instance {
+func (self Instance) SetVisible(value bool) Instance { //gd:StatusIndicator.visible
 	class(self).SetVisible(value)
 	return self
 }

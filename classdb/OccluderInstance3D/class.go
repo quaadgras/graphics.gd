@@ -215,12 +215,12 @@ Alternatively, you can select a primitive occluder to use: [QuadOccluder3D], [Bo
 [QuadOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/QuadOccluder3D
 [SphereOccluder3D]: https://pkg.go.dev/graphics.gd/classdb/SphereOccluder3D
 */
-func (self Instance) Occluder() Occluder3D.Instance {
+func (self Instance) Occluder() Occluder3D.Instance { //gd:OccluderInstance3D.occluder
 	return Occluder3D.Instance(class(self).GetOccluder())
 }
 
 // SetOccluder sets the property returned by [GetOccluder]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOccluder(value Occluder3D.Instance) Instance {
+func (self Instance) SetOccluder(value Occluder3D.Instance) Instance { //gd:OccluderInstance3D.occluder
 	class(self).SetOccluder(value)
 	return self
 }
@@ -234,12 +234,12 @@ To improve performance and avoid artifacts, it is recommended to exclude dynamic
 [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
-func (self Instance) BakeMask() int {
+func (self Instance) BakeMask() int { //gd:OccluderInstance3D.bake_mask
 	return int(int(class(self).GetBakeMask()))
 }
 
 // SetBakeMask sets the property returned by [GetBakeMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeMask(value int) Instance {
+func (self Instance) SetBakeMask(value int) Instance { //gd:OccluderInstance3D.bake_mask
 	class(self).SetBakeMask(int64(value))
 	return self
 }
@@ -255,12 +255,12 @@ Note: This uses the [meshoptimizer] library under the hood, similar to LOD gener
 
 [meshoptimizer]: https://meshoptimizer.org/
 */
-func (self Instance) BakeSimplificationDistance() Float.X {
+func (self Instance) BakeSimplificationDistance() Float.X { //gd:OccluderInstance3D.bake_simplification_distance
 	return Float.X(Float.X(class(self).GetBakeSimplificationDistance()))
 }
 
 // SetBakeSimplificationDistance sets the property returned by [GetBakeSimplificationDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBakeSimplificationDistance(value Float.X) Instance {
+func (self Instance) SetBakeSimplificationDistance(value Float.X) Instance { //gd:OccluderInstance3D.bake_simplification_distance
 	class(self).SetBakeSimplificationDistance(float64(value))
 	return self
 }

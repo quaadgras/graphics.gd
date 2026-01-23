@@ -176,12 +176,12 @@ The [Environment] resource used by this [WorldEnvironment], defining the default
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 [WorldEnvironment]: https://pkg.go.dev/graphics.gd/classdb/WorldEnvironment
 */
-func (self Instance) Environment() Environment.Instance {
+func (self Instance) Environment() Environment.Instance { //gd:WorldEnvironment.environment
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
 // SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironment(value Environment.Instance) Instance {
+func (self Instance) SetEnvironment(value Environment.Instance) Instance { //gd:WorldEnvironment.environment
 	class(self).SetEnvironment(value)
 	return self
 }
@@ -192,12 +192,12 @@ The default [CameraAttributes] resource to use if none set on the [Camera3D].
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
-func (self Instance) CameraAttributes() CameraAttributes.Instance {
+func (self Instance) CameraAttributes() CameraAttributes.Instance { //gd:WorldEnvironment.camera_attributes
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
 // SetCameraAttributes sets the property returned by [GetCameraAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) Instance { //gd:WorldEnvironment.camera_attributes
 	class(self).SetCameraAttributes(value)
 	return self
 }
@@ -208,12 +208,12 @@ The default [Compositor] resource to use if none set on the [Camera3D].
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
 */
-func (self Instance) Compositor() Compositor.Instance {
+func (self Instance) Compositor() Compositor.Instance { //gd:WorldEnvironment.compositor
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
 // SetCompositor sets the property returned by [GetCompositor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompositor(value Compositor.Instance) Instance {
+func (self Instance) SetCompositor(value Compositor.Instance) Instance { //gd:WorldEnvironment.compositor
 	class(self).SetCompositor(value)
 	return self
 }

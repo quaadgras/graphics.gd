@@ -253,12 +253,12 @@ func New() Instance {
 /*
 Allow overriding the texture size (for 2D only).
 */
-func (self Instance) SizeOverride() Vector2.XY {
+func (self Instance) SizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.size_override
 	return Vector2.XY(class(self).GetSizeOverride())
 }
 
 // SetSizeOverride sets the property returned by [GetSizeOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSizeOverride(value Vector2.XY) Instance {
+func (self Instance) SetSizeOverride(value Vector2.XY) Instance { //gd:PortableCompressedTexture2D.size_override
 	class(self).SetSizeOverride(Vector2.XY(value))
 	return self
 }
@@ -272,12 +272,12 @@ Note: This must be set before [CreateFromImage] to take effect.
 
 [CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
 */
-func (self Instance) KeepCompressedBuffer() bool {
+func (self Instance) KeepCompressedBuffer() bool { //gd:PortableCompressedTexture2D.keep_compressed_buffer
 	return bool(class(self).IsKeepingCompressedBuffer())
 }
 
 // SetKeepCompressedBuffer sets the property returned by [IsKeepingCompressedBuffer]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepCompressedBuffer(value bool) Instance {
+func (self Instance) SetKeepCompressedBuffer(value bool) Instance { //gd:PortableCompressedTexture2D.keep_compressed_buffer
 	class(self).SetKeepCompressedBuffer(value)
 	return self
 }

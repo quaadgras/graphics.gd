@@ -1288,12 +1288,12 @@ Note: This only affects the contents of [Text], not the tag stack.
 
 [Text]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Text
 */
-func (self Instance) BbcodeEnabled() bool {
+func (self Instance) BbcodeEnabled() bool { //gd:RichTextLabel.bbcode_enabled
 	return bool(class(self).IsUsingBbcode())
 }
 
 // SetBbcodeEnabled sets the property returned by [IsUsingBbcode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBbcodeEnabled(value bool) Instance {
+func (self Instance) SetBbcodeEnabled(value bool) Instance { //gd:RichTextLabel.bbcode_enabled
 	class(self).SetUseBbcode(value)
 	return self
 }
@@ -1307,12 +1307,12 @@ Note: If [BbcodeEnabled] is true, it is unadvised to use the += operator with [T
 [BbcodeEnabled]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.BbcodeEnabled
 [Text]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Text
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:RichTextLabel.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:RichTextLabel.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -1322,12 +1322,12 @@ If true, the label's minimum size will be automatically updated to fit its conte
 
 [Label]: https://pkg.go.dev/graphics.gd/classdb/Label
 */
-func (self Instance) FitContent() bool {
+func (self Instance) FitContent() bool { //gd:RichTextLabel.fit_content
 	return bool(class(self).IsFitContentEnabled())
 }
 
 // SetFitContent sets the property returned by [IsFitContentEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFitContent(value bool) Instance {
+func (self Instance) SetFitContent(value bool) Instance { //gd:RichTextLabel.fit_content
 	class(self).SetFitContent(value)
 	return self
 }
@@ -1337,12 +1337,12 @@ If true, the scrollbar is visible. Setting this to false does not block scrollin
 
 [ScrollToLine]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.ScrollToLine
 */
-func (self Instance) ScrollActive() bool {
+func (self Instance) ScrollActive() bool { //gd:RichTextLabel.scroll_active
 	return bool(class(self).IsScrollActive())
 }
 
 // SetScrollActive sets the property returned by [IsScrollActive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollActive(value bool) Instance {
+func (self Instance) SetScrollActive(value bool) Instance { //gd:RichTextLabel.scroll_active
 	class(self).SetScrollActive(value)
 	return self
 }
@@ -1350,12 +1350,12 @@ func (self Instance) SetScrollActive(value bool) Instance {
 /*
 If true, the window scrolls down to display new content automatically.
 */
-func (self Instance) ScrollFollowing() bool {
+func (self Instance) ScrollFollowing() bool { //gd:RichTextLabel.scroll_following
 	return bool(class(self).IsScrollFollowing())
 }
 
 // SetScrollFollowing sets the property returned by [IsScrollFollowing]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollFollowing(value bool) Instance {
+func (self Instance) SetScrollFollowing(value bool) Instance { //gd:RichTextLabel.scroll_following
 	class(self).SetScrollFollow(value)
 	return self
 }
@@ -1366,12 +1366,12 @@ If true, the window scrolls to display the last visible line when [VisibleCharac
 [VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
 [VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
 */
-func (self Instance) ScrollFollowingVisibleCharacters() bool {
+func (self Instance) ScrollFollowingVisibleCharacters() bool { //gd:RichTextLabel.scroll_following_visible_characters
 	return bool(class(self).IsScrollFollowingVisibleCharacters())
 }
 
 // SetScrollFollowingVisibleCharacters sets the property returned by [IsScrollFollowingVisibleCharacters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScrollFollowingVisibleCharacters(value bool) Instance {
+func (self Instance) SetScrollFollowingVisibleCharacters(value bool) Instance { //gd:RichTextLabel.scroll_following_visible_characters
 	class(self).SetScrollFollowVisibleCharacters(value)
 	return self
 }
@@ -1379,12 +1379,12 @@ func (self Instance) SetScrollFollowingVisibleCharacters(value bool) Instance {
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle.
 */
-func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 // SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance { //gd:RichTextLabel.autowrap_mode
 	class(self).SetAutowrapMode(value)
 	return self
 }
@@ -1392,12 +1392,12 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 /*
 Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
 */
-func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag { //gd:RichTextLabel.autowrap_trim_flags
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
 // SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance {
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance { //gd:RichTextLabel.autowrap_trim_flags
 	class(self).SetAutowrapTrimFlags(value)
 	return self
 }
@@ -1405,12 +1405,12 @@ func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instan
 /*
 The number of spaces associated with a single tab length. Does not affect \t in text tags, only indent tags.
 */
-func (self Instance) TabSize() int {
+func (self Instance) TabSize() int { //gd:RichTextLabel.tab_size
 	return int(int(class(self).GetTabSize()))
 }
 
 // SetTabSize sets the property returned by [GetTabSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabSize(value int) Instance {
+func (self Instance) SetTabSize(value int) Instance { //gd:RichTextLabel.tab_size
 	class(self).SetTabSize(int64(value))
 	return self
 }
@@ -1418,12 +1418,12 @@ func (self Instance) SetTabSize(value int) Instance {
 /*
 If true, a right-click displays the context menu.
 */
-func (self Instance) ContextMenuEnabled() bool {
+func (self Instance) ContextMenuEnabled() bool { //gd:RichTextLabel.context_menu_enabled
 	return bool(class(self).IsContextMenuEnabled())
 }
 
 // SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetContextMenuEnabled(value bool) Instance {
+func (self Instance) SetContextMenuEnabled(value bool) Instance { //gd:RichTextLabel.context_menu_enabled
 	class(self).SetContextMenuEnabled(value)
 	return self
 }
@@ -1431,12 +1431,12 @@ func (self Instance) SetContextMenuEnabled(value bool) Instance {
 /*
 If true, shortcut keys for context menu items are enabled, even if the context menu is disabled.
 */
-func (self Instance) ShortcutKeysEnabled() bool {
+func (self Instance) ShortcutKeysEnabled() bool { //gd:RichTextLabel.shortcut_keys_enabled
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
 // SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
+func (self Instance) SetShortcutKeysEnabled(value bool) Instance { //gd:RichTextLabel.shortcut_keys_enabled
 	class(self).SetShortcutKeysEnabled(value)
 	return self
 }
@@ -1444,12 +1444,12 @@ func (self Instance) SetShortcutKeysEnabled(value bool) Instance {
 /*
 Controls the text's horizontal alignment. Supports left, center, right, and fill, or justify.
 */
-func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.horizontal_alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 // SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance { //gd:RichTextLabel.horizontal_alignment
 	class(self).SetHorizontalAlignment(value)
 	return self
 }
@@ -1457,12 +1457,12 @@ func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Insta
 /*
 Controls the text's vertical alignment. Supports top, center, bottom, and fill.
 */
-func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment { //gd:RichTextLabel.vertical_alignment
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
 // SetVerticalAlignment sets the property returned by [GetVerticalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance { //gd:RichTextLabel.vertical_alignment
 	class(self).SetVerticalAlignment(value)
 	return self
 }
@@ -1470,12 +1470,12 @@ func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance 
 /*
 Line fill alignment rules.
 */
-func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+func (self Instance) JustificationFlags() TextServer.JustificationFlag { //gd:RichTextLabel.justification_flags
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
 // SetJustificationFlags sets the property returned by [GetJustificationFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance { //gd:RichTextLabel.justification_flags
 	class(self).SetJustificationFlags(value)
 	return self
 }
@@ -1483,12 +1483,12 @@ func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) I
 /*
 Aligns text to the given tab-stops.
 */
-func (self Instance) TabStops() []float32 {
+func (self Instance) TabStops() []float32 { //gd:RichTextLabel.tab_stops
 	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
 // SetTabStops sets the property returned by [GetTabStops]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabStops(value []float32) Instance {
+func (self Instance) SetTabStops(value []float32) Instance { //gd:RichTextLabel.tab_stops
 	class(self).SetTabStops(Packed.New(value...))
 	return self
 }
@@ -1501,12 +1501,12 @@ To add a custom effect, it's more convenient to use [InstallEffect].
 [InstallEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.InstallEffect
 [RichTextEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextEffect
 */
-func (self Instance) CustomEffects() []any {
+func (self Instance) CustomEffects() []any { //gd:RichTextLabel.custom_effects
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetEffects())))
 }
 
 // SetCustomEffects sets the property returned by [GetEffects]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCustomEffects(value []any) Instance {
+func (self Instance) SetCustomEffects(value []any) Instance { //gd:RichTextLabel.custom_effects
 	class(self).SetEffects(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -1516,12 +1516,12 @@ If true, the label underlines meta tags such as [url]{text}[/url]. These tags ca
 
 [OnMetaClicked]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.OnMetaClicked
 */
-func (self Instance) MetaUnderlined() bool {
+func (self Instance) MetaUnderlined() bool { //gd:RichTextLabel.meta_underlined
 	return bool(class(self).IsMetaUnderlined())
 }
 
 // SetMetaUnderlined sets the property returned by [IsMetaUnderlined]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMetaUnderlined(value bool) Instance {
+func (self Instance) SetMetaUnderlined(value bool) Instance { //gd:RichTextLabel.meta_underlined
 	class(self).SetMetaUnderline(value)
 	return self
 }
@@ -1529,12 +1529,12 @@ func (self Instance) SetMetaUnderlined(value bool) Instance {
 /*
 If true, the label underlines hint tags such as [hint=description]{text}[/hint].
 */
-func (self Instance) HintUnderlined() bool {
+func (self Instance) HintUnderlined() bool { //gd:RichTextLabel.hint_underlined
 	return bool(class(self).IsHintUnderlined())
 }
 
 // SetHintUnderlined sets the property returned by [IsHintUnderlined]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHintUnderlined(value bool) Instance {
+func (self Instance) SetHintUnderlined(value bool) Instance { //gd:RichTextLabel.hint_underlined
 	class(self).SetHintUnderline(value)
 	return self
 }
@@ -1542,12 +1542,12 @@ func (self Instance) SetHintUnderlined(value bool) Instance {
 /*
 If true, text processing is done in a background thread.
 */
-func (self Instance) Threaded() bool {
+func (self Instance) Threaded() bool { //gd:RichTextLabel.threaded
 	return bool(class(self).IsThreaded())
 }
 
 // SetThreaded sets the property returned by [IsThreaded]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetThreaded(value bool) Instance {
+func (self Instance) SetThreaded(value bool) Instance { //gd:RichTextLabel.threaded
 	class(self).SetThreaded(value)
 	return self
 }
@@ -1559,12 +1559,12 @@ Note: Progress bar is displayed only if [Threaded] is enabled.
 
 [Threaded]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Threaded
 */
-func (self Instance) ProgressBarDelay() int {
+func (self Instance) ProgressBarDelay() int { //gd:RichTextLabel.progress_bar_delay
 	return int(int(class(self).GetProgressBarDelay()))
 }
 
 // SetProgressBarDelay sets the property returned by [GetProgressBarDelay]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProgressBarDelay(value int) Instance {
+func (self Instance) SetProgressBarDelay(value int) Instance { //gd:RichTextLabel.progress_bar_delay
 	class(self).SetProgressBarDelay(int64(value))
 	return self
 }
@@ -1572,12 +1572,12 @@ func (self Instance) SetProgressBarDelay(value int) Instance {
 /*
 If true, the label allows text selection.
 */
-func (self Instance) SelectionEnabled() bool {
+func (self Instance) SelectionEnabled() bool { //gd:RichTextLabel.selection_enabled
 	return bool(class(self).IsSelectionEnabled())
 }
 
 // SetSelectionEnabled sets the property returned by [IsSelectionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSelectionEnabled(value bool) Instance {
+func (self Instance) SetSelectionEnabled(value bool) Instance { //gd:RichTextLabel.selection_enabled
 	class(self).SetSelectionEnabled(value)
 	return self
 }
@@ -1585,12 +1585,12 @@ func (self Instance) SetSelectionEnabled(value bool) Instance {
 /*
 If true, the selected text will be deselected when focus is lost.
 */
-func (self Instance) DeselectOnFocusLossEnabled() bool {
+func (self Instance) DeselectOnFocusLossEnabled() bool { //gd:RichTextLabel.deselect_on_focus_loss_enabled
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
 // SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
+func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance { //gd:RichTextLabel.deselect_on_focus_loss_enabled
 	class(self).SetDeselectOnFocusLossEnabled(value)
 	return self
 }
@@ -1598,12 +1598,12 @@ func (self Instance) SetDeselectOnFocusLossEnabled(value bool) Instance {
 /*
 If true, allow drag and drop of selected text.
 */
-func (self Instance) DragAndDropSelectionEnabled() bool {
+func (self Instance) DragAndDropSelectionEnabled() bool { //gd:RichTextLabel.drag_and_drop_selection_enabled
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
 // SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance {
+func (self Instance) SetDragAndDropSelectionEnabled(value bool) Instance { //gd:RichTextLabel.drag_and_drop_selection_enabled
 	class(self).SetDragAndDropSelectionEnabled(value)
 	return self
 }
@@ -1617,12 +1617,12 @@ Note: Characters are counted as Unicode codepoints. A single visible grapheme ma
 
 [VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
 */
-func (self Instance) VisibleCharacters() int {
+func (self Instance) VisibleCharacters() int { //gd:RichTextLabel.visible_characters
 	return int(int(class(self).GetVisibleCharacters()))
 }
 
 // SetVisibleCharacters sets the property returned by [GetVisibleCharacters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleCharacters(value int) Instance {
+func (self Instance) SetVisibleCharacters(value int) Instance { //gd:RichTextLabel.visible_characters
 	class(self).SetVisibleCharacters(int64(value))
 	return self
 }
@@ -1633,12 +1633,12 @@ The clipping behavior when [VisibleCharacters] or [VisibleRatio] is set.
 [VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
 [VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleRatio
 */
-func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior {
+func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:RichTextLabel.visible_characters_behavior
 	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
 // SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) Instance {
+func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) Instance { //gd:RichTextLabel.visible_characters_behavior
 	class(self).SetVisibleCharactersBehavior(value)
 	return self
 }
@@ -1651,12 +1651,12 @@ Note: Setting this property updates [VisibleCharacters] accordingly.
 [GetTotalCharacterCount]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.GetTotalCharacterCount
 [VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.VisibleCharacters
 */
-func (self Instance) VisibleRatio() Float.X {
+func (self Instance) VisibleRatio() Float.X { //gd:RichTextLabel.visible_ratio
 	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
 // SetVisibleRatio sets the property returned by [GetVisibleRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleRatio(value Float.X) Instance {
+func (self Instance) SetVisibleRatio(value Float.X) Instance { //gd:RichTextLabel.visible_ratio
 	class(self).SetVisibleRatio(float64(value))
 	return self
 }
@@ -1664,12 +1664,12 @@ func (self Instance) SetVisibleRatio(value Float.X) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:RichTextLabel.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:RichTextLabel.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -1677,12 +1677,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:RichTextLabel.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:RichTextLabel.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }
@@ -1690,12 +1690,12 @@ func (self Instance) SetLanguage(value string) Instance {
 /*
 Set BiDi algorithm override for the structured text.
 */
-func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:RichTextLabel.structured_text_bidi_override
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 // SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance { //gd:RichTextLabel.structured_text_bidi_override
 	class(self).SetStructuredTextBidiOverride(value)
 	return self
 }
@@ -1703,12 +1703,12 @@ func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTe
 /*
 Set additional options for BiDi override.
 */
-func (self Instance) StructuredTextBidiOverrideOptions() []any {
+func (self Instance) StructuredTextBidiOverrideOptions() []any { //gd:RichTextLabel.structured_text_bidi_override_options
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 // SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance { //gd:RichTextLabel.structured_text_bidi_override_options
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 	return self
 }

@@ -203,12 +203,12 @@ func New() Instance {
 /*
 The interaction profile path identifying the XR device.
 */
-func (self Instance) InteractionProfilePath() string {
+func (self Instance) InteractionProfilePath() string { //gd:OpenXRInteractionProfile.interaction_profile_path
 	return string(class(self).GetInteractionProfilePath().String())
 }
 
 // SetInteractionProfilePath sets the property returned by [GetInteractionProfilePath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInteractionProfilePath(value string) Instance {
+func (self Instance) SetInteractionProfilePath(value string) Instance { //gd:OpenXRInteractionProfile.interaction_profile_path
 	class(self).SetInteractionProfilePath(String.New(value))
 	return self
 }
@@ -216,12 +216,12 @@ func (self Instance) SetInteractionProfilePath(value string) Instance {
 /*
 Action bindings for this interaction profile.
 */
-func (self Instance) Bindings() []OpenXRIPBinding.Instance {
+func (self Instance) Bindings() []OpenXRIPBinding.Instance { //gd:OpenXRInteractionProfile.bindings
 	return []OpenXRIPBinding.Instance(gd.ArrayAs[[]OpenXRIPBinding.Instance](gd.InternalArray(class(self).GetBindings())))
 }
 
 // SetBindings sets the property returned by [GetBindings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) Instance {
+func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) Instance { //gd:OpenXRInteractionProfile.bindings
 	class(self).SetBindings(gd.EngineArrayFromSlice(value))
 	return self
 }
@@ -229,12 +229,12 @@ func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) Instance {
 /*
 Binding modifiers for this interaction profile.
 */
-func (self Instance) BindingModifiers() []OpenXRIPBindingModifier.Instance {
+func (self Instance) BindingModifiers() []OpenXRIPBindingModifier.Instance { //gd:OpenXRInteractionProfile.binding_modifiers
 	return []OpenXRIPBindingModifier.Instance(gd.ArrayAs[[]OpenXRIPBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
 // SetBindingModifiers sets the property returned by [GetBindingModifiers]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) Instance {
+func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) Instance { //gd:OpenXRInteractionProfile.binding_modifiers
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 	return self
 }

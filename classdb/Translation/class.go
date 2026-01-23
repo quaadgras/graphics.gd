@@ -365,12 +365,12 @@ func New() Instance {
 /*
 The locale of the translation.
 */
-func (self Instance) Locale() string {
+func (self Instance) Locale() string { //gd:Translation.locale
 	return string(class(self).GetLocale().String())
 }
 
 // SetLocale sets the property returned by [GetLocale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLocale(value string) Instance {
+func (self Instance) SetLocale(value string) Instance { //gd:Translation.locale
 	class(self).SetLocale(String.New(value))
 	return self
 }

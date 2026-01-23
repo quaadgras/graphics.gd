@@ -175,12 +175,12 @@ func New() Instance {
 /*
 The list of 3D points forming the convex polygon shape.
 */
-func (self Instance) Points() []Vector3.XYZ {
+func (self Instance) Points() []Vector3.XYZ { //gd:ConvexPolygonShape3D.points
 	return []Vector3.XYZ(slices.Collect(class(self).GetPoints().Values()))
 }
 
 // SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPoints(value []Vector3.XYZ) Instance {
+func (self Instance) SetPoints(value []Vector3.XYZ) Instance { //gd:ConvexPolygonShape3D.points
 	class(self).SetPoints(Packed.New(value...))
 	return self
 }

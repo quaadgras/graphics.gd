@@ -170,12 +170,12 @@ func New() Instance {
 /*
 One of the several input constants in lower-case style like: "vertex" (VERTEX) or "point_size" (POINT_SIZE).
 */
-func (self Instance) InputName() string {
+func (self Instance) InputName() string { //gd:VisualShaderNodeInput.input_name
 	return string(class(self).GetInputName().String())
 }
 
 // SetInputName sets the property returned by [GetInputName]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInputName(value string) Instance {
+func (self Instance) SetInputName(value string) Instance { //gd:VisualShaderNodeInput.input_name
 	class(self).SetInputName(String.New(value))
 	return self
 }

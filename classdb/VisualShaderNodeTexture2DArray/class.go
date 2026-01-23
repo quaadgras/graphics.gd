@@ -164,12 +164,12 @@ A source texture array. Used if [VisualShaderNodeSample3D.Source] is set to [Vis
 
 [VisualShaderNodeSample3D.Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeSample3D#Instance.Source
 */
-func (self Instance) TextureArray() TextureLayered.Instance {
+func (self Instance) TextureArray() TextureLayered.Instance { //gd:VisualShaderNodeTexture2DArray.texture_array
 	return TextureLayered.Instance(class(self).GetTextureArray())
 }
 
 // SetTextureArray sets the property returned by [GetTextureArray]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextureArray(value TextureLayered.Instance) Instance {
+func (self Instance) SetTextureArray(value TextureLayered.Instance) Instance { //gd:VisualShaderNodeTexture2DArray.texture_array
 	class(self).SetTextureArray(value)
 	return self
 }

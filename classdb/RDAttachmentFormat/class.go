@@ -165,12 +165,12 @@ func New() Instance {
 /*
 The attachment's data format.
 */
-func (self Instance) Format() Rendering.DataFormat {
+func (self Instance) Format() Rendering.DataFormat { //gd:RDAttachmentFormat.format
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
 // SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
+func (self Instance) SetFormat(value Rendering.DataFormat) Instance { //gd:RDAttachmentFormat.format
 	class(self).SetFormat(value)
 	return self
 }
@@ -178,12 +178,12 @@ func (self Instance) SetFormat(value Rendering.DataFormat) Instance {
 /*
 The number of samples used when sampling the attachment.
 */
-func (self Instance) Samples() Rendering.TextureSamples {
+func (self Instance) Samples() Rendering.TextureSamples { //gd:RDAttachmentFormat.samples
 	return Rendering.TextureSamples(class(self).GetSamples())
 }
 
 // SetSamples sets the property returned by [GetSamples]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSamples(value Rendering.TextureSamples) Instance {
+func (self Instance) SetSamples(value Rendering.TextureSamples) Instance { //gd:RDAttachmentFormat.samples
 	class(self).SetSamples(value)
 	return self
 }
@@ -191,12 +191,12 @@ func (self Instance) SetSamples(value Rendering.TextureSamples) Instance {
 /*
 The attachment's usage flags, which determine what can be done with it.
 */
-func (self Instance) UsageFlags() int {
+func (self Instance) UsageFlags() int { //gd:RDAttachmentFormat.usage_flags
 	return int(int(class(self).GetUsageFlags()))
 }
 
 // SetUsageFlags sets the property returned by [GetUsageFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUsageFlags(value int) Instance {
+func (self Instance) SetUsageFlags(value int) Instance { //gd:RDAttachmentFormat.usage_flags
 	class(self).SetUsageFlags(int64(value))
 	return self
 }

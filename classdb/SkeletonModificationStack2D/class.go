@@ -227,12 +227,12 @@ If true, the modification's in the stack will be called. This is handled automat
 
 [Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
 */
-func (self Instance) Enabled() bool {
+func (self Instance) Enabled() bool { //gd:SkeletonModificationStack2D.enabled
 	return bool(class(self).GetEnabled())
 }
 
 // SetEnabled sets the property returned by [GetEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnabled(value bool) Instance {
+func (self Instance) SetEnabled(value bool) Instance { //gd:SkeletonModificationStack2D.enabled
 	class(self).SetEnabled(value)
 	return self
 }
@@ -243,12 +243,12 @@ The interpolation strength of the modifications in stack. A value of 0 will make
 [Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
 [Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
 */
-func (self Instance) Strength() Float.X {
+func (self Instance) Strength() Float.X { //gd:SkeletonModificationStack2D.strength
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
 // SetStrength sets the property returned by [GetStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStrength(value Float.X) Instance {
+func (self Instance) SetStrength(value Float.X) Instance { //gd:SkeletonModificationStack2D.strength
 	class(self).SetStrength(float64(value))
 	return self
 }
@@ -256,12 +256,12 @@ func (self Instance) SetStrength(value Float.X) Instance {
 /*
 The number of modifications in the stack.
 */
-func (self Instance) ModificationCount() int {
+func (self Instance) ModificationCount() int { //gd:SkeletonModificationStack2D.modification_count
 	return int(int(class(self).GetModificationCount()))
 }
 
 // SetModificationCount sets the property returned by [GetModificationCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetModificationCount(value int) Instance {
+func (self Instance) SetModificationCount(value int) Instance { //gd:SkeletonModificationStack2D.modification_count
 	class(self).SetModificationCount(int64(value))
 	return self
 }

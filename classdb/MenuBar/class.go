@@ -292,12 +292,12 @@ Flat [MenuBar] don't display item decoration.
 
 [MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
 */
-func (self Instance) Flat() bool {
+func (self Instance) Flat() bool { //gd:MenuBar.flat
 	return bool(class(self).IsFlat())
 }
 
 // SetFlat sets the property returned by [IsFlat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFlat(value bool) Instance {
+func (self Instance) SetFlat(value bool) Instance { //gd:MenuBar.flat
 	class(self).SetFlat(value)
 	return self
 }
@@ -308,12 +308,12 @@ Position order in the global menu to insert [MenuBar] items at. All menu items i
 [MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
 [StartIndex]: https://pkg.go.dev/graphics.gd/classdb/MenuBar#Instance.StartIndex
 */
-func (self Instance) StartIndex() int {
+func (self Instance) StartIndex() int { //gd:MenuBar.start_index
 	return int(int(class(self).GetStartIndex()))
 }
 
 // SetStartIndex sets the property returned by [GetStartIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStartIndex(value int) Instance {
+func (self Instance) SetStartIndex(value int) Instance { //gd:MenuBar.start_index
 	class(self).SetStartIndex(int64(value))
 	return self
 }
@@ -323,12 +323,12 @@ If true, when the cursor hovers above menu item, it will close the current [Popu
 
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 */
-func (self Instance) SwitchOnHover() bool {
+func (self Instance) SwitchOnHover() bool { //gd:MenuBar.switch_on_hover
 	return bool(class(self).IsSwitchOnHover())
 }
 
 // SetSwitchOnHover sets the property returned by [IsSwitchOnHover]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSwitchOnHover(value bool) Instance {
+func (self Instance) SetSwitchOnHover(value bool) Instance { //gd:MenuBar.switch_on_hover
 	class(self).SetSwitchOnHover(value)
 	return self
 }
@@ -344,12 +344,12 @@ Note: This property overrides the value of the [PopupMenu.PreferNativeMenu] prop
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
 [PopupMenu.PreferNativeMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.PreferNativeMenu
 */
-func (self Instance) PreferGlobalMenu() bool {
+func (self Instance) PreferGlobalMenu() bool { //gd:MenuBar.prefer_global_menu
 	return bool(class(self).IsPreferGlobalMenu())
 }
 
 // SetPreferGlobalMenu sets the property returned by [IsPreferGlobalMenu]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPreferGlobalMenu(value bool) Instance {
+func (self Instance) SetPreferGlobalMenu(value bool) Instance { //gd:MenuBar.prefer_global_menu
 	class(self).SetPreferGlobalMenu(value)
 	return self
 }
@@ -357,12 +357,12 @@ func (self Instance) SetPreferGlobalMenu(value bool) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:MenuBar.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:MenuBar.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -370,12 +370,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:MenuBar.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:MenuBar.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }

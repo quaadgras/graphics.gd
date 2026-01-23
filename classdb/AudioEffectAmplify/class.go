@@ -162,12 +162,12 @@ func New() Instance {
 /*
 Amount of amplification in decibels. Positive values make the sound louder, negative values make it quieter. Value can range from -80 to 24.
 */
-func (self Instance) VolumeDb() Float.X {
+func (self Instance) VolumeDb() Float.X { //gd:AudioEffectAmplify.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
 // SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeDb(value Float.X) Instance {
+func (self Instance) SetVolumeDb(value Float.X) Instance { //gd:AudioEffectAmplify.volume_db
 	class(self).SetVolumeDb(float64(value))
 	return self
 }
@@ -181,12 +181,12 @@ Note: This member modifies [VolumeDb] for convenience. The returned value is equ
 [@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
 [VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectAmplify#Instance.VolumeDb
 */
-func (self Instance) VolumeLinear() Float.X {
+func (self Instance) VolumeLinear() Float.X { //gd:AudioEffectAmplify.volume_linear
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
 // SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeLinear(value Float.X) Instance {
+func (self Instance) SetVolumeLinear(value Float.X) Instance { //gd:AudioEffectAmplify.volume_linear
 	class(self).SetVolumeLinear(float64(value))
 	return self
 }

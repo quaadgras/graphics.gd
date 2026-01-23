@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The diffuse texture.
 */
-func (self Instance) DiffuseImg() Image.Instance {
+func (self Instance) DiffuseImg() Image.Instance { //gd:GLTFSpecGloss.diffuse_img
 	return Image.Instance(class(self).GetDiffuseImg())
 }
 
 // SetDiffuseImg sets the property returned by [GetDiffuseImg]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiffuseImg(value Image.Instance) Instance {
+func (self Instance) SetDiffuseImg(value Image.Instance) Instance { //gd:GLTFSpecGloss.diffuse_img
 	class(self).SetDiffuseImg(value)
 	return self
 }
@@ -182,12 +182,12 @@ func (self Instance) SetDiffuseImg(value Image.Instance) Instance {
 /*
 The reflected diffuse factor of the material.
 */
-func (self Instance) DiffuseFactor() Color.RGBA {
+func (self Instance) DiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.diffuse_factor
 	return Color.RGBA(class(self).GetDiffuseFactor())
 }
 
 // SetDiffuseFactor sets the property returned by [GetDiffuseFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDiffuseFactor(value Color.RGBA) Instance {
+func (self Instance) SetDiffuseFactor(value Color.RGBA) Instance { //gd:GLTFSpecGloss.diffuse_factor
 	class(self).SetDiffuseFactor(Color.RGBA(value))
 	return self
 }
@@ -195,12 +195,12 @@ func (self Instance) SetDiffuseFactor(value Color.RGBA) Instance {
 /*
 The glossiness or smoothness of the material.
 */
-func (self Instance) GlossFactor() Float.X {
+func (self Instance) GlossFactor() Float.X { //gd:GLTFSpecGloss.gloss_factor
 	return Float.X(Float.X(class(self).GetGlossFactor()))
 }
 
 // SetGlossFactor sets the property returned by [GetGlossFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlossFactor(value Float.X) Instance {
+func (self Instance) SetGlossFactor(value Float.X) Instance { //gd:GLTFSpecGloss.gloss_factor
 	class(self).SetGlossFactor(float64(value))
 	return self
 }
@@ -208,12 +208,12 @@ func (self Instance) SetGlossFactor(value Float.X) Instance {
 /*
 The specular RGB color of the material. The alpha channel is unused.
 */
-func (self Instance) SpecularFactor() Color.RGBA {
+func (self Instance) SpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.specular_factor
 	return Color.RGBA(class(self).GetSpecularFactor())
 }
 
 // SetSpecularFactor sets the property returned by [GetSpecularFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpecularFactor(value Color.RGBA) Instance {
+func (self Instance) SetSpecularFactor(value Color.RGBA) Instance { //gd:GLTFSpecGloss.specular_factor
 	class(self).SetSpecularFactor(Color.RGBA(value))
 	return self
 }
@@ -221,12 +221,12 @@ func (self Instance) SetSpecularFactor(value Color.RGBA) Instance {
 /*
 The specular-glossiness texture.
 */
-func (self Instance) SpecGlossImg() Image.Instance {
+func (self Instance) SpecGlossImg() Image.Instance { //gd:GLTFSpecGloss.spec_gloss_img
 	return Image.Instance(class(self).GetSpecGlossImg())
 }
 
 // SetSpecGlossImg sets the property returned by [GetSpecGlossImg]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSpecGlossImg(value Image.Instance) Instance {
+func (self Instance) SetSpecGlossImg(value Image.Instance) Instance { //gd:GLTFSpecGloss.spec_gloss_img
 	class(self).SetSpecGlossImg(value)
 	return self
 }

@@ -168,12 +168,12 @@ func New() Instance {
 /*
 Maximum amount of simultaneous streams that can be played.
 */
-func (self Instance) Polyphony() int {
+func (self Instance) Polyphony() int { //gd:AudioStreamPolyphonic.polyphony
 	return int(int(class(self).GetPolyphony()))
 }
 
 // SetPolyphony sets the property returned by [GetPolyphony]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolyphony(value int) Instance {
+func (self Instance) SetPolyphony(value int) Instance { //gd:AudioStreamPolyphonic.polyphony
 	class(self).SetPolyphony(int64(value))
 	return self
 }

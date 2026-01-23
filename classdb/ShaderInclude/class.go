@@ -161,12 +161,12 @@ func New() Instance {
 /*
 Returns the code of the shader include file. The returned text is what the user has written, not the full generated code used internally.
 */
-func (self Instance) Code() string {
+func (self Instance) Code() string { //gd:ShaderInclude.code
 	return string(class(self).GetCode().String())
 }
 
 // SetCode sets the property returned by [GetCode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCode(value string) Instance {
+func (self Instance) SetCode(value string) Instance { //gd:ShaderInclude.code
 	class(self).SetCode(String.New(value))
 	return self
 }

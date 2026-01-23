@@ -420,12 +420,12 @@ The axis to lock during [Fov]/[Size] adjustments. Can be either [KeepWidth] or [
 [Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
 [Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
 */
-func (self Instance) KeepAspect() KeepAspect {
+func (self Instance) KeepAspect() KeepAspect { //gd:Camera3D.keep_aspect
 	return KeepAspect(class(self).GetKeepAspectMode())
 }
 
 // SetKeepAspect sets the property returned by [GetKeepAspectMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetKeepAspect(value KeepAspect) Instance {
+func (self Instance) SetKeepAspect(value KeepAspect) Instance { //gd:Camera3D.keep_aspect
 	class(self).SetKeepAspectMode(value)
 	return self
 }
@@ -448,12 +448,12 @@ Note: [VoxelGI], SDFGI and [LightmapGI] will always take all layers into account
 [VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
-func (self Instance) CullMask() int {
+func (self Instance) CullMask() int { //gd:Camera3D.cull_mask
 	return int(int(class(self).GetCullMask()))
 }
 
 // SetCullMask sets the property returned by [GetCullMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCullMask(value int) Instance {
+func (self Instance) SetCullMask(value int) Instance { //gd:Camera3D.cull_mask
 	class(self).SetCullMask(int64(value))
 	return self
 }
@@ -463,12 +463,12 @@ The [Environment] to use for this camera.
 
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
-func (self Instance) Environment() Environment.Instance {
+func (self Instance) Environment() Environment.Instance { //gd:Camera3D.environment
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
 // SetEnvironment sets the property returned by [GetEnvironment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnvironment(value Environment.Instance) Instance {
+func (self Instance) SetEnvironment(value Environment.Instance) Instance { //gd:Camera3D.environment
 	class(self).SetEnvironment(value)
 	return self
 }
@@ -478,12 +478,12 @@ The [CameraAttributes] to use for this camera.
 
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
-func (self Instance) Attributes() CameraAttributes.Instance {
+func (self Instance) Attributes() CameraAttributes.Instance { //gd:Camera3D.attributes
 	return CameraAttributes.Instance(class(self).GetAttributes())
 }
 
 // SetAttributes sets the property returned by [GetAttributes]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttributes(value CameraAttributes.Instance) Instance {
+func (self Instance) SetAttributes(value CameraAttributes.Instance) Instance { //gd:Camera3D.attributes
 	class(self).SetAttributes(value)
 	return self
 }
@@ -493,12 +493,12 @@ The [Compositor] to use for this camera.
 
 [Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
 */
-func (self Instance) Compositor() Compositor.Instance {
+func (self Instance) Compositor() Compositor.Instance { //gd:Camera3D.compositor
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
 // SetCompositor sets the property returned by [GetCompositor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCompositor(value Compositor.Instance) Instance {
+func (self Instance) SetCompositor(value Compositor.Instance) Instance { //gd:Camera3D.compositor
 	class(self).SetCompositor(value)
 	return self
 }
@@ -506,12 +506,12 @@ func (self Instance) SetCompositor(value Compositor.Instance) Instance {
 /*
 The horizontal (X) offset of the camera viewport.
 */
-func (self Instance) HOffset() Float.X {
+func (self Instance) HOffset() Float.X { //gd:Camera3D.h_offset
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
 // SetHOffset sets the property returned by [GetHOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHOffset(value Float.X) Instance {
+func (self Instance) SetHOffset(value Float.X) Instance { //gd:Camera3D.h_offset
 	class(self).SetHOffset(float64(value))
 	return self
 }
@@ -519,12 +519,12 @@ func (self Instance) SetHOffset(value Float.X) Instance {
 /*
 The vertical (Y) offset of the camera viewport.
 */
-func (self Instance) VOffset() Float.X {
+func (self Instance) VOffset() Float.X { //gd:Camera3D.v_offset
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
 // SetVOffset sets the property returned by [GetVOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVOffset(value Float.X) Instance {
+func (self Instance) SetVOffset(value Float.X) Instance { //gd:Camera3D.v_offset
 	class(self).SetVOffset(float64(value))
 	return self
 }
@@ -538,12 +538,12 @@ Note: The Doppler effect will only be heard on [AudioStreamPlayer3D]s if [AudioS
 [AudioStreamPlayer3D.DopplerTracking]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.DopplerTracking
 [Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
 */
-func (self Instance) DopplerTracking() DopplerTracking {
+func (self Instance) DopplerTracking() DopplerTracking { //gd:Camera3D.doppler_tracking
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
 // SetDopplerTracking sets the property returned by [GetDopplerTracking]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
+func (self Instance) SetDopplerTracking(value DopplerTracking) Instance { //gd:Camera3D.doppler_tracking
 	class(self).SetDopplerTracking(value)
 	return self
 }
@@ -551,12 +551,12 @@ func (self Instance) SetDopplerTracking(value DopplerTracking) Instance {
 /*
 The camera's projection mode. In [ProjectionPerspective] mode, objects' Z distance from the camera's local space scales their perceived size.
 */
-func (self Instance) Projection() ProjectionType {
+func (self Instance) Projection() ProjectionType { //gd:Camera3D.projection
 	return ProjectionType(class(self).GetProjection())
 }
 
 // SetProjection sets the property returned by [GetProjection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProjection(value ProjectionType) Instance {
+func (self Instance) SetProjection(value ProjectionType) Instance { //gd:Camera3D.projection
 	class(self).SetProjection(value)
 	return self
 }
@@ -570,12 +570,12 @@ If multiple cameras are in the scene, one will always be made current. For examp
 [Current]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Current
 [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
-func (self Instance) Current() bool {
+func (self Instance) Current() bool { //gd:Camera3D.current
 	return bool(class(self).IsCurrent())
 }
 
 // SetCurrent sets the property returned by [IsCurrent]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCurrent(value bool) Instance {
+func (self Instance) SetCurrent(value bool) Instance { //gd:Camera3D.current
 	class(self).SetCurrent(value)
 	return self
 }
@@ -596,12 +596,12 @@ For reference, the default vertical field of view value (75.0) is equivalent to 
 [Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
 [KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
 */
-func (self Instance) Fov() Float.X {
+func (self Instance) Fov() Float.X { //gd:Camera3D.fov
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
 // SetFov sets the property returned by [GetFov]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFov(value Float.X) Instance {
+func (self Instance) SetFov(value Float.X) Instance { //gd:Camera3D.fov
 	class(self).SetFov(float64(value))
 	return self
 }
@@ -611,12 +611,12 @@ The camera's size in meters measured as the diameter of the width or height, dep
 
 [KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
 */
-func (self Instance) Size() Float.X {
+func (self Instance) Size() Float.X { //gd:Camera3D.size
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Float.X) Instance {
+func (self Instance) SetSize(value Float.X) Instance { //gd:Camera3D.size
 	class(self).SetSize(float64(value))
 	return self
 }
@@ -629,12 +629,12 @@ Note: Only effective if [Projection] is [ProjectionFrustum].
 [Projection]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Projection
 [Y-shearing]: https://zdoom.org/wiki/Y-shearing
 */
-func (self Instance) FrustumOffset() Vector2.XY {
+func (self Instance) FrustumOffset() Vector2.XY { //gd:Camera3D.frustum_offset
 	return Vector2.XY(class(self).GetFrustumOffset())
 }
 
 // SetFrustumOffset sets the property returned by [GetFrustumOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrustumOffset(value Vector2.XY) Instance {
+func (self Instance) SetFrustumOffset(value Vector2.XY) Instance { //gd:Camera3D.frustum_offset
 	class(self).SetFrustumOffset(Vector2.XY(value))
 	return self
 }
@@ -642,12 +642,12 @@ func (self Instance) SetFrustumOffset(value Vector2.XY) Instance {
 /*
 The distance to the near culling boundary for this camera relative to its local Z axis. Lower values allow the camera to see objects more up close to its origin, at the cost of lower precision across the entire range. Values lower than the default can lead to increased Z-fighting.
 */
-func (self Instance) Near() Float.X {
+func (self Instance) Near() Float.X { //gd:Camera3D.near
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
 // SetNear sets the property returned by [GetNear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNear(value Float.X) Instance {
+func (self Instance) SetNear(value Float.X) Instance { //gd:Camera3D.near
 	class(self).SetNear(float64(value))
 	return self
 }
@@ -657,12 +657,12 @@ The distance to the far culling boundary for this camera relative to its local Z
 
 [Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
 */
-func (self Instance) Far() Float.X {
+func (self Instance) Far() Float.X { //gd:Camera3D.far
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
 // SetFar sets the property returned by [GetFar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFar(value Float.X) Instance {
+func (self Instance) SetFar(value Float.X) Instance { //gd:Camera3D.far
 	class(self).SetFar(float64(value))
 	return self
 }

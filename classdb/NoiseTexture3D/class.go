@@ -199,7 +199,7 @@ func New() Instance {
 Width of the generated texture (in pixels).
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetWidth(value int) Instance {
+func (self Instance) SetWidth(value int) Instance { //gd:NoiseTexture3D.width
 	class(self).SetWidth(int64(value))
 	return self
 }
@@ -208,7 +208,7 @@ func (self Instance) SetWidth(value int) Instance {
 Height of the generated texture (in pixels).
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetHeight(value int) Instance {
+func (self Instance) SetHeight(value int) Instance { //gd:NoiseTexture3D.height
 	class(self).SetHeight(int64(value))
 	return self
 }
@@ -217,7 +217,7 @@ func (self Instance) SetHeight(value int) Instance {
 Depth of the generated texture (in pixels).
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetDepth(value int) Instance {
+func (self Instance) SetDepth(value int) Instance { //gd:NoiseTexture3D.depth
 	class(self).SetDepth(int64(value))
 	return self
 }
@@ -227,12 +227,12 @@ The instance of the [Noise] object.
 
 [Noise]: https://pkg.go.dev/graphics.gd/classdb/Noise
 */
-func (self Instance) Noise() Noise.Instance {
+func (self Instance) Noise() Noise.Instance { //gd:NoiseTexture3D.noise
 	return Noise.Instance(class(self).GetNoise())
 }
 
 // SetNoise sets the property returned by [GetNoise]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNoise(value Noise.Instance) Instance {
+func (self Instance) SetNoise(value Noise.Instance) Instance { //gd:NoiseTexture3D.noise
 	class(self).SetNoise(value)
 	return self
 }
@@ -242,12 +242,12 @@ A [Gradient] which is used to map the luminance of each pixel to a color value.
 
 [Gradient]: https://pkg.go.dev/graphics.gd/classdb/Gradient
 */
-func (self Instance) ColorRamp() Gradient.Instance {
+func (self Instance) ColorRamp() Gradient.Instance { //gd:NoiseTexture3D.color_ramp
 	return Gradient.Instance(class(self).GetColorRamp())
 }
 
 // SetColorRamp sets the property returned by [GetColorRamp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorRamp(value Gradient.Instance) Instance {
+func (self Instance) SetColorRamp(value Gradient.Instance) Instance { //gd:NoiseTexture3D.color_ramp
 	class(self).SetColorRamp(value)
 	return self
 }
@@ -266,12 +266,12 @@ Note: The default [FastNoiseLite] implementation uses the fallback path for seam
 [SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.SeamlessBlendSkirt
 [Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Width
 */
-func (self Instance) Seamless() bool {
+func (self Instance) Seamless() bool { //gd:NoiseTexture3D.seamless
 	return bool(class(self).GetSeamless())
 }
 
 // SetSeamless sets the property returned by [GetSeamless]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeamless(value bool) Instance {
+func (self Instance) SetSeamless(value bool) Instance { //gd:NoiseTexture3D.seamless
 	class(self).SetSeamless(value)
 	return self
 }
@@ -279,12 +279,12 @@ func (self Instance) SetSeamless(value bool) Instance {
 /*
 If true, inverts the noise texture. White becomes black, black becomes white.
 */
-func (self Instance) Invert() bool {
+func (self Instance) Invert() bool { //gd:NoiseTexture3D.invert
 	return bool(class(self).GetInvert())
 }
 
 // SetInvert sets the property returned by [GetInvert]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInvert(value bool) Instance {
+func (self Instance) SetInvert(value bool) Instance { //gd:NoiseTexture3D.invert
 	class(self).SetInvert(value)
 	return self
 }
@@ -294,12 +294,12 @@ If true, the noise image coming from the noise generator is normalized to the ra
 
 Turning normalization off can affect the contrast and allows you to generate non repeating tileable noise textures.
 */
-func (self Instance) Normalize() bool {
+func (self Instance) Normalize() bool { //gd:NoiseTexture3D.normalize
 	return bool(class(self).IsNormalized())
 }
 
 // SetNormalize sets the property returned by [IsNormalized]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalize(value bool) Instance {
+func (self Instance) SetNormalize(value bool) Instance { //gd:NoiseTexture3D.normalize
 	class(self).SetNormalize(value)
 	return self
 }
@@ -315,12 +315,12 @@ Note: If using a [Width], [Height] or [Depth] lower than the default, you may ne
 [SeamlessBlendSkirt]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.SeamlessBlendSkirt
 [Width]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D#Instance.Width
 */
-func (self Instance) SeamlessBlendSkirt() Float.X {
+func (self Instance) SeamlessBlendSkirt() Float.X { //gd:NoiseTexture3D.seamless_blend_skirt
 	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
 // SetSeamlessBlendSkirt sets the property returned by [GetSeamlessBlendSkirt]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance {
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) Instance { //gd:NoiseTexture3D.seamless_blend_skirt
 	class(self).SetSeamlessBlendSkirt(float64(value))
 	return self
 }

@@ -170,36 +170,36 @@ func (self Instance) Rotate(radians Angle.Radians) { //gd:Node2D.rotate
 }
 
 /*
-Applies a local translation on the node's X axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's X axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 func (self Instance) MoveLocalX(delta Float.X) { //gd:Node2D.move_local_x
 	Advanced(self).MoveLocalX(float64(delta), false)
 }
 
 /*
-Applies a local translation on the node's X axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's X axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 func (self MoreArgs) MoveLocalX(delta Float.X, scaled bool) { //gd:Node2D.move_local_x
 	Advanced(self).MoveLocalX(float64(delta), scaled)
 }
 
 /*
-Applies a local translation on the node's Y axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's Y axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 func (self Instance) MoveLocalY(delta Float.X) { //gd:Node2D.move_local_y
 	Advanced(self).MoveLocalY(float64(delta), false)
 }
 
 /*
-Applies a local translation on the node's Y axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's Y axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 func (self MoreArgs) MoveLocalY(delta Float.X, scaled bool) { //gd:Node2D.move_local_y
 	Advanced(self).MoveLocalY(float64(delta), scaled)
@@ -320,12 +320,12 @@ Position, relative to the node's parent. See also [GlobalPosition].
 
 [GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalPosition
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:Node2D.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2.XY) Instance {
+func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:Node2D.position
 	class(self).SetPosition(Vector2.XY(value))
 	return self
 }
@@ -338,12 +338,12 @@ Note: This property is edited in the inspector in degrees. If you want to use de
 [GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
 [RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.RotationDegrees
 */
-func (self Instance) Rotation() Angle.Radians {
+func (self Instance) Rotation() Angle.Radians { //gd:Node2D.rotation
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
 // SetRotation sets the property returned by [GetRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotation(value Angle.Radians) Instance {
+func (self Instance) SetRotation(value Angle.Radians) Instance { //gd:Node2D.rotation
 	class(self).SetRotation(float64(value))
 	return self
 }
@@ -354,12 +354,12 @@ Helper property to access [Rotation] in degrees instead of radians. See also [Gl
 [GlobalRotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotationDegrees
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
 */
-func (self Instance) RotationDegrees() Angle.Degrees {
+func (self Instance) RotationDegrees() Angle.Degrees { //gd:Node2D.rotation_degrees
 	return Angle.Degrees(Float.X(class(self).GetRotationDegrees()))
 }
 
 // SetRotationDegrees sets the property returned by [GetRotationDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRotationDegrees(value Angle.Degrees) Instance {
+func (self Instance) SetRotationDegrees(value Angle.Degrees) Instance { //gd:Node2D.rotation_degrees
 	class(self).SetRotationDegrees(float64(value))
 	return self
 }
@@ -371,12 +371,12 @@ Note: Negative X scales in 2D are not decomposable from the transformation matri
 
 [GlobalScale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalScale
 */
-func (self Instance) Scale() Vector2.XY {
+func (self Instance) Scale() Vector2.XY { //gd:Node2D.scale
 	return Vector2.XY(class(self).GetScale())
 }
 
 // SetScale sets the property returned by [GetScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetScale(value Vector2.XY) Instance {
+func (self Instance) SetScale(value Vector2.XY) Instance { //gd:Node2D.scale
 	class(self).SetScale(Vector2.XY(value))
 	return self
 }
@@ -390,12 +390,12 @@ Note: This property is edited in the inspector in degrees. If you want to use de
 
 [GlobalSkew]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalSkew
 */
-func (self Instance) Skew() Float.X {
+func (self Instance) Skew() Float.X { //gd:Node2D.skew
 	return Float.X(Float.X(class(self).GetSkew()))
 }
 
 // SetSkew sets the property returned by [GetSkew]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkew(value Float.X) Instance {
+func (self Instance) SetSkew(value Float.X) Instance { //gd:Node2D.skew
 	class(self).SetSkew(float64(value))
 	return self
 }
@@ -407,7 +407,7 @@ The node's [Transform2D.OriginXY], relative to the node's parent. See also [Glob
 [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetTransform(value Transform2D.OriginXY) Instance { //gd:Node2D.transform
 	class(self).SetTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -417,12 +417,12 @@ Global position. See also [Position].
 
 [Position]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Position
 */
-func (self Instance) GlobalPosition() Vector2.XY {
+func (self Instance) GlobalPosition() Vector2.XY { //gd:Node2D.global_position
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
 // SetGlobalPosition sets the property returned by [GetGlobalPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalPosition(value Vector2.XY) Instance {
+func (self Instance) SetGlobalPosition(value Vector2.XY) Instance { //gd:Node2D.global_position
 	class(self).SetGlobalPosition(Vector2.XY(value))
 	return self
 }
@@ -432,12 +432,12 @@ Global rotation in radians. See also [Rotation].
 
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
 */
-func (self Instance) GlobalRotation() Angle.Radians {
+func (self Instance) GlobalRotation() Angle.Radians { //gd:Node2D.global_rotation
 	return Angle.Radians(Float.X(class(self).GetGlobalRotation()))
 }
 
 // SetGlobalRotation sets the property returned by [GetGlobalRotation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalRotation(value Angle.Radians) Instance {
+func (self Instance) SetGlobalRotation(value Angle.Radians) Instance { //gd:Node2D.global_rotation
 	class(self).SetGlobalRotation(float64(value))
 	return self
 }
@@ -448,12 +448,12 @@ Helper property to access [GlobalRotation] in degrees instead of radians. See al
 [GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
 [RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.RotationDegrees
 */
-func (self Instance) GlobalRotationDegrees() Angle.Degrees {
+func (self Instance) GlobalRotationDegrees() Angle.Degrees { //gd:Node2D.global_rotation_degrees
 	return Angle.Degrees(Float.X(class(self).GetGlobalRotationDegrees()))
 }
 
 // SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) Instance {
+func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) Instance { //gd:Node2D.global_rotation_degrees
 	class(self).SetGlobalRotationDegrees(float64(value))
 	return self
 }
@@ -463,12 +463,12 @@ Global scale. See also [Scale].
 
 [Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
-func (self Instance) GlobalScale() Vector2.XY {
+func (self Instance) GlobalScale() Vector2.XY { //gd:Node2D.global_scale
 	return Vector2.XY(class(self).GetGlobalScale())
 }
 
 // SetGlobalScale sets the property returned by [GetGlobalScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalScale(value Vector2.XY) Instance {
+func (self Instance) SetGlobalScale(value Vector2.XY) Instance { //gd:Node2D.global_scale
 	class(self).SetGlobalScale(Vector2.XY(value))
 	return self
 }
@@ -478,12 +478,12 @@ Global skew in radians. See also [Skew].
 
 [Skew]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Skew
 */
-func (self Instance) GlobalSkew() Float.X {
+func (self Instance) GlobalSkew() Float.X { //gd:Node2D.global_skew
 	return Float.X(Float.X(class(self).GetGlobalSkew()))
 }
 
 // SetGlobalSkew sets the property returned by [GetGlobalSkew]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGlobalSkew(value Float.X) Instance {
+func (self Instance) SetGlobalSkew(value Float.X) Instance { //gd:Node2D.global_skew
 	class(self).SetGlobalSkew(float64(value))
 	return self
 }
@@ -495,7 +495,7 @@ Global [Transform2D.OriginXY]. See also [Transform].
 [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) Instance {
+func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) Instance { //gd:Node2D.global_transform
 	class(self).SetGlobalTransform(Transform2D.OriginXY(value))
 	return self
 }
@@ -569,9 +569,9 @@ func (self class) Rotate(radians float64) { //gd:Node2D.rotate
 }
 
 /*
-Applies a local translation on the node's X axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's X axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 //go:nosplit
 func (self class) MoveLocalX(delta float64, scaled bool) { //gd:Node2D.move_local_x
@@ -582,9 +582,9 @@ func (self class) MoveLocalX(delta float64, scaled bool) { //gd:Node2D.move_loca
 }
 
 /*
-Applies a local translation on the node's Y axis based on the [Node.Process]'s 'delta'. If 'scaled' is false, normalizes the movement.
+Applies a local translation on the node's Y axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
 
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
 */
 //go:nosplit
 func (self class) MoveLocalY(delta float64, scaled bool) { //gd:Node2D.move_local_y

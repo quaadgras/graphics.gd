@@ -167,12 +167,12 @@ func New() Instance {
 /*
 Sets the mesh used to draw. It must be a mesh using 2D vertices.
 */
-func (self Instance) Mesh() Mesh.Instance {
+func (self Instance) Mesh() Mesh.Instance { //gd:MeshTexture.mesh
 	return Mesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value Mesh.Instance) Instance {
+func (self Instance) SetMesh(value Mesh.Instance) Instance { //gd:MeshTexture.mesh
 	class(self).SetMesh(value)
 	return self
 }
@@ -180,12 +180,12 @@ func (self Instance) SetMesh(value Mesh.Instance) Instance {
 /*
 Sets the base texture that the Mesh will use to draw.
 */
-func (self Instance) BaseTexture() Texture2D.Instance {
+func (self Instance) BaseTexture() Texture2D.Instance { //gd:MeshTexture.base_texture
 	return Texture2D.Instance(class(self).GetBaseTexture())
 }
 
 // SetBaseTexture sets the property returned by [GetBaseTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBaseTexture(value Texture2D.Instance) Instance {
+func (self Instance) SetBaseTexture(value Texture2D.Instance) Instance { //gd:MeshTexture.base_texture
 	class(self).SetBaseTexture(value)
 	return self
 }
@@ -193,12 +193,12 @@ func (self Instance) SetBaseTexture(value Texture2D.Instance) Instance {
 /*
 Sets the size of the image, needed for reference.
 */
-func (self Instance) ImageSize() Vector2.XY {
+func (self Instance) ImageSize() Vector2.XY { //gd:MeshTexture.image_size
 	return Vector2.XY(class(self).GetImageSize())
 }
 
 // SetImageSize sets the property returned by [GetImageSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetImageSize(value Vector2.XY) Instance {
+func (self Instance) SetImageSize(value Vector2.XY) Instance { //gd:MeshTexture.image_size
 	class(self).SetImageSize(Vector2.XY(value))
 	return self
 }

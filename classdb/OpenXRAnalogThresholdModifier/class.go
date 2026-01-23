@@ -174,12 +174,12 @@ When our input value is equal or larger than this value, our output becomes true
 
 [OffThreshold]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAnalogThresholdModifier#Instance.OffThreshold
 */
-func (self Instance) OnThreshold() Float.X {
+func (self Instance) OnThreshold() Float.X { //gd:OpenXRAnalogThresholdModifier.on_threshold
 	return Float.X(Float.X(class(self).GetOnThreshold()))
 }
 
 // SetOnThreshold sets the property returned by [GetOnThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOnThreshold(value Float.X) Instance {
+func (self Instance) SetOnThreshold(value Float.X) Instance { //gd:OpenXRAnalogThresholdModifier.on_threshold
 	class(self).SetOnThreshold(float64(value))
 	return self
 }
@@ -187,12 +187,12 @@ func (self Instance) SetOnThreshold(value Float.X) Instance {
 /*
 When our input value falls below this, our output becomes false.
 */
-func (self Instance) OffThreshold() Float.X {
+func (self Instance) OffThreshold() Float.X { //gd:OpenXRAnalogThresholdModifier.off_threshold
 	return Float.X(Float.X(class(self).GetOffThreshold()))
 }
 
 // SetOffThreshold sets the property returned by [GetOffThreshold]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffThreshold(value Float.X) Instance {
+func (self Instance) SetOffThreshold(value Float.X) Instance { //gd:OpenXRAnalogThresholdModifier.off_threshold
 	class(self).SetOffThreshold(float64(value))
 	return self
 }
@@ -200,12 +200,12 @@ func (self Instance) SetOffThreshold(value Float.X) Instance {
 /*
 Haptic pulse to emit when the user presses the input.
 */
-func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
+func (self Instance) OnHaptic() OpenXRHapticBase.Instance { //gd:OpenXRAnalogThresholdModifier.on_haptic
 	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
 // SetOnHaptic sets the property returned by [GetOnHaptic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
+func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance { //gd:OpenXRAnalogThresholdModifier.on_haptic
 	class(self).SetOnHaptic(value)
 	return self
 }
@@ -213,12 +213,12 @@ func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) Instance {
 /*
 Haptic pulse to emit when the user releases the input.
 */
-func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
+func (self Instance) OffHaptic() OpenXRHapticBase.Instance { //gd:OpenXRAnalogThresholdModifier.off_haptic
 	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
 // SetOffHaptic sets the property returned by [GetOffHaptic]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance {
+func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance { //gd:OpenXRAnalogThresholdModifier.off_haptic
 	class(self).SetOffHaptic(value)
 	return self
 }

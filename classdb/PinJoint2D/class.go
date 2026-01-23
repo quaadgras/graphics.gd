@@ -174,12 +174,12 @@ func New() Instance {
 /*
 The higher this value, the more the bond to the pinned partner can flex.
 */
-func (self Instance) Softness() Float.X {
+func (self Instance) Softness() Float.X { //gd:PinJoint2D.softness
 	return Float.X(Float.X(class(self).GetSoftness()))
 }
 
 // SetSoftness sets the property returned by [GetSoftness]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSoftness(value Float.X) Instance {
+func (self Instance) SetSoftness(value Float.X) Instance { //gd:PinJoint2D.softness
 	class(self).SetSoftness(float64(value))
 	return self
 }
@@ -190,12 +190,12 @@ If true, the pin maximum and minimum rotation, defined by [AngularLimitLower] an
 [AngularLimitLower]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitLower
 [AngularLimitUpper]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitUpper
 */
-func (self Instance) AngularLimitEnabled() bool {
+func (self Instance) AngularLimitEnabled() bool { //gd:PinJoint2D.angular_limit_enabled
 	return bool(class(self).IsAngularLimitEnabled())
 }
 
 // SetAngularLimitEnabled sets the property returned by [IsAngularLimitEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularLimitEnabled(value bool) Instance {
+func (self Instance) SetAngularLimitEnabled(value bool) Instance { //gd:PinJoint2D.angular_limit_enabled
 	class(self).SetAngularLimitEnabled(value)
 	return self
 }
@@ -205,12 +205,12 @@ The minimum rotation. Only active if [AngularLimitEnabled] is true.
 
 [AngularLimitEnabled]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitEnabled
 */
-func (self Instance) AngularLimitLower() Float.X {
+func (self Instance) AngularLimitLower() Float.X { //gd:PinJoint2D.angular_limit_lower
 	return Float.X(Float.X(class(self).GetAngularLimitLower()))
 }
 
 // SetAngularLimitLower sets the property returned by [GetAngularLimitLower]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularLimitLower(value Float.X) Instance {
+func (self Instance) SetAngularLimitLower(value Float.X) Instance { //gd:PinJoint2D.angular_limit_lower
 	class(self).SetAngularLimitLower(float64(value))
 	return self
 }
@@ -220,12 +220,12 @@ The maximum rotation. Only active if [AngularLimitEnabled] is true.
 
 [AngularLimitEnabled]: https://pkg.go.dev/graphics.gd/classdb/PinJoint2D#Instance.AngularLimitEnabled
 */
-func (self Instance) AngularLimitUpper() Float.X {
+func (self Instance) AngularLimitUpper() Float.X { //gd:PinJoint2D.angular_limit_upper
 	return Float.X(Float.X(class(self).GetAngularLimitUpper()))
 }
 
 // SetAngularLimitUpper sets the property returned by [GetAngularLimitUpper]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAngularLimitUpper(value Float.X) Instance {
+func (self Instance) SetAngularLimitUpper(value Float.X) Instance { //gd:PinJoint2D.angular_limit_upper
 	class(self).SetAngularLimitUpper(float64(value))
 	return self
 }
@@ -233,12 +233,12 @@ func (self Instance) SetAngularLimitUpper(value Float.X) Instance {
 /*
 When activated, a motor turns the pin.
 */
-func (self Instance) MotorEnabled() bool {
+func (self Instance) MotorEnabled() bool { //gd:PinJoint2D.motor_enabled
 	return bool(class(self).IsMotorEnabled())
 }
 
 // SetMotorEnabled sets the property returned by [IsMotorEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotorEnabled(value bool) Instance {
+func (self Instance) SetMotorEnabled(value bool) Instance { //gd:PinJoint2D.motor_enabled
 	class(self).SetMotorEnabled(value)
 	return self
 }
@@ -246,12 +246,12 @@ func (self Instance) SetMotorEnabled(value bool) Instance {
 /*
 Target speed for the motor. In radians per second.
 */
-func (self Instance) MotorTargetVelocity() Float.X {
+func (self Instance) MotorTargetVelocity() Float.X { //gd:PinJoint2D.motor_target_velocity
 	return Float.X(Float.X(class(self).GetMotorTargetVelocity()))
 }
 
 // SetMotorTargetVelocity sets the property returned by [GetMotorTargetVelocity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMotorTargetVelocity(value Float.X) Instance {
+func (self Instance) SetMotorTargetVelocity(value Float.X) Instance { //gd:PinJoint2D.motor_target_velocity
 	class(self).SetMotorTargetVelocity(float64(value))
 	return self
 }

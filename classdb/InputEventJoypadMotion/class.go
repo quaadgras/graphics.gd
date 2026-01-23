@@ -166,12 +166,12 @@ func New() Instance {
 /*
 Axis identifier.
 */
-func (self Instance) Axis() Input.JoyAxis {
+func (self Instance) Axis() Input.JoyAxis { //gd:InputEventJoypadMotion.axis
 	return Input.JoyAxis(class(self).GetAxis())
 }
 
 // SetAxis sets the property returned by [GetAxis]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxis(value Input.JoyAxis) Instance {
+func (self Instance) SetAxis(value Input.JoyAxis) Instance { //gd:InputEventJoypadMotion.axis
 	class(self).SetAxis(value)
 	return self
 }
@@ -179,12 +179,12 @@ func (self Instance) SetAxis(value Input.JoyAxis) Instance {
 /*
 Current position of the joystick on the given axis. The value ranges from -1.0 to 1.0. A value of 0 means the axis is in its resting position.
 */
-func (self Instance) AxisValue() Float.X {
+func (self Instance) AxisValue() Float.X { //gd:InputEventJoypadMotion.axis_value
 	return Float.X(Float.X(class(self).GetAxisValue()))
 }
 
 // SetAxisValue sets the property returned by [GetAxisValue]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAxisValue(value Float.X) Instance {
+func (self Instance) SetAxisValue(value Float.X) Instance { //gd:InputEventJoypadMotion.axis_value
 	class(self).SetAxisValue(float64(value))
 	return self
 }

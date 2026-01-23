@@ -199,12 +199,12 @@ func New() Instance {
 /*
 Specifies the format in which the sample will be recorded.
 */
-func (self Instance) Format() AudioStreamWAV.Format {
+func (self Instance) Format() AudioStreamWAV.Format { //gd:AudioEffectRecord.format
 	return AudioStreamWAV.Format(class(self).GetFormat())
 }
 
 // SetFormat sets the property returned by [GetFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFormat(value AudioStreamWAV.Format) Instance {
+func (self Instance) SetFormat(value AudioStreamWAV.Format) Instance { //gd:AudioEffectRecord.format
 	class(self).SetFormat(value)
 	return self
 }

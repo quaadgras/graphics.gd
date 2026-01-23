@@ -255,12 +255,12 @@ Note: [AnimationNodeTransition] transitions the current state immediately after 
 [AnimationNodeTransition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition
 [XfadeTime]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition#Instance.XfadeTime
 */
-func (self Instance) XfadeTime() Float.X {
+func (self Instance) XfadeTime() Float.X { //gd:AnimationNodeTransition.xfade_time
 	return Float.X(Float.X(class(self).GetXfadeTime()))
 }
 
 // SetXfadeTime sets the property returned by [GetXfadeTime]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXfadeTime(value Float.X) Instance {
+func (self Instance) SetXfadeTime(value Float.X) Instance { //gd:AnimationNodeTransition.xfade_time
 	class(self).SetXfadeTime(float64(value))
 	return self
 }
@@ -270,12 +270,12 @@ Determines how cross-fading between animations is eased. If empty, the transitio
 
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
-func (self Instance) XfadeCurve() Curve.Instance {
+func (self Instance) XfadeCurve() Curve.Instance { //gd:AnimationNodeTransition.xfade_curve
 	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
 // SetXfadeCurve sets the property returned by [GetXfadeCurve]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
+func (self Instance) SetXfadeCurve(value Curve.Instance) Instance { //gd:AnimationNodeTransition.xfade_curve
 	class(self).SetXfadeCurve(value)
 	return self
 }
@@ -283,12 +283,12 @@ func (self Instance) SetXfadeCurve(value Curve.Instance) Instance {
 /*
 If true, allows transition to the self state. When the reset option is enabled in input, the animation is restarted. If false, nothing happens on the transition to the self state.
 */
-func (self Instance) AllowTransitionToSelf() bool {
+func (self Instance) AllowTransitionToSelf() bool { //gd:AnimationNodeTransition.allow_transition_to_self
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
 // SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllowTransitionToSelf(value bool) Instance {
+func (self Instance) SetAllowTransitionToSelf(value bool) Instance { //gd:AnimationNodeTransition.allow_transition_to_self
 	class(self).SetAllowTransitionToSelf(value)
 	return self
 }
@@ -297,7 +297,7 @@ func (self Instance) SetAllowTransitionToSelf(value bool) Instance {
 The number of enabled input ports for this animation node.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetInputCount(value int) Instance {
+func (self Instance) SetInputCount(value int) Instance { //gd:AnimationNodeTransition.input_count
 	class(self).SetInputCount(int64(value))
 	return self
 }

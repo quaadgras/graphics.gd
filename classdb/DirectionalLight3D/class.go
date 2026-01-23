@@ -169,12 +169,12 @@ func New() Instance {
 /*
 The light's shadow rendering algorithm.
 */
-func (self Instance) DirectionalShadowMode() ShadowMode {
+func (self Instance) DirectionalShadowMode() ShadowMode { //gd:DirectionalLight3D.directional_shadow_mode
 	return ShadowMode(class(self).GetShadowMode())
 }
 
 // SetDirectionalShadowMode sets the property returned by [GetShadowMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirectionalShadowMode(value ShadowMode) Instance {
+func (self Instance) SetDirectionalShadowMode(value ShadowMode) Instance { //gd:DirectionalLight3D.directional_shadow_mode
 	class(self).SetShadowMode(value)
 	return self
 }
@@ -184,12 +184,12 @@ If true, shadow detail is sacrificed in exchange for smoother transitions betwee
 
 [DirectionalShadowMode]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMode
 */
-func (self Instance) DirectionalShadowBlendSplits() bool {
+func (self Instance) DirectionalShadowBlendSplits() bool { //gd:DirectionalLight3D.directional_shadow_blend_splits
 	return bool(class(self).IsBlendSplitsEnabled())
 }
 
 // SetDirectionalShadowBlendSplits sets the property returned by [IsBlendSplitsEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDirectionalShadowBlendSplits(value bool) Instance {
+func (self Instance) SetDirectionalShadowBlendSplits(value bool) Instance { //gd:DirectionalLight3D.directional_shadow_blend_splits
 	class(self).SetBlendSplits(value)
 	return self
 }
@@ -199,12 +199,12 @@ Whether this [DirectionalLight3D] is visible in the sky, in the scene, or both i
 
 [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 */
-func (self Instance) SkyMode() SkyMode {
+func (self Instance) SkyMode() SkyMode { //gd:DirectionalLight3D.sky_mode
 	return SkyMode(class(self).GetSkyMode())
 }
 
 // SetSkyMode sets the property returned by [GetSkyMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkyMode(value SkyMode) Instance {
+func (self Instance) SetSkyMode(value SkyMode) Instance { //gd:DirectionalLight3D.sky_mode
 	class(self).SetSkyMode(value)
 	return self
 }

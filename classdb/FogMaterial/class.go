@@ -184,12 +184,12 @@ Note: Due to limited precision, [Density] values between -0.001 and 0.001 (exclu
 [Environment.VolumetricFogDensity]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogDensity
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) Density() Float.X {
+func (self Instance) Density() Float.X { //gd:FogMaterial.density
 	return Float.X(Float.X(class(self).GetDensity()))
 }
 
 // SetDensity sets the property returned by [GetDensity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDensity(value Float.X) Instance {
+func (self Instance) SetDensity(value Float.X) Instance { //gd:FogMaterial.density
 	class(self).SetDensity(float64(value))
 	return self
 }
@@ -202,12 +202,12 @@ The single-scattering [Color.RGBA] of the [FogVolume]. Internally, [Albedo] is c
 [Environment.VolumetricFogAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogAlbedo
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) Albedo() Color.RGBA {
+func (self Instance) Albedo() Color.RGBA { //gd:FogMaterial.albedo
 	return Color.RGBA(class(self).GetAlbedo())
 }
 
 // SetAlbedo sets the property returned by [GetAlbedo]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlbedo(value Color.RGBA) Instance {
+func (self Instance) SetAlbedo(value Color.RGBA) Instance { //gd:FogMaterial.albedo
 	class(self).SetAlbedo(Color.RGBA(value))
 	return self
 }
@@ -218,12 +218,12 @@ The [Color.RGBA] of the light emitted by the [FogVolume]. Emitted light will not
 [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) Emission() Color.RGBA {
+func (self Instance) Emission() Color.RGBA { //gd:FogMaterial.emission
 	return Color.RGBA(class(self).GetEmission())
 }
 
 // SetEmission sets the property returned by [GetEmission]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEmission(value Color.RGBA) Instance {
+func (self Instance) SetEmission(value Color.RGBA) Instance { //gd:FogMaterial.emission
 	class(self).SetEmission(Color.RGBA(value))
 	return self
 }
@@ -233,12 +233,12 @@ The rate by which the height-based fog decreases in density as height increases 
 
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) HeightFalloff() Float.X {
+func (self Instance) HeightFalloff() Float.X { //gd:FogMaterial.height_falloff
 	return Float.X(Float.X(class(self).GetHeightFalloff()))
 }
 
 // SetHeightFalloff sets the property returned by [GetHeightFalloff]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHeightFalloff(value Float.X) Instance {
+func (self Instance) SetHeightFalloff(value Float.X) Instance { //gd:FogMaterial.height_falloff
 	class(self).SetHeightFalloff(float64(value))
 	return self
 }
@@ -248,12 +248,12 @@ The hardness of the edges of the [FogVolume]. A higher value will result in soft
 
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
-func (self Instance) EdgeFade() Float.X {
+func (self Instance) EdgeFade() Float.X { //gd:FogMaterial.edge_fade
 	return Float.X(Float.X(class(self).GetEdgeFade()))
 }
 
 // SetEdgeFade sets the property returned by [GetEdgeFade]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEdgeFade(value Float.X) Instance {
+func (self Instance) SetEdgeFade(value Float.X) Instance { //gd:FogMaterial.edge_fade
 	class(self).SetEdgeFade(float64(value))
 	return self
 }
@@ -265,12 +265,12 @@ The 3D texture that is used to scale the [Density] of the [FogVolume]. This can 
 [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 [fog shader]: https://docs.godotengine.org/tutorials/shaders/shader_reference/fog_shader.html
 */
-func (self Instance) DensityTexture() Texture3D.Instance {
+func (self Instance) DensityTexture() Texture3D.Instance { //gd:FogMaterial.density_texture
 	return Texture3D.Instance(class(self).GetDensityTexture())
 }
 
 // SetDensityTexture sets the property returned by [GetDensityTexture]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDensityTexture(value Texture3D.Instance) Instance {
+func (self Instance) SetDensityTexture(value Texture3D.Instance) Instance { //gd:FogMaterial.density_texture
 	class(self).SetDensityTexture(value)
 	return self
 }

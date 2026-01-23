@@ -273,12 +273,12 @@ The [AudioStream] object to be played.
 
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Instance) Stream() AudioStream.Instance {
+func (self Instance) Stream() AudioStream.Instance { //gd:AudioStreamPlayer2D.stream
 	return AudioStream.Instance(class(self).GetStream())
 }
 
 // SetStream sets the property returned by [GetStream]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStream(value AudioStream.Instance) Instance {
+func (self Instance) SetStream(value AudioStream.Instance) Instance { //gd:AudioStreamPlayer2D.stream
 	class(self).SetStream(value)
 	return self
 }
@@ -286,12 +286,12 @@ func (self Instance) SetStream(value AudioStream.Instance) Instance {
 /*
 Base volume before attenuation, in decibels.
 */
-func (self Instance) VolumeDb() Float.X {
+func (self Instance) VolumeDb() Float.X { //gd:AudioStreamPlayer2D.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
 // SetVolumeDb sets the property returned by [GetVolumeDb]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeDb(value Float.X) Instance {
+func (self Instance) SetVolumeDb(value Float.X) Instance { //gd:AudioStreamPlayer2D.volume_db
 	class(self).SetVolumeDb(float64(value))
 	return self
 }
@@ -305,12 +305,12 @@ Note: This member modifies [VolumeDb] for convenience. The returned value is equ
 [@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
 [VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.VolumeDb
 */
-func (self Instance) VolumeLinear() Float.X {
+func (self Instance) VolumeLinear() Float.X { //gd:AudioStreamPlayer2D.volume_linear
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
 // SetVolumeLinear sets the property returned by [GetVolumeLinear]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVolumeLinear(value Float.X) Instance {
+func (self Instance) SetVolumeLinear(value Float.X) Instance { //gd:AudioStreamPlayer2D.volume_linear
 	class(self).SetVolumeLinear(float64(value))
 	return self
 }
@@ -318,12 +318,12 @@ func (self Instance) SetVolumeLinear(value Float.X) Instance {
 /*
 The pitch and the tempo of the audio, as a multiplier of the audio sample's sample rate.
 */
-func (self Instance) PitchScale() Float.X {
+func (self Instance) PitchScale() Float.X { //gd:AudioStreamPlayer2D.pitch_scale
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
 // SetPitchScale sets the property returned by [GetPitchScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPitchScale(value Float.X) Instance {
+func (self Instance) SetPitchScale(value Float.X) Instance { //gd:AudioStreamPlayer2D.pitch_scale
 	class(self).SetPitchScale(float64(value))
 	return self
 }
@@ -333,12 +333,12 @@ If true, audio is playing or is queued to be played (see [Play]).
 
 [Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.Play
 */
-func (self Instance) Playing() bool {
+func (self Instance) Playing() bool { //gd:AudioStreamPlayer2D.playing
 	return bool(class(self).IsPlaying())
 }
 
 // SetPlaying sets the property returned by [IsPlaying]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaying(value bool) Instance {
+func (self Instance) SetPlaying(value bool) Instance { //gd:AudioStreamPlayer2D.playing
 	class(self).SetPlaying(value)
 	return self
 }
@@ -346,12 +346,12 @@ func (self Instance) SetPlaying(value bool) Instance {
 /*
 If true, audio plays when added to scene tree.
 */
-func (self Instance) Autoplay() bool {
+func (self Instance) Autoplay() bool { //gd:AudioStreamPlayer2D.autoplay
 	return bool(class(self).IsAutoplayEnabled())
 }
 
 // SetAutoplay sets the property returned by [IsAutoplayEnabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoplay(value bool) Instance {
+func (self Instance) SetAutoplay(value bool) Instance { //gd:AudioStreamPlayer2D.autoplay
 	class(self).SetAutoplay(value)
 	return self
 }
@@ -361,12 +361,12 @@ If true, the playback is paused. You can resume it by setting [StreamPaused] to 
 
 [StreamPaused]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.StreamPaused
 */
-func (self Instance) StreamPaused() bool {
+func (self Instance) StreamPaused() bool { //gd:AudioStreamPlayer2D.stream_paused
 	return bool(class(self).GetStreamPaused())
 }
 
 // SetStreamPaused sets the property returned by [GetStreamPaused]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStreamPaused(value bool) Instance {
+func (self Instance) SetStreamPaused(value bool) Instance { //gd:AudioStreamPlayer2D.stream_paused
 	class(self).SetStreamPaused(value)
 	return self
 }
@@ -374,12 +374,12 @@ func (self Instance) SetStreamPaused(value bool) Instance {
 /*
 Maximum distance from which audio is still hearable.
 */
-func (self Instance) MaxDistance() Float.X {
+func (self Instance) MaxDistance() Float.X { //gd:AudioStreamPlayer2D.max_distance
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
 // SetMaxDistance sets the property returned by [GetMaxDistance]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxDistance(value Float.X) Instance {
+func (self Instance) SetMaxDistance(value Float.X) Instance { //gd:AudioStreamPlayer2D.max_distance
 	class(self).SetMaxDistance(float64(value))
 	return self
 }
@@ -387,12 +387,12 @@ func (self Instance) SetMaxDistance(value Float.X) Instance {
 /*
 The volume is attenuated over distance with this as an exponent.
 */
-func (self Instance) Attenuation() Float.X {
+func (self Instance) Attenuation() Float.X { //gd:AudioStreamPlayer2D.attenuation
 	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
 // SetAttenuation sets the property returned by [GetAttenuation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAttenuation(value Float.X) Instance {
+func (self Instance) SetAttenuation(value Float.X) Instance { //gd:AudioStreamPlayer2D.attenuation
 	class(self).SetAttenuation(float64(value))
 	return self
 }
@@ -400,12 +400,12 @@ func (self Instance) SetAttenuation(value Float.X) Instance {
 /*
 The maximum number of sounds this node can play at the same time. Playing additional sounds after this value is reached will cut off the oldest sounds.
 */
-func (self Instance) MaxPolyphony() int {
+func (self Instance) MaxPolyphony() int { //gd:AudioStreamPlayer2D.max_polyphony
 	return int(int(class(self).GetMaxPolyphony()))
 }
 
 // SetMaxPolyphony sets the property returned by [GetMaxPolyphony]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxPolyphony(value int) Instance {
+func (self Instance) SetMaxPolyphony(value int) Instance { //gd:AudioStreamPlayer2D.max_polyphony
 	class(self).SetMaxPolyphony(int64(value))
 	return self
 }
@@ -415,12 +415,12 @@ Scales the panning strength for this node by multiplying the base [ProjectSettin
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) PanningStrength() Float.X {
+func (self Instance) PanningStrength() Float.X { //gd:AudioStreamPlayer2D.panning_strength
 	return Float.X(Float.X(class(self).GetPanningStrength()))
 }
 
 // SetPanningStrength sets the property returned by [GetPanningStrength]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPanningStrength(value Float.X) Instance {
+func (self Instance) SetPanningStrength(value Float.X) Instance { //gd:AudioStreamPlayer2D.panning_strength
 	class(self).SetPanningStrength(float64(value))
 	return self
 }
@@ -430,12 +430,12 @@ Bus on which this audio is playing.
 
 Note: When setting this property, keep in mind that no validation is performed to see if the given name matches an existing bus. This is because audio bus layouts might be loaded after this property is set. If this given name can't be resolved at runtime, it will fall back to "Master".
 */
-func (self Instance) Bus() string {
+func (self Instance) Bus() string { //gd:AudioStreamPlayer2D.bus
 	return string(class(self).GetBus().String())
 }
 
 // SetBus sets the property returned by [GetBus]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetBus(value string) Instance {
+func (self Instance) SetBus(value string) Instance { //gd:AudioStreamPlayer2D.bus
 	class(self).SetBus(String.Name(String.New(value)))
 	return self
 }
@@ -446,12 +446,12 @@ Determines which [Area2D] layers affect the sound for reverb and audio bus effec
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Instance) AreaMask() int {
+func (self Instance) AreaMask() int { //gd:AudioStreamPlayer2D.area_mask
 	return int(int(class(self).GetAreaMask()))
 }
 
 // SetAreaMask sets the property returned by [GetAreaMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAreaMask(value int) Instance {
+func (self Instance) SetAreaMask(value int) Instance { //gd:AudioStreamPlayer2D.area_mask
 	class(self).SetAreaMask(int64(value))
 	return self
 }
@@ -459,12 +459,12 @@ func (self Instance) SetAreaMask(value int) Instance {
 /*
 The playback type of the stream player. If set other than to the default value, it will force that playback type.
 */
-func (self Instance) PlaybackType() AudioServer.PlaybackType {
+func (self Instance) PlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer2D.playback_type
 	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
 // SetPlaybackType sets the property returned by [GetPlaybackType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance {
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) Instance { //gd:AudioStreamPlayer2D.playback_type
 	class(self).SetPlaybackType(value)
 	return self
 }

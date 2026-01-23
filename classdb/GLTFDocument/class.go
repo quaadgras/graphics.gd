@@ -368,12 +368,12 @@ By default, Godot allows the following options: "None", "PNG", "JPEG", "Lossless
 
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
 */
-func (self Instance) ImageFormat() string {
+func (self Instance) ImageFormat() string { //gd:GLTFDocument.image_format
 	return string(class(self).GetImageFormat().String())
 }
 
 // SetImageFormat sets the property returned by [GetImageFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetImageFormat(value string) Instance {
+func (self Instance) SetImageFormat(value string) Instance { //gd:GLTFDocument.image_format
 	class(self).SetImageFormat(String.New(value))
 	return self
 }
@@ -383,12 +383,12 @@ If [ImageFormat] is a lossy image format, this determines the lossy quality of t
 
 [ImageFormat]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.ImageFormat
 */
-func (self Instance) LossyQuality() Float.X {
+func (self Instance) LossyQuality() Float.X { //gd:GLTFDocument.lossy_quality
 	return Float.X(Float.X(class(self).GetLossyQuality()))
 }
 
 // SetLossyQuality sets the property returned by [GetLossyQuality]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLossyQuality(value Float.X) Instance {
+func (self Instance) SetLossyQuality(value Float.X) Instance { //gd:GLTFDocument.lossy_quality
 	class(self).SetLossyQuality(float64(value))
 	return self
 }
@@ -401,12 +401,12 @@ This property may only be one of "None", "PNG", or "JPEG", and is only used when
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
 [ImageFormat]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocument#Instance.ImageFormat
 */
-func (self Instance) FallbackImageFormat() string {
+func (self Instance) FallbackImageFormat() string { //gd:GLTFDocument.fallback_image_format
 	return string(class(self).GetFallbackImageFormat().String())
 }
 
 // SetFallbackImageFormat sets the property returned by [GetFallbackImageFormat]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbackImageFormat(value string) Instance {
+func (self Instance) SetFallbackImageFormat(value string) Instance { //gd:GLTFDocument.fallback_image_format
 	class(self).SetFallbackImageFormat(String.New(value))
 	return self
 }
@@ -414,12 +414,12 @@ func (self Instance) SetFallbackImageFormat(value string) Instance {
 /*
 The quality of the fallback image, if any. For PNG files, this downscales the image on both dimensions by this factor. For JPEG files, this is the lossy quality of the image. A low value is recommended, since including multiple high quality images in a glTF file defeats the file size gains of using a more efficient image format.
 */
-func (self Instance) FallbackImageQuality() Float.X {
+func (self Instance) FallbackImageQuality() Float.X { //gd:GLTFDocument.fallback_image_quality
 	return Float.X(Float.X(class(self).GetFallbackImageQuality()))
 }
 
 // SetFallbackImageQuality sets the property returned by [GetFallbackImageQuality]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFallbackImageQuality(value Float.X) Instance {
+func (self Instance) SetFallbackImageQuality(value Float.X) Instance { //gd:GLTFDocument.fallback_image_quality
 	class(self).SetFallbackImageQuality(float64(value))
 	return self
 }
@@ -429,12 +429,12 @@ How to process the root node during export. The default and recommended value is
 
 Note: Regardless of how the glTF file is exported, when importing, the root node type and name can be overridden in the scene import settings tab.
 */
-func (self Instance) RootNodeMode() RootNodeMode {
+func (self Instance) RootNodeMode() RootNodeMode { //gd:GLTFDocument.root_node_mode
 	return RootNodeMode(class(self).GetRootNodeMode())
 }
 
 // SetRootNodeMode sets the property returned by [GetRootNodeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRootNodeMode(value RootNodeMode) Instance {
+func (self Instance) SetRootNodeMode(value RootNodeMode) Instance { //gd:GLTFDocument.root_node_mode
 	class(self).SetRootNodeMode(value)
 	return self
 }
@@ -442,12 +442,12 @@ func (self Instance) SetRootNodeMode(value RootNodeMode) Instance {
 /*
 How to deal with node visibility during export. This setting does nothing if all nodes are visible. The default and recommended value is [VisibilityModeIncludeRequired], which uses the KHR_node_visibility extension.
 */
-func (self Instance) VisibilityMode() VisibilityMode {
+func (self Instance) VisibilityMode() VisibilityMode { //gd:GLTFDocument.visibility_mode
 	return VisibilityMode(class(self).GetVisibilityMode())
 }
 
 // SetVisibilityMode sets the property returned by [GetVisibilityMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityMode(value VisibilityMode) Instance {
+func (self Instance) SetVisibilityMode(value VisibilityMode) Instance { //gd:GLTFDocument.visibility_mode
 	class(self).SetVisibilityMode(value)
 	return self
 }

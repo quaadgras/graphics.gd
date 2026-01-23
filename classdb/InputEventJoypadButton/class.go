@@ -166,22 +166,22 @@ func New() Instance {
 /*
 Button identifier. One of the [JoyButton] button constants.
 */
-func (self Instance) ButtonIndex() Input.JoyButton {
+func (self Instance) ButtonIndex() Input.JoyButton { //gd:InputEventJoypadButton.button_index
 	return Input.JoyButton(class(self).GetButtonIndex())
 }
 
 // SetButtonIndex sets the property returned by [GetButtonIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetButtonIndex(value Input.JoyButton) Instance {
+func (self Instance) SetButtonIndex(value Input.JoyButton) Instance { //gd:InputEventJoypadButton.button_index
 	class(self).SetButtonIndex(value)
 	return self
 }
 
-func (self Instance) Pressure() Float.X {
+func (self Instance) Pressure() Float.X { //gd:InputEventJoypadButton.pressure
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
 // SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPressure(value Float.X) Instance {
+func (self Instance) SetPressure(value Float.X) Instance { //gd:InputEventJoypadButton.pressure
 	class(self).SetPressure(float64(value))
 	return self
 }
@@ -190,7 +190,7 @@ func (self Instance) SetPressure(value Float.X) Instance {
 If true, the button's state is pressed. If false, the button's state is released.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) Instance {
+func (self Instance) SetPressed(value bool) Instance { //gd:InputEventJoypadButton.pressed
 	class(self).SetPressed(value)
 	return self
 }

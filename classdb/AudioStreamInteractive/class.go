@@ -397,12 +397,12 @@ func New() Instance {
 /*
 Amount of clips contained in this interactive player.
 */
-func (self Instance) ClipCount() Clip {
+func (self Instance) ClipCount() Clip { //gd:AudioStreamInteractive.clip_count
 	return Clip(Clip(class(self).GetClipCount()))
 }
 
 // SetClipCount sets the property returned by [GetClipCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipCount(value Clip) Instance {
+func (self Instance) SetClipCount(value Clip) Instance { //gd:AudioStreamInteractive.clip_count
 	class(self).SetClipCount(int64(value))
 	return self
 }
@@ -410,12 +410,12 @@ func (self Instance) SetClipCount(value Clip) Instance {
 /*
 Index of the initial clip, which will be played first when this stream is played.
 */
-func (self Instance) InitialClip() Clip {
+func (self Instance) InitialClip() Clip { //gd:AudioStreamInteractive.initial_clip
 	return Clip(Clip(class(self).GetInitialClip()))
 }
 
 // SetInitialClip sets the property returned by [GetInitialClip]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInitialClip(value Clip) Instance {
+func (self Instance) SetInitialClip(value Clip) Instance { //gd:AudioStreamInteractive.initial_clip
 	class(self).SetInitialClip(int64(value))
 	return self
 }

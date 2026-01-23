@@ -167,12 +167,12 @@ func New() Instance {
 /*
 The type to be used in the comparison.
 */
-func (self Instance) Type() ComparisonType {
+func (self Instance) Type() ComparisonType { //gd:VisualShaderNodeCompare.type
 	return ComparisonType(class(self).GetComparisonType())
 }
 
 // SetType sets the property returned by [GetComparisonType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetType(value ComparisonType) Instance {
+func (self Instance) SetType(value ComparisonType) Instance { //gd:VisualShaderNodeCompare.type
 	class(self).SetComparisonType(value)
 	return self
 }
@@ -180,12 +180,12 @@ func (self Instance) SetType(value ComparisonType) Instance {
 /*
 A comparison function.
 */
-func (self Instance) Function() Function {
+func (self Instance) Function() Function { //gd:VisualShaderNodeCompare.function
 	return Function(class(self).GetFunction())
 }
 
 // SetFunction sets the property returned by [GetFunction]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFunction(value Function) Instance {
+func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNodeCompare.function
 	class(self).SetFunction(value)
 	return self
 }
@@ -195,12 +195,12 @@ Extra condition which is applied if [Type] is set to [CtypeVector3d].
 
 [Type]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCompare#Instance.Type
 */
-func (self Instance) Condition() Condition {
+func (self Instance) Condition() Condition { //gd:VisualShaderNodeCompare.condition
 	return Condition(class(self).GetCondition())
 }
 
 // SetCondition sets the property returned by [GetCondition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCondition(value Condition) Instance {
+func (self Instance) SetCondition(value Condition) Instance { //gd:VisualShaderNodeCompare.condition
 	class(self).SetCondition(value)
 	return self
 }

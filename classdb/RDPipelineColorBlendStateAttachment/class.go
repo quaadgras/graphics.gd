@@ -311,12 +311,12 @@ If true, performs blending between the source and destination according to the f
 [WriteG]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteG
 [WriteR]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteR
 */
-func (self Instance) EnableBlend() bool {
+func (self Instance) EnableBlend() bool { //gd:RDPipelineColorBlendStateAttachment.enable_blend
 	return bool(class(self).GetEnableBlend())
 }
 
 // SetEnableBlend sets the property returned by [GetEnableBlend]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableBlend(value bool) Instance {
+func (self Instance) SetEnableBlend(value bool) Instance { //gd:RDPipelineColorBlendStateAttachment.enable_blend
 	class(self).SetEnableBlend(value)
 	return self
 }
@@ -324,12 +324,12 @@ func (self Instance) SetEnableBlend(value bool) Instance {
 /*
 Controls how the blend factor for the color channels is determined based on the source's fragments.
 */
-func (self Instance) SrcColorBlendFactor() Rendering.BlendFactor {
+func (self Instance) SrcColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.src_color_blend_factor
 	return Rendering.BlendFactor(class(self).GetSrcColorBlendFactor())
 }
 
 // SetSrcColorBlendFactor sets the property returned by [GetSrcColorBlendFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) Instance {
+func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) Instance { //gd:RDPipelineColorBlendStateAttachment.src_color_blend_factor
 	class(self).SetSrcColorBlendFactor(value)
 	return self
 }
@@ -337,12 +337,12 @@ func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) Instanc
 /*
 Controls how the blend factor for the color channels is determined based on the destination's fragments.
 */
-func (self Instance) DstColorBlendFactor() Rendering.BlendFactor {
+func (self Instance) DstColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.dst_color_blend_factor
 	return Rendering.BlendFactor(class(self).GetDstColorBlendFactor())
 }
 
 // SetDstColorBlendFactor sets the property returned by [GetDstColorBlendFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) Instance {
+func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) Instance { //gd:RDPipelineColorBlendStateAttachment.dst_color_blend_factor
 	class(self).SetDstColorBlendFactor(value)
 	return self
 }
@@ -350,12 +350,12 @@ func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) Instanc
 /*
 The blend mode to use for the red/green/blue color channels.
 */
-func (self Instance) ColorBlendOp() Rendering.BlendOperation {
+func (self Instance) ColorBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.color_blend_op
 	return Rendering.BlendOperation(class(self).GetColorBlendOp())
 }
 
 // SetColorBlendOp sets the property returned by [GetColorBlendOp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) Instance {
+func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) Instance { //gd:RDPipelineColorBlendStateAttachment.color_blend_op
 	class(self).SetColorBlendOp(value)
 	return self
 }
@@ -363,12 +363,12 @@ func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) Instance {
 /*
 Controls how the blend factor for the alpha channel is determined based on the source's fragments.
 */
-func (self Instance) SrcAlphaBlendFactor() Rendering.BlendFactor {
+func (self Instance) SrcAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.src_alpha_blend_factor
 	return Rendering.BlendFactor(class(self).GetSrcAlphaBlendFactor())
 }
 
 // SetSrcAlphaBlendFactor sets the property returned by [GetSrcAlphaBlendFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) Instance {
+func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) Instance { //gd:RDPipelineColorBlendStateAttachment.src_alpha_blend_factor
 	class(self).SetSrcAlphaBlendFactor(value)
 	return self
 }
@@ -376,12 +376,12 @@ func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) Instanc
 /*
 Controls how the blend factor for the alpha channel is determined based on the destination's fragments.
 */
-func (self Instance) DstAlphaBlendFactor() Rendering.BlendFactor {
+func (self Instance) DstAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.dst_alpha_blend_factor
 	return Rendering.BlendFactor(class(self).GetDstAlphaBlendFactor())
 }
 
 // SetDstAlphaBlendFactor sets the property returned by [GetDstAlphaBlendFactor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) Instance {
+func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) Instance { //gd:RDPipelineColorBlendStateAttachment.dst_alpha_blend_factor
 	class(self).SetDstAlphaBlendFactor(value)
 	return self
 }
@@ -389,12 +389,12 @@ func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) Instanc
 /*
 The blend mode to use for the alpha channel.
 */
-func (self Instance) AlphaBlendOp() Rendering.BlendOperation {
+func (self Instance) AlphaBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.alpha_blend_op
 	return Rendering.BlendOperation(class(self).GetAlphaBlendOp())
 }
 
 // SetAlphaBlendOp sets the property returned by [GetAlphaBlendOp]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) Instance {
+func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) Instance { //gd:RDPipelineColorBlendStateAttachment.alpha_blend_op
 	class(self).SetAlphaBlendOp(value)
 	return self
 }
@@ -402,12 +402,12 @@ func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) Instance {
 /*
 If true, writes the new red color channel to the final result.
 */
-func (self Instance) WriteR() bool {
+func (self Instance) WriteR() bool { //gd:RDPipelineColorBlendStateAttachment.write_r
 	return bool(class(self).GetWriteR())
 }
 
 // SetWriteR sets the property returned by [GetWriteR]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWriteR(value bool) Instance {
+func (self Instance) SetWriteR(value bool) Instance { //gd:RDPipelineColorBlendStateAttachment.write_r
 	class(self).SetWriteR(value)
 	return self
 }
@@ -415,12 +415,12 @@ func (self Instance) SetWriteR(value bool) Instance {
 /*
 If true, writes the new green color channel to the final result.
 */
-func (self Instance) WriteG() bool {
+func (self Instance) WriteG() bool { //gd:RDPipelineColorBlendStateAttachment.write_g
 	return bool(class(self).GetWriteG())
 }
 
 // SetWriteG sets the property returned by [GetWriteG]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWriteG(value bool) Instance {
+func (self Instance) SetWriteG(value bool) Instance { //gd:RDPipelineColorBlendStateAttachment.write_g
 	class(self).SetWriteG(value)
 	return self
 }
@@ -428,12 +428,12 @@ func (self Instance) SetWriteG(value bool) Instance {
 /*
 If true, writes the new blue color channel to the final result.
 */
-func (self Instance) WriteB() bool {
+func (self Instance) WriteB() bool { //gd:RDPipelineColorBlendStateAttachment.write_b
 	return bool(class(self).GetWriteB())
 }
 
 // SetWriteB sets the property returned by [GetWriteB]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWriteB(value bool) Instance {
+func (self Instance) SetWriteB(value bool) Instance { //gd:RDPipelineColorBlendStateAttachment.write_b
 	class(self).SetWriteB(value)
 	return self
 }
@@ -441,12 +441,12 @@ func (self Instance) SetWriteB(value bool) Instance {
 /*
 If true, writes the new alpha channel to the final result.
 */
-func (self Instance) WriteA() bool {
+func (self Instance) WriteA() bool { //gd:RDPipelineColorBlendStateAttachment.write_a
 	return bool(class(self).GetWriteA())
 }
 
 // SetWriteA sets the property returned by [GetWriteA]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetWriteA(value bool) Instance {
+func (self Instance) SetWriteA(value bool) Instance { //gd:RDPipelineColorBlendStateAttachment.write_a
 	class(self).SetWriteA(value)
 	return self
 }

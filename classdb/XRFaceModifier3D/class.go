@@ -171,12 +171,12 @@ The [XRFaceTracker] path.
 
 [XRFaceTracker]: https://pkg.go.dev/graphics.gd/classdb/XRFaceTracker
 */
-func (self Instance) FaceTracker() string {
+func (self Instance) FaceTracker() string { //gd:XRFaceModifier3D.face_tracker
 	return string(class(self).GetFaceTracker().String())
 }
 
 // SetFaceTracker sets the property returned by [GetFaceTracker]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFaceTracker(value string) Instance {
+func (self Instance) SetFaceTracker(value string) Instance { //gd:XRFaceModifier3D.face_tracker
 	class(self).SetFaceTracker(String.Name(String.New(value)))
 	return self
 }
@@ -186,12 +186,12 @@ The node path of the face [MeshInstance3D].
 
 [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 */
-func (self Instance) Target() string {
+func (self Instance) Target() string { //gd:XRFaceModifier3D.target
 	return string(class(self).GetTarget().String())
 }
 
 // SetTarget sets the property returned by [GetTarget]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTarget(value string) Instance {
+func (self Instance) SetTarget(value string) Instance { //gd:XRFaceModifier3D.target
 	class(self).SetTarget(Path.ToNode(String.New(value)))
 	return self
 }

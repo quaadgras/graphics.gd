@@ -174,102 +174,102 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mesh() ImporterMesh.Instance {
+func (self Instance) Mesh() ImporterMesh.Instance { //gd:ImporterMeshInstance3D.mesh
 	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
 // SetMesh sets the property returned by [GetMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMesh(value ImporterMesh.Instance) Instance {
+func (self Instance) SetMesh(value ImporterMesh.Instance) Instance { //gd:ImporterMeshInstance3D.mesh
 	class(self).SetMesh(value)
 	return self
 }
 
-func (self Instance) Skin() Skin.Instance {
+func (self Instance) Skin() Skin.Instance { //gd:ImporterMeshInstance3D.skin
 	return Skin.Instance(class(self).GetSkin())
 }
 
 // SetSkin sets the property returned by [GetSkin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkin(value Skin.Instance) Instance {
+func (self Instance) SetSkin(value Skin.Instance) Instance { //gd:ImporterMeshInstance3D.skin
 	class(self).SetSkin(value)
 	return self
 }
 
-func (self Instance) SkeletonPath() string {
+func (self Instance) SkeletonPath() string { //gd:ImporterMeshInstance3D.skeleton_path
 	return string(class(self).GetSkeletonPath().String())
 }
 
 // SetSkeletonPath sets the property returned by [GetSkeletonPath]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSkeletonPath(value string) Instance {
+func (self Instance) SetSkeletonPath(value string) Instance { //gd:ImporterMeshInstance3D.skeleton_path
 	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 	return self
 }
 
-func (self Instance) LayerMask() int {
+func (self Instance) LayerMask() int { //gd:ImporterMeshInstance3D.layer_mask
 	return int(int(class(self).GetLayerMask()))
 }
 
 // SetLayerMask sets the property returned by [GetLayerMask]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayerMask(value int) Instance {
+func (self Instance) SetLayerMask(value int) Instance { //gd:ImporterMeshInstance3D.layer_mask
 	class(self).SetLayerMask(int64(value))
 	return self
 }
 
-func (self Instance) CastShadow() GeometryInstance3D.ShadowCastingSetting {
+func (self Instance) CastShadow() GeometryInstance3D.ShadowCastingSetting { //gd:ImporterMeshInstance3D.cast_shadow
 	return GeometryInstance3D.ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
 // SetCastShadow sets the property returned by [GetCastShadowsSetting]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetCastShadow(value GeometryInstance3D.ShadowCastingSetting) Instance {
+func (self Instance) SetCastShadow(value GeometryInstance3D.ShadowCastingSetting) Instance { //gd:ImporterMeshInstance3D.cast_shadow
 	class(self).SetCastShadowsSetting(value)
 	return self
 }
 
-func (self Instance) VisibilityRangeBegin() Float.X {
+func (self Instance) VisibilityRangeBegin() Float.X { //gd:ImporterMeshInstance3D.visibility_range_begin
 	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
 // SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeBegin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeBegin(value Float.X) Instance { //gd:ImporterMeshInstance3D.visibility_range_begin
 	class(self).SetVisibilityRangeBegin(float64(value))
 	return self
 }
 
-func (self Instance) VisibilityRangeBeginMargin() Float.X {
+func (self Instance) VisibilityRangeBeginMargin() Float.X { //gd:ImporterMeshInstance3D.visibility_range_begin_margin
 	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
 // SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) Instance { //gd:ImporterMeshInstance3D.visibility_range_begin_margin
 	class(self).SetVisibilityRangeBeginMargin(float64(value))
 	return self
 }
 
-func (self Instance) VisibilityRangeEnd() Float.X {
+func (self Instance) VisibilityRangeEnd() Float.X { //gd:ImporterMeshInstance3D.visibility_range_end
 	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
 // SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeEnd(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeEnd(value Float.X) Instance { //gd:ImporterMeshInstance3D.visibility_range_end
 	class(self).SetVisibilityRangeEnd(float64(value))
 	return self
 }
 
-func (self Instance) VisibilityRangeEndMargin() Float.X {
+func (self Instance) VisibilityRangeEndMargin() Float.X { //gd:ImporterMeshInstance3D.visibility_range_end_margin
 	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
 // SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance {
+func (self Instance) SetVisibilityRangeEndMargin(value Float.X) Instance { //gd:ImporterMeshInstance3D.visibility_range_end_margin
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 	return self
 }
 
-func (self Instance) VisibilityRangeFadeMode() GeometryInstance3D.VisibilityRangeFadeMode {
+func (self Instance) VisibilityRangeFadeMode() GeometryInstance3D.VisibilityRangeFadeMode { //gd:ImporterMeshInstance3D.visibility_range_fade_mode
 	return GeometryInstance3D.VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
 // SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.VisibilityRangeFadeMode) Instance {
+func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.VisibilityRangeFadeMode) Instance { //gd:ImporterMeshInstance3D.visibility_range_fade_mode
 	class(self).SetVisibilityRangeFadeMode(value)
 	return self
 }

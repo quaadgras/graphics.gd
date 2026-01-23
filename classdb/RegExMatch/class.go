@@ -235,21 +235,21 @@ func New() Instance {
 /*
 The source string used with the search pattern to find this matching result.
 */
-func (self Instance) Subject() string {
+func (self Instance) Subject() string { //gd:RegExMatch.subject
 	return string(class(self).GetSubject().String())
 }
 
 /*
 A dictionary of named groups and its corresponding group number. Only groups that were matched are included. If multiple groups have the same name, that name would refer to the first matching one.
 */
-func (self Instance) Names() map[string]int {
+func (self Instance) Names() map[string]int { //gd:RegExMatch.names
 	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetNames()))
 }
 
 /*
 An slice of the match and its capturing groups.
 */
-func (self Instance) Strings() []string {
+func (self Instance) Strings() []string { //gd:RegExMatch.strings
 	return []string(class(self).GetStrings().Strings())
 }
 

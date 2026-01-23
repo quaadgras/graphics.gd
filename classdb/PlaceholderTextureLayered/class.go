@@ -171,12 +171,12 @@ func New() Instance {
 /*
 The size of each texture layer (in pixels).
 */
-func (self Instance) Size() Vector2i.XY {
+func (self Instance) Size() Vector2i.XY { //gd:PlaceholderTextureLayered.size
 	return Vector2i.XY(class(self).GetSize())
 }
 
 // SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2i.XY) Instance {
+func (self Instance) SetSize(value Vector2i.XY) Instance { //gd:PlaceholderTextureLayered.size
 	class(self).SetSize(Vector2i.XY(value))
 	return self
 }
@@ -185,7 +185,7 @@ func (self Instance) SetSize(value Vector2i.XY) Instance {
 The number of layers in the texture array.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetLayers(value int) Instance {
+func (self Instance) SetLayers(value int) Instance { //gd:PlaceholderTextureLayered.layers
 	class(self).SetLayers(int64(value))
 	return self
 }

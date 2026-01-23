@@ -164,12 +164,12 @@ func New() Instance {
 /*
 The duration of the pulse in nanoseconds. Use -1 for a minimum duration pulse for the current XR runtime.
 */
-func (self Instance) Duration() int {
+func (self Instance) Duration() int { //gd:OpenXRHapticVibration.duration
 	return int(int(class(self).GetDuration()))
 }
 
 // SetDuration sets the property returned by [GetDuration]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDuration(value int) Instance {
+func (self Instance) SetDuration(value int) Instance { //gd:OpenXRHapticVibration.duration
 	class(self).SetDuration(int64(value))
 	return self
 }
@@ -177,12 +177,12 @@ func (self Instance) SetDuration(value int) Instance {
 /*
 The frequency of the pulse in Hz. 0.0 will let the XR runtime chose an optimal frequency for the device used.
 */
-func (self Instance) Frequency() Float.X {
+func (self Instance) Frequency() Float.X { //gd:OpenXRHapticVibration.frequency
 	return Float.X(Float.X(class(self).GetFrequency()))
 }
 
 // SetFrequency sets the property returned by [GetFrequency]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetFrequency(value Float.X) Instance {
+func (self Instance) SetFrequency(value Float.X) Instance { //gd:OpenXRHapticVibration.frequency
 	class(self).SetFrequency(float64(value))
 	return self
 }
@@ -190,12 +190,12 @@ func (self Instance) SetFrequency(value Float.X) Instance {
 /*
 The amplitude of the pulse between 0.0 and 1.0.
 */
-func (self Instance) Amplitude() Float.X {
+func (self Instance) Amplitude() Float.X { //gd:OpenXRHapticVibration.amplitude
 	return Float.X(Float.X(class(self).GetAmplitude()))
 }
 
 // SetAmplitude sets the property returned by [GetAmplitude]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAmplitude(value Float.X) Instance {
+func (self Instance) SetAmplitude(value Float.X) Instance { //gd:OpenXRHapticVibration.amplitude
 	class(self).SetAmplitude(float64(value))
 	return self
 }

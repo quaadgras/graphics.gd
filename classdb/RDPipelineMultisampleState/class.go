@@ -174,12 +174,12 @@ The number of MSAA samples (or SSAA samples if [EnableSampleShading] is true) to
 
 [EnableSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.EnableSampleShading
 */
-func (self Instance) SampleCount() Rendering.TextureSamples {
+func (self Instance) SampleCount() Rendering.TextureSamples { //gd:RDPipelineMultisampleState.sample_count
 	return Rendering.TextureSamples(class(self).GetSampleCount())
 }
 
 // SetSampleCount sets the property returned by [GetSampleCount]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSampleCount(value Rendering.TextureSamples) Instance {
+func (self Instance) SetSampleCount(value Rendering.TextureSamples) Instance { //gd:RDPipelineMultisampleState.sample_count
 	class(self).SetSampleCount(value)
 	return self
 }
@@ -190,12 +190,12 @@ If true, enables per-sample shading which replaces MSAA by SSAA. This provides h
 [MinSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.MinSampleShading
 [per-sample shading Vulkan documentation]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#primsrast-sampleshading
 */
-func (self Instance) EnableSampleShading() bool {
+func (self Instance) EnableSampleShading() bool { //gd:RDPipelineMultisampleState.enable_sample_shading
 	return bool(class(self).GetEnableSampleShading())
 }
 
 // SetEnableSampleShading sets the property returned by [GetEnableSampleShading]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableSampleShading(value bool) Instance {
+func (self Instance) SetEnableSampleShading(value bool) Instance { //gd:RDPipelineMultisampleState.enable_sample_shading
 	class(self).SetEnableSampleShading(value)
 	return self
 }
@@ -207,12 +207,12 @@ The multiplier of [SampleCount] that determines how many samples are performed f
 [MinSampleShading]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.MinSampleShading
 [SampleCount]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.SampleCount
 */
-func (self Instance) MinSampleShading() Float.X {
+func (self Instance) MinSampleShading() Float.X { //gd:RDPipelineMultisampleState.min_sample_shading
 	return Float.X(Float.X(class(self).GetMinSampleShading()))
 }
 
 // SetMinSampleShading sets the property returned by [GetMinSampleShading]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinSampleShading(value Float.X) Instance {
+func (self Instance) SetMinSampleShading(value Float.X) Instance { //gd:RDPipelineMultisampleState.min_sample_shading
 	class(self).SetMinSampleShading(float64(value))
 	return self
 }
@@ -220,12 +220,12 @@ func (self Instance) SetMinSampleShading(value Float.X) Instance {
 /*
 If true, alpha to coverage is enabled. This generates a temporary coverage value based on the alpha component of the fragment's first color output. This allows alpha transparency to make use of multisample antialiasing.
 */
-func (self Instance) EnableAlphaToCoverage() bool {
+func (self Instance) EnableAlphaToCoverage() bool { //gd:RDPipelineMultisampleState.enable_alpha_to_coverage
 	return bool(class(self).GetEnableAlphaToCoverage())
 }
 
 // SetEnableAlphaToCoverage sets the property returned by [GetEnableAlphaToCoverage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableAlphaToCoverage(value bool) Instance {
+func (self Instance) SetEnableAlphaToCoverage(value bool) Instance { //gd:RDPipelineMultisampleState.enable_alpha_to_coverage
 	class(self).SetEnableAlphaToCoverage(value)
 	return self
 }
@@ -235,12 +235,12 @@ If true, alpha is forced to either 0.0 or 1.0. This allows hardening the edges o
 
 [EnableAlphaToCoverage]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineMultisampleState#Instance.EnableAlphaToCoverage
 */
-func (self Instance) EnableAlphaToOne() bool {
+func (self Instance) EnableAlphaToOne() bool { //gd:RDPipelineMultisampleState.enable_alpha_to_one
 	return bool(class(self).GetEnableAlphaToOne())
 }
 
 // SetEnableAlphaToOne sets the property returned by [GetEnableAlphaToOne]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEnableAlphaToOne(value bool) Instance {
+func (self Instance) SetEnableAlphaToOne(value bool) Instance { //gd:RDPipelineMultisampleState.enable_alpha_to_one
 	class(self).SetEnableAlphaToOne(value)
 	return self
 }
@@ -250,12 +250,12 @@ The sample mask array. See the [sample mask Vulkan documentation] for more detai
 
 [sample mask Vulkan documentation]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#fragops-samplemask
 */
-func (self Instance) SampleMasks() []int {
+func (self Instance) SampleMasks() []int { //gd:RDPipelineMultisampleState.sample_masks
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetSampleMasks())))
 }
 
 // SetSampleMasks sets the property returned by [GetSampleMasks]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSampleMasks(value []int) Instance {
+func (self Instance) SetSampleMasks(value []int) Instance { //gd:RDPipelineMultisampleState.sample_masks
 	class(self).SetSampleMasks(gd.ArrayFromSlice[Array.Contains[int64]](value))
 	return self
 }

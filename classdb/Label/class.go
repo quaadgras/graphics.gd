@@ -274,12 +274,12 @@ func New() Instance {
 /*
 The text to display on screen.
 */
-func (self Instance) Text() string {
+func (self Instance) Text() string { //gd:Label.text
 	return string(class(self).GetText().String())
 }
 
 // SetText sets the property returned by [GetText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetText(value string) Instance {
+func (self Instance) SetText(value string) Instance { //gd:Label.text
 	class(self).SetText(String.New(value))
 	return self
 }
@@ -290,12 +290,12 @@ A [LabelSettings] resource that can be shared between multiple [Label] nodes. Ta
 [Label]: https://pkg.go.dev/graphics.gd/classdb/Label
 [LabelSettings]: https://pkg.go.dev/graphics.gd/classdb/LabelSettings
 */
-func (self Instance) LabelSettings() LabelSettings.Instance {
+func (self Instance) LabelSettings() LabelSettings.Instance { //gd:Label.label_settings
 	return LabelSettings.Instance(class(self).GetLabelSettings())
 }
 
 // SetLabelSettings sets the property returned by [GetLabelSettings]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLabelSettings(value LabelSettings.Instance) Instance {
+func (self Instance) SetLabelSettings(value LabelSettings.Instance) Instance { //gd:Label.label_settings
 	class(self).SetLabelSettings(value)
 	return self
 }
@@ -303,12 +303,12 @@ func (self Instance) SetLabelSettings(value LabelSettings.Instance) Instance {
 /*
 Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
 */
-func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment { //gd:Label.horizontal_alignment
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
 // SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Instance { //gd:Label.horizontal_alignment
 	class(self).SetHorizontalAlignment(value)
 	return self
 }
@@ -316,12 +316,12 @@ func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) Insta
 /*
 Controls the text's vertical alignment. Supports top, center, bottom, and fill.
 */
-func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment { //gd:Label.vertical_alignment
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
 // SetVerticalAlignment sets the property returned by [GetVerticalAlignment]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance { //gd:Label.vertical_alignment
 	class(self).SetVerticalAlignment(value)
 	return self
 }
@@ -329,12 +329,12 @@ func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance 
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
 */
-func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:Label.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 // SetAutowrapMode sets the property returned by [GetAutowrapMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance { //gd:Label.autowrap_mode
 	class(self).SetAutowrapMode(value)
 	return self
 }
@@ -342,12 +342,12 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) Instance {
 /*
 Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
 */
-func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Label.autowrap_trim_flags
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
 // SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance {
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instance { //gd:Label.autowrap_trim_flags
 	class(self).SetAutowrapTrimFlags(value)
 	return self
 }
@@ -355,12 +355,12 @@ func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) Instan
 /*
 Line fill alignment rules.
 */
-func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+func (self Instance) JustificationFlags() TextServer.JustificationFlag { //gd:Label.justification_flags
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
 // SetJustificationFlags sets the property returned by [GetJustificationFlags]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) Instance { //gd:Label.justification_flags
 	class(self).SetJustificationFlags(value)
 	return self
 }
@@ -368,12 +368,12 @@ func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) I
 /*
 String used as a paragraph separator. Each paragraph is processed independently, in its own BiDi context.
 */
-func (self Instance) ParagraphSeparator() string {
+func (self Instance) ParagraphSeparator() string { //gd:Label.paragraph_separator
 	return string(class(self).GetParagraphSeparator().String())
 }
 
 // SetParagraphSeparator sets the property returned by [GetParagraphSeparator]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetParagraphSeparator(value string) Instance {
+func (self Instance) SetParagraphSeparator(value string) Instance { //gd:Label.paragraph_separator
 	class(self).SetParagraphSeparator(String.New(value))
 	return self
 }
@@ -381,12 +381,12 @@ func (self Instance) SetParagraphSeparator(value string) Instance {
 /*
 If true, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
 */
-func (self Instance) ClipText() bool {
+func (self Instance) ClipText() bool { //gd:Label.clip_text
 	return bool(class(self).IsClippingText())
 }
 
 // SetClipText sets the property returned by [IsClippingText]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipText(value bool) Instance {
+func (self Instance) SetClipText(value bool) Instance { //gd:Label.clip_text
 	class(self).SetClipText(value)
 	return self
 }
@@ -394,12 +394,12 @@ func (self Instance) SetClipText(value bool) Instance {
 /*
 The clipping behavior when the text exceeds the node's bounding rectangle.
 */
-func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior { //gd:Label.text_overrun_behavior
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
 // SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) Instance { //gd:Label.text_overrun_behavior
 	class(self).SetTextOverrunBehavior(value)
 	return self
 }
@@ -407,12 +407,12 @@ func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) In
 /*
 Ellipsis character used for text clipping.
 */
-func (self Instance) EllipsisChar() string {
+func (self Instance) EllipsisChar() string { //gd:Label.ellipsis_char
 	return string(class(self).GetEllipsisChar().String())
 }
 
 // SetEllipsisChar sets the property returned by [GetEllipsisChar]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetEllipsisChar(value string) Instance {
+func (self Instance) SetEllipsisChar(value string) Instance { //gd:Label.ellipsis_char
 	class(self).SetEllipsisChar(String.New(value))
 	return self
 }
@@ -420,12 +420,12 @@ func (self Instance) SetEllipsisChar(value string) Instance {
 /*
 If true, all the text displays as UPPERCASE.
 */
-func (self Instance) Uppercase() bool {
+func (self Instance) Uppercase() bool { //gd:Label.uppercase
 	return bool(class(self).IsUppercase())
 }
 
 // SetUppercase sets the property returned by [IsUppercase]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetUppercase(value bool) Instance {
+func (self Instance) SetUppercase(value bool) Instance { //gd:Label.uppercase
 	class(self).SetUppercase(value)
 	return self
 }
@@ -433,12 +433,12 @@ func (self Instance) SetUppercase(value bool) Instance {
 /*
 Aligns text to the given tab-stops.
 */
-func (self Instance) TabStops() []float32 {
+func (self Instance) TabStops() []float32 { //gd:Label.tab_stops
 	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
 // SetTabStops sets the property returned by [GetTabStops]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTabStops(value []float32) Instance {
+func (self Instance) SetTabStops(value []float32) Instance { //gd:Label.tab_stops
 	class(self).SetTabStops(Packed.New(value...))
 	return self
 }
@@ -448,12 +448,12 @@ The number of the lines ignored and not displayed from the start of the [Text] v
 
 [Text]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.Text
 */
-func (self Instance) LinesSkipped() int {
+func (self Instance) LinesSkipped() int { //gd:Label.lines_skipped
 	return int(int(class(self).GetLinesSkipped()))
 }
 
 // SetLinesSkipped sets the property returned by [GetLinesSkipped]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLinesSkipped(value int) Instance {
+func (self Instance) SetLinesSkipped(value int) Instance { //gd:Label.lines_skipped
 	class(self).SetLinesSkipped(int64(value))
 	return self
 }
@@ -461,12 +461,12 @@ func (self Instance) SetLinesSkipped(value int) Instance {
 /*
 Limits the lines of text the node shows on screen.
 */
-func (self Instance) MaxLinesVisible() int {
+func (self Instance) MaxLinesVisible() int { //gd:Label.max_lines_visible
 	return int(int(class(self).GetMaxLinesVisible()))
 }
 
 // SetMaxLinesVisible sets the property returned by [GetMaxLinesVisible]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxLinesVisible(value int) Instance {
+func (self Instance) SetMaxLinesVisible(value int) Instance { //gd:Label.max_lines_visible
 	class(self).SetMaxLinesVisible(int64(value))
 	return self
 }
@@ -480,12 +480,12 @@ Note: Characters are counted as Unicode codepoints. A single visible grapheme ma
 
 [VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleRatio
 */
-func (self Instance) VisibleCharacters() int {
+func (self Instance) VisibleCharacters() int { //gd:Label.visible_characters
 	return int(int(class(self).GetVisibleCharacters()))
 }
 
 // SetVisibleCharacters sets the property returned by [GetVisibleCharacters]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleCharacters(value int) Instance {
+func (self Instance) SetVisibleCharacters(value int) Instance { //gd:Label.visible_characters
 	class(self).SetVisibleCharacters(int64(value))
 	return self
 }
@@ -496,12 +496,12 @@ The clipping behavior when [VisibleCharacters] or [VisibleRatio] is set.
 [VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleCharacters
 [VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleRatio
 */
-func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior {
+func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:Label.visible_characters_behavior
 	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
 // SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) Instance {
+func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) Instance { //gd:Label.visible_characters_behavior
 	class(self).SetVisibleCharactersBehavior(value)
 	return self
 }
@@ -514,12 +514,12 @@ Note: Setting this property updates [VisibleCharacters] accordingly.
 [GetTotalCharacterCount]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.GetTotalCharacterCount
 [VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleCharacters
 */
-func (self Instance) VisibleRatio() Float.X {
+func (self Instance) VisibleRatio() Float.X { //gd:Label.visible_ratio
 	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
 // SetVisibleRatio sets the property returned by [GetVisibleRatio]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetVisibleRatio(value Float.X) Instance {
+func (self Instance) SetVisibleRatio(value Float.X) Instance { //gd:Label.visible_ratio
 	class(self).SetVisibleRatio(float64(value))
 	return self
 }
@@ -527,12 +527,12 @@ func (self Instance) SetVisibleRatio(value Float.X) Instance {
 /*
 Base text writing direction.
 */
-func (self Instance) TextDirection() Control.TextDirection {
+func (self Instance) TextDirection() Control.TextDirection { //gd:Label.text_direction
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
 // SetTextDirection sets the property returned by [GetTextDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
+func (self Instance) SetTextDirection(value Control.TextDirection) Instance { //gd:Label.text_direction
 	class(self).SetTextDirection(value)
 	return self
 }
@@ -540,12 +540,12 @@ func (self Instance) SetTextDirection(value Control.TextDirection) Instance {
 /*
 Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
-func (self Instance) Language() string {
+func (self Instance) Language() string { //gd:Label.language
 	return string(class(self).GetLanguage().String())
 }
 
 // SetLanguage sets the property returned by [GetLanguage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLanguage(value string) Instance {
+func (self Instance) SetLanguage(value string) Instance { //gd:Label.language
 	class(self).SetLanguage(String.New(value))
 	return self
 }
@@ -553,12 +553,12 @@ func (self Instance) SetLanguage(value string) Instance {
 /*
 Set BiDi algorithm override for the structured text.
 */
-func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:Label.structured_text_bidi_override
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
 // SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) Instance { //gd:Label.structured_text_bidi_override
 	class(self).SetStructuredTextBidiOverride(value)
 	return self
 }
@@ -566,12 +566,12 @@ func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTe
 /*
 Set additional options for BiDi override.
 */
-func (self Instance) StructuredTextBidiOverrideOptions() []any {
+func (self Instance) StructuredTextBidiOverrideOptions() []any { //gd:Label.structured_text_bidi_override_options
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
 // SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance {
+func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) Instance { //gd:Label.structured_text_bidi_override_options
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 	return self
 }

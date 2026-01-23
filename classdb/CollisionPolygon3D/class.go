@@ -178,12 +178,12 @@ func New() Instance {
 /*
 Length that the resulting collision extends in either direction perpendicular to its 2D polygon.
 */
-func (self Instance) Depth() Float.X {
+func (self Instance) Depth() Float.X { //gd:CollisionPolygon3D.depth
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
 // SetDepth sets the property returned by [GetDepth]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDepth(value Float.X) Instance {
+func (self Instance) SetDepth(value Float.X) Instance { //gd:CollisionPolygon3D.depth
 	class(self).SetDepth(float64(value))
 	return self
 }
@@ -193,12 +193,12 @@ If true, no collision will be produced. This property should be changed with [Ob
 
 [Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
 */
-func (self Instance) Disabled() bool {
+func (self Instance) Disabled() bool { //gd:CollisionPolygon3D.disabled
 	return bool(class(self).IsDisabled())
 }
 
 // SetDisabled sets the property returned by [IsDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisabled(value bool) Instance {
+func (self Instance) SetDisabled(value bool) Instance { //gd:CollisionPolygon3D.disabled
 	class(self).SetDisabled(value)
 	return self
 }
@@ -206,12 +206,12 @@ func (self Instance) SetDisabled(value bool) Instance {
 /*
 Array of vertices which define the 2D polygon in the local XY plane.
 */
-func (self Instance) Polygon() []Vector2.XY {
+func (self Instance) Polygon() []Vector2.XY { //gd:CollisionPolygon3D.polygon
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
 // SetPolygon sets the property returned by [GetPolygon]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPolygon(value []Vector2.XY) Instance {
+func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:CollisionPolygon3D.polygon
 	class(self).SetPolygon(Packed.New(value...))
 	return self
 }
@@ -222,12 +222,12 @@ The collision margin for the generated [Shape3D]. See [Shape3D.Margin] for more 
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 [Shape3D.Margin]: https://pkg.go.dev/graphics.gd/classdb/Shape3D#Instance.Margin
 */
-func (self Instance) Margin() Float.X {
+func (self Instance) Margin() Float.X { //gd:CollisionPolygon3D.margin
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
 // SetMargin sets the property returned by [GetMargin]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMargin(value Float.X) Instance {
+func (self Instance) SetMargin(value Float.X) Instance { //gd:CollisionPolygon3D.margin
 	class(self).SetMargin(float64(value))
 	return self
 }
@@ -239,12 +239,12 @@ Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
-func (self Instance) DebugColor() Color.RGBA {
+func (self Instance) DebugColor() Color.RGBA { //gd:CollisionPolygon3D.debug_color
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
 // SetDebugColor sets the property returned by [GetDebugColor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugColor(value Color.RGBA) Instance {
+func (self Instance) SetDebugColor(value Color.RGBA) Instance { //gd:CollisionPolygon3D.debug_color
 	class(self).SetDebugColor(Color.RGBA(value))
 	return self
 }
@@ -252,12 +252,12 @@ func (self Instance) SetDebugColor(value Color.RGBA) Instance {
 /*
 If true, when the shape is displayed, it will show a solid fill color in addition to its wireframe.
 */
-func (self Instance) DebugFill() bool {
+func (self Instance) DebugFill() bool { //gd:CollisionPolygon3D.debug_fill
 	return bool(class(self).GetEnableDebugFill())
 }
 
 // SetDebugFill sets the property returned by [GetEnableDebugFill]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDebugFill(value bool) Instance {
+func (self Instance) SetDebugFill(value bool) Instance { //gd:CollisionPolygon3D.debug_fill
 	class(self).SetEnableDebugFill(value)
 	return self
 }

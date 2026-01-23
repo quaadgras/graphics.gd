@@ -627,12 +627,12 @@ func New() Instance {
 /*
 Sets a hint to be used for lightmap resolution.
 */
-func (self Instance) LightmapSizeHint() Vector2i.XY {
+func (self Instance) LightmapSizeHint() Vector2i.XY { //gd:Mesh.lightmap_size_hint
 	return Vector2i.XY(class(self).GetLightmapSizeHint())
 }
 
 // SetLightmapSizeHint sets the property returned by [GetLightmapSizeHint]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLightmapSizeHint(value Vector2i.XY) Instance {
+func (self Instance) SetLightmapSizeHint(value Vector2i.XY) Instance { //gd:Mesh.lightmap_size_hint
 	class(self).SetLightmapSizeHint(Vector2i.XY(value))
 	return self
 }

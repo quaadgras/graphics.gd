@@ -184,12 +184,12 @@ func New() Instance {
 /*
 Maximum concavity. Ranges from 0.0 to 1.0.
 */
-func (self Instance) MaxConcavity() Float.X {
+func (self Instance) MaxConcavity() Float.X { //gd:MeshConvexDecompositionSettings.max_concavity
 	return Float.X(Float.X(class(self).GetMaxConcavity()))
 }
 
 // SetMaxConcavity sets the property returned by [GetMaxConcavity]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxConcavity(value Float.X) Instance {
+func (self Instance) SetMaxConcavity(value Float.X) Instance { //gd:MeshConvexDecompositionSettings.max_concavity
 	class(self).SetMaxConcavity(float64(value))
 	return self
 }
@@ -197,12 +197,12 @@ func (self Instance) SetMaxConcavity(value Float.X) Instance {
 /*
 Controls the bias toward clipping along symmetry planes. Ranges from 0.0 to 1.0.
 */
-func (self Instance) SymmetryPlanesClippingBias() Float.X {
+func (self Instance) SymmetryPlanesClippingBias() Float.X { //gd:MeshConvexDecompositionSettings.symmetry_planes_clipping_bias
 	return Float.X(Float.X(class(self).GetSymmetryPlanesClippingBias()))
 }
 
 // SetSymmetryPlanesClippingBias sets the property returned by [GetSymmetryPlanesClippingBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) Instance {
+func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) Instance { //gd:MeshConvexDecompositionSettings.symmetry_planes_clipping_bias
 	class(self).SetSymmetryPlanesClippingBias(float64(value))
 	return self
 }
@@ -210,12 +210,12 @@ func (self Instance) SetSymmetryPlanesClippingBias(value Float.X) Instance {
 /*
 Controls the bias toward clipping along revolution axes. Ranges from 0.0 to 1.0.
 */
-func (self Instance) RevolutionAxesClippingBias() Float.X {
+func (self Instance) RevolutionAxesClippingBias() Float.X { //gd:MeshConvexDecompositionSettings.revolution_axes_clipping_bias
 	return Float.X(Float.X(class(self).GetRevolutionAxesClippingBias()))
 }
 
 // SetRevolutionAxesClippingBias sets the property returned by [GetRevolutionAxesClippingBias]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetRevolutionAxesClippingBias(value Float.X) Instance {
+func (self Instance) SetRevolutionAxesClippingBias(value Float.X) Instance { //gd:MeshConvexDecompositionSettings.revolution_axes_clipping_bias
 	class(self).SetRevolutionAxesClippingBias(float64(value))
 	return self
 }
@@ -223,12 +223,12 @@ func (self Instance) SetRevolutionAxesClippingBias(value Float.X) Instance {
 /*
 Controls the adaptive sampling of the generated convex-hulls. Ranges from 0.0 to 0.01.
 */
-func (self Instance) MinVolumePerConvexHull() Float.X {
+func (self Instance) MinVolumePerConvexHull() Float.X { //gd:MeshConvexDecompositionSettings.min_volume_per_convex_hull
 	return Float.X(Float.X(class(self).GetMinVolumePerConvexHull()))
 }
 
 // SetMinVolumePerConvexHull sets the property returned by [GetMinVolumePerConvexHull]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMinVolumePerConvexHull(value Float.X) Instance {
+func (self Instance) SetMinVolumePerConvexHull(value Float.X) Instance { //gd:MeshConvexDecompositionSettings.min_volume_per_convex_hull
 	class(self).SetMinVolumePerConvexHull(float64(value))
 	return self
 }
@@ -236,12 +236,12 @@ func (self Instance) SetMinVolumePerConvexHull(value Float.X) Instance {
 /*
 Maximum number of voxels generated during the voxelization stage.
 */
-func (self Instance) Resolution() int {
+func (self Instance) Resolution() int { //gd:MeshConvexDecompositionSettings.resolution
 	return int(int(class(self).GetResolution()))
 }
 
 // SetResolution sets the property returned by [GetResolution]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetResolution(value int) Instance {
+func (self Instance) SetResolution(value int) Instance { //gd:MeshConvexDecompositionSettings.resolution
 	class(self).SetResolution(int64(value))
 	return self
 }
@@ -249,12 +249,12 @@ func (self Instance) SetResolution(value int) Instance {
 /*
 Controls the maximum number of triangles per convex-hull. Ranges from 4 to 1024.
 */
-func (self Instance) MaxNumVerticesPerConvexHull() int {
+func (self Instance) MaxNumVerticesPerConvexHull() int { //gd:MeshConvexDecompositionSettings.max_num_vertices_per_convex_hull
 	return int(int(class(self).GetMaxNumVerticesPerConvexHull()))
 }
 
 // SetMaxNumVerticesPerConvexHull sets the property returned by [GetMaxNumVerticesPerConvexHull]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxNumVerticesPerConvexHull(value int) Instance {
+func (self Instance) SetMaxNumVerticesPerConvexHull(value int) Instance { //gd:MeshConvexDecompositionSettings.max_num_vertices_per_convex_hull
 	class(self).SetMaxNumVerticesPerConvexHull(int64(value))
 	return self
 }
@@ -262,12 +262,12 @@ func (self Instance) SetMaxNumVerticesPerConvexHull(value int) Instance {
 /*
 Controls the granularity of the search for the "best" clipping plane. Ranges from 1 to 16.
 */
-func (self Instance) PlaneDownsampling() int {
+func (self Instance) PlaneDownsampling() int { //gd:MeshConvexDecompositionSettings.plane_downsampling
 	return int(int(class(self).GetPlaneDownsampling()))
 }
 
 // SetPlaneDownsampling sets the property returned by [GetPlaneDownsampling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPlaneDownsampling(value int) Instance {
+func (self Instance) SetPlaneDownsampling(value int) Instance { //gd:MeshConvexDecompositionSettings.plane_downsampling
 	class(self).SetPlaneDownsampling(int64(value))
 	return self
 }
@@ -275,12 +275,12 @@ func (self Instance) SetPlaneDownsampling(value int) Instance {
 /*
 Controls the precision of the convex-hull generation process during the clipping plane selection stage. Ranges from 1 to 16.
 */
-func (self Instance) ConvexHullDownsampling() int {
+func (self Instance) ConvexHullDownsampling() int { //gd:MeshConvexDecompositionSettings.convex_hull_downsampling
 	return int(int(class(self).GetConvexHullDownsampling()))
 }
 
 // SetConvexHullDownsampling sets the property returned by [GetConvexHullDownsampling]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConvexHullDownsampling(value int) Instance {
+func (self Instance) SetConvexHullDownsampling(value int) Instance { //gd:MeshConvexDecompositionSettings.convex_hull_downsampling
 	class(self).SetConvexHullDownsampling(int64(value))
 	return self
 }
@@ -288,12 +288,12 @@ func (self Instance) SetConvexHullDownsampling(value int) Instance {
 /*
 If true, normalizes the mesh before applying the convex decomposition.
 */
-func (self Instance) NormalizeMesh() bool {
+func (self Instance) NormalizeMesh() bool { //gd:MeshConvexDecompositionSettings.normalize_mesh
 	return bool(class(self).GetNormalizeMesh())
 }
 
 // SetNormalizeMesh sets the property returned by [GetNormalizeMesh]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetNormalizeMesh(value bool) Instance {
+func (self Instance) SetNormalizeMesh(value bool) Instance { //gd:MeshConvexDecompositionSettings.normalize_mesh
 	class(self).SetNormalizeMesh(value)
 	return self
 }
@@ -301,12 +301,12 @@ func (self Instance) SetNormalizeMesh(value bool) Instance {
 /*
 Mode for the approximate convex decomposition.
 */
-func (self Instance) Mode() Mode {
+func (self Instance) Mode() Mode { //gd:MeshConvexDecompositionSettings.mode
 	return Mode(class(self).GetMode())
 }
 
 // SetMode sets the property returned by [GetMode]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMode(value Mode) Instance {
+func (self Instance) SetMode(value Mode) Instance { //gd:MeshConvexDecompositionSettings.mode
 	class(self).SetMode(value)
 	return self
 }
@@ -314,12 +314,12 @@ func (self Instance) SetMode(value Mode) Instance {
 /*
 If true, uses approximation for computing convex hulls.
 */
-func (self Instance) ConvexHullApproximation() bool {
+func (self Instance) ConvexHullApproximation() bool { //gd:MeshConvexDecompositionSettings.convex_hull_approximation
 	return bool(class(self).GetConvexHullApproximation())
 }
 
 // SetConvexHullApproximation sets the property returned by [GetConvexHullApproximation]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetConvexHullApproximation(value bool) Instance {
+func (self Instance) SetConvexHullApproximation(value bool) Instance { //gd:MeshConvexDecompositionSettings.convex_hull_approximation
 	class(self).SetConvexHullApproximation(value)
 	return self
 }
@@ -327,12 +327,12 @@ func (self Instance) SetConvexHullApproximation(value bool) Instance {
 /*
 The maximum number of convex hulls to produce from the merge operation.
 */
-func (self Instance) MaxConvexHulls() int {
+func (self Instance) MaxConvexHulls() int { //gd:MeshConvexDecompositionSettings.max_convex_hulls
 	return int(int(class(self).GetMaxConvexHulls()))
 }
 
 // SetMaxConvexHulls sets the property returned by [GetMaxConvexHulls]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetMaxConvexHulls(value int) Instance {
+func (self Instance) SetMaxConvexHulls(value int) Instance { //gd:MeshConvexDecompositionSettings.max_convex_hulls
 	class(self).SetMaxConvexHulls(int64(value))
 	return self
 }
@@ -340,12 +340,12 @@ func (self Instance) SetMaxConvexHulls(value int) Instance {
 /*
 If true, projects output convex hull vertices onto the original source mesh to increase floating-point accuracy of the results.
 */
-func (self Instance) ProjectHullVertices() bool {
+func (self Instance) ProjectHullVertices() bool { //gd:MeshConvexDecompositionSettings.project_hull_vertices
 	return bool(class(self).GetProjectHullVertices())
 }
 
 // SetProjectHullVertices sets the property returned by [GetProjectHullVertices]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetProjectHullVertices(value bool) Instance {
+func (self Instance) SetProjectHullVertices(value bool) Instance { //gd:MeshConvexDecompositionSettings.project_hull_vertices
 	class(self).SetProjectHullVertices(value)
 	return self
 }

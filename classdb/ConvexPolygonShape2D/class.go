@@ -192,12 +192,12 @@ Warning: Only set this property to a list of points that actually form a convex 
 
 [SetPointCloud]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape2D#Instance.SetPointCloud
 */
-func (self Instance) Points() []Vector2.XY {
+func (self Instance) Points() []Vector2.XY { //gd:ConvexPolygonShape2D.points
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
 // SetPoints sets the property returned by [GetPoints]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPoints(value []Vector2.XY) Instance {
+func (self Instance) SetPoints(value []Vector2.XY) Instance { //gd:ConvexPolygonShape2D.points
 	class(self).SetPoints(Packed.New(value...))
 	return self
 }

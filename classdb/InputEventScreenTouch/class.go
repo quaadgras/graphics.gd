@@ -170,12 +170,12 @@ func New() Instance {
 /*
 The touch index in the case of a multi-touch event. One index = one finger.
 */
-func (self Instance) Index() int {
+func (self Instance) Index() int { //gd:InputEventScreenTouch.index
 	return int(int(class(self).GetIndex()))
 }
 
 // SetIndex sets the property returned by [GetIndex]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetIndex(value int) Instance {
+func (self Instance) SetIndex(value int) Instance { //gd:InputEventScreenTouch.index
 	class(self).SetIndex(int64(value))
 	return self
 }
@@ -183,12 +183,12 @@ func (self Instance) SetIndex(value int) Instance {
 /*
 The touch position in the viewport the node is in, using the coordinate system of this viewport.
 */
-func (self Instance) Position() Vector2.XY {
+func (self Instance) Position() Vector2.XY { //gd:InputEventScreenTouch.position
 	return Vector2.XY(class(self).GetPosition())
 }
 
 // SetPosition sets the property returned by [GetPosition]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPosition(value Vector2.XY) Instance {
+func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:InputEventScreenTouch.position
 	class(self).SetPosition(Vector2.XY(value))
 	return self
 }
@@ -197,7 +197,7 @@ func (self Instance) SetPosition(value Vector2.XY) Instance {
 If true, the touch event has been canceled.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetCanceled(value bool) Instance {
+func (self Instance) SetCanceled(value bool) Instance { //gd:InputEventScreenTouch.canceled
 	class(self).SetCanceled(value)
 	return self
 }
@@ -206,7 +206,7 @@ func (self Instance) SetCanceled(value bool) Instance {
 If true, the touch's state is pressed. If false, the touch's state is released.
 Returns the instance, so that property settings can be chained.
 */
-func (self Instance) SetPressed(value bool) Instance {
+func (self Instance) SetPressed(value bool) Instance { //gd:InputEventScreenTouch.pressed
 	class(self).SetPressed(value)
 	return self
 }
@@ -214,12 +214,12 @@ func (self Instance) SetPressed(value bool) Instance {
 /*
 If true, the touch's state is a double tap.
 */
-func (self Instance) DoubleTap() bool {
+func (self Instance) DoubleTap() bool { //gd:InputEventScreenTouch.double_tap
 	return bool(class(self).IsDoubleTap())
 }
 
 // SetDoubleTap sets the property returned by [IsDoubleTap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDoubleTap(value bool) Instance {
+func (self Instance) SetDoubleTap(value bool) Instance { //gd:InputEventScreenTouch.double_tap
 	class(self).SetDoubleTap(value)
 	return self
 }
