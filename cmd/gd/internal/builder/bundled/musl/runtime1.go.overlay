@@ -114,23 +114,49 @@ func goargs() {
 var procSelfCmdline = []byte("/proc/self/cmdline\x00")
 
 func goenvs_unix() {
-	// TODO(austin): ppc64 in dynamic linking mode doesn't
-	// guarantee env[] will immediately follow argv. Might cause
-	// problems.
-	n := int32(0)
-	for argv_index(argv, argc+1+n) != nil {
-		n++
+	// Read environment from /proc/self/environ for musl and other compatibility.
+	fd := open(&procSelfEnviron[0], _O_RDONLY, 0)
+	if fd < 0 {
+		envs = nil
+		return
 	}
 
-	envs = make([]string, n)
+	// Read the environ file - environment entries are null-separated
+	var buf [4096]byte
+	n := read(fd, noescape(unsafe.Pointer(&buf[0])), int32(len(buf)))
+	closefd(fd)
+
+	if n <= 0 {
+		envs = nil
+		return
+	}
+
+	// Count environment variables (number of null terminators)
+	count := int32(0)
 	for i := int32(0); i < n; i++ {
-		envs[i] = gostring(argv_index(argv, argc+1+i))
+		if buf[i] == 0 {
+			count++
+		}
+	}
+
+	// Build environment slice
+	envs = make([]string, count)
+	idx := 0
+	start := int32(0)
+	for i := int32(0); i < n; i++ {
+		if buf[i] == 0 {
+			envs[idx] = string(buf[start:i])
+			idx++
+			start = i + 1
+		}
 	}
 }
 
 func environ() []string {
 	return envs
 }
+
+var procSelfEnviron = []byte("/proc/self/environ\x00")
 
 // TODO: These should be locals in testAtomic64, but we don't 8-byte
 // align stack variables on 386.

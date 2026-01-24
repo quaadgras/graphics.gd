@@ -143,5 +143,6 @@ var LibGodot = toolchain{
 }
 
 var ListDynamicDependencies = toolchain{
-	Name: "ldd",
+	Name:        "ldd",
+	RequiredFor: "musl detection",
 }

@@ -41,12 +41,6 @@ func MainLoop(loop MainLoopClass.Interface) {
 
 var theMainFunctionIsWaitingForTheEngineToShutDown = false
 
-// Deprecated: Use [Scene] instead.
-func Engine() { Scene() }
-
-// Deprecated: Use [LoadingScene] instead.
-func Loader() { LoadingScene() }
-
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
 	if !loadingSceneWasCalled {

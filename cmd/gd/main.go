@@ -150,6 +150,9 @@ func gd(args ...string) error {
 		if err := os.Chdir(project.GraphicsDirectory); err != nil {
 			return xray.New(err)
 		}
+		if os.Getenv("RUNNING_INSIDE_GODOT") != "" {
+			return nil
+		}
 		return tooling.Godot.Exec("-e")
 	default:
 		switch args[0] {
