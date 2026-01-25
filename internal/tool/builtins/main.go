@@ -162,6 +162,16 @@ func work() error {
 			}
 		}
 	}
+	for _, class := range spec.Classes {
+		if class.Name == "Object" {
+			for _, method := range class.Methods {
+				tag := class.Name + "." + method.Name
+				if _, ok := tags[tag]; !ok {
+					fmt.Println("//gd:" + tag)
+				}
+			}
+		}
+	}
 	for _, utility := range spec.UtilityFunctions {
 		tag := utility.Name
 		if tag == "error_string" {
