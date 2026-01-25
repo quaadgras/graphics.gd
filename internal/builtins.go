@@ -514,6 +514,23 @@ func (o Object) Set(name StringName, value Variant) {
 		pointers.Get(name), gdextension.Variant(pointers.Get(value)),
 	}))
 }
+
+func (o Object) GetMeta(name StringName) Variant {
+	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+		Name gdextension.StringName
+	}{
+		pointers.Get(name),
+	}))))
+}
+func (o Object) SetMeta(name StringName, value Variant) {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_meta, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+		Name  gdextension.StringName
+		Value gdextension.Variant
+	}{
+		pointers.Get(name), gdextension.Variant(pointers.Get(value)),
+	}))
+}
+
 func (o Object) HasMethod(name StringName) bool {
 	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName

@@ -282,3 +282,32 @@ type MethodInfo struct {
 	ReturnValue PropertyInfo   `gd:"return"`
 	Flags       int            `gd:"flags"`
 }
+
+// SetMeta adds or changes the entry name inside the object's metadata. The metadata
+// value can be any Variant, although some types cannot be serialized correctly.
+//
+// If value is null, the entry is removed. This is the equivalent of using
+// [Instance.RemoveMeta]. See also [Instance.HasMeta] and [Instance.GetMeta].
+//
+// Note: A metadata's name must be a valid identifier as per
+// [String.IsValidIdentifier] method.
+//
+// Note: Metadata that has a name starting with an underscore (_) is considered
+// editor-only. Editor-only metadata is not displayed in the Inspector and should
+// not be edited, although it can still be found by this method.
+func (obj Instance) SetMeta(property string, value any) { //gd:Object.set_meta
+	obj.AsObject()[0].SetMeta(gd.NewStringName(property), gd.NewVariant(value))
+}
+
+// Returns the object's metadata value for the given entry name. If the entry does
+// not exist, returns default. If default is null, an error is also generated.
+//
+// Note: A metadata's name must be a valid identifier as per
+// [String.IsValidIdentifier] method.
+//
+// Note: Metadata that has a name starting with an underscore (_) is considered
+// editor-only. Editor-only metadata is not displayed in the Inspector and should
+// not be edited, although it can still be found by this method.
+func (obj Instance) GetMeta(property string) any { //gd:Object.get_meta
+	return obj.AsObject()[0].GetMeta(gd.NewStringName(property)).Interface()
+}
