@@ -152,7 +152,7 @@ memory.
 ## Platform Restrictions
 
 * 64bit only (`arm64`, `amd64` and `wasm`).
-* No support for Playstation/Xbox/Switch yet (achievable in the future with gd-compiler, TamaGo, WASI, wasm2c or hitsumabushi).
+* No support for Playstation/Xbox/Switch yet (achievable in the future with [gd-compiler](https://github.com/quaadgras/gd-compiler), [TamaGo](https://github.com/usbarmory/tamago), [WASI](https://github.com/WebAssembly/WASI), [wasm2c](https://github.com/WebAssembly/wabt/tree/main/wasm2c) or [hitsumabushi](https://github.com/hajimehoshi/hitsumabushi)).
 
 ## Contributing
 
