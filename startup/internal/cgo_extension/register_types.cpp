@@ -85,7 +85,7 @@ void initialize_cgo_extension_module(ModuleInitializationLevel p_level) {
 	Ref<GDExtensionStaticLibraryLoader> loader;
     loader.instantiate();
     loader->set_entry_funcptr(&cgo_extension_init);
-    GDExtensionManager::get_singleton()->load_extension_with_loader("tiny_lobby", loader);
+    GDExtensionManager::get_singleton()->load_extension_with_loader("go", loader);
 }
 
 void uninitialize_cgo_extension_module(ModuleInitializationLevel p_level) {}

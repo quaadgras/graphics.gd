@@ -3,3 +3,5 @@
 Import('env')
 
 env.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
+env.add_source_files(env.modules_sources, "dlopen.c")   # Add all c files to the build
+env.add_source_files(env.modules_sources, "foreign_tramp.S")   # Add all assembly files to the build
