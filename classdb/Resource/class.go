@@ -223,7 +223,7 @@ Example: Set a random damage value to every local resource from an instantiated 
 */
 func (Instance) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -236,7 +236,7 @@ Override this method to return a custom [Resource.ID] when [GetRid] is called.
 */
 func (Instance) _get_rid(impl func(ptr gdclass.Receiver) ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -250,7 +250,7 @@ For resources that store state in non-exported properties, such as via [Object.V
 */
 func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -264,7 +264,7 @@ func (Instance) _set_path_cache(impl func(ptr gdclass.Receiver, path string)) (c
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, path.String())
 	}
 }
@@ -588,20 +588,20 @@ func (self Instance) SetResourceSceneUniqueId(value string) Instance { //gd:Reso
 }
 func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -609,7 +609,7 @@ func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readabl
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, path)
 	}
 }
@@ -755,13 +755,13 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_local_to_scene":
-		return gd.ValueOf(self._setup_local_to_scene)
+		return reflect.ValueOf(self._setup_local_to_scene)
 	case "_get_rid":
-		return gd.ValueOf(self._get_rid)
+		return reflect.ValueOf(self._get_rid)
 	case "_reset_state":
-		return gd.ValueOf(self._reset_state)
+		return reflect.ValueOf(self._reset_state)
 	case "_set_path_cache":
-		return gd.ValueOf(self._set_path_cache)
+		return reflect.ValueOf(self._set_path_cache)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -770,13 +770,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_local_to_scene":
-		return gd.ValueOf(self._setup_local_to_scene)
+		return reflect.ValueOf(self._setup_local_to_scene)
 	case "_get_rid":
-		return gd.ValueOf(self._get_rid)
+		return reflect.ValueOf(self._get_rid)
 	case "_reset_state":
-		return gd.ValueOf(self._reset_state)
+		return reflect.ValueOf(self._reset_state)
 	case "_set_path_cache":
-		return gd.ValueOf(self._set_path_cache)
+		return reflect.ValueOf(self._set_path_cache)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

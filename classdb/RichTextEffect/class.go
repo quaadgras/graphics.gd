@@ -150,7 +150,7 @@ func (Instance) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx CharF
 		var char_fx = [1]gdclass.CharFXTransform{gdclass.NewCharFXTransform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetCharFXTransform(char_fx[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -203,7 +203,7 @@ func (class) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx [1]gdcla
 		var char_fx = [1]gdclass.CharFXTransform{gdclass.NewCharFXTransform(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetCharFXTransform(char_fx[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -234,7 +234,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_custom_fx":
-		return gd.ValueOf(self._process_custom_fx)
+		return reflect.ValueOf(self._process_custom_fx)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -243,7 +243,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_custom_fx":
-		return gd.ValueOf(self._process_custom_fx)
+		return reflect.ValueOf(self._process_custom_fx)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

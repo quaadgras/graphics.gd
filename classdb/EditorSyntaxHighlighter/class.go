@@ -144,7 +144,7 @@ Virtual method which can be overridden to return the syntax highlighter name.
 */
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -160,7 +160,7 @@ Virtual method which can be overridden to return the supported language names.
 */
 func (Instance) _get_supported_languages(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -176,7 +176,7 @@ Virtual method which creates a new instance of the syntax highlighter.
 */
 func (Instance) _create(impl func(ptr gdclass.Receiver) Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetEditorSyntaxHighlighter(ret[0])[0])
 
@@ -231,7 +231,7 @@ func New() Instance {
 }
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -243,7 +243,7 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 }
 func (class) _get_supported_languages(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -255,7 +255,7 @@ func (class) _get_supported_languages(impl func(ptr gdclass.Receiver) Packed.Str
 }
 func (class) _create(impl func(ptr gdclass.Receiver) [1]gdclass.EditorSyntaxHighlighter) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetEditorSyntaxHighlighter(ret[0])[0])
 
@@ -302,11 +302,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_supported_languages":
-		return gd.ValueOf(self._get_supported_languages)
+		return reflect.ValueOf(self._get_supported_languages)
 	case "_create":
-		return gd.ValueOf(self._create)
+		return reflect.ValueOf(self._create)
 	default:
 		return gd.VirtualByName(SyntaxHighlighter.Advanced(self.AsSyntaxHighlighter()), name)
 	}
@@ -315,11 +315,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_supported_languages":
-		return gd.ValueOf(self._get_supported_languages)
+		return reflect.ValueOf(self._get_supported_languages)
 	case "_create":
-		return gd.ValueOf(self._create)
+		return reflect.ValueOf(self._create)
 	default:
 		return gd.VirtualByName(SyntaxHighlighter.Instance(self.AsSyntaxHighlighter()), name)
 	}

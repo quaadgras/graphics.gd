@@ -272,7 +272,7 @@ Override this method to define how the selected entry should be inserted. If 're
 func (Instance) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, replace)
 	}
 }
@@ -283,7 +283,7 @@ Override this method to define what happens when the user requests code completi
 func (Instance) _request_code_completion(impl func(ptr gdclass.Receiver, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, force)
 	}
 }
@@ -299,7 +299,7 @@ func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receive
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gd.ArrayAs[[][]CompletionInfo](gd.InternalArray(candidates)))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -1352,14 +1352,14 @@ func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) Instance { /
 func (class) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, replace)
 	}
 }
 func (class) _request_code_completion(impl func(ptr gdclass.Receiver, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, force)
 	}
 }
@@ -1367,7 +1367,7 @@ func (class) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, candidates)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -1990,11 +1990,11 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_confirm_code_completion":
-		return gd.ValueOf(self._confirm_code_completion)
+		return reflect.ValueOf(self._confirm_code_completion)
 	case "_request_code_completion":
-		return gd.ValueOf(self._request_code_completion)
+		return reflect.ValueOf(self._request_code_completion)
 	case "_filter_code_completion_candidates":
-		return gd.ValueOf(self._filter_code_completion_candidates)
+		return reflect.ValueOf(self._filter_code_completion_candidates)
 	default:
 		return gd.VirtualByName(TextEdit.Advanced(self.AsTextEdit()), name)
 	}
@@ -2003,11 +2003,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_confirm_code_completion":
-		return gd.ValueOf(self._confirm_code_completion)
+		return reflect.ValueOf(self._confirm_code_completion)
 	case "_request_code_completion":
-		return gd.ValueOf(self._request_code_completion)
+		return reflect.ValueOf(self._request_code_completion)
 	case "_filter_code_completion_candidates":
-		return gd.ValueOf(self._filter_code_completion_candidates)
+		return reflect.ValueOf(self._filter_code_completion_candidates)
 	default:
 		return gd.VirtualByName(TextEdit.Instance(self.AsTextEdit()), name)
 	}

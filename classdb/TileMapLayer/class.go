@@ -264,7 +264,7 @@ Note: If the result of this function should change, use [NotifyRuntimeTileDataUp
 func (Instance) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, coords)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -290,7 +290,7 @@ func (Instance) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords
 		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, coords, tile_data)
 	}
 }
@@ -321,7 +321,7 @@ func (Instance) _update_cells(impl func(ptr gdclass.Receiver, coords []Vector2i.
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(coords)), forced_cleanup)
 	}
 }
@@ -956,7 +956,7 @@ func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) Inst
 func (class) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, coords)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -967,7 +967,7 @@ func (class) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Ve
 		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, coords, tile_data)
 	}
 }
@@ -976,7 +976,7 @@ func (class) _update_cells(impl func(ptr gdclass.Receiver, coords Array.Contains
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, coords, forced_cleanup)
 	}
 }
@@ -1292,11 +1292,11 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_use_tile_data_runtime_update":
-		return gd.ValueOf(self._use_tile_data_runtime_update)
+		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
-		return gd.ValueOf(self._tile_data_runtime_update)
+		return reflect.ValueOf(self._tile_data_runtime_update)
 	case "_update_cells":
-		return gd.ValueOf(self._update_cells)
+		return reflect.ValueOf(self._update_cells)
 	default:
 		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
@@ -1305,11 +1305,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_use_tile_data_runtime_update":
-		return gd.ValueOf(self._use_tile_data_runtime_update)
+		return reflect.ValueOf(self._use_tile_data_runtime_update)
 	case "_tile_data_runtime_update":
-		return gd.ValueOf(self._tile_data_runtime_update)
+		return reflect.ValueOf(self._tile_data_runtime_update)
 	case "_update_cells":
-		return gd.ValueOf(self._update_cells)
+		return reflect.ValueOf(self._update_cells)
 	default:
 		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}

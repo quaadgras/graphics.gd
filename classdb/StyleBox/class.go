@@ -154,14 +154,14 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.CanvasItem(to_canvas_item), rect)
 	}
 }
 func (Instance) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
@@ -174,7 +174,7 @@ Virtual method to be implemented by the user. Returns a custom minimum size that
 */
 func (Instance) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -183,7 +183,7 @@ func (Instance) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rec
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -368,21 +368,21 @@ func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect)
 	}
 }
 func (class) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -391,7 +391,7 @@ func (class) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rect R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -466,13 +466,13 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	case "_get_draw_rect":
-		return gd.ValueOf(self._get_draw_rect)
+		return reflect.ValueOf(self._get_draw_rect)
 	case "_get_minimum_size":
-		return gd.ValueOf(self._get_minimum_size)
+		return reflect.ValueOf(self._get_minimum_size)
 	case "_test_mask":
-		return gd.ValueOf(self._test_mask)
+		return reflect.ValueOf(self._test_mask)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -481,13 +481,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	case "_get_draw_rect":
-		return gd.ValueOf(self._get_draw_rect)
+		return reflect.ValueOf(self._get_draw_rect)
 	case "_get_minimum_size":
-		return gd.ValueOf(self._get_minimum_size)
+		return reflect.ValueOf(self._get_minimum_size)
 	case "_test_mask":
-		return gd.ValueOf(self._test_mask)
+		return reflect.ValueOf(self._test_mask)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

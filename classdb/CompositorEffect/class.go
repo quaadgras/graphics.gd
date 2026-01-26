@@ -158,7 +158,7 @@ func (Instance) _render_callback(impl func(ptr gdclass.Receiver, effect_callback
 		var render_data = [1]gdclass.RenderData{gdclass.NewRenderData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetRenderData(render_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(effect_callback_type), render_data)
 	}
 }
@@ -321,7 +321,7 @@ func (class) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_ty
 		var render_data = [1]gdclass.RenderData{gdclass.NewRenderData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetRenderData(render_data[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, effect_callback_type, render_data)
 	}
 }
@@ -407,7 +407,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_render_callback":
-		return gd.ValueOf(self._render_callback)
+		return reflect.ValueOf(self._render_callback)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -416,7 +416,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_render_callback":
-		return gd.ValueOf(self._render_callback)
+		return reflect.ValueOf(self._render_callback)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

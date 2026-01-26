@@ -326,7 +326,7 @@ func (Instance) _get_preset_features(impl func(ptr gdclass.Receiver, preset Edit
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -344,7 +344,7 @@ func (Instance) _is_executable(impl func(ptr gdclass.Receiver, path string) bool
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -385,7 +385,7 @@ func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) [][]struct {
 	Required         bool        "gd:\"required\""
 }) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -401,7 +401,7 @@ Returns true if export options list is changed and presets should be updated.
 */
 func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -417,7 +417,7 @@ func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, pr
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -433,7 +433,7 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, prese
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(option))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -449,7 +449,7 @@ Returns target OS name.
 */
 func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -465,7 +465,7 @@ Returns export platform name.
 */
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -483,7 +483,7 @@ Returns the platform logo displayed in the export dialog. The logo should be 32Ã
 */
 func (Instance) _get_logo(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -499,7 +499,7 @@ Returns true if one-click deploy options are changed and editor interface should
 */
 func (Instance) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -510,7 +510,7 @@ Returns the number of devices (or other options) available in the one-click depl
 */
 func (Instance) _get_options_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -521,7 +521,7 @@ Returns tooltip of the one-click deploy menu button.
 */
 func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -540,7 +540,7 @@ Returns the item icon for the specified 'device' in the one-click deploy menu. T
 func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -557,7 +557,7 @@ Returns one-click deploy menu item label for the specified 'device'.
 func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -574,7 +574,7 @@ Returns one-click deploy menu item tooltip for the specified 'device'.
 func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -591,7 +591,7 @@ Returns device architecture for one-click deploy.
 func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -607,7 +607,7 @@ Called by the editor before platform is unregistered.
 */
 func (Instance) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -624,7 +624,7 @@ func (Instance) _run(impl func(ptr gdclass.Receiver, preset EditorExportPreset.I
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
 		var debug_flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 2)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, int(device), debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -642,7 +642,7 @@ Returns the icon of the one-click deploy menu button. The icon should be 16Ã—16 
 */
 func (Instance) _get_run_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -669,7 +669,7 @@ func (Instance) _can_export(impl func(ptr gdclass.Receiver, preset EditorExportP
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -684,7 +684,7 @@ func (Instance) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, 
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -698,7 +698,7 @@ func (Instance) _has_valid_project_configuration(impl func(ptr gdclass.Receiver,
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -712,7 +712,7 @@ func (Instance) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset Ed
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -743,7 +743,7 @@ func (Instance) _export_project(impl func(ptr gdclass.Receiver, preset EditorExp
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -768,7 +768,7 @@ func (Instance) _export_pack(impl func(ptr gdclass.Receiver, preset EditorExport
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -793,7 +793,7 @@ func (Instance) _export_zip(impl func(ptr gdclass.Receiver, preset EditorExportP
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -822,7 +822,7 @@ func (Instance) _export_pack_patch(impl func(ptr gdclass.Receiver, preset Editor
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -851,7 +851,7 @@ func (Instance) _export_zip_patch(impl func(ptr gdclass.Receiver, preset EditorE
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -867,7 +867,7 @@ Returns array of platform specific features.
 */
 func (Instance) _get_platform_features(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -883,7 +883,7 @@ Returns protocol used for remote debugging. Default implementation return tcp://
 */
 func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -993,7 +993,7 @@ func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdcl
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -1007,14 +1007,14 @@ func (class) _is_executable(impl func(ptr gdclass.Receiver, path String.Readable
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -1026,7 +1026,7 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[
 }
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1038,7 +1038,7 @@ func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, prese
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1050,7 +1050,7 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(option))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1062,7 +1062,7 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [
 }
 func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1074,7 +1074,7 @@ func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 }
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1086,7 +1086,7 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 }
 func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -1098,21 +1098,21 @@ func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb
 }
 func (class) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_options_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1125,7 +1125,7 @@ func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readabl
 func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -1138,7 +1138,7 @@ func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]g
 func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1151,7 +1151,7 @@ func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) Str
 func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1164,7 +1164,7 @@ func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) S
 func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1176,7 +1176,7 @@ func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int
 }
 func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -1187,7 +1187,7 @@ func (class) _run(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExport
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
 		var debug_flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 2)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, device, debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1199,7 +1199,7 @@ func (class) _run(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExport
 }
 func (class) _get_run_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetTexture2D(ret[0])[0])
 
@@ -1215,7 +1215,7 @@ func (class) _can_export(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1226,7 +1226,7 @@ func (class) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, pre
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1236,7 +1236,7 @@ func (class) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, pr
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1246,7 +1246,7 @@ func (class) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset [1]gd
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetEditorExportPreset(preset[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -1265,7 +1265,7 @@ func (class) _export_project(impl func(ptr gdclass.Receiver, preset [1]gdclass.E
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1284,7 +1284,7 @@ func (class) _export_pack(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edit
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1303,7 +1303,7 @@ func (class) _export_zip(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1324,7 +1324,7 @@ func (class) _export_pack_patch(impl func(ptr gdclass.Receiver, preset [1]gdclas
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1345,7 +1345,7 @@ func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -1357,7 +1357,7 @@ func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass
 }
 func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -1369,7 +1369,7 @@ func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strin
 }
 func (class) _get_debug_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1425,65 +1425,65 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_preset_features":
-		return gd.ValueOf(self._get_preset_features)
+		return reflect.ValueOf(self._get_preset_features)
 	case "_is_executable":
-		return gd.ValueOf(self._is_executable)
+		return reflect.ValueOf(self._is_executable)
 	case "_get_export_options":
-		return gd.ValueOf(self._get_export_options)
+		return reflect.ValueOf(self._get_export_options)
 	case "_should_update_export_options":
-		return gd.ValueOf(self._should_update_export_options)
+		return reflect.ValueOf(self._should_update_export_options)
 	case "_get_export_option_visibility":
-		return gd.ValueOf(self._get_export_option_visibility)
+		return reflect.ValueOf(self._get_export_option_visibility)
 	case "_get_export_option_warning":
-		return gd.ValueOf(self._get_export_option_warning)
+		return reflect.ValueOf(self._get_export_option_warning)
 	case "_get_os_name":
-		return gd.ValueOf(self._get_os_name)
+		return reflect.ValueOf(self._get_os_name)
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_logo":
-		return gd.ValueOf(self._get_logo)
+		return reflect.ValueOf(self._get_logo)
 	case "_poll_export":
-		return gd.ValueOf(self._poll_export)
+		return reflect.ValueOf(self._poll_export)
 	case "_get_options_count":
-		return gd.ValueOf(self._get_options_count)
+		return reflect.ValueOf(self._get_options_count)
 	case "_get_options_tooltip":
-		return gd.ValueOf(self._get_options_tooltip)
+		return reflect.ValueOf(self._get_options_tooltip)
 	case "_get_option_icon":
-		return gd.ValueOf(self._get_option_icon)
+		return reflect.ValueOf(self._get_option_icon)
 	case "_get_option_label":
-		return gd.ValueOf(self._get_option_label)
+		return reflect.ValueOf(self._get_option_label)
 	case "_get_option_tooltip":
-		return gd.ValueOf(self._get_option_tooltip)
+		return reflect.ValueOf(self._get_option_tooltip)
 	case "_get_device_architecture":
-		return gd.ValueOf(self._get_device_architecture)
+		return reflect.ValueOf(self._get_device_architecture)
 	case "_cleanup":
-		return gd.ValueOf(self._cleanup)
+		return reflect.ValueOf(self._cleanup)
 	case "_run":
-		return gd.ValueOf(self._run)
+		return reflect.ValueOf(self._run)
 	case "_get_run_icon":
-		return gd.ValueOf(self._get_run_icon)
+		return reflect.ValueOf(self._get_run_icon)
 	case "_can_export":
-		return gd.ValueOf(self._can_export)
+		return reflect.ValueOf(self._can_export)
 	case "_has_valid_export_configuration":
-		return gd.ValueOf(self._has_valid_export_configuration)
+		return reflect.ValueOf(self._has_valid_export_configuration)
 	case "_has_valid_project_configuration":
-		return gd.ValueOf(self._has_valid_project_configuration)
+		return reflect.ValueOf(self._has_valid_project_configuration)
 	case "_get_binary_extensions":
-		return gd.ValueOf(self._get_binary_extensions)
+		return reflect.ValueOf(self._get_binary_extensions)
 	case "_export_project":
-		return gd.ValueOf(self._export_project)
+		return reflect.ValueOf(self._export_project)
 	case "_export_pack":
-		return gd.ValueOf(self._export_pack)
+		return reflect.ValueOf(self._export_pack)
 	case "_export_zip":
-		return gd.ValueOf(self._export_zip)
+		return reflect.ValueOf(self._export_zip)
 	case "_export_pack_patch":
-		return gd.ValueOf(self._export_pack_patch)
+		return reflect.ValueOf(self._export_pack_patch)
 	case "_export_zip_patch":
-		return gd.ValueOf(self._export_zip_patch)
+		return reflect.ValueOf(self._export_zip_patch)
 	case "_get_platform_features":
-		return gd.ValueOf(self._get_platform_features)
+		return reflect.ValueOf(self._get_platform_features)
 	case "_get_debug_protocol":
-		return gd.ValueOf(self._get_debug_protocol)
+		return reflect.ValueOf(self._get_debug_protocol)
 	default:
 		return gd.VirtualByName(EditorExportPlatform.Advanced(self.AsEditorExportPlatform()), name)
 	}
@@ -1492,65 +1492,65 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_preset_features":
-		return gd.ValueOf(self._get_preset_features)
+		return reflect.ValueOf(self._get_preset_features)
 	case "_is_executable":
-		return gd.ValueOf(self._is_executable)
+		return reflect.ValueOf(self._is_executable)
 	case "_get_export_options":
-		return gd.ValueOf(self._get_export_options)
+		return reflect.ValueOf(self._get_export_options)
 	case "_should_update_export_options":
-		return gd.ValueOf(self._should_update_export_options)
+		return reflect.ValueOf(self._should_update_export_options)
 	case "_get_export_option_visibility":
-		return gd.ValueOf(self._get_export_option_visibility)
+		return reflect.ValueOf(self._get_export_option_visibility)
 	case "_get_export_option_warning":
-		return gd.ValueOf(self._get_export_option_warning)
+		return reflect.ValueOf(self._get_export_option_warning)
 	case "_get_os_name":
-		return gd.ValueOf(self._get_os_name)
+		return reflect.ValueOf(self._get_os_name)
 	case "_get_name":
-		return gd.ValueOf(self._get_name)
+		return reflect.ValueOf(self._get_name)
 	case "_get_logo":
-		return gd.ValueOf(self._get_logo)
+		return reflect.ValueOf(self._get_logo)
 	case "_poll_export":
-		return gd.ValueOf(self._poll_export)
+		return reflect.ValueOf(self._poll_export)
 	case "_get_options_count":
-		return gd.ValueOf(self._get_options_count)
+		return reflect.ValueOf(self._get_options_count)
 	case "_get_options_tooltip":
-		return gd.ValueOf(self._get_options_tooltip)
+		return reflect.ValueOf(self._get_options_tooltip)
 	case "_get_option_icon":
-		return gd.ValueOf(self._get_option_icon)
+		return reflect.ValueOf(self._get_option_icon)
 	case "_get_option_label":
-		return gd.ValueOf(self._get_option_label)
+		return reflect.ValueOf(self._get_option_label)
 	case "_get_option_tooltip":
-		return gd.ValueOf(self._get_option_tooltip)
+		return reflect.ValueOf(self._get_option_tooltip)
 	case "_get_device_architecture":
-		return gd.ValueOf(self._get_device_architecture)
+		return reflect.ValueOf(self._get_device_architecture)
 	case "_cleanup":
-		return gd.ValueOf(self._cleanup)
+		return reflect.ValueOf(self._cleanup)
 	case "_run":
-		return gd.ValueOf(self._run)
+		return reflect.ValueOf(self._run)
 	case "_get_run_icon":
-		return gd.ValueOf(self._get_run_icon)
+		return reflect.ValueOf(self._get_run_icon)
 	case "_can_export":
-		return gd.ValueOf(self._can_export)
+		return reflect.ValueOf(self._can_export)
 	case "_has_valid_export_configuration":
-		return gd.ValueOf(self._has_valid_export_configuration)
+		return reflect.ValueOf(self._has_valid_export_configuration)
 	case "_has_valid_project_configuration":
-		return gd.ValueOf(self._has_valid_project_configuration)
+		return reflect.ValueOf(self._has_valid_project_configuration)
 	case "_get_binary_extensions":
-		return gd.ValueOf(self._get_binary_extensions)
+		return reflect.ValueOf(self._get_binary_extensions)
 	case "_export_project":
-		return gd.ValueOf(self._export_project)
+		return reflect.ValueOf(self._export_project)
 	case "_export_pack":
-		return gd.ValueOf(self._export_pack)
+		return reflect.ValueOf(self._export_pack)
 	case "_export_zip":
-		return gd.ValueOf(self._export_zip)
+		return reflect.ValueOf(self._export_zip)
 	case "_export_pack_patch":
-		return gd.ValueOf(self._export_pack_patch)
+		return reflect.ValueOf(self._export_pack_patch)
 	case "_export_zip_patch":
-		return gd.ValueOf(self._export_zip_patch)
+		return reflect.ValueOf(self._export_zip_patch)
 	case "_get_platform_features":
-		return gd.ValueOf(self._get_platform_features)
+		return reflect.ValueOf(self._get_platform_features)
 	case "_get_debug_protocol":
-		return gd.ValueOf(self._get_debug_protocol)
+		return reflect.ValueOf(self._get_debug_protocol)
 	default:
 		return gd.VirtualByName(EditorExportPlatform.Instance(self.AsEditorExportPlatform()), name)
 	}

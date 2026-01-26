@@ -273,7 +273,7 @@ Corresponds to the [NotificationDraw] notification in [Object.Notification].
 */
 func (Instance) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -1576,7 +1576,7 @@ func (self Instance) SetUseParentMaterial(value bool) Instance { //gd:CanvasItem
 }
 func (class) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -2209,7 +2209,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	default:
 		return gd.VirtualByName(Node.Advanced(self.AsNode()), name)
 	}
@@ -2218,7 +2218,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_draw":
-		return gd.ValueOf(self._draw)
+		return reflect.ValueOf(self._draw)
 	default:
 		return gd.VirtualByName(Node.Instance(self.AsNode()), name)
 	}

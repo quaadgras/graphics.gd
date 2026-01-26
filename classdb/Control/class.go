@@ -681,7 +681,7 @@ Note: If you want to check if a point is inside the control, you can use Rect2(V
 func (Instance) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -700,7 +700,7 @@ func (Instance) _structured_text_parser(impl func(ptr gdclass.Receiver, args []a
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(text))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector3i.XYZ]](ret)))
 
@@ -728,7 +728,7 @@ Note: This method will not be called when the script is attached to a [Control] 
 */
 func (Instance) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -745,7 +745,7 @@ Note: If this method returns an empty string and [MakeCustomTooltip] is not over
 func (Instance) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -778,7 +778,7 @@ Note: If the drag was initiated by a keyboard shortcut or [AccessibilityDrag], '
 func (Instance) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -809,7 +809,7 @@ func (Instance) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vecto
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position, data.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -836,7 +836,7 @@ func (Instance) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.X
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, at_position, data.Interface())
 	}
 }
@@ -876,7 +876,7 @@ func (Instance) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text st
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_text))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text.String())
 		ptr, ok := pointers.End(ret[0])
 
@@ -892,7 +892,7 @@ Return the description of the keyboard shortcuts and other contextual help for t
 */
 func (Instance) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -913,7 +913,7 @@ func (Instance) _get_accessibility_container_name(impl func(ptr gdclass.Receiver
 		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetNode(node[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, node)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -962,7 +962,7 @@ func (Instance) _gui_input(impl func(ptr gdclass.Receiver, event InputEvent.Inst
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
 }
@@ -3000,7 +3000,7 @@ func (self Instance) SetThemeTypeVariation(value string) Instance { //gd:Control
 func (class) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3011,7 +3011,7 @@ func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(text))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, args, text)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -3023,7 +3023,7 @@ func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.
 }
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3031,7 +3031,7 @@ func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb g
 func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -3044,7 +3044,7 @@ func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY
 func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -3059,7 +3059,7 @@ func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position, data)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3069,7 +3069,7 @@ func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, 
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, at_position, data)
 	}
 }
@@ -3077,7 +3077,7 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_text))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text)
 		ptr, ok := pointers.End(ret[0])
 
@@ -3089,7 +3089,7 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 }
 func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -3104,7 +3104,7 @@ func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, n
 		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetNode(node[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, node)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -3119,7 +3119,7 @@ func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEv
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, event)
 	}
 }
@@ -4020,27 +4020,27 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_has_point":
-		return gd.ValueOf(self._has_point)
+		return reflect.ValueOf(self._has_point)
 	case "_structured_text_parser":
-		return gd.ValueOf(self._structured_text_parser)
+		return reflect.ValueOf(self._structured_text_parser)
 	case "_get_minimum_size":
-		return gd.ValueOf(self._get_minimum_size)
+		return reflect.ValueOf(self._get_minimum_size)
 	case "_get_tooltip":
-		return gd.ValueOf(self._get_tooltip)
+		return reflect.ValueOf(self._get_tooltip)
 	case "_get_drag_data":
-		return gd.ValueOf(self._get_drag_data)
+		return reflect.ValueOf(self._get_drag_data)
 	case "_can_drop_data":
-		return gd.ValueOf(self._can_drop_data)
+		return reflect.ValueOf(self._can_drop_data)
 	case "_drop_data":
-		return gd.ValueOf(self._drop_data)
+		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
-		return gd.ValueOf(self._make_custom_tooltip)
+		return reflect.ValueOf(self._make_custom_tooltip)
 	case "_accessibility_get_contextual_info":
-		return gd.ValueOf(self._accessibility_get_contextual_info)
+		return reflect.ValueOf(self._accessibility_get_contextual_info)
 	case "_get_accessibility_container_name":
-		return gd.ValueOf(self._get_accessibility_container_name)
+		return reflect.ValueOf(self._get_accessibility_container_name)
 	case "_gui_input":
-		return gd.ValueOf(self._gui_input)
+		return reflect.ValueOf(self._gui_input)
 	default:
 		return gd.VirtualByName(CanvasItem.Advanced(self.AsCanvasItem()), name)
 	}
@@ -4049,27 +4049,27 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_has_point":
-		return gd.ValueOf(self._has_point)
+		return reflect.ValueOf(self._has_point)
 	case "_structured_text_parser":
-		return gd.ValueOf(self._structured_text_parser)
+		return reflect.ValueOf(self._structured_text_parser)
 	case "_get_minimum_size":
-		return gd.ValueOf(self._get_minimum_size)
+		return reflect.ValueOf(self._get_minimum_size)
 	case "_get_tooltip":
-		return gd.ValueOf(self._get_tooltip)
+		return reflect.ValueOf(self._get_tooltip)
 	case "_get_drag_data":
-		return gd.ValueOf(self._get_drag_data)
+		return reflect.ValueOf(self._get_drag_data)
 	case "_can_drop_data":
-		return gd.ValueOf(self._can_drop_data)
+		return reflect.ValueOf(self._can_drop_data)
 	case "_drop_data":
-		return gd.ValueOf(self._drop_data)
+		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
-		return gd.ValueOf(self._make_custom_tooltip)
+		return reflect.ValueOf(self._make_custom_tooltip)
 	case "_accessibility_get_contextual_info":
-		return gd.ValueOf(self._accessibility_get_contextual_info)
+		return reflect.ValueOf(self._accessibility_get_contextual_info)
 	case "_get_accessibility_container_name":
-		return gd.ValueOf(self._get_accessibility_container_name)
+		return reflect.ValueOf(self._get_accessibility_container_name)
 	case "_gui_input":
-		return gd.ValueOf(self._gui_input)
+		return reflect.ValueOf(self._gui_input)
 	default:
 		return gd.VirtualByName(CanvasItem.Instance(self.AsCanvasItem()), name)
 	}

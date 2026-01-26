@@ -176,7 +176,7 @@ func (Instance) _log_error(impl func(ptr gdclass.Receiver, function string, file
 		var error_type = gd.UnsafeGet[int64](p_args, 6)
 		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7))))
 		defer pointers.End(gd.InternalArray(script_backtraces))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, function.String(), file.String(), int(line), code.String(), rationale.String(), editor_notify, int(error_type), gd.ArrayAs[[]ScriptBacktrace.Instance](gd.InternalArray(script_backtraces)))
 	}
 }
@@ -191,7 +191,7 @@ func (Instance) _log_message(impl func(ptr gdclass.Receiver, message string, err
 		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(message))
 		var error = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, message.String(), error)
 	}
 }
@@ -253,7 +253,7 @@ func (class) _log_error(impl func(ptr gdclass.Receiver, function String.Readable
 		var error_type = gd.UnsafeGet[int64](p_args, 6)
 		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7))))
 		defer pointers.End(gd.InternalArray(script_backtraces))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, function, file, line, code, rationale, editor_notify, error_type, script_backtraces)
 	}
 }
@@ -262,7 +262,7 @@ func (class) _log_message(impl func(ptr gdclass.Receiver, message String.Readabl
 		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(message))
 		var error = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, message, error)
 	}
 }
@@ -281,9 +281,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_log_error":
-		return gd.ValueOf(self._log_error)
+		return reflect.ValueOf(self._log_error)
 	case "_log_message":
-		return gd.ValueOf(self._log_message)
+		return reflect.ValueOf(self._log_message)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -292,9 +292,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_log_error":
-		return gd.ValueOf(self._log_error)
+		return reflect.ValueOf(self._log_error)
 	case "_log_message":
-		return gd.ValueOf(self._log_message)
+		return reflect.ValueOf(self._log_message)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

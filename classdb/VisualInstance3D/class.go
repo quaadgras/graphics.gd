@@ -142,7 +142,7 @@ type implementation struct{}
 func (self implementation) GetAabb() (_ AABB.PositionSize) { return }
 func (Instance) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, AABB.PositionSize(ret))
 	}
@@ -325,7 +325,7 @@ func (self Instance) SetSortingUseAabbCenter(value bool) Instance { //gd:VisualI
 }
 func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -407,7 +407,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_aabb":
-		return gd.ValueOf(self._get_aabb)
+		return reflect.ValueOf(self._get_aabb)
 	default:
 		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
@@ -416,7 +416,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_aabb":
-		return gd.ValueOf(self._get_aabb)
+		return reflect.ValueOf(self._get_aabb)
 	default:
 		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}

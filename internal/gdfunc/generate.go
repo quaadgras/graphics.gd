@@ -96,7 +96,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 				fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
 			}
 		}
-		fmt.Fprintf(w, "\t\tself := gdclass.ReceiverOf(class)\n")
+		fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\tret := ")
 		}

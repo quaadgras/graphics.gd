@@ -163,7 +163,7 @@ func (Instance) _post_import(impl func(ptr gdclass.Receiver, scene Node.Instance
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetNode(scene[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
 
@@ -228,7 +228,7 @@ func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetNode(scene[0])[0])
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
 
@@ -264,7 +264,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_post_import":
-		return gd.ValueOf(self._post_import)
+		return reflect.ValueOf(self._post_import)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -273,7 +273,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_post_import":
-		return gd.ValueOf(self._post_import)
+		return reflect.ValueOf(self._post_import)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

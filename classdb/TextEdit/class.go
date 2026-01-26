@@ -431,7 +431,7 @@ func (Instance) _handle_unicode_input(impl func(ptr gdclass.Receiver, unicode_ch
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var unicode_char = gd.UnsafeGet[int64](p_args, 0)
 		var caret_index = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(unicode_char), int(caret_index))
 	}
 }
@@ -442,7 +442,7 @@ Override this method to define what happens when the user presses the backspace 
 func (Instance) _backspace(impl func(ptr gdclass.Receiver, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(caret_index))
 	}
 }
@@ -453,7 +453,7 @@ Override this method to define what happens when the user performs a cut operati
 func (Instance) _cut(impl func(ptr gdclass.Receiver, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(caret_index))
 	}
 }
@@ -464,7 +464,7 @@ Override this method to define what happens when the user performs a copy operat
 func (Instance) _copy(impl func(ptr gdclass.Receiver, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(caret_index))
 	}
 }
@@ -475,7 +475,7 @@ Override this method to define what happens when the user performs a paste opera
 func (Instance) _paste(impl func(ptr gdclass.Receiver, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(caret_index))
 	}
 }
@@ -488,7 +488,7 @@ Note: This method is only implemented on Linux.
 func (Instance) _paste_primary_clipboard(impl func(ptr gdclass.Receiver, caret_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(caret_index))
 	}
 }
@@ -3031,42 +3031,42 @@ func (class) _handle_unicode_input(impl func(ptr gdclass.Receiver, unicode_char 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var unicode_char = gd.UnsafeGet[int64](p_args, 0)
 		var caret_index = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, unicode_char, caret_index)
 	}
 }
 func (class) _backspace(impl func(ptr gdclass.Receiver, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, caret_index)
 	}
 }
 func (class) _cut(impl func(ptr gdclass.Receiver, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, caret_index)
 	}
 }
 func (class) _copy(impl func(ptr gdclass.Receiver, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, caret_index)
 	}
 }
 func (class) _paste(impl func(ptr gdclass.Receiver, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, caret_index)
 	}
 }
 func (class) _paste_primary_clipboard(impl func(ptr gdclass.Receiver, caret_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var caret_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, caret_index)
 	}
 }
@@ -4410,17 +4410,17 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handle_unicode_input":
-		return gd.ValueOf(self._handle_unicode_input)
+		return reflect.ValueOf(self._handle_unicode_input)
 	case "_backspace":
-		return gd.ValueOf(self._backspace)
+		return reflect.ValueOf(self._backspace)
 	case "_cut":
-		return gd.ValueOf(self._cut)
+		return reflect.ValueOf(self._cut)
 	case "_copy":
-		return gd.ValueOf(self._copy)
+		return reflect.ValueOf(self._copy)
 	case "_paste":
-		return gd.ValueOf(self._paste)
+		return reflect.ValueOf(self._paste)
 	case "_paste_primary_clipboard":
-		return gd.ValueOf(self._paste_primary_clipboard)
+		return reflect.ValueOf(self._paste_primary_clipboard)
 	default:
 		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
@@ -4429,17 +4429,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_handle_unicode_input":
-		return gd.ValueOf(self._handle_unicode_input)
+		return reflect.ValueOf(self._handle_unicode_input)
 	case "_backspace":
-		return gd.ValueOf(self._backspace)
+		return reflect.ValueOf(self._backspace)
 	case "_cut":
-		return gd.ValueOf(self._cut)
+		return reflect.ValueOf(self._cut)
 	case "_copy":
-		return gd.ValueOf(self._copy)
+		return reflect.ValueOf(self._copy)
 	case "_paste":
-		return gd.ValueOf(self._paste)
+		return reflect.ValueOf(self._paste)
 	case "_paste_primary_clipboard":
-		return gd.ValueOf(self._paste_primary_clipboard)
+		return reflect.ValueOf(self._paste_primary_clipboard)
 	default:
 		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}

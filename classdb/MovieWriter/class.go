@@ -207,7 +207,7 @@ Called when the audio sample rate used for recording the audio is requested by t
 */
 func (Instance) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -220,7 +220,7 @@ Called when the audio speaker mode used for recording the audio is requested by 
 */
 func (Instance) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -240,7 +240,7 @@ func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -257,7 +257,7 @@ func (Instance) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i
 		var fps = gd.UnsafeGet[int64](p_args, 1)
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(base_path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, movie_size, int(fps), base_path.String())
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -277,7 +277,7 @@ func (Instance) _write_frame(impl func(ptr gdclass.Receiver, frame_image Image.I
 
 		defer pointers.End(gdclass.GetImage(frame_image[0])[0])
 		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -298,7 +298,7 @@ Note: Pressing Ctrl + C on the terminal running the editor/project does not resu
 */
 func (Instance) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -358,14 +358,14 @@ func New() Instance {
 }
 func (class) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -374,7 +374,7 @@ func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -385,7 +385,7 @@ func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY
 		var fps = gd.UnsafeGet[int64](p_args, 1)
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(base_path))
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, movie_size, fps, base_path)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -401,7 +401,7 @@ func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass
 
 		defer pointers.End(gdclass.GetImage(frame_image[0])[0])
 		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -413,7 +413,7 @@ func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass
 }
 func (class) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -432,17 +432,17 @@ func (self *Extension[T]) AsMovieWriter() Instance { return self.Super().AsMovie
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_audio_mix_rate":
-		return gd.ValueOf(self._get_audio_mix_rate)
+		return reflect.ValueOf(self._get_audio_mix_rate)
 	case "_get_audio_speaker_mode":
-		return gd.ValueOf(self._get_audio_speaker_mode)
+		return reflect.ValueOf(self._get_audio_speaker_mode)
 	case "_handles_file":
-		return gd.ValueOf(self._handles_file)
+		return reflect.ValueOf(self._handles_file)
 	case "_write_begin":
-		return gd.ValueOf(self._write_begin)
+		return reflect.ValueOf(self._write_begin)
 	case "_write_frame":
-		return gd.ValueOf(self._write_frame)
+		return reflect.ValueOf(self._write_frame)
 	case "_write_end":
-		return gd.ValueOf(self._write_end)
+		return reflect.ValueOf(self._write_end)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -451,17 +451,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_audio_mix_rate":
-		return gd.ValueOf(self._get_audio_mix_rate)
+		return reflect.ValueOf(self._get_audio_mix_rate)
 	case "_get_audio_speaker_mode":
-		return gd.ValueOf(self._get_audio_speaker_mode)
+		return reflect.ValueOf(self._get_audio_speaker_mode)
 	case "_handles_file":
-		return gd.ValueOf(self._handles_file)
+		return reflect.ValueOf(self._handles_file)
 	case "_write_begin":
-		return gd.ValueOf(self._write_begin)
+		return reflect.ValueOf(self._write_begin)
 	case "_write_frame":
-		return gd.ValueOf(self._write_frame)
+		return reflect.ValueOf(self._write_frame)
 	case "_write_end":
-		return gd.ValueOf(self._write_end)
+		return reflect.ValueOf(self._write_end)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}

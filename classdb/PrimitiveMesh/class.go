@@ -153,7 +153,7 @@ Override this method to customize how this primitive mesh should be generated. S
 */
 func (Instance) _create_mesh_array(impl func(ptr gdclass.Receiver) [][]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
 
@@ -309,7 +309,7 @@ func (self Instance) SetUv2Padding(value Float.X) Instance { //gd:PrimitiveMesh.
 }
 func (class) _create_mesh_array(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.ReceiverOf(class)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -398,7 +398,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_create_mesh_array":
-		return gd.ValueOf(self._create_mesh_array)
+		return reflect.ValueOf(self._create_mesh_array)
 	default:
 		return gd.VirtualByName(Mesh.Advanced(self.AsMesh()), name)
 	}
@@ -407,7 +407,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_create_mesh_array":
-		return gd.ValueOf(self._create_mesh_array)
+		return reflect.ValueOf(self._create_mesh_array)
 	default:
 		return gd.VirtualByName(Mesh.Instance(self.AsMesh()), name)
 	}
