@@ -205,28 +205,17 @@ func (self Instance) SetIndices(value []int32) Instance { //gd:ArrayOccluder3D.i
 	return self
 }
 
-/*
-Sets [Indices] and [Vertices], while updating the final occluder only once after both values are set.
-
-[Indices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Indices
-[Vertices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Vertices
-*/
-//go:nosplit
 func (self class) SetArrays(vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_arrays
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_arrays, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 		indices  gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
-
-//go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:ArrayOccluder3D.set_vertices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))})
 }
-
-//go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_indices
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizePackedArray<<4), &struct {
 		indices gdextension.PackedArray[int32]

@@ -180,12 +180,9 @@ func (self Instance) SetSize(value Vector3i.XYZ) Instance { //gd:PlaceholderText
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3i.XYZ) { //gd:PlaceholderTexture3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3i<<4), &struct{ size Vector3i.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3i.XYZ { //gd:PlaceholderTexture3D.get_size
 	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3i, &struct{}{})
 	var ret = r_ret

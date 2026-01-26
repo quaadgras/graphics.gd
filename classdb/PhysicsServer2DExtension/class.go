@@ -3133,12 +3133,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Overridable version of [PhysicsServer2D.WorldBoundaryShapeCreate].
-
-[PhysicsServer2D.WorldBoundaryShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#WorldBoundaryShapeCreate
-*/
 func (class) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3146,12 +3140,6 @@ func (class) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.An
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SeparationRayShapeCreate].
-
-[PhysicsServer2D.SeparationRayShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SeparationRayShapeCreate
-*/
 func (class) _separation_ray_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3159,12 +3147,6 @@ func (class) _separation_ray_shape_create(impl func(ptr gdclass.Receiver) RID.An
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SegmentShapeCreate].
-
-[PhysicsServer2D.SegmentShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SegmentShapeCreate
-*/
 func (class) _segment_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3172,12 +3154,6 @@ func (class) _segment_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.CircleShapeCreate].
-
-[PhysicsServer2D.CircleShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#CircleShapeCreate
-*/
 func (class) _circle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3185,12 +3161,6 @@ func (class) _circle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.RectangleShapeCreate].
-
-[PhysicsServer2D.RectangleShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#RectangleShapeCreate
-*/
 func (class) _rectangle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3198,12 +3168,6 @@ func (class) _rectangle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.CapsuleShapeCreate].
-
-[PhysicsServer2D.CapsuleShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#CapsuleShapeCreate
-*/
 func (class) _capsule_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3211,12 +3175,6 @@ func (class) _capsule_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.ConvexPolygonShapeCreate].
-
-[PhysicsServer2D.ConvexPolygonShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#ConvexPolygonShapeCreate
-*/
 func (class) _convex_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3224,12 +3182,6 @@ func (class) _convex_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.An
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.ConcavePolygonShapeCreate].
-
-[PhysicsServer2D.ConcavePolygonShapeCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#ConcavePolygonShapeCreate
-*/
 func (class) _concave_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3237,12 +3189,6 @@ func (class) _concave_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.ShapeSetData].
-
-[PhysicsServer2D.ShapeSetData]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#ShapeSetData
-*/
 func (class) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Any, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3252,15 +3198,6 @@ func (class) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Any, data
 		impl(self, shape, data)
 	}
 }
-
-/*
-Should set the custom solver bias for the given 'shape'. It defines how much bodies are forced to separate on contact.
-
-Overridable version of [PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [Shape2D.CustomSolverBias].
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Shape2D.CustomSolverBias]: https://pkg.go.dev/graphics.gd/classdb/Shape2D#Instance.CustomSolverBias
-*/
 func (class) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Any, bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3269,12 +3206,6 @@ func (class) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, shape
 		impl(self, shape, bias)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.ShapeGetType].
-
-[PhysicsServer2D.ShapeGetType]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#ShapeGetType
-*/
 func (class) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Any) PhysicsServer2D.ShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3283,12 +3214,6 @@ func (class) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Any) Phys
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.ShapeGetData].
-
-[PhysicsServer2D.ShapeGetData]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#ShapeGetData
-*/
 func (class) _shape_get_data(impl func(ptr gdclass.Receiver, shape RID.Any) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3302,15 +3227,6 @@ func (class) _shape_get_data(impl func(ptr gdclass.Receiver, shape RID.Any) vari
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Should return the custom solver bias of the given 'shape', which defines how much bodies are forced to separate on contact when this shape is involved.
-
-Overridable version of [PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [Shape2D.CustomSolverBias].
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Shape2D.CustomSolverBias]: https://pkg.go.dev/graphics.gd/classdb/Shape2D#Instance.CustomSolverBias
-*/
 func (class) _shape_get_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3319,15 +3235,6 @@ func (class) _shape_get_custom_solver_bias(impl func(ptr gdclass.Receiver, shape
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Given two shapes and their parameters, should return true if a collision between the two would occur, with additional details passed in 'results'.
-
-Overridable version of [PhysicsServer2D]'s internal shape_collide method. Corresponds to [PhysicsDirectSpaceState2D.CollideShape].
-
-[PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_A = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3344,12 +3251,6 @@ func (class) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Any, xfo
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceCreate].
-
-[PhysicsServer2D.SpaceCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceCreate
-*/
 func (class) _space_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3357,12 +3258,6 @@ func (class) _space_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Exten
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceSetActive].
-
-[PhysicsServer2D.SpaceSetActive]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceSetActive
-*/
 func (class) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Any, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3371,12 +3266,6 @@ func (class) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Any, ac
 		impl(self, space, active)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceIsActive].
-
-[PhysicsServer2D.SpaceIsActive]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceIsActive
-*/
 func (class) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3385,12 +3274,6 @@ func (class) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Any) boo
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceSetParam].
-
-[PhysicsServer2D.SpaceSetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceSetParam
-*/
 func (class) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Any, param PhysicsServer2D.SpaceParameter, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3400,12 +3283,6 @@ func (class) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Any, par
 		impl(self, space, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceGetParam].
-
-[PhysicsServer2D.SpaceGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceGetParam
-*/
 func (class) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Any, param PhysicsServer2D.SpaceParameter) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3415,12 +3292,6 @@ func (class) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Any, par
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SpaceGetDirectState].
-
-[PhysicsServer2D.SpaceGetDirectState]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SpaceGetDirectState
-*/
 func (class) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3434,16 +3305,6 @@ func (class) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.A
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Used internally to allow the given 'space' to store contact points, up to 'max_contacts'. This is automatically set for the main [World2D]'s space when [SceneTree.DebugCollisionsHint] is true, or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
-
-Overridable version of [PhysicsServer2D]'s internal space_set_debug_contacts method.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[SceneTree.DebugCollisionsHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugCollisionsHint
-[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
-*/
 func (class) _space_set_debug_contacts(impl func(ptr gdclass.Receiver, space RID.Any, max_contacts int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3452,16 +3313,6 @@ func (class) _space_set_debug_contacts(impl func(ptr gdclass.Receiver, space RID
 		impl(self, space, max_contacts)
 	}
 }
-
-/*
-Should return the positions of all contacts that have occurred during the last physics step in the given 'space'. See also [SpaceGetContactCount] and [SpaceSetDebugContacts].
-
-Overridable version of [PhysicsServer2D]'s internal space_get_contacts method.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[SpaceGetContactCount]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[SpaceSetDebugContacts]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-*/
 func (class) _space_get_contacts(impl func(ptr gdclass.Receiver, space RID.Any) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3475,16 +3326,6 @@ func (class) _space_get_contacts(impl func(ptr gdclass.Receiver, space RID.Any) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Should return how many contacts have occurred during the last physics step in the given 'space'. See also [SpaceGetContacts] and [SpaceSetDebugContacts].
-
-Overridable version of [PhysicsServer2D]'s internal space_get_contact_count method.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[SpaceGetContacts]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[SpaceSetDebugContacts]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-*/
 func (class) _space_get_contact_count(impl func(ptr gdclass.Receiver, space RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3493,12 +3334,6 @@ func (class) _space_get_contact_count(impl func(ptr gdclass.Receiver, space RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaCreate].
-
-[PhysicsServer2D.AreaCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaCreate
-*/
 func (class) _area_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3506,12 +3341,6 @@ func (class) _area_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Extens
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetSpace].
-
-[PhysicsServer2D.AreaSetSpace]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetSpace
-*/
 func (class) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3520,12 +3349,6 @@ func (class) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Any, space
 		impl(self, area, space)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetSpace].
-
-[PhysicsServer2D.AreaGetSpace]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetSpace
-*/
 func (class) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3534,12 +3357,6 @@ func (class) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Any) RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaAddShape].
-
-[PhysicsServer2D.AreaAddShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaAddShape
-*/
 func (class) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3550,12 +3367,6 @@ func (class) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape
 		impl(self, area, shape, transform, disabled)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetShape].
-
-[PhysicsServer2D.AreaSetShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetShape
-*/
 func (class) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3565,12 +3376,6 @@ func (class) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape
 		impl(self, area, shape_idx, shape)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetShapeTransform].
-
-[PhysicsServer2D.AreaSetShapeTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetShapeTransform
-*/
 func (class) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3580,12 +3385,6 @@ func (class) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area RID.
 		impl(self, area, shape_idx, transform)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetShapeDisabled].
-
-[PhysicsServer2D.AreaSetShapeDisabled]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetShapeDisabled
-*/
 func (class) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3595,12 +3394,6 @@ func (class) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RID.A
 		impl(self, area, shape_idx, disabled)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetShapeCount].
-
-[PhysicsServer2D.AreaGetShapeCount]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetShapeCount
-*/
 func (class) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3609,12 +3402,6 @@ func (class) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.Any)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetShape].
-
-[PhysicsServer2D.AreaGetShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetShape
-*/
 func (class) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3624,12 +3411,6 @@ func (class) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetShapeTransform].
-
-[PhysicsServer2D.AreaGetShapeTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetShapeTransform
-*/
 func (class) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3639,12 +3420,6 @@ func (class) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaRemoveShape].
-
-[PhysicsServer2D.AreaRemoveShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaRemoveShape
-*/
 func (class) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3653,12 +3428,6 @@ func (class) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Any, sh
 		impl(self, area, shape_idx)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaClearShapes].
-
-[PhysicsServer2D.AreaClearShapes]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaClearShapes
-*/
 func (class) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3666,12 +3435,6 @@ func (class) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Any)) (
 		impl(self, area)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaAttachObjectInstanceId].
-
-[PhysicsServer2D.AreaAttachObjectInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaAttachObjectInstanceId
-*/
 func (class) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3680,12 +3443,6 @@ func (class) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, are
 		impl(self, area, id)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetObjectInstanceId].
-
-[PhysicsServer2D.AreaGetObjectInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetObjectInstanceId
-*/
 func (class) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3694,12 +3451,6 @@ func (class) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, area R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaAttachCanvasInstanceId].
-
-[PhysicsServer2D.AreaAttachCanvasInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaAttachCanvasInstanceId
-*/
 func (class) _area_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3708,12 +3459,6 @@ func (class) _area_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, are
 		impl(self, area, id)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetCanvasInstanceId].
-
-[PhysicsServer2D.AreaGetCanvasInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetCanvasInstanceId
-*/
 func (class) _area_get_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3722,12 +3467,6 @@ func (class) _area_get_canvas_instance_id(impl func(ptr gdclass.Receiver, area R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetParam].
-
-[PhysicsServer2D.AreaSetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetParam
-*/
 func (class) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Any, param PhysicsServer2D.AreaParameter, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3738,12 +3477,6 @@ func (class) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Any, param
 		impl(self, area, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetTransform].
-
-[PhysicsServer2D.AreaSetTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetTransform
-*/
 func (class) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3752,12 +3485,6 @@ func (class) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Any, t
 		impl(self, area, transform)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetParam].
-
-[PhysicsServer2D.AreaGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetParam
-*/
 func (class) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Any, param PhysicsServer2D.AreaParameter) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3772,12 +3499,6 @@ func (class) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Any, param
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetTransform].
-
-[PhysicsServer2D.AreaGetTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetTransform
-*/
 func (class) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3786,12 +3507,6 @@ func (class) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Any) T
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetCollisionLayer].
-
-[PhysicsServer2D.AreaSetCollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetCollisionLayer
-*/
 func (class) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area RID.Any, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3800,12 +3515,6 @@ func (class) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area RID.
 		impl(self, area, layer)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetCollisionLayer].
-
-[PhysicsServer2D.AreaGetCollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetCollisionLayer
-*/
 func (class) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3814,12 +3523,6 @@ func (class) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetCollisionMask].
-
-[PhysicsServer2D.AreaSetCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetCollisionMask
-*/
 func (class) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RID.Any, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3828,12 +3531,6 @@ func (class) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RID.A
 		impl(self, area, mask)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaGetCollisionMask].
-
-[PhysicsServer2D.AreaGetCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaGetCollisionMask
-*/
 func (class) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3842,12 +3539,6 @@ func (class) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetMonitorable].
-
-[PhysicsServer2D.AreaSetMonitorable]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetMonitorable
-*/
 func (class) _area_set_monitorable(impl func(ptr gdclass.Receiver, area RID.Any, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3856,16 +3547,6 @@ func (class) _area_set_monitorable(impl func(ptr gdclass.Receiver, area RID.Any,
 		impl(self, area, monitorable)
 	}
 }
-
-/*
-If set to true, allows the area with the given [Resource.ID] to detect mouse inputs when the mouse cursor is hovering on it.
-
-Overridable version of [PhysicsServer2D]'s internal area_set_pickable method. Corresponds to [CollisionObject2D.InputPickable].
-
-[CollisionObject2D.InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3874,12 +3555,6 @@ func (class) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Any, pi
 		impl(self, area, pickable)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetMonitorCallback].
-
-[PhysicsServer2D.AreaSetMonitorCallback]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetMonitorCallback
-*/
 func (class) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3889,12 +3564,6 @@ func (class) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID
 		impl(self, area, callback)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.AreaSetAreaMonitorCallback].
-
-[PhysicsServer2D.AreaSetAreaMonitorCallback]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#AreaSetAreaMonitorCallback
-*/
 func (class) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3904,12 +3573,6 @@ func (class) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, are
 		impl(self, area, callback)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyCreate].
-
-[PhysicsServer2D.BodyCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyCreate
-*/
 func (class) _body_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -3917,12 +3580,6 @@ func (class) _body_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Extens
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetSpace].
-
-[PhysicsServer2D.BodySetSpace]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetSpace
-*/
 func (class) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3931,12 +3588,6 @@ func (class) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Any, space
 		impl(self, body, space)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetSpace].
-
-[PhysicsServer2D.BodyGetSpace]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetSpace
-*/
 func (class) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3945,12 +3596,6 @@ func (class) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Any) RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetMode].
-
-[PhysicsServer2D.BodySetMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetMode
-*/
 func (class) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Any, mode PhysicsServer2D.BodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3959,12 +3604,6 @@ func (class) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Any, mode P
 		impl(self, body, mode)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetMode].
-
-[PhysicsServer2D.BodyGetMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetMode
-*/
 func (class) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Any) PhysicsServer2D.BodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3973,12 +3612,6 @@ func (class) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Any) Physic
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAddShape].
-
-[PhysicsServer2D.BodyAddShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAddShape
-*/
 func (class) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3989,12 +3622,6 @@ func (class) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape
 		impl(self, body, shape, transform, disabled)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetShape].
-
-[PhysicsServer2D.BodySetShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetShape
-*/
 func (class) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4004,12 +3631,6 @@ func (class) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape
 		impl(self, body, shape_idx, shape)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetShapeTransform].
-
-[PhysicsServer2D.BodySetShapeTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetShapeTransform
-*/
 func (class) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4019,12 +3640,6 @@ func (class) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, body, shape_idx, transform)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetShapeCount].
-
-[PhysicsServer2D.BodyGetShapeCount]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetShapeCount
-*/
 func (class) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4033,12 +3648,6 @@ func (class) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.Any)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetShape].
-
-[PhysicsServer2D.BodyGetShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetShape
-*/
 func (class) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4048,12 +3657,6 @@ func (class) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetShapeTransform].
-
-[PhysicsServer2D.BodyGetShapeTransform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetShapeTransform
-*/
 func (class) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4063,12 +3666,6 @@ func (class) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetShapeDisabled].
-
-[PhysicsServer2D.BodySetShapeDisabled]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetShapeDisabled
-*/
 func (class) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4078,12 +3675,6 @@ func (class) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RID.A
 		impl(self, body, shape_idx, disabled)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetShapeAsOneWayCollision].
-
-[PhysicsServer2D.BodySetShapeAsOneWayCollision]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetShapeAsOneWayCollision
-*/
 func (class) _body_set_shape_as_one_way_collision(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64, enable bool, margin float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4094,12 +3685,6 @@ func (class) _body_set_shape_as_one_way_collision(impl func(ptr gdclass.Receiver
 		impl(self, body, shape_idx, enable, margin)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyRemoveShape].
-
-[PhysicsServer2D.BodyRemoveShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyRemoveShape
-*/
 func (class) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4108,12 +3693,6 @@ func (class) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Any, sh
 		impl(self, body, shape_idx)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyClearShapes].
-
-[PhysicsServer2D.BodyClearShapes]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyClearShapes
-*/
 func (class) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4121,12 +3700,6 @@ func (class) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Any)) (
 		impl(self, body)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAttachObjectInstanceId].
-
-[PhysicsServer2D.BodyAttachObjectInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAttachObjectInstanceId
-*/
 func (class) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4135,12 +3708,6 @@ func (class) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, bod
 		impl(self, body, id)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetObjectInstanceId].
-
-[PhysicsServer2D.BodyGetObjectInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetObjectInstanceId
-*/
 func (class) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4149,12 +3716,6 @@ func (class) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, body R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAttachCanvasInstanceId].
-
-[PhysicsServer2D.BodyAttachCanvasInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAttachCanvasInstanceId
-*/
 func (class) _body_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Any, id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4163,12 +3724,6 @@ func (class) _body_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, bod
 		impl(self, body, id)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetCanvasInstanceId].
-
-[PhysicsServer2D.BodyGetCanvasInstanceId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetCanvasInstanceId
-*/
 func (class) _body_get_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4177,12 +3732,6 @@ func (class) _body_get_canvas_instance_id(impl func(ptr gdclass.Receiver, body R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetContinuousCollisionDetectionMode].
-
-[PhysicsServer2D.BodySetContinuousCollisionDetectionMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetContinuousCollisionDetectionMode
-*/
 func (class) _body_set_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Any, mode PhysicsServer2D.CCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4191,12 +3740,6 @@ func (class) _body_set_continuous_collision_detection_mode(impl func(ptr gdclass
 		impl(self, body, mode)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetContinuousCollisionDetectionMode].
-
-[PhysicsServer2D.BodyGetContinuousCollisionDetectionMode]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetContinuousCollisionDetectionMode
-*/
 func (class) _body_get_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Any) PhysicsServer2D.CCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4205,12 +3748,6 @@ func (class) _body_get_continuous_collision_detection_mode(impl func(ptr gdclass
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetCollisionLayer].
-
-[PhysicsServer2D.BodySetCollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetCollisionLayer
-*/
 func (class) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body RID.Any, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4219,12 +3756,6 @@ func (class) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, body, layer)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetCollisionLayer].
-
-[PhysicsServer2D.BodyGetCollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetCollisionLayer
-*/
 func (class) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4233,12 +3764,6 @@ func (class) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetCollisionMask].
-
-[PhysicsServer2D.BodySetCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetCollisionMask
-*/
 func (class) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RID.Any, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4247,12 +3772,6 @@ func (class) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RID.A
 		impl(self, body, mask)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetCollisionMask].
-
-[PhysicsServer2D.BodyGetCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetCollisionMask
-*/
 func (class) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4261,12 +3780,6 @@ func (class) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetCollisionPriority].
-
-[PhysicsServer2D.BodySetCollisionPriority]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetCollisionPriority
-*/
 func (class) _body_set_collision_priority(impl func(ptr gdclass.Receiver, body RID.Any, priority float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4275,12 +3788,6 @@ func (class) _body_set_collision_priority(impl func(ptr gdclass.Receiver, body R
 		impl(self, body, priority)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetCollisionPriority].
-
-[PhysicsServer2D.BodyGetCollisionPriority]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetCollisionPriority
-*/
 func (class) _body_get_collision_priority(impl func(ptr gdclass.Receiver, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4289,12 +3796,6 @@ func (class) _body_get_collision_priority(impl func(ptr gdclass.Receiver, body R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetParam].
-
-[PhysicsServer2D.BodySetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetParam
-*/
 func (class) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Any, param PhysicsServer2D.BodyParameter, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4305,12 +3806,6 @@ func (class) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Any, param
 		impl(self, body, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetParam].
-
-[PhysicsServer2D.BodyGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetParam
-*/
 func (class) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Any, param PhysicsServer2D.BodyParameter) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4325,12 +3820,6 @@ func (class) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Any, param
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyResetMassProperties].
-
-[PhysicsServer2D.BodyResetMassProperties]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyResetMassProperties
-*/
 func (class) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4338,12 +3827,6 @@ func (class) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body RI
 		impl(self, body)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetState].
-
-[PhysicsServer2D.BodySetState]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetState
-*/
 func (class) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, state PhysicsServer2D.BodyState, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4354,12 +3837,6 @@ func (class) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, state
 		impl(self, body, state, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetState].
-
-[PhysicsServer2D.BodyGetState]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetState
-*/
 func (class) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Any, state PhysicsServer2D.BodyState) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4374,12 +3851,6 @@ func (class) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Any, state
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyCentralImpulse].
-
-[PhysicsServer2D.BodyApplyCentralImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyCentralImpulse
-*/
 func (class) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4388,12 +3859,6 @@ func (class) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RI
 		impl(self, body, impulse)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyTorqueImpulse].
-
-[PhysicsServer2D.BodyApplyTorqueImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyTorqueImpulse
-*/
 func (class) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4402,12 +3867,6 @@ func (class) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body RID
 		impl(self, body, impulse)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyImpulse].
-
-[PhysicsServer2D.BodyApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyImpulse
-*/
 func (class) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4417,12 +3876,6 @@ func (class) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Any, i
 		impl(self, body, impulse, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyCentralForce].
-
-[PhysicsServer2D.BodyApplyCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyCentralForce
-*/
 func (class) _body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4431,12 +3884,6 @@ func (class) _body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, body, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyForce].
-
-[PhysicsServer2D.BodyApplyForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyForce
-*/
 func (class) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4446,12 +3893,6 @@ func (class) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Any, for
 		impl(self, body, force, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyApplyTorque].
-
-[PhysicsServer2D.BodyApplyTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyApplyTorque
-*/
 func (class) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4460,12 +3901,6 @@ func (class) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Any, to
 		impl(self, body, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAddConstantCentralForce].
-
-[PhysicsServer2D.BodyAddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAddConstantCentralForce
-*/
 func (class) _body_add_constant_central_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4474,12 +3909,6 @@ func (class) _body_add_constant_central_force(impl func(ptr gdclass.Receiver, bo
 		impl(self, body, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAddConstantForce].
-
-[PhysicsServer2D.BodyAddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAddConstantForce
-*/
 func (class) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4489,12 +3918,6 @@ func (class) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RID.A
 		impl(self, body, force, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAddConstantTorque].
-
-[PhysicsServer2D.BodyAddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAddConstantTorque
-*/
 func (class) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4503,12 +3926,6 @@ func (class) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, body, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetConstantForce].
-
-[PhysicsServer2D.BodySetConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetConstantForce
-*/
 func (class) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4517,12 +3934,6 @@ func (class) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RID.A
 		impl(self, body, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetConstantForce].
-
-[PhysicsServer2D.BodyGetConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetConstantForce
-*/
 func (class) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4531,12 +3942,6 @@ func (class) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RID.A
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetConstantTorque].
-
-[PhysicsServer2D.BodySetConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetConstantTorque
-*/
 func (class) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4545,12 +3950,6 @@ func (class) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, body, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetConstantTorque].
-
-[PhysicsServer2D.BodyGetConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetConstantTorque
-*/
 func (class) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4559,12 +3958,6 @@ func (class) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body RID.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetAxisVelocity].
-
-[PhysicsServer2D.BodySetAxisVelocity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetAxisVelocity
-*/
 func (class) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID.Any, axis_velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4573,12 +3966,6 @@ func (class) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID.An
 		impl(self, body, axis_velocity)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyAddCollisionException].
-
-[PhysicsServer2D.BodyAddCollisionException]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyAddCollisionException
-*/
 func (class) _body_add_collision_exception(impl func(ptr gdclass.Receiver, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4587,12 +3974,6 @@ func (class) _body_add_collision_exception(impl func(ptr gdclass.Receiver, body 
 		impl(self, body, excepted_body)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyRemoveCollisionException].
-
-[PhysicsServer2D.BodyRemoveCollisionException]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyRemoveCollisionException
-*/
 func (class) _body_remove_collision_exception(impl func(ptr gdclass.Receiver, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4601,18 +3982,6 @@ func (class) _body_remove_collision_exception(impl func(ptr gdclass.Receiver, bo
 		impl(self, body, excepted_body)
 	}
 }
-
-/*
-Returns the [Resource.ID]s of all bodies added as collision exceptions for the given 'body'. See also [BodyAddCollisionException] and [BodyRemoveCollisionException].
-
-Overridable version of [PhysicsServer2D]'s internal body_get_collision_exceptions method. Corresponds to [PhysicsBody2D.GetCollisionExceptions].
-
-[BodyAddCollisionException]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[BodyRemoveCollisionException]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[PhysicsBody2D.GetCollisionExceptions]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D#Instance.GetCollisionExceptions
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body RID.Any) Array.Contains[RID.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4626,12 +3995,6 @@ func (class) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetMaxContactsReported].
-
-[PhysicsServer2D.BodySetMaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetMaxContactsReported
-*/
 func (class) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any, amount int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4640,12 +4003,6 @@ func (class) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, bod
 		impl(self, body, amount)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetMaxContactsReported].
-
-[PhysicsServer2D.BodyGetMaxContactsReported]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetMaxContactsReported
-*/
 func (class) _body_get_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4654,14 +4011,6 @@ func (class) _body_get_max_contacts_reported(impl func(ptr gdclass.Receiver, bod
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D]'s internal body_set_contacts_reported_depth_threshold method.
-
-Note: This method is currently unused by Godot's default physics implementation.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _body_set_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Any, threshold float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4670,14 +4019,6 @@ func (class) _body_set_contacts_reported_depth_threshold(impl func(ptr gdclass.R
 		impl(self, body, threshold)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D]'s internal body_get_contacts_reported_depth_threshold method.
-
-Note: This method is currently unused by Godot's default physics implementation.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4686,12 +4027,6 @@ func (class) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclass.R
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetOmitForceIntegration].
-
-[PhysicsServer2D.BodySetOmitForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetOmitForceIntegration
-*/
 func (class) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver, body RID.Any, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4700,12 +4035,6 @@ func (class) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver, bo
 		impl(self, body, enable)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyIsOmittingForceIntegration].
-
-[PhysicsServer2D.BodyIsOmittingForceIntegration]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyIsOmittingForceIntegration
-*/
 func (class) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver, body RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4714,16 +4043,6 @@ func (class) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver,
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Assigns the 'body' to call the given 'callable' during the synchronization phase of the loop, before [Step] is called. See also [Sync].
-
-Overridable version of [PhysicsServer2D.BodySetStateSyncCallback].
-
-[PhysicsServer2D.BodySetStateSyncCallback]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetStateSyncCallback
-[Step]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[Sync]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-*/
 func (class) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4733,12 +4052,6 @@ func (class) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body 
 		impl(self, body, callable)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodySetForceIntegrationCallback].
-
-[PhysicsServer2D.BodySetForceIntegrationCallback]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodySetForceIntegrationCallback
-*/
 func (class) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function, userdata variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4750,15 +4063,6 @@ func (class) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver
 		impl(self, body, callable, userdata)
 	}
 }
-
-/*
-Given a 'body', a 'shape', and their respective parameters, this method should return true if a collision between the two would occur, with additional details passed in 'results'.
-
-Overridable version of [PhysicsServer2D]'s internal shape_collide method. Corresponds to [PhysicsDirectSpaceState2D.CollideShape].
-
-[PhysicsDirectSpaceState2D.CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Any, body_shape int64, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4774,16 +4078,6 @@ func (class) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Any, b
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-If set to true, allows the body with the given [Resource.ID] to detect mouse inputs when the mouse cursor is hovering on it.
-
-Overridable version of [PhysicsServer2D]'s internal body_set_pickable method. Corresponds to [CollisionObject2D.InputPickable].
-
-[CollisionObject2D.InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _body_set_pickable(impl func(ptr gdclass.Receiver, body RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4792,12 +4086,6 @@ func (class) _body_set_pickable(impl func(ptr gdclass.Receiver, body RID.Any, pi
 		impl(self, body, pickable)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyGetDirectState].
-
-[PhysicsServer2D.BodyGetDirectState]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyGetDirectState
-*/
 func (class) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Any) [1]gdclass.PhysicsDirectBodyState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4811,13 +4099,6 @@ func (class) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Any
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.BodyTestMotion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
-
-[PhysicsServer2D.BodyTestMotion]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#BodyTestMotion
-[PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
-*/
 func (class) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin float64, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4832,12 +4113,6 @@ func (class) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, fro
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointCreate].
-
-[PhysicsServer2D.JointCreate]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointCreate
-*/
 func (class) _joint_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -4845,12 +4120,6 @@ func (class) _joint_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Exten
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointClear].
-
-[PhysicsServer2D.JointClear]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointClear
-*/
 func (class) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4858,12 +4127,6 @@ func (class) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Any)) (cb gd
 		impl(self, joint)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointSetParam].
-
-[PhysicsServer2D.JointSetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointSetParam
-*/
 func (class) _joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.JointParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4873,12 +4136,6 @@ func (class) _joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, par
 		impl(self, joint, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointGetParam].
-
-[PhysicsServer2D.JointGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointGetParam
-*/
 func (class) _joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.JointParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4888,12 +4145,6 @@ func (class) _joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, par
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointDisableCollisionsBetweenBodies].
-
-[PhysicsServer2D.JointDisableCollisionsBetweenBodies]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointDisableCollisionsBetweenBodies
-*/
 func (class) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Any, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4902,12 +4153,6 @@ func (class) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.Rece
 		impl(self, joint, disable)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointIsDisabledCollisionsBetweenBodies].
-
-[PhysicsServer2D.JointIsDisabledCollisionsBetweenBodies]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointIsDisabledCollisionsBetweenBodies
-*/
 func (class) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4916,12 +4161,6 @@ func (class) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdclass.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointMakePin].
-
-[PhysicsServer2D.JointMakePin]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointMakePin
-*/
 func (class) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4932,12 +4171,6 @@ func (class) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Any, anch
 		impl(self, joint, anchor, body_a, body_b)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointMakeGroove].
-
-[PhysicsServer2D.JointMakeGroove]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointMakeGroove
-*/
 func (class) _joint_make_groove(impl func(ptr gdclass.Receiver, joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4950,12 +4183,6 @@ func (class) _joint_make_groove(impl func(ptr gdclass.Receiver, joint RID.Any, a
 		impl(self, joint, a_groove1, a_groove2, b_anchor, body_a, body_b)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointMakeDampedSpring].
-
-[PhysicsServer2D.JointMakeDampedSpring]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointMakeDampedSpring
-*/
 func (class) _joint_make_damped_spring(impl func(ptr gdclass.Receiver, joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4967,12 +4194,6 @@ func (class) _joint_make_damped_spring(impl func(ptr gdclass.Receiver, joint RID
 		impl(self, joint, anchor_a, anchor_b, body_a, body_b)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.PinJointSetFlag].
-
-[PhysicsServer2D.PinJointSetFlag]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#PinJointSetFlag
-*/
 func (class) _pin_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.Any, flag PhysicsServer2D.PinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4982,12 +4203,6 @@ func (class) _pin_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.Any, 
 		impl(self, joint, flag, enabled)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.PinJointGetFlag].
-
-[PhysicsServer2D.PinJointGetFlag]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#PinJointGetFlag
-*/
 func (class) _pin_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Any, flag PhysicsServer2D.PinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4997,12 +4212,6 @@ func (class) _pin_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Any, 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.PinJointSetParam].
-
-[PhysicsServer2D.PinJointSetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#PinJointSetParam
-*/
 func (class) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.PinJointParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5012,12 +4221,6 @@ func (class) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any,
 		impl(self, joint, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.PinJointGetParam].
-
-[PhysicsServer2D.PinJointGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#PinJointGetParam
-*/
 func (class) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.PinJointParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5027,12 +4230,6 @@ func (class) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any,
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.DampedSpringJointSetParam].
-
-[PhysicsServer2D.DampedSpringJointSetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#DampedSpringJointSetParam
-*/
 func (class) _damped_spring_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.DampedSpringParam, value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5042,12 +4239,6 @@ func (class) _damped_spring_joint_set_param(impl func(ptr gdclass.Receiver, join
 		impl(self, joint, param, value)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.DampedSpringJointGetParam].
-
-[PhysicsServer2D.DampedSpringJointGetParam]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#DampedSpringJointGetParam
-*/
 func (class) _damped_spring_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.DampedSpringParam) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5057,12 +4248,6 @@ func (class) _damped_spring_joint_get_param(impl func(ptr gdclass.Receiver, join
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.JointGetType].
-
-[PhysicsServer2D.JointGetType]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#JointGetType
-*/
 func (class) _joint_get_type(impl func(ptr gdclass.Receiver, joint RID.Any) PhysicsServer2D.JointType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5071,12 +4256,6 @@ func (class) _joint_get_type(impl func(ptr gdclass.Receiver, joint RID.Any) Phys
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.FreeRid].
-
-[PhysicsServer2D.FreeRid]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#FreeRid
-*/
 func (class) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -5084,12 +4263,6 @@ func (class) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.Exte
 		impl(self, rid)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.SetActive].
-
-[PhysicsServer2D.SetActive]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#SetActive
-*/
 func (class) _set_active(impl func(ptr gdclass.Receiver, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var active = gd.UnsafeGet[bool](p_args, 0)
@@ -5097,31 +4270,12 @@ func (class) _set_active(impl func(ptr gdclass.Receiver, active bool)) (cb gd.Ex
 		impl(self, active)
 	}
 }
-
-/*
-Called when the main loop is initialized and creates a new instance of this physics server. See also [MainLoop.Initialize] and [Finish].
-
-Overridable version of [PhysicsServer2D]'s internal init method.
-
-[Finish]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[MainLoop.Initialize]: https://pkg.go.dev/graphics.gd/classdb/MainLoop#Instance.Initialize
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _init(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as the value returned by [Node.GetPhysicsProcessDeltaTime].
-
-Overridable version of [PhysicsServer2D]'s internal step method.
-
-[Node.GetPhysicsProcessDeltaTime]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetPhysicsProcessDeltaTime
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _step(impl func(ptr gdclass.Receiver, step float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var step = gd.UnsafeGet[float64](p_args, 0)
@@ -5129,76 +4283,30 @@ func (class) _step(impl func(ptr gdclass.Receiver, step float64)) (cb gd.Extensi
 		impl(self, step)
 	}
 }
-
-/*
-Called to indicate that the physics server is synchronizing and cannot access physics states if running on a separate thread. See also [EndSync].
-
-Overridable version of [PhysicsServer2D]'s internal sync method.
-
-[EndSync]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _sync(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called every physics step before [Step] to process all remaining queries.
-
-Overridable version of [PhysicsServer2D]'s internal flush_queries method.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Step]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-*/
 func (class) _flush_queries(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called to indicate that the physics server has stopped synchronizing. It is in the loop's iteration/physics phase, and can access physics objects even if running on a separate thread. See also [Sync].
-
-Overridable version of [PhysicsServer2D]'s internal end_sync method.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Sync]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-*/
 func (class) _end_sync(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called when the main loop finalizes to shut down the physics server. See also [MainLoop.Finalize] and [Init].
-
-Overridable version of [PhysicsServer2D]'s internal finish method.
-
-[Init]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[MainLoop.Finalize]: https://pkg.go.dev/graphics.gd/classdb/MainLoop#Instance.Finalize
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _finish(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Overridable method that should return true when the physics server is processing queries. See also [FlushQueries].
-
-Overridable version of [PhysicsServer2D]'s internal is_flushing_queries method.
-
-[FlushQueries]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-*/
 func (class) _is_flushing_queries(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -5206,12 +4314,6 @@ func (class) _is_flushing_queries(impl func(ptr gdclass.Receiver) bool) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsServer2D.GetProcessInfo].
-
-[PhysicsServer2D.GetProcessInfo]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D#GetProcessInfo
-*/
 func (class) _get_process_info(impl func(ptr gdclass.Receiver, process_info PhysicsServer2D.ProcessInfo) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var process_info = gd.UnsafeGet[PhysicsServer2D.ProcessInfo](p_args, 0)
@@ -5221,27 +4323,11 @@ func (class) _get_process_info(impl func(ptr gdclass.Receiver, process_info Phys
 	}
 }
 
-/*
-Returns true if the body with the given [Resource.ID] is being excluded from [BodyTestMotion]. See also [Object.GetInstanceId].
-
-[BodyTestMotion]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) BodyTestMotionIsExcludingBody(body RID.Any) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_body, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the object with the given instance ID is being excluded from [BodyTestMotion]. See also [Object.GetInstanceId].
-
-[BodyTestMotion]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2DExtension#Interface
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-*/
-//go:nosplit
 func (self class) BodyTestMotionIsExcludingObject(obj int64) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_object, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ obj int64 }{obj})
 	var ret = r_ret

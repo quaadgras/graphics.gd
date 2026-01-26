@@ -183,12 +183,9 @@ func (self Instance) SetRadius(value Float.X) Instance { //gd:GPUParticlesCollis
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:GPUParticlesCollisionSphere3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:GPUParticlesCollisionSphere3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

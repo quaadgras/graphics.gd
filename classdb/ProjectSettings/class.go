@@ -399,29 +399,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetProjectSettings(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns true if a configuration value is present.
-
-Note: In order to be be detected, custom settings have to be either defined with [SetSetting], or exist in the project.godot file. This is especially relevant when using [SetInitialValue].
-*/
-//go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the value of a setting.
-
-
-	ProjectSettings.SetSetting("application/config/name", "Example")
-
-
-This can also be used to erase custom project settings. To do this change the setting value to null.
-*/
-//go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_setting
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -429,20 +412,6 @@ func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:Pro
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
-
-
-	fmt.Println(ProjectSettings.GetSetting("application/config/name", nil))
-	fmt.Println(ProjectSettings.GetSetting("application/config/custom_description", "No description specified."))
-
-
-Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
-
-See also [HasSetting] to check whether a setting exists.
-*/
-//go:nosplit
 func (self class) GetSetting(name String.Readable, default_value variant.Any) variant.Any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -452,51 +421,18 @@ func (self class) GetSetting(name String.Readable, default_value variant.Any) va
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Similar to [GetSetting], but applies feature tag overrides if any exists and is valid.
-
-Example: If the setting override "application/config/name.windows" exists, and the following code is executed on a Windows operating system, the overridden setting is printed instead:
-
-
-	fmt.Println(ProjectSettings.GetSettingWithOverride("application/config/name"))
-
-*/
-//go:nosplit
 func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting_with_override, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns an slice of registered global classes. Each global class is represented as a data structure that contains the following entries:
-
-- base is a name of the base class;
-
-- class is a name of the registered global class;
-
-- icon is a path to a custom icon of the global class, if it has any;
-
-- language is a name of a programming language in which the global class is written;
-
-- path is a path to a file containing the global class.
-
-Note: Both the script and the icon paths are local to the project filesystem, i.e. they start with res://.
-*/
-//go:nosplit
 func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:ProjectSettings.get_global_class_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_global_class_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Similar to [GetSettingWithOverride], but applies feature tag overrides instead of current OS features.
-*/
-//go:nosplit
 func (self class) GetSettingWithOverrideAndCustomFeatures(name String.Name, features Packed.Strings) variant.Any { //gd:ProjectSettings.get_setting_with_override_and_custom_features
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting_with_override_and_custom_features, gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8), &struct {
@@ -506,11 +442,6 @@ func (self class) GetSettingWithOverrideAndCustomFeatures(name String.Name, feat
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets the order of a configuration value (influences when saved to the config file).
-*/
-//go:nosplit
 func (self class) SetOrder(name String.Readable, position int64) { //gd:ProjectSettings.set_order
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_order, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
@@ -518,36 +449,12 @@ func (self class) SetOrder(name String.Readable, position int64) { //gd:ProjectS
 		position int64
 	}{pointers.Get(gd.InternalString(name)), position})
 }
-
-/*
-Returns the order of a configuration value (influences when saved to the config file).
-*/
-//go:nosplit
 func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.get_order
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_order, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the specified setting's initial value. This is the value the setting reverts to. The setting should already exist before calling this method. Note that project settings equal to their default value are not saved, so your code needs to account for that.
-
-
-	const SETTING_NAME = "addons/my_setting"
-	const SETTING_DEFAULT = 10.0
-
-	if !ProjectSettings.HasSetting(SETTING_NAME) {
-		ProjectSettings.SetSetting(SETTING_NAME, SETTING_DEFAULT)
-	}
-	ProjectSettings.SetInitialValue(SETTING_NAME, SETTING_DEFAULT)
-
-
-If you have a project setting defined by an [EditorPlugin], but want to use it in a running project, you will need a similar code at runtime.
-
-[EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
-*/
-//go:nosplit
 func (self class) SetInitialValue(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_initial_value
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
@@ -555,11 +462,6 @@ func (self class) SetInitialValue(name String.Readable, value variant.Any) { //g
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Defines if the specified setting is considered basic or advanced. Basic settings will always be shown in the project settings. Advanced settings will only be shown if the user enables the "Advanced Settings" option.
-*/
-//go:nosplit
 func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSettings.set_as_basic
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_basic, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -567,11 +469,6 @@ func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSet
 		basic bool
 	}{pointers.Get(gd.InternalString(name)), basic})
 }
-
-/*
-Defines if the specified setting is considered internal. An internal setting won't show up in the Project Settings dialog. This is mostly useful for addons that need to store their own internal settings without exposing them directly to the user.
-*/
-//go:nosplit
 func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:ProjectSettings.set_as_internal
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_internal, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -579,40 +476,10 @@ func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:Pro
 		internal_ bool
 	}{pointers.Get(gd.InternalString(name)), internal_})
 }
-
-/*
-Adds a custom property info to a property. The dictionary must contain:
-
-- "name": string (the property's name)
-
-- "type": int (see [Variant.Type])
-
-- optionally "hint": int (see [PropertyHint]) and "hint_string": string
-
-
-	ProjectSettings.SetSetting("category/property_name", 0)
-	ProjectSettings.AddPropertyInfo(Object.PropertyInfo{
-		Name:       "category/propertyName",
-		Type:       reflect.TypeFor[int](),
-		Hint:       int(classdb.PropertyHintEnum),
-		HintString: "one,two,three",
-	})
-
-
-Note: Setting "usage" for the property is not supported. Use [SetAsBasic], [SetRestartIfChanged], and [SetAsInternal] to modify usage flags.
-*/
-//go:nosplit
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_info, 0|(gdextension.SizeDictionary<<4), &struct{ hint gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(hint))})
 }
-
-/*
-Sets whether a setting requires restarting the editor to properly take effect.
-
-Note: This is just a hint to display to the user that the editor must be restarted for changes to take effect. Enabling [SetRestartIfChanged] does not delay the setting being set when changed.
-*/
-//go:nosplit
 func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd:ProjectSettings.set_restart_if_changed
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_restart_if_changed, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
@@ -620,84 +487,28 @@ func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd
 		restart bool
 	}{pointers.Get(gd.InternalString(name)), restart})
 }
-
-/*
-Clears the whole configuration (not recommended, may break things).
-*/
-//go:nosplit
 func (self class) Clear(name String.Readable) { //gd:ProjectSettings.clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns the localized path (starting with res://) corresponding to the absolute, native OS 'path'. See also [GlobalizePath].
-*/
-//go:nosplit
 func (self class) LocalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.localize_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.localize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the absolute, native OS path corresponding to the localized 'path' (starting with res:// or user://). The returned path will vary depending on the operating system and user preferences. See [File paths in Godot projects] to see what those paths convert to. See also [LocalizePath].
-
-Note: [GlobalizePath] with res:// will not work in an exported project. Instead, prepend the executable's base directory to the path when running from an exported project:
-
-
-	var path = ""
-	if OS.HasFeature("editor") {
-		// Running from an editor binary.
-		// `path` will contain the absolute path to `hello.txt` located in the project root.
-		path = ProjectSettings.GlobalizePath("res://hello.txt")
-	} else {
-		// Running from an exported project.
-		// `path` will contain the absolute path to `hello.txt` next to the executable.
-		// This is *not* identical to using `ProjectSettings.globalize_path()` with a `res://` path,
-		// but is close enough in spirit.
-		path = filepath.Join(filepath.Base(OS.GetExecutablePath()), "hello.txt")
-	}
-
-
-[File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
-*/
-//go:nosplit
 func (self class) GlobalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.globalize_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.globalize_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Saves the configuration to the project.godot file.
-
-Note: This method is intended to be used by editor plugins, as modified [ProjectSettings] can't be loaded back in the running app. If you want to change project settings in exported projects, use [SaveCustom] to save override.cfg file.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) Save() Error.Code { //gd:ProjectSettings.save
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads the contents of the .pck or .zip file specified by 'pack' into the resource filesystem (res://). Returns true on success.
-
-Note: If a file from 'pack' shares the same path as a file already in the resource filesystem, any attempts to load that file will use the file from 'pack' unless 'replace_files' is set to false.
-
-Note: The optional 'offset' parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
-
-Note: [DirAccess] will not show changes made to the contents of res:// after calling this function.
-
-[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
-*/
-//go:nosplit
 func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset int64) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.load_resource_pack, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
@@ -708,13 +519,6 @@ func (self class) LoadResourcePack(pack String.Readable, replace_files bool, off
 	var ret = r_ret
 	return ret
 }
-
-/*
-Saves the configuration to a custom file. The file extension must be .godot (to save in text-based [ConfigFile] format) or .binary (to save in binary format). You can also save override.cfg file, which is also text, but can be used in exported projects unlike other formats.
-
-[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
-*/
-//go:nosplit
 func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSettings.save_custom
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})

@@ -248,61 +248,38 @@ func (self Instance) SetRotationOffset(value Quaternion.IJKX) Instance { //gd:Sp
 	return self
 }
 
-/*
-Get parent [Skeleton3D] node of the parent [SpringBoneSimulator3D] if found.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
-*/
-//go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SpringBoneCollision3D.get_skeleton
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:SpringBoneCollision3D.set_bone_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
-
-//go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:SpringBoneCollision3D.get_bone_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBone(bone int64) { //gd:SpringBoneCollision3D.set_bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone, 0|(gdextension.SizeInt<<4), &struct{ bone int64 }{bone})
 }
-
-//go:nosplit
 func (self class) GetBone() int64 { //gd:SpringBoneCollision3D.get_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPositionOffset(offset Vector3.XYZ) { //gd:SpringBoneCollision3D.set_position_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector3<<4), &struct{ offset Vector3.XYZ }{offset})
 }
-
-//go:nosplit
 func (self class) GetPositionOffset() Vector3.XYZ { //gd:SpringBoneCollision3D.get_position_offset
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRotationOffset(offset Quaternion.IJKX) { //gd:SpringBoneCollision3D.set_rotation_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_offset, 0|(gdextension.SizeQuaternion<<4), &struct{ offset Quaternion.IJKX }{offset})
 }
-
-//go:nosplit
 func (self class) GetRotationOffset() Quaternion.IJKX { //gd:SpringBoneCollision3D.get_rotation_offset
 	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_rotation_offset, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret

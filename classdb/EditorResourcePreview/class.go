@@ -207,14 +207,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Queue a resource file located at 'path' for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [Texture2D] preview, [Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
-
-Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		path          gdextension.String
@@ -223,15 +215,6 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 		userdata      gdextension.Variant
 	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
-
-/*
-Queue the 'resource' being edited for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [Texture2D] preview, [Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
-
-Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-//go:nosplit
 func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		resource      gdextension.Object
@@ -240,27 +223,12 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		userdata      gdextension.Variant
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0]))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(receiver[0])[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
-
-/*
-Create an own, custom preview generator.
-*/
-//go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
 }
-
-/*
-Removes a custom preview generator.
-*/
-//go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourcePreviewGenerator(generator[0])))})
 }
-
-/*
-Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
-*/
-//go:nosplit
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }

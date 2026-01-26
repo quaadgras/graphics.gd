@@ -265,83 +265,49 @@ func (self Instance) SetExternalSkeleton(value string) Instance { //gd:BoneAttac
 	return self
 }
 
-/*
-Returns the parent or external [Skeleton3D] node if it exists, otherwise returns null.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-*/
-//go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:BoneAttachment3D.set_bone_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
-
-//go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:BoneAttachment3D.get_bone_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBoneIdx(bone_idx int64) { //gd:BoneAttachment3D.set_bone_idx
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_idx, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
-
-//go:nosplit
 func (self class) GetBoneIdx() int64 { //gd:BoneAttachment3D.get_bone_idx
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_idx, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-A function that is called automatically when the [Skeleton3D] is updated. This function is where the [BoneAttachment3D] node updates its position so it is correctly bound when it is not set to override the bone pose.
-
-[BoneAttachment3D]: https://pkg.go.dev/graphics.gd/classdb/BoneAttachment3D
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-*/
-//go:nosplit
 func (self class) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.on_skeleton_update, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetOverridePose(override_pose bool) { //gd:BoneAttachment3D.set_override_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_override_pose, 0|(gdextension.SizeBool<<4), &struct{ override_pose bool }{override_pose})
 }
-
-//go:nosplit
 func (self class) GetOverridePose() bool { //gd:BoneAttachment3D.get_override_pose
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_override_pose, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_external_skeleton, 0|(gdextension.SizeBool<<4), &struct{ use_external_skeleton bool }{use_external_skeleton})
 }
-
-//go:nosplit
 func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_external_skeleton, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExternalSkeleton(external_skeleton Path.ToNode) { //gd:BoneAttachment3D.set_external_skeleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ external_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_skeleton))})
 }
-
-//go:nosplit
 func (self class) GetExternalSkeleton() Path.ToNode { //gd:BoneAttachment3D.get_external_skeleton
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))

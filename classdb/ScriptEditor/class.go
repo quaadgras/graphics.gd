@@ -306,159 +306,52 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [ScriptEditorBase] object that the user is currently editing.
-
-[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
-*/
-//go:nosplit
 func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptEditorBase{gdclass.NewScriptEditorBase(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
-
-[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
-*/
-//go:nosplit
 func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] { //gd:ScriptEditor.get_open_script_editors
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_script_editors, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptEditorBase]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns array of breakpoints.
-*/
-//go:nosplit
 func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakpoints
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_breakpoints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
-
-Note: Does not apply to scripts that are already opened.
-
-[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
-*/
-//go:nosplit
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])))})
 }
-
-/*
-Unregisters the [EditorSyntaxHighlighter] from the editor.
-
-Note: The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
-
-[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
-*/
-//go:nosplit
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorSyntaxHighlighter(syntax_highlighter[0])))})
 }
-
-/*
-Goes to the specified line in the current script.
-*/
-//go:nosplit
 func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_line, 0|(gdextension.SizeInt<<4), &struct{ line_number int64 }{line_number})
 }
-
-/*
-Returns a [Script] that is currently active in editor.
-
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_script, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Script{gdclass.NewScript(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an array with all [Script] objects which are currently open in editor.
-
-[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
-*/
-//go:nosplit
 func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:ScriptEditor.get_open_scripts
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scripts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Script]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Opens the script create dialog. The script will extend 'base_name'. The file extension can be omitted from 'base_path'. It will be added based on the selected scripting language.
-*/
-//go:nosplit
 func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path String.Readable) { //gd:ScriptEditor.open_script_create_dialog
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_script_create_dialog, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		base_name gdextension.String
 		base_path gdextension.String
 	}{pointers.Get(gd.InternalString(base_name)), pointers.Get(gd.InternalString(base_path))})
 }
-
-/*
-Opens help for the given topic. The 'topic' is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
-
-The supported 'topic' formats include class_name:class, class_method:class:method, class_constant:class:constant, class_signal:class:signal, class_annotation:class:@annotation, class_property:class:property, and class_theme_item:class:item, where class is the class name, method is the method name, constant is the constant name, signal is the signal name, annotation is the annotation name, property is the property name, and item is the theme item.
-
-
-	var topics = []string{
-		// Shows help for the Node class.
-		"class_name:Node",
-		// Shows help for the global min function.
-		// Global objects are accessible in the GlobalScope namespace, shown here.
-		"class_method:@GlobalScope:min",
-		// Shows help for get_viewport in the Node class.
-		"class_method:Node:get_viewport",
-		// Shows help for the Input constant MOUSE_BUTTON_MIDDLE.
-		"class_constant:Input:MOUSE_BUTTON_MIDDLE",
-		// Shows help for the BaseButton signal pressed.
-		"class_signal:BaseButton:pressed",
-		// Shows help for the CanvasItem property visible.
-		"class_property:CanvasItem:visible",
-		// Shows help for the GDScript annotation export.
-		// Annotations should be prefixed with the '@' symbol in the descriptor, as shown here.
-		"class_annotation:@GDScript:@export",
-		// Shows help for the GraphNode theme item named panel_selected.
-		"class_theme_item:GraphNode:panel_selected",
-	}
-	for _, topic := range topics {
-		scriptEditor.GotoHelp(topic)
-	}
-
-*/
-//go:nosplit
 func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_help, 0|(gdextension.SizeString<<4), &struct{ topic gdextension.String }{pointers.Get(gd.InternalString(topic))})
 }
-
-/*
-Updates the documentation for the given 'script'.
-
-Note: This should be called whenever the script is changed to keep the open documentation state up to date.
-*/
-//go:nosplit
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0])))})
 }
-
-/*
-Removes the documentation for the given 'script'.
-
-Note: This should be called whenever the script is changed to keep the open documentation state up to date.
-*/
-//go:nosplit
 func (self class) ClearDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.clear_docs_from_script
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScript(script[0])))})
 }

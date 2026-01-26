@@ -170,12 +170,9 @@ func (self Instance) SetSource(value Source) Instance { //gd:VisualShaderNodeSam
 	return self
 }
 
-//go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeSample3D.set_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
 }
-
-//go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeSample3D.get_source
 	var r_ret = noescape.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

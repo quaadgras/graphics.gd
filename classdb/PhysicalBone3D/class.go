@@ -541,12 +541,6 @@ func (self Instance) SetCanSleep(value bool) Instance { //gd:PhysicalBone3D.can_
 	class(self).SetCanSleep(value)
 	return self
 }
-
-/*
-Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [CustomIntegrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
-
-[CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.CustomIntegrator
-*/
 func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -557,251 +551,153 @@ func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.
 	}
 }
 
-/*
-Applies a directional impulse without affecting rotation.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
-
-This is equivalent to using [ApplyImpulse] at the body's center of mass.
-
-[ApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D#Instance.ApplyImpulse
-*/
-//go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector3<<4), &struct{ impulse Vector3.XYZ }{impulse})
 }
-
-/*
-Applies a positioned impulse to the PhysicsBone3D.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
-
-'position' is the offset from the PhysicsBone3D origin in global coordinates.
-*/
-//go:nosplit
 func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		impulse  Vector3.XYZ
 		position Vector3.XYZ
 	}{impulse, position})
 }
-
-//go:nosplit
 func (self class) SetJointType(joint_type JointType) { //gd:PhysicalBone3D.set_joint_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_type, 0|(gdextension.SizeInt<<4), &struct{ joint_type JointType }{joint_type})
 }
-
-//go:nosplit
 func (self class) GetJointType() JointType { //gd:PhysicalBone3D.get_joint_type
 	var r_ret = noescape.Call[JointType](gd.ObjectChecked(self.AsObject()), methods.get_joint_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetJointOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_joint_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_offset, 0|(gdextension.SizeTransform3D<<4), &struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)})
 }
-
-//go:nosplit
 func (self class) GetJointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_joint_offset
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_offset, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetJointRotation(euler Vector3.XYZ) { //gd:PhysicalBone3D.set_joint_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_rotation, 0|(gdextension.SizeVector3<<4), &struct{ euler Vector3.XYZ }{euler})
 }
-
-//go:nosplit
 func (self class) GetJointRotation() Vector3.XYZ { //gd:PhysicalBone3D.get_joint_rotation
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_joint_rotation, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBodyOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_body_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_offset, 0|(gdextension.SizeTransform3D<<4), &struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)})
 }
-
-//go:nosplit
 func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_body_offset
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_body_offset, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns true if the PhysicsBone3D is allowed to simulate physics.
-*/
-//go:nosplit
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the PhysicsBone3D is currently simulating physics.
-*/
-//go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the unique identifier of the PhysicsBone3D.
-*/
-//go:nosplit
 func (self class) GetBoneId() int64 { //gd:PhysicalBone3D.get_bone_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMass(mass float64) { //gd:PhysicalBone3D.set_mass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
-
-//go:nosplit
 func (self class) GetMass() float64 { //gd:PhysicalBone3D.get_mass
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicalBone3D.set_friction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
-
-//go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicalBone3D.get_friction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicalBone3D.set_bounce
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
-
-//go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicalBone3D.get_bounce
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityScale(gravity_scale float64) { //gd:PhysicalBone3D.set_gravity_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), &struct{ gravity_scale float64 }{gravity_scale})
 }
-
-//go:nosplit
 func (self class) GetGravityScale() float64 { //gd:PhysicalBone3D.get_gravity_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:PhysicalBone3D.set_linear_damp_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ linear_damp_mode DampMode }{linear_damp_mode})
 }
-
-//go:nosplit
 func (self class) GetLinearDampMode() DampMode { //gd:PhysicalBone3D.get_linear_damp_mode
 	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:PhysicalBone3D.set_angular_damp_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), &struct{ angular_damp_mode DampMode }{angular_damp_mode})
 }
-
-//go:nosplit
 func (self class) GetAngularDampMode() DampMode { //gd:PhysicalBone3D.get_angular_damp_mode
 	var r_ret = noescape.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:PhysicalBone3D.set_linear_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
-
-//go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:PhysicalBone3D.get_linear_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:PhysicalBone3D.set_angular_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
-
-//go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:PhysicalBone3D.get_angular_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_linear_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ linear_velocity Vector3.XYZ }{linear_velocity})
 }
-
-//go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_linear_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_angular_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ angular_velocity Vector3.XYZ }{angular_velocity})
 }
-
-//go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_angular_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseCustomIntegrator(enable bool) { //gd:PhysicalBone3D.set_use_custom_integrator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingCustomIntegrator() bool { //gd:PhysicalBone3D.is_using_custom_integrator
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCanSleep(able_to_sleep bool) { //gd:PhysicalBone3D.set_can_sleep
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), &struct{ able_to_sleep bool }{able_to_sleep})
 }
-
-//go:nosplit
 func (self class) IsAbleToSleep() bool { //gd:PhysicalBone3D.is_able_to_sleep
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

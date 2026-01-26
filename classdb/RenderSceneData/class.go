@@ -213,68 +213,31 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the camera transform used to render this frame.
-
-Note: If more than one view is rendered, this will return a centered transform.
-*/
-//go:nosplit
 func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_cam_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the camera projection used to render this frame.
-
-Note: If more than one view is rendered, this will return a combined projection.
-*/
-//go:nosplit
 func (self class) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
 	var r_ret = noescape.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_cam_projection, gdextension.SizeProjection, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of views being rendered.
-*/
-//go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneData.get_view_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the eye offset per view used to render this frame. This is the offset between our camera transform and the eye transform.
-*/
-//go:nosplit
 func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_view_eye_offset, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the view projection per view used to render this frame.
-
-Note: If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
-*/
-//go:nosplit
 func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSceneData.get_view_projection
 	var r_ret = noescape.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_view_projection, gdextension.SizeProjection|(gdextension.SizeInt<<4), &struct{ view int64 }{view})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_uniform_buffer, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret

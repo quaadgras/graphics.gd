@@ -259,14 +259,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Opens the TCP socket, and binds it to the specified local address.
-
-This method is generally not needed, and only used to force the subsequent call to [ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
-
-[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
-*/
-//go:nosplit
 func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:StreamPeerTCP.bind
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port int64
@@ -275,11 +267,6 @@ func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:Strea
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Connects to the specified host:port pair. A hostname will be resolved if valid. Returns [Ok] on success.
-*/
-//go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:StreamPeerTCP.connect_to_host
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
@@ -288,75 +275,34 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Poll the socket, updating its state. See [GetStatus].
-
-[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.GetStatus
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the status of the connection.
-*/
-//go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status
 	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the IP of this peer.
-*/
-//go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_connected_host, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the port of this peer.
-*/
-//go:nosplit
 func (self class) GetConnectedPort() int64 { //gd:StreamPeerTCP.get_connected_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connected_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local port to which this peer is bound.
-*/
-//go:nosplit
 func (self class) GetLocalPort() int64 { //gd:StreamPeerTCP.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Disconnects from host.
-*/
-//go:nosplit
 func (self class) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_host, 0, &struct{}{})
 }
-
-/*
-If 'enabled' is true, packets will be sent immediately. If 'enabled' is false (the default), packet transfers will be delayed and combined using [Nagle's algorithm].
-
-Note: It's recommended to leave this disabled for applications that send large packets or need to transfer a lot of data, as enabling this can decrease the total available bandwidth.
-
-[Nagle's algorithm]: https://en.wikipedia.org/wiki/Nagle%27s_algorithm
-*/
-//go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }

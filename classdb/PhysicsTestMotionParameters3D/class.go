@@ -293,98 +293,67 @@ func (self Instance) SetRecoveryAsCollision(value bool) Instance { //gd:PhysicsT
 	return self
 }
 
-//go:nosplit
 func (self class) GetFrom() Transform3D.BasisOrigin { //gd:PhysicsTestMotionParameters3D.get_from
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_from, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFrom(from Transform3D.BasisOrigin) { //gd:PhysicsTestMotionParameters3D.set_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_from, 0|(gdextension.SizeTransform3D<<4), &struct{ from Transform3D.BasisOrigin }{gd.Transposed(from)})
 }
-
-//go:nosplit
 func (self class) GetMotion() Vector3.XYZ { //gd:PhysicsTestMotionParameters3D.get_motion
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_motion, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMotion(motion Vector3.XYZ) { //gd:PhysicsTestMotionParameters3D.set_motion
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion, 0|(gdextension.SizeVector3<<4), &struct{ motion Vector3.XYZ }{motion})
 }
-
-//go:nosplit
 func (self class) GetMargin() float64 { //gd:PhysicsTestMotionParameters3D.get_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMargin(margin float64) { //gd:PhysicsTestMotionParameters3D.set_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetMaxCollisions() int64 { //gd:PhysicsTestMotionParameters3D.get_max_collisions
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_collisions, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxCollisions(max_collisions int64) { //gd:PhysicsTestMotionParameters3D.set_max_collisions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_collisions, 0|(gdextension.SizeInt<<4), &struct{ max_collisions int64 }{max_collisions})
 }
-
-//go:nosplit
 func (self class) IsCollideSeparationRayEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_collide_separation_ray_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_separation_ray_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideSeparationRayEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_collide_separation_ray_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetExcludeBodies() Array.Contains[RID.Any] { //gd:PhysicsTestMotionParameters3D.get_exclude_bodies
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude_bodies, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExcludeBodies(exclude_list Array.Contains[RID.Any]) { //gd:PhysicsTestMotionParameters3D.set_exclude_bodies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_bodies, 0|(gdextension.SizeArray<<4), &struct{ exclude_list gdextension.Array }{pointers.Get(gd.InternalArray(exclude_list))})
 }
-
-//go:nosplit
 func (self class) GetExcludeObjects() Array.Contains[int64] { //gd:PhysicsTestMotionParameters3D.get_exclude_objects
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude_objects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExcludeObjects(exclude_list Array.Contains[int64]) { //gd:PhysicsTestMotionParameters3D.set_exclude_objects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_objects, 0|(gdextension.SizeArray<<4), &struct{ exclude_list gdextension.Array }{pointers.Get(gd.InternalArray(exclude_list))})
 }
-
-//go:nosplit
 func (self class) IsRecoveryAsCollisionEnabled() bool { //gd:PhysicsTestMotionParameters3D.is_recovery_as_collision_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recovery_as_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTestMotionParameters3D.set_recovery_as_collision_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }

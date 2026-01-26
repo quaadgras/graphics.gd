@@ -204,38 +204,27 @@ func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:OccluderPoly
 	return self
 }
 
-//go:nosplit
 func (self class) SetClosed(closed bool) { //gd:OccluderPolygon2D.set_closed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closed, 0|(gdextension.SizeBool<<4), &struct{ closed bool }{closed})
 }
-
-//go:nosplit
 func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCullMode(cull_mode CullMode) { //gd:OccluderPolygon2D.set_cull_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), &struct{ cull_mode CullMode }{cull_mode})
 }
-
-//go:nosplit
 func (self class) GetCullMode() CullMode { //gd:OccluderPolygon2D.get_cull_mode
 	var r_ret = noescape.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:OccluderPolygon2D.set_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygon, 0|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
-
-//go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:OccluderPolygon2D.get_polygon
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

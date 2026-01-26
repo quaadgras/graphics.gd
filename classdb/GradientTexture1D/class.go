@@ -208,29 +208,20 @@ func (self Instance) SetUseHdr(value bool) Instance { //gd:GradientTexture1D.use
 	return self
 }
 
-//go:nosplit
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture1D.set_gradient
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(gradient[0])))})
 }
-
-//go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture1D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWidth(width int64) { //gd:GradientTexture1D.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
-
-//go:nosplit
 func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture1D.set_use_hdr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_hdr, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsUsingHdr() bool { //gd:GradientTexture1D.is_using_hdr
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_hdr, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -191,19 +191,9 @@ func (self Instance) SetAabb(value AABB.PositionSize) Instance { //gd:VisibleOnS
 	return self
 }
 
-//go:nosplit
 func (self class) SetAabb(rect AABB.PositionSize) { //gd:VisibleOnScreenNotifier3D.set_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ rect AABB.PositionSize }{rect})
 }
-
-/*
-Returns true if the bounding box is on the screen.
-
-Note: It takes one frame for the [VisibleOnScreenNotifier3D]'s visibility to be assessed once added to the scene tree, so this method will always return false right after it is instantiated.
-
-[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
-*/
-//go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

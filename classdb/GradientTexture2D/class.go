@@ -287,82 +287,55 @@ func (self Instance) SetRepeat(value Repeat) Instance { //gd:GradientTexture2D.r
 	return self
 }
 
-//go:nosplit
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture2D.set_gradient
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gradient, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(gradient[0])))})
 }
-
-//go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture2D.get_gradient
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gradient, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWidth(width int64) { //gd:GradientTexture2D.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ width int64 }{width})
 }
-
-//go:nosplit
 func (self class) SetHeight(height int64) { //gd:GradientTexture2D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
-
-//go:nosplit
 func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture2D.set_use_hdr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_hdr, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsUsingHdr() bool { //gd:GradientTexture2D.is_using_hdr
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_hdr, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFill(fill Fill) { //gd:GradientTexture2D.set_fill
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill, 0|(gdextension.SizeInt<<4), &struct{ fill Fill }{fill})
 }
-
-//go:nosplit
 func (self class) GetFill() Fill { //gd:GradientTexture2D.get_fill
 	var r_ret = noescape.Call[Fill](gd.ObjectChecked(self.AsObject()), methods.get_fill, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFillFrom(fill_from Vector2.XY) { //gd:GradientTexture2D.set_fill_from
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_from, 0|(gdextension.SizeVector2<<4), &struct{ fill_from Vector2.XY }{fill_from})
 }
-
-//go:nosplit
 func (self class) GetFillFrom() Vector2.XY { //gd:GradientTexture2D.get_fill_from
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_fill_from, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFillTo(fill_to Vector2.XY) { //gd:GradientTexture2D.set_fill_to
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fill_to, 0|(gdextension.SizeVector2<<4), &struct{ fill_to Vector2.XY }{fill_to})
 }
-
-//go:nosplit
 func (self class) GetFillTo() Vector2.XY { //gd:GradientTexture2D.get_fill_to
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_fill_to, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRepeat(repeat Repeat) { //gd:GradientTexture2D.set_repeat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat, 0|(gdextension.SizeInt<<4), &struct{ repeat Repeat }{repeat})
 }
-
-//go:nosplit
 func (self class) GetRepeat() Repeat { //gd:GradientTexture2D.get_repeat
 	var r_ret = noescape.Call[Repeat](gd.ObjectChecked(self.AsObject()), methods.get_repeat, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

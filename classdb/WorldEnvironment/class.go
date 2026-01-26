@@ -218,36 +218,25 @@ func (self Instance) SetCompositor(value Compositor.Instance) Instance { //gd:Wo
 	return self
 }
 
-//go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnvironment.set_environment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), &struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEnvironment(env[0])))})
 }
-
-//go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironment.get_environment
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Environment{gdclass.NewEnvironment(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:WorldEnvironment.set_camera_attributes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), &struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCameraAttributes(camera_attributes[0])))})
 }
-
-//go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:WorldEnvironment.get_camera_attributes
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEnvironment.set_compositor
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), &struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCompositor(compositor[0])))})
 }
-
-//go:nosplit
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.get_compositor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Compositor{gdclass.NewCompositor(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

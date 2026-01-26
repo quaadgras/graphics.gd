@@ -352,27 +352,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Checks whether a point is inside any solid shape. Position and other parameters are defined through [PhysicsPointQueryParameters2D]. The shapes the point is inside of are returned in an array containing dictionaries with the following fields:
-
-collider: The colliding object.
-
-collider_id: The colliding object's ID.
-
-rid: The intersecting object's [Resource.ID].
-
-shape: The shape index of the colliding shape.
-
-The number of intersections can be limited with the 'max_results' parameter, to reduce the processing time.
-
-Note: [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in Segments build mode are not solid shapes. Therefore, they will not be detected.
-
-[CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
-[ConcavePolygonShape2D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape2D
-[PhysicsPointQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsPointQueryParameters2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState2D.intersect_point
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_point, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
@@ -381,52 +360,11 @@ func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParamete
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Intersects a ray in a given space. Ray position and other parameters are defined through [PhysicsRayQueryParameters2D]. The returned object is a dictionary with the following fields:
-
-collider: The colliding object.
-
-collider_id: The colliding object's ID.
-
-normal: The object's surface normal at the intersection point, or Vector2(0, 0) if the ray starts inside the shape and [PhysicsRayQueryParameters2D.HitFromInside] is true.
-
-position: The intersection point.
-
-rid: The intersecting object's [Resource.ID].
-
-shape: The shape index of the colliding shape.
-
-If the ray did not intersect anything, then an empty dictionary is returned instead.
-
-[PhysicsRayQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D
-[PhysicsRayQueryParameters2D.HitFromInside]: https://pkg.go.dev/graphics.gd/classdb/PhysicsRayQueryParameters2D#Instance.HitFromInside
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.intersect_ray
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsRayQueryParameters2D(parameters[0])))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters2D] object, against the space. The intersected shapes are returned in an array containing dictionaries with the following fields:
-
-collider: The colliding object.
-
-collider_id: The colliding object's ID.
-
-rid: The intersecting object's [Resource.ID].
-
-shape: The shape index of the colliding shape.
-
-The number of intersections can be limited with the 'max_results' parameter, to reduce the processing time.
-
-[PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState2D.intersect_shape
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
@@ -435,34 +373,11 @@ func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParamete
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Checks how far a [Shape2D] can move without colliding. All the parameters for the query, including the shape and the motion, are supplied through a [PhysicsShapeQueryParameters2D] object.
-
-Returns an array with the safe and unsafe proportions (between 0 and 1) of the motion. The safe proportion is the maximum fraction of the motion that can be made without a collision. The unsafe proportion is the minimum fraction of the distance that must be moved for a collision. If no collision is detected a result of [1.0, 1.0] will be returned.
-
-Note: Any [Shape2D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [CollideShape] to determine the [Shape2D]s that the shape is already colliding with.
-
-[CollideShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.CollideShape
-[PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
-[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
-*/
-//go:nosplit
 func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Packed.Array[float32] { //gd:PhysicsDirectSpaceState2D.cast_motion
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters2D] object, against the space. The resulting array contains a list of points where the shape intersects another. Like with [IntersectShape], the number of returned results can be limited to save processing time.
-
-Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters2D] object, second one is in the collided shape from the physics space.
-
-[IntersectShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D#Instance.IntersectShape
-[PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
-*/
-//go:nosplit
 func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int64) Array.Contains[Vector2.XY] { //gd:PhysicsDirectSpaceState2D.collide_shape
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.collide_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
@@ -471,30 +386,6 @@ func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters
 	var ret = Array.Through(gd.ArrayProxy[Vector2.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters2D] object, against the space. If it collides with more than one shape, the nearest one is selected. The returned object is a dictionary containing the following fields:
-
-collider_id: The colliding object's ID.
-
-linear_velocity: The colliding object's velocity [Vector2.XY]. If the object is an [Area2D], the result is (0, 0).
-
-normal: The collision normal of the query shape at the intersection point, pointing away from the intersecting object.
-
-point: The intersection point.
-
-rid: The intersecting object's [Resource.ID].
-
-shape: The shape index of the colliding shape.
-
-If the shape did not intersect anything, then an empty dictionary is returned instead.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-[PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))

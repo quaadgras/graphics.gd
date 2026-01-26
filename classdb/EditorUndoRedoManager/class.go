@@ -386,24 +386,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Create a new action. After this is called, do all your calls to [AddDoMethod], [AddUndoMethod], [AddDoProperty], and [AddUndoProperty], then commit the action with [CommitAction].
-
-The way actions are merged is dictated by the 'merge_mode' argument.
-
-If 'custom_context' object is provided, it will be used for deducing target history (instead of using the first operation).
-
-The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
-
-If 'mark_unsaved' is false, the action will not mark the history as unsaved. This is useful for example for actions that change a selection, or a setting that will be saved automatically. Otherwise, this should be left to true if the action requires saving by the user or if it can cause data loss when left unsaved.
-
-[AddDoMethod]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.AddDoMethod
-[AddDoProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.AddDoProperty
-[AddUndoMethod]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.AddUndoMethod
-[AddUndoProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.AddUndoProperty
-[CommitAction]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.CommitAction
-*/
-//go:nosplit
 func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMode, custom_context [1]gd.Object, backward_undo_ops bool, mark_unsaved bool) { //gd:EditorUndoRedoManager.create_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		name              gdextension.String
@@ -413,47 +395,17 @@ func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMo
 		mark_unsaved      bool
 	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(custom_context[0])[0])), backward_undo_ops, mark_unsaved})
 }
-
-/*
-Commits the action. If 'execute' is true (default), all "do" methods/properties are called/set when this function is called.
-*/
-//go:nosplit
 func (self class) CommitAction(execute bool) { //gd:EditorUndoRedoManager.commit_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.commit_action, 0|(gdextension.SizeBool<<4), &struct{ execute bool }{execute})
 }
-
-/*
-Returns true if the [EditorUndoRedoManager] is currently committing the action, i.e. running its "do" method or property change (see [CommitAction]).
-
-[CommitAction]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.CommitAction
-[EditorUndoRedoManager]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager
-*/
-//go:nosplit
 func (self class) IsCommittingAction() bool { //gd:EditorUndoRedoManager.is_committing_action
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_committing_action, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Forces the next operation (e.g. [AddDoMethod]) to use the action's history rather than guessing it from the object. This is sometimes needed when a history can't be correctly determined, like for a nested resource that doesn't have a path yet.
-
-This method should only be used when absolutely necessary, otherwise it might cause invalid history state. For most of complex cases, the custom_context parameter of [CreateAction] is sufficient.
-
-[AddDoMethod]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.AddDoMethod
-[CreateAction]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.CreateAction
-*/
-//go:nosplit
 func (self class) ForceFixedHistory() { //gd:EditorUndoRedoManager.force_fixed_history
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fixed_history, 0, &struct{}{})
 }
-
-/*
-Register a method that will be called when the action is committed (i.e. the "do" action).
-
-If this is the first operation, the 'object' will be used to deduce target undo history.
-*/
-//go:nosplit
 func (self class) AddDoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_do_method
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -467,12 +419,6 @@ func (self class) AddDoMethod(obj [1]gd.Object, method String.Name, args ...gd.V
 	_ = ret
 }
 
-/*
-Register a method that will be called when the action is undone (i.e. the "undo" action).
-
-If this is the first operation, the 'object' will be used to deduce target undo history.
-*/
-//go:nosplit
 func (self class) AddUndoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_undo_method
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
 	var dynamic []gdextension.Variant
@@ -486,12 +432,6 @@ func (self class) AddUndoMethod(obj [1]gd.Object, method String.Name, args ...gd
 	_ = ret
 }
 
-/*
-Register a property value change for "do".
-
-If this is the first operation, the 'object' will be used to deduce target undo history.
-*/
-//go:nosplit
 func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:EditorUndoRedoManager.add_do_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		obj      gdextension.Object
@@ -499,13 +439,6 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value va
 		value    gdextension.Variant
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Register a property value change for "undo".
-
-If this is the first operation, the 'object' will be used to deduce target undo history.
-*/
-//go:nosplit
 func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:EditorUndoRedoManager.add_undo_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		obj      gdextension.Object
@@ -513,68 +446,22 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 		value    gdextension.Variant
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Register a reference for "do" that will be erased if the "do" history is lost. This is useful mostly for new nodes created for the "do" call. Do not use for resources.
-*/
-//go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_do_reference
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Register a reference for "undo" that will be erased if the "undo" history is lost. This is useful mostly for nodes removed with the "do" call (not the "undo" call!).
-*/
-//go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_undo_reference
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Returns the history ID deduced from the given 'object'. It can be used with [GetHistoryUndoRedo].
-
-[GetHistoryUndoRedo]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.GetHistoryUndoRedo
-*/
-//go:nosplit
 func (self class) GetObjectHistoryId(obj [1]gd.Object) int64 { //gd:EditorUndoRedoManager.get_object_history_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [UndoRedo] object associated with the given history 'id'.
-
-'id' above 0 are mapped to the opened scene tabs (but it doesn't match their order). 'id' of 0 or lower have special meaning (see [SpecialHistory]).
-
-Best used with [GetObjectHistoryId]. This method is only provided in case you need some more advanced methods of [UndoRedo] (but keep in mind that directly operating on the [UndoRedo] object might affect editor's stability).
-
-[GetObjectHistoryId]: https://pkg.go.dev/graphics.gd/classdb/EditorUndoRedoManager#Instance.GetObjectHistoryId
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
-//go:nosplit
 func (self class) GetHistoryUndoRedo(id int64) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_history_undo_redo, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.UndoRedo{gdclass.NewUndoRedo(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if 'id' is [InvalidHistory].
-
-If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
-
-
-	var scene_root = EditorInterface.GetEditedSceneRoot()
-	var undo_redo = EditorInterface.GetEditorUndoRedo()
-	undo_redo.MoreArgs().ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
-
-
-Note: If you want to mark an edited scene as unsaved without clearing its history, use [EditorInterface.MarkSceneAsUnsaved] instead.
-
-[EditorInterface.MarkSceneAsUnsaved]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#MarkSceneAsUnsaved
-*/
-//go:nosplit
 func (self class) ClearHistory(id int64, increase_version bool) { //gd:EditorUndoRedoManager.clear_history
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_history, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id               int64

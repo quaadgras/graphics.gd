@@ -356,12 +356,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [GetAudioMixRate] is not overridden.
-
-[GetAudioMixRate]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
-*/
 func (class) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -369,12 +363,6 @@ func (class) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [Audioserver.SpeakerModeStereo] if [GetAudioSpeakerMode] is not overridden.
-
-[GetAudioSpeakerMode]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
-*/
 func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -382,17 +370,6 @@ func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called when the engine determines whether this [MovieWriter] is able to handle the file at 'path'. Must return true if this [MovieWriter] is able to handle the given file path, false otherwise. Typically, [HandlesFile] is overridden as follows to allow the user to record a file at any path with a given file extension:
-
-	HandlesFile := func(path string) bool {
-		return strings.ToLower(filepath.Ext(path)) == ".mkv"
-	}
-
-[HandlesFile]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
-[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
-*/
 func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -402,12 +379,6 @@ func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Called once before the engine starts writing video and audio data. 'movie_size' is the width and height of the video to save. 'fps' is the number of frames per second specified in the project settings or using the --fixed-fps <fps> [command line argument].
-
-[command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
-*/
 func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY, fps int64, base_path String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
@@ -424,10 +395,6 @@ func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Called at the end of every rendered frame. The 'frame_image' and 'audio_frame_block' function arguments should be written to.
-*/
 func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass.Image, audio_frame_block gdextension.Pointer) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -444,15 +411,6 @@ func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [SceneTree.Quit] is called.
-
-Note: Pressing Ctrl + C on the terminal running the editor/project does not result in [WriteEnd] being called.
-
-[SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
-[WriteEnd]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
-*/
 func (class) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -460,14 +418,6 @@ func (class) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCa
 	}
 }
 
-/*
-Adds a writer to be usable by the engine. The supported file extensions can be set by overriding [HandlesFile].
-
-Note: [AddWriter] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
-
-[HandlesFile]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
-*/
-//go:nosplit
 func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
 	noescape.CallStatic[struct{}](methods.add_writer, 0|(gdextension.SizeObject<<4), &struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetMovieWriter(writer[0])[0]))})
 }

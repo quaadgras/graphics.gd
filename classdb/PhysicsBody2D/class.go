@@ -288,24 +288,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Moves the body along the vector 'motion'. In order to be frame rate independent in [Node.PhysicsProcess] or [Node.Process], 'motion' should be computed using delta.
-
-Returns a [KinematicCollision2D], which contains information about the collision when stopped, or when touching another body along the motion.
-
-If 'test_only' is true, the body does not move but the would-be collision information is given.
-
-'safe_margin' is the extra margin used for collision recovery (see [CharacterBody2D.SafeMargin] for more details).
-
-If 'recovery_as_collision' is true, any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
-
-[CharacterBody2D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D
-[CharacterBody2D.SafeMargin]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.SafeMargin
-[KinematicCollision2D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision2D
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-*/
-//go:nosplit
 func (self class) MoveAndCollide(motion Vector2.XY, test_only bool, safe_margin float64, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.move_and_collide, gdextension.SizeObject|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		motion                Vector2.XY
@@ -316,25 +298,6 @@ func (self class) MoveAndCollide(motion Vector2.XY, test_only bool, safe_margin 
 	var ret = [1]gdclass.KinematicCollision2D{gdclass.NewKinematicCollision2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Checks for collisions without moving the body. In order to be frame rate independent in [Node.PhysicsProcess] or [Node.Process], 'motion' should be computed using delta.
-
-Virtually sets the node's position, scale and rotation to that of the given [Transform2D.OriginXY], then tries to move the body along the vector 'motion'. Returns true if a collision would stop the body from moving along the whole path.
-
-'collision' is an optional object of type [KinematicCollision2D], which contains additional information about the collision when stopped, or when touching another body along the motion.
-
-'safe_margin' is the extra margin used for collision recovery (see [CharacterBody2D.SafeMargin] for more details).
-
-If 'recovery_as_collision' is true, any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would touch any other bodies.
-
-[CharacterBody2D.SafeMargin]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody2D#Instance.SafeMargin
-[KinematicCollision2D]: https://pkg.go.dev/graphics.gd/classdb/KinematicCollision2D
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collision [1]gdclass.KinematicCollision2D, safe_margin float64, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_move, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), &struct {
 		from                  Transform2D.OriginXY
@@ -346,41 +309,19 @@ func (self class) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collisi
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-*/
-//go:nosplit
 func (self class) GetGravity() Vector2.XY { //gd:PhysicsBody2D.get_gravity
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of nodes that were added as collision exceptions for this body.
-*/
-//go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody2D] { //gd:PhysicsBody2D.get_collision_exceptions
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_exceptions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Adds a body to the list of bodies that this body can't collide with.
-*/
-//go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.add_collision_exception_with
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 }
-
-/*
-Removes a body from the list of bodies that this body can't collide with.
-*/
-//go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.remove_collision_exception_with
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 }

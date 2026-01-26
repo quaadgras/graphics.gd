@@ -273,92 +273,49 @@ func (self Instance) SetMargin(value Float.X) Instance { //gd:SpringArm3D.margin
 	return self
 }
 
-/*
-Returns the spring arm's current length.
-*/
-//go:nosplit
 func (self class) GetHitLength() float64 { //gd:SpringArm3D.get_hit_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hit_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLength(length float64) { //gd:SpringArm3D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetLength() float64 { //gd:SpringArm3D.get_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape[0])))})
 }
-
-//go:nosplit
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:SpringArm3D.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Adds the [PhysicsBody3D] object with the given [Resource.ID] to the list of [PhysicsBody3D] objects excluded from the collision check.
-
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) AddExcludedObject(rid RID.Any) { //gd:SpringArm3D.add_excluded_object
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_excluded_object, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Removes the given [Resource.ID] from the list of [PhysicsBody3D] objects excluded from the collision check.
-
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) RemoveExcludedObject(rid RID.Any) bool { //gd:SpringArm3D.remove_excluded_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.remove_excluded_object, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clears the list of [PhysicsBody3D] objects excluded from the collision check.
-
-[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
-*/
-//go:nosplit
 func (self class) ClearExcludedObjects() { //gd:SpringArm3D.clear_excluded_objects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_excluded_objects, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:SpringArm3D.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:SpringArm3D.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMargin(margin float64) { //gd:SpringArm3D.set_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetMargin() float64 { //gd:SpringArm3D.get_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

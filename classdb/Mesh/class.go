@@ -636,12 +636,6 @@ func (self Instance) SetLightmapSizeHint(value Vector2i.XY) Instance { //gd:Mesh
 	class(self).SetLightmapSizeHint(Vector2i.XY(value))
 	return self
 }
-
-/*
-Virtual method to override the surface count for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _get_surface_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -649,12 +643,6 @@ func (class) _get_surface_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the surface array length for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_array_len(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -663,12 +651,6 @@ func (class) _surface_get_array_len(impl func(ptr gdclass.Receiver, index int64)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the surface array index length for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_array_index_len(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -677,12 +659,6 @@ func (class) _surface_get_array_index_len(impl func(ptr gdclass.Receiver, index 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the surface arrays for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_arrays(impl func(ptr gdclass.Receiver, index int64) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -696,12 +672,6 @@ func (class) _surface_get_arrays(impl func(ptr gdclass.Receiver, index int64) Ar
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override the blend shape arrays for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int64) Array.Contains[Array.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -715,12 +685,6 @@ func (class) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, ind
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override the surface LODs for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_lods(impl func(ptr gdclass.Receiver, index int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -734,12 +698,6 @@ func (class) _surface_get_lods(impl func(ptr gdclass.Receiver, index int64) Dict
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override the surface format for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_format(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -748,12 +706,6 @@ func (class) _surface_get_format(impl func(ptr gdclass.Receiver, index int64) in
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the surface primitive type for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_primitive_type(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -762,12 +714,6 @@ func (class) _surface_get_primitive_type(impl func(ptr gdclass.Receiver, index i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the setting of a 'material' at the given 'index' for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_set_material(impl func(ptr gdclass.Receiver, index int64, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -778,12 +724,6 @@ func (class) _surface_set_material(impl func(ptr gdclass.Receiver, index int64, 
 		impl(self, index, material)
 	}
 }
-
-/*
-Virtual method to override the surface material for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _surface_get_material(impl func(ptr gdclass.Receiver, index int64) [1]gdclass.Material) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -797,12 +737,6 @@ func (class) _surface_get_material(impl func(ptr gdclass.Receiver, index int64) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override the number of blend shapes for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _get_blend_shape_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -810,12 +744,6 @@ func (class) _get_blend_shape_count(impl func(ptr gdclass.Receiver) int64) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _get_blend_shape_name(impl func(ptr gdclass.Receiver, index int64) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -829,12 +757,6 @@ func (class) _get_blend_shape_name(impl func(ptr gdclass.Receiver, index int64) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method to override the names of blend shapes for a custom class extending [Mesh].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _set_blend_shape_name(impl func(ptr gdclass.Receiver, index int64, name String.Name)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
@@ -844,13 +766,6 @@ func (class) _set_blend_shape_name(impl func(ptr gdclass.Receiver, index int64, 
 		impl(self, index, name)
 	}
 }
-
-/*
-Virtual method to override the [AABB.PositionSize] for a custom class extending [Mesh].
-
-[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-*/
 func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -859,148 +774,60 @@ func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd
 	}
 }
 
-//go:nosplit
 func (self class) SetLightmapSizeHint(size Vector2i.XY) { //gd:Mesh.set_lightmap_size_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_size_hint, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetLightmapSizeHint() Vector2i.XY { //gd:Mesh.get_lightmap_size_hint
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_size_hint, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the smallest [AABB.PositionSize] enclosing this mesh in local space. Not affected by custom_aabb.
-
-Note: This is only implemented for [ArrayMesh] and [PrimitiveMesh].
-
-[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-[PrimitiveMesh]: https://pkg.go.dev/graphics.gd/classdb/PrimitiveMesh
-*/
-//go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:Mesh.get_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
-*/
-//go:nosplit
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:Mesh.get_faces
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the number of surfaces that the [Mesh] holds. This is equivalent to [MeshInstance3D.GetSurfaceOverrideMaterialCount].
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[MeshInstance3D.GetSurfaceOverrideMaterialCount]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.GetSurfaceOverrideMaterialCount
-*/
-//go:nosplit
 func (self class) GetSurfaceCount() int64 { //gd:Mesh.get_surface_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [ArrayMesh.AddSurfaceFromArrays]).
-
-[ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) SurfaceGetArrays(surf_idx int64) Array.Any { //gd:Mesh.surface_get_arrays
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.surface_get_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the blend shape arrays for the requested surface.
-*/
-//go:nosplit
 func (self class) SurfaceGetBlendShapeArrays(surf_idx int64) Array.Contains[Array.Any] { //gd:Mesh.surface_get_blend_shape_arrays
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.surface_get_blend_shape_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sets a [Material] for a given surface. Surface will be rendered using this material.
-
-Note: This assigns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To set the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [MeshInstance3D.SetSurfaceOverrideMaterial] instead.
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[MeshInstance3D.SetSurfaceOverrideMaterial]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.SetSurfaceOverrideMaterial
-*/
-//go:nosplit
 func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surf_idx int64
 		material gdextension.Object
 	}{surf_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-/*
-Returns a [Material] in a given surface. Surface is rendered using this material.
-
-Note: This returns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To get the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [MeshInstance3D.GetSurfaceOverrideMaterial] instead.
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[MeshInstance3D.GetSurfaceOverrideMaterial]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.GetSurfaceOverrideMaterial
-*/
-//go:nosplit
 func (self class) SurfaceGetMaterial(surf_idx int64) [1]gdclass.Material { //gd:Mesh.surface_get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.surface_get_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a placeholder version of this resource ([PlaceholderMesh]).
-
-[PlaceholderMesh]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderMesh
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Calculate a [ConcavePolygonShape3D] from the mesh.
-
-[ConcavePolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape3D
-*/
-//go:nosplit
 func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_trimesh_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ConcavePolygonShape3D{gdclass.NewConcavePolygonShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Calculate a [ConvexPolygonShape3D] from the mesh.
-
-If 'clean' is true (default), duplicate and interior vertices are removed automatically. You can set it to false to make the process faster if not needed.
-
-If 'simplify' is true, the geometry can be further simplified to reduce the number of vertices. Disabled by default.
-
-[ConvexPolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape3D
-*/
-//go:nosplit
 func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_convex_shape, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
 		clean    bool
@@ -1009,25 +836,11 @@ func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.Convex
 	var ret = [1]gdclass.ConvexPolygonShape3D{gdclass.NewConvexPolygonShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Calculate an outline mesh at a defined offset (margin) from the original mesh.
-
-Note: This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
-*/
-//go:nosplit
 func (self class) CreateOutline(margin float64) [1]gdclass.Mesh { //gd:Mesh.create_outline
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_outline, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of these primitive types: [PrimitiveTriangles], [PrimitiveTriangleStrip].
-
-[TriangleMesh]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh
-*/
-//go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_triangle_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TriangleMesh{gdclass.NewTriangleMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

@@ -322,172 +322,84 @@ func New() Instance {
 	return casted
 }
 
-/*
-Parses the next node in the file. This method returns an error code.
-*/
-//go:nosplit
 func (self class) Read() Error.Code { //gd:XMLParser.read
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.read, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the type of the current node. Compare with [NodeType] constants.
-*/
-//go:nosplit
 func (self class) GetNodeType() NodeType { //gd:XMLParser.get_node_type
 	var r_ret = noescape.Call[NodeType](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of a node. This method will raise an error if the currently parsed node is a text node.
-
-Note: The content of a [NodeCdata] node and the comment string of a [NodeComment] node are also considered names.
-*/
-//go:nosplit
 func (self class) GetNodeName() String.Readable { //gd:XMLParser.get_node_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the contents of a text node. This method will raise an error if the current parsed node is of any other type.
-*/
-//go:nosplit
 func (self class) GetNodeData() String.Readable { //gd:XMLParser.get_node_data
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_data, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the byte offset of the currently parsed node since the beginning of the file or buffer. This is usually equivalent to the number of characters before the read position.
-*/
-//go:nosplit
 func (self class) GetNodeOffset() int64 { //gd:XMLParser.get_node_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of attributes in the currently parsed element.
-
-Note: If this method is used while the currently parsed node is not [NodeElement] or [NodeElementEnd], this count will not be updated and will still reflect the last element.
-*/
-//go:nosplit
 func (self class) GetAttributeCount() int64 { //gd:XMLParser.get_attribute_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_attribute_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of an attribute of the currently parsed element, specified by the 'idx' index.
-*/
-//go:nosplit
 func (self class) GetAttributeName(idx int64) String.Readable { //gd:XMLParser.get_attribute_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_attribute_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the value of an attribute of the currently parsed element, specified by the 'idx' index.
-*/
-//go:nosplit
 func (self class) GetAttributeValue(idx int64) String.Readable { //gd:XMLParser.get_attribute_value
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_attribute_value, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the currently parsed element has an attribute with the 'name'.
-*/
-//go:nosplit
 func (self class) HasAttribute(name String.Readable) bool { //gd:XMLParser.has_attribute
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the value of an attribute of the currently parsed element, specified by its 'name'. This method will raise an error if the element has no such attribute.
-*/
-//go:nosplit
 func (self class) GetNamedAttributeValue(name String.Readable) String.Readable { //gd:XMLParser.get_named_attribute_value
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_named_attribute_value, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the value of an attribute of the currently parsed element, specified by its 'name'. This method will return an empty string if the element has no such attribute.
-*/
-//go:nosplit
 func (self class) GetNamedAttributeValueSafe(name String.Readable) String.Readable { //gd:XMLParser.get_named_attribute_value_safe
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_named_attribute_value_safe, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the currently parsed element is empty, e.g. <element />.
-*/
-//go:nosplit
 func (self class) IsEmpty() bool { //gd:XMLParser.is_empty
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current line in the parsed file, counting from 0.
-*/
-//go:nosplit
 func (self class) GetCurrentLine() int64 { //gd:XMLParser.get_current_line
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_line, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Skips the current section. If the currently parsed node contains more inner nodes, they will be ignored and the cursor will go to the closing of the current element.
-*/
-//go:nosplit
 func (self class) SkipSection() { //gd:XMLParser.skip_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skip_section, 0, &struct{}{})
 }
-
-/*
-Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
-*/
-//go:nosplit
 func (self class) SeekTo(position int64) Error.Code { //gd:XMLParser.seek
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.seek, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Opens an XML 'file' for parsing. This method returns an error code.
-*/
-//go:nosplit
 func (self class) Open(file String.Readable) Error.Code { //gd:XMLParser.open
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Opens an XML raw 'buffer' for parsing. This method returns an error code.
-*/
-//go:nosplit
 func (self class) OpenBuffer(buffer Packed.Bytes) Error.Code { //gd:XMLParser.open_buffer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)

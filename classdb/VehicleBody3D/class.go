@@ -230,36 +230,25 @@ func (self Instance) SetSteering(value Float.X) Instance { //gd:VehicleBody3D.st
 	return self
 }
 
-//go:nosplit
 func (self class) SetEngineForce(engine_force float64) { //gd:VehicleBody3D.set_engine_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_engine_force, 0|(gdextension.SizeFloat<<4), &struct{ engine_force float64 }{engine_force})
 }
-
-//go:nosplit
 func (self class) GetEngineForce() float64 { //gd:VehicleBody3D.get_engine_force
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_engine_force, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBrake(brake float64) { //gd:VehicleBody3D.set_brake
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_brake, 0|(gdextension.SizeFloat<<4), &struct{ brake float64 }{brake})
 }
-
-//go:nosplit
 func (self class) GetBrake() float64 { //gd:VehicleBody3D.get_brake
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_brake, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSteering(steering float64) { //gd:VehicleBody3D.set_steering
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_steering, 0|(gdextension.SizeFloat<<4), &struct{ steering float64 }{steering})
 }
-
-//go:nosplit
 func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_steering, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

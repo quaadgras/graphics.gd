@@ -497,278 +497,151 @@ func (self Instance) SetAudioBusName(value string) Instance { //gd:Area2D.audio_
 	return self
 }
 
-//go:nosplit
 func (self class) SetGravitySpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_gravity_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetGravitySpaceOverrideMode() SpaceOverride { //gd:Area2D.get_gravity_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_gravity_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityIsPoint(enable bool) { //gd:Area2D.set_gravity_is_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_is_point, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsGravityAPoint() bool { //gd:Area2D.is_gravity_a_point
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_gravity_a_point, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityPointUnitDistance(distance_scale float64) { //gd:Area2D.set_gravity_point_unit_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_unit_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance_scale float64 }{distance_scale})
 }
-
-//go:nosplit
 func (self class) GetGravityPointUnitDistance() float64 { //gd:Area2D.get_gravity_point_unit_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_unit_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityPointCenter(center Vector2.XY) { //gd:Area2D.set_gravity_point_center
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_point_center, 0|(gdextension.SizeVector2<<4), &struct{ center Vector2.XY }{center})
 }
-
-//go:nosplit
 func (self class) GetGravityPointCenter() Vector2.XY { //gd:Area2D.get_gravity_point_center
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity_point_center, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravityDirection(direction Vector2.XY) { //gd:Area2D.set_gravity_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_direction, 0|(gdextension.SizeVector2<<4), &struct{ direction Vector2.XY }{direction})
 }
-
-//go:nosplit
 func (self class) GetGravityDirection() Vector2.XY { //gd:Area2D.get_gravity_direction
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity_direction, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGravity(gravity float64) { //gd:Area2D.set_gravity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeFloat<<4), &struct{ gravity float64 }{gravity})
 }
-
-//go:nosplit
 func (self class) GetGravity() float64 { //gd:Area2D.get_gravity
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_linear_damp_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetLinearDampSpaceOverrideMode() SpaceOverride { //gd:Area2D.get_linear_damp_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_angular_damp_space_override_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_space_override_mode, 0|(gdextension.SizeInt<<4), &struct{ space_override_mode SpaceOverride }{space_override_mode})
 }
-
-//go:nosplit
 func (self class) GetAngularDampSpaceOverrideMode() SpaceOverride { //gd:Area2D.get_angular_damp_space_override_mode
 	var r_ret = noescape.Call[SpaceOverride](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_space_override_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:Area2D.set_linear_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), &struct{ linear_damp float64 }{linear_damp})
 }
-
-//go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:Area2D.get_linear_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:Area2D.set_angular_damp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), &struct{ angular_damp float64 }{angular_damp})
 }
-
-//go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:Area2D.get_angular_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPriority(priority int64) { //gd:Area2D.set_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetPriority() int64 { //gd:Area2D.get_priority
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMonitoring(enable bool) { //gd:Area2D.set_monitoring
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitoring, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsMonitoring() bool { //gd:Area2D.is_monitoring
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMonitorable(enable bool) { //gd:Area2D.set_monitorable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitorable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsMonitorable() bool { //gd:Area2D.is_monitorable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitorable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping body's [CollisionObject2D.CollisionLayer] must be part of this area's [CollisionObject2D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[CollisionObject2D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
-[CollisionObject2D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
-[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
-[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
-*/
-//go:nosplit
 func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:Area2D.get_overlapping_bodies
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_overlapping_bodies, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a list of intersecting [Area2D]s. The overlapping area's [CollisionObject2D.CollisionLayer] must be part of this area's [CollisionObject2D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-[CollisionObject2D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
-[CollisionObject2D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area2D] { //gd:Area2D.get_overlapping_areas
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_overlapping_areas, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if intersecting any [PhysicsBody2D]s or [TileMap]s, otherwise returns false. The overlapping body's [CollisionObject2D.CollisionLayer] must be part of this area's [CollisionObject2D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[CollisionObject2D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
-[CollisionObject2D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
-[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
-[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
-*/
-//go:nosplit
 func (self class) HasOverlappingBodies() bool { //gd:Area2D.has_overlapping_bodies
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_overlapping_bodies, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if intersecting any [Area2D]s, otherwise returns false. The overlapping area's [CollisionObject2D.CollisionLayer] must be part of this area's [CollisionObject2D.CollisionMask] in order to be detected.
-
-For performance reasons (collisions are all processed at the same time) the list of overlapping areas is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-[CollisionObject2D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
-[CollisionObject2D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_overlapping_areas, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given physics body intersects or overlaps this [Area2D], false otherwise.
-
-Note: The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
-
-The 'body' argument can either be a [PhysicsBody2D] or a [TileMap] instance. While TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
-[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
-*/
-//go:nosplit
 func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(body[0])))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the given [Area2D] intersects or overlaps this [Area2D], false otherwise.
-
-Note: The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
-
-[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
-*/
-//go:nosplit
 func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ area gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(area[0])))})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAudioBusName(name String.Name) { //gd:Area2D.set_audio_bus_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-//go:nosplit
 func (self class) GetAudioBusName() String.Name { //gd:Area2D.get_audio_bus_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_audio_bus_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAudioBusOverride(enable bool) { //gd:Area2D.set_audio_bus_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_bus_override, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_bus
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_overriding_audio_bus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

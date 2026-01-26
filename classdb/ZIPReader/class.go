@@ -306,48 +306,21 @@ func New() Instance {
 	return casted
 }
 
-/*
-Opens the zip archive at the given 'path' and reads its file index.
-*/
-//go:nosplit
 func (self class) Open(path String.Readable) Error.Code { //gd:ZIPReader.open
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes the underlying resources used by this instance.
-*/
-//go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPReader.close
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the list of names of all files in the loaded archive.
-
-Must be called after [Open].
-
-[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
-*/
-//go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:ZIPReader.get_files
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_files, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Loads the whole content of a file in the loaded zip archive into memory and returns it.
-
-Must be called after [Open].
-
-[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
-*/
-//go:nosplit
 func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Bytes { //gd:ZIPReader.read_file
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_file, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
@@ -356,15 +329,6 @@ func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Byt
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Returns true if the file exists in the loaded zip archive.
-
-Must be called after [Open].
-
-[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
-*/
-//go:nosplit
 func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
@@ -373,13 +337,6 @@ func (self class) FileExists(path String.Readable, case_sensitive bool) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the compression level of the file in the loaded zip archive. Returns -1 if the file doesn't exist or any other error occurs. Must be called after [Open].
-
-[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPReader#Instance.Open
-*/
-//go:nosplit
 func (self class) GetCompressionLevel(path String.Readable, case_sensitive bool) int64 { //gd:ZIPReader.get_compression_level
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String

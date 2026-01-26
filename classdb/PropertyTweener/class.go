@@ -282,109 +282,36 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets a custom initial value to the [PropertyTweener].
-
-Example: Move the node from position (100, 100) to (200, 100).
-
-
-	var tween = SceneTree.Get(node).CreateTween()
-	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(Vector2.New(100, 100))
-
-
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-*/
-//go:nosplit
 func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from, gdextension.SizeObject|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Makes the [PropertyTweener] use the current property value (i.e. at the time of creating this [PropertyTweener]) as a starting point. This is equivalent of using [From] with the current value. These two calls will do the same:
-
-
-	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(node2d.Position())
-	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).FromCurrent()
-
-
-[From]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener#Instance.From
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-*/
-//go:nosplit
 func (self class) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from_current, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-When called, the final value will be used as a relative value instead.
-
-Example: Move the node by 100 pixels to the right.
-
-
-	var tween = SceneTree.Get(node).CreateTween()
-	PropertyTweener.Make(tween, self, "position", Vector2.MulX(Vector2.Right, 100), 1).AsRelative()
-
-*/
-//go:nosplit
 func (self class) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.as_relative, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the type of used transition from [Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans Tween.TransitionType }{trans})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the type of used easing from [Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease Tween.EaseType }{ease})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Allows interpolating the value with a custom easing function. The provided 'interpolator_method' will be called with a value ranging from 0.0 to 1.0 and is expected to return a value within the same range (values outside the range can be used for overshoot). The return value of the method is then used for interpolation between initial and final value. Note that the parameter passed to the method is still subject to the tweener's own easing.
-
-
-	var curve Curve.Instance
-	var tween Tween.Instance
-	PropertyTweener.Make(tween, self, "position:x", 300, 1).AsRelative().SetCustomInterpolator(func(v float32) float32 {
-		return curve.SampleBaked(v)
-	})
-
-
-*/
-//go:nosplit
 func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_custom_interpolator
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_custom_interpolator, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ interpolator_method gdextension.Callable }{pointers.Get(gd.InternalCallable(interpolator_method))})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the time in seconds after which the [PropertyTweener] will start interpolating. By default there's no delay.
-
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-*/
-//go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

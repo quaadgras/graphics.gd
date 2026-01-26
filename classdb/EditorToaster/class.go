@@ -184,10 +184,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Pushes a toast notification to the editor for display.
-*/
-//go:nosplit
 func (self class) PushToast(message String.Readable, severity Severity, tooltip String.Readable) { //gd:EditorToaster.push_toast
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_toast, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		message  gdextension.String

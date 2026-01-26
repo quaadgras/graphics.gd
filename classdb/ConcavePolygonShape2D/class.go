@@ -189,14 +189,11 @@ func (self Instance) SetSegments(value []Vector2.XY) Instance { //gd:ConcavePoly
 	return self
 }
 
-//go:nosplit
 func (self class) SetSegments(segments Packed.Array[Vector2.XY]) { //gd:ConcavePolygonShape2D.set_segments
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_segments, 0|(gdextension.SizePackedArray<<4), &struct {
 		segments gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments))})
 }
-
-//go:nosplit
 func (self class) GetSegments() Packed.Array[Vector2.XY] { //gd:ConcavePolygonShape2D.get_segments
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_segments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

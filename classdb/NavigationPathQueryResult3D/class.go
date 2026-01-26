@@ -245,76 +245,52 @@ func (self Instance) SetPathLength(value Float.X) Instance { //gd:NavigationPath
 	return self
 }
 
-//go:nosplit
 func (self class) SetPath(path Packed.Array[Vector3.XYZ]) { //gd:NavigationPathQueryResult3D.set_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), &struct {
 		path gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](path))})
 }
-
-//go:nosplit
 func (self class) GetPath() Packed.Array[Vector3.XYZ] { //gd:NavigationPathQueryResult3D.get_path
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:NavigationPathQueryResult3D.set_path_types
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_types, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_types gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types))})
 }
-
-//go:nosplit
 func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryResult3D.get_path_types
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:NavigationPathQueryResult3D.set_path_rids
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
 }
-
-//go:nosplit
 func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult3D.get_path_rids
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:NavigationPathQueryResult3D.set_path_owner_ids
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_owner_ids, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_owner_ids gdextension.PackedArray[int64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))})
 }
-
-//go:nosplit
 func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult3D.get_path_owner_ids
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathLength(length float64) { //gd:NavigationPathQueryResult3D.set_path_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetPathLength() float64 { //gd:NavigationPathQueryResult3D.get_path_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Reset the result object to its initial state. This is useful to reuse the object across multiple queries.
-*/
-//go:nosplit
 func (self class) Reset() { //gd:NavigationPathQueryResult3D.reset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }

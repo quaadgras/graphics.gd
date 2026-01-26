@@ -172,12 +172,9 @@ func (self Instance) SetOpType(value OpType) Instance { //gd:VisualShaderNodeSwi
 	return self
 }
 
-//go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeSwitch.set_op_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), &struct{ atype OpType }{atype})
 }
-
-//go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeSwitch.get_op_type
 	var r_ret = noescape.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

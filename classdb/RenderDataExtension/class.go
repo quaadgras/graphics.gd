@@ -247,12 +247,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
-
-[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
-*/
 func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -265,12 +259,6 @@ func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclas
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
-
-[RenderSceneDataExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneDataExtension
-*/
 func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -283,12 +271,6 @@ func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.R
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Implement this in GDExtension to return the [Resource.ID] of the implementation's environment object.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -296,12 +278,6 @@ func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement this in GDExtension to return the [Resource.ID] for the implementation's camera attributes object.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
 func (class) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

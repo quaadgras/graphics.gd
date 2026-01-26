@@ -176,12 +176,9 @@ func (self Instance) SetConstant(value Vector3.XYZ) Instance { //gd:VisualShader
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant Vector3.XYZ) { //gd:VisualShaderNodeVec3Constant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeVector3<<4), &struct{ constant Vector3.XYZ }{constant})
 }
-
-//go:nosplit
 func (self class) GetConstant() Vector3.XYZ { //gd:VisualShaderNodeVec3Constant.get_constant
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret

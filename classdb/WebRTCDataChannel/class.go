@@ -270,138 +270,67 @@ func (self Instance) SetWriteMode(value WriteMode) Instance { //gd:WebRTCDataCha
 	return self
 }
 
-/*
-Reserved, but not used for now.
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCDataChannel.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes this data channel, notifying the other peer.
-*/
-//go:nosplit
 func (self class) Close() { //gd:WebRTCDataChannel.close
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
-
-/*
-Returns true if the last received packet was transferred as text. See [WriteMode].
-
-[WriteMode]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel#Instance.WriteMode
-*/
-//go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.was_string_packet, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWriteMode(write_mode WriteMode) { //gd:WebRTCDataChannel.set_write_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_mode, 0|(gdextension.SizeInt<<4), &struct{ write_mode WriteMode }{write_mode})
 }
-
-//go:nosplit
 func (self class) GetWriteMode() WriteMode { //gd:WebRTCDataChannel.get_write_mode
 	var r_ret = noescape.Call[WriteMode](gd.ObjectChecked(self.AsObject()), methods.get_write_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current state of this channel.
-*/
-//go:nosplit
 func (self class) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
 	var r_ret = noescape.Call[ChannelState](gd.ObjectChecked(self.AsObject()), methods.get_ready_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the label assigned to this channel during creation.
-*/
-//go:nosplit
 func (self class) GetLabel() String.Readable { //gd:WebRTCDataChannel.get_label
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if this channel was created with ordering enabled (default).
-*/
-//go:nosplit
 func (self class) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ordered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the ID assigned to this channel during creation (or auto-assigned during negotiation).
-
-If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return 65535 until then).
-*/
-//go:nosplit
 func (self class) GetId() int64 { //gd:WebRTCDataChannel.get_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the maxPacketLifeTime value assigned to this channel during creation.
-
-Will be 65535 if not specified.
-*/
-//go:nosplit
 func (self class) GetMaxPacketLifeTime() int64 { //gd:WebRTCDataChannel.get_max_packet_life_time
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_packet_life_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the maxRetransmits value assigned to this channel during creation.
-
-Will be 65535 if not specified.
-*/
-//go:nosplit
 func (self class) GetMaxRetransmits() int64 { //gd:WebRTCDataChannel.get_max_retransmits
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_retransmits, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the sub-protocol assigned to this channel during creation. An empty string if not specified.
-*/
-//go:nosplit
 func (self class) GetProtocol() String.Readable { //gd:WebRTCDataChannel.get_protocol
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_protocol, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if this channel was created with out-of-band configuration.
-*/
-//go:nosplit
 func (self class) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_negotiated, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of bytes currently queued to be sent over this channel.
-*/
-//go:nosplit
 func (self class) GetBufferedAmount() int64 { //gd:WebRTCDataChannel.get_buffered_amount
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffered_amount, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

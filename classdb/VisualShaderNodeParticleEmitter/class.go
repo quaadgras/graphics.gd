@@ -172,12 +172,9 @@ func (self Instance) SetMode2d(value bool) Instance { //gd:VisualShaderNodeParti
 	return self
 }
 
-//go:nosplit
 func (self class) SetMode2d(enabled bool) { //gd:VisualShaderNodeParticleEmitter.set_mode_2d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode_2d, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsMode2d() bool { //gd:VisualShaderNodeParticleEmitter.is_mode_2d
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mode_2d, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

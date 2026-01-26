@@ -293,120 +293,46 @@ func (self Instance) SetRest(value Transform2D.OriginXY) Instance { //gd:Bone2D.
 	return self
 }
 
-//go:nosplit
 func (self class) SetRest(rest Transform2D.OriginXY) { //gd:Bone2D.set_rest
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest, 0|(gdextension.SizeTransform2D<<4), &struct{ rest Transform2D.OriginXY }{rest})
 }
-
-//go:nosplit
 func (self class) GetRest() Transform2D.OriginXY { //gd:Bone2D.get_rest
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Resets the bone to the rest pose. This is equivalent to setting [Node2D.Transform] to [Rest].
-
-[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
-[Rest]: https://pkg.go.dev/graphics.gd/classdb/Bone2D#Instance.Rest
-*/
-//go:nosplit
 func (self class) ApplyRest() { //gd:Bone2D.apply_rest
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_rest, 0, &struct{}{})
 }
-
-/*
-Returns the node's [Rest] [Transform2D.OriginXY] if it doesn't have a parent, or its rest pose relative to its parent.
-
-[Rest]: https://pkg.go.dev/graphics.gd/classdb/Bone2D#Instance.Rest
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) GetSkeletonRest() Transform2D.OriginXY { //gd:Bone2D.get_skeleton_rest
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rest, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the node's index as part of the entire skeleton. See [Skeleton2D].
-
-[Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
-*/
-//go:nosplit
 func (self class) GetIndexInSkeleton() int64 { //gd:Bone2D.get_index_in_skeleton
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index_in_skeleton, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-When set to true, the [Bone2D] node will attempt to automatically calculate the bone angle and length using the first child [Bone2D] node, if one exists. If none exist, the [Bone2D] cannot automatically calculate these values and will print a warning.
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-*/
-//go:nosplit
 func (self class) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bone2D.set_autocalculate_length_and_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autocalculate_length_and_angle, 0|(gdextension.SizeBool<<4), &struct{ auto_calculate bool }{auto_calculate})
 }
-
-/*
-Returns whether this [Bone2D] is going to autocalculate its length and bone angle using its first [Bone2D] child node, if one exists. If there are no [Bone2D] children, then it cannot autocalculate these values and will print a warning.
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-*/
-//go:nosplit
 func (self class) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autocalculate_length_and_angle
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the length of the bone in the [Bone2D].
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-*/
-//go:nosplit
 func (self class) SetLength(length float64) { //gd:Bone2D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-/*
-Returns the length of the bone in the [Bone2D] node.
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-*/
-//go:nosplit
 func (self class) GetLength() float64 { //gd:Bone2D.get_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the bone angle for the [Bone2D]. This is typically set to the rotation from the [Bone2D] to a child [Bone2D] node.
-
-Note: This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [Node2D.Transform].
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
-*/
-//go:nosplit
 func (self class) SetBoneAngle(angle float64) { //gd:Bone2D.set_bone_angle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_angle, 0|(gdextension.SizeFloat<<4), &struct{ angle float64 }{angle})
 }
-
-/*
-Returns the angle of the bone in the [Bone2D].
-
-Note: This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [Node2D.Transform].
-
-[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
-[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
-*/
-//go:nosplit
 func (self class) GetBoneAngle() float64 { //gd:Bone2D.get_bone_angle
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

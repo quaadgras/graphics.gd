@@ -651,10 +651,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Initializes the VCS plugin when called from the editor. Returns whether or not the plugin was successfully initialized. A VCS project is initialized at 'project_path'.
-*/
 func (class) _initialize(impl func(ptr gdclass.Receiver, project_path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var project_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -664,10 +660,6 @@ func (class) _initialize(impl func(ptr gdclass.Receiver, project_path String.Rea
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Set user credentials in the underlying VCS. 'username' and 'password' are used only during HTTPS authentication unless not already mentioned in the remote URL. 'ssh_public_key_path', 'ssh_private_key_path', and 'ssh_passphrase' are only used during SSH authentication.
-*/
 func (class) _set_credentials(impl func(ptr gdclass.Receiver, username String.Readable, password String.Readable, ssh_public_key_path String.Readable, ssh_private_key_path String.Readable, ssh_passphrase String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var username = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -684,12 +676,6 @@ func (class) _set_credentials(impl func(ptr gdclass.Receiver, username String.Re
 		impl(self, username, password, ssh_public_key_path, ssh_private_key_path, ssh_passphrase)
 	}
 }
-
-/*
-Returns an slice of data structure items (see [CreateStatusFile]), each containing the status data of every modified file in the project folder.
-
-[CreateStatusFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateStatusFile
-*/
 func (class) _get_modified_files_data(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -702,10 +688,6 @@ func (class) _get_modified_files_data(impl func(ptr gdclass.Receiver) Array.Cont
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Stages the file present at 'file_path' to the staged area.
-*/
 func (class) _stage_file(impl func(ptr gdclass.Receiver, file_path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -714,10 +696,6 @@ func (class) _stage_file(impl func(ptr gdclass.Receiver, file_path String.Readab
 		impl(self, file_path)
 	}
 }
-
-/*
-Unstages the file present at 'file_path' from the staged area to the unstaged area.
-*/
 func (class) _unstage_file(impl func(ptr gdclass.Receiver, file_path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -726,10 +704,6 @@ func (class) _unstage_file(impl func(ptr gdclass.Receiver, file_path String.Read
 		impl(self, file_path)
 	}
 }
-
-/*
-Discards the changes made in a file present at 'file_path'.
-*/
 func (class) _discard_file(impl func(ptr gdclass.Receiver, file_path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -738,10 +712,6 @@ func (class) _discard_file(impl func(ptr gdclass.Receiver, file_path String.Read
 		impl(self, file_path)
 	}
 }
-
-/*
-Commits the currently staged changes and applies the commit 'msg' to the resulting commit.
-*/
 func (class) _commit(impl func(ptr gdclass.Receiver, msg String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var msg = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -750,16 +720,6 @@ func (class) _commit(impl func(ptr gdclass.Receiver, msg String.Readable)) (cb g
 		impl(self, msg)
 	}
 }
-
-/*
-Returns an array of data structure items (see [CreateDiffFile], [CreateDiffHunk], [CreateDiffLine], [AddLineDiffsIntoDiffHunk] and [AddDiffHunksIntoDiffFile]), each containing information about a diff. If 'identifier' is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
-
-[AddDiffHunksIntoDiffFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.AddDiffHunksIntoDiffFile
-[AddLineDiffsIntoDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.AddLineDiffsIntoDiffHunk
-[CreateDiffFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffFile
-[CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
-[CreateDiffLine]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffLine
-*/
 func (class) _get_diff(impl func(ptr gdclass.Receiver, identifier String.Readable, area int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -775,10 +735,6 @@ func (class) _get_diff(impl func(ptr gdclass.Receiver, identifier String.Readabl
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
-*/
 func (class) _shut_down(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -786,10 +742,6 @@ func (class) _shut_down(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Returns the name of the underlying VCS provider.
-*/
 func (class) _get_vcs_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -802,12 +754,6 @@ func (class) _get_vcs_name(impl func(ptr gdclass.Receiver) String.Readable) (cb 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns an slice of data structure items (see [CreateCommit]), each containing the data for a past commit.
-
-[CreateCommit]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateCommit
-*/
 func (class) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
@@ -821,10 +767,6 @@ func (class) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits i
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets an instance of an slice of strings containing available branch names in the VCS.
-*/
 func (class) _get_branch_list(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -837,10 +779,6 @@ func (class) _get_branch_list(impl func(ptr gdclass.Receiver) Array.Contains[Str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns an slice of strings, each containing the name of a remote configured in the VCS.
-*/
 func (class) _get_remotes(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -853,10 +791,6 @@ func (class) _get_remotes(impl func(ptr gdclass.Receiver) Array.Contains[String.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Creates a new branch named 'branch_name' in the VCS.
-*/
 func (class) _create_branch(impl func(ptr gdclass.Receiver, branch_name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -865,10 +799,6 @@ func (class) _create_branch(impl func(ptr gdclass.Receiver, branch_name String.R
 		impl(self, branch_name)
 	}
 }
-
-/*
-Remove a branch from the local VCS.
-*/
 func (class) _remove_branch(impl func(ptr gdclass.Receiver, branch_name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -877,10 +807,6 @@ func (class) _remove_branch(impl func(ptr gdclass.Receiver, branch_name String.R
 		impl(self, branch_name)
 	}
 }
-
-/*
-Creates a new remote destination with name 'remote_name' and points it to 'remote_url'. This can be an HTTPS remote or an SSH remote.
-*/
 func (class) _create_remote(impl func(ptr gdclass.Receiver, remote_name String.Readable, remote_url String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -891,10 +817,6 @@ func (class) _create_remote(impl func(ptr gdclass.Receiver, remote_name String.R
 		impl(self, remote_name, remote_url)
 	}
 }
-
-/*
-Remove a remote from the local VCS.
-*/
 func (class) _remove_remote(impl func(ptr gdclass.Receiver, remote_name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -903,10 +825,6 @@ func (class) _remove_remote(impl func(ptr gdclass.Receiver, remote_name String.R
 		impl(self, remote_name)
 	}
 }
-
-/*
-Gets the current branch name defined in the VCS.
-*/
 func (class) _get_current_branch_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -919,10 +837,6 @@ func (class) _get_current_branch_name(impl func(ptr gdclass.Receiver) String.Rea
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Checks out a 'branch_name' in the VCS.
-*/
 func (class) _checkout_branch(impl func(ptr gdclass.Receiver, branch_name String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -932,10 +846,6 @@ func (class) _checkout_branch(impl func(ptr gdclass.Receiver, branch_name String
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Pulls changes from the remote. This can give rise to merge conflicts.
-*/
 func (class) _pull(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -944,10 +854,6 @@ func (class) _pull(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb 
 		impl(self, remote)
 	}
 }
-
-/*
-Pushes changes to the 'remote'. If 'force' is true, a force push will override the change history already present on the remote.
-*/
 func (class) _push(impl func(ptr gdclass.Receiver, remote String.Readable, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -957,10 +863,6 @@ func (class) _push(impl func(ptr gdclass.Receiver, remote String.Readable, force
 		impl(self, remote, force)
 	}
 }
-
-/*
-Fetches new changes from the 'remote', but doesn't write changes to the current working directory. Equivalent to git fetch.
-*/
 func (class) _fetch(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -969,12 +871,6 @@ func (class) _fetch(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb
 		impl(self, remote)
 	}
 }
-
-/*
-Returns an slice of data structure items (see [CreateDiffHunk]), each containing a line diff between a file at 'file_path' and the 'text' which is passed in.
-
-[CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
-*/
 func (class) _get_line_diff(impl func(ptr gdclass.Receiver, file_path String.Readable, text String.Readable) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -992,10 +888,6 @@ func (class) _get_line_diff(impl func(ptr gdclass.Receiver, file_path String.Rea
 	}
 }
 
-/*
-Helper function to create a data structure for storing a line diff. 'new_line_no' is the line number in the new file (can be -1 if the line is deleted). 'old_line_no' is the line number in the old file (can be -1 if the line is added). 'content' is the diff text. 'status' is a single character string which stores the line origin.
-*/
-//go:nosplit
 func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_line, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
 		new_line_no int64
@@ -1006,11 +898,6 @@ func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content S
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to create a data structure for storing diff hunk data. 'old_start' is the starting line number in old file. 'new_start' is the starting line number in new file. 'old_lines' is the number of lines in the old file. 'new_lines' is the number of lines in the new file.
-*/
-//go:nosplit
 func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int64, new_lines int64) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		old_start int64
@@ -1021,11 +908,6 @@ func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to create a data structure for storing old and new diff file paths.
-*/
-//go:nosplit
 func (self class) CreateDiffFile(new_file String.Readable, old_file String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_file
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		new_file gdextension.String
@@ -1034,11 +916,6 @@ func (self class) CreateDiffFile(new_file String.Readable, old_file String.Reada
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to create a commit data structure item. 'msg' is the commit message of the commit. 'author' is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. 'id' is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. 'unix_timestamp' is the UTC Unix timestamp of when the commit was created. 'offset_minutes' is the timezone offset in minutes, recorded from the system timezone where the commit was created.
-*/
-//go:nosplit
 func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp int64, offset_minutes int64) Dictionary.Any { //gd:EditorVCSInterface.create_commit
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_commit, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		msg            gdextension.String
@@ -1050,11 +927,6 @@ func (self class) CreateCommit(msg String.Readable, author String.Readable, id S
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to create a data structure used by editor to read the status of a file.
-*/
-//go:nosplit
 func (self class) CreateStatusFile(file_path String.Readable, change_type ChangeType, area TreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_status_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		file_path   gdextension.String
@@ -1064,11 +936,6 @@ func (self class) CreateStatusFile(file_path String.Readable, change_type Change
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to add an array of 'diff_hunks' into a 'diff_file'.
-*/
-//go:nosplit
 func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_diff_hunks_into_diff_file, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
 		diff_file  gdextension.Dictionary
@@ -1077,11 +944,6 @@ func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks 
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Helper function to add an array of 'line_diffs' into a 'diff_hunk'.
-*/
-//go:nosplit
 func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_line_diffs_into_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
 		diff_hunk  gdextension.Dictionary
@@ -1090,11 +952,6 @@ func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs 
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Pops up an error message in the editor which is shown as coming from the underlying VCS. Use this to show VCS specific error messages.
-*/
-//go:nosplit
 func (self class) PopupError(msg String.Readable) { //gd:EditorVCSInterface.popup_error
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_error, 0|(gdextension.SizeString<<4), &struct{ msg gdextension.String }{pointers.Get(gd.InternalString(msg))})
 }

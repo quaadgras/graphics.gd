@@ -252,24 +252,14 @@ func (self Instance) SetCustomSolverBias(value Float.X) Instance { //gd:Shape2D.
 	return self
 }
 
-//go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape2D.set_custom_solver_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
-
-//go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape2D.get_custom_solver_bias
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this shape is colliding with another.
-
-This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
-*/
-//go:nosplit
 func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		local_xform Transform2D.OriginXY
@@ -279,13 +269,6 @@ func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclas
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether this shape would collide with another, if a given movement was applied.
-
-This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
-*/
-//go:nosplit
 func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
 		local_xform  Transform2D.OriginXY
@@ -297,17 +280,6 @@ func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_moti
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a list of contact point pairs where this shape touches another.
-
-If there are no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
-
-A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
-
-This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
-*/
-//go:nosplit
 func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_and_get_contacts
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), &struct {
 		local_xform Transform2D.OriginXY
@@ -317,17 +289,6 @@ func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_s
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a list of contact point pairs where this shape would touch another, if a given movement was applied.
-
-If there would be no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
-
-A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
-
-This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
-*/
-//go:nosplit
 func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_with_motion_and_get_contacts
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), &struct {
 		local_xform  Transform2D.OriginXY
@@ -339,27 +300,12 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		canvas_item RID.Any
 		color       Color.RGBA
 	}{canvas_item, color})
 }
-
-/*
-Returns a [Rect2.PositionSize] representing the shapes boundary.
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret

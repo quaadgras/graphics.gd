@@ -261,12 +261,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Parses the expression and returns an [Error] code.
-
-You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
-*/
-//go:nosplit
 func (self class) Parse(expression String.Readable, input_names Packed.Strings) Error.Code { //gd:Expression.parse
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		expression  gdextension.String
@@ -275,16 +269,6 @@ func (self class) Parse(expression String.Readable, input_names Packed.Strings) 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Executes the expression that was previously parsed by [Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [HasExecuteFailed].
-
-If you defined input variables in [Parse], you can specify their values in the inputs array, in the same order.
-
-[HasExecuteFailed]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.HasExecuteFailed
-[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
-*/
-//go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.execute, gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		inputs           gdextension.Array
@@ -295,26 +279,11 @@ func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_err
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns true if [Execute] has failed.
-
-[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
-*/
-//go:nosplit
 func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_execute_failed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the error text if [Parse] or [Execute] has failed.
-
-[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
-[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
-*/
-//go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

@@ -189,24 +189,17 @@ func (self Instance) SetAxisValue(value Float.X) Instance { //gd:InputEventJoypa
 	return self
 }
 
-//go:nosplit
 func (self class) SetAxis(axis Input.JoyAxis) { //gd:InputEventJoypadMotion.set_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), &struct{ axis Input.JoyAxis }{axis})
 }
-
-//go:nosplit
 func (self class) GetAxis() Input.JoyAxis { //gd:InputEventJoypadMotion.get_axis
 	var r_ret = noescape.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_value, 0|(gdextension.SizeFloat<<4), &struct{ axis_value float64 }{axis_value})
 }
-
-//go:nosplit
 func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

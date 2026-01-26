@@ -269,14 +269,6 @@ func (self Instance) Host() ENetConnection.Instance { //gd:ENetMultiplayerPeer.h
 	return ENetConnection.Instance(class(self).GetHost())
 }
 
-/*
-Create server that listens to connections via 'port'. The port needs to be an available, unused port between 0 and 65535. Note that ports below 1024 are privileged and may require elevated permissions depending on the platform. To change the interface the server listens on, use [SetBindIp]. The default IP is the wildcard "*", which listens on all available interfaces. 'max_clients' is the maximum number of clients that are allowed at once, any number up to 4095 may be used, although the achievable number of simultaneous clients may be far lower and depends on the application. For additional details on the bandwidth parameters, see [CreateClient]. Returns [Ok] if a server was created, [ErrAlreadyInUse] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [MultiplayerPeer.Close] first) or [ErrCantCreate] if the server could not be created.
-
-[CreateClient]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.CreateClient
-[MultiplayerPeer.Close]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.Close
-[SetBindIp]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.SetBindIp
-*/
-//go:nosplit
 func (self class) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetMultiplayerPeer.create_server
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		port          int64
@@ -288,13 +280,6 @@ func (self class) CreateServer(port int64, max_clients int64, max_channels int64
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Create client that connects to a server at 'address' using specified 'port'. The given address needs to be either a fully qualified domain name (e.g. "www.example.com") or an IP address in IPv4 or IPv6 format (e.g. "192.168.1.1"). The 'port' is the port the server is listening on. The 'channel_count' parameter can be used to specify the number of ENet channels allocated for the connection. The 'in_bandwidth' and 'out_bandwidth' parameters can be used to limit the incoming and outgoing bandwidth to the given number of bytes per second. The default of 0 means unlimited bandwidth. Note that ENet will strategically drop packets on specific sides of a connection between peers to ensure the peer's bandwidth is not overwhelmed. The bandwidth parameters also determine the window size of a connection which limits the amount of reliable packets that may be in transit at any given time. Returns [Ok] if a client was created, [ErrAlreadyInUse] if this ENetMultiplayerPeer instance already has an open connection (in which case you need to call [MultiplayerPeer.Close] first) or [ErrCantCreate] if the client could not be created. If 'local_port' is specified, the client will also listen to the given port; this is useful for some NAT traversal techniques.
-
-[MultiplayerPeer.Close]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.Close
-*/
-//go:nosplit
 func (self class) CreateClient(address String.Readable, port int64, channel_count int64, in_bandwidth int64, out_bandwidth int64, local_port int64) Error.Code { //gd:ENetMultiplayerPeer.create_client
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		address       gdextension.String
@@ -307,28 +292,11 @@ func (self class) CreateClient(address String.Readable, port int64, channel_coun
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Initialize this [MultiplayerPeer] in mesh mode. The provided 'unique_id' will be used as the local peer network unique ID once assigned as the [MultiplayerAPI.MultiplayerPeer]. In the mesh configuration you will need to set up each new peer manually using [ENetConnection] before calling [AddMeshPeer]. While this technique is more advanced, it allows for better control over the connection process (e.g. when dealing with NAT punch-through) and for better distribution of the network load (which would otherwise be more taxing on the server).
-
-[AddMeshPeer]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer#Instance.AddMeshPeer
-[ENetConnection]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection
-[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer
-*/
-//go:nosplit
 func (self class) CreateMesh(unique_id int64) Error.Code { //gd:ENetMultiplayerPeer.create_mesh
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ unique_id int64 }{unique_id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Add a new remote peer with the given 'peer_id' connected to the given 'host'.
-
-Note: The 'host' must have exactly one peer in the [Enetpacketpeer.StateConnected] state.
-*/
-//go:nosplit
 func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Error.Code { //gd:ENetMultiplayerPeer.add_mesh_peer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		peer_id int64
@@ -337,28 +305,14 @@ func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Err
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-The IP used when creating a server. This is set to the wildcard "*" by default, which binds to all available interfaces. The given IP needs to be in IPv4 or IPv6 address format, for example: "192.168.1.1".
-*/
-//go:nosplit
 func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_ip, 0|(gdextension.SizeString<<4), &struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))})
 }
-
-//go:nosplit
 func (self class) GetHost() [1]gdclass.ENetConnection { //gd:ENetMultiplayerPeer.get_host
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_host, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ENetConnection{gdclass.NewENetConnection(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [ENetPacketPeer] associated to the given 'id'.
-
-[ENetPacketPeer]: https://pkg.go.dev/graphics.gd/classdb/ENetPacketPeer
-*/
-//go:nosplit
 func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.ENetPacketPeer{gdclass.NewENetPacketPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

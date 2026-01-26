@@ -195,10 +195,6 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNavigationMeshGenerator(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Bakes the 'navigation_mesh' with source geometry collected starting from the 'root_node'.
-*/
-//go:nosplit
 func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
@@ -206,28 +202,10 @@ func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]g
 		root_node       gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(root_node[0])))})
 }
-
-/*
-Removes all polygons and vertices from the provided 'navigation_mesh' resource.
-*/
-//go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0])))})
 }
-
-/*
-Parses the [SceneTree] for source geometry according to the properties of 'navigation_mesh'. Updates the provided 'source_geometry_data' resource with the resulting data. The resource can then be used to bake a navigation mesh with [BakeFromSourceGeometryData]. After the process is finished the optional 'callback' will be called.
-
-Note: This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
-
-Performance: While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationMeshGenerator.parse_source_geometry_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), &struct {
@@ -237,11 +215,6 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 		callback             gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMesh(navigation_mesh[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationMeshSourceGeometryData3D(source_geometry_data[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(root_node[0]))), pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
-*/
-//go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), &struct {

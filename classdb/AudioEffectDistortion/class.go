@@ -232,60 +232,41 @@ func (self Instance) SetPostGain(value Float.X) Instance { //gd:AudioEffectDisto
 	return self
 }
 
-//go:nosplit
 func (self class) SetMode(mode Mode) { //gd:AudioEffectDistortion.set_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
-
-//go:nosplit
 func (self class) GetMode() Mode { //gd:AudioEffectDistortion.get_mode
 	var r_ret = noescape.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreGain(pre_gain float64) { //gd:AudioEffectDistortion.set_pre_gain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain, 0|(gdextension.SizeFloat<<4), &struct{ pre_gain float64 }{pre_gain})
 }
-
-//go:nosplit
 func (self class) GetPreGain() float64 { //gd:AudioEffectDistortion.get_pre_gain
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetKeepHfHz(keep_hf_hz float64) { //gd:AudioEffectDistortion.set_keep_hf_hz
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_hf_hz, 0|(gdextension.SizeFloat<<4), &struct{ keep_hf_hz float64 }{keep_hf_hz})
 }
-
-//go:nosplit
 func (self class) GetKeepHfHz() float64 { //gd:AudioEffectDistortion.get_keep_hf_hz
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_keep_hf_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drive, 0|(gdextension.SizeFloat<<4), &struct{ drive float64 }{drive})
 }
-
-//go:nosplit
 func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPostGain(post_gain float64) { //gd:AudioEffectDistortion.set_post_gain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_post_gain, 0|(gdextension.SizeFloat<<4), &struct{ post_gain float64 }{post_gain})
 }
-
-//go:nosplit
 func (self class) GetPostGain() float64 { //gd:AudioEffectDistortion.get_post_gain
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_post_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

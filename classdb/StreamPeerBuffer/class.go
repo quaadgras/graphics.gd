@@ -233,77 +233,33 @@ func (self Instance) SetDataArray(value []byte) Instance { //gd:StreamPeerBuffer
 	return self
 }
 
-/*
-Moves the cursor to the specified position. 'position' must be a valid index of [DataArray].
-
-[DataArray]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer#Instance.DataArray
-*/
-//go:nosplit
 func (self class) SeekTo(position int64) { //gd:StreamPeerBuffer.seek
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
 }
-
-/*
-Returns the size of [DataArray].
-
-[DataArray]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer#Instance.DataArray
-*/
-//go:nosplit
 func (self class) GetSize() int64 { //gd:StreamPeerBuffer.get_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current cursor position.
-*/
-//go:nosplit
 func (self class) GetPosition() int64 { //gd:StreamPeerBuffer.get_position
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Resizes the [DataArray]. This doesn't update the cursor.
-
-[DataArray]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer#Instance.DataArray
-*/
-//go:nosplit
 func (self class) Resize(size int64) { //gd:StreamPeerBuffer.resize
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) SetDataArray(data Packed.Bytes) { //gd:StreamPeerBuffer.set_data_array
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data_array, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) GetDataArray() Packed.Bytes { //gd:StreamPeerBuffer.get_data_array
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_array, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Clears the [DataArray] and resets the cursor.
-
-[DataArray]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer#Instance.DataArray
-*/
-//go:nosplit
 func (self class) Clear() { //gd:StreamPeerBuffer.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns a new [StreamPeerBuffer] with the same [DataArray] content.
-
-[DataArray]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer#Instance.DataArray
-[StreamPeerBuffer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerBuffer
-*/
-//go:nosplit
 func (self class) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeerBuffer{gdclass.NewStreamPeerBuffer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

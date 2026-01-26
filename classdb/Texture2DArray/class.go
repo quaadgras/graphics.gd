@@ -177,12 +177,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a placeholder version of this resource ([PlaceholderTexture2DArray]).
-
-[PlaceholderTexture2DArray]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture2DArray
-*/
-//go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2DArray.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

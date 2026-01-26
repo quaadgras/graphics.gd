@@ -310,31 +310,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Initialize the multiplayer peer as a server (with unique ID of 1). This mode enables [MultiplayerPeer.IsServerRelaySupported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
-
-You can optionally specify a 'channels_config' array of [MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
-
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[MultiplayerPeer.IsServerRelaySupported]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.IsServerRelaySupported
-*/
-//go:nosplit
 func (self class) CreateServer(channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_server
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ channels_config gdextension.Array }{pointers.Get(gd.InternalArray(channels_config))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Initialize the multiplayer peer as a client with the given 'peer_id' (must be between 2 and 2147483647). In this mode, you should only call [AddPeer] once and with 'peer_id' of 1. This mode enables [MultiplayerPeer.IsServerRelaySupported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
-
-You can optionally specify a 'channels_config' array of [MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
-
-[AddPeer]: https://pkg.go.dev/graphics.gd/classdb/WebRTCMultiplayerPeer#Instance.AddPeer
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-[MultiplayerPeer.IsServerRelaySupported]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.IsServerRelaySupported
-*/
-//go:nosplit
 func (self class) CreateClient(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_client
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
 		peer_id         int64
@@ -343,11 +323,6 @@ func (self class) CreateClient(peer_id int64, channels_config Array.Any) Error.C
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given 'peer_id' (must be between 1 and 2147483647).
-*/
-//go:nosplit
 func (self class) CreateMesh(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_mesh
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), &struct {
 		peer_id         int64
@@ -356,16 +331,6 @@ func (self class) CreateMesh(peer_id int64, channels_config Array.Any) Error.Cod
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Add a new peer to the mesh with the given 'peer_id'. The [WebRTCPeerConnection] must be in state [Webrtcpeerconnection.StateNew].
-
-Three channels will be created for reliable, unreliable, and ordered transport. The value of 'unreliable_lifetime' will be passed to the "maxPacketLifetime" option when creating unreliable and ordered channels (see [WebRTCPeerConnection.CreateDataChannel]).
-
-[WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
-[WebRTCPeerConnection.CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
-*/
-//go:nosplit
 func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, unreliable_lifetime int64) Error.Code { //gd:WebRTCMultiplayerPeer.add_peer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		peer                gdextension.Object
@@ -375,47 +340,19 @@ func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, u
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Remove the peer with given 'peer_id' from the mesh. If the peer was connected, and [OnMultiplayerpeer.PeerConnected] was emitted for it, then [OnMultiplayerpeer.PeerDisconnected] will be emitted.
-
-[OnMultiplayerpeer.PeerConnected]: https://pkg.go.dev/graphics.gd/classdb/WebRTCMultiplayerPeer#Instance.OnMultiplayerpeer.PeerConnected
-[OnMultiplayerpeer.PeerDisconnected]: https://pkg.go.dev/graphics.gd/classdb/WebRTCMultiplayerPeer#Instance.OnMultiplayerpeer.PeerDisconnected
-*/
-//go:nosplit
 func (self class) RemovePeer(peer_id int64) { //gd:WebRTCMultiplayerPeer.remove_peer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_peer, 0|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 }
-
-/*
-Returns true if the given 'peer_id' is in the peers map (it might not be connected though).
-*/
-//go:nosplit
 func (self class) HasPeer(peer_id int64) bool { //gd:WebRTCMultiplayerPeer.has_peer
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_peer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a dictionary representation of the peer with given 'peer_id' with three keys. "connection" containing the [WebRTCPeerConnection] to this peer, "channels" an array of three [WebRTCDataChannel], and "connected" a boolean representing if the peer connection is currently connected (all three channels are open).
-
-[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
-[WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
-*/
-//go:nosplit
 func (self class) GetPeer(peer_id int64) Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peer
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ peer_id int64 }{peer_id})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns a dictionary which keys are the peer ids and values the peer representation as in [GetPeer].
-
-[GetPeer]: https://pkg.go.dev/graphics.gd/classdb/WebRTCMultiplayerPeer#Instance.GetPeer
-*/
-//go:nosplit
 func (self class) GetPeers() Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peers
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))

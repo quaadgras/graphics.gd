@@ -178,12 +178,9 @@ func (self Instance) SetDelta(value Vector2.XY) Instance { //gd:InputEventPanGes
 	return self
 }
 
-//go:nosplit
 func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta, 0|(gdextension.SizeVector2<<4), &struct{ delta Vector2.XY }{delta})
 }
-
-//go:nosplit
 func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delta, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

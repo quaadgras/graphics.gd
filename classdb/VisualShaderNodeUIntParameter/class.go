@@ -192,24 +192,17 @@ func (self Instance) SetDefaultValue(value int) Instance { //gd:VisualShaderNode
 	return self
 }
 
-//go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeUIntParameter.set_default_value_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeUIntParameter.is_default_value_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultValue(value int64) { //gd:VisualShaderNodeUIntParameter.set_default_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
-
-//go:nosplit
 func (self class) GetDefaultValue() int64 { //gd:VisualShaderNodeUIntParameter.get_default_value
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -182,12 +182,9 @@ func (self Instance) SetMaxDistance(value Float.X) Instance { //gd:DirectionalLi
 	return self
 }
 
-//go:nosplit
 func (self class) SetMaxDistance(pixels float64) { //gd:DirectionalLight2D.set_max_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ pixels float64 }{pixels})
 }
-
-//go:nosplit
 func (self class) GetMaxDistance() float64 { //gd:DirectionalLight2D.get_max_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

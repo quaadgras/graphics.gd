@@ -289,10 +289,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to define a custom parsing logic to extract the translatable strings.
-*/
 func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -307,10 +303,6 @@ func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) A
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Gets the list of file extensions to associate with this parser, e.g. ["csv"].
-*/
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

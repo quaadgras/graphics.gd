@@ -205,36 +205,25 @@ func (self Instance) SetOccluderLightMask(value int) Instance { //gd:LightOcclud
 	return self
 }
 
-//go:nosplit
 func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), &struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(polygon[0])))})
 }
-
-//go:nosplit
 func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:LightOccluder2D.get_occluder_polygon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OccluderPolygon2D{gdclass.NewOccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOccluderLightMask(mask int64) { //gd:LightOccluder2D.set_occluder_light_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_light_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetOccluderLightMask() int64 { //gd:LightOccluder2D.get_occluder_light_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occluder_light_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAsSdfCollision(enable bool) { //gd:LightOccluder2D.set_as_sdf_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_sdf_collision, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsSetAsSdfCollision() bool { //gd:LightOccluder2D.is_set_as_sdf_collision
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_sdf_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

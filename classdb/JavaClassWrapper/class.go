@@ -186,34 +186,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetJavaClassWrapper(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
-
-When wrapping inner (nested) classes, use $ instead of . to separate them. For example, JavaClassWrapper.wrap("android.view.WindowManager$LayoutParams") wraps the WindowManager.LayoutParams class.
-
-Note: To invoke a constructor, call a method with the same name as the class. For example:
-
-
-
-Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
-
-[JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the Java exception from the last call into a Java class. If there was no exception, it will return null.
-
-Note: This method only works on Android. On every other platform, this method will always return null.
-*/
-//go:nosplit
 func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_exception, gdextension.SizeObject, &struct{}{})

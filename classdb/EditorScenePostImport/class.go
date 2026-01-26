@@ -223,10 +223,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called after the scene was imported. This method must return the modified version of the scene.
-*/
 func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -243,10 +239,6 @@ func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 	}
 }
 
-/*
-Returns the source file path which got imported (e.g. res://scene.dae).
-*/
-//go:nosplit
 func (self class) GetSourceFile() String.Readable { //gd:EditorScenePostImport.get_source_file
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

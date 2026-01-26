@@ -331,120 +331,56 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the name of the script language that this backtrace was captured from.
-*/
-//go:nosplit
 func (self class) GetLanguageName() String.Readable { //gd:ScriptBacktrace.get_language_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the backtrace has no stack frames.
-*/
-//go:nosplit
 func (self class) IsEmpty() bool { //gd:ScriptBacktrace.is_empty
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of stack frames in the backtrace.
-*/
-//go:nosplit
 func (self class) GetFrameCount() int64 { //gd:ScriptBacktrace.get_frame_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the function called at the stack frame at the specified index.
-*/
-//go:nosplit
 func (self class) GetFrameFunction(index int64) String.Readable { //gd:ScriptBacktrace.get_frame_function
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_function, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the file name of the call site represented by the stack frame at the specified index.
-*/
-//go:nosplit
 func (self class) GetFrameFile(index int64) String.Readable { //gd:ScriptBacktrace.get_frame_file
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_file, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the line number of the call site represented by the stack frame at the specified index.
-*/
-//go:nosplit
 func (self class) GetFrameLine(index int64) int64 { //gd:ScriptBacktrace.get_frame_line
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of global variables (e.g. autoload singletons) in the backtrace.
-
-Note: This will be non-zero only if the include_variables parameter was true when capturing the backtrace with [Engine.CaptureScriptBacktraces].
-
-[Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
-*/
-//go:nosplit
 func (self class) GetGlobalVariableCount() int64 { //gd:ScriptBacktrace.get_global_variable_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the global variable at the specified index.
-*/
-//go:nosplit
 func (self class) GetGlobalVariableName(variable_index int64) String.Readable { //gd:ScriptBacktrace.get_global_variable_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the value of the global variable at the specified index.
-
-Warning: With GDScript backtraces, the returned any will be the variable's actual value, including any object references. This means that storing the returned any will prevent any such object from being deallocated, so it's generally recommended not to do so.
-*/
-//go:nosplit
 func (self class) GetGlobalVariableValue(variable_index int64) variant.Any { //gd:ScriptBacktrace.get_global_variable_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of local variables in the stack frame at the specified index.
-
-Note: This will be non-zero only if the include_variables parameter was true when capturing the backtrace with [Engine.CaptureScriptBacktraces].
-
-[Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
-*/
-//go:nosplit
 func (self class) GetLocalVariableCount(frame_index int64) int64 { //gd:ScriptBacktrace.get_local_variable_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the local variable at the specified 'variable_index' in the stack frame at the specified 'frame_index'.
-*/
-//go:nosplit
 func (self class) GetLocalVariableName(frame_index int64, variable_index int64) String.Readable { //gd:ScriptBacktrace.get_local_variable_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
@@ -453,13 +389,6 @@ func (self class) GetLocalVariableName(frame_index int64, variable_index int64) 
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the value of the local variable at the specified 'variable_index' in the stack frame at the specified 'frame_index'.
-
-Warning: With GDScript backtraces, the returned any will be the variable's actual value, including any object references. This means that storing the returned any will prevent any such object from being deallocated, so it's generally recommended not to do so.
-*/
-//go:nosplit
 func (self class) GetLocalVariableValue(frame_index int64, variable_index int64) variant.Any { //gd:ScriptBacktrace.get_local_variable_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
@@ -468,25 +397,11 @@ func (self class) GetLocalVariableValue(frame_index int64, variable_index int64)
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of member variables in the stack frame at the specified index.
-
-Note: This will be non-zero only if the include_variables parameter was true when capturing the backtrace with [Engine.CaptureScriptBacktraces].
-
-[Engine.CaptureScriptBacktraces]: https://pkg.go.dev/graphics.gd/classdb/Engine#CaptureScriptBacktraces
-*/
-//go:nosplit
 func (self class) GetMemberVariableCount(frame_index int64) int64 { //gd:ScriptBacktrace.get_member_variable_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the member variable at the specified 'variable_index' in the stack frame at the specified 'frame_index'.
-*/
-//go:nosplit
 func (self class) GetMemberVariableName(frame_index int64, variable_index int64) String.Readable { //gd:ScriptBacktrace.get_member_variable_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
@@ -495,13 +410,6 @@ func (self class) GetMemberVariableName(frame_index int64, variable_index int64)
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the value of the member variable at the specified 'variable_index' in the stack frame at the specified 'frame_index'.
-
-Warning: With GDScript backtraces, the returned any will be the variable's actual value, including any object references. This means that storing the returned any will prevent any such object from being deallocated, so it's generally recommended not to do so.
-*/
-//go:nosplit
 func (self class) GetMemberVariableValue(frame_index int64, variable_index int64) variant.Any { //gd:ScriptBacktrace.get_member_variable_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
@@ -510,17 +418,6 @@ func (self class) GetMemberVariableValue(frame_index int64, variable_index int64
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Converts the backtrace to a string, where the entire string will be indented by 'indent_all' number of spaces, and the individual stack frames will be additionally indented by 'indent_frames' number of spaces.
-
-Note: Calling [Object.ToString] on a [ScriptBacktrace] will produce the same output as calling [Format] with all parameters left at their default values.
-
-[Format]: https://pkg.go.dev/graphics.gd/classdb/ScriptBacktrace#Instance.Format
-[Object.ToString]: https://pkg.go.dev/graphics.gd/variant/Object#ToString
-[ScriptBacktrace]: https://pkg.go.dev/graphics.gd/classdb/ScriptBacktrace
-*/
-//go:nosplit
 func (self class) Format(indent_all int64, indent_frames int64) String.Readable { //gd:ScriptBacktrace.format
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.format, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		indent_all    int64

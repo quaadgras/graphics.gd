@@ -180,12 +180,9 @@ func (self Instance) SetColumns(value int) Instance { //gd:GridContainer.columns
 	return self
 }
 
-//go:nosplit
 func (self class) SetColumns(columns int64) { //gd:GridContainer.set_columns
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_columns, 0|(gdextension.SizeInt<<4), &struct{ columns int64 }{columns})
 }
-
-//go:nosplit
 func (self class) GetColumns() int64 { //gd:GridContainer.get_columns
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_columns, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

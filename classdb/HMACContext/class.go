@@ -222,12 +222,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Finish] has been called.
-
-[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
-*/
-//go:nosplit
 func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Error.Code { //gd:HMACContext.start
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		hash_type HashingContext.HashType
@@ -236,24 +230,11 @@ func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Err
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Updates the message to be HMACed. This can be called multiple times before [Finish] is called to append 'data' to the message, but cannot be called until [Start] has been called.
-
-[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
-[Start]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Start
-*/
-//go:nosplit
 func (self class) Update(data Packed.Bytes) Error.Code { //gd:HMACContext.update
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the resulting HMAC. If the HMAC failed, an empty []byte is returned.
-*/
-//go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}

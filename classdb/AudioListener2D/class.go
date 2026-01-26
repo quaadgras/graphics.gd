@@ -195,35 +195,12 @@ func New() Instance {
 	return casted
 }
 
-/*
-Makes the [AudioListener2D] active, setting it as the hearing point for the sounds. If there is already another active [AudioListener2D], it will be disabled.
-
-This method will have no effect if the [AudioListener2D] is not added to [SceneTree].
-
-[AudioListener2D]: https://pkg.go.dev/graphics.gd/classdb/AudioListener2D
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
-
-/*
-Disables the [AudioListener2D]. If it's not set as current, this method will have no effect.
-
-[AudioListener2D]: https://pkg.go.dev/graphics.gd/classdb/AudioListener2D
-*/
-//go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
 }
-
-/*
-Returns true if this [AudioListener2D] is currently active.
-
-[AudioListener2D]: https://pkg.go.dev/graphics.gd/classdb/AudioListener2D
-*/
-//go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

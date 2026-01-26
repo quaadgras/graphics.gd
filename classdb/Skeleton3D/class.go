@@ -755,53 +755,27 @@ func (self Instance) SetAnimatePhysicalBones(value bool) Instance { //gd:Skeleto
 	return self
 }
 
-/*
-Adds a new bone with the given name. Returns the new bone's index, or -1 if this method fails.
-
-Note: Bone names should be unique, non empty, and cannot include the : and / characters.
-*/
-//go:nosplit
 func (self class) AddBone(name String.Readable) int64 { //gd:Skeleton3D.add_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_bone, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the bone index that matches 'name' as its name. Returns -1 if no bone with this name exists.
-*/
-//go:nosplit
 func (self class) FindBone(name String.Readable) int64 { //gd:Skeleton3D.find_bone
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_bone, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the bone at index 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneName(bone_idx int64) String.Readable { //gd:Skeleton3D.get_bone_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the bone name, 'name', for the bone at 'bone_idx'.
-*/
-//go:nosplit
 func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skeleton3D.set_bone_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		bone_idx int64
 		name     gdextension.String
 	}{bone_idx, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns the metadata for the bone at index 'bone_idx' with 'key'.
-*/
-//go:nosplit
 func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //gd:Skeleton3D.get_bone_meta
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_bone_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		bone_idx int64
@@ -810,21 +784,11 @@ func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //g
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the list of all metadata keys for the bone at index 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { //gd:Skeleton3D.get_bone_meta_list
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bone_meta_list, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the bone at index 'bone_idx' has metadata with the key 'key'.
-*/
-//go:nosplit
 func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skeleton3D.has_bone_meta
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_bone_meta, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		bone_idx int64
@@ -833,11 +797,6 @@ func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skele
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the metadata for the bone at index 'bone_idx', setting the 'key' meta to 'value'.
-*/
-//go:nosplit
 func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any) { //gd:Skeleton3D.set_bone_meta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		bone_idx int64
@@ -845,409 +804,185 @@ func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any
 		value    gdextension.Variant
 	}{bone_idx, pointers.Get(gd.InternalStringName(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns all bone names concatenated with commas (,) as a single string.
-
-It is useful to set it as a hint for the enum property.
-*/
-//go:nosplit
 func (self class) GetConcatenatedBoneNames() String.Name { //gd:Skeleton3D.get_concatenated_bone_names
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_concatenated_bone_names, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns the bone index which is the parent of the bone at 'bone_idx'. If -1, then bone has no parent.
-
-Note: The parent bone returned will always be less than 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneParent(bone_idx int64) int64 { //gd:Skeleton3D.get_bone_parent
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_parent, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the bone index 'parent_idx' as the parent of the bone at 'bone_idx'. If -1, then bone has no parent.
-
-Note: 'parent_idx' must be less than 'bone_idx'.
-*/
-//go:nosplit
 func (self class) SetBoneParent(bone_idx int64, parent_idx int64) { //gd:Skeleton3D.set_bone_parent
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_parent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		bone_idx   int64
 		parent_idx int64
 	}{bone_idx, parent_idx})
 }
-
-/*
-Returns the number of bones in the skeleton.
-*/
-//go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Skeleton3D.get_bone_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of times the bone hierarchy has changed within this skeleton, including renames.
-
-The Skeleton version is not serialized: only use within a single instance of Skeleton3D.
-
-Use for invalidating caches in IK solvers and other nodes which process bones.
-*/
-//go:nosplit
 func (self class) GetVersion() int64 { //gd:Skeleton3D.get_version
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Unparents the bone at 'bone_idx' and sets its rest position to that of its parent prior to being reset.
-*/
-//go:nosplit
 func (self class) UnparentBoneAndRest(bone_idx int64) { //gd:Skeleton3D.unparent_bone_and_rest
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unparent_bone_and_rest, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
-
-/*
-Returns an array containing the bone indexes of all the child node of the passed in bone, 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneChildren(bone_idx int64) Packed.Array[int32] { //gd:Skeleton3D.get_bone_children
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_bone_children, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns an array with all of the bones that are parentless. Another way to look at this is that it returns the indexes of all the bones that are not dependent or modified by other bones in the Skeleton.
-*/
-//go:nosplit
 func (self class) GetParentlessBones() Packed.Array[int32] { //gd:Skeleton3D.get_parentless_bones
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_parentless_bones, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns the rest transform for a bone 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_rest
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_rest, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Sets the rest transform for bone 'bone_idx'.
-*/
-//go:nosplit
 func (self class) SetBoneRest(bone_idx int64, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_rest, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		bone_idx int64
 		rest     Transform3D.BasisOrigin
 	}{bone_idx, gd.Transposed(rest)})
 }
-
-/*
-Returns the global rest transform for 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneGlobalRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_rest
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_rest, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton3D.create_skin_from_rest_transforms
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_skin_from_rest_transforms, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gdclass.NewSkin(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Binds the given Skin to the Skeleton.
-*/
-//go:nosplit
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSkin(skin[0])))})
 	var ret = [1]gdclass.SkinReference{gdclass.NewSkinReference(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns all bones in the skeleton to their rest poses.
-*/
-//go:nosplit
 func (self class) LocalizeRests() { //gd:Skeleton3D.localize_rests
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.localize_rests, 0, &struct{}{})
 }
-
-/*
-Clear all the bones in this skeleton.
-*/
-//go:nosplit
 func (self class) ClearBones() { //gd:Skeleton3D.clear_bones
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_bones, 0, &struct{}{})
 }
-
-/*
-Returns the pose transform of the specified bone.
-
-Note: This is the pose you set to the skeleton in the process, the final pose can get overridden by modifiers in the deferred process, if you want to access the final pose, use [OnSkeletonmodifier3d.ModificationProcessed].
-
-[OnSkeletonmodifier3d.ModificationProcessed]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.OnSkeletonmodifier3d.ModificationProcessed
-*/
-//go:nosplit
 func (self class) GetBonePose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_pose
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Sets the pose transform, 'pose', for the bone at 'bone_idx'.
-*/
-//go:nosplit
 func (self class) SetBonePose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		bone_idx int64
 		pose     Transform3D.BasisOrigin
 	}{bone_idx, gd.Transposed(pose)})
 }
-
-/*
-Sets the pose position of the bone at 'bone_idx' to 'position'. 'position' is a [Vector3.XYZ] describing a position local to the [Skeleton3D] node.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) SetBonePosePosition(bone_idx int64, position Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_pose_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		bone_idx int64
 		position Vector3.XYZ
 	}{bone_idx, position})
 }
-
-/*
-Sets the pose rotation of the bone at 'bone_idx' to 'rotation'. 'rotation' is a [Quaternion.IJKX] describing a rotation in the bone's local coordinate space with respect to the rotation of any parent bones.
-
-[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
-*/
-//go:nosplit
 func (self class) SetBonePoseRotation(bone_idx int64, rotation Quaternion.IJKX) { //gd:Skeleton3D.set_bone_pose_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_pose_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeQuaternion<<8), &struct {
 		bone_idx int64
 		rotation Quaternion.IJKX
 	}{bone_idx, rotation})
 }
-
-/*
-Sets the pose scale of the bone at 'bone_idx' to 'scale'.
-*/
-//go:nosplit
 func (self class) SetBonePoseScale(bone_idx int64, scale Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_pose_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		bone_idx int64
 		scale    Vector3.XYZ
 	}{bone_idx, scale})
 }
-
-/*
-Returns the pose position of the bone at 'bone_idx'. The returned [Vector3.XYZ] is in the local coordinate space of the [Skeleton3D] node.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetBonePosePosition(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_bone_pose_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the pose rotation of the bone at 'bone_idx'. The returned [Quaternion.IJKX] is local to the bone with respect to the rotation of any parent bones.
-
-[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
-*/
-//go:nosplit
 func (self class) GetBonePoseRotation(bone_idx int64) Quaternion.IJKX { //gd:Skeleton3D.get_bone_pose_rotation
 	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_bone_pose_rotation, gdextension.SizeQuaternion|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the pose scale of the bone at 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBonePoseScale(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_scale
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_bone_pose_scale, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the bone pose to rest for 'bone_idx'.
-*/
-//go:nosplit
 func (self class) ResetBonePose(bone_idx int64) { //gd:Skeleton3D.reset_bone_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_bone_pose, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
-
-/*
-Sets all bone poses to rests.
-*/
-//go:nosplit
 func (self class) ResetBonePoses() { //gd:Skeleton3D.reset_bone_poses
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_bone_poses, 0, &struct{}{})
 }
-
-/*
-Returns whether the bone pose for the bone at 'bone_idx' is enabled.
-*/
-//go:nosplit
 func (self class) IsBoneEnabled(bone_idx int64) bool { //gd:Skeleton3D.is_bone_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bone_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Disables the pose for the bone at 'bone_idx' if false, enables the bone pose if true.
-*/
-//go:nosplit
 func (self class) SetBoneEnabled(bone_idx int64, enabled bool) { //gd:Skeleton3D.set_bone_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		bone_idx int64
 		enabled  bool
 	}{bone_idx, enabled})
 }
-
-/*
-Returns the overall transform of the specified bone, with respect to the skeleton. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
-
-Note: This is the global pose you set to the skeleton in the process, the final global pose can get overridden by modifiers in the deferred process, if you want to access the final global pose, use [OnSkeletonmodifier3d.ModificationProcessed].
-
-[OnSkeletonmodifier3d.ModificationProcessed]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.OnSkeletonmodifier3d.ModificationProcessed
-*/
-//go:nosplit
 func (self class) GetBoneGlobalPose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
-
-Note: If other bone poses have been changed, this method executes a dirty poses recalculation and will cause performance to deteriorate. If you know that multiple global poses will be applied, consider using [SetBonePose] with precalculation.
-
-[SetBonePose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.SetBonePose
-*/
-//go:nosplit
 func (self class) SetBoneGlobalPose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_global_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		bone_idx int64
 		pose     Transform3D.BasisOrigin
 	}{bone_idx, gd.Transposed(pose)})
 }
-
-/*
-Force updates the bone transforms/poses for all bones in the skeleton.
-*/
-//go:nosplit
 func (self class) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_update_all_bone_transforms
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_all_bone_transforms, 0, &struct{}{})
 }
-
-/*
-Force updates the bone transform for the bone at 'bone_idx' and all of its children.
-*/
-//go:nosplit
 func (self class) ForceUpdateBoneChildTransform(bone_idx int64) { //gd:Skeleton3D.force_update_bone_child_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_bone_child_transform, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 }
-
-//go:nosplit
 func (self class) SetMotionScale(motion_scale float64) { //gd:Skeleton3D.set_motion_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_scale, 0|(gdextension.SizeFloat<<4), &struct{ motion_scale float64 }{motion_scale})
 }
-
-//go:nosplit
 func (self class) GetMotionScale() float64 { //gd:Skeleton3D.get_motion_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motion_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowRestOnly(enabled bool) { //gd:Skeleton3D.set_show_rest_only
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rest_only, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsShowRestOnly() bool { //gd:Skeleton3D.is_show_rest_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_show_rest_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetModifierCallbackModeProcess(mode ModifierCallbackModeProcess) { //gd:Skeleton3D.set_modifier_callback_mode_process
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modifier_callback_mode_process, 0|(gdextension.SizeInt<<4), &struct{ mode ModifierCallbackModeProcess }{mode})
 }
-
-//go:nosplit
 func (self class) GetModifierCallbackModeProcess() ModifierCallbackModeProcess { //gd:Skeleton3D.get_modifier_callback_mode_process
 	var r_ret = noescape.Call[ModifierCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_modifier_callback_mode_process, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Manually advance the child [SkeletonModifier3D]s by the specified time (in seconds).
-
-Note: The 'delta' is temporarily accumulated in the [Skeleton3D], and the deferred process uses the accumulated value to process the modification.
-
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
-*/
-//go:nosplit
 func (self class) Advance(delta float64) { //gd:Skeleton3D.advance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.advance, 0|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 }
-
-/*
-Removes the global pose override on all bones in the skeleton.
-*/
-//go:nosplit
 func (self class) ClearBonesGlobalPoseOverride() { //gd:Skeleton3D.clear_bones_global_pose_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_bones_global_pose_override, 0, &struct{}{})
 }
-
-/*
-Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
-
-'amount' is the interpolation strength that will be used when applying the pose, and 'persistent' determines if the applied pose will remain.
-
-Note: The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [Transform3D.AffineInverse] of the node's [Node3D.GlobalTransform] by the desired world transform.
-
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
-[Transform3D.AffineInverse]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.AffineInverse
-*/
-//go:nosplit
 func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.BasisOrigin, amount float64, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_global_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		bone_idx   int64
@@ -1256,81 +991,33 @@ func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.Bas
 		persistent bool
 	}{bone_idx, gd.Transposed(pose), amount, persistent})
 }
-
-/*
-Returns the global pose override transform for 'bone_idx'.
-*/
-//go:nosplit
 func (self class) GetBoneGlobalPoseOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_pose_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
-*/
-//go:nosplit
 func (self class) GetBoneGlobalPoseNoOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_pose_no_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAnimatePhysicalBones(enabled bool) { //gd:Skeleton3D.set_animate_physical_bones
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animate_physical_bones, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetAnimatePhysicalBones() bool { //gd:Skeleton3D.get_animate_physical_bones
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animate_physical_bones, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesStopSimulation() { //gd:Skeleton3D.physical_bones_stop_simulation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, &struct{}{})
 }
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
-
-Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:Skeleton3D.physical_bones_start_simulation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
 }
-
-/*
-Adds a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_add_collision_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }
-
-/*
-Removes a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-//go:nosplit
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }

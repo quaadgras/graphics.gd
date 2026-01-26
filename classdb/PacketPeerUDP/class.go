@@ -370,18 +370,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Binds this [PacketPeerUDP] to the specified 'port' and 'bind_address' with a buffer size 'recv_buf_size', allowing it to receive incoming packets.
-
-If 'bind_address' is set to "*" (default), the peer will be bound on all available addresses (both IPv4 and IPv6).
-
-If 'bind_address' is set to "0.0.0.0" (for IPv4) or "::" (for IPv6), the peer will be bound to all available addresses matching that IP type.
-
-If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
-
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-*/
-//go:nosplit
 func (self class) Bind(port int64, bind_address String.Readable, recv_buf_size int64) Error.Code { //gd:PacketPeerUDP.bind
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		port          int64
@@ -391,57 +379,19 @@ func (self class) Bind(port int64, bind_address String.Readable, recv_buf_size i
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes the [PacketPeerUDP]'s underlying UDP socket.
-
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-*/
-//go:nosplit
 func (self class) Close() { //gd:PacketPeerUDP.close
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
-
-/*
-Waits for a packet to arrive on the bound address. See [Bind].
-
-Note: [Wait] can't be interrupted once it has been called. This can be worked around by allowing the other party to send a specific "death pill" packet like this:
-
-
-
-[Bind]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Bind
-[Wait]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Wait
-*/
-//go:nosplit
 func (self class) Wait() Error.Code { //gd:PacketPeerUDP.wait
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.wait, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns whether this [PacketPeerUDP] is bound to an address and can receive packets.
-
-[PacketPeerUDP]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP
-*/
-//go:nosplit
 func (self class) IsBound() bool { //gd:PacketPeerUDP.is_bound
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bound, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Calling this method connects this UDP peer to the given 'host'/'port' pair. UDP is in reality connectionless, so this option only means that incoming packets from different addresses are automatically discarded, and that outgoing packets are always sent to the connected address (future calls to [SetDestAddress] are not allowed). This method does not send any data to the remote peer, to do that, use [PacketPeer.PutVar] or [PacketPeer.PutPacket] as usual. See also [UDPServer].
-
-Note: Connecting to the remote peer does not help to protect from malicious attacks like IP spoofing, etc. Think about using an encryption technique like TLS or DTLS if you feel like your application is transferring sensitive information.
-
-[PacketPeer.PutPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutPacket
-[PacketPeer.PutVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutVar
-[SetDestAddress]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.SetDestAddress
-[UDPServer]: https://pkg.go.dev/graphics.gd/classdb/UDPServer
-*/
-//go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:PacketPeerUDP.connect_to_host
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
@@ -450,63 +400,26 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the UDP socket is open and has been connected to a remote address. See [ConnectToHost].
-
-[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.ConnectToHost
-*/
-//go:nosplit
 func (self class) IsSocketConnected() bool { //gd:PacketPeerUDP.is_socket_connected
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_socket_connected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the IP of the remote peer that sent the last packet(that was received with [PacketPeer.GetPacket] or [PacketPeer.GetVar]).
-
-[PacketPeer.GetPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetPacket
-[PacketPeer.GetVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetVar
-*/
-//go:nosplit
 func (self class) GetPacketIp() String.Readable { //gd:PacketPeerUDP.get_packet_ip
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_packet_ip, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the port of the remote peer that sent the last packet(that was received with [PacketPeer.GetPacket] or [PacketPeer.GetVar]).
-
-[PacketPeer.GetPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetPacket
-[PacketPeer.GetVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetVar
-*/
-//go:nosplit
 func (self class) GetPacketPort() int64 { //gd:PacketPeerUDP.get_packet_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local port to which this peer is bound.
-*/
-//go:nosplit
 func (self class) GetLocalPort() int64 { //gd:PacketPeerUDP.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the destination address and port for sending packets and variables. A hostname will be resolved using DNS if needed.
-
-Note: [SetBroadcastEnabled] must be enabled before sending packets to a broadcast address (e.g. 255.255.255.255).
-
-[SetBroadcastEnabled]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.SetBroadcastEnabled
-*/
-//go:nosplit
 func (self class) SetDestAddress(host String.Readable, port int64) Error.Code { //gd:PacketPeerUDP.set_dest_address
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_dest_address, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
@@ -515,27 +428,9 @@ func (self class) SetDestAddress(host String.Readable, port int64) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Enable or disable sending of broadcast packets (e.g. set_dest_address("255.255.255.255", 4343). This option is disabled by default.
-
-Note: Some Android devices might require the CHANGE_WIFI_MULTICAST_STATE permission and this option to be enabled to receive broadcast packets too.
-*/
-//go:nosplit
 func (self class) SetBroadcastEnabled(enabled bool) { //gd:PacketPeerUDP.set_broadcast_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_broadcast_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-/*
-Joins the multicast group specified by 'multicast_address' using the interface identified by 'interface_name'.
-
-You can join the same multicast group with multiple interfaces. Use [IP.GetLocalInterfaces] to know which are available.
-
-Note: Some Android devices might require the CHANGE_WIFI_MULTICAST_STATE permission for multicast to work.
-
-[IP.GetLocalInterfaces]: https://pkg.go.dev/graphics.gd/classdb/IP#GetLocalInterfaces
-*/
-//go:nosplit
 func (self class) JoinMulticastGroup(multicast_address String.Readable, interface_name String.Readable) Error.Code { //gd:PacketPeerUDP.join_multicast_group
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.join_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		multicast_address gdextension.String
@@ -544,11 +439,6 @@ func (self class) JoinMulticastGroup(multicast_address String.Readable, interfac
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Removes the interface identified by 'interface_name' from the multicast group specified by 'multicast_address'.
-*/
-//go:nosplit
 func (self class) LeaveMulticastGroup(multicast_address String.Readable, interface_name String.Readable) Error.Code { //gd:PacketPeerUDP.leave_multicast_group
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.leave_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		multicast_address gdextension.String

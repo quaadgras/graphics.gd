@@ -235,58 +235,38 @@ func (self Instance) SetReverseFill(value bool) Instance { //gd:FlowContainer.re
 	return self
 }
 
-/*
-Returns the current line count.
-*/
-//go:nosplit
 func (self class) GetLineCount() int64 { //gd:FlowContainer.get_line_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:FlowContainer.set_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
 }
-
-//go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:FlowContainer.get_alignment
 	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLastWrapAlignment(last_wrap_alignment LastWrapAlignmentMode) { //gd:FlowContainer.set_last_wrap_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_last_wrap_alignment, 0|(gdextension.SizeInt<<4), &struct{ last_wrap_alignment LastWrapAlignmentMode }{last_wrap_alignment})
 }
-
-//go:nosplit
 func (self class) GetLastWrapAlignment() LastWrapAlignmentMode { //gd:FlowContainer.get_last_wrap_alignment
 	var r_ret = noescape.Call[LastWrapAlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_last_wrap_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:FlowContainer.set_vertical
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
-
-//go:nosplit
 func (self class) IsVertical() bool { //gd:FlowContainer.is_vertical
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReverseFill(reverse_fill bool) { //gd:FlowContainer.set_reverse_fill
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverse_fill, 0|(gdextension.SizeBool<<4), &struct{ reverse_fill bool }{reverse_fill})
 }
-
-//go:nosplit
 func (self class) IsReverseFill() bool { //gd:FlowContainer.is_reverse_fill
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reverse_fill, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

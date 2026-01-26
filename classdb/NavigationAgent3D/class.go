@@ -928,641 +928,370 @@ func (self Instance) SetDebugPathCustomPointSize(value Float.X) Instance { //gd:
 	return self
 }
 
-/*
-Returns the [Resource.ID] of this agent on the [NavigationServer3D].
-
-[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationAgent3D.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAvoidanceEnabled(enabled bool) { //gd:NavigationAgent3D.set_avoidance_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetAvoidanceEnabled() bool { //gd:NavigationAgent3D.get_avoidance_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathDesiredDistance(desired_distance float64) { //gd:NavigationAgent3D.set_path_desired_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_desired_distance, 0|(gdextension.SizeFloat<<4), &struct{ desired_distance float64 }{desired_distance})
 }
-
-//go:nosplit
 func (self class) GetPathDesiredDistance() float64 { //gd:NavigationAgent3D.get_path_desired_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_desired_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTargetDesiredDistance(desired_distance float64) { //gd:NavigationAgent3D.set_target_desired_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_desired_distance, 0|(gdextension.SizeFloat<<4), &struct{ desired_distance float64 }{desired_distance})
 }
-
-//go:nosplit
 func (self class) GetTargetDesiredDistance() float64 { //gd:NavigationAgent3D.get_target_desired_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_target_desired_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:NavigationAgent3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:NavigationAgent3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeight(height float64) { //gd:NavigationAgent3D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
-
-//go:nosplit
 func (self class) GetHeight() float64 { //gd:NavigationAgent3D.get_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathHeightOffset(path_height_offset float64) { //gd:NavigationAgent3D.set_path_height_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_height_offset, 0|(gdextension.SizeFloat<<4), &struct{ path_height_offset float64 }{path_height_offset})
 }
-
-//go:nosplit
 func (self class) GetPathHeightOffset() float64 { //gd:NavigationAgent3D.get_path_height_offset
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_height_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUse3dAvoidance(enabled bool) { //gd:NavigationAgent3D.set_use_3d_avoidance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_3d_avoidance, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetUse3dAvoidance() bool { //gd:NavigationAgent3D.get_use_3d_avoidance
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_3d_avoidance, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetKeepYVelocity(enabled bool) { //gd:NavigationAgent3D.set_keep_y_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_y_velocity, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetKeepYVelocity() bool { //gd:NavigationAgent3D.get_keep_y_velocity
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_y_velocity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNeighborDistance(neighbor_distance float64) { //gd:NavigationAgent3D.set_neighbor_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_neighbor_distance, 0|(gdextension.SizeFloat<<4), &struct{ neighbor_distance float64 }{neighbor_distance})
 }
-
-//go:nosplit
 func (self class) GetNeighborDistance() float64 { //gd:NavigationAgent3D.get_neighbor_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_neighbor_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxNeighbors(max_neighbors int64) { //gd:NavigationAgent3D.set_max_neighbors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_neighbors, 0|(gdextension.SizeInt<<4), &struct{ max_neighbors int64 }{max_neighbors})
 }
-
-//go:nosplit
 func (self class) GetMaxNeighbors() int64 { //gd:NavigationAgent3D.get_max_neighbors
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_neighbors, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTimeHorizonAgents(time_horizon float64) { //gd:NavigationAgent3D.set_time_horizon_agents
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_horizon_agents, 0|(gdextension.SizeFloat<<4), &struct{ time_horizon float64 }{time_horizon})
 }
-
-//go:nosplit
 func (self class) GetTimeHorizonAgents() float64 { //gd:NavigationAgent3D.get_time_horizon_agents
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_horizon_agents, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTimeHorizonObstacles(time_horizon float64) { //gd:NavigationAgent3D.set_time_horizon_obstacles
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_horizon_obstacles, 0|(gdextension.SizeFloat<<4), &struct{ time_horizon float64 }{time_horizon})
 }
-
-//go:nosplit
 func (self class) GetTimeHorizonObstacles() float64 { //gd:NavigationAgent3D.get_time_horizon_obstacles
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_horizon_obstacles, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxSpeed(max_speed float64) { //gd:NavigationAgent3D.set_max_speed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_speed, 0|(gdextension.SizeFloat<<4), &struct{ max_speed float64 }{max_speed})
 }
-
-//go:nosplit
 func (self class) GetMaxSpeed() float64 { //gd:NavigationAgent3D.get_max_speed
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathMaxDistance(max_speed float64) { //gd:NavigationAgent3D.set_path_max_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ max_speed float64 }{max_speed})
 }
-
-//go:nosplit
 func (self class) GetPathMaxDistance() float64 { //gd:NavigationAgent3D.get_path_max_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationAgent3D.set_navigation_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
-
-//go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationAgent3D.get_navigation_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
-
-[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
-*/
-//go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
-
-[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
-*/
-//go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_navigation_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm NavigationPathQueryParameters3D.PathfindingAlgorithm) { //gd:NavigationAgent3D.set_pathfinding_algorithm
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), &struct {
 		pathfinding_algorithm NavigationPathQueryParameters3D.PathfindingAlgorithm
 	}{pathfinding_algorithm})
 }
-
-//go:nosplit
 func (self class) GetPathfindingAlgorithm() NavigationPathQueryParameters3D.PathfindingAlgorithm { //gd:NavigationAgent3D.get_pathfinding_algorithm
 	var r_ret = noescape.Call[NavigationPathQueryParameters3D.PathfindingAlgorithm](gd.ObjectChecked(self.AsObject()), methods.get_pathfinding_algorithm, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathPostprocessing(path_postprocessing NavigationPathQueryParameters3D.PathPostProcessing) { //gd:NavigationAgent3D.set_path_postprocessing
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_postprocessing, 0|(gdextension.SizeInt<<4), &struct {
 		path_postprocessing NavigationPathQueryParameters3D.PathPostProcessing
 	}{path_postprocessing})
 }
-
-//go:nosplit
 func (self class) GetPathPostprocessing() NavigationPathQueryParameters3D.PathPostProcessing { //gd:NavigationAgent3D.get_path_postprocessing
 	var r_ret = noescape.Call[NavigationPathQueryParameters3D.PathPostProcessing](gd.ObjectChecked(self.AsObject()), methods.get_path_postprocessing, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathMetadataFlags(flags NavigationPathQueryParameters3D.PathMetadataFlags) { //gd:NavigationAgent3D.set_path_metadata_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_metadata_flags, 0|(gdextension.SizeInt<<4), &struct {
 		flags NavigationPathQueryParameters3D.PathMetadataFlags
 	}{flags})
 }
-
-//go:nosplit
 func (self class) GetPathMetadataFlags() NavigationPathQueryParameters3D.PathMetadataFlags { //gd:NavigationAgent3D.get_path_metadata_flags
 	var r_ret = noescape.Call[NavigationPathQueryParameters3D.PathMetadataFlags](gd.ObjectChecked(self.AsObject()), methods.get_path_metadata_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Resource.ID] of the navigation map this NavigationAgent node should use and also updates the agent on the NavigationServer.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationAgent3D.set_navigation_map
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
-
-/*
-Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[SetNavigationMap]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.SetNavigationMap
-*/
-//go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationAgent3D.get_navigation_map
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTargetPosition(position Vector3.XYZ) { //gd:NavigationAgent3D.set_target_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
 }
-
-//go:nosplit
 func (self class) GetTargetPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_target_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSimplifyPath(enabled bool) { //gd:NavigationAgent3D.set_simplify_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_path, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetSimplifyPath() bool { //gd:NavigationAgent3D.get_simplify_path
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simplify_path, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationAgent3D.set_simplify_epsilon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), &struct{ epsilon float64 }{epsilon})
 }
-
-//go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationAgent3D.get_simplify_epsilon
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathReturnMaxLength(length float64) { //gd:NavigationAgent3D.set_path_return_max_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetPathReturnMaxLength() float64 { //gd:NavigationAgent3D.get_path_return_max_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathReturnMaxRadius(radius float64) { //gd:NavigationAgent3D.set_path_return_max_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetPathReturnMaxRadius() float64 { //gd:NavigationAgent3D.get_path_return_max_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathSearchMaxPolygons(max_polygons int64) { //gd:NavigationAgent3D.set_path_search_max_polygons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_polygons, 0|(gdextension.SizeInt<<4), &struct{ max_polygons int64 }{max_polygons})
 }
-
-//go:nosplit
 func (self class) GetPathSearchMaxPolygons() int64 { //gd:NavigationAgent3D.get_path_search_max_polygons
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_polygons, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPathSearchMaxDistance(distance float64) { //gd:NavigationAgent3D.set_path_search_max_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
-
-//go:nosplit
 func (self class) GetPathSearchMaxDistance() float64 { //gd:NavigationAgent3D.get_path_search_max_distance
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the length of the currently calculated path. The returned value is 0.0, if the path is still calculating or no calculation has been requested yet.
-*/
-//go:nosplit
 func (self class) GetPathLength() float64 { //gd:NavigationAgent3D.get_path_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the next position in global coordinates that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the position of the agent's parent. The use of this function once every physics frame is required to update the internal path logic of the NavigationAgent.
-*/
-//go:nosplit
 func (self class) GetNextPathPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_next_path_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_next_path_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Replaces the internal velocity in the collision avoidance simulation with 'velocity'. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
-*/
-//go:nosplit
 func (self class) SetVelocityForced(velocity Vector3.XYZ) { //gd:NavigationAgent3D.set_velocity_forced
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity_forced, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
-
-//go:nosplit
 func (self class) SetVelocity(velocity Vector3.XYZ) { //gd:NavigationAgent3D.set_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
-
-//go:nosplit
 func (self class) GetVelocity() Vector3.XYZ { //gd:NavigationAgent3D.get_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the distance to the target position, using the agent's global position. The user must set [TargetPosition] in order for this to be accurate.
-
-[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
-*/
-//go:nosplit
 func (self class) DistanceToTarget() float64 { //gd:NavigationAgent3D.distance_to_target
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.distance_to_target, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the path query result for the path the agent is currently following.
-*/
-//go:nosplit
 func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult3D { //gd:NavigationAgent3D.get_current_navigation_result
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_navigation_result, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.NavigationPathQueryResult3D{gdclass.NewNavigationPathQueryResult3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [GetNextPathPosition] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
-
-[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
-*/
-//go:nosplit
 func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:NavigationAgent3D.get_current_navigation_path
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_current_navigation_path, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns which index the agent is currently on in the navigation path's [][Vector3.XYZ].
-
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetCurrentNavigationPathIndex() int64 { //gd:NavigationAgent3D.get_current_navigation_path_index
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_navigation_path_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the agent reached the target, i.e. the agent moved within [TargetDesiredDistance] of the [TargetPosition]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [GetFinalPosition].
-
-[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
-[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
-[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
-*/
-//go:nosplit
 func (self class) IsTargetReached() bool { //gd:NavigationAgent3D.is_target_reached
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_target_reached, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if [GetFinalPosition] is within [TargetDesiredDistance] of the [TargetPosition].
-
-[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
-[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
-[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
-*/
-//go:nosplit
 func (self class) IsTargetReachable() bool { //gd:NavigationAgent3D.is_target_reachable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_target_reachable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the agent's navigation has finished. If the target is reachable, navigation ends when the target is reached. If the target is unreachable, navigation ends when the last waypoint of the path is reached.
-
-Note: While true prefer to stop calling update functions like [GetNextPathPosition]. This avoids jittering the standing agent due to calling repeated path updates.
-
-[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
-*/
-//go:nosplit
 func (self class) IsNavigationFinished() bool { //gd:NavigationAgent3D.is_navigation_finished
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_navigation_finished, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [OnPathChanged] signal.
-
-[OnPathChanged]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.OnPathChanged
-*/
-//go:nosplit
 func (self class) GetFinalPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_final_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_final_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAvoidanceLayers(layers int64) { //gd:NavigationAgent3D.set_avoidance_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
-
-//go:nosplit
 func (self class) GetAvoidanceLayers() int64 { //gd:NavigationAgent3D.get_avoidance_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAvoidanceMask(mask int64) { //gd:NavigationAgent3D.set_avoidance_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetAvoidanceMask() int64 { //gd:NavigationAgent3D.get_avoidance_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
-
-[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
-*/
-//go:nosplit
 func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [AvoidanceLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
-
-[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
-*/
-//go:nosplit
 func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified mask in the [AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
-
-[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
-*/
-//go:nosplit
 func (self class) SetAvoidanceMaskValue(mask_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		mask_number int64
 		value       bool
 	}{mask_number, value})
 }
-
-/*
-Returns whether or not the specified mask of the [AvoidanceMask] bitmask is enabled, given a 'mask_number' between 1 and 32.
-
-[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
-*/
-//go:nosplit
 func (self class) GetAvoidanceMaskValue(mask_number int64) bool { //gd:NavigationAgent3D.get_avoidance_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ mask_number int64 }{mask_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAvoidancePriority(priority float64) { //gd:NavigationAgent3D.set_avoidance_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetAvoidancePriority() float64 { //gd:NavigationAgent3D.get_avoidance_priority
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugEnabled(enabled bool) { //gd:NavigationAgent3D.set_debug_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetDebugEnabled() bool { //gd:NavigationAgent3D.get_debug_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_debug_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugUseCustom(enabled bool) { //gd:NavigationAgent3D.set_debug_use_custom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_use_custom, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetDebugUseCustom() bool { //gd:NavigationAgent3D.get_debug_use_custom
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_debug_use_custom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugPathCustomColor(color Color.RGBA) { //gd:NavigationAgent3D.set_debug_path_custom_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_path_custom_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetDebugPathCustomColor() Color.RGBA { //gd:NavigationAgent3D.get_debug_path_custom_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_path_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugPathCustomPointSize(point_size float64) { //gd:NavigationAgent3D.set_debug_path_custom_point_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_path_custom_point_size, 0|(gdextension.SizeFloat<<4), &struct{ point_size float64 }{point_size})
 }
-
-//go:nosplit
 func (self class) GetDebugPathCustomPointSize() float64 { //gd:NavigationAgent3D.get_debug_path_custom_point_size
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_debug_path_custom_point_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

@@ -205,36 +205,19 @@ func (self Instance) SetAllowUnpress(value bool) Instance { //gd:ButtonGroup.all
 	return self
 }
 
-/*
-Returns the current pressed button.
-*/
-//go:nosplit
 func (self class) GetPressedButton() [1]gdclass.BaseButton { //gd:ButtonGroup.get_pressed_button
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pressed_button, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.BaseButton{gdclass.NewBaseButton(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an slice of [Button]s who have this as their [ButtonGroup] (see [BaseButton.ButtonGroup]).
-
-[BaseButton.ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ButtonGroup
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/ButtonGroup
-*/
-//go:nosplit
 func (self class) GetButtons() Array.Contains[[1]gdclass.BaseButton] { //gd:ButtonGroup.get_buttons
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_buttons, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.BaseButton]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowUnpress(enabled bool) { //gd:ButtonGroup.set_allow_unpress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_unpress, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsAllowUnpress() bool { //gd:ButtonGroup.is_allow_unpress
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_unpress, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

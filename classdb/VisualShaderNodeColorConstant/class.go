@@ -180,12 +180,9 @@ func (self Instance) SetConstant(value Color.RGBA) Instance { //gd:VisualShaderN
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant Color.RGBA) { //gd:VisualShaderNodeColorConstant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeColor<<4), &struct{ constant Color.RGBA }{constant})
 }
-
-//go:nosplit
 func (self class) GetConstant() Color.RGBA { //gd:VisualShaderNodeColorConstant.get_constant
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret

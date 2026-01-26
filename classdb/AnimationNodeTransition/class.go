@@ -302,104 +302,61 @@ func (self Instance) SetInputCount(value int) Instance { //gd:AnimationNodeTrans
 	return self
 }
 
-//go:nosplit
 func (self class) SetInputCount(input_count int64) { //gd:AnimationNodeTransition.set_input_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_count, 0|(gdextension.SizeInt<<4), &struct{ input_count int64 }{input_count})
 }
-
-/*
-Enables or disables auto-advance for the given 'input' index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
-*/
-//go:nosplit
 func (self class) SetInputAsAutoAdvance(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_as_auto_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		input  int64
 		enable bool
 	}{input, enable})
 }
-
-/*
-Returns true if auto-advance is enabled for the given 'input' index.
-*/
-//go:nosplit
 func (self class) IsInputSetAsAutoAdvance(input int64) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_set_as_auto_advance, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
-*/
-//go:nosplit
 func (self class) SetInputBreakLoopAtEnd(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_break_loop_at_end, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		input  int64
 		enable bool
 	}{input, enable})
 }
-
-/*
-Returns whether the animation breaks the loop at the end of the loop cycle for transition.
-*/
-//go:nosplit
 func (self class) IsInputLoopBrokenAtEnd(input int64) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_loop_broken_at_end, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the destination animation is restarted when the animation transitions.
-*/
-//go:nosplit
 func (self class) SetInputReset(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_reset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_reset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		input  int64
 		enable bool
 	}{input, enable})
 }
-
-/*
-Returns whether the animation restarts when the animation transitions from the other animation.
-*/
-//go:nosplit
 func (self class) IsInputReset(input int64) bool { //gd:AnimationNodeTransition.is_input_reset
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_reset, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetXfadeTime(time float64) { //gd:AnimationNodeTransition.set_xfade_time
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_time, 0|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 }
-
-//go:nosplit
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfade_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_xfade_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
-
-//go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeTransition.get_xfade_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_xfade_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeTransition.set_allow_transition_to_self
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeTransition.is_allow_transition_to_self
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

@@ -213,36 +213,25 @@ func (self Instance) SetEnergyMultiplier(value Float.X) Instance { //gd:Panorama
 	return self
 }
 
-//go:nosplit
 func (self class) SetPanorama(texture [1]gdclass.Texture2D) { //gd:PanoramaSkyMaterial.set_panorama
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panorama, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetPanorama() [1]gdclass.Texture2D { //gd:PanoramaSkyMaterial.get_panorama
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_panorama, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFilteringEnabled(enabled bool) { //gd:PanoramaSkyMaterial.set_filtering_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filtering_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsFilteringEnabled() bool { //gd:PanoramaSkyMaterial.is_filtering_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filtering_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PanoramaSkyMaterial.set_energy_multiplier
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
-
-//go:nosplit
 func (self class) GetEnergyMultiplier() float64 { //gd:PanoramaSkyMaterial.get_energy_multiplier
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

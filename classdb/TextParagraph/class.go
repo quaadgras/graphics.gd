@@ -713,98 +713,57 @@ func (self Instance) SetLineSpacing(value Float.X) Instance { //gd:TextParagraph
 	return self
 }
 
-/*
-Clears text paragraph (removes text and inline objects).
-*/
-//go:nosplit
 func (self class) Clear() { //gd:TextParagraph.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetDirection(direction TextServer.Direction) { //gd:TextParagraph.set_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeInt<<4), &struct{ direction TextServer.Direction }{direction})
 }
-
-//go:nosplit
 func (self class) GetDirection() TextServer.Direction { //gd:TextParagraph.get_direction
 	var r_ret = noescape.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text writing direction inferred by the BiDi algorithm.
-*/
-//go:nosplit
 func (self class) GetInferredDirection() TextServer.Direction { //gd:TextParagraph.get_inferred_direction
 	var r_ret = noescape.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_inferred_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCustomPunctuation(custom_punctuation String.Readable) { //gd:TextParagraph.set_custom_punctuation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_punctuation, 0|(gdextension.SizeString<<4), &struct{ custom_punctuation gdextension.String }{pointers.Get(gd.InternalString(custom_punctuation))})
 }
-
-//go:nosplit
 func (self class) GetCustomPunctuation() String.Readable { //gd:TextParagraph.get_custom_punctuation
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_custom_punctuation, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOrientation(orientation TextServer.Orientation) { //gd:TextParagraph.set_orientation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orientation, 0|(gdextension.SizeInt<<4), &struct{ orientation TextServer.Orientation }{orientation})
 }
-
-//go:nosplit
 func (self class) GetOrientation() TextServer.Orientation { //gd:TextParagraph.get_orientation
 	var r_ret = noescape.Call[TextServer.Orientation](gd.ObjectChecked(self.AsObject()), methods.get_orientation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreserveInvalid(enabled bool) { //gd:TextParagraph.set_preserve_invalid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_invalid, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetPreserveInvalid() bool { //gd:TextParagraph.get_preserve_invalid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_invalid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPreserveControl(enabled bool) { //gd:TextParagraph.set_preserve_control
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_control, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetPreserveControl() bool { //gd:TextParagraph.get_preserve_control
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_control, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Overrides BiDi for the structured text.
-
-Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
-*/
-//go:nosplit
 func (self class) SetBidiOverride(override Array.Any) { //gd:TextParagraph.set_bidi_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidi_override, 0|(gdextension.SizeArray<<4), &struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))})
 }
-
-/*
-Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
-*/
-//go:nosplit
 func (self class) SetDropcap(text String.Readable, font [1]gdclass.Font, font_size int64, dropcap_margins Rect2.PositionSize, language String.Readable) bool { //gd:TextParagraph.set_dropcap
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_dropcap, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeString<<20), &struct {
 		text            gdextension.String
@@ -816,19 +775,9 @@ func (self class) SetDropcap(text String.Readable, font [1]gdclass.Font, font_si
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes dropcap.
-*/
-//go:nosplit
 func (self class) ClearDropcap() { //gd:TextParagraph.clear_dropcap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_dropcap, 0, &struct{}{})
 }
-
-/*
-Adds text span and font to draw it.
-*/
-//go:nosplit
 func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size int64, language String.Readable, meta variant.Any) bool { //gd:TextParagraph.add_string
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_string, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16)|(gdextension.SizeVariant<<20), &struct {
 		text      gdextension.String
@@ -840,11 +789,6 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds inline object to the text buffer, 'key' must be unique. In the text, object is represented as 'length' object replacement characters.
-*/
-//go:nosplit
 func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool { //gd:TextParagraph.add_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20), &struct {
 		key          gdextension.Variant
@@ -856,11 +800,6 @@ func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.I
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets new size and alignment of embedded object.
-*/
-//go:nosplit
 func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool { //gd:TextParagraph.resize_object
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.resize_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), &struct {
 		key          gdextension.Variant
@@ -871,197 +810,115 @@ func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GU
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAlignment(alignment GUI.HorizontalAlignment) { //gd:TextParagraph.set_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
-
-//go:nosplit
 func (self class) GetAlignment() GUI.HorizontalAlignment { //gd:TextParagraph.get_alignment
 	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Aligns paragraph to the given tab-stops.
-*/
-//go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextParagraph.tab_align
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tab_align, 0|(gdextension.SizePackedArray<<4), &struct {
 		tab_stops gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))})
 }
-
-//go:nosplit
 func (self class) SetBreakFlags(flags TextServer.LineBreakFlag) { //gd:TextParagraph.set_break_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_break_flags, 0|(gdextension.SizeInt<<4), &struct{ flags TextServer.LineBreakFlag }{flags})
 }
-
-//go:nosplit
 func (self class) GetBreakFlags() TextServer.LineBreakFlag { //gd:TextParagraph.get_break_flags
 	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_break_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetJustificationFlags(flags TextServer.JustificationFlag) { //gd:TextParagraph.set_justification_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), &struct{ flags TextServer.JustificationFlag }{flags})
 }
-
-//go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:TextParagraph.get_justification_flags
 	var r_ret = noescape.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:TextParagraph.set_text_overrun_behavior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), &struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior})
 }
-
-//go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextParagraph.get_text_overrun_behavior
 	var r_ret = noescape.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:TextParagraph.set_ellipsis_char
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), &struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))})
 }
-
-//go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:TextParagraph.get_ellipsis_char
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWidth(width float64) { //gd:TextParagraph.set_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), &struct{ width float64 }{width})
 }
-
-//go:nosplit
 func (self class) GetWidth() float64 { //gd:TextParagraph.get_width
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the size of the bounding box of the paragraph, without line breaks.
-*/
-//go:nosplit
 func (self class) GetNonWrappedSize() Vector2.XY { //gd:TextParagraph.get_non_wrapped_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_non_wrapped_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the size of the bounding box of the paragraph.
-*/
-//go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:TextParagraph.get_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns TextServer full string buffer RID.
-*/
-//go:nosplit
 func (self class) GetRid() RID.Any { //gd:TextParagraph.get_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns TextServer line buffer RID.
-*/
-//go:nosplit
 func (self class) GetLineRid(line int64) RID.Any { //gd:TextParagraph.get_line_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_line_rid, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns drop cap text buffer RID.
-*/
-//go:nosplit
 func (self class) GetDropcapRid() RID.Any { //gd:TextParagraph.get_dropcap_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_dropcap_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the character range of the paragraph.
-*/
-//go:nosplit
 func (self class) GetRange() Vector2i.XY { //gd:TextParagraph.get_range
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns number of lines in the paragraph.
-*/
-//go:nosplit
 func (self class) GetLineCount() int64 { //gd:TextParagraph.get_line_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxLinesVisible(max_lines_visible int64) { //gd:TextParagraph.set_max_lines_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_lines_visible, 0|(gdextension.SizeInt<<4), &struct{ max_lines_visible int64 }{max_lines_visible})
 }
-
-//go:nosplit
 func (self class) GetMaxLinesVisible() int64 { //gd:TextParagraph.get_max_lines_visible
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_lines_visible, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLineSpacing(line_spacing float64) { //gd:TextParagraph.set_line_spacing
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_spacing, 0|(gdextension.SizeFloat<<4), &struct{ line_spacing float64 }{line_spacing})
 }
-
-//go:nosplit
 func (self class) GetLineSpacing() float64 { //gd:TextParagraph.get_line_spacing
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_spacing, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns array of inline objects in the line.
-*/
-//go:nosplit
 func (self class) GetLineObjects(line int64) Array.Any { //gd:TextParagraph.get_line_objects
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_objects, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns bounding rectangle of the inline object.
-*/
-//go:nosplit
 func (self class) GetLineObjectRect(line int64, key variant.Any) Rect2.PositionSize { //gd:TextParagraph.get_line_object_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_line_object_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		line int64
@@ -1070,101 +927,51 @@ func (self class) GetLineObjectRect(line int64, key variant.Any) Rect2.PositionS
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns size of the bounding box of the line of text. Returned size is rounded up.
-*/
-//go:nosplit
 func (self class) GetLineSize(line int64) Vector2.XY { //gd:TextParagraph.get_line_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_line_size, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns character range of the line.
-*/
-//go:nosplit
 func (self class) GetLineRange(line int64) Vector2i.XY { //gd:TextParagraph.get_line_range
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_line_range, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text line ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
-*/
-//go:nosplit
 func (self class) GetLineAscent(line int64) float64 { //gd:TextParagraph.get_line_ascent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_ascent, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the text line descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
-*/
-//go:nosplit
 func (self class) GetLineDescent(line int64) float64 { //gd:TextParagraph.get_line_descent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_descent, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns width (for horizontal layout) or height (for vertical) of the line of text.
-*/
-//go:nosplit
 func (self class) GetLineWidth(line int64) float64 { //gd:TextParagraph.get_line_width
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns pixel offset of the underline below the baseline.
-*/
-//go:nosplit
 func (self class) GetLineUnderlinePosition(line int64) float64 { //gd:TextParagraph.get_line_underline_position
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_position, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns thickness of the underline.
-*/
-//go:nosplit
 func (self class) GetLineUnderlineThickness(line int64) float64 { //gd:TextParagraph.get_line_underline_thickness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_thickness, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns drop cap bounding box size.
-*/
-//go:nosplit
 func (self class) GetDropcapSize() Vector2.XY { //gd:TextParagraph.get_dropcap_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_dropcap_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns number of lines used by dropcap.
-*/
-//go:nosplit
 func (self class) GetDropcapLines() int64 { //gd:TextParagraph.get_dropcap_lines
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_dropcap_lines, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, dc_color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
@@ -1174,11 +981,6 @@ func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, dc_colo
 		oversampling float64
 	}{canvas, pos, color, dc_color, oversampling})
 }
-
-/*
-Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, dc_color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		canvas       RID.Any
@@ -1189,11 +991,6 @@ func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64
 		oversampling float64
 	}{canvas, pos, outline_size, color, dc_color, oversampling})
 }
-
-/*
-Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawLine(canvas RID.Any, pos Vector2.XY, line int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_line
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
@@ -1203,11 +1000,6 @@ func (self class) DrawLine(canvas RID.Any, pos Vector2.XY, line int64, color Col
 		oversampling float64
 	}{canvas, pos, line, color, oversampling})
 }
-
-/*
-Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawLineOutline(canvas RID.Any, pos Vector2.XY, line int64, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_line_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		canvas       RID.Any
@@ -1218,11 +1010,6 @@ func (self class) DrawLineOutline(canvas RID.Any, pos Vector2.XY, line int64, ou
 		oversampling float64
 	}{canvas, pos, line, outline_size, color, oversampling})
 }
-
-/*
-Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawDropcap(canvas RID.Any, pos Vector2.XY, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_dropcap
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16), &struct {
 		canvas       RID.Any
@@ -1231,11 +1018,6 @@ func (self class) DrawDropcap(canvas RID.Any, pos Vector2.XY, color Color.RGBA, 
 		oversampling float64
 	}{canvas, pos, color, oversampling})
 }
-
-/*
-Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-*/
-//go:nosplit
 func (self class) DrawDropcapOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_dropcap_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
@@ -1245,11 +1027,6 @@ func (self class) DrawDropcapOutline(canvas RID.Any, pos Vector2.XY, outline_siz
 		oversampling float64
 	}{canvas, pos, outline_size, color, oversampling})
 }
-
-/*
-Returns caret character offset at the specified coordinates. This function always returns a valid position.
-*/
-//go:nosplit
 func (self class) HitTest(coords Vector2.XY) int64 { //gd:TextParagraph.hit_test
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_test, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ coords Vector2.XY }{coords})
 	var ret = r_ret

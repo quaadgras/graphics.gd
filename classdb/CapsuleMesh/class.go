@@ -228,48 +228,33 @@ func (self Instance) SetRings(value int) Instance { //gd:CapsuleMesh.rings
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CapsuleMesh.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:CapsuleMesh.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeight(height float64) { //gd:CapsuleMesh.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
-
-//go:nosplit
 func (self class) GetHeight() float64 { //gd:CapsuleMesh.get_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRadialSegments(segments int64) { //gd:CapsuleMesh.set_radial_segments
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
-
-//go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:CapsuleMesh.get_radial_segments
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRings(rings int64) { //gd:CapsuleMesh.set_rings
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
-
-//go:nosplit
 func (self class) GetRings() int64 { //gd:CapsuleMesh.get_rings
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -177,12 +177,9 @@ func (self Instance) SetPosition(value Vector2.XY) Instance { //gd:InputEventGes
 	return self
 }
 
-//go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventGesture.set_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-//go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventGesture.get_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

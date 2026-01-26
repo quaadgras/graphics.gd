@@ -393,52 +393,25 @@ func (self Instance) SetMaxDeltaPacketSize(value int) Instance { //gd:SceneMulti
 	return self
 }
 
-//go:nosplit
 func (self class) SetRootPath(path Path.ToNode) { //gd:SceneMultiplayer.set_root_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetRootPath() Path.ToNode { //gd:SceneMultiplayer.get_root_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-Clears the current SceneMultiplayer network state (you shouldn't call this unless you know what you are doing).
-*/
-//go:nosplit
 func (self class) Clear() { //gd:SceneMultiplayer.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Disconnects the peer identified by 'id', removing it from the list of connected peers, and closing the underlying connection with it.
-*/
-//go:nosplit
 func (self class) DisconnectPeer(id int64) { //gd:SceneMultiplayer.disconnect_peer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_peer, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-/*
-Returns the IDs of the peers currently trying to authenticate with this [MultiplayerAPI].
-
-[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
-*/
-//go:nosplit
 func (self class) GetAuthenticatingPeers() Packed.Array[int32] { //gd:SceneMultiplayer.get_authenticating_peers
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_authenticating_peers, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sends the specified 'data' to the remote peer identified by 'id' as part of an authentication message. This can be used to authenticate peers, and control when [OnMultiplayerapi.PeerConnected] is emitted (and the remote peer accepted as one of the connected peers).
-
-[OnMultiplayerapi.PeerConnected]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnMultiplayerapi.PeerConnected
-*/
-//go:nosplit
 func (self class) SendAuth(id int64, data Packed.Bytes) Error.Code { //gd:SceneMultiplayer.send_auth
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send_auth, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		id   int64
@@ -447,91 +420,51 @@ func (self class) SendAuth(id int64, data Packed.Bytes) Error.Code { //gd:SceneM
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Mark the authentication step as completed for the remote peer identified by 'id'. The [OnMultiplayerapi.PeerConnected] signal will be emitted for this peer once the remote side also completes the authentication. No further authentication messages are expected to be received from this peer.
-
-If a peer disconnects before completing authentication, either due to a network issue, the [AuthTimeout] expiring, or manually calling [DisconnectPeer], the [OnPeerAuthenticationFailed] signal will be emitted instead of [OnMultiplayerapi.PeerDisconnected].
-
-[AuthTimeout]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.AuthTimeout
-[DisconnectPeer]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.DisconnectPeer
-[OnMultiplayerapi.PeerConnected]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnMultiplayerapi.PeerConnected
-[OnMultiplayerapi.PeerDisconnected]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnMultiplayerapi.PeerDisconnected
-[OnPeerAuthenticationFailed]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticationFailed
-*/
-//go:nosplit
 func (self class) CompleteAuth(id int64) Error.Code { //gd:SceneMultiplayer.complete_auth
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.complete_auth, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAuthCallback(callback Callable.Function) { //gd:SceneMultiplayer.set_auth_callback
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auth_callback, 0|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 }
-
-//go:nosplit
 func (self class) GetAuthCallback() Callable.Function { //gd:SceneMultiplayer.get_auth_callback
 	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_auth_callback, gdextension.SizeCallable, &struct{}{})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAuthTimeout(timeout float64) { //gd:SceneMultiplayer.set_auth_timeout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auth_timeout, 0|(gdextension.SizeFloat<<4), &struct{ timeout float64 }{timeout})
 }
-
-//go:nosplit
 func (self class) GetAuthTimeout() float64 { //gd:SceneMultiplayer.get_auth_timeout
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auth_timeout, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRefuseNewConnections(refuse bool) { //gd:SceneMultiplayer.set_refuse_new_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ refuse bool }{refuse})
 }
-
-//go:nosplit
 func (self class) IsRefusingNewConnections() bool { //gd:SceneMultiplayer.is_refusing_new_connections
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_refusing_new_connections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowObjectDecoding(enable bool) { //gd:SceneMultiplayer.set_allow_object_decoding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_object_decoding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsObjectDecodingAllowed() bool { //gd:SceneMultiplayer.is_object_decoding_allowed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_object_decoding_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetServerRelayEnabled(enabled bool) { //gd:SceneMultiplayer.set_server_relay_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_server_relay_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsServerRelayEnabled() bool { //gd:SceneMultiplayer.is_server_relay_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server_relay_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sends the given raw 'bytes' to a specific peer identified by 'id' (see [MultiplayerPeer.SetTargetPeer]). Default ID is 0, i.e. broadcast to all peers.
-
-[MultiplayerPeer.SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
-*/
-//go:nosplit
 func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.TransferMode, channel int64) Error.Code { //gd:SceneMultiplayer.send_bytes
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send_bytes, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		bytes   gdextension.PackedArray[byte]
@@ -542,27 +475,19 @@ func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.T
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) GetMaxSyncPacketSize() int64 { //gd:SceneMultiplayer.get_max_sync_packet_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_sync_packet_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxSyncPacketSize(size int64) { //gd:SceneMultiplayer.set_max_sync_packet_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_sync_packet_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetMaxDeltaPacketSize() int64 { //gd:SceneMultiplayer.get_max_delta_packet_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_delta_packet_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxDeltaPacketSize(size int64) { //gd:SceneMultiplayer.set_max_delta_packet_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_delta_packet_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }

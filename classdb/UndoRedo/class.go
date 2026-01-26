@@ -464,20 +464,6 @@ func (self Instance) SetMaxSteps(value int) Instance { //gd:UndoRedo.max_steps
 	return self
 }
 
-/*
-Create a new action. After this is called, do all your calls to [AddDoMethod], [AddUndoMethod], [AddDoProperty], and [AddUndoProperty], then commit the action with [CommitAction].
-
-The way actions are merged is dictated by 'merge_mode'.
-
-The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
-
-[AddDoMethod]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.AddDoMethod
-[AddDoProperty]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.AddDoProperty
-[AddUndoMethod]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.AddUndoMethod
-[AddUndoProperty]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.AddUndoProperty
-[CommitAction]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.CommitAction
-*/
-//go:nosplit
 func (self class) CreateAction(name String.Readable, merge_mode MergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		name              gdextension.String
@@ -485,48 +471,20 @@ func (self class) CreateAction(name String.Readable, merge_mode MergeMode, backw
 		backward_undo_ops bool
 	}{pointers.Get(gd.InternalString(name)), merge_mode, backward_undo_ops})
 }
-
-/*
-Commit the action. If 'execute' is true (which it is by default), all "do" methods/properties are called/set when this function is called.
-*/
-//go:nosplit
 func (self class) CommitAction(execute bool) { //gd:UndoRedo.commit_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.commit_action, 0|(gdextension.SizeBool<<4), &struct{ execute bool }{execute})
 }
-
-/*
-Returns true if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [CommitAction]).
-
-[CommitAction]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.CommitAction
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
-//go:nosplit
 func (self class) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_committing_action, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Register a func that will be called when the action is committed.
-*/
-//go:nosplit
 func (self class) AddDoMethod(callable Callable.Function) { //gd:UndoRedo.add_do_method
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_method, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Register a func that will be called when the action is undone.
-*/
-//go:nosplit
 func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_undo_method
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_method, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
-
-/*
-Register a 'property' that would change its value to 'value' when the action is committed.
-*/
-//go:nosplit
 func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_do_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		obj      gdextension.Object
@@ -534,11 +492,6 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value va
 		value    gdextension.Variant
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Register a 'property' that would change its value to 'value' when the action is undone.
-*/
-//go:nosplit
 func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_undo_property
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), &struct {
 		obj      gdextension.Object
@@ -546,165 +499,69 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 		value    gdextension.Variant
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Register a reference to an object that will be erased if the "do" history is deleted. This is useful for objects added by the "do" action and removed by the "undo" action.
-
-When the "do" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-
-
-
-[RefCounted]: https://pkg.go.dev/graphics.gd/variant/RefCounted
-*/
-//go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_reference
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Register a reference to an object that will be erased if the "undo" history is deleted. This is useful for objects added by the "undo" action and removed by the "do" action.
-
-When the "undo" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-
-
-
-[RefCounted]: https://pkg.go.dev/graphics.gd/variant/RefCounted
-*/
-//go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:UndoRedo.add_undo_reference
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
-
-/*
-Marks the next "do" and "undo" operations to be processed even if the action gets merged with another in the [MergeEnds] mode. Return to normal operation using [EndForceKeepInMergeEnds].
-
-[EndForceKeepInMergeEnds]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.EndForceKeepInMergeEnds
-*/
-//go:nosplit
 func (self class) StartForceKeepInMergeEnds() { //gd:UndoRedo.start_force_keep_in_merge_ends
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_force_keep_in_merge_ends, 0, &struct{}{})
 }
-
-/*
-Stops marking operations as to be processed even if the action gets merged with another in the [MergeEnds] mode. See [StartForceKeepInMergeEnds].
-
-[StartForceKeepInMergeEnds]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.StartForceKeepInMergeEnds
-*/
-//go:nosplit
 func (self class) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_merge_ends
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_force_keep_in_merge_ends, 0, &struct{}{})
 }
-
-/*
-Returns how many elements are in the history.
-*/
-//go:nosplit
 func (self class) GetHistoryCount() int64 { //gd:UndoRedo.get_history_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_history_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets the index of the current action.
-*/
-//go:nosplit
 func (self class) GetCurrentAction() int64 { //gd:UndoRedo.get_current_action
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_action, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets the action name from its index.
-*/
-//go:nosplit
 func (self class) GetActionName(id int64) String.Readable { //gd:UndoRedo.get_action_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Clear the undo/redo history and associated references.
-
-Passing false to 'increase_version' will prevent the version number from increasing when the history is cleared.
-*/
-//go:nosplit
 func (self class) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_history
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_history, 0|(gdextension.SizeBool<<4), &struct{ increase_version bool }{increase_version})
 }
-
-/*
-Gets the name of the current action, equivalent to get_action_name(get_current_action()).
-*/
-//go:nosplit
 func (self class) GetCurrentActionName() String.Readable { //gd:UndoRedo.get_current_action_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_action_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if an "undo" action is available.
-*/
-//go:nosplit
 func (self class) HasUndo() bool { //gd:UndoRedo.has_undo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_undo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a "redo" action is available.
-*/
-//go:nosplit
 func (self class) HasRedo() bool { //gd:UndoRedo.has_redo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets the version. Every time a new action is committed, the [UndoRedo]'s version number is increased automatically.
-
-This is useful mostly to check if something changed from a saved version.
-
-[UndoRedo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo
-*/
-//go:nosplit
 func (self class) GetVersion() int64 { //gd:UndoRedo.get_version
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxSteps(max_steps int64) { //gd:UndoRedo.set_max_steps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_steps, 0|(gdextension.SizeInt<<4), &struct{ max_steps int64 }{max_steps})
 }
-
-//go:nosplit
 func (self class) GetMaxSteps() int64 { //gd:UndoRedo.get_max_steps
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_steps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Redo the last action.
-*/
-//go:nosplit
 func (self class) Redo() bool { //gd:UndoRedo.redo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.redo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Undo the last action.
-*/
-//go:nosplit
 func (self class) Undo() bool { //gd:UndoRedo.undo
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.undo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

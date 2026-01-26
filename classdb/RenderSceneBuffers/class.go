@@ -164,10 +164,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-This method is called by the rendering server when the associated viewport's configuration is changed. It will discard the old buffers and recreate the internal buffers used.
-*/
-//go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetRenderSceneBuffersConfiguration(config[0])))})
 }

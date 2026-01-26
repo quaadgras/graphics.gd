@@ -218,10 +218,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Start the stream in compression mode with the given 'buffer_size', if 'use_deflate' is true uses deflate instead of GZIP.
-*/
-//go:nosplit
 func (self class) StartCompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_compression
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
@@ -230,11 +226,6 @@ func (self class) StartCompression(use_deflate bool, buffer_size int64) Error.Co
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Start the stream in decompression mode with the given 'buffer_size', if 'use_deflate' is true uses deflate instead of GZIP.
-*/
-//go:nosplit
 func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_decompression
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
@@ -243,23 +234,11 @@ func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Finalizes the stream, compressing any buffered chunk left.
-
-You must call it only when you are compressing.
-*/
-//go:nosplit
 func (self class) Finish() Error.Code { //gd:StreamPeerGZIP.finish
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Clears this stream, resetting the internal state.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:StreamPeerGZIP.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }

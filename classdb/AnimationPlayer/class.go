@@ -862,31 +862,17 @@ func (self Instance) SetMovieQuitOnFinish(value bool) Instance { //gd:AnimationP
 	return self
 }
 
-/*
-Triggers the 'animation_to' animation when the 'animation_from' animation completes.
-*/
-//go:nosplit
 func (self class) AnimationSetNext(animation_from String.Name, animation_to String.Name) { //gd:AnimationPlayer.animation_set_next
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.animation_set_next, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))})
 }
-
-/*
-Returns the key of the animation which is queued to play after the 'animation_from' animation.
-*/
-//go:nosplit
 func (self class) AnimationGetNext(animation_from String.Name) String.Name { //gd:AnimationPlayer.animation_get_next
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.animation_get_next, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Specifies a blend time (in seconds) between two animations, referenced by their keys.
-*/
-//go:nosplit
 func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec float64) { //gd:AnimationPlayer.set_blend_time
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_time, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12), &struct {
 		animation_from gdextension.StringName
@@ -894,11 +880,6 @@ func (self class) SetBlendTime(animation_from String.Name, animation_to String.N
 		sec            float64
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to)), sec})
 }
-
-/*
-Returns the blend time (in seconds) between two animations, referenced by their keys.
-*/
-//go:nosplit
 func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) float64 { //gd:AnimationPlayer.get_blend_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_time, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		animation_from gdextension.StringName
@@ -907,81 +888,46 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultBlendTime(sec float64) { //gd:AnimationPlayer.set_default_blend_time
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), &struct{ sec float64 }{sec})
 }
-
-//go:nosplit
 func (self class) GetDefaultBlendTime() float64 { //gd:AnimationPlayer.get_default_blend_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoCapture(auto_capture bool) { //gd:AnimationPlayer.set_auto_capture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture, 0|(gdextension.SizeBool<<4), &struct{ auto_capture bool }{auto_capture})
 }
-
-//go:nosplit
 func (self class) IsAutoCapture() bool { //gd:AnimationPlayer.is_auto_capture
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoCaptureDuration(auto_capture_duration float64) { //gd:AnimationPlayer.set_auto_capture_duration
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), &struct{ auto_capture_duration float64 }{auto_capture_duration})
 }
-
-//go:nosplit
 func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_auto_capture_duration
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type Tween.TransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type})
 }
-
-//go:nosplit
 func (self class) GetAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
 	var r_ret = noescape.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoCaptureEaseType(auto_capture_ease_type Tween.EaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type})
 }
-
-//go:nosplit
 func (self class) GetAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
 	var r_ret = noescape.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Plays the animation with key 'name'. Custom blend times and speed can be set.
-
-The 'from_end' option only affects when switching to a new animation track, or if the same track but at the start or end. It does not affect resuming playback that was paused in the middle of an animation. If 'custom_speed' is negative and 'from_end' is true, the animation will play backwards (which is equivalent to calling [PlayBackwards]).
-
-The [AnimationPlayer] keeps track of its current or last played animation with [AssignedAnimation]. If this method is called with that same animation 'name', or with no 'name' parameter, the assigned animation will resume playing if it was paused.
-
-Note: The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call advance(0).
-
-[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
-[AssignedAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.AssignedAnimation
-[PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayBackwards
-*/
-//go:nosplit
 func (self class) Play(name String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		name         gdextension.StringName
@@ -990,15 +936,6 @@ func (self class) Play(name String.Name, custom_blend float64, custom_speed floa
 		from_end     bool
 	}{pointers.Get(gd.InternalStringName(name)), custom_blend, custom_speed, from_end})
 }
-
-/*
-Plays the animation with key 'name' and the section starting from 'start_marker' and ending on 'end_marker'.
-
-If the start marker is empty, the section starts from the beginning of the animation. If the end marker is empty, the section ends on the end of the animation. See also [Play].
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
-*/
-//go:nosplit
 func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		name         gdextension.StringName
@@ -1009,15 +946,6 @@ func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.N
 		from_end     bool
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker)), custom_blend, custom_speed, from_end})
 }
-
-/*
-Plays the animation with key 'name' and the section starting from 'start_time' and ending on 'end_time'. See also [Play].
-
-Setting 'start_time' to a value outside the range of the animation means the start of the animation will be used instead, and setting 'end_time' to a value outside the range of the animation means the end of the animation will be used instead. 'start_time' cannot be equal to 'end_time'.
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
-*/
-//go:nosplit
 func (self class) PlaySection(name String.Name, start_time float64, end_time float64, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		name         gdextension.StringName
@@ -1028,30 +956,12 @@ func (self class) PlaySection(name String.Name, start_time float64, end_time flo
 		from_end     bool
 	}{pointers.Get(gd.InternalStringName(name)), start_time, end_time, custom_blend, custom_speed, from_end})
 }
-
-/*
-Plays the animation with key 'name' in reverse.
-
-This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = true, so see its description for more information.
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
-*/
-//go:nosplit
 func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:AnimationPlayer.play_backwards
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		name         gdextension.StringName
 		custom_blend float64
 	}{pointers.Get(gd.InternalStringName(name)), custom_blend})
 }
-
-/*
-Plays the animation with key 'name' and the section starting from 'start_marker' and ending on 'end_marker' in reverse.
-
-This method is a shorthand for [PlaySectionWithMarkers] with custom_speed = -1.0 and from_end = true, see its description for more information.
-
-[PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
-*/
-//go:nosplit
 func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64) { //gd:AnimationPlayer.play_section_with_markers_backwards
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16), &struct {
 		name         gdextension.StringName
@@ -1060,15 +970,6 @@ func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker
 		custom_blend float64
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker)), custom_blend})
 }
-
-/*
-Plays the animation with key 'name' and the section starting from 'start_time' and ending on 'end_time' in reverse.
-
-This method is a shorthand for [PlaySection] with custom_speed = -1.0 and from_end = true, see its description for more information.
-
-[PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
-*/
-//go:nosplit
 func (self class) PlaySectionBackwards(name String.Name, start_time float64, end_time float64, custom_blend float64) { //gd:AnimationPlayer.play_section_backwards
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		name         gdextension.StringName
@@ -1077,29 +978,6 @@ func (self class) PlaySectionBackwards(name String.Name, start_time float64, end
 		custom_blend float64
 	}{pointers.Get(gd.InternalStringName(name)), start_time, end_time, custom_blend})
 }
-
-/*
-See also [AnimationMixer.Capture].
-
-You can use this method to use more detailed options for capture than those performed by [PlaybackAutoCapture]. When [PlaybackAutoCapture] is false, this method is almost the same as the following:
-
-
-	animationMixer.MoreArgs().Capture(name("run"), duration(0.2), Tween.TransitionType(0), Tween.EaseType(0))
-	animationPlayer.MoreArgs().PlayWithCapture(name("run"), duration(0.5), custom_blend(1), custom_speed(1), from_end(false), Tween.TransitionType(0), Tween.EaseType(0))
-
-
-If 'name' is blank, it specifies [AssignedAnimation].
-
-If 'duration' is a negative value, the duration is set to the interval between the current position and the first key, when 'from_end' is true, uses the interval between the current position and the last key instead.
-
-Note: The 'duration' takes [SpeedScale] into account, but 'custom_speed' does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
-
-[AnimationMixer.Capture]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.Capture
-[AssignedAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.AssignedAnimation
-[PlaybackAutoCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaybackAutoCapture
-[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.SpeedScale
-*/
-//go:nosplit
 func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_with_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		name         gdextension.StringName
@@ -1111,243 +989,113 @@ func (self class) PlayWithCapture(name String.Name, duration float64, custom_ble
 		ease_type    Tween.EaseType
 	}{pointers.Get(gd.InternalStringName(name)), duration, custom_blend, custom_speed, from_end, trans_type, ease_type})
 }
-
-/*
-Pauses the currently playing animation. The [CurrentAnimationPosition] will be kept and calling [Play] or [PlayBackwards] without arguments or with the same animation name as [AssignedAnimation] will resume the animation.
-
-See also [Stop].
-
-[AssignedAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.AssignedAnimation
-[CurrentAnimationPosition]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimationPosition
-[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
-[PlayBackwards]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayBackwards
-[Stop]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Stop
-*/
-//go:nosplit
 func (self class) Pause() { //gd:AnimationPlayer.pause
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
 }
-
-/*
-Stops the currently playing animation. The animation position is reset to 0 and the custom_speed is reset to 1.0. See also [Pause].
-
-If 'keep_state' is true, the animation state is not updated visually.
-
-Note: The method / audio / animation playback tracks will not be processed by this method.
-
-[Pause]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Pause
-*/
-//go:nosplit
 func (self class) Stop(keep_state bool) { //gd:AnimationPlayer.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
 }
-
-/*
-Returns true if an animation is currently playing (even if [SpeedScale] and/or custom_speed are 0).
-
-[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.SpeedScale
-*/
-//go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
 }
-
-//go:nosplit
 func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
 }
-
-//go:nosplit
 func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Queues an animation for playback once the current animation and all previously queued animations are done.
-
-Note: If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
-*/
-//go:nosplit
 func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns a list of the animation keys that are currently queued to play.
-*/
-//go:nosplit
 func (self class) GetQueue() Packed.Strings { //gd:AnimationPlayer.get_queue
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Clears all queued, unplayed animations.
-*/
-//go:nosplit
 func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_queue, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetSpeedScale(speed float64) { //gd:AnimationPlayer.set_speed_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
-
-//go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimationPlayer.get_speed_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the actual playing speed of current animation or 0 if not playing. This speed is the [SpeedScale] property multiplied by custom_speed argument specified when calling the [Play] method.
-
-Returns a negative value if the current animation is playing backwards.
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
-[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.SpeedScale
-*/
-//go:nosplit
 func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_speed
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) { //gd:AnimationPlayer.set_movie_quit_on_finish_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsMovieQuitOnFinishEnabled() bool { //gd:AnimationPlayer.is_movie_quit_on_finish_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCurrentAnimationPosition() float64 { //gd:AnimationPlayer.get_current_animation_position
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCurrentAnimationLength() float64 { //gd:AnimationPlayer.get_current_animation_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Changes the start and end markers of the section being played. The current playback position will be clamped within the new section. See also [PlaySectionWithMarkers].
-
-If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
-
-[PlaySectionWithMarkers]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySectionWithMarkers
-*/
-//go:nosplit
 func (self class) SetSectionWithMarkers(start_marker String.Name, end_marker String.Name) { //gd:AnimationPlayer.set_section_with_markers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker))})
 }
-
-/*
-Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [PlaySection].
-
-[PlaySection]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaySection
-*/
-//go:nosplit
 func (self class) SetSection(start_time float64, end_time float64) { //gd:AnimationPlayer.set_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
 		start_time float64
 		end_time   float64
 	}{start_time, end_time})
 }
-
-/*
-Resets the current section. Does nothing if a section has not been set.
-*/
-//go:nosplit
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
 }
-
-/*
-Returns the start time of the section currently being played.
-*/
-//go:nosplit
 func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the end time of the section currently being played.
-*/
-//go:nosplit
 func (self class) GetSectionEndTime() float64 { //gd:AnimationPlayer.get_section_end_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_end_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if an animation is currently playing with a section.
-*/
-//go:nosplit
 func (self class) HasSection() bool { //gd:AnimationPlayer.has_section
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Seeks the animation to the 'seconds' point in time (in seconds). If 'update' is true, the animation updates too, otherwise it updates at process time. Events between the current frame and 'seconds' are skipped.
-
-If 'update_only' is true, the method / audio / animation playback tracks will not be processed.
-
-Note: Seeking to the end of the animation doesn't emit [OnAnimationmixer.AnimationFinished]. If you want to skip animation and emit the signal, use [AnimationMixer.Advance].
-
-[AnimationMixer.Advance]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.Advance
-[OnAnimationmixer.AnimationFinished]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.OnAnimationmixer.AnimationFinished
-*/
-//go:nosplit
 func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:AnimationPlayer.seek
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		seconds     float64
@@ -1355,55 +1103,25 @@ func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:
 		update_only bool
 	}{seconds, update, update_only})
 }
-
-/*
-Sets the process notification in which to update animations.
-*/
-//go:nosplit
 func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationProcessCallback }{mode})
 }
-
-/*
-Returns the process notification in which to update animations.
-*/
-//go:nosplit
 func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
 	var r_ret = noescape.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the call mode used for "Call Method" tracks.
-*/
-//go:nosplit
 func (self class) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method_call_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationMethodCallMode }{mode})
 }
-
-/*
-Returns the call mode used for "Call Method" tracks.
-*/
-//go:nosplit
 func (self class) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
 	var r_ret = noescape.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), methods.get_method_call_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the node which node path references will travel from.
-*/
-//go:nosplit
 func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-/*
-Returns the node which node path references will travel from.
-*/
-//go:nosplit
 func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))

@@ -180,17 +180,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns a new instance of the script.
-
-
-	var MyClass = Resource.Load[GDScript.Instance]("myclass.gd")
-	var instance = MyClass.New()
-	script, _ := Script.Get(instance.(Object.Instance))
-	fmt.Println(Object.Aliases(MyClass, script)) // Prints true
-
-*/
-//go:nosplit
 func (self class) New(args ...gd.Variant) variant.Any { //gd:GDScript.new
 	var fixed = [...]gdextension.Variant{}
 	var dynamic []gdextension.Variant

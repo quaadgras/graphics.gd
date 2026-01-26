@@ -175,12 +175,9 @@ func (self Instance) SetConstant(value bool) Instance { //gd:VisualShaderNodeBoo
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant bool) { //gd:VisualShaderNodeBooleanConstant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeBool<<4), &struct{ constant bool }{constant})
 }
-
-//go:nosplit
 func (self class) GetConstant() bool { //gd:VisualShaderNodeBooleanConstant.get_constant
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

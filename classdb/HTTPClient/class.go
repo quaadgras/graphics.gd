@@ -458,15 +458,6 @@ func (self Instance) SetReadChunkSize(value int) Instance { //gd:HTTPClient.read
 	return self
 }
 
-/*
-Connects to a host. This needs to be done before any requests are sent.
-
-If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
-
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-*/
-//go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1]gdclass.TLSOptions) Error.Code { //gd:HTTPClient.connect_to_host
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		host        gdextension.String
@@ -476,29 +467,14 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), &struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(connection[0])))})
 }
-
-//go:nosplit
 func (self class) GetConnection() [1]gdclass.StreamPeer { //gd:HTTPClient.get_connection
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeer{gdclass.NewStreamPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sends a raw HTTP request to the connected host with the given 'method'.
-
-The URL parameter is usually just the part after the host, so for https://example.com/index.php, it is /index.php. When sending requests to an HTTP proxy server, it should be an absolute URL. For [Httpclient.MethodOptions] requests, * is also allowed. For [Httpclient.MethodConnect] requests, it should be the authority component (host:port).
-
-'headers' are HTTP request headers.
-
-Sends the body data raw, as a byte array and does not encode it in any way.
-*/
-//go:nosplit
 func (self class) RequestRaw(method Method, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request_raw, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), &struct {
 		method  Method
@@ -509,28 +485,6 @@ func (self class) RequestRaw(method Method, url String.Readable, headers Packed.
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sends an HTTP request to the connected host with the given 'method'.
-
-The URL parameter is usually just the part after the host, so for https://example.com/index.php, it is /index.php. When sending requests to an HTTP proxy server, it should be an absolute URL. For [Httpclient.MethodOptions] requests, * is also allowed. For [Httpclient.MethodConnect] requests, it should be the authority component (host:port).
-
-'headers' are HTTP request headers.
-
-To create a POST request with query strings to push to the server, do:
-
-
-	var fields = map[string]string{"username": "user", "password": "pass"}
-	var queryString = http_client.QueryStringFromDict(fields)
-	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
-	var result = http_client.MoreArgs().Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
-
-
-Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [String.UriEncode] for an example.
-
-[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
-*/
-//go:nosplit
 func (self class) Request(method Method, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
 		method  Method
@@ -541,190 +495,82 @@ func (self class) Request(method Method, url String.Readable, headers Packed.Str
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Closes the current connection, allowing reuse of this [HTTPClient].
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-*/
-//go:nosplit
 func (self class) Close() { //gd:HTTPClient.close
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
-
-/*
-If true, this [HTTPClient] has a response available.
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-*/
-//go:nosplit
 func (self class) HasResponse() bool { //gd:HTTPClient.has_response
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_response, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, this [HTTPClient] has a response that is chunked.
-
-[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
-*/
-//go:nosplit
 func (self class) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_response_chunked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the response's HTTP status code.
-*/
-//go:nosplit
 func (self class) GetResponseCode() int64 { //gd:HTTPClient.get_response_code
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_code, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the response headers.
-*/
-//go:nosplit
 func (self class) GetResponseHeaders() Packed.Strings { //gd:HTTPClient.get_response_headers
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_response_headers, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns all response headers as a data structure. Each entry is composed by the header name, and a string containing the values separated by "; ". The casing is kept the same as the headers were received.
-
-
-	headers := map[string]string{
-		"Content-Length": "12",
-		"Content-Type":   "application/json; charset=UTF-8",
-	}
-
-*/
-//go:nosplit
 func (self class) GetResponseHeadersAsDictionary() Dictionary.Any { //gd:HTTPClient.get_response_headers_as_dictionary
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_response_headers_as_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns the response's body length.
-
-Note: Some Web servers may not send a body length. In this case, the value returned will be -1. If using chunked transfer encoding, the body length will also be -1.
-
-Note: This function always returns -1 on the Web platform due to browsers limitations.
-*/
-//go:nosplit
 func (self class) GetResponseBodyLength() int64 { //gd:HTTPClient.get_response_body_length
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_body_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Reads one chunk from the response.
-*/
-//go:nosplit
 func (self class) ReadResponseBodyChunk() Packed.Bytes { //gd:HTTPClient.read_response_body_chunk
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_response_body_chunk, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReadChunkSize(bytes int64) { //gd:HTTPClient.set_read_chunk_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_chunk_size, 0|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 }
-
-//go:nosplit
 func (self class) GetReadChunkSize() int64 { //gd:HTTPClient.get_read_chunk_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_read_chunk_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBlockingMode(enabled bool) { //gd:HTTPClient.set_blocking_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blocking_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsBlockingModeEnabled() bool { //gd:HTTPClient.is_blocking_mode_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blocking_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a [Status] constant. Need to call [Poll] in order to get status updates.
-
-[Poll]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Poll
-*/
-//go:nosplit
 func (self class) GetStatus() Status { //gd:HTTPClient.get_status
 	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-This needs to be called in order to have any request processed. Check results with [GetStatus].
-
-[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.GetStatus
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:HTTPClient.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sets the proxy server for HTTP requests.
-
-The proxy server is unset if 'host' is empty or 'port' is -1.
-*/
-//go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPClient.set_http_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
 }
-
-/*
-Sets the proxy server for HTTPS requests.
-
-The proxy server is unset if 'host' is empty or 'port' is -1.
-*/
-//go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPClient.set_https_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
 }
-
-/*
-Generates a GET/POST application/x-www-form-urlencoded style query string from a provided dictionary, e.g.:
-
-
-	var fields = map[string]string{"username": "user", "password": "pass"}
-	var queryString = http_client.QueryStringFromDict(fields)
-	// Returns "username=user&password=pass"
-
-
-Furthermore, if a key has a null value, only the key itself is added, without equal sign and value. If the value is an array, for each value in it a pair with the same key is added.
-
-
-*/
-//go:nosplit
 func (self class) QueryStringFromDict(fields Dictionary.Any) String.Readable { //gd:HTTPClient.query_string_from_dict
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_string_from_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4), &struct{ fields gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(fields))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

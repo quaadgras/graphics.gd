@@ -239,60 +239,41 @@ func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGSph
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CSGSphere3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:CSGSphere3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRadialSegments(radial_segments int64) { //gd:CSGSphere3D.set_radial_segments
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ radial_segments int64 }{radial_segments})
 }
-
-//go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:CSGSphere3D.get_radial_segments
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRings(rings int64) { //gd:CSGSphere3D.set_rings
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
-
-//go:nosplit
 func (self class) GetRings() int64 { //gd:CSGSphere3D.get_rings
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGSphere3D.set_smooth_faces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
 }
-
-//go:nosplit
 func (self class) GetSmoothFaces() bool { //gd:CSGSphere3D.get_smooth_faces
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGSphere3D.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGSphere3D.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

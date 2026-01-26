@@ -230,12 +230,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Implement to return a list of allowed horizontal [Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
-
-Note: Having no size flags is equal to having [Control.SizeShrinkBegin]. As such, this value is always implicitly allowed.
-*/
 func (class) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -248,12 +242,6 @@ func (class) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Implement to return a list of allowed vertical [Control.SizeFlags] for child nodes. This doesn't technically prevent the usages of any other size flags, if your implementation requires that. This only limits the options available to the user in the Inspector dock.
-
-Note: Having no size flags is equal to having [Control.SizeShrinkBegin]. As such, this value is always implicitly allowed.
-*/
 func (class) _get_allowed_size_flags_vertical(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -267,18 +255,9 @@ func (class) _get_allowed_size_flags_vertical(impl func(ptr gdclass.Receiver) Pa
 	}
 }
 
-/*
-Queue resort of the contained children. This is called automatically anyway, but can be called upon request.
-*/
-//go:nosplit
 func (self class) QueueSort() { //gd:Container.queue_sort
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_sort, 0, &struct{}{})
 }
-
-/*
-Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
-*/
-//go:nosplit
 func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		child gdextension.Object

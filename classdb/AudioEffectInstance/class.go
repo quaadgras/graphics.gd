@@ -218,15 +218,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called by the [AudioServer] to process this effect. When [ProcessSilence] is not overridden or it returns false, this method is called only when the bus is active.
-
-Note: It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
-
-[AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
-[ProcessSilence]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance#Interface
-*/
 func (class) _process(impl func(ptr gdclass.Receiver, src_buffer gdextension.Pointer, dst_buffer *AudioFrame, frame_count int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
@@ -236,15 +227,6 @@ func (class) _process(impl func(ptr gdclass.Receiver, src_buffer gdextension.Poi
 		impl(self, src_buffer, dst_buffer, frame_count)
 	}
 }
-
-/*
-Override this method to customize the processing behavior of this effect instance.
-
-Should return true to force the [AudioServer] to always call [Process], even if the bus has been muted or cannot otherwise be heard.
-
-[AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
-[Process]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance#Interface
-*/
 func (class) _process_silence(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

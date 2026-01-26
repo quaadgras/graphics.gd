@@ -500,248 +500,134 @@ func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) Instance { /
 	return self
 }
 
-//go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:Node2D.set_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-//go:nosplit
 func (self class) SetRotation(radians float64) { //gd:Node2D.set_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) SetRotationDegrees(degrees float64) { //gd:Node2D.set_rotation_degrees
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
-
-//go:nosplit
 func (self class) SetSkew(radians float64) { //gd:Node2D.set_skew
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skew, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:Node2D.set_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
-
-//go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:Node2D.get_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetRotation() float64 { //gd:Node2D.get_rotation
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetRotationDegrees() float64 { //gd:Node2D.get_rotation_degrees
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetSkew() float64 { //gd:Node2D.get_skew
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_skew, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:Node2D.get_scale
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Applies a rotation to the node, in radians, starting from its current rotation.
-*/
-//go:nosplit
 func (self class) Rotate(radians float64) { //gd:Node2D.rotate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rotate, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-/*
-Applies a local translation on the node's X axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
-
-[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
-*/
-//go:nosplit
 func (self class) MoveLocalX(delta float64, scaled bool) { //gd:Node2D.move_local_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_local_x, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), &struct {
 		delta  float64
 		scaled bool
 	}{delta, scaled})
 }
-
-/*
-Applies a local translation on the node's Y axis with the amount specified in 'delta'. If 'scaled' is false, normalizes the movement to occur independently of the node's [Scale].
-
-[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
-*/
-//go:nosplit
 func (self class) MoveLocalY(delta float64, scaled bool) { //gd:Node2D.move_local_y
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_local_y, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), &struct {
 		delta  float64
 		scaled bool
 	}{delta, scaled})
 }
-
-/*
-Translates the node by the given 'offset' in local coordinates.
-*/
-//go:nosplit
 func (self class) Translate(offset Vector2.XY) { //gd:Node2D.translate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.translate, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-/*
-Adds the 'offset' vector to the node's global position.
-*/
-//go:nosplit
 func (self class) GlobalTranslate(offset Vector2.XY) { //gd:Node2D.global_translate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_translate, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-/*
-Multiplies the current scale by the 'ratio' vector.
-*/
-//go:nosplit
 func (self class) ApplyScale(ratio Vector2.XY) { //gd:Node2D.apply_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_scale, 0|(gdextension.SizeVector2<<4), &struct{ ratio Vector2.XY }{ratio})
 }
-
-//go:nosplit
 func (self class) SetGlobalPosition(position Vector2.XY) { //gd:Node2D.set_global_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-//go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:Node2D.get_global_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGlobalRotation(radians float64) { //gd:Node2D.set_global_rotation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_rotation, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) SetGlobalRotationDegrees(degrees float64) { //gd:Node2D.set_global_rotation_degrees
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_rotation_degrees, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
-
-//go:nosplit
 func (self class) GetGlobalRotation() float64 { //gd:Node2D.get_global_rotation
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_global_rotation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetGlobalRotationDegrees() float64 { //gd:Node2D.get_global_rotation_degrees
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_global_rotation_degrees, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGlobalSkew(radians float64) { //gd:Node2D.set_global_skew
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_skew, 0|(gdextension.SizeFloat<<4), &struct{ radians float64 }{radians})
 }
-
-//go:nosplit
 func (self class) GetGlobalSkew() float64 { //gd:Node2D.get_global_skew
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_global_skew, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGlobalScale(scale Vector2.XY) { //gd:Node2D.set_global_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
-
-//go:nosplit
 func (self class) GetGlobalScale() Vector2.XY { //gd:Node2D.get_global_scale
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTransform(xform Transform2D.OriginXY) { //gd:Node2D.set_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ xform Transform2D.OriginXY }{xform})
 }
-
-//go:nosplit
 func (self class) SetGlobalTransform(xform Transform2D.OriginXY) { //gd:Node2D.set_global_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ xform Transform2D.OriginXY }{xform})
 }
-
-/*
-Rotates the node so that its local +X axis points towards the 'point', which is expected to use global coordinates.
-
-'point' should not be the same as the node's position, otherwise the node always looks to the right.
-*/
-//go:nosplit
 func (self class) LookAt(point Vector2.XY) { //gd:Node2D.look_at
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.look_at, 0|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
 }
-
-/*
-Returns the angle between the node and the 'point' in radians.
-
-[Illustration of the returned angle.]
-
-[Illustration of the returned angle.]: https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png
-*/
-//go:nosplit
 func (self class) GetAngleTo(point Vector2.XY) float64 { //gd:Node2D.get_angle_to
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angle_to, gdextension.SizeFloat|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Transforms the provided global position into a position in local coordinate space. The output will be local relative to the [Node2D] it is called on. e.g. It is appropriate for determining the positions of child nodes, but it is not appropriate for determining its own position relative to its parent.
-
-[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
-*/
-//go:nosplit
 func (self class) ToLocal(global_point Vector2.XY) Vector2.XY { //gd:Node2D.to_local
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.to_local, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ global_point Vector2.XY }{global_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Transforms the provided local position into a position in global coordinate space. The input is expected to be local relative to the [Node2D] it is called on. e.g. Applying this method to the positions of child nodes will correctly transform their positions into the global coordinate space, but applying it to a node's own position will give an incorrect result, as it will incorporate the node's own transformation into its global position.
-
-[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
-*/
-//go:nosplit
 func (self class) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.to_global
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.to_global, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ local_point Vector2.XY }{local_point})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Transform2D.OriginXY] relative to this node's parent.
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-//go:nosplit
 func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), &struct{ parent gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(parent[0])))})
 	var ret = r_ret

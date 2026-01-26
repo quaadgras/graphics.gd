@@ -244,34 +244,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [AudioServer.AddBusEffect].
-
-	package main
-
-	import (
-		"graphics.gd/classdb/AudioEffect"
-		"graphics.gd/classdb/AudioEffectAmplify"
-		"graphics.gd/variant/Object"
-	)
-
-	type MyAudioEffect struct {
-		AudioEffect.Extension[MyAudioEffect]
-	}
-
-	func (e *MyAudioEffect) Instantiate() AudioEffect.Instance {
-		effect := AudioEffectAmplify.New()
-		Object.Set(effect, "base", e)
-		return effect.AsAudioEffect()
-	}
-
-Note: It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
-
-[AudioEffect]: https://pkg.go.dev/graphics.gd/classdb/AudioEffect
-[AudioEffectInstance]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance
-[AudioServer.AddBusEffect]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#AddBusEffect
-*/
 func (class) _instantiate(impl func(ptr gdclass.Receiver) [1]gdclass.AudioEffectInstance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

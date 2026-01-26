@@ -1030,12 +1030,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.TotalGravity] and its respective getter.
-
-[PhysicsDirectBodyState2D.TotalGravity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.TotalGravity
-*/
 func (class) _get_total_gravity(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1043,12 +1037,6 @@ func (class) _get_total_gravity(impl func(ptr gdclass.Receiver) Vector2.XY) (cb 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.TotalLinearDamp] and its respective getter.
-
-[PhysicsDirectBodyState2D.TotalLinearDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.TotalLinearDamp
-*/
 func (class) _get_total_linear_damp(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1056,12 +1044,6 @@ func (class) _get_total_linear_damp(impl func(ptr gdclass.Receiver) float64) (cb
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.TotalAngularDamp] and its respective getter.
-
-[PhysicsDirectBodyState2D.TotalAngularDamp]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.TotalAngularDamp
-*/
 func (class) _get_total_angular_damp(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1069,12 +1051,6 @@ func (class) _get_total_angular_damp(impl func(ptr gdclass.Receiver) float64) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.CenterOfMass] and its respective getter.
-
-[PhysicsDirectBodyState2D.CenterOfMass]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.CenterOfMass
-*/
 func (class) _get_center_of_mass(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1082,12 +1058,6 @@ func (class) _get_center_of_mass(impl func(ptr gdclass.Receiver) Vector2.XY) (cb
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.CenterOfMassLocal] and its respective getter.
-
-[PhysicsDirectBodyState2D.CenterOfMassLocal]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.CenterOfMassLocal
-*/
 func (class) _get_center_of_mass_local(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1095,12 +1065,6 @@ func (class) _get_center_of_mass_local(impl func(ptr gdclass.Receiver) Vector2.X
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.InverseMass] and its respective getter.
-
-[PhysicsDirectBodyState2D.InverseMass]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.InverseMass
-*/
 func (class) _get_inverse_mass(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1108,12 +1072,6 @@ func (class) _get_inverse_mass(impl func(ptr gdclass.Receiver) float64) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.InverseInertia] and its respective getter.
-
-[PhysicsDirectBodyState2D.InverseInertia]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.InverseInertia
-*/
 func (class) _get_inverse_inertia(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1121,12 +1079,6 @@ func (class) _get_inverse_inertia(impl func(ptr gdclass.Receiver) float64) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.LinearVelocity] and its respective setter.
-
-[PhysicsDirectBodyState2D.LinearVelocity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.LinearVelocity
-*/
 func (class) _set_linear_velocity(impl func(ptr gdclass.Receiver, velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var velocity = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1134,12 +1086,6 @@ func (class) _set_linear_velocity(impl func(ptr gdclass.Receiver, velocity Vecto
 		impl(self, velocity)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.LinearVelocity] and its respective getter.
-
-[PhysicsDirectBodyState2D.LinearVelocity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.LinearVelocity
-*/
 func (class) _get_linear_velocity(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1147,12 +1093,6 @@ func (class) _get_linear_velocity(impl func(ptr gdclass.Receiver) Vector2.XY) (c
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.AngularVelocity] and its respective setter.
-
-[PhysicsDirectBodyState2D.AngularVelocity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.AngularVelocity
-*/
 func (class) _set_angular_velocity(impl func(ptr gdclass.Receiver, velocity float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var velocity = gd.UnsafeGet[float64](p_args, 0)
@@ -1160,12 +1100,6 @@ func (class) _set_angular_velocity(impl func(ptr gdclass.Receiver, velocity floa
 		impl(self, velocity)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.AngularVelocity] and its respective getter.
-
-[PhysicsDirectBodyState2D.AngularVelocity]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.AngularVelocity
-*/
 func (class) _get_angular_velocity(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1173,12 +1107,6 @@ func (class) _get_angular_velocity(impl func(ptr gdclass.Receiver) float64) (cb 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.Transform] and its respective setter.
-
-[PhysicsDirectBodyState2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.Transform
-*/
 func (class) _set_transform(impl func(ptr gdclass.Receiver, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 0)
@@ -1186,12 +1114,6 @@ func (class) _set_transform(impl func(ptr gdclass.Receiver, transform Transform2
 		impl(self, transform)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.Transform] and its respective getter.
-
-[PhysicsDirectBodyState2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.Transform
-*/
 func (class) _get_transform(impl func(ptr gdclass.Receiver) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1199,12 +1121,6 @@ func (class) _get_transform(impl func(ptr gdclass.Receiver) Transform2D.OriginXY
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetVelocityAtLocalPosition].
-
-[PhysicsDirectBodyState2D.GetVelocityAtLocalPosition]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetVelocityAtLocalPosition
-*/
 func (class) _get_velocity_at_local_position(impl func(ptr gdclass.Receiver, local_position Vector2.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var local_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1213,12 +1129,6 @@ func (class) _get_velocity_at_local_position(impl func(ptr gdclass.Receiver, loc
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyCentralImpulse].
-
-[PhysicsDirectBodyState2D.ApplyCentralImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyCentralImpulse
-*/
 func (class) _apply_central_impulse(impl func(ptr gdclass.Receiver, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1226,12 +1136,6 @@ func (class) _apply_central_impulse(impl func(ptr gdclass.Receiver, impulse Vect
 		impl(self, impulse)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyImpulse].
-
-[PhysicsDirectBodyState2D.ApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyImpulse
-*/
 func (class) _apply_impulse(impl func(ptr gdclass.Receiver, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1240,12 +1144,6 @@ func (class) _apply_impulse(impl func(ptr gdclass.Receiver, impulse Vector2.XY, 
 		impl(self, impulse, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyTorqueImpulse].
-
-[PhysicsDirectBodyState2D.ApplyTorqueImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyTorqueImpulse
-*/
 func (class) _apply_torque_impulse(impl func(ptr gdclass.Receiver, impulse float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var impulse = gd.UnsafeGet[float64](p_args, 0)
@@ -1253,12 +1151,6 @@ func (class) _apply_torque_impulse(impl func(ptr gdclass.Receiver, impulse float
 		impl(self, impulse)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyCentralForce].
-
-[PhysicsDirectBodyState2D.ApplyCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyCentralForce
-*/
 func (class) _apply_central_force(impl func(ptr gdclass.Receiver, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1266,12 +1158,6 @@ func (class) _apply_central_force(impl func(ptr gdclass.Receiver, force Vector2.
 		impl(self, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyForce].
-
-[PhysicsDirectBodyState2D.ApplyForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyForce
-*/
 func (class) _apply_force(impl func(ptr gdclass.Receiver, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1280,12 +1166,6 @@ func (class) _apply_force(impl func(ptr gdclass.Receiver, force Vector2.XY, posi
 		impl(self, force, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.ApplyTorque].
-
-[PhysicsDirectBodyState2D.ApplyTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.ApplyTorque
-*/
 func (class) _apply_torque(impl func(ptr gdclass.Receiver, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var torque = gd.UnsafeGet[float64](p_args, 0)
@@ -1293,12 +1173,6 @@ func (class) _apply_torque(impl func(ptr gdclass.Receiver, torque float64)) (cb 
 		impl(self, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.AddConstantCentralForce].
-
-[PhysicsDirectBodyState2D.AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.AddConstantCentralForce
-*/
 func (class) _add_constant_central_force(impl func(ptr gdclass.Receiver, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1306,12 +1180,6 @@ func (class) _add_constant_central_force(impl func(ptr gdclass.Receiver, force V
 		impl(self, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.AddConstantForce].
-
-[PhysicsDirectBodyState2D.AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.AddConstantForce
-*/
 func (class) _add_constant_force(impl func(ptr gdclass.Receiver, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1320,12 +1188,6 @@ func (class) _add_constant_force(impl func(ptr gdclass.Receiver, force Vector2.X
 		impl(self, force, position)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.AddConstantTorque].
-
-[PhysicsDirectBodyState2D.AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.AddConstantTorque
-*/
 func (class) _add_constant_torque(impl func(ptr gdclass.Receiver, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var torque = gd.UnsafeGet[float64](p_args, 0)
@@ -1333,12 +1195,6 @@ func (class) _add_constant_torque(impl func(ptr gdclass.Receiver, torque float64
 		impl(self, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.SetConstantForce].
-
-[PhysicsDirectBodyState2D.SetConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.SetConstantForce
-*/
 func (class) _set_constant_force(impl func(ptr gdclass.Receiver, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1346,12 +1202,6 @@ func (class) _set_constant_force(impl func(ptr gdclass.Receiver, force Vector2.X
 		impl(self, force)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetConstantForce].
-
-[PhysicsDirectBodyState2D.GetConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetConstantForce
-*/
 func (class) _get_constant_force(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1359,12 +1209,6 @@ func (class) _get_constant_force(impl func(ptr gdclass.Receiver) Vector2.XY) (cb
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.SetConstantTorque].
-
-[PhysicsDirectBodyState2D.SetConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.SetConstantTorque
-*/
 func (class) _set_constant_torque(impl func(ptr gdclass.Receiver, torque float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var torque = gd.UnsafeGet[float64](p_args, 0)
@@ -1372,12 +1216,6 @@ func (class) _set_constant_torque(impl func(ptr gdclass.Receiver, torque float64
 		impl(self, torque)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetConstantTorque].
-
-[PhysicsDirectBodyState2D.GetConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetConstantTorque
-*/
 func (class) _get_constant_torque(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1385,12 +1223,6 @@ func (class) _get_constant_torque(impl func(ptr gdclass.Receiver) float64) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.Sleeping] and its respective setter.
-
-[PhysicsDirectBodyState2D.Sleeping]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.Sleeping
-*/
 func (class) _set_sleep_state(impl func(ptr gdclass.Receiver, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
@@ -1398,12 +1230,6 @@ func (class) _set_sleep_state(impl func(ptr gdclass.Receiver, enabled bool)) (cb
 		impl(self, enabled)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.Sleeping] and its respective getter.
-
-[PhysicsDirectBodyState2D.Sleeping]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.Sleeping
-*/
 func (class) _is_sleeping(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1411,7 +1237,6 @@ func (class) _is_sleeping(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _set_collision_layer(impl func(ptr gdclass.Receiver, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer = gd.UnsafeGet[int64](p_args, 0)
@@ -1419,7 +1244,6 @@ func (class) _set_collision_layer(impl func(ptr gdclass.Receiver, layer int64)) 
 		impl(self, layer)
 	}
 }
-
 func (class) _get_collision_layer(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1427,7 +1251,6 @@ func (class) _get_collision_layer(impl func(ptr gdclass.Receiver) int64) (cb gd.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _set_collision_mask(impl func(ptr gdclass.Receiver, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var mask = gd.UnsafeGet[int64](p_args, 0)
@@ -1435,7 +1258,6 @@ func (class) _set_collision_mask(impl func(ptr gdclass.Receiver, mask int64)) (c
 		impl(self, mask)
 	}
 }
-
 func (class) _get_collision_mask(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1443,12 +1265,6 @@ func (class) _get_collision_mask(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactCount].
-
-[PhysicsDirectBodyState2D.GetContactCount]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactCount
-*/
 func (class) _get_contact_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1456,12 +1272,6 @@ func (class) _get_contact_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactLocalPosition].
-
-[PhysicsDirectBodyState2D.GetContactLocalPosition]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactLocalPosition
-*/
 func (class) _get_contact_local_position(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1470,12 +1280,6 @@ func (class) _get_contact_local_position(impl func(ptr gdclass.Receiver, contact
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactLocalNormal].
-
-[PhysicsDirectBodyState2D.GetContactLocalNormal]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactLocalNormal
-*/
 func (class) _get_contact_local_normal(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1484,12 +1288,6 @@ func (class) _get_contact_local_normal(impl func(ptr gdclass.Receiver, contact_i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactLocalShape].
-
-[PhysicsDirectBodyState2D.GetContactLocalShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactLocalShape
-*/
 func (class) _get_contact_local_shape(impl func(ptr gdclass.Receiver, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1498,12 +1296,6 @@ func (class) _get_contact_local_shape(impl func(ptr gdclass.Receiver, contact_id
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactLocalVelocityAtPosition].
-
-[PhysicsDirectBodyState2D.GetContactLocalVelocityAtPosition]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactLocalVelocityAtPosition
-*/
 func (class) _get_contact_local_velocity_at_position(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1512,12 +1304,6 @@ func (class) _get_contact_local_velocity_at_position(impl func(ptr gdclass.Recei
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactCollider].
-
-[PhysicsDirectBodyState2D.GetContactCollider]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactCollider
-*/
 func (class) _get_contact_collider(impl func(ptr gdclass.Receiver, contact_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1526,12 +1312,6 @@ func (class) _get_contact_collider(impl func(ptr gdclass.Receiver, contact_idx i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactColliderPosition].
-
-[PhysicsDirectBodyState2D.GetContactColliderPosition]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactColliderPosition
-*/
 func (class) _get_contact_collider_position(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1540,12 +1320,6 @@ func (class) _get_contact_collider_position(impl func(ptr gdclass.Receiver, cont
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactColliderId].
-
-[PhysicsDirectBodyState2D.GetContactColliderId]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactColliderId
-*/
 func (class) _get_contact_collider_id(impl func(ptr gdclass.Receiver, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1554,12 +1328,6 @@ func (class) _get_contact_collider_id(impl func(ptr gdclass.Receiver, contact_id
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactColliderObject].
-
-[PhysicsDirectBodyState2D.GetContactColliderObject]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactColliderObject
-*/
 func (class) _get_contact_collider_object(impl func(ptr gdclass.Receiver, contact_idx int64) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1573,12 +1341,6 @@ func (class) _get_contact_collider_object(impl func(ptr gdclass.Receiver, contac
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactColliderShape].
-
-[PhysicsDirectBodyState2D.GetContactColliderShape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactColliderShape
-*/
 func (class) _get_contact_collider_shape(impl func(ptr gdclass.Receiver, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1587,12 +1349,6 @@ func (class) _get_contact_collider_shape(impl func(ptr gdclass.Receiver, contact
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactColliderVelocityAtPosition].
-
-[PhysicsDirectBodyState2D.GetContactColliderVelocityAtPosition]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactColliderVelocityAtPosition
-*/
 func (class) _get_contact_collider_velocity_at_position(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1601,12 +1357,6 @@ func (class) _get_contact_collider_velocity_at_position(impl func(ptr gdclass.Re
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetContactImpulse].
-
-[PhysicsDirectBodyState2D.GetContactImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetContactImpulse
-*/
 func (class) _get_contact_impulse(impl func(ptr gdclass.Receiver, contact_idx int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
@@ -1615,12 +1365,6 @@ func (class) _get_contact_impulse(impl func(ptr gdclass.Receiver, contact_idx in
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Implement to override the behavior of [PhysicsDirectBodyState2D.Step] and its respective getter.
-
-[PhysicsDirectBodyState2D.Step]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.Step
-*/
 func (class) _get_step(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -1628,24 +1372,12 @@ func (class) _get_step(impl func(ptr gdclass.Receiver) float64) (cb gd.Extension
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.IntegrateForces].
-
-[PhysicsDirectBodyState2D.IntegrateForces]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.IntegrateForces
-*/
 func (class) _integrate_forces(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Overridable version of [PhysicsDirectBodyState2D.GetSpaceState].
-
-[PhysicsDirectBodyState2D.GetSpaceState]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D#Instance.GetSpaceState
-*/
 func (class) _get_space_state(impl func(ptr gdclass.Receiver) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

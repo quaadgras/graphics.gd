@@ -842,24 +842,9 @@ func (self Instance) SetAutoTooltip(value bool) Instance { //gd:Tree.auto_toolti
 	return self
 }
 
-/*
-Clears the tree. This removes all items.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:Tree.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Creates an item in the tree and adds it as a child of 'parent', which can be either a valid [TreeItem] or null.
-
-If 'parent' is null, the root item will be the parent, or the new item will be the root itself if the tree is empty.
-
-The new item will be the 'index'-th child of parent, or it will be the last child if there are not enough siblings.
-
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-//go:nosplit
 func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass.TreeItem { //gd:Tree.create_item
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_item, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parent gdextension.Object
@@ -868,284 +853,128 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the tree's root item, or null if the tree is empty.
-*/
-//go:nosplit
 func (self class) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Overrides the calculated minimum width of a column. It can be set to 0 to restore the default behavior. Columns that have the "Expand" flag will use their "min_width" in a similar fashion to [Control.SizeFlagsStretchRatio].
-
-[Control.SizeFlagsStretchRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsStretchRatio
-*/
-//go:nosplit
 func (self class) SetColumnCustomMinimumWidth(column int64, min_width int64) { //gd:Tree.set_column_custom_minimum_width
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_custom_minimum_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column    int64
 		min_width int64
 	}{column, min_width})
 }
-
-/*
-If true, the column will have the "Expand" flag of [Control]. Columns that have the "Expand" flag will use their expand ratio in a similar fashion to [Control.SizeFlagsStretchRatio] (see [SetColumnExpandRatio]).
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.SizeFlagsStretchRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.SizeFlagsStretchRatio
-[SetColumnExpandRatio]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnExpandRatio
-*/
-//go:nosplit
 func (self class) SetColumnExpand(column int64, expand bool) { //gd:Tree.set_column_expand
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		column int64
 		expand bool
 	}{column, expand})
 }
-
-/*
-Sets the relative expand ratio for a column. See [SetColumnExpand].
-
-[SetColumnExpand]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnExpand
-*/
-//go:nosplit
 func (self class) SetColumnExpandRatio(column int64, ratio int64) { //gd:Tree.set_column_expand_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_expand_ratio, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column int64
 		ratio  int64
 	}{column, ratio})
 }
-
-/*
-Allows to enable clipping for column's content, making the content size ignored.
-*/
-//go:nosplit
 func (self class) SetColumnClipContent(column int64, enable bool) { //gd:Tree.set_column_clip_content
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_clip_content, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		column int64
 		enable bool
 	}{column, enable})
 }
-
-/*
-Returns true if the column has enabled expanding (see [SetColumnExpand]).
-
-[SetColumnExpand]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnExpand
-*/
-//go:nosplit
 func (self class) IsColumnExpanding(column int64) bool { //gd:Tree.is_column_expanding
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_column_expanding, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the column has enabled clipping (see [SetColumnClipContent]).
-
-[SetColumnClipContent]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SetColumnClipContent
-*/
-//go:nosplit
 func (self class) IsColumnClippingContent(column int64) bool { //gd:Tree.is_column_clipping_content
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_column_clipping_content, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the expand ratio assigned to the column.
-*/
-//go:nosplit
 func (self class) GetColumnExpandRatio(column int64) int64 { //gd:Tree.get_column_expand_ratio
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_column_expand_ratio, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the column's width in pixels.
-*/
-//go:nosplit
 func (self class) GetColumnWidth(column int64) int64 { //gd:Tree.get_column_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_column_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHideRoot(enable bool) { //gd:Tree.set_hide_root
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_root, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsRootHidden() bool { //gd:Tree.is_root_hidden
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_hidden, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the next selected [TreeItem] after the given one, or null if the end is reached.
-
-If 'from' is null, this returns the first selected item.
-
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-//go:nosplit
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(from[0])))})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the currently focused item, or null if no item is focused.
-
-In [SelectRow] and [SelectSingle] modes, the focused item is same as the selected item. In [SelectMulti] mode, the focused item is the item under the focus cursor, not necessarily selected.
-
-To get the currently selected item(s), use [GetNextSelected].
-
-[GetNextSelected]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.GetNextSelected
-*/
-//go:nosplit
 func (self class) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Selects the specified [TreeItem] and column.
-
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-//go:nosplit
 func (self class) SetSelected(item [1]gdclass.TreeItem, column int64) { //gd:Tree.set_selected
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		item   gdextension.Object
 		column int64
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), column})
 }
-
-/*
-Returns the currently focused column, or -1 if no column is focused.
-
-In [SelectSingle] mode, the focused column is the selected column. In [SelectRow] mode, the focused column is always 0 if any item is selected. In [SelectMulti] mode, the focused column is the column under the focus cursor, and there are not necessarily any column selected.
-
-To tell whether a column of an item is selected, use [TreeItem.IsSelected].
-
-[TreeItem.IsSelected]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.IsSelected
-*/
-//go:nosplit
 func (self class) GetSelectedColumn() int64 { //gd:Tree.get_selected_column
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_column, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the last pressed button's index.
-*/
-//go:nosplit
 func (self class) GetPressedButton() int64 { //gd:Tree.get_pressed_button
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pressed_button, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSelectMode(mode SelectMode) { //gd:Tree.set_select_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_mode, 0|(gdextension.SizeInt<<4), &struct{ mode SelectMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetSelectMode() SelectMode { //gd:Tree.get_select_mode
 	var r_ret = noescape.Call[SelectMode](gd.ObjectChecked(self.AsObject()), methods.get_select_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Deselects all tree items (rows and columns). In [SelectMulti] mode also removes selection cursor.
-*/
-//go:nosplit
 func (self class) DeselectAll() { //gd:Tree.deselect_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect_all, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetColumns(amount int64) { //gd:Tree.set_columns
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_columns, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetColumns() int64 { //gd:Tree.get_columns
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_columns, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the currently edited item. Can be used with [OnItemEdited] to get the item that was modified.
-
-
-
-[OnItemEdited]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemEdited
-*/
-//go:nosplit
 func (self class) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the column for the currently edited item.
-*/
-//go:nosplit
 func (self class) GetEditedColumn() int64 { //gd:Tree.get_edited_column
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_edited_column, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Edits the selected tree item as if it was clicked.
-
-Either the item must be set editable with [TreeItem.SetEditable] or 'force_edit' must be true.
-
-Returns true if the item could be edited. Fails if no item is selected.
-
-[TreeItem.SetEditable]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.SetEditable
-*/
-//go:nosplit
 func (self class) EditSelected(force_edit bool) bool { //gd:Tree.edit_selected
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.edit_selected, gdextension.SizeBool|(gdextension.SizeBool<<4), &struct{ force_edit bool }{force_edit})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the rectangle for custom popups. Helper to create custom cell controls that display a popup. See [TreeItem.SetCellMode].
-
-[TreeItem.SetCellMode]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.SetCellMode
-*/
-//go:nosplit
 func (self class) GetCustomPopupRect() Rect2.PositionSize { //gd:Tree.get_custom_popup_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_popup_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the rectangle area for the specified [TreeItem]. If 'column' is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
-
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-//go:nosplit
 func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button_index int64) Rect2.PositionSize { //gd:Tree.get_item_area_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_item_area_rect, gdextension.SizeRect2|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		item         gdextension.Object
@@ -1155,287 +984,159 @@ func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the tree item at the specified position (relative to the tree origin position).
-*/
-//go:nosplit
 func (self class) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_at_position, gdextension.SizeObject|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the column index at 'position', or -1 if no item is there.
-*/
-//go:nosplit
 func (self class) GetColumnAtPosition(position Vector2.XY) int64 { //gd:Tree.get_column_at_position
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_column_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the drop section at 'position', or -100 if no item is there.
-
-Values -1, 0, or 1 will be returned for the "above item", "on item", and "below item" drop sections, respectively. See [DropModeFlags] for a description of each drop section.
-
-To get the item which the returned drop section is relative to, use [GetItemAtPosition].
-
-[GetItemAtPosition]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.GetItemAtPosition
-*/
-//go:nosplit
 func (self class) GetDropSectionAtPosition(position Vector2.XY) int64 { //gd:Tree.get_drop_section_at_position
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drop_section_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the button ID at 'position', or -1 if no button is there.
-*/
-//go:nosplit
 func (self class) GetButtonIdAtPosition(position Vector2.XY) int64 { //gd:Tree.get_button_id_at_position
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_button_id_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Makes the currently focused cell visible.
-
-This will scroll the tree if necessary. In [SelectRow] mode, this will not do horizontal scrolling, as all the cells in the selected row is focused logically.
-
-Note: Despite the name of this method, the focus cursor itself is only visible in [SelectMulti] mode.
-*/
-//go:nosplit
 func (self class) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_cursor_is_visible, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetColumnTitlesVisible(visible bool) { //gd:Tree.set_column_titles_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_titles_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) AreColumnTitlesVisible() bool { //gd:Tree.are_column_titles_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_column_titles_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the title of a column.
-*/
-//go:nosplit
 func (self class) SetColumnTitle(column int64, title String.Readable) { //gd:Tree.set_column_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		column int64
 		title  gdextension.String
 	}{column, pointers.Get(gd.InternalString(title))})
 }
-
-/*
-Returns the column's title.
-*/
-//go:nosplit
 func (self class) GetColumnTitle(column int64) String.Readable { //gd:Tree.get_column_title
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_column_title, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the column title alignment. Note that [@Globalscope.HorizontalAlignmentFill] is not supported for column titles.
-*/
-//go:nosplit
 func (self class) SetColumnTitleAlignment(column int64, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title_alignment, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column          int64
 		title_alignment GUI.HorizontalAlignment
 	}{column, title_alignment})
 }
-
-/*
-Returns the column title alignment.
-*/
-//go:nosplit
 func (self class) GetColumnTitleAlignment(column int64) GUI.HorizontalAlignment { //gd:Tree.get_column_title_alignment
 	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_column_title_alignment, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets column title base writing direction.
-*/
-//go:nosplit
 func (self class) SetColumnTitleDirection(column int64, direction Control.TextDirection) { //gd:Tree.set_column_title_direction
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column    int64
 		direction Control.TextDirection
 	}{column, direction})
 }
-
-/*
-Returns column title base writing direction.
-*/
-//go:nosplit
 func (self class) GetColumnTitleDirection(column int64) Control.TextDirection { //gd:Tree.get_column_title_direction
 	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_column_title_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
-*/
-//go:nosplit
 func (self class) SetColumnTitleLanguage(column int64, language String.Readable) { //gd:Tree.set_column_title_language
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_column_title_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		column   int64
 		language gdextension.String
 	}{column, pointers.Get(gd.InternalString(language))})
 }
-
-/*
-Returns column title language code.
-*/
-//go:nosplit
 func (self class) GetColumnTitleLanguage(column int64) String.Readable { //gd:Tree.get_column_title_language
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_column_title_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the current scrolling position.
-*/
-//go:nosplit
 func (self class) GetScroll() Vector2.XY { //gd:Tree.get_scroll
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Causes the [Tree] to jump to the specified [TreeItem].
-
-[Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-//go:nosplit
 func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { //gd:Tree.scroll_to_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		item           gdextension.Object
 		center_on_item bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), center_on_item})
 }
-
-//go:nosplit
 func (self class) SetHScrollEnabled(h_scroll bool) { //gd:Tree.set_h_scroll_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_scroll_enabled, 0|(gdextension.SizeBool<<4), &struct{ h_scroll bool }{h_scroll})
 }
-
-//go:nosplit
 func (self class) IsHScrollEnabled() bool { //gd:Tree.is_h_scroll_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_h_scroll_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVScrollEnabled(h_scroll bool) { //gd:Tree.set_v_scroll_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_scroll_enabled, 0|(gdextension.SizeBool<<4), &struct{ h_scroll bool }{h_scroll})
 }
-
-//go:nosplit
 func (self class) IsVScrollEnabled() bool { //gd:Tree.is_v_scroll_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_v_scroll_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHideFolding(hide bool) { //gd:Tree.set_hide_folding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_folding, 0|(gdextension.SizeBool<<4), &struct{ hide bool }{hide})
 }
-
-//go:nosplit
 func (self class) IsFoldingHidden() bool { //gd:Tree.is_folding_hidden
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_folding_hidden, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnableRecursiveFolding(enable bool) { //gd:Tree.set_enable_recursive_folding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_recursive_folding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsRecursiveFoldingEnabled() bool { //gd:Tree.is_recursive_folding_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recursive_folding_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDropModeFlags(flags int64) { //gd:Tree.set_drop_mode_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drop_mode_flags, 0|(gdextension.SizeInt<<4), &struct{ flags int64 }{flags})
 }
-
-//go:nosplit
 func (self class) GetDropModeFlags() int64 { //gd:Tree.get_drop_mode_flags
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drop_mode_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowRmbSelect(allow bool) { //gd:Tree.set_allow_rmb_select
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_rmb_select, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
-
-//go:nosplit
 func (self class) GetAllowRmbSelect() bool { //gd:Tree.get_allow_rmb_select
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowReselect(allow bool) { //gd:Tree.set_allow_reselect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
-
-//go:nosplit
 func (self class) GetAllowReselect() bool { //gd:Tree.get_allow_reselect
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowSearch(allow bool) { //gd:Tree.set_allow_search
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
-
-//go:nosplit
 func (self class) GetAllowSearch() bool { //gd:Tree.get_allow_search
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAutoTooltip(enable bool) { //gd:Tree.set_auto_tooltip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_tooltip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_tooltip_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

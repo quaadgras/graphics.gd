@@ -190,12 +190,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the magnitude of the frequencies from 'from_hz' to 'to_hz' in linear energy as a Vector2. The x component of the return value represents the left stereo channel, and y represents the right channel.
-
-'mode' determines how the frequency range will be processed.
-*/
-//go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {
 		from_hz float64

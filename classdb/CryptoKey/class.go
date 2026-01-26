@@ -244,12 +244,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Saves a key to the given 'path'. If 'public_only' is true, only the public key will be saved.
-
-Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
-*/
-//go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
@@ -258,13 +252,6 @@ func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Loads a key from 'path'. If 'public_only' is true, only the public key will be loaded.
-
-Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file otherwise.
-*/
-//go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
@@ -273,31 +260,16 @@ func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if this CryptoKey only has the public part, and not the private one.
-*/
-//go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a string containing the key in PEM format. If 'public_only' is true, only the public key will be included.
-*/
-//go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ public_only bool }{public_only})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Loads a key from the given 'string_key'. If 'public_only' is true, only the public key will be loaded.
-*/
-//go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		string_key  gdextension.String

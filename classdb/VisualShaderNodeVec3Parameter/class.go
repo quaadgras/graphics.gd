@@ -191,24 +191,17 @@ func (self Instance) SetDefaultValue(value Vector3.XYZ) Instance { //gd:VisualSh
 	return self
 }
 
-//go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeVec3Parameter.set_default_value_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec3Parameter.is_default_value_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultValue(value Vector3.XYZ) { //gd:VisualShaderNodeVec3Parameter.set_default_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
-
-//go:nosplit
 func (self class) GetDefaultValue() Vector3.XYZ { //gd:VisualShaderNodeVec3Parameter.get_default_value
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret

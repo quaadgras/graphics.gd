@@ -180,12 +180,9 @@ func (self Instance) SetPlane(value Plane.NormalD) Instance { //gd:WorldBoundary
 	return self
 }
 
-//go:nosplit
 func (self class) SetPlane(plane Plane.NormalD) { //gd:WorldBoundaryShape3D.set_plane
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane, 0|(gdextension.SizePlane<<4), &struct{ plane Plane.NormalD }{plane})
 }
-
-//go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:WorldBoundaryShape3D.get_plane
 	var r_ret = noescape.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_plane, gdextension.SizePlane, &struct{}{})
 	var ret = r_ret

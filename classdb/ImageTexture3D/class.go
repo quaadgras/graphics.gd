@@ -188,12 +188,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates the [ImageTexture3D] with specified 'format', 'width', 'height', and 'depth'. If 'use_mipmaps' is true, generates mipmaps for the [ImageTexture3D].
-
-[ImageTexture3D]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture3D
-*/
-//go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), &struct {
 		format      Image.Format
@@ -206,14 +200,6 @@ func (self class) Create(format Image.Format, width int64, height int64, depth i
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Replaces the texture's existing data with the layers specified in 'data'. The size of 'data' must match the parameters that were used for [Create]. In other words, the texture cannot be resized or have its format changed by calling [Update].
-
-[Create]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture3D#Instance.Create
-[Update]: https://pkg.go.dev/graphics.gd/classdb/ImageTexture3D#Instance.Update
-*/
-//go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), &struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))})
 }

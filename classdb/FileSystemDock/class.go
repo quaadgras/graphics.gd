@@ -194,30 +194,12 @@ func New() Instance {
 	return casted
 }
 
-/*
-Sets the given 'path' as currently selected, ensuring that the selected file/directory is visible.
-*/
-//go:nosplit
 func (self class) NavigateToPath(path String.Readable) { //gd:FileSystemDock.navigate_to_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.navigate_to_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Registers a new [EditorResourceTooltipPlugin].
-
-[EditorResourceTooltipPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceTooltipPlugin
-*/
-//go:nosplit
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
 }
-
-/*
-Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously added.
-
-[EditorResourceTooltipPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceTooltipPlugin
-*/
-//go:nosplit
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetEditorResourceTooltipPlugin(plugin[0])))})
 }

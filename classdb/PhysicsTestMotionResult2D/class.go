@@ -270,140 +270,66 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the moving object's travel before collision.
-*/
-//go:nosplit
 func (self class) GetTravel() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_travel
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the moving object's remaining movement vector.
-*/
-//go:nosplit
 func (self class) GetRemainder() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_remainder
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the point of collision in global coordinates, if a collision occurred.
-*/
-//go:nosplit
 func (self class) GetCollisionPoint() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_point
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's shape's normal at the point of collision, if a collision occurred.
-*/
-//go:nosplit
 func (self class) GetCollisionNormal() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_normal
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's velocity, if a collision occurred.
-*/
-//go:nosplit
 func (self class) GetColliderVelocity() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collider_velocity
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the unique instance ID of the colliding body's attached [Object], if a collision occurred. See [Object.GetInstanceId].
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-*/
-//go:nosplit
 func (self class) GetColliderId() int64 { //gd:PhysicsTestMotionResult2D.get_collider_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's [Resource.ID] used by the [PhysicsServer2D], if a collision occurred.
-
-[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:PhysicsTestMotionResult2D.get_collider_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the colliding body's attached [Object], if a collision occurred.
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:PhysicsTestMotionResult2D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the colliding body's shape index, if a collision occurred. See [CollisionObject2D].
-
-[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
-*/
-//go:nosplit
 func (self class) GetColliderShape() int64 { //gd:PhysicsTestMotionResult2D.get_collider_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the moving object's colliding shape, if a collision occurred.
-*/
-//go:nosplit
 func (self class) GetCollisionLocalShape() int64 { //gd:PhysicsTestMotionResult2D.get_collision_local_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_local_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the length of overlap along the collision normal, if a collision occurred.
-*/
-//go:nosplit
 func (self class) GetCollisionDepth() float64 { //gd:PhysicsTestMotionResult2D.get_collision_depth
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the maximum fraction of the motion that can occur without a collision, between 0 and 1.
-*/
-//go:nosplit
 func (self class) GetCollisionSafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_safe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the minimum fraction of the motion needed to collide, if a collision occurred, between 0 and 1.
-*/
-//go:nosplit
 func (self class) GetCollisionUnsafeFraction() float64 { //gd:PhysicsTestMotionResult2D.get_collision_unsafe_fraction
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_unsafe_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

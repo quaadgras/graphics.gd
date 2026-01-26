@@ -651,198 +651,108 @@ func (self Instance) SetBakeNavigation(value bool) Instance { //gd:GridMap.bake_
 	return self
 }
 
-//go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:GridMap.set_collision_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
-
-//go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:GridMap.get_collision_layer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:GridMap.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:GridMap.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:GridMap.set_collision_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:GridMap.get_collision_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
-
-[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionLayer
-*/
-//go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:GridMap.set_collision_layer_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
-
-[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.CollisionLayer
-*/
-//go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:GridMap.get_collision_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollisionPriority(priority float64) { //gd:GridMap.set_collision_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
-
-//go:nosplit
 func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_priority
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd:GridMap.set_physics_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakeNavigation(bake_navigation bool) { //gd:GridMap.set_bake_navigation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_navigation, 0|(gdextension.SizeBool<<4), &struct{ bake_navigation bool }{bake_navigation})
 }
-
-//go:nosplit
 func (self class) IsBakingNavigation() bool { //gd:GridMap.is_baking_navigation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the [Resource.ID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:GridMap.set_navigation_map
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
-
-/*
-Returns the [Resource.ID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
-
-This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:GridMap.get_navigation_map
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:GridMap.set_mesh_library
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMeshLibrary(mesh_library[0])))})
 }
-
-//go:nosplit
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh_library, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MeshLibrary{gdclass.NewMeshLibrary(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCellSize(size Vector3.XYZ) { //gd:GridMap.set_cell_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetCellSize() Vector3.XYZ { //gd:GridMap.get_cell_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_cell_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCellScale(scale float64) { //gd:GridMap.set_cell_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
-
-//go:nosplit
 func (self class) GetCellScale() float64 { //gd:GridMap.get_cell_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cell_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOctantSize(size int64) { //gd:GridMap.set_octant_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_octant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetOctantSize() int64 { //gd:GridMap.get_octant_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_octant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the mesh index for the cell referenced by its grid coordinates.
-
-A negative item index such as [InvalidCellItem] will clear the cell.
-
-Optionally, the item's orientation can be passed. For valid orientation values, see [GetOrthogonalIndexFromBasis].
-
-[GetOrthogonalIndexFromBasis]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.GetOrthogonalIndexFromBasis
-*/
-//go:nosplit
 func (self class) SetCellItem(position Vector3i.XYZ, item int64, orientation int64) { //gd:GridMap.set_cell_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_item, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		position    Vector3i.XYZ
@@ -850,221 +760,99 @@ func (self class) SetCellItem(position Vector3i.XYZ, item int64, orientation int
 		orientation int64
 	}{position, item, orientation})
 }
-
-/*
-The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [InvalidCellItem] will be returned.
-
-[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
-*/
-//go:nosplit
 func (self class) GetCellItem(position Vector3i.XYZ) int64 { //gd:GridMap.get_cell_item
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_item, gdextension.SizeInt|(gdextension.SizeVector3i<<4), &struct{ position Vector3i.XYZ }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-The orientation of the cell at the given grid coordinates. -1 is returned if the cell is empty.
-*/
-//go:nosplit
 func (self class) GetCellItemOrientation(position Vector3i.XYZ) int64 { //gd:GridMap.get_cell_item_orientation
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_item_orientation, gdextension.SizeInt|(gdextension.SizeVector3i<<4), &struct{ position Vector3i.XYZ }{position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the basis that gives the specified cell its orientation.
-*/
-//go:nosplit
 func (self class) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ { //gd:GridMap.get_cell_item_basis
 	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_cell_item_basis, gdextension.SizeBasis|(gdextension.SizeVector3i<<4), &struct{ position Vector3i.XYZ }{position})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns one of 24 possible rotations that lie along the vectors (x,y,z) with each component being either -1, 0, or 1. For further details, refer to the Godot source code.
-*/
-//go:nosplit
 func (self class) GetBasisWithOrthogonalIndex(index int64) Basis.XYZ { //gd:GridMap.get_basis_with_orthogonal_index
 	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_basis_with_orthogonal_index, gdextension.SizeBasis|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
-
-/*
-This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index (in the range from 0 to 23) of the point best representing the orientation of the object. For further details, refer to the Godot source code.
-*/
-//go:nosplit
 func (self class) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int64 { //gd:GridMap.get_orthogonal_index_from_basis
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_orthogonal_index_from_basis, gdextension.SizeInt|(gdextension.SizeBasis<<4), &struct{ basis Basis.XYZ }{Basis.Transposed(basis)})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the map coordinates of the cell containing the given 'local_position'. If 'local_position' is in global coordinates, consider using [Node3D.ToLocal] before passing it to this method. See also [MapToLocal].
-
-[MapToLocal]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.MapToLocal
-[Node3D.ToLocal]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.ToLocal
-*/
-//go:nosplit
 func (self class) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:GridMap.local_to_map
 	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.local_to_map, gdextension.SizeVector3i|(gdextension.SizeVector3<<4), &struct{ local_position Vector3.XYZ }{local_position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [Node3D.ToGlobal]. See also [LocalToMap].
-
-[LocalToMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.LocalToMap
-[Node3D.ToGlobal]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.ToGlobal
-*/
-//go:nosplit
 func (self class) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_to_local, gdextension.SizeVector3|(gdextension.SizeVector3i<<4), &struct{ map_position Vector3i.XYZ }{map_position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-This method does nothing.
-*/
-//go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
-
-//go:nosplit
 func (self class) SetCenterX(enable bool) { //gd:GridMap.set_center_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_x, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetCenterX() bool { //gd:GridMap.get_center_x
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_x, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCenterY(enable bool) { //gd:GridMap.set_center_y
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_y, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetCenterY() bool { //gd:GridMap.get_center_y
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_y, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCenterZ(enable bool) { //gd:GridMap.set_center_z
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_z, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetCenterZ() bool { //gd:GridMap.get_center_z
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_center_z, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clear all cells.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:GridMap.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns an array of [Vector3.XYZ] with the non-empty cell coordinates in the grid map.
-
-[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
-*/
-//go:nosplit
 func (self class) GetUsedCells() Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of all cells with the given item index specified in 'item'.
-*/
-//go:nosplit
 func (self class) GetUsedCellsByItem(item int64) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells_by_item
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_by_item, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of [Transform3D.BasisOrigin] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space. Even indices contain [Transform3D.BasisOrigin]s, while odd indices contain [Mesh]es related to the [Transform3D.BasisOrigin] in the index preceding it.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an array of [ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap. Even indices contain [ArrayMesh]es, while odd indices contain [Transform3D.BasisOrigin]s that are always equal to [Transform3d.Identity].
-
-This method relies on the output of [MakeBakedMeshes], which will be called with gen_lightmap_uv set to true and lightmap_uv_texel_size set to 0.1 if it hasn't been called yet.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-[MakeBakedMeshes]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.MakeBakedMeshes
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bake_meshes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns [Resource.ID] of a baked mesh with the given 'idx'.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetBakeMeshInstance(idx int64) RID.Any { //gd:GridMap.get_bake_mesh_instance
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_bake_mesh_instance, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clears all baked meshes. See [MakeBakedMeshes].
-
-[MakeBakedMeshes]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.MakeBakedMeshes
-*/
-//go:nosplit
 func (self class) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_baked_meshes, 0, &struct{}{})
 }
-
-/*
-Generates a baked mesh that represents all meshes in the assigned [MeshLibrary] for use with [LightmapGI]. If 'gen_lightmap_uv' is true, UV2 data will be generated for each mesh currently used in the [GridMap]. Otherwise, only meshes that already have UV2 data present will be able to use baked lightmaps. When generating UV2, 'lightmap_uv_texel_size' controls the texel density for lightmaps, with lower values resulting in more detailed lightmaps. 'lightmap_uv_texel_size' is ignored if 'gen_lightmap_uv' is false. See also [GetBakeMeshes], which relies on the output of this method.
-
-Note: Calling this method will not actually bake lightmaps, as lightmap baking is performed using the [LightmapGI] node.
-
-[GetBakeMeshes]: https://pkg.go.dev/graphics.gd/classdb/GridMap#Instance.GetBakeMeshes
-[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
-[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
-[MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
-*/
-//go:nosplit
 func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size float64) { //gd:GridMap.make_baked_meshes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_baked_meshes, 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), &struct {
 		gen_lightmap_uv        bool

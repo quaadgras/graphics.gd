@@ -275,12 +275,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Returns the class name of the target type of [Resource] that this plugin converts source resources to.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
 func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -293,12 +287,6 @@ func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
 func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -309,13 +297,6 @@ func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resour
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Takes an input [Resource] and converts it to the type given in [ConvertsTo]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
-
-[ConvertsTo]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceConversionPlugin#Interface
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
 func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}

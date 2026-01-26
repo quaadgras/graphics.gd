@@ -212,36 +212,16 @@ func New() Instance {
 	return casted
 }
 
-/*
-Pushes a single audio data frame to the buffer. This is usually less efficient than [PushBuffer] in C# and compiled languages via GDExtension, but [PushFrame] may be more efficient in GDScript.
-
-[PushBuffer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGeneratorPlayback#Instance.PushBuffer
-[PushFrame]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGeneratorPlayback#Instance.PushFrame
-*/
-//go:nosplit
 func (self class) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a buffer of the size 'amount' can be pushed to the audio sample data buffer without overflowing it, false otherwise.
-*/
-//go:nosplit
 func (self class) CanPushBuffer(amount int64) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Pushes several audio data frames to the buffer. This is usually more efficient than [PushFrame] in C# and compiled languages via GDExtension, but [PushBuffer] may be less efficient in GDScript.
-
-[PushBuffer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGeneratorPlayback#Instance.PushBuffer
-[PushFrame]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGeneratorPlayback#Instance.PushFrame
-*/
-//go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		frames gdextension.PackedArray[Vector2.XY]
@@ -249,31 +229,16 @@ func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioS
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of frames that can be pushed to the audio sample data buffer without overflowing it. If the result is 0, the buffer is full.
-*/
-//go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioStreamGeneratorPlayback.get_frames_available
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of times the playback skipped due to a buffer underrun in the audio sample data. This value is reset at the start of the playback.
-*/
-//go:nosplit
 func (self class) GetSkips() int64 { //gd:AudioStreamGeneratorPlayback.get_skips
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Clears the audio sample data buffer.
-*/
-//go:nosplit
 func (self class) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
 }

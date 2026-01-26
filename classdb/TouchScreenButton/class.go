@@ -317,118 +317,78 @@ func (self Instance) SetVisibilityMode(value VisibilityMode) Instance { //gd:Tou
 	return self
 }
 
-//go:nosplit
 func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_normal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_normal
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_pressed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenButton.get_texture_pressed
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBitmask(bitmask [1]gdclass.BitMap) { //gd:TouchScreenButton.set_bitmask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitmask, 0|(gdextension.SizeObject<<4), &struct{ bitmask gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetBitMap(bitmask[0])))})
 }
-
-//go:nosplit
 func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bitmask
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bitmask, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.BitMap{gdclass.NewBitMap(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:TouchScreenButton.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(shape[0])))})
 }
-
-//go:nosplit
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:TouchScreenButton.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShapeCentered(b bool) { //gd:TouchScreenButton.set_shape_centered
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_centered, 0|(gdextension.SizeBool<<4), &struct{ b bool }{b})
 }
-
-//go:nosplit
 func (self class) IsShapeCentered() bool { //gd:TouchScreenButton.is_shape_centered
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_centered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShapeVisible(b bool) { //gd:TouchScreenButton.set_shape_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_visible, 0|(gdextension.SizeBool<<4), &struct{ b bool }{b})
 }
-
-//go:nosplit
 func (self class) IsShapeVisible() bool { //gd:TouchScreenButton.is_shape_visible
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAction(action String.Readable) { //gd:TouchScreenButton.set_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeString<<4), &struct{ action gdextension.String }{pointers.Get(gd.InternalString(action))})
 }
-
-//go:nosplit
 func (self class) GetAction() String.Readable { //gd:TouchScreenButton.get_action
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVisibilityMode(mode VisibilityMode) { //gd:TouchScreenButton.set_visibility_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VisibilityMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetVisibilityMode() VisibilityMode { //gd:TouchScreenButton.get_visibility_mode
 	var r_ret = noescape.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPassbyPress(enabled bool) { //gd:TouchScreenButton.set_passby_press
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_passby_press, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPassbyPressEnabled() bool { //gd:TouchScreenButton.is_passby_press_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passby_press_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this button is currently pressed.
-*/
-//go:nosplit
 func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

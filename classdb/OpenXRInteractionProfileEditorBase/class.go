@@ -172,10 +172,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Setup this editor for the provided 'action_map' and 'interaction_profile'.
-*/
-//go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map          gdextension.Object

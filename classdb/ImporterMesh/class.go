@@ -477,73 +477,27 @@ func New() Instance {
 	return casted
 }
 
-/*
-Adds name for a blend shape that will be added with [AddSurface]. Must be called before surface is added.
-
-[AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
-*/
-//go:nosplit
 func (self class) AddBlendShape(name String.Readable) { //gd:ImporterMesh.add_blend_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns the number of blend shapes that the mesh holds.
-*/
-//go:nosplit
 func (self class) GetBlendShapeCount() int64 { //gd:ImporterMesh.get_blend_shape_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the blend shape at this index.
-*/
-//go:nosplit
 func (self class) GetBlendShapeName(blend_shape_idx int64) String.Readable { //gd:ImporterMesh.get_blend_shape_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ blend_shape_idx int64 }{blend_shape_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the blend shape mode.
-*/
-//go:nosplit
 func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mesh.BlendShapeMode }{mode})
 }
-
-/*
-Returns the blend shape mode for this Mesh.
-*/
-//go:nosplit
 func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
 	var r_ret = noescape.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new surface. [Mesh.GetSurfaceCount] will become the surf_idx for this new surface.
-
-Surfaces are created to be rendered using a 'primitive', which may be any of the values defined in [Mesh.PrimitiveType].
-
-The 'arrays' argument is an array of arrays. Each of the [Mesh.ArrayMax] elements contains an array with some of the mesh data for this surface as described by the corresponding member of [Mesh.ArrayType] or null if it is not used by the surface. For example, arrays[0] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this surface into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [Mesh.ArrayIndex] if it is used.
-
-The 'blend_shapes' argument is an array of vertex data for each blend shape. Each element is an array of the same structure as 'arrays', but [Mesh.ArrayVertex], [Mesh.ArrayNormal], and [Mesh.ArrayTangent] are set if and only if they are set in 'arrays' and all other entries are null.
-
-The 'lods' argument is a dictionary with [Float.X] keys and []int32 values. Each entry in the dictionary represents an LOD level of the surface, where the value is the [Mesh.ArrayIndex] array to use for the LOD level and the key is roughly proportional to the distance at which the LOD stats being used. I.e., increasing the key of an LOD also increases the distance that the objects has to be from the camera before the LOD is used.
-
-The 'flags' argument is the bitwise OR of, as required: One value of [Mesh.ArrayCustomFormat] left shifted by ARRAY_FORMAT_CUSTOMn_SHIFT for each custom channel in use, [Mesh.ArrayFlagUseDynamicUpdate], [Mesh.ArrayFlagUse8BoneWeights], or [Mesh.ArrayFlagUsesEmptyVertexArray].
-
-Note: When using indices, it is recommended to only use points, lines, or triangles.
-
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-[Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
-*/
-//go:nosplit
 func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name String.Readable, flags int64) { //gd:ImporterMesh.add_surface
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_surface, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeString<<24)|(gdextension.SizeInt<<28), &struct {
 		primitive    Mesh.PrimitiveType
@@ -555,55 +509,26 @@ func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, ble
 		flags        int64
 	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), pointers.Get(gd.InternalString(name)), flags})
 }
-
-/*
-Returns the number of surfaces that the mesh holds.
-*/
-//go:nosplit
 func (self class) GetSurfaceCount() int64 { //gd:ImporterMesh.get_surface_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the primitive type of the requested surface (see [AddSurface]).
-
-[AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
-*/
-//go:nosplit
 func (self class) GetSurfacePrimitiveType(surface_idx int64) Mesh.PrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
 	var r_ret = noescape.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_surface_primitive_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets the name assigned to this surface.
-*/
-//go:nosplit
 func (self class) GetSurfaceName(surface_idx int64) String.Readable { //gd:ImporterMesh.get_surface_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_surface_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [AddSurface].
-
-[AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
-*/
-//go:nosplit
 func (self class) GetSurfaceArrays(surface_idx int64) Array.Any { //gd:ImporterMesh.get_surface_arrays
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surface_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a single set of blend shape arrays for the requested blend shape index for a surface.
-*/
-//go:nosplit
 func (self class) GetSurfaceBlendShapeArrays(surface_idx int64, blend_shape_idx int64) Array.Any { //gd:ImporterMesh.get_surface_blend_shape_arrays
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surface_blend_shape_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		surface_idx     int64
@@ -612,21 +537,11 @@ func (self class) GetSurfaceBlendShapeArrays(surface_idx int64, blend_shape_idx 
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of lods that the mesh holds on a given surface.
-*/
-//go:nosplit
 func (self class) GetSurfaceLodCount(surface_idx int64) int64 { //gd:ImporterMesh.get_surface_lod_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the screen ratio which activates a lod for a surface.
-*/
-//go:nosplit
 func (self class) GetSurfaceLodSize(surface_idx int64, lod_idx int64) float64 { //gd:ImporterMesh.get_surface_lod_size
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_size, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		surface_idx int64
@@ -635,11 +550,6 @@ func (self class) GetSurfaceLodSize(surface_idx int64, lod_idx int64) float64 { 
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index buffer of a lod for a surface.
-*/
-//go:nosplit
 func (self class) GetSurfaceLodIndices(surface_idx int64, lod_idx int64) Packed.Array[int32] { //gd:ImporterMesh.get_surface_lod_indices
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_indices, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		surface_idx int64
@@ -648,70 +558,28 @@ func (self class) GetSurfaceLodIndices(surface_idx int64, lod_idx int64) Packed.
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a [Material] in a given surface. Surface is rendered using this material.
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-*/
-//go:nosplit
 func (self class) GetSurfaceMaterial(surface_idx int64) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the format of the surface that the mesh holds.
-*/
-//go:nosplit
 func (self class) GetSurfaceFormat(surface_idx int64) int64 { //gd:ImporterMesh.get_surface_format
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a name for a given surface.
-*/
-//go:nosplit
 func (self class) SetSurfaceName(surface_idx int64, name String.Readable) { //gd:ImporterMesh.set_surface_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		surface_idx int64
 		name        gdextension.String
 	}{surface_idx, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Sets a [Material] for a given surface. Surface will be rendered using this material.
-
-[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
-*/
-//go:nosplit
 func (self class) SetSurfaceMaterial(surface_idx int64, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surface_idx int64
 		material    gdextension.Object
 	}{surface_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-/*
-Generates all lods for this ImporterMesh.
-
-'normal_merge_angle' is in degrees and used in the same way as the importer settings in lods.
-
-'normal_split_angle' is not used and only remains for compatibility with older versions of the API.
-
-The number of generated lods can be accessed using [GetSurfaceLodCount], and each LOD is available in [GetSurfaceLodSize] and [GetSurfaceLodIndices].
-
-'bone_transform_array' is an slice which can be either empty or contain [Transform3D.BasisOrigin]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
-
-[GetSurfaceLodCount]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.GetSurfaceLodCount
-[GetSurfaceLodIndices]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.GetSurfaceLodIndices
-[GetSurfaceLodSize]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.GetSurfaceLodSize
-[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
-*/
-//go:nosplit
 func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array Array.Any) { //gd:ImporterMesh.generate_lods
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate_lods, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeArray<<12), &struct {
 		normal_merge_angle   float64
@@ -719,47 +587,17 @@ func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle fl
 		bone_transform_array gdextension.Array
 	}{normal_merge_angle, normal_split_angle, pointers.Get(gd.InternalArray(bone_transform_array))})
 }
-
-/*
-Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh].
-
-This method caches the returned mesh, and subsequent calls will return the cached data until [Clear] is called.
-
-If not yet cached and 'base_mesh' is provided, 'base_mesh' will be used and mutated.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-[Clear]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.Clear
-[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
-*/
-//go:nosplit
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(base_mesh[0])))})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Removes all surfaces and blend shapes from this [ImporterMesh].
-
-[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
-*/
-//go:nosplit
 func (self class) Clear() { //gd:ImporterMesh.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
-*/
-//go:nosplit
 func (self class) SetLightmapSizeHint(size Vector2i.XY) { //gd:ImporterMesh.set_lightmap_size_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_size_hint, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-/*
-Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
-*/
-//go:nosplit
 func (self class) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_lightmap_size_hint
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_size_hint, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret

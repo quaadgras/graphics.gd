@@ -198,36 +198,19 @@ func (self Instance) SetAllowFoldingAll(value bool) Instance { //gd:FoldableGrou
 	return self
 }
 
-/*
-Returns the current expanded container.
-*/
-//go:nosplit
 func (self class) GetExpandedContainer() [1]gdclass.FoldableContainer { //gd:FoldableGroup.get_expanded_container
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_expanded_container, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.FoldableContainer{gdclass.NewFoldableContainer(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns an slice of [FoldableContainer]s that have this as their FoldableGroup (see [FoldableContainer.FoldableGroup]). This is equivalent to [ButtonGroup] but for FoldableContainers.
-
-[ButtonGroup]: https://pkg.go.dev/graphics.gd/classdb/ButtonGroup
-[FoldableContainer]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer
-[FoldableContainer.FoldableGroup]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.FoldableGroup
-*/
-//go:nosplit
 func (self class) GetContainers() Array.Contains[[1]gdclass.FoldableContainer] { //gd:FoldableGroup.get_containers
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_containers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.FoldableContainer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAllowFoldingAll(enabled bool) { //gd:FoldableGroup.set_allow_folding_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_folding_all, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsAllowFoldingAll() bool { //gd:FoldableGroup.is_allow_folding_all
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_folding_all, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

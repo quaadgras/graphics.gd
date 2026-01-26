@@ -212,36 +212,25 @@ func (self Instance) SetCameraIsActive(value bool) Instance { //gd:CameraTexture
 	return self
 }
 
-//go:nosplit
 func (self class) SetCameraFeedId(feed_id int64) { //gd:CameraTexture.set_camera_feed_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_feed_id, 0|(gdextension.SizeInt<<4), &struct{ feed_id int64 }{feed_id})
 }
-
-//go:nosplit
 func (self class) GetCameraFeedId() int64 { //gd:CameraTexture.get_camera_feed_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera_feed_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWhichFeed(which_feed CameraFeed.ImageType) { //gd:CameraTexture.set_which_feed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_which_feed, 0|(gdextension.SizeInt<<4), &struct{ which_feed CameraFeed.ImageType }{which_feed})
 }
-
-//go:nosplit
 func (self class) GetWhichFeed() CameraFeed.ImageType { //gd:CameraTexture.get_which_feed
 	var r_ret = noescape.Call[CameraFeed.ImageType](gd.ObjectChecked(self.AsObject()), methods.get_which_feed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCameraActive(active bool) { //gd:CameraTexture.set_camera_active
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
-
-//go:nosplit
 func (self class) GetCameraActive() bool { //gd:CameraTexture.get_camera_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_camera_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

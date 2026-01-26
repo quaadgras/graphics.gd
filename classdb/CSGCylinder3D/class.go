@@ -256,72 +256,49 @@ func (self Instance) SetMaterial(value Material.Instance) Instance { //gd:CSGCyl
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CSGCylinder3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:CSGCylinder3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeight(height float64) { //gd:CSGCylinder3D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
-
-//go:nosplit
 func (self class) GetHeight() float64 { //gd:CSGCylinder3D.get_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSides(sides int64) { //gd:CSGCylinder3D.set_sides
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
 }
-
-//go:nosplit
 func (self class) GetSides() int64 { //gd:CSGCylinder3D.get_sides
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCone(cone bool) { //gd:CSGCylinder3D.set_cone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cone, 0|(gdextension.SizeBool<<4), &struct{ cone bool }{cone})
 }
-
-//go:nosplit
 func (self class) IsCone() bool { //gd:CSGCylinder3D.is_cone
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cone, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGCylinder3D.set_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
-
-//go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGCylinder3D.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGCylinder3D.set_smooth_faces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
 }
-
-//go:nosplit
 func (self class) GetSmoothFaces() bool { //gd:CSGCylinder3D.get_smooth_faces
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

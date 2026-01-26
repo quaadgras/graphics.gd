@@ -211,42 +211,19 @@ func New() Instance {
 	return casted
 }
 
-/*
-Shows the properties of the given 'object' in this inspector for editing. To clear the inspector, call this method with null.
-
-Note: If you want to edit an object in the editor's main inspector, use the edit_* methods in [EditorInterface] instead.
-
-[EditorInterface]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface
-*/
-//go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 }
-
-/*
-Gets the path of the currently selected property.
-*/
-//go:nosplit
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the object currently selected in this inspector.
-*/
-//go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Creates a property editor that can be used by plugin UI to edit the specified property of an 'object'.
-*/
-//go:nosplit
 func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		obj       gdextension.Object

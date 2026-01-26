@@ -1598,252 +1598,148 @@ func (self Instance) SetOversamplingOverride(value Float.X) Instance { //gd:View
 	return self
 }
 
-//go:nosplit
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld2D(world_2d[0])))})
 }
-
-//go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the first valid [World2D] for this viewport, searching the [World2d] property of itself and any Viewport ancestor.
-
-[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
-[World2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.World2d
-*/
-//go:nosplit
 func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_canvas_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ xform Transform2D.OriginXY }{xform})
 }
-
-//go:nosplit
 func (self class) GetCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_canvas_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_canvas_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGlobalCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_global_canvas_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_canvas_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ xform Transform2D.OriginXY }{xform})
 }
-
-//go:nosplit
 func (self class) GetGlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_global_canvas_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_global_canvas_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the automatically computed 2D stretch transform, taking the [Viewport]'s stretch settings into account. The final value is multiplied by [Window.ContentScaleFactor], but only for the root viewport. If this method is called on a [SubViewport] (e.g., in a scene tree with [SubViewportContainer] and [SubViewport]), the scale factor of the root window will not be applied. Using [Transform2D.GetScale] on the returned value, this can be used to compensate for scaling when zooming a [Camera2D] node, or to scale down a [TextureRect] to be pixel-perfect regardless of the automatically computed scale factor.
-
-Note: Due to how pixel scaling works, the returned transform's X and Y scale may differ slightly, even when [Window.ContentScaleAspect] is set to a mode that preserves the pixels' aspect ratio. If [Window.ContentScaleAspect] is [Window.ContentScaleAspectIgnore], the X and Y scale may differ significantly.
-
-[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
-[TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
-[Transform2D.GetScale]: https://pkg.go.dev/graphics.gd/classdb/Transform2D#Instance.GetScale
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[Window.ContentScaleAspect]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleAspect
-[Window.ContentScaleFactor]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleFactor
-*/
-//go:nosplit
 func (self class) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_stretch_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
-*/
-//go:nosplit
 func (self class) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_final_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
-*/
-//go:nosplit
 func (self class) GetScreenTransform() Transform2D.OriginXY { //gd:Viewport.get_screen_transform
 	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_screen_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the visible rectangle in global screen coordinates.
-*/
-//go:nosplit
 func (self class) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_visible_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visible_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTransparentBackground(enable bool) { //gd:Viewport.set_transparent_background
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transparent_background, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) HasTransparentBackground() bool { //gd:Viewport.has_transparent_background
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transparent_background, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseHdr2d(enable bool) { //gd:Viewport.set_use_hdr_2d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_hdr_2d, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingHdr2d() bool { //gd:Viewport.is_using_hdr_2d
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_hdr_2d, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMsaa2d(msaa MSAA) { //gd:Viewport.set_msaa_2d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_2d, 0|(gdextension.SizeInt<<4), &struct{ msaa MSAA }{msaa})
 }
-
-//go:nosplit
 func (self class) GetMsaa2d() MSAA { //gd:Viewport.get_msaa_2d
 	var r_ret = noescape.Call[MSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_2d, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMsaa3d(msaa MSAA) { //gd:Viewport.set_msaa_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_3d, 0|(gdextension.SizeInt<<4), &struct{ msaa MSAA }{msaa})
 }
-
-//go:nosplit
 func (self class) GetMsaa3d() MSAA { //gd:Viewport.get_msaa_3d
 	var r_ret = noescape.Call[MSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScreenSpaceAa(screen_space_aa ScreenSpaceAA) { //gd:Viewport.set_screen_space_aa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_space_aa, 0|(gdextension.SizeInt<<4), &struct{ screen_space_aa ScreenSpaceAA }{screen_space_aa})
 }
-
-//go:nosplit
 func (self class) GetScreenSpaceAa() ScreenSpaceAA { //gd:Viewport.get_screen_space_aa
 	var r_ret = noescape.Call[ScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseTaa(enable bool) { //gd:Viewport.set_use_taa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_taa, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingTaa() bool { //gd:Viewport.is_using_taa
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_taa, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseDebanding(enable bool) { //gd:Viewport.set_use_debanding
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingDebanding() bool { //gd:Viewport.is_using_debanding
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_debanding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseOcclusionCulling(enable bool) { //gd:Viewport.set_use_occlusion_culling
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_occlusion_culling, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingOcclusionCulling() bool { //gd:Viewport.is_using_occlusion_culling
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_occlusion_culling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugDraw(debug_draw DebugDraw) { //gd:Viewport.set_debug_draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_draw, 0|(gdextension.SizeInt<<4), &struct{ debug_draw DebugDraw }{debug_draw})
 }
-
-//go:nosplit
 func (self class) GetDebugDraw() DebugDraw { //gd:Viewport.get_debug_draw
 	var r_ret = noescape.Call[DebugDraw](gd.ObjectChecked(self.AsObject()), methods.get_debug_draw, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseOversampling(enable bool) { //gd:Viewport.set_use_oversampling
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_oversampling, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingOversampling() bool { //gd:Viewport.is_using_oversampling
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_oversampling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOversamplingOverride(oversampling float64) { //gd:Viewport.set_oversampling_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling_override, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
 }
-
-//go:nosplit
 func (self class) GetOversamplingOverride() float64 { //gd:Viewport.get_oversampling_override
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling_override, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns viewport oversampling factor.
-*/
-//go:nosplit
 func (self class) GetOversampling() float64 { //gd:Viewport.get_oversampling
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns rendering statistics of the given type.
-*/
-//go:nosplit
 func (self class) GetRenderInfo(atype RenderInfoType, info RenderInfo) int64 { //gd:Viewport.get_render_info
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_info, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		atype RenderInfoType
@@ -1852,825 +1748,394 @@ func (self class) GetRenderInfo(atype RenderInfoType, info RenderInfo) int64 { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the viewport's texture.
-
-Note: When trying to store the current texture (e.g. in a file), it might be completely black or outdated if used too early, especially when used in e.g. [Node.Ready]. To make sure the texture you get is correct, you can await [OnRenderingserver.FramePostDraw] signal.
-
-
-	RenderingServer.OnFramePostDraw(func() {
-		viewport.GetTexture().AsTexture2D().GetImage().SavePng("user://Screenshot.png")
-	})
-
-
-Note: When [UseHdr2d] is true the returned texture will be an HDR image encoded in linear space.
-
-[Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
-[OnRenderingserver.FramePostDraw]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnRenderingserver.FramePostDraw
-[UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
-*/
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ViewportTexture{gdclass.NewViewportTexture(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsObjectPicking(enable bool) { //gd:Viewport.set_physics_object_picking
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetPhysicsObjectPicking() bool { //gd:Viewport.get_physics_object_picking
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsObjectPickingSort(enable bool) { //gd:Viewport.set_physics_object_picking_sort
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_sort, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetPhysicsObjectPickingSort() bool { //gd:Viewport.get_physics_object_picking_sort
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_sort, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) { //gd:Viewport.set_physics_object_picking_first_only
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_first_only, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetPhysicsObjectPickingFirstOnly() bool { //gd:Viewport.get_physics_object_picking_first_only
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_first_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the viewport's RID from the [RenderingServer].
-
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-*/
-//go:nosplit
 func (self class) GetViewportRid() RID.Any { //gd:Viewport.get_viewport_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_viewport_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Helper method which calls the set_text() method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
-*/
-//go:nosplit
 func (self class) PushTextInput(text String.Readable) { //gd:Viewport.push_text_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_text_input, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
-
-/*
-Triggers the given 'event' in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
-
-If 'in_local_coords' is false, the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If 'in_local_coords' is true, the event's position is in viewport coordinates.
-
-While this method serves a similar purpose as [Input.ParseInputEvent], it does not remap the specified 'event' based on project settings like [ProjectSettings] "input_devices/pointing/emulate_touch_from_mouse".
-
-Calling this method will propagate calls to child nodes for following methods in the given order:
-
-- [Node.Input]
-
-- [Control.GuiInput] for [Control] nodes
-
-- [Node.ShortcutInput]
-
-- [Node.UnhandledKeyInput]
-
-- [Node.UnhandledInput]
-
-If an earlier method marks the input as handled via [SetInputAsHandled], any later method in this list will not be called.
-
-If none of the methods handle the event and [PhysicsObjectPicking] is true, the event is used for physics object picking.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
-[Input.ParseInputEvent]: https://pkg.go.dev/graphics.gd/classdb/Input#ParseInputEvent
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-[Node.ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ShortcutInput
-[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
-[Node.UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledKeyInput
-[PhysicsObjectPicking]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPicking
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
 }
-
-/*
-Triggers the given 'event' in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
-
-If 'in_local_coords' is false, the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If 'in_local_coords' is true, the event's position is in viewport coordinates.
-
-Calling this method will propagate calls to child nodes for following methods in the given order:
-
-- [Node.ShortcutInput]
-
-- [Node.UnhandledKeyInput]
-
-- [Node.UnhandledInput]
-
-If an earlier method marks the input as handled via [SetInputAsHandled], any later method in this list will not be called.
-
-If none of the methods handle the event and [PhysicsObjectPicking] is true, the event is used for physics object picking.
-
-Note: This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Node.ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ShortcutInput
-[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
-[Node.UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledKeyInput
-[PhysicsObjectPicking]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPicking
-[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
 }
-
-/*
-Inform the Viewport that the mouse has entered its area. Use this function before sending an [InputEventMouseButton] or [InputEventMouseMotion] to the [Viewport] with [Viewport.PushInput]. See also [NotifyMouseExited].
-
-Note: In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-[NotifyMouseExited]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.NotifyMouseExited
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
-[TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[Viewport.PushInput]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PushInput
-*/
-//go:nosplit
 func (self class) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_mouse_entered, 0, &struct{}{})
 }
-
-/*
-Inform the Viewport that the mouse has left its area. Use this function when the node that displays the viewport notices the mouse has left the area of the displayed viewport. See also [NotifyMouseEntered].
-
-Note: In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
-
-[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
-[NotifyMouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.NotifyMouseEntered
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
-[TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
-*/
-//go:nosplit
 func (self class) NotifyMouseExited() { //gd:Viewport.notify_mouse_exited
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_mouse_exited, 0, &struct{}{})
 }
-
-/*
-Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_mouse_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Moves the mouse pointer to the specified position in this [Viewport] using the coordinate system of this [Viewport].
-
-Note: [WarpMouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[WarpMouse]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.WarpMouse
-*/
-//go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
-
-/*
-Force instantly updating the display based on the current mouse cursor position. This includes updating the mouse cursor shape and sending necessary [OnControl.MouseEntered], [OnCollisionobject2d.MouseEntered], [OnCollisionobject3d.MouseEntered] and [OnWindow.MouseEntered] signals and their respective mouse_exited counterparts.
-
-[OnCollisionobject2d.MouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnCollisionobject2d.MouseEntered
-[OnCollisionobject3d.MouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnCollisionobject3d.MouseEntered
-[OnControl.MouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnControl.MouseEntered
-[OnWindow.MouseEntered]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OnWindow.MouseEntered
-*/
-//go:nosplit
 func (self class) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_state
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_mouse_cursor_state, 0, &struct{}{})
 }
-
-/*
-Cancels the drag operation that was previously started through [Control.GetDragData] or forced with [Control.ForceDrag].
-
-[Control.ForceDrag]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ForceDrag
-[Control.GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetDragData
-*/
-//go:nosplit
 func (self class) GuiCancelDrag() { //gd:Viewport.gui_cancel_drag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_cancel_drag, 0, &struct{}{})
 }
-
-/*
-Returns the drag data from the GUI, that was previously returned by [Control.GetDragData].
-
-[Control.GetDragData]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetDragData
-*/
-//go:nosplit
 func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.gui_get_drag_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the drag data human-readable description.
-*/
-//go:nosplit
 func (self class) GuiGetDragDescription() String.Readable { //gd:Viewport.gui_get_drag_description
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.gui_get_drag_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the drag data human-readable description.
-*/
-//go:nosplit
 func (self class) GuiSetDragDescription(description String.Readable) { //gd:Viewport.gui_set_drag_description
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_set_drag_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
-
-/*
-Returns true if a drag operation is currently ongoing and where the drop action could happen in this viewport.
-
-Alternative to [Node.NotificationDragBegin] and [Node.NotificationDragEnd] when you prefer polling the value.
-*/
-//go:nosplit
 func (self class) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.gui_is_dragging, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the drag operation is successful.
-*/
-//go:nosplit
 func (self class) GuiIsDragSuccessful() bool { //gd:Viewport.gui_is_drag_successful
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.gui_is_drag_successful, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_release_focus, 0, &struct{}{})
 }
-
-/*
-Returns the currently focused [Control] within this viewport. If no [Control] is focused, returns null.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_focus_owner, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns null.
-
-Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [Node.IsAncestorOf] to find if the mouse is within a control tree.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Node.IsAncestorOf]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsAncestorOf
-*/
-//go:nosplit
 func (self class) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_hovered_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDisableInput(disable bool) { //gd:Viewport.set_disable_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_input, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 }
-
-//go:nosplit
 func (self class) IsInputDisabled() bool { //gd:Viewport.is_input_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPositionalShadowAtlasSize(size int64) { //gd:Viewport.set_positional_shadow_atlas_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
-
-//go:nosplit
 func (self class) GetPositionalShadowAtlasSize() int64 { //gd:Viewport.get_positional_shadow_atlas_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPositionalShadowAtlas16Bits(enable bool) { //gd:Viewport.set_positional_shadow_atlas_16_bits
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_16_bits, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetPositionalShadowAtlas16Bits() bool { //gd:Viewport.get_positional_shadow_atlas_16_bits
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_16_bits, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSnapControlsToPixels(enabled bool) { //gd:Viewport.set_snap_controls_to_pixels
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_controls_to_pixels, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSnapControlsToPixelsEnabled() bool { //gd:Viewport.is_snap_controls_to_pixels_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_controls_to_pixels_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSnap2dTransformsToPixel(enabled bool) { //gd:Viewport.set_snap_2d_transforms_to_pixel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_2d_transforms_to_pixel, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSnap2dTransformsToPixelEnabled() bool { //gd:Viewport.is_snap_2d_transforms_to_pixel_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_2d_transforms_to_pixel_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSnap2dVerticesToPixel(enabled bool) { //gd:Viewport.set_snap_2d_vertices_to_pixel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_2d_vertices_to_pixel, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSnap2dVerticesToPixelEnabled() bool { //gd:Viewport.is_snap_2d_vertices_to_pixel_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_2d_vertices_to_pixel_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the number of subdivisions to use in the specified quadrant. A higher number of subdivisions allows you to have more shadows in the scene at once, but reduces the quality of the shadows. A good practice is to have quadrants with a varying number of subdivisions and to have as few subdivisions as possible.
-*/
-//go:nosplit
 func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv PositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_quadrant_subdiv, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		quadrant int64
 		subdiv   PositionalShadowAtlasQuadrantSubdiv
 	}{quadrant, subdiv})
 }
-
-/*
-Returns the positional shadow atlas quadrant subdivision of the specified quadrant.
-*/
-//go:nosplit
 func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant int64) PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
 	var r_ret = noescape.Call[PositionalShadowAtlasQuadrantSubdiv](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_quadrant_subdiv, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ quadrant int64 }{quadrant})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Stops the input from propagating further down the [SceneTree].
-
-Note: This does not affect the methods in [Input], only the way events are propagated.
-
-[Input]: https://pkg.go.dev/graphics.gd/classdb/Input
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_as_handled, 0, &struct{}{})
 }
-
-/*
-Returns whether the current [InputEvent] has been handled. Input events are not handled until [SetInputAsHandled] has been called during the lifetime of an [InputEvent].
-
-This is usually done as part of input handling methods like [Node.Input], [Control.GuiInput] or others, as well as in corresponding signal handlers.
-
-If [HandleInputLocally] is set to false, this method will try finding the first parent viewport that is set to handle input locally, and return its value for [IsInputHandled] instead.
-
-[Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
-[HandleInputLocally]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.HandleInputLocally
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[IsInputHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.IsInputHandled
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-*/
-//go:nosplit
 func (self class) IsInputHandled() bool { //gd:Viewport.is_input_handled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_handled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHandleInputLocally(enable bool) { //gd:Viewport.set_handle_input_locally
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_input_locally, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHandlingInputLocally() bool { //gd:Viewport.is_handling_input_locally
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_handling_input_locally, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultCanvasItemTextureFilter(mode DefaultCanvasItemTextureFilter) { //gd:Viewport.set_default_canvas_item_texture_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_canvas_item_texture_filter, 0|(gdextension.SizeInt<<4), &struct {
 		mode DefaultCanvasItemTextureFilter
 	}{mode})
 }
-
-//go:nosplit
 func (self class) GetDefaultCanvasItemTextureFilter() DefaultCanvasItemTextureFilter { //gd:Viewport.get_default_canvas_item_texture_filter
 	var r_ret = noescape.Call[DefaultCanvasItemTextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_default_canvas_item_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEmbeddingSubwindows(enable bool) { //gd:Viewport.set_embedding_subwindows
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_embedding_subwindows, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsEmbeddingSubwindows() bool { //gd:Viewport.is_embedding_subwindows
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_embedding_subwindows, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a list of the visible embedded [Window]s inside the viewport.
-
-Note: [Window]s inside other viewports will not be listed.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-//go:nosplit
 func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //gd:Viewport.get_embedded_subwindows
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_embedded_subwindows, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Window]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCanvasCullMask(mask int64) { //gd:Viewport.set_canvas_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCanvasCullMask() int64 { //gd:Viewport.get_canvas_cull_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_canvas_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
-
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-*/
-//go:nosplit
 func (self class) SetCanvasCullMaskBit(layer int64, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_cull_mask_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer  int64
 		enable bool
 	}{layer, enable})
 }
-
-/*
-Returns an individual bit on the rendering layer mask.
-*/
-//go:nosplit
 func (self class) GetCanvasCullMaskBit(layer int64) bool { //gd:Viewport.get_canvas_cull_mask_bit
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_canvas_cull_mask_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultCanvasItemTextureRepeat(mode DefaultCanvasItemTextureRepeat) { //gd:Viewport.set_default_canvas_item_texture_repeat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_canvas_item_texture_repeat, 0|(gdextension.SizeInt<<4), &struct {
 		mode DefaultCanvasItemTextureRepeat
 	}{mode})
 }
-
-//go:nosplit
 func (self class) GetDefaultCanvasItemTextureRepeat() DefaultCanvasItemTextureRepeat { //gd:Viewport.get_default_canvas_item_texture_repeat
 	var r_ret = noescape.Call[DefaultCanvasItemTextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_default_canvas_item_texture_repeat, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSdfOversize(oversize SDFOversize) { //gd:Viewport.set_sdf_oversize
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sdf_oversize, 0|(gdextension.SizeInt<<4), &struct{ oversize SDFOversize }{oversize})
 }
-
-//go:nosplit
 func (self class) GetSdfOversize() SDFOversize { //gd:Viewport.get_sdf_oversize
 	var r_ret = noescape.Call[SDFOversize](gd.ObjectChecked(self.AsObject()), methods.get_sdf_oversize, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSdfScale(scale SDFScale) { //gd:Viewport.set_sdf_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sdf_scale, 0|(gdextension.SizeInt<<4), &struct{ scale SDFScale }{scale})
 }
-
-//go:nosplit
 func (self class) GetSdfScale() SDFScale { //gd:Viewport.get_sdf_scale
 	var r_ret = noescape.Call[SDFScale](gd.ObjectChecked(self.AsObject()), methods.get_sdf_scale, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMeshLodThreshold(pixels float64) { //gd:Viewport.set_mesh_lod_threshold
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_lod_threshold, 0|(gdextension.SizeFloat<<4), &struct{ pixels float64 }{pixels})
 }
-
-//go:nosplit
 func (self class) GetMeshLodThreshold() float64 { //gd:Viewport.get_mesh_lod_threshold
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_lod_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAsAudioListener2d(enable bool) { //gd:Viewport.set_as_audio_listener_2d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_audio_listener_2d, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAudioListener2d() bool { //gd:Viewport.is_audio_listener_2d
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_audio_listener_2d, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the currently active 2D audio listener. Returns null if there are no active 2D audio listeners, in which case the active 2D camera will be treated as listener.
-*/
-//go:nosplit
 func (self class) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioListener2D{gdclass.NewAudioListener2D(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the currently active 2D camera. Returns null if there are no active cameras.
-*/
-//go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_2d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Camera2D{gdclass.NewCamera2D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), &struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld3D(world_3d[0])))})
 }
-
-//go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_3d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.World3D{gdclass.NewWorld3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the first valid [World3D] for this viewport, searching the [World3d] property of itself and any Viewport ancestor.
-
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-[World3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.World3d
-*/
-//go:nosplit
 func (self class) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_3d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.World3D{gdclass.NewWorld3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseOwnWorld3d(enable bool) { //gd:Viewport.set_use_own_world_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_own_world_3d, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsUsingOwnWorld3d() bool { //gd:Viewport.is_using_own_world_3d
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_own_world_3d, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the currently active 3D audio listener. Returns null if there are no active 3D audio listeners, in which case the active 3D camera will be treated as listener.
-*/
-//go:nosplit
 func (self class) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_3d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioListener3D{gdclass.NewAudioListener3D(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the currently active 3D camera.
-*/
-//go:nosplit
 func (self class) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_3d, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Camera3D{gdclass.NewCamera3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAsAudioListener3d(enable bool) { //gd:Viewport.set_as_audio_listener_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_audio_listener_3d, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsAudioListener3d() bool { //gd:Viewport.is_audio_listener_3d
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_audio_listener_3d, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDisable3d(disable bool) { //gd:Viewport.set_disable_3d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_3d, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 }
-
-//go:nosplit
 func (self class) Is3dDisabled() bool { //gd:Viewport.is_3d_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_3d_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUseXr(use bool) { //gd:Viewport.set_use_xr
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_xr, 0|(gdextension.SizeBool<<4), &struct{ use bool }{use})
 }
-
-//go:nosplit
 func (self class) IsUsingXr() bool { //gd:Viewport.is_using_xr
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_xr, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScaling3dMode(scaling_3d_mode Scaling3DMode) { //gd:Viewport.set_scaling_3d_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_mode, 0|(gdextension.SizeInt<<4), &struct{ scaling_3d_mode Scaling3DMode }{scaling_3d_mode})
 }
-
-//go:nosplit
 func (self class) GetScaling3dMode() Scaling3DMode { //gd:Viewport.get_scaling_3d_mode
 	var r_ret = noescape.Call[Scaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScaling3dScale(scale float64) { //gd:Viewport.set_scaling_3d_scale
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
-
-//go:nosplit
 func (self class) GetScaling3dScale() float64 { //gd:Viewport.get_scaling_3d_scale
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:Viewport.set_fsr_sharpness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fsr_sharpness, 0|(gdextension.SizeFloat<<4), &struct{ fsr_sharpness float64 }{fsr_sharpness})
 }
-
-//go:nosplit
 func (self class) GetFsrSharpness() float64 { //gd:Viewport.get_fsr_sharpness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:Viewport.set_texture_mipmap_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mipmap_bias, 0|(gdextension.SizeFloat<<4), &struct{ texture_mipmap_bias float64 }{texture_mipmap_bias})
 }
-
-//go:nosplit
 func (self class) GetTextureMipmapBias() float64 { //gd:Viewport.get_texture_mipmap_bias
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_mipmap_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level AnisotropicFiltering) { //gd:Viewport.set_anisotropic_filtering_level
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropic_filtering_level, 0|(gdextension.SizeInt<<4), &struct{ anisotropic_filtering_level AnisotropicFiltering }{anisotropic_filtering_level})
 }
-
-//go:nosplit
 func (self class) GetAnisotropicFilteringLevel() AnisotropicFiltering { //gd:Viewport.get_anisotropic_filtering_level
 	var r_ret = noescape.Call[AnisotropicFiltering](gd.ObjectChecked(self.AsObject()), methods.get_anisotropic_filtering_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVrsMode(mode VRSMode) { //gd:Viewport.set_vrs_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VRSMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetVrsMode() VRSMode { //gd:Viewport.get_vrs_mode
 	var r_ret = noescape.Call[VRSMode](gd.ObjectChecked(self.AsObject()), methods.get_vrs_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVrsUpdateMode(mode VRSUpdateMode) { //gd:Viewport.set_vrs_update_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VRSUpdateMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_update_mode
 	var r_ret = noescape.Call[VRSUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_vrs_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vrs_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

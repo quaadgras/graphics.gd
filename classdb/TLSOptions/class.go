@@ -273,14 +273,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a TLS client configuration which validates certificates and their common names (fully qualified domain names).
-
-You can specify a custom 'trusted_chain' of certification authorities (the default CA list will be used if null), and optionally provide a 'common_name_override' if you expect the certificate to have a common name other than the server FQDN.
-
-Note: On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
-*/
-//go:nosplit
 func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override String.Readable) [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		trusted_chain        gdextension.Object
@@ -289,25 +281,11 @@ func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_o
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates an unsafe TLS client configuration where certificate validation is optional. You can optionally provide a valid 'trusted_chain', but the common name of the certificates will never be checked. Using this configuration for purposes other than testing is not recommended.
-
-Note: On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
-*/
-//go:nosplit
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetX509Certificate(trusted_chain[0])))})
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a TLS server configuration using the provided 'key' and 'certificate'.
-
-Note: The 'certificate' should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
-*/
-//go:nosplit
 func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		key         gdextension.Object
@@ -316,77 +294,31 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 	var ret = [1]gdclass.TLSOptions{gdclass.NewTLSOptions(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns true if created with [TLSOptions.Server], false otherwise.
-
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-*/
-//go:nosplit
 func (self class) IsServer() bool { //gd:TLSOptions.is_server
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if created with [TLSOptions.ClientUnsafe], false otherwise.
-
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-*/
-//go:nosplit
 func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the common name (domain name) override specified when creating with [TLSOptions.Client].
-
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-*/
-//go:nosplit
 func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the CA [X509Certificate] chain specified when creating with [TLSOptions.Client] or [TLSOptions.ClientUnsafe].
-
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
-*/
-//go:nosplit
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [CryptoKey] specified when creating with [TLSOptions.Server].
-
-[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-*/
-//go:nosplit
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the [X509Certificate] specified when creating with [TLSOptions.Server].
-
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
-*/
-//go:nosplit
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

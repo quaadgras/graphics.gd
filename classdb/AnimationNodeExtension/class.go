@@ -223,16 +223,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-A version of the [AnimationNode.Process] method that is meant to be overridden by custom nodes. It returns a []float32 with the processed animation data.
-
-The []float64 parameter contains the playback information, containing the following values encoded as floating point numbers (in order): playback time and delta, start and end times, whether a seek was requested (encoded as a float greater than 0), whether the seek request was externally requested (encoded as a float greater than 0), the current [Animation.LoopedFlag] (encoded as a float), and the current blend weight.
-
-The function must return a []float32 of the node's time info, containing the following values (in order): animation length, time position, delta, [Animation.LoopMode] (encoded as a float), whether the animation is about to end (encoded as a float greater than 0) and whether the animation is infinite (encoded as a float greater than 0). All values must be included in the returned array.
-
-[AnimationNode.Process]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.Process
-*/
 func (class) _process_animation_node(impl func(ptr gdclass.Receiver, playback_info Packed.Array[float64], test_only bool) Packed.Array[float32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
@@ -249,10 +239,6 @@ func (class) _process_animation_node(impl func(ptr gdclass.Receiver, playback_in
 	}
 }
 
-/*
-Returns true if the animation for the given 'node_info' is looping.
-*/
-//go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
 	var r_ret = noescape.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		node_info gdextension.PackedArray[float32]
@@ -260,11 +246,6 @@ func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:Animati
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the animation's remaining time for the given node info. For looping animations, it will only return the remaining time if 'break_loop' is true, a large integer value will be returned otherwise.
-*/
-//go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
 	var r_ret = noescape.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
 		node_info  gdextension.PackedArray[float32]

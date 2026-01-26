@@ -248,60 +248,41 @@ func (self Instance) SetDebugColor(value Color.RGBA) Instance { //gd:CollisionSh
 	return self
 }
 
-//go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:CollisionShape2D.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape2D(shape[0])))})
 }
-
-//go:nosplit
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:CollisionShape2D.get_shape
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shape2D{gdclass.NewShape2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDisabled(disabled bool) { //gd:CollisionShape2D.set_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
-
-//go:nosplit
 func (self class) IsDisabled() bool { //gd:CollisionShape2D.is_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionShape2D.set_one_way_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionShape2D.is_one_way_collision_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionShape2D.set_one_way_collision_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionShape2D.get_one_way_collision_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape2D.set_debug_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
-
-//go:nosplit
 func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape2D.get_debug_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret

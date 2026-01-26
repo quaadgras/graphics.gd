@@ -335,121 +335,69 @@ func (self Instance) SetPublicVisibility(value bool) Instance { //gd:Multiplayer
 	return self
 }
 
-//go:nosplit
 func (self class) SetRootPath(path Path.ToNode) { //gd:MultiplayerSynchronizer.set_root_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
-
-//go:nosplit
 func (self class) GetRootPath() Path.ToNode { //gd:MultiplayerSynchronizer.get_root_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReplicationInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_replication_interval
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_interval, 0|(gdextension.SizeFloat<<4), &struct{ milliseconds float64 }{milliseconds})
 }
-
-//go:nosplit
 func (self class) GetReplicationInterval() float64 { //gd:MultiplayerSynchronizer.get_replication_interval
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_replication_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDeltaInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_delta_interval
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta_interval, 0|(gdextension.SizeFloat<<4), &struct{ milliseconds float64 }{milliseconds})
 }
-
-//go:nosplit
 func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_delta_interval
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_delta_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig) { //gd:MultiplayerSynchronizer.set_replication_config
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSceneReplicationConfig(config[0])))})
 }
-
-//go:nosplit
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //gd:MultiplayerSynchronizer.get_replication_config
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SceneReplicationConfig{gdclass.NewSceneReplicationConfig(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVisibilityUpdateMode(mode VisibilityUpdateMode) { //gd:MultiplayerSynchronizer.set_visibility_update_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode VisibilityUpdateMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetVisibilityUpdateMode() VisibilityUpdateMode { //gd:MultiplayerSynchronizer.get_visibility_update_mode
 	var r_ret = noescape.Call[VisibilityUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the visibility of 'for_peer' according to visibility filters. If 'for_peer' is 0 (the default), all peers' visibilties are updated.
-*/
-//go:nosplit
 func (self class) UpdateVisibility(for_peer int64) { //gd:MultiplayerSynchronizer.update_visibility
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_visibility, 0|(gdextension.SizeInt<<4), &struct{ for_peer int64 }{for_peer})
 }
-
-//go:nosplit
 func (self class) SetVisibilityPublic(visible bool) { //gd:MultiplayerSynchronizer.set_visibility_public
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_public, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
-
-//go:nosplit
 func (self class) IsVisibilityPublic() bool { //gd:MultiplayerSynchronizer.is_visibility_public
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visibility_public, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a peer visibility filter for this synchronizer.
-
-'filter' should take a peer ID int and return a bool.
-*/
-//go:nosplit
 func (self class) AddVisibilityFilter(filter Callable.Function) { //gd:MultiplayerSynchronizer.add_visibility_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_visibility_filter, 0|(gdextension.SizeCallable<<4), &struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))})
 }
-
-/*
-Removes a peer visibility filter from this synchronizer.
-*/
-//go:nosplit
 func (self class) RemoveVisibilityFilter(filter Callable.Function) { //gd:MultiplayerSynchronizer.remove_visibility_filter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_visibility_filter, 0|(gdextension.SizeCallable<<4), &struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))})
 }
-
-/*
-Sets the visibility of 'peer' to 'visible'. If 'peer' is 0, the value of [PublicVisibility] will be updated instead.
-
-[PublicVisibility]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer#Instance.PublicVisibility
-*/
-//go:nosplit
 func (self class) SetVisibilityFor(peer int64, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_for, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		peer    int64
 		visible bool
 	}{peer, visible})
 }
-
-/*
-Queries the current visibility for peer 'peer'.
-*/
-//go:nosplit
 func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchronizer.get_visibility_for
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visibility_for, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ peer int64 }{peer})
 	var ret = r_ret

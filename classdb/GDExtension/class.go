@@ -177,20 +177,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns true if this extension's library has been opened.
-*/
-//go:nosplit
 func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the lowest level required for this extension to be properly initialized (see the [InitializationLevel] enum).
-*/
-//go:nosplit
 func (self class) GetMinimumLibraryInitializationLevel() InitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
 	var r_ret = noescape.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

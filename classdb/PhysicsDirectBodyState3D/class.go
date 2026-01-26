@@ -686,465 +686,224 @@ func (self Instance) SetTransform(value Transform3D.BasisOrigin) Instance { //gd
 	return self
 }
 
-//go:nosplit
 func (self class) GetTotalGravity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_total_gravity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_total_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetTotalLinearDamp() float64 { //gd:PhysicsDirectBodyState3D.get_total_linear_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetTotalAngularDamp() float64 { //gd:PhysicsDirectBodyState3D.get_total_angular_damp
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_center_of_mass
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetCenterOfMassLocal() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_center_of_mass_local
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_local, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetPrincipalInertiaAxes() Basis.XYZ { //gd:PhysicsDirectBodyState3D.get_principal_inertia_axes
 	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_principal_inertia_axes, gdextension.SizeBasis, &struct{}{})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) GetInverseMass() float64 { //gd:PhysicsDirectBodyState3D.get_inverse_mass
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inverse_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetInverseInertia() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_inverse_inertia
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetInverseInertiaTensor() Basis.XYZ { //gd:PhysicsDirectBodyState3D.get_inverse_inertia_tensor
 	var r_ret = noescape.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia_tensor, gdextension.SizeBasis, &struct{}{})
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_linear_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
-
-//go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_linear_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_angular_velocity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
-
-//go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_angular_velocity
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:PhysicsDirectBodyState3D.set_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)})
 }
-
-//go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsDirectBodyState3D.get_transform
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
-
-/*
-Returns the body's velocity at the given relative position, including both translation and rotation.
-*/
-//go:nosplit
 func (self class) GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_velocity_at_local_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity_at_local_position, gdextension.SizeVector3|(gdextension.SizeVector3<<4), &struct{ local_position Vector3.XYZ }{local_position})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Applies a directional impulse without affecting rotation.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-
-This is equivalent to using [ApplyImpulse] at the body's center of mass.
-
-[ApplyImpulse]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.ApplyImpulse
-*/
-//go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_impulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector3<<4), &struct{ impulse Vector3.XYZ }{impulse})
 }
-
-/*
-Applies a positioned impulse to the body.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-//go:nosplit
 func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_impulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		impulse  Vector3.XYZ
 		position Vector3.XYZ
 	}{impulse, position})
 }
-
-/*
-Applies a rotational impulse to the body without affecting the position.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-
-Note: [InverseInertia] is required for this to work. To have [InverseInertia], an active [CollisionShape3D] must be a child of the node, or you can manually set [InverseInertia].
-
-[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
-[InverseInertia]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.InverseInertia
-*/
-//go:nosplit
 func (self class) ApplyTorqueImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque_impulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeVector3<<4), &struct{ impulse Vector3.XYZ }{impulse})
 }
-
-/*
-Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
-
-This is equivalent to using [ApplyForce] at the body's center of mass.
-
-[ApplyForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.ApplyForce
-*/
-//go:nosplit
 func (self class) ApplyCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector3<<4), &struct{ force Vector3.XYZ }{force})
 }
-
-/*
-Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
-
-'position' is the offset from the body origin in global coordinates.
-*/
-//go:nosplit
 func (self class) ApplyForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		force    Vector3.XYZ
 		position Vector3.XYZ
 	}{force, position})
 }
-
-/*
-Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
-
-Note: [InverseInertia] is required for this to work. To have [InverseInertia], an active [CollisionShape3D] must be a child of the node, or you can manually set [InverseInertia].
-
-[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
-[InverseInertia]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.InverseInertia
-*/
-//go:nosplit
 func (self class) ApplyTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeVector3<<4), &struct{ torque Vector3.XYZ }{torque})
 }
-
-/*
-Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with constant_force = Vector3(0, 0, 0).
-
-This is equivalent to using [AddConstantForce] at the body's center of mass.
-
-[AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantForce
-*/
-//go:nosplit
 func (self class) AddConstantCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_central_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector3<<4), &struct{ force Vector3.XYZ }{force})
 }
-
-/*
-Adds a constant positioned force to the body that keeps being applied over time until cleared with constant_force = Vector3(0, 0, 0).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-//go:nosplit
 func (self class) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		force    Vector3.XYZ
 		position Vector3.XYZ
 	}{force, position})
 }
-
-/*
-Adds a constant rotational force without affecting position that keeps being applied over time until cleared with constant_torque = Vector3(0, 0, 0).
-*/
-//go:nosplit
 func (self class) AddConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_torque
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeVector3<<4), &struct{ torque Vector3.XYZ }{torque})
 }
-
-/*
-Sets the body's total constant positional forces applied during each physics update.
-
-See [AddConstantForce] and [AddConstantCentralForce].
-
-[AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantCentralForce
-[AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantForce
-*/
-//go:nosplit
 func (self class) SetConstantForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_force
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector3<<4), &struct{ force Vector3.XYZ }{force})
 }
-
-/*
-Returns the body's total constant positional forces applied during each physics update.
-
-See [AddConstantForce] and [AddConstantCentralForce].
-
-[AddConstantCentralForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantCentralForce
-[AddConstantForce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantForce
-*/
-//go:nosplit
 func (self class) GetConstantForce() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_force
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the body's total constant rotational forces applied during each physics update.
-
-See [AddConstantTorque].
-
-[AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantTorque
-*/
-//go:nosplit
 func (self class) SetConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_torque
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeVector3<<4), &struct{ torque Vector3.XYZ }{torque})
 }
-
-/*
-Returns the body's total constant rotational forces applied during each physics update.
-
-See [AddConstantTorque].
-
-[AddConstantTorque]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D#Instance.AddConstantTorque
-*/
-//go:nosplit
 func (self class) GetConstantTorque() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_torque
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSleepState(enabled bool) { //gd:PhysicsDirectBodyState3D.set_sleep_state
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleep_state, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsSleeping() bool { //gd:PhysicsDirectBodyState3D.is_sleeping
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:PhysicsDirectBodyState3D.set_collision_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
-
-//go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:PhysicsDirectBodyState3D.get_collision_layer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:PhysicsDirectBodyState3D.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsDirectBodyState3D.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of contacts this body has with other bodies.
-
-Note: By default, this returns 0 unless bodies are configured to monitor contacts. See [RigidBody3D.ContactMonitor].
-
-[RigidBody3D.ContactMonitor]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.ContactMonitor
-*/
-//go:nosplit
 func (self class) GetContactCount() int64 { //gd:PhysicsDirectBodyState3D.get_contact_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of the contact point on the body in the global coordinate system.
-*/
-//go:nosplit
 func (self class) GetContactLocalPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local normal at the contact point.
-*/
-//go:nosplit
 func (self class) GetContactLocalNormal(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_normal
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Impulse created by the contact.
-*/
-//go:nosplit
 func (self class) GetContactImpulse(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_impulse
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_impulse, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local shape index of the collision.
-*/
-//go:nosplit
 func (self class) GetContactLocalShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_local_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the linear velocity vector at the body's contact point.
-*/
-//go:nosplit
 func (self class) GetContactLocalVelocityAtPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_velocity_at_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_velocity_at_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collider's [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetContactCollider(contact_idx int64) RID.Any { //gd:PhysicsDirectBodyState3D.get_contact_collider
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the position of the contact point on the collider in the global coordinate system.
-*/
-//go:nosplit
 func (self class) GetContactColliderPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collider's object id.
-*/
-//go:nosplit
 func (self class) GetContactColliderId(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_collider_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collider object.
-*/
-//go:nosplit
 func (self class) GetContactColliderObject(contact_idx int64) [1]gd.Object { //gd:PhysicsDirectBodyState3D.get_contact_collider_object
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_object, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the collider's shape index.
-*/
-//go:nosplit
 func (self class) GetContactColliderShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_collider_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the linear velocity vector at the collider's contact point.
-*/
-//go:nosplit
 func (self class) GetContactColliderVelocityAtPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_velocity_at_position
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_velocity_at_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetStep() float64 { //gd:PhysicsDirectBodyState3D.get_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the body's linear and angular velocity by applying gravity and damping for the equivalent of one physics tick.
-*/
-//go:nosplit
 func (self class) IntegrateForces() { //gd:PhysicsDirectBodyState3D.integrate_forces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.integrate_forces, 0, &struct{}{})
 }
-
-/*
-Returns the current state of the space, useful for queries.
-*/
-//go:nosplit
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsDirectBodyState3D.get_space_state
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_space_state, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gdclass.NewPhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}

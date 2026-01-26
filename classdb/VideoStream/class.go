@@ -211,12 +211,6 @@ func (self Instance) SetFile(value string) Instance { //gd:VideoStream.file
 	class(self).SetFile(String.New(value))
 	return self
 }
-
-/*
-Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
-
-[VideoStreamPlayback]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback
-*/
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -230,12 +224,9 @@ func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.Vi
 	}
 }
 
-//go:nosplit
 func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
-
-//go:nosplit
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))

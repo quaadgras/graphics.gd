@@ -677,379 +677,152 @@ func SetPhysicsJitterFix(value Float.X) { //gd:Engine.physics_jitter_fix
 	class(self).SetPhysicsJitterFix(float64(value))
 }
 
-//go:nosplit
 func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second int64) { //gd:Engine.set_physics_ticks_per_second
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_ticks_per_second, 0|(gdextension.SizeInt<<4), &struct{ physics_ticks_per_second int64 }{physics_ticks_per_second})
 }
-
-//go:nosplit
 func (self class) GetPhysicsTicksPerSecond() int64 { //gd:Engine.get_physics_ticks_per_second
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_ticks_per_second, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps int64) { //gd:Engine.set_max_physics_steps_per_frame
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_physics_steps_per_frame, 0|(gdextension.SizeInt<<4), &struct{ max_physics_steps int64 }{max_physics_steps})
 }
-
-//go:nosplit
 func (self class) GetMaxPhysicsStepsPerFrame() int64 { //gd:Engine.get_max_physics_steps_per_frame
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_physics_steps_per_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPhysicsJitterFix(physics_jitter_fix float64) { //gd:Engine.set_physics_jitter_fix
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_jitter_fix, 0|(gdextension.SizeFloat<<4), &struct{ physics_jitter_fix float64 }{physics_jitter_fix})
 }
-
-//go:nosplit
 func (self class) GetPhysicsJitterFix() float64 { //gd:Engine.get_physics_jitter_fix
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_jitter_fix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the fraction through the current physics tick we are at the time of rendering the frame. This can be used to implement fixed timestep interpolation.
-*/
-//go:nosplit
 func (self class) GetPhysicsInterpolationFraction() float64 { //gd:Engine.get_physics_interpolation_fraction
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_fraction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMaxFps(max_fps int64) { //gd:Engine.set_max_fps
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_fps, 0|(gdextension.SizeInt<<4), &struct{ max_fps int64 }{max_fps})
 }
-
-//go:nosplit
 func (self class) GetMaxFps() int64 { //gd:Engine.get_max_fps
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_fps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTimeScale(time_scale float64) { //gd:Engine.set_time_scale
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_scale, 0|(gdextension.SizeFloat<<4), &struct{ time_scale float64 }{time_scale})
 }
-
-//go:nosplit
 func (self class) GetTimeScale() float64 { //gd:Engine.get_time_scale
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the total number of frames drawn since the engine started.
-
-Note: On headless platforms, or if rendering is disabled with --disable-render-loop via command line, this method always returns 0. See also [GetProcessFrames].
-*/
-//go:nosplit
 func (self class) GetFramesDrawn() int64 { //gd:Engine.get_frames_drawn
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_drawn, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the average frames rendered every second (FPS), also known as the framerate.
-*/
-//go:nosplit
 func (self class) GetFramesPerSecond() float64 { //gd:Engine.get_frames_per_second
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frames_per_second, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the total number of frames passed since the engine started. This number is increased every physics frame. See also [GetProcessFrames].
-
-This method can be used to run expensive logic less often without relying on a [Timer]:
-
-
-	if Engine.GetPhysicsFrames()%2 == 0 {
-		// Run expensive logic only once every 2 physics frames here.
-	}
-
-
-[Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
-*/
-//go:nosplit
 func (self class) GetPhysicsFrames() int64 { //gd:Engine.get_physics_frames
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the total number of frames passed since the engine started. This number is increased every process frame, regardless of whether the render loop is enabled. See also [GetFramesDrawn] and [GetPhysicsFrames].
-
-This method can be used to run expensive logic less often without relying on a [Timer]:
-
-
-	if Engine.GetProcessFrames()%5 == 0 {
-		// Run expensive logic only once every 5 process (render) frames here.
-	}
-
-
-[Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
-*/
-//go:nosplit
 func (self class) GetProcessFrames() int64 { //gd:Engine.get_process_frames
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and is the same as [Node.GetTree].
-
-Note: The type instantiated as the main loop can changed with [ProjectSettings] "application/run/main_loop_type".
-
-[MainLoop]: https://pkg.go.dev/graphics.gd/classdb/MainLoop
-[Node.GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_main_loop, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MainLoop{gdclass.NewMainLoop(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns the current engine version information as a data structure containing the following entries:
-
-- major - Major version number as an int;
-
-- minor - Minor version number as an int;
-
-- patch - Patch version number as an int;
-
-- hex - Full version encoded as a hexadecimal int with one byte (2 hex digits) per number (see example below);
-
-- status - Status (such as "beta", "rc1", "rc2", "stable", etc.) as a String;
-
-- build - Build name (e.g. "custom_build") as a String;
-
-- hash - Full Git commit hash as a String;
-
-- timestamp - Holds the Git commit date UNIX timestamp in seconds as an int, or 0 if unavailable;
-
-- string - major, minor, patch, status, and build in a single String.
-
-The hex value is encoded as follows, from left to right: one byte for the major, one byte for the minor, one byte for the patch version. For example, "3.1.12" would be 0x03010C.
-
-Note: The hex value is still an int internally, and printing it will give you its decimal representation, which is not particularly meaningful. Use hexadecimal literals for quick version comparisons from code:
-
-
-	if Engine.GetVersionInfo().Hex >= 0x040100 {
-		// Do things specific to version 4.1 or later.
-	} else {
-		// Do things specific to versions before 4.1.
-	}
-
-*/
-//go:nosplit
 func (self class) GetVersionInfo() Dictionary.Any { //gd:Engine.get_version_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_version_info, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns the engine author information as a data structure, where each entry is an slice of strings with the names of notable contributors to the Godot Engine: lead_developers, founders, project_managers, and developers.
-*/
-//go:nosplit
 func (self class) GetAuthorInfo() Dictionary.Any { //gd:Engine.get_author_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_author_info, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns an slice of dictionaries with copyright information for every component of Godot's source code.
-
-Every data structure contains a name identifier, and a parts array of dictionaries. It describes the component in detail with the following entries:
-
-- files - slice of file paths from the source code affected by this component;
-
-- copyright - slice of owners of this component;
-
-- license - The license applied to this component (such as "[Expat]" or "[CC-BY-4.0]").
-
-[CC-BY-4.0]: https://creativecommons.org/licenses/by/4.0/
-[Expat]: https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants
-*/
-//go:nosplit
 func (self class) GetCopyrightInfo() Array.Contains[Dictionary.Any] { //gd:Engine.get_copyright_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_copyright_info, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns a data structure of categorized donor names. Each entry is an slice of strings:
-
-{platinum_sponsors, gold_sponsors, silver_sponsors, bronze_sponsors, mini_sponsors, gold_donors, silver_donors, bronze_donors}
-*/
-//go:nosplit
 func (self class) GetDonorInfo() Dictionary.Any { //gd:Engine.get_donor_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_donor_info, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns a data structure of licenses used by Godot and included third party components. Each entry is a license name (such as "[Expat]") and its associated text.
-
-[Expat]: https://en.wikipedia.org/wiki/MIT_License#Ambiguity_and_variants
-*/
-//go:nosplit
 func (self class) GetLicenseInfo() Dictionary.Any { //gd:Engine.get_license_info
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_license_info, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns the full Godot license text.
-*/
-//go:nosplit
 func (self class) GetLicenseText() String.Readable { //gd:Engine.get_license_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_license_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the name of the CPU architecture the Godot binary was built for. Possible return values include "x86_64", "x86_32", "arm64", "arm32", "rv64", "ppc64", "loongarch64", "wasm64", and "wasm32".
-
-To detect whether the current build is 64-bit, or the type of architecture, don't use the architecture name. Instead, use [OS.HasFeature] to check for the "64" feature tag, or tags such as "x86" or "arm". See the [Feature Tags] documentation for more details.
-
-Note: This method does not return the name of the system's CPU architecture (like [OS.GetProcessorName]). For example, when running an x86_32 Godot binary on an x86_64 system, the returned value will still be "x86_32".
-
-[Feature Tags]: https://docs.godotengine.org/tutorials/export/feature_tags.html
-[OS.GetProcessorName]: https://pkg.go.dev/graphics.gd/classdb/OS#GetProcessorName
-[OS.HasFeature]: https://pkg.go.dev/graphics.gd/classdb/OS#HasFeature
-*/
-//go:nosplit
 func (self class) GetArchitectureName() String.Readable { //gd:Engine.get_architecture_name
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_architecture_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the engine is inside the fixed physics process step of the main loop.
-
-	package main
-
-	import (
-		"fmt"
-
-		"graphics.gd/classdb/Engine"
-		"graphics.gd/classdb/Node"
-	)
-
-	type ExampleInPhysicsFrame struct {
-		Node.Extension[ExampleInPhysicsFrame]
-	}
-
-	func (e *ExampleInPhysicsFrame) EnterTree() {
-		// Depending on when the node is added to the tree,
-		// prints either "true" or "false".
-		fmt.Println(Engine.IsInPhysicsFrame())
-	}
-
-	func (e *ExampleInPhysicsFrame) Process(delta float64) {
-		fmt.Println(Engine.IsInPhysicsFrame()) // Prints false
-	}
-
-	func (e *ExampleInPhysicsFrame) PhysicsProcess(delta float64) {
-		fmt.Println(Engine.IsInPhysicsFrame()) // Prints true
-	}
-
-*/
-//go:nosplit
 func (self class) IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_physics_frame, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a singleton with the given 'name' exists in the global scope. See also [GetSingleton].
-
-
-	fmt.Println(Engine.HasSingleton("OS"))          // Prints true
-	fmt.Println(Engine.HasSingleton("Engine"))      // Prints true
-	fmt.Println(Engine.HasSingleton("AudioServer")) // Prints true
-	fmt.Println(Engine.HasSingleton("Unknown"))     // Prints false
-
-
-Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
-*/
-//go:nosplit
 func (self class) HasSingleton(name String.Name) bool { //gd:Engine.has_singleton
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_singleton, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the global singleton with the given 'name', or null if it does not exist. Often used for plugins. See also [HasSingleton] and [GetSingletonList].
-
-Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
-*/
-//go:nosplit
 func (self class) GetSingleton(name String.Name) [1]gd.Object { //gd:Engine.get_singleton
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_singleton, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Registers the given [Object] 'instance' as a singleton, available globally under 'name'. Useful for plugins.
-
-[Object]: https://pkg.go.dev/graphics.gd/variant/Object
-*/
-//go:nosplit
 func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { //gd:Engine.register_singleton
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_singleton, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
@@ -1057,183 +830,78 @@ func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { /
 		instance gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(instance[0])[0]))})
 }
-
-/*
-Removes the singleton registered under 'name'. The singleton object is not freed. Only works with user-defined singletons registered with [RegisterSingleton].
-*/
-//go:nosplit
 func (self class) UnregisterSingleton(name String.Name) { //gd:Engine.unregister_singleton
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_singleton, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns a list of names of all available global singletons. See also [GetSingleton].
-*/
-//go:nosplit
 func (self class) GetSingletonList() Packed.Strings { //gd:Engine.get_singleton_list
 	once.Do(singleton)
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_singleton_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Registers a [ScriptLanguage] instance to be available with ScriptServer.
-
-Returns:
-
-- [Ok] on success;
-
-- [ErrUnavailable] if ScriptServer has reached the limit and cannot register any new language;
-
-- [ErrAlreadyExists] if ScriptServer already contains a language with similar extension/name/type.
-
-[ScriptLanguage]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguage
-*/
-//go:nosplit
 func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.register_script_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.register_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetScriptLanguage(language[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Unregisters the [ScriptLanguage] instance from ScriptServer.
-
-Returns:
-
-- [Ok] on success;
-
-- [ErrDoesNotExist] if the language is not registered in ScriptServer.
-
-[ScriptLanguage]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguage
-*/
-//go:nosplit
 func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the number of available script languages. Use with [GetScriptLanguage].
-*/
-//go:nosplit
 func (self class) GetScriptLanguageCount() int64 { //gd:Engine.get_script_language_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_script_language_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an instance of a [ScriptLanguage] with the given 'index'.
-
-[ScriptLanguage]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguage
-*/
-//go:nosplit
 func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_language, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.ScriptLanguage{gdclass.NewScriptLanguage(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Captures and returns backtraces from all registered script languages.
-
-By default, the returned [ScriptBacktrace] will only contain stack frames in editor builds and debug builds. To enable them for release builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
-
-If 'include_variables' is true, the backtrace will also include the names and values of any global variables (e.g. autoload singletons) at the point of the capture, as well as local variables and class member variables at each stack frame. This will however will only be respected when running the game with a debugger attached, like when running the game from the editor. To enable it for export builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_local_variables".
-
-Warning: When 'include_variables' is true, any captured variables can potentially (e.g. with GDScript backtraces) be their actual values, including any object references. This means that storing such a [ScriptBacktrace] will prevent those objects from being deallocated, so it's generally recommended not to do so.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[ScriptBacktrace]: https://pkg.go.dev/graphics.gd/classdb/ScriptBacktrace
-*/
-//go:nosplit
 func (self class) CaptureScriptBacktraces(include_variables bool) Array.Contains[[1]gdclass.ScriptBacktrace] { //gd:Engine.capture_script_backtraces
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.capture_script_backtraces, gdextension.SizeArray|(gdextension.SizeBool<<4), &struct{ include_variables bool }{include_variables})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the script is currently running inside the editor, otherwise returns false. This is useful for @tool scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
-
-
-	if Engine.IsEditorHint() {
-		DrawGizmos()
-	} else {
-		SimulatePhysics()
-	}
-
-
-See [Running code in the editor] in the documentation for more information.
-
-Note: To detect whether the script is running on an editor build (such as when pressing F5), use [OS.HasFeature] with the "editor" argument instead. OS.has_feature("editor") evaluate to true both when the script is running in the editor and when running the project from the editor, but returns false when run from an exported project.
-
-[OS.HasFeature]: https://pkg.go.dev/graphics.gd/classdb/OS#HasFeature
-[Running code in the editor]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
-*/
-//go:nosplit
 func (self class) IsEditorHint() bool { //gd:Engine.is_editor_hint
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_hint, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the engine is running embedded in the editor. This is useful to prevent attempting to update window mode or window flags that are not supported when running the project embedded in the editor.
-*/
-//go:nosplit
 func (self class) IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_embedded_in_editor, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the path to the [MovieWriter]'s output file, or an empty string if the engine wasn't started in Movie Maker mode. The default path can be changed in [ProjectSettings] "editor/movie_writer/movie_file".
-
-[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetWriteMoviePath() String.Readable { //gd:Engine.get_write_movie_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_write_movie_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPrintToStdout(enabled bool) { //gd:Engine.set_print_to_stdout
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_print_to_stdout, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPrintingToStdout() bool { //gd:Engine.is_printing_to_stdout
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_printing_to_stdout, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPrintErrorMessages(enabled bool) { //gd:Engine.set_print_error_messages
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_print_error_messages, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPrintingErrorMessages() bool { //gd:Engine.is_printing_error_messages
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_printing_error_messages, gdextension.SizeBool, &struct{}{})

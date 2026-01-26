@@ -170,12 +170,9 @@ func (self Instance) SetPan(value Float.X) Instance { //gd:AudioEffectPanner.pan
 	return self
 }
 
-//go:nosplit
 func (self class) SetPan(cpanume float64) { //gd:AudioEffectPanner.set_pan
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pan, 0|(gdextension.SizeFloat<<4), &struct{ cpanume float64 }{cpanume})
 }
-
-//go:nosplit
 func (self class) GetPan() float64 { //gd:AudioEffectPanner.get_pan
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pan, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

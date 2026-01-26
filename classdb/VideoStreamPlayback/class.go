@@ -434,42 +434,18 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Stops playback. May be called multiple times before [Play], or in response to [VideoStreamPlayer.Stop]. [IsPlaying] should return false once stopped.
-
-[IsPlaying]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[Play]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[VideoStreamPlayer.Stop]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Stop
-*/
 func (class) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Called in response to [VideoStreamPlayer.Autoplay] or [VideoStreamPlayer.Play]. Note that manual playback may also invoke [Stop] multiple times before this method is called. [IsPlaying] should return true once playing.
-
-[IsPlaying]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[Stop]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[VideoStreamPlayer.Autoplay]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Autoplay
-[VideoStreamPlayer.Play]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Play
-*/
 func (class) _play(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
-
-/*
-Returns the playback state, as determined by calls to [Play] and [Stop].
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[Stop]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-*/
 func (class) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -477,13 +453,6 @@ func (class) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Set the paused status of video playback. [IsPaused] must return 'paused'. Called in response to the [VideoStreamPlayer.Paused] setter.
-
-[IsPaused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[VideoStreamPlayer.Paused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Paused
-*/
 func (class) _set_paused(impl func(ptr gdclass.Receiver, paused bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var paused = gd.UnsafeGet[bool](p_args, 0)
@@ -491,12 +460,6 @@ func (class) _set_paused(impl func(ptr gdclass.Receiver, paused bool)) (cb gd.Ex
 		impl(self, paused)
 	}
 }
-
-/*
-Returns the paused status, as set by [SetPaused].
-
-[SetPaused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-*/
 func (class) _is_paused(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -504,10 +467,6 @@ func (class) _is_paused(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Returns the video duration in seconds, if known, or 0 if unknown.
-*/
 func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -515,12 +474,6 @@ func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Return the current playback timestamp. Called in response to the [VideoStreamPlayer.StreamPosition] getter.
-
-[VideoStreamPlayer.StreamPosition]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.StreamPosition
-*/
 func (class) _get_playback_position(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -528,12 +481,6 @@ func (class) _get_playback_position(impl func(ptr gdclass.Receiver) float64) (cb
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Seeks to 'time' seconds. Called in response to the [VideoStreamPlayer.StreamPosition] setter.
-
-[VideoStreamPlayer.StreamPosition]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.StreamPosition
-*/
 func (class) _seek(impl func(ptr gdclass.Receiver, time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
@@ -541,12 +488,6 @@ func (class) _seek(impl func(ptr gdclass.Receiver, time float64)) (cb gd.Extensi
 		impl(self, time)
 	}
 }
-
-/*
-Select the audio track 'idx'. Called when playback starts, and in response to the [VideoStreamPlayer.AudioTrack] setter.
-
-[VideoStreamPlayer.AudioTrack]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.AudioTrack
-*/
 func (class) _set_audio_track(impl func(ptr gdclass.Receiver, idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var idx = gd.UnsafeGet[int64](p_args, 0)
@@ -554,12 +495,6 @@ func (class) _set_audio_track(impl func(ptr gdclass.Receiver, idx int64)) (cb gd
 		impl(self, idx)
 	}
 }
-
-/*
-Allocates a [Texture2D] in which decoded video frames will be drawn.
-
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
 func (class) _get_texture(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -572,13 +507,6 @@ func (class) _get_texture(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Ticks video playback for 'delta' seconds. Called every frame as long as both [IsPaused] and [IsPlaying] return true.
-
-[IsPaused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-[IsPlaying]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-*/
 func (class) _update(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
@@ -586,10 +514,6 @@ func (class) _update(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Exte
 		impl(self, delta)
 	}
 }
-
-/*
-Returns the number of audio channels.
-*/
 func (class) _get_channels(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -597,10 +521,6 @@ func (class) _get_channels(impl func(ptr gdclass.Receiver) int64) (cb gd.Extensi
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Returns the audio sample rate used for mixing.
-*/
 func (class) _get_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -609,12 +529,6 @@ func (class) _get_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.Extensi
 	}
 }
 
-/*
-Render 'num_frames' audio frames (of [GetChannels] floats each) from 'buffer', starting from index 'offset' in the array. Returns the number of audio frames rendered, or -1 on error.
-
-[GetChannels]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayback#Interface
-*/
-//go:nosplit
 func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mix_audio, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		num_frames int64

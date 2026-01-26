@@ -383,186 +383,127 @@ func (self Instance) SetSparseValuesByteOffset(value int) Instance { //gd:GLTFAc
 	return self
 }
 
-//go:nosplit
 func (self class) GetBufferView() int64 { //gd:GLTFAccessor.get_buffer_view
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_view, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBufferView(buffer_view int64) { //gd:GLTFAccessor.set_buffer_view
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_view, 0|(gdextension.SizeInt<<4), &struct{ buffer_view int64 }{buffer_view})
 }
-
-//go:nosplit
 func (self class) GetByteOffset() int64 { //gd:GLTFAccessor.get_byte_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetByteOffset(byte_offset int64) { //gd:GLTFAccessor.set_byte_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_offset, 0|(gdextension.SizeInt<<4), &struct{ byte_offset int64 }{byte_offset})
 }
-
-//go:nosplit
 func (self class) GetComponentType() GLTFComponentType { //gd:GLTFAccessor.get_component_type
 	var r_ret = noescape.Call[GLTFComponentType](gd.ObjectChecked(self.AsObject()), methods.get_component_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetComponentType(component_type GLTFComponentType) { //gd:GLTFAccessor.set_component_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_component_type, 0|(gdextension.SizeInt<<4), &struct{ component_type GLTFComponentType }{component_type})
 }
-
-//go:nosplit
 func (self class) GetNormalized() bool { //gd:GLTFAccessor.get_normalized
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_normalized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNormalized(normalized bool) { //gd:GLTFAccessor.set_normalized
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalized, 0|(gdextension.SizeBool<<4), &struct{ normalized bool }{normalized})
 }
-
-//go:nosplit
 func (self class) GetCount() int64 { //gd:GLTFAccessor.get_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCount(count int64) { //gd:GLTFAccessor.set_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
-
-//go:nosplit
 func (self class) GetAccessorType() GLTFAccessorType { //gd:GLTFAccessor.get_accessor_type
 	var r_ret = noescape.Call[GLTFAccessorType](gd.ObjectChecked(self.AsObject()), methods.get_accessor_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessorType(accessor_type GLTFAccessorType) { //gd:GLTFAccessor.set_accessor_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessor_type, 0|(gdextension.SizeInt<<4), &struct{ accessor_type GLTFAccessorType }{accessor_type})
 }
-
-//go:nosplit
 func (self class) GetType() int64 { //gd:GLTFAccessor.get_type
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetType(atype int64) { //gd:GLTFAccessor.set_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_type, 0|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 }
-
-//go:nosplit
 func (self class) GetMin() Packed.Array[float64] { //gd:GLTFAccessor.get_min
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMin(min Packed.Array[float64]) { //gd:GLTFAccessor.set_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizePackedArray<<4), &struct {
 		min gdextension.PackedArray[float64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](min))})
 }
-
-//go:nosplit
 func (self class) GetMax() Packed.Array[float64] { //gd:GLTFAccessor.get_max
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMax(max Packed.Array[float64]) { //gd:GLTFAccessor.set_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizePackedArray<<4), &struct {
 		max gdextension.PackedArray[float64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat64Array, float64](max))})
 }
-
-//go:nosplit
 func (self class) GetSparseCount() int64 { //gd:GLTFAccessor.get_sparse_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseCount(sparse_count int64) { //gd:GLTFAccessor.set_sparse_count
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_count, 0|(gdextension.SizeInt<<4), &struct{ sparse_count int64 }{sparse_count})
 }
-
-//go:nosplit
 func (self class) GetSparseIndicesBufferView() int64 { //gd:GLTFAccessor.get_sparse_indices_buffer_view
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_indices_buffer_view, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseIndicesBufferView(sparse_indices_buffer_view int64) { //gd:GLTFAccessor.set_sparse_indices_buffer_view
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_indices_buffer_view, 0|(gdextension.SizeInt<<4), &struct{ sparse_indices_buffer_view int64 }{sparse_indices_buffer_view})
 }
-
-//go:nosplit
 func (self class) GetSparseIndicesByteOffset() int64 { //gd:GLTFAccessor.get_sparse_indices_byte_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_indices_byte_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseIndicesByteOffset(sparse_indices_byte_offset int64) { //gd:GLTFAccessor.set_sparse_indices_byte_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_indices_byte_offset, 0|(gdextension.SizeInt<<4), &struct{ sparse_indices_byte_offset int64 }{sparse_indices_byte_offset})
 }
-
-//go:nosplit
 func (self class) GetSparseIndicesComponentType() GLTFComponentType { //gd:GLTFAccessor.get_sparse_indices_component_type
 	var r_ret = noescape.Call[GLTFComponentType](gd.ObjectChecked(self.AsObject()), methods.get_sparse_indices_component_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseIndicesComponentType(sparse_indices_component_type GLTFComponentType) { //gd:GLTFAccessor.set_sparse_indices_component_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_indices_component_type, 0|(gdextension.SizeInt<<4), &struct{ sparse_indices_component_type GLTFComponentType }{sparse_indices_component_type})
 }
-
-//go:nosplit
 func (self class) GetSparseValuesBufferView() int64 { //gd:GLTFAccessor.get_sparse_values_buffer_view
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_values_buffer_view, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseValuesBufferView(sparse_values_buffer_view int64) { //gd:GLTFAccessor.set_sparse_values_buffer_view
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_values_buffer_view, 0|(gdextension.SizeInt<<4), &struct{ sparse_values_buffer_view int64 }{sparse_values_buffer_view})
 }
-
-//go:nosplit
 func (self class) GetSparseValuesByteOffset() int64 { //gd:GLTFAccessor.get_sparse_values_byte_offset
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_values_byte_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSparseValuesByteOffset(sparse_values_byte_offset int64) { //gd:GLTFAccessor.set_sparse_values_byte_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_values_byte_offset, 0|(gdextension.SizeInt<<4), &struct{ sparse_values_byte_offset int64 }{sparse_values_byte_offset})
 }

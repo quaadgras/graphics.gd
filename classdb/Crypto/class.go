@@ -309,40 +309,16 @@ func New() Instance {
 	return casted
 }
 
-/*
-Generates a []byte of cryptographically secure random bytes with given 'size'.
-*/
-//go:nosplit
 func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_random_bytes, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [StreamPeerTLS.AcceptStream].
-
-[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
-[StreamPeerTLS.AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
-*/
-//go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
-
-A small example to generate an RSA key and an X509 self-signed certificate.
-
-
-
-[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
-[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
-*/
-//go:nosplit
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_self_signed_certificate, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
 		key         gdextension.Object
@@ -353,11 +329,6 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sign a given 'hash' of type 'hash_type' with the provided private 'key'.
-*/
-//go:nosplit
 func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.sign, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
 		hash_type HashingContext.HashType
@@ -367,11 +338,6 @@ func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Verify that a given 'signature' for 'hash' of type 'hash_type' against the provided public 'key'.
-*/
-//go:nosplit
 func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.verify, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
 		hash_type HashingContext.HashType
@@ -382,13 +348,6 @@ func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, s
 	var ret = r_ret
 	return ret
 }
-
-/*
-Encrypt the given 'plaintext' with the provided public 'key'.
-
-Note: The maximum size of accepted plaintext is limited by the key size.
-*/
-//go:nosplit
 func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Packed.Bytes { //gd:Crypto.encrypt
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key       gdextension.Object
@@ -397,13 +356,6 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Decrypt the given 'ciphertext' with the provided private 'key'.
-
-Note: The maximum size of accepted ciphertext is limited by the key size.
-*/
-//go:nosplit
 func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Packed.Bytes { //gd:Crypto.decrypt
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key        gdextension.Object
@@ -412,15 +364,6 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Generates an [HMAC] digest of 'msg' using 'key'. The 'hash_type' parameter is the hashing algorithm that is used for the inner and outer hashes.
-
-Currently, only [Hashingcontext.HashSha256] and [Hashingcontext.HashSha1] are supported.
-
-[HMAC]: https://en.wikipedia.org/wiki/HMAC
-*/
-//go:nosplit
 func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.hmac_digest, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
 		hash_type HashingContext.HashType
@@ -430,15 +373,6 @@ func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-
-/*
-Compares two []bytes for equality without leaking timing information in order to prevent timing attacks.
-
-See [this blog post] for more information.
-
-[this blog post]: https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy
-*/
-//go:nosplit
 func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.constant_time_compare, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		trusted  gdextension.PackedArray[byte]

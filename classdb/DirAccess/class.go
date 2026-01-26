@@ -719,42 +719,16 @@ func (self Instance) SetIncludeHidden(value bool) Instance { //gd:DirAccess.incl
 	return self
 }
 
-/*
-Creates a new [DirAccess] object and opens an existing directory of the filesystem. The 'path' argument can be within the project tree (res://folder), the user directory (user://folder) or an absolute path of the user filesystem (e.g. /tmp/folder or C:\tmp\folder).
-
-Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
-
-[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
-*/
-//go:nosplit
 func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAccess.open
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.open, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.DirAccess{gdclass.NewDirAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the result of the last [Open] call in the current thread.
-*/
-//go:nosplit
 func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
 	var r_ret = noescape.CallStatic[int64](methods.get_open_error, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
-
-If 'prefix' is not empty, it will be prefixed to the directory name, separated by a -.
-
-If 'keep' is true, the directory is not deleted when the returned [DirAccess] is freed.
-
-Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
-
-[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
-*/
-//go:nosplit
 func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_temp, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		prefix gdextension.String
@@ -763,313 +737,109 @@ func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAc
 	var ret = [1]gdclass.DirAccess{gdclass.NewDirAccess(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Initializes the stream used to list all files and directories using the [GetNext] function, closing the currently opened stream if needed. Once the stream has been processed, it should typically be closed with [ListDirEnd].
-
-Affected by [IncludeHidden] and [IncludeNavigational].
-
-Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [GetFiles] or [GetDirectories].
-
-[GetDirectories]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetDirectories
-[GetFiles]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetFiles
-[GetNext]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetNext
-[IncludeHidden]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.IncludeHidden
-[IncludeNavigational]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.IncludeNavigational
-[ListDirEnd]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirEnd
-*/
-//go:nosplit
 func (self class) ListDirBegin() Error.Code { //gd:DirAccess.list_dir_begin
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.list_dir_begin, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the next element (file or directory) in the current directory.
-
-The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty string and closes the stream automatically (i.e. [ListDirEnd] would not be mandatory in such a case).
-
-[ListDirEnd]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirEnd
-*/
-//go:nosplit
 func (self class) GetNext() String.Readable { //gd:DirAccess.get_next
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns whether the current item processed with the last [GetNext] call is a directory (. and .. are considered directories).
-
-[GetNext]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetNext
-*/
-//go:nosplit
 func (self class) CurrentIsDir() bool { //gd:DirAccess.current_is_dir
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.current_is_dir, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Closes the current stream opened with [ListDirBegin] (whether it has been fully processed with [GetNext] does not matter).
-
-[GetNext]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetNext
-[ListDirBegin]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.ListDirBegin
-*/
-//go:nosplit
 func (self class) ListDirEnd() { //gd:DirAccess.list_dir_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.list_dir_end, 0, &struct{}{})
 }
-
-/*
-Returns a []string containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
-
-Affected by [IncludeHidden].
-
-Note: When used on a res:// path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to *.gd and *.import files are returned (plus a few files such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on whether [ProjectSettings] "editor/export/convert_text_resources_to_binary" is true.
-
-[IncludeHidden]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.IncludeHidden
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_files, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a []string containing filenames of the directory contents, excluding directories, at the given 'path'. The array is sorted alphabetically.
-
-Use [GetFiles] if you want more control of what gets included.
-
-Note: When used on a res:// path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to .gd and .import files are returned (plus a few other files, such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on [ProjectSettings] "editor/export/convert_text_resources_to_binary".
-
-[GetFiles]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetFiles
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-//go:nosplit
 func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_files_at
 	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_files_at, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a []string containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
-
-Affected by [IncludeHidden] and [IncludeNavigational].
-
-Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
-
-[IncludeHidden]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.IncludeHidden
-[IncludeNavigational]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.IncludeNavigational
-*/
-//go:nosplit
 func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directories
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_directories, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Returns a []string containing filenames of the directory contents, excluding files, at the given 'path'. The array is sorted alphabetically.
-
-Use [GetDirectories] if you want more control of what gets included.
-
-Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
-
-[GetDirectories]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.GetDirectories
-*/
-//go:nosplit
 func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_directories_at
 	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.get_directories_at, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-On Windows, returns the number of drives (partitions) mounted on the current filesystem.
-
-On macOS and Android, returns the number of mounted volumes.
-
-On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
-
-On other platforms, the method returns 0.
-*/
-//go:nosplit
 func (self class) GetDriveCount() int64 { //gd:DirAccess.get_drive_count
 	var r_ret = noescape.CallStatic[int64](methods.get_drive_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-On Windows, returns the name of the drive (partition) passed as an argument (e.g. C:).
-
-On macOS, returns the path to the mounted volume passed as an argument.
-
-On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
-
-On Android (API level 30+), returns the path to the mounted volume as an argument.
-
-On other platforms, or if the requested drive does not exist, the method returns an empty String.
-*/
-//go:nosplit
 func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_drive_name
 	var r_ret = noescape.CallStatic[gdextension.String](methods.get_drive_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the currently opened directory's drive index. See [GetDriveName] to convert returned index to the name of the drive.
-*/
-//go:nosplit
 func (self class) GetCurrentDrive() int64 { //gd:DirAccess.get_current_drive
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_drive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Changes the currently opened directory to the one passed as an argument. The argument can be relative to the current directory (e.g. newdir or ../newdir), or an absolute path (e.g. /tmp/newdir or res://somedir/newdir).
-
-Returns one of the [Error] code constants ([Ok] on success).
-
-Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Open] to create a new instance instead.
-*/
-//go:nosplit
 func (self class) ChangeDir(to_dir String.Readable) Error.Code { //gd:DirAccess.change_dir
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.change_dir, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ to_dir gdextension.String }{pointers.Get(gd.InternalString(to_dir))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the absolute path to the currently opened directory (e.g. res://folder or C:\tmp\folder).
-*/
-//go:nosplit
 func (self class) GetCurrentDir(include_drive bool) String.Readable { //gd:DirAccess.get_current_dir
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ include_drive bool }{include_drive})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [MakeDirRecursive]).
-
-Returns one of the [Error] code constants ([Ok] on success).
-
-[MakeDirRecursive]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDirRecursive
-*/
-//go:nosplit
 func (self class) MakeDir(path String.Readable) Error.Code { //gd:DirAccess.make_dir
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.make_dir, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Static version of [MakeDir]. Supports only absolute paths.
-
-[MakeDir]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDir
-*/
-//go:nosplit
 func (self class) MakeDirAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_absolute
 	var r_ret = noescape.CallStatic[int64](methods.make_dir_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Creates a target directory and all necessary intermediate directories in its path, by calling [MakeDir] recursively. The argument can be relative to the current directory, or an absolute path.
-
-Returns one of the [Error] code constants ([Ok] on success).
-
-[MakeDir]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDir
-*/
-//go:nosplit
 func (self class) MakeDirRecursive(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.make_dir_recursive, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Static version of [MakeDirRecursive]. Supports only absolute paths.
-
-[MakeDirRecursive]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDirRecursive
-*/
-//go:nosplit
 func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive_absolute
 	var r_ret = noescape.CallStatic[int64](methods.make_dir_recursive_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
-
-For a static equivalent, use [FileAccess.FileExists].
-
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
-
-[FileAccess.FileExists]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.FileExists
-[ResourceLoader.Exists]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Exists
-*/
-//go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_exists
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
-
-Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
-*/
-//go:nosplit
 func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exists
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.dir_exists, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Static version of [DirExists]. Supports only absolute paths.
-
-Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
-
-[DirExists]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.DirExists
-*/
-//go:nosplit
 func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.dir_exists_absolute
 	var r_ret = noescape.CallStatic[bool](methods.dir_exists_absolute, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the available space on the current directory's disk, in bytes. Returns 0 if the platform-specific method to query the available space fails.
-*/
-//go:nosplit
 func (self class) GetSpaceLeft() int64 { //gd:DirAccess.get_space_left
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_space_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Copies the 'from' file to the 'to' destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
-
-If 'chmod_flags' is different than -1, the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
-
-Returns one of the [Error] code constants ([Ok] on success).
-*/
-//go:nosplit
 func (self class) Copy(from String.Readable, to String.Readable, chmod_flags int64) Error.Code { //gd:DirAccess.copy
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.copy, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		from        gdextension.String
@@ -1079,13 +849,6 @@ func (self class) Copy(from String.Readable, to String.Readable, chmod_flags int
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Static version of [Copy]. Supports only absolute paths.
-
-[Copy]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.Copy
-*/
-//go:nosplit
 func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_flags int64) Error.Code { //gd:DirAccess.copy_absolute
 	var r_ret = noescape.CallStatic[int64](methods.copy_absolute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		from        gdextension.String
@@ -1095,13 +858,6 @@ func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_f
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Renames (move) the 'from' file or directory to the 'to' destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
-
-Returns one of the [Error] code constants ([Ok] on success).
-*/
-//go:nosplit
 func (self class) Rename(from String.Readable, to String.Readable) Error.Code { //gd:DirAccess.rename
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rename, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		from gdextension.String
@@ -1110,13 +866,6 @@ func (self class) Rename(from String.Readable, to String.Readable) Error.Code { 
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Static version of [Rename]. Supports only absolute paths.
-
-[Rename]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.Rename
-*/
-//go:nosplit
 func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error.Code { //gd:DirAccess.rename_absolute
 	var r_ret = noescape.CallStatic[int64](methods.rename_absolute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		from gdextension.String
@@ -1125,67 +874,26 @@ func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Permanently deletes the target file or an empty directory. The argument can be relative to the current directory, or an absolute path. If the target directory is not empty, the operation will fail.
-
-If you don't want to delete the file/directory permanently, use [OS.MoveToTrash] instead.
-
-Returns one of the [Error] code constants ([Ok] on success).
-
-[OS.MoveToTrash]: https://pkg.go.dev/graphics.gd/classdb/OS#MoveToTrash
-*/
-//go:nosplit
 func (self class) Remove(path String.Readable) Error.Code { //gd:DirAccess.remove
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.remove, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Static version of [Remove]. Supports only absolute paths.
-
-[Remove]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.Remove
-*/
-//go:nosplit
 func (self class) RemoveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.remove_absolute
 	var r_ret = noescape.CallStatic[int64](methods.remove_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the file or directory is a symbolic link, directory junction, or other reparse point.
-
-Note: This method is implemented on macOS, Linux, and Windows.
-*/
-//go:nosplit
 func (self class) IsLink(path String.Readable) bool { //gd:DirAccess.is_link
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_link, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns target of the symbolic link.
-
-Note: This method is implemented on macOS, Linux, and Windows.
-*/
-//go:nosplit
 func (self class) ReadLink(path String.Readable) String.Readable { //gd:DirAccess.read_link
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.read_link, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Creates symbolic link between files or folders.
-
-Note: On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
-
-Note: This method is implemented on macOS, Linux, and Windows.
-*/
-//go:nosplit
 func (self class) CreateLink(source String.Readable, target String.Readable) Error.Code { //gd:DirAccess.create_link
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_link, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		source gdextension.String
@@ -1194,71 +902,37 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the directory is a macOS bundle.
-
-Note: This method is implemented on macOS.
-*/
-//go:nosplit
 func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetIncludeNavigational(enable bool) { //gd:DirAccess.set_include_navigational
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_navigational, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetIncludeNavigational() bool { //gd:DirAccess.get_include_navigational
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_navigational, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetIncludeHidden(enable bool) { //gd:DirAccess.set_include_hidden
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_include_hidden, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetIncludeHidden() bool { //gd:DirAccess.get_include_hidden
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_include_hidden, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns file system type name of the current directory's disk. Returned values are uppercase strings like NTFS, FAT32, EXFAT, APFS, EXT4, BTRFS, and so on.
-
-Note: This method is implemented on macOS, Linux, Windows and for PCK virtual file system.
-*/
-//go:nosplit
 func (self class) GetFilesystemType() String.Readable { //gd:DirAccess.get_filesystem_type
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filesystem_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true if the file system or directory use case sensitive file names.
-
-Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
-*/
-//go:nosplit
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if paths 'path_a' and 'path_b' resolve to the same file system object. Returns false otherwise, even if the files are bit-for-bit identical (e.g., identical copies of the file that are not symbolic links).
-*/
-//go:nosplit
 func (self class) IsEquivalent(path_a String.Readable, path_b String.Readable) bool { //gd:DirAccess.is_equivalent
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_equivalent, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path_a gdextension.String

@@ -175,14 +175,11 @@ func (self Instance) SetColors(value []Color.RGBA) Instance { //gd:ColorPalette.
 	return self
 }
 
-//go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:ColorPalette.set_colors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_colors, 0|(gdextension.SizePackedArray<<4), &struct {
 		colors gdextension.PackedArray[Color.RGBA]
 	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))})
 }
-
-//go:nosplit
 func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:ColorPalette.get_colors
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_colors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

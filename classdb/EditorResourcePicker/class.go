@@ -306,16 +306,6 @@ func (self Instance) SetToggleMode(value bool) Instance { //gd:EditorResourcePic
 	class(self).SetToggleMode(value)
 	return self
 }
-
-/*
-This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. 'menu_node' is a reference to the [PopupMenu] node.
-
-Note: Implement [HandleMenuSelected] to handle these custom items.
-
-[EditorResourcePicker]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker
-[HandleMenuSelected]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Interface
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
 func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -324,12 +314,6 @@ func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd
 		impl(self, menu_node)
 	}
 }
-
-/*
-This virtual method can be implemented to handle context menu items not handled by default. See [SetCreateOptions].
-
-[SetCreateOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Interface
-*/
 func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
@@ -339,70 +323,41 @@ func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) boo
 	}
 }
 
-//go:nosplit
 func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePicker.set_base_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
 }
-
-//go:nosplit
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a list of all allowed types and subtypes corresponding to the [BaseType]. If the [BaseType] is empty, an empty list is returned.
-
-[BaseType]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.BaseType
-*/
-//go:nosplit
 func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.get_allowed_types
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_allowed_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
-
-//go:nosplit
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsToggleMode() bool { //gd:EditorResourcePicker.is_toggle_mode
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the toggle mode state for the main button. Works only if [ToggleMode] is set to true.
-
-[ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.ToggleMode
-*/
-//go:nosplit
 func (self class) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
-
-//go:nosplit
 func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_editable
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

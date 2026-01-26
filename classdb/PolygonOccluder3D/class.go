@@ -179,14 +179,11 @@ func (self Instance) SetPolygon(value []Vector2.XY) Instance { //gd:PolygonOcclu
 	return self
 }
 
-//go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:PolygonOccluder3D.set_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygon, 0|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
-
-//go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:PolygonOccluder3D.get_polygon
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

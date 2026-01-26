@@ -187,24 +187,17 @@ func (self Instance) SetKeepScale(value bool) Instance { //gd:VisualShaderNodeBi
 	return self
 }
 
-//go:nosplit
 func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_type, 0|(gdextension.SizeInt<<4), &struct{ billboard_type BillboardType }{billboard_type})
 }
-
-//go:nosplit
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
 	var r_ret = noescape.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

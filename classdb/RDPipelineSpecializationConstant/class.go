@@ -193,24 +193,17 @@ func (self Instance) SetConstantId(value int) Instance { //gd:RDPipelineSpeciali
 	return self
 }
 
-//go:nosplit
 func (self class) SetValue(value variant.Any) { //gd:RDPipelineSpecializationConstant.set_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value, 0|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-//go:nosplit
 func (self class) GetValue() variant.Any { //gd:RDPipelineSpecializationConstant.get_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetConstantId(constant_id int64) { //gd:RDPipelineSpecializationConstant.set_constant_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_id, 0|(gdextension.SizeInt<<4), &struct{ constant_id int64 }{constant_id})
 }
-
-//go:nosplit
 func (self class) GetConstantId() int64 { //gd:RDPipelineSpecializationConstant.get_constant_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_constant_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

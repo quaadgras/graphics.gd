@@ -359,53 +359,25 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns true if the setting specified by 'name' exists, false otherwise.
-*/
-//go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.has_setting
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Object.Set] on the EditorSettings instance.
-
-[Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
-*/
-//go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:EditorSettings.set_setting
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Returns the value of the setting specified by 'name'. This is equivalent to using [Object.Get] on the EditorSettings instance.
-
-[Object.Get]: https://pkg.go.dev/graphics.gd/variant/Object#Get
-*/
-//go:nosplit
 func (self class) GetSetting(name String.Readable) variant.Any { //gd:EditorSettings.get_setting
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Erases the setting whose name is specified by 'property'.
-*/
-//go:nosplit
 func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase, 0|(gdextension.SizeString<<4), &struct{ property gdextension.String }{pointers.Get(gd.InternalString(property))})
 }
-
-/*
-Sets the initial value of the setting specified by 'name' to 'value'. This is used to provide a value for the Revert button in the Editor Settings. If 'update_current' is true, the setting is reset to 'value' as well.
-*/
-//go:nosplit
 func (self class) SetInitialValue(name String.Name, value variant.Any, update_current bool) { //gd:EditorSettings.set_initial_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_value, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeBool<<12), &struct {
 		name           gdextension.StringName
@@ -413,29 +385,9 @@ func (self class) SetInitialValue(name String.Name, value variant.Any, update_cu
 		update_current bool
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), update_current})
 }
-
-/*
-Adds a custom property info to a property. The dictionary must contain:
-
-- name: string (the name of the property)
-
-- type: int (see [Variant.Type])
-
-- optionally hint: int (see [PropertyHint]) and hint_string: string
-
-
-*/
-//go:nosplit
 func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add_property_info
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_info, 0|(gdextension.SizeDictionary<<4), &struct{ info gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(info))})
 }
-
-/*
-Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [GetProjectMetadata].
-
-[GetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetProjectMetadata
-*/
-//go:nosplit
 func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data variant.Any) { //gd:EditorSettings.set_project_metadata
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_project_metadata, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		section gdextension.String
@@ -443,13 +395,6 @@ func (self class) SetProjectMetadata(section String.Readable, key String.Readabl
 		data    gdextension.Variant
 	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
-
-/*
-Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [SetProjectMetadata].
-
-[SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
-*/
-//go:nosplit
 func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:EditorSettings.get_project_metadata
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_project_metadata, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), &struct {
 		section gdextension.String
@@ -459,87 +404,42 @@ func (self class) GetProjectMetadata(section String.Readable, key String.Readabl
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Sets the list of favorite files and directories for this project.
-*/
-//go:nosplit
 func (self class) SetFavorites(dirs Packed.Strings) { //gd:EditorSettings.set_favorites
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_favorites, 0|(gdextension.SizePackedArray<<4), &struct {
 		dirs gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(dirs))})
 }
-
-/*
-Returns the list of favorite files and directories for this project.
-*/
-//go:nosplit
 func (self class) GetFavorites() Packed.Strings { //gd:EditorSettings.get_favorites
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_favorites, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sets the list of recently visited folders in the file dialog for this project.
-*/
-//go:nosplit
 func (self class) SetRecentDirs(dirs Packed.Strings) { //gd:EditorSettings.set_recent_dirs
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recent_dirs, 0|(gdextension.SizePackedArray<<4), &struct {
 		dirs gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(dirs))})
 }
-
-/*
-Returns the list of recently visited folders in the file dialog for this project.
-*/
-//go:nosplit
 func (self class) GetRecentDirs() Packed.Strings { //gd:EditorSettings.get_recent_dirs
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recent_dirs, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Overrides the built-in editor action 'name' with the input actions defined in 'actions_list'.
-*/
-//go:nosplit
 func (self class) SetBuiltinActionOverride(name String.Readable, actions_list Array.Contains[[1]gdclass.InputEvent]) { //gd:EditorSettings.set_builtin_action_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_builtin_action_override, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
 		name         gdextension.String
 		actions_list gdextension.Array
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalArray(actions_list))})
 }
-
-/*
-Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
-
-[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
-*/
-//go:nosplit
 func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:EditorSettings.check_changed_settings_in_group
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.check_changed_settings_in_group, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ setting_prefix gdextension.String }{pointers.Get(gd.InternalString(setting_prefix))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets an array of the settings which have been changed since the last save. Note that internally changed_settings is cleared after a successful save, so generally the most appropriate place to use this method is when processing [NotificationEditorSettingsChanged].
-*/
-//go:nosplit
 func (self class) GetChangedSettings() Packed.Strings { //gd:EditorSettings.get_changed_settings
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_changed_settings, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Marks the passed editor setting as being changed, see [GetChangedSettings]. Only settings which exist (see [HasSetting]) will be accepted.
-
-[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
-[HasSetting]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.HasSetting
-*/
-//go:nosplit
 func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_setting_changed, 0|(gdextension.SizeString<<4), &struct{ setting gdextension.String }{pointers.Get(gd.InternalString(setting))})
 }

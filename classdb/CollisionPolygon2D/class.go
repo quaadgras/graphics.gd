@@ -250,62 +250,43 @@ func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance { //gd:Col
 	return self
 }
 
-//go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:CollisionPolygon2D.set_polygon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygon, 0|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 }
-
-//go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CollisionPolygon2D.get_polygon
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBuildMode(build_mode BuildMode) { //gd:CollisionPolygon2D.set_build_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_build_mode, 0|(gdextension.SizeInt<<4), &struct{ build_mode BuildMode }{build_mode})
 }
-
-//go:nosplit
 func (self class) GetBuildMode() BuildMode { //gd:CollisionPolygon2D.get_build_mode
 	var r_ret = noescape.Call[BuildMode](gd.ObjectChecked(self.AsObject()), methods.get_build_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDisabled(disabled bool) { //gd:CollisionPolygon2D.set_disabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disabled, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
-
-//go:nosplit
 func (self class) IsDisabled() bool { //gd:CollisionPolygon2D.is_disabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_disabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionPolygon2D.set_one_way_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionPolygon2D.is_one_way_collision_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_way_collision_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionPolygon2D.set_one_way_collision_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionPolygon2D.get_one_way_collision_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

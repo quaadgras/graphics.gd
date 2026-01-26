@@ -178,12 +178,9 @@ func (self Instance) SetPolyphony(value int) Instance { //gd:AudioStreamPolyphon
 	return self
 }
 
-//go:nosplit
 func (self class) SetPolyphony(voices int64) { //gd:AudioStreamPolyphonic.set_polyphony
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polyphony, 0|(gdextension.SizeInt<<4), &struct{ voices int64 }{voices})
 }
-
-//go:nosplit
 func (self class) GetPolyphony() int64 { //gd:AudioStreamPolyphonic.get_polyphony
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

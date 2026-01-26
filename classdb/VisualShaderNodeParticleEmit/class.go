@@ -170,12 +170,9 @@ func (self Instance) SetFlags(value EmitFlags) Instance { //gd:VisualShaderNodeP
 	return self
 }
 
-//go:nosplit
 func (self class) SetFlags(flags EmitFlags) { //gd:VisualShaderNodeParticleEmit.set_flags
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), &struct{ flags EmitFlags }{flags})
 }
-
-//go:nosplit
 func (self class) GetFlags() EmitFlags { //gd:VisualShaderNodeParticleEmit.get_flags
 	var r_ret = noescape.Call[EmitFlags](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

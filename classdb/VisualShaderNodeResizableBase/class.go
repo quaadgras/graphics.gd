@@ -173,12 +173,9 @@ func (self Instance) SetSize(value Vector2.XY) Instance { //gd:VisualShaderNodeR
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:VisualShaderNodeResizableBase.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:VisualShaderNodeResizableBase.get_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

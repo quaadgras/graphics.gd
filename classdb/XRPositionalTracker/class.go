@@ -259,66 +259,35 @@ func (self Instance) SetHand(value TrackerHand) Instance { //gd:XRPositionalTrac
 	return self
 }
 
-//go:nosplit
 func (self class) GetTrackerProfile() String.Readable { //gd:XRPositionalTracker.get_tracker_profile
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_profile, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTrackerProfile(profile String.Readable) { //gd:XRPositionalTracker.set_tracker_profile
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_profile, 0|(gdextension.SizeString<<4), &struct{ profile gdextension.String }{pointers.Get(gd.InternalString(profile))})
 }
-
-//go:nosplit
 func (self class) GetTrackerHand() TrackerHand { //gd:XRPositionalTracker.get_tracker_hand
 	var r_ret = noescape.Call[TrackerHand](gd.ObjectChecked(self.AsObject()), methods.get_tracker_hand, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTrackerHand(hand TrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_hand, 0|(gdextension.SizeInt<<4), &struct{ hand TrackerHand }{hand})
 }
-
-/*
-Returns true if the tracker is available and is currently tracking the bound 'name' pose.
-*/
-//go:nosplit
 func (self class) HasPose(name String.Name) bool { //gd:XRPositionalTracker.has_pose
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_pose, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the current [XRPose] state object for the bound 'name' pose.
-
-[XRPose]: https://pkg.go.dev/graphics.gd/classdb/XRPose
-*/
-//go:nosplit
 func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.XRPose{gdclass.NewXRPose(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
-*/
-//go:nosplit
 func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.invalidate_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate_pose, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by an [XRInterface] implementation and should not be used directly.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeInt<<20), &struct {
 		name                gdextension.StringName
@@ -328,25 +297,11 @@ func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, l
 		tracking_confidence XRPose.TrackingConfidence
 	}{pointers.Get(gd.InternalStringName(name)), gd.Transposed(transform), linear_velocity, angular_velocity, tracking_confidence})
 }
-
-/*
-Returns an input for this tracker. It can return a boolean, float or [Vector2.XY] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-//go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_input, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Changes the value for the given input. This method is called by an [XRInterface] implementation and should not be used directly.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-//go:nosplit
 func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.StringName

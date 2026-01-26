@@ -274,106 +274,63 @@ func (self Instance) SetDepthNear(value Float.X) Instance { //gd:GLTFCamera.dept
 	return self
 }
 
-/*
-Create a new GLTFCamera instance from the given Godot [Camera3D] node.
-
-[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
-*/
-//go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCamera3D(camera_node[0])))})
 	var ret = [1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Converts this GLTFCamera instance into a Godot [Camera3D] node.
-
-[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
-*/
-//go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Camera3D{gdclass.NewCamera3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new GLTFCamera instance by parsing the given data structure.
-*/
-//go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
 	var ret = [1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Serializes this GLTFCamera instance into a data structure.
-*/
-//go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFCamera.to_dictionary
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) GetPerspective() bool { //gd:GLTFCamera.get_perspective
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_perspective, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPerspective(perspective bool) { //gd:GLTFCamera.set_perspective
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_perspective, 0|(gdextension.SizeBool<<4), &struct{ perspective bool }{perspective})
 }
-
-//go:nosplit
 func (self class) GetFov() float64 { //gd:GLTFCamera.get_fov
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFov(fov float64) { //gd:GLTFCamera.set_fov
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov, 0|(gdextension.SizeFloat<<4), &struct{ fov float64 }{fov})
 }
-
-//go:nosplit
 func (self class) GetSizeMag() float64 { //gd:GLTFCamera.get_size_mag
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size_mag, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSizeMag(size_mag float64) { //gd:GLTFCamera.set_size_mag
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_mag, 0|(gdextension.SizeFloat<<4), &struct{ size_mag float64 }{size_mag})
 }
-
-//go:nosplit
 func (self class) GetDepthFar() float64 { //gd:GLTFCamera.get_depth_far
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_far, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDepthFar(zdepth_far float64) { //gd:GLTFCamera.set_depth_far
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_far, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_far float64 }{zdepth_far})
 }
-
-//go:nosplit
 func (self class) GetDepthNear() float64 { //gd:GLTFCamera.get_depth_near
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_near, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDepthNear(zdepth_near float64) { //gd:GLTFCamera.set_depth_near
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_near, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_near float64 }{zdepth_near})
 }

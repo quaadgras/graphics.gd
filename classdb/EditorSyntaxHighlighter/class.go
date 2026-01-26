@@ -229,10 +229,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Virtual method which can be overridden to return the syntax highlighter name.
-*/
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -245,10 +241,6 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method which can be overridden to return the supported language names.
-*/
 func (class) _get_supported_languages(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -261,10 +253,6 @@ func (class) _get_supported_languages(impl func(ptr gdclass.Receiver) Packed.Str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Virtual method which creates a new instance of the syntax highlighter.
-*/
 func (class) _create(impl func(ptr gdclass.Receiver) [1]gdclass.EditorSyntaxHighlighter) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

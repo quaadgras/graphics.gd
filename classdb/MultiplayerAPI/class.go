@@ -342,93 +342,39 @@ func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) Instance
 	return self
 }
 
-/*
-Returns true if there is a [MultiplayerPeer] set.
-
-[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
-//go:nosplit
 func (self class) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplayer_peer
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_multiplayer_peer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:MultiplayerAPI.get_multiplayer_peer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_peer, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiplayerPeer(peer[0])))})
 }
-
-/*
-Returns the unique peer ID of this MultiplayerAPI's [MultiplayerPeer].
-
-[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
-//go:nosplit
 func (self class) GetUniqueId() int64 { //gd:MultiplayerAPI.get_unique_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unique_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this MultiplayerAPI's [MultiplayerPeer] is valid and in server mode (listening for connections).
-
-[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
-//go:nosplit
 func (self class) IsServer() bool { //gd:MultiplayerAPI.is_server
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the sender's peer ID for the RPC currently being executed.
-
-Note: This method returns 0 when called outside of an RPC. As such, the original peer ID may be lost when code execution is delayed (such as with GDScript's await keyword).
-*/
-//go:nosplit
 func (self class) GetRemoteSenderId() int64 { //gd:MultiplayerAPI.get_remote_sender_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_remote_sender_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Method used for polling the MultiplayerAPI. You only need to worry about this if you set [SceneTree.MultiplayerPoll] to false. By default, [SceneTree] will poll its MultiplayerAPI(s) for you.
-
-Note: This method results in RPCs being called, so they will be executed in the same context of this function (e.g. _process, physics, [Thread]).
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[SceneTree.MultiplayerPoll]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.MultiplayerPoll
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-//go:nosplit
 func (self class) Poll() Error.Code { //gd:MultiplayerAPI.poll
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Sends an RPC to the target 'peer'. The given 'method' will be called on the remote 'object' with the provided 'arguments'. The RPC may also be called locally depending on the implementation and RPC configuration. See [Node.Rpc] and [Node.RpcConfig].
-
-Note: Prefer using [Node.Rpc], [Node.RpcId], or my_method.rpc(peer, arg1, arg2, ...) (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when extending or replacing the multiplayer capabilities.
-
-[MultiplayerAPIExtension]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPIExtension
-[Node.Rpc]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Rpc
-[Node.RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
-[Node.RpcId]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcId
-*/
-//go:nosplit
 func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, arguments Array.Any) Error.Code { //gd:MultiplayerAPI.rpc
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rpc, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeArray<<16), &struct {
 		peer      int64
@@ -439,17 +385,6 @@ func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, argument
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Notifies the MultiplayerAPI of a new 'configuration' for the given 'object'. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing null and a valid node path as 'configuration'). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
-
-Note: This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
-
-[MultiplayerAPIExtension]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPIExtension
-[SceneMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_add
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_add, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
@@ -458,17 +393,6 @@ func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Notifies the MultiplayerAPI to remove a 'configuration' for the given 'object'. This method is used internally by [SceneTree] to configure the root path for this MultiplayerAPI (passing null and an empty node path as 'configuration'). This method can be further used by MultiplayerAPI implementations to provide additional features, refer to specific implementation (e.g. [SceneMultiplayer]) for details on how they use it.
-
-Note: This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
-
-[MultiplayerAPIExtension]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPIExtension
-[SceneMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_remove
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
@@ -477,45 +401,19 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration vari
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the peer IDs of all connected peers of this MultiplayerAPI's [MultiplayerPeer].
-
-[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
-*/
-//go:nosplit
 func (self class) GetPeers() Packed.Array[int32] { //gd:MultiplayerAPI.get_peers
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sets the default MultiplayerAPI implementation class. This method can be used by modules and extensions to configure which implementation will be used by [SceneTree] when the engine starts.
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-//go:nosplit
 func (self class) SetDefaultInterface(interface_name String.Name) { //gd:MultiplayerAPI.set_default_interface
 	noescape.CallStatic[struct{}](methods.set_default_interface, 0|(gdextension.SizeStringName<<4), &struct{ interface_name gdextension.StringName }{pointers.Get(gd.InternalStringName(interface_name))})
 }
-
-/*
-Returns the default MultiplayerAPI implementation class name. This is usually "SceneMultiplayer" when [SceneMultiplayer] is available. See [SetDefaultInterface].
-
-[SceneMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer
-*/
-//go:nosplit
 func (self class) GetDefaultInterface() String.Name { //gd:MultiplayerAPI.get_default_interface
 	var r_ret = noescape.CallStatic[gdextension.StringName](methods.get_default_interface, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns a new instance of the default MultiplayerAPI.
-*/
-//go:nosplit
 func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_default_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

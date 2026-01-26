@@ -190,24 +190,17 @@ func (self Instance) SetSlideOnSlope(value bool) Instance { //gd:SeparationRaySh
 	return self
 }
 
-//go:nosplit
 func (self class) SetLength(length float64) { //gd:SeparationRayShape3D.set_length
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
-
-//go:nosplit
 func (self class) GetLength() float64 { //gd:SeparationRayShape3D.get_length
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSlideOnSlope(active bool) { //gd:SeparationRayShape3D.set_slide_on_slope
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_slope, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
-
-//go:nosplit
 func (self class) GetSlideOnSlope() bool { //gd:SeparationRayShape3D.get_slide_on_slope
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_slide_on_slope, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

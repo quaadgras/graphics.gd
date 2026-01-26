@@ -263,94 +263,45 @@ func (self Instance) SetShowWhenTracked(value bool) Instance { //gd:XRNode3D.sho
 	return self
 }
 
-//go:nosplit
 func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_tracker
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
-
-//go:nosplit
 func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose_name, 0|(gdextension.SizeStringName<<4), &struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))})
 }
-
-//go:nosplit
 func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tracked
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_when_tracked, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
-
-//go:nosplit
 func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the [Tracker] has been registered and the [Pose] is being tracked.
-
-[Pose]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Pose
-[Tracker]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Tracker
-*/
-//go:nosplit
 func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if the [Tracker] has current tracking data for the [Pose] being tracked.
-
-[Pose]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Pose
-[Tracker]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Tracker
-*/
-//go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [XRPose] containing the current state of the pose being tracked. This gives access to additional properties of this pose.
-
-[XRPose]: https://pkg.go.dev/graphics.gd/classdb/XRPose
-*/
-//go:nosplit
 func (self class) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.XRPose{gdclass.NewXRPose(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Triggers a haptic pulse on a device associated with this interface.
-
-'action_name' is the name of the action for this pulse.
-
-'frequency' is the frequency of the pulse, set to 0.0 to have the system use a default frequency.
-
-'amplitude' is the amplitude of the pulse between 0.0 and 1.0.
-
-'duration_sec' is the duration of the pulse in seconds.
-
-'delay_sec' is a delay in seconds before the pulse is given.
-*/
-//go:nosplit
 func (self class) TriggerHapticPulse(action_name String.Readable, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRNode3D.trigger_haptic_pulse
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
 		action_name  gdextension.String

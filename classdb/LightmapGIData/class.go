@@ -254,60 +254,30 @@ func (self Instance) SetLightTexture(value TextureLayered.Instance) Instance { /
 	return self
 }
 
-//go:nosplit
 func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_lightmap_textures
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_textures, 0|(gdextension.SizeArray<<4), &struct{ light_textures gdextension.Array }{pointers.Get(gd.InternalArray(light_textures))})
 }
-
-//go:nosplit
 func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_lightmap_textures
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShadowmaskTextures(shadowmask_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_shadowmask_textures
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadowmask_textures, 0|(gdextension.SizeArray<<4), &struct{ shadowmask_textures gdextension.Array }{pointers.Get(gd.InternalArray(shadowmask_textures))})
 }
-
-//go:nosplit
 func (self class) GetShadowmaskTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_shadowmask_textures
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-If 'uses_spherical_harmonics' is true, tells the engine to treat the lightmap data as if it was baked with directional information.
-
-Note: Changing this value on already baked lightmaps will not cause them to be baked again. This means the material appearance will look incorrect until lightmaps are baked again, in which case the value set here is discarded as the entire [LightmapGIData] resource is replaced by the lightmapper.
-
-[LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
-*/
-//go:nosplit
 func (self class) SetUsesSphericalHarmonics(uses_spherical_harmonics bool) { //gd:LightmapGIData.set_uses_spherical_harmonics
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uses_spherical_harmonics, 0|(gdextension.SizeBool<<4), &struct{ uses_spherical_harmonics bool }{uses_spherical_harmonics})
 }
-
-/*
-If true, lightmaps were baked with directional information. See also [LightmapGI.Directional].
-
-[LightmapGI.Directional]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Directional
-*/
-//go:nosplit
 func (self class) IsUsingSphericalHarmonics() bool { //gd:LightmapGIData.is_using_spherical_harmonics
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_spherical_harmonics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds an object that is considered baked within this [LightmapGIData].
-
-[LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
-*/
-//go:nosplit
 func (self class) AddUser(path Path.ToNode, uv_scale Rect2.PositionSize, slice_index int64, sub_instance int64) { //gd:LightmapGIData.add_user
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_user, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		path         gdextension.NodePath
@@ -316,45 +286,22 @@ func (self class) AddUser(path Path.ToNode, uv_scale Rect2.PositionSize, slice_i
 		sub_instance int64
 	}{pointers.Get(gd.InternalNodePath(path)), uv_scale, slice_index, sub_instance})
 }
-
-/*
-Returns the number of objects that are considered baked within this [LightmapGIData].
-
-[LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
-*/
-//go:nosplit
 func (self class) GetUserCount() int64 { //gd:LightmapGIData.get_user_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_user_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the node path of the baked object at index 'user_idx'.
-*/
-//go:nosplit
 func (self class) GetUserPath(user_idx int64) Path.ToNode { //gd:LightmapGIData.get_user_path
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_user_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ user_idx int64 }{user_idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-
-/*
-Clear all objects that are considered baked within this [LightmapGIData].
-
-[LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
-*/
-//go:nosplit
 func (self class) ClearUsers() { //gd:LightmapGIData.clear_users
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_users, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) { //gd:LightmapGIData.set_light_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_texture, 0|(gdextension.SizeObject<<4), &struct{ light_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTextureLayered(light_texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetLightTexture() [1]gdclass.TextureLayered { //gd:LightmapGIData.get_light_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextureLayered{gdclass.NewTextureLayered(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

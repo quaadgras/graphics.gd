@@ -178,12 +178,9 @@ func (self Instance) SetCurve(value Curve2D.Instance) Instance { //gd:Path2D.cur
 	return self
 }
 
-//go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve2D) { //gd:Path2D.set_curve
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve2D(curve[0])))})
 }
-
-//go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve2D { //gd:Path2D.get_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve2D{gdclass.NewCurve2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

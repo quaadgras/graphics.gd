@@ -256,72 +256,49 @@ func (self Instance) SetDefaultValue(value Float.X) Instance { //gd:VisualShader
 	return self
 }
 
-//go:nosplit
 func (self class) SetHint(hint Hint) { //gd:VisualShaderNodeFloatParameter.set_hint
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hint, 0|(gdextension.SizeInt<<4), &struct{ hint Hint }{hint})
 }
-
-//go:nosplit
 func (self class) GetHint() Hint { //gd:VisualShaderNodeFloatParameter.get_hint
 	var r_ret = noescape.Call[Hint](gd.ObjectChecked(self.AsObject()), methods.get_hint, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMin(value float64) { //gd:VisualShaderNodeFloatParameter.set_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-//go:nosplit
 func (self class) GetMin() float64 { //gd:VisualShaderNodeFloatParameter.get_min
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMax(value float64) { //gd:VisualShaderNodeFloatParameter.set_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-//go:nosplit
 func (self class) GetMax() float64 { //gd:VisualShaderNodeFloatParameter.get_max
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStep(value float64) { //gd:VisualShaderNodeFloatParameter.set_step
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-//go:nosplit
 func (self class) GetStep() float64 { //gd:VisualShaderNodeFloatParameter.get_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeFloatParameter.set_default_value_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParameter.is_default_value_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDefaultValue(value float64) { //gd:VisualShaderNodeFloatParameter.set_default_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
-
-//go:nosplit
 func (self class) GetDefaultValue() float64 { //gd:VisualShaderNodeFloatParameter.get_default_value
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

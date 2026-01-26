@@ -172,12 +172,9 @@ func (self Instance) SetOperator(value Operator) Instance { //gd:VisualShaderNod
 	return self
 }
 
-//go:nosplit
 func (self class) SetOperator(op Operator) { //gd:VisualShaderNodeColorOp.set_operator
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operator, 0|(gdextension.SizeInt<<4), &struct{ op Operator }{op})
 }
-
-//go:nosplit
 func (self class) GetOperator() Operator { //gd:VisualShaderNodeColorOp.get_operator
 	var r_ret = noescape.Call[Operator](gd.ObjectChecked(self.AsObject()), methods.get_operator, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

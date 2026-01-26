@@ -474,90 +474,36 @@ func (self Instance) SetShadowMesh(value Instance) Instance { //gd:ArrayMesh.sha
 	return self
 }
 
-/*
-Adds name for a blend shape that will be added with [AddSurfaceFromArrays]. Must be called before surface is added.
-
-[AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) AddBlendShape(name String.Name) { //gd:ArrayMesh.add_blend_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Returns the number of blend shapes that the [ArrayMesh] holds.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) GetBlendShapeCount() int64 { //gd:ArrayMesh.get_blend_shape_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the blend shape at this index.
-*/
-//go:nosplit
 func (self class) GetBlendShapeName(index int64) String.Name { //gd:ArrayMesh.get_blend_shape_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Sets the name of the blend shape at this index.
-*/
-//go:nosplit
 func (self class) SetBlendShapeName(index int64, name String.Name) { //gd:ArrayMesh.set_blend_shape_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		index int64
 		name  gdextension.StringName
 	}{index, pointers.Get(gd.InternalStringName(name))})
 }
-
-/*
-Removes all blend shapes from this [ArrayMesh].
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_blend_shapes, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ArrayMesh.set_blend_shape_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mesh.BlendShapeMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
 	var r_ret = noescape.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a new surface. [Mesh.GetSurfaceCount] will become the surf_idx for this new surface.
-
-Surfaces are created to be rendered using a 'primitive', which may be any of the values defined in [Mesh.PrimitiveType].
-
-The 'arrays' argument is an array of arrays. Each of the [Mesh.ArrayMax] elements contains an array with some of the mesh data for this surface as described by the corresponding member of [Mesh.ArrayType] or null if it is not used by the surface. For example, arrays[0] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this surface into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [Mesh.ArrayIndex] if it is used.
-
-The 'blend_shapes' argument is an array of vertex data for each blend shape. Each element is an array of the same structure as 'arrays', but [Mesh.ArrayVertex], [Mesh.ArrayNormal], and [Mesh.ArrayTangent] are set if and only if they are set in 'arrays' and all other entries are null.
-
-The 'lods' argument is a dictionary with [Float.X] keys and []int32 values. Each entry in the dictionary represents an LOD level of the surface, where the value is the [Mesh.ArrayIndex] array to use for the LOD level and the key is roughly proportional to the distance at which the LOD stats being used. I.e., increasing the key of an LOD also increases the distance that the objects has to be from the camera before the LOD is used.
-
-The 'flags' argument is the bitwise OR of, as required: One value of [Mesh.ArrayCustomFormat] left shifted by ARRAY_FORMAT_CUSTOMn_SHIFT for each custom channel in use, [Mesh.ArrayFlagUseDynamicUpdate], [Mesh.ArrayFlagUse8BoneWeights], or [Mesh.ArrayFlagUsesEmptyVertexArray].
-
-Note: When using indices, it is recommended to only use points, lines, or triangles.
-
-[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
-[Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
-*/
-//go:nosplit
 func (self class) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_surface_from_arrays, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeInt<<20), &struct {
 		primitive    Mesh.PrimitiveType
@@ -567,26 +513,12 @@ func (self class) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays Arra
 		flags        Mesh.ArrayFormat
 	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), flags})
 }
-
-/*
-Removes all surfaces from this [ArrayMesh].
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, &struct{}{})
 }
-
-/*
-Removes the surface at the given index from the Mesh, shifting surfaces with higher index down by one.
-*/
-//go:nosplit
 func (self class) SurfaceRemove(surf_idx int64) { //gd:ArrayMesh.surface_remove
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_remove, 0|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 }
-
-//go:nosplit
 func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_vertex_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_vertex_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
@@ -594,8 +526,6 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data P
 		data     gdextension.PackedArray[byte]
 	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_attribute_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_attribute_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
@@ -603,8 +533,6 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, dat
 		data     gdextension.PackedArray[byte]
 	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-//go:nosplit
 func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_skin_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_skin_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
@@ -612,104 +540,45 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Pac
 		data     gdextension.PackedArray[byte]
 	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
-
-/*
-Returns the length in vertices of the vertex array in the requested surface (see [AddSurfaceFromArrays]).
-
-[AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) SurfaceGetArrayLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_len
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_len, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the length in indices of the index array in the requested surface (see [AddSurfaceFromArrays]).
-
-[AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) SurfaceGetArrayIndexLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_index_len
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_index_len, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the format mask of the requested surface (see [AddSurfaceFromArrays]).
-
-[AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) SurfaceGetFormat(surf_idx int64) Mesh.ArrayFormat { //gd:ArrayMesh.surface_get_format
 	var r_ret = noescape.Call[Mesh.ArrayFormat](gd.ObjectChecked(self.AsObject()), methods.surface_get_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the primitive type of the requested surface (see [AddSurfaceFromArrays]).
-
-[AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
-*/
-//go:nosplit
 func (self class) SurfaceGetPrimitiveType(surf_idx int64) Mesh.PrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
 	var r_ret = noescape.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.surface_get_primitive_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) SurfaceFindByName(name String.Readable) int64 { //gd:ArrayMesh.surface_find_by_name
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_find_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a name for a given surface.
-*/
-//go:nosplit
 func (self class) SurfaceSetName(surf_idx int64, name String.Readable) { //gd:ArrayMesh.surface_set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		surf_idx int64
 		name     gdextension.String
 	}{surf_idx, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Gets the name assigned to this surface.
-*/
-//go:nosplit
 func (self class) SurfaceGetName(surf_idx int64) String.Readable { //gd:ArrayMesh.surface_get_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.surface_get_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Regenerates tangents for each of the [ArrayMesh]'s surfaces.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.regen_normal_maps, 0, &struct{}{})
 }
-
-/*
-Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-*/
-//go:nosplit
 func (self class) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size float64) Error.Code { //gd:ArrayMesh.lightmap_unwrap
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.lightmap_unwrap, gdextension.SizeInt|(gdextension.SizeTransform3D<<4)|(gdextension.SizeFloat<<8), &struct {
 		transform  Transform3D.BasisOrigin
@@ -718,25 +587,17 @@ func (self class) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size f
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:ArrayMesh.set_custom_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
-
-//go:nosplit
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_shadow_mesh
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(mesh[0])))})
 }
-
-//go:nosplit
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

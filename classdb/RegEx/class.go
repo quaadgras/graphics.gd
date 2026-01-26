@@ -405,13 +405,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates and compiles a new [RegEx] object. See also [Compile].
-
-[Compile]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Compile
-[RegEx]: https://pkg.go.dev/graphics.gd/classdb/RegEx
-*/
-//go:nosplit
 func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_string, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		pattern    gdextension.String
@@ -420,19 +413,9 @@ func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]
 	var ret = [1]gdclass.RegEx{gdclass.NewRegEx(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-This method resets the state of the object, as if it was freshly created. Namely, it unassigns the regular expression of this object.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:RegEx.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Compiles and assign the search pattern to use. Returns [Ok] if the compilation is successful. If compilation fails, returns [Failed] and when 'show_error' is true, details are printed to standard output.
-*/
-//go:nosplit
 func (self class) Compile(pattern String.Readable, show_error bool) Error.Code { //gd:RegEx.compile
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compile, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		pattern    gdextension.String
@@ -441,15 +424,6 @@ func (self class) Compile(pattern String.Readable, show_error bool) Error.Code {
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise null.
-
-The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
-
-[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
-*/
-//go:nosplit
 func (self class) Search(subject String.Readable, offset int64, end int64) [1]gdclass.RegExMatch { //gd:RegEx.search
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.search, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		subject gdextension.String
@@ -459,15 +433,6 @@ func (self class) Search(subject String.Readable, offset int64, end int64) [1]gd
 	var ret = [1]gdclass.RegExMatch{gdclass.NewRegExMatch(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
-
-The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
-
-[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
-*/
-//go:nosplit
 func (self class) SearchAll(subject String.Readable, offset int64, end int64) Array.Contains[[1]gdclass.RegExMatch] { //gd:RegEx.search_all
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.search_all, gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		subject gdextension.String
@@ -477,13 +442,6 @@ func (self class) SearchAll(subject String.Readable, offset int64, end int64) Ar
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RegExMatch]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Searches the text for the compiled pattern and replaces it with the specified string. Escapes and backreferences such as $1 and $name are expanded and resolved. By default, only the first instance is replaced, but it can be changed for all instances (global replacement).
-
-The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
-*/
-//go:nosplit
 func (self class) Sub(subject String.Readable, replacement String.Readable, all bool, offset int64, end int64) String.Readable { //gd:RegEx.sub
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.sub, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		subject     gdextension.String
@@ -495,41 +453,21 @@ func (self class) Sub(subject String.Readable, replacement String.Readable, all 
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns whether this object has a valid search pattern assigned.
-*/
-//go:nosplit
 func (self class) IsValid() bool { //gd:RegEx.is_valid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the original search pattern that was compiled.
-*/
-//go:nosplit
 func (self class) GetPattern() String.Readable { //gd:RegEx.get_pattern
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of capturing groups in compiled pattern.
-*/
-//go:nosplit
 func (self class) GetGroupCount() int64 { //gd:RegEx.get_group_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_group_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns an array of names of named capturing groups in the compiled pattern. They are ordered by appearance.
-*/
-//go:nosplit
 func (self class) GetNames() Packed.Strings { //gd:RegEx.get_names
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_names, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

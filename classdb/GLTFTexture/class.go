@@ -183,26 +183,19 @@ func (self Instance) SetSampler(value int) Instance { //gd:GLTFTexture.sampler
 	return self
 }
 
-//go:nosplit
 func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
 }
-
-//go:nosplit
 func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
 }

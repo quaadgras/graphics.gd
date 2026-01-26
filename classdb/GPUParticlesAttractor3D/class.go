@@ -242,48 +242,33 @@ func (self Instance) SetCullMask(value int) Instance { //gd:GPUParticlesAttracto
 	return self
 }
 
-//go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:GPUParticlesAttractor3D.set_cull_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCullMask() int64 { //gd:GPUParticlesAttractor3D.get_cull_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStrength(strength float64) { //gd:GPUParticlesAttractor3D.set_strength
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
-
-//go:nosplit
 func (self class) GetStrength() float64 { //gd:GPUParticlesAttractor3D.get_strength
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAttenuation(attenuation float64) { //gd:GPUParticlesAttractor3D.set_attenuation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation, 0|(gdextension.SizeFloat<<4), &struct{ attenuation float64 }{attenuation})
 }
-
-//go:nosplit
 func (self class) GetAttenuation() float64 { //gd:GPUParticlesAttractor3D.get_attenuation
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetDirectionality(amount float64) { //gd:GPUParticlesAttractor3D.set_directionality
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directionality, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetDirectionality() float64 { //gd:GPUParticlesAttractor3D.get_directionality
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_directionality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

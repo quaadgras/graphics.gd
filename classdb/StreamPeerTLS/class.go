@@ -235,22 +235,9 @@ func New() Instance {
 	return casted
 }
 
-/*
-Poll the connection to check for incoming bytes. Call this right before [StreamPeer.GetAvailableBytes] for it to work properly.
-
-[StreamPeer.GetAvailableBytes]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.GetAvailableBytes
-*/
-//go:nosplit
 func (self class) Poll() { //gd:StreamPeerTLS.poll
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.poll, 0, &struct{}{})
 }
-
-/*
-Accepts a peer connection as a server using the given 'server_options'. See [TLSOptions.Server].
-
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-*/
-//go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.accept_stream
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		stream         gdextension.Object
@@ -259,15 +246,6 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
-
-[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-*/
-//go:nosplit
 func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.connect_to_stream
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
 		stream         gdextension.Object
@@ -277,35 +255,16 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns the status of the connection.
-*/
-//go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTLS.get_status
 	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the underlying [StreamPeer] connection, used in [AcceptStream] or [ConnectToStream].
-
-[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
-[ConnectToStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.ConnectToStream
-[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
-*/
-//go:nosplit
 func (self class) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeer{gdclass.NewStreamPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Disconnects from host.
-*/
-//go:nosplit
 func (self class) DisconnectFromStream() { //gd:StreamPeerTLS.disconnect_from_stream
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_stream, 0, &struct{}{})
 }

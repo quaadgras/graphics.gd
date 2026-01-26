@@ -202,36 +202,25 @@ func (self Instance) SetRecordingProperties(value bool) Instance { //gd:MissingN
 	return self
 }
 
-//go:nosplit
 func (self class) SetOriginalClass(name String.Readable) { //gd:MissingNode.set_original_class
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetOriginalClass() String.Readable { //gd:MissingNode.get_original_class
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetOriginalScene(name String.Readable) { //gd:MissingNode.set_original_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_scene, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
-
-//go:nosplit
 func (self class) GetOriginalScene() String.Readable { //gd:MissingNode.get_original_scene
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_scene, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRecordingProperties(enable bool) { //gd:MissingNode.set_recording_properties
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_properties, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsRecordingProperties() bool { //gd:MissingNode.is_recording_properties
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

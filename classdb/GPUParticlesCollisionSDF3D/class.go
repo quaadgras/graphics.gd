@@ -289,85 +289,52 @@ func (self Instance) SetTexture(value Texture3D.Instance) Instance { //gd:GPUPar
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionSDF3D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
-
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), &struct{ resolution Resolution }{resolution})
 }
-
-//go:nosplit
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
 	var r_ret = noescape.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesCollisionSDF3D.set_texture
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture3D(texture[0])))})
 }
-
-//go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollisionSDF3D.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture3D{gdclass.NewTexture3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetThickness(thickness float64) { //gd:GPUParticlesCollisionSDF3D.set_thickness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeFloat<<4), &struct{ thickness float64 }{thickness})
 }
-
-//go:nosplit
 func (self class) GetThickness() float64 { //gd:GPUParticlesCollisionSDF3D.get_thickness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetBakeMask() int64 { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [BakeMask], given a 'layer_number' between 1 and 32.
-
-[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.BakeMask
-*/
-//go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [BakeMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[BakeMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.BakeMask
-*/
-//go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret

@@ -437,46 +437,20 @@ func (self Instance) SetPseudolocalizationSuffix(value string) Instance { //gd:T
 	return self
 }
 
-/*
-Returns the [Translation] instance that best matches 'locale'. Returns null if there are no matches.
-
-[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
-*/
-//go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationDomain.get_translation_object
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 	var ret = [1]gdclass.Translation{gdclass.NewTranslation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Adds a translation.
-*/
-//go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
 }
-
-/*
-Removes the given translation.
-*/
-//go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
 }
-
-/*
-Removes all translations.
-*/
-//go:nosplit
 func (self class) Clear() { //gd:TranslationDomain.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-
-/*
-Returns the current locale's translation for the given message and context.
-*/
-//go:nosplit
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationDomain.translate
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		message gdextension.StringName
@@ -485,13 +459,6 @@ func (self class) Translate(message String.Name, context String.Name) String.Nam
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns the current locale's translation for the given message, plural message and context.
-
-The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
-*/
-//go:nosplit
 func (self class) TranslatePlural(message String.Name, message_plural String.Name, n int64, context String.Name) String.Name { //gd:TranslationDomain.translate_plural
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.translate_plural, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		message        gdextension.StringName
@@ -502,153 +469,94 @@ func (self class) TranslatePlural(message String.Name, message_plural String.Nam
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-
-/*
-Returns the locale override of the domain. Returns an empty string if locale override is disabled.
-*/
-//go:nosplit
 func (self class) GetLocaleOverride() String.Readable { //gd:TranslationDomain.get_locale_override
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the locale override of the domain.
-
-If 'locale' is an empty string, locale override is disabled. Otherwise, 'locale' will be standardized to match known locales (e.g. en-US would be matched to en_US).
-
-Note: Calling this method does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] signal manually.
-*/
-//go:nosplit
 func (self class) SetLocaleOverride(locale String.Readable) { //gd:TranslationDomain.set_locale_override
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale_override, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
-
-//go:nosplit
 func (self class) IsEnabled() bool { //gd:TranslationDomain.is_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:TranslationDomain.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationAccentsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_accents_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_accents_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationAccentsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_accents_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_accents_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationDoubleVowelsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_double_vowels_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_double_vowels_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationDoubleVowelsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_double_vowels_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_double_vowels_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationFakeBidiEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_fake_bidi_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationFakeBidiEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_fake_bidi_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_fake_bidi_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationOverrideEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_override_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_override_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationOverrideEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_override_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_override_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsPseudolocalizationSkipPlaceholdersEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_skip_placeholders_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pseudolocalization_skip_placeholders_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationSkipPlaceholdersEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_skip_placeholders_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_skip_placeholders_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetPseudolocalizationExpansionRatio() float64 { //gd:TranslationDomain.get_pseudolocalization_expansion_ratio
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_expansion_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationExpansionRatio(ratio float64) { //gd:TranslationDomain.set_pseudolocalization_expansion_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_expansion_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
-
-//go:nosplit
 func (self class) GetPseudolocalizationPrefix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_prefix
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationPrefix(prefix String.Readable) { //gd:TranslationDomain.set_pseudolocalization_prefix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
-
-//go:nosplit
 func (self class) GetPseudolocalizationSuffix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_suffix
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPseudolocalizationSuffix(suffix String.Readable) { //gd:TranslationDomain.set_pseudolocalization_suffix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
-
-/*
-Returns the pseudolocalized string based on the 'message' passed in.
-*/
-//go:nosplit
 func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationDomain.pseudolocalize
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.pseudolocalize, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ message gdextension.StringName }{pointers.Get(gd.InternalStringName(message))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))

@@ -195,24 +195,17 @@ func (self Instance) SetRadius(value Float.X) Instance { //gd:CylinderShape3D.ra
 	return self
 }
 
-//go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CylinderShape3D.set_radius
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
-
-//go:nosplit
 func (self class) GetRadius() float64 { //gd:CylinderShape3D.get_radius
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHeight(height float64) { //gd:CylinderShape3D.set_height
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
-
-//go:nosplit
 func (self class) GetHeight() float64 { //gd:CylinderShape3D.get_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

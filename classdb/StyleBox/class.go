@@ -364,7 +364,6 @@ func (self Instance) SetContentMarginBottom(value Float.X) Instance { //gd:Style
 	class(self).SetContentMargin(3, float64(value))
 	return self
 }
-
 func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -373,7 +372,6 @@ func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect 
 		impl(self, to_canvas_item, rect)
 	}
 }
-
 func (class) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 0)
@@ -382,12 +380,6 @@ func (class) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionS
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [GetMinimumSize] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
-
-[GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.GetMinimumSize
-*/
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -395,7 +387,6 @@ func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb g
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -406,105 +397,46 @@ func (class) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rect R
 	}
 }
 
-/*
-Returns the minimum size that this stylebox can be shrunk to.
-*/
-//go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the default value of the specified [Side] to 'offset' pixels.
-*/
-//go:nosplit
 func (self class) SetContentMargin(margin Rect2.Side, offset float64) { //gd:StyleBox.set_content_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		margin Rect2.Side
 		offset float64
 	}{margin, offset})
 }
-
-/*
-Sets the default margin to 'offset' pixels for all sides.
-*/
-//go:nosplit
 func (self class) SetContentMarginAll(offset float64) { //gd:StyleBox.set_content_margin_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
-
-/*
-Returns the default margin of the specified [Side].
-*/
-//go:nosplit
 func (self class) GetContentMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_content_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_content_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the content margin offset for the specified [Side].
-
-Positive values reduce size inwards, unlike [Control]'s margin values.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-*/
-//go:nosplit
 func (self class) GetMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the "offset" of a stylebox. This helper function returns a value equivalent to Vector2(style.get_margin(MARGIN_LEFT), style.get_margin(MARGIN_TOP)).
-*/
-//go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draws this stylebox using a canvas item identified by the given [Resource.ID].
-
-The [Resource.ID] value can either be the result of [CanvasItem.GetCanvasItem] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [RenderingServer.CanvasItemCreate].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.GetCanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetCanvasItem
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[RenderingServer.CanvasItemCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#CanvasItemCreate
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) Draw(canvas_item RID.Any, rect Rect2.PositionSize) { //gd:StyleBox.draw
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 	}{canvas_item, rect})
 }
-
-/*
-Returns the [CanvasItem] that handles its [Canvasitem.NotificationDraw] or [CanvasItem.Draw] callback at this moment.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.Draw]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Draw
-*/
-//go:nosplit
 func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_item_drawn, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CanvasItem{gdclass.NewCanvasItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Test a position in a rectangle, return whether it passes the mask test.
-*/
-//go:nosplit
 func (self class) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_mask, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeRect2<<8), &struct {
 		point Vector2.XY

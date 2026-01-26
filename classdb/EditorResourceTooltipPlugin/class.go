@@ -283,12 +283,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Return true if the plugin is going to handle the given [Resource] 'type'.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
 func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -298,32 +292,6 @@ func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) boo
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Create and return a tooltip that will be displayed when the user hovers a resource under the given 'path' in filesystem dock.
-
-The 'metadata' dictionary is provided by preview generator (see [EditorResourcePreviewGenerator.Generate]).
-
-'base' is the base default tooltip, which is a [VBoxContainer] with a file name, type and size labels. If another plugin handled the same file type, 'base' will be output from the previous plugin. For best result, make sure the base tooltip is part of the returned [Control].
-
-Note: It's unadvised to use [ResourceLoader.Load], especially with heavy resources like models or textures, because it will make the editor unresponsive when creating the tooltip. You can use [RequestThumbnail] if you want to display a preview in your tooltip.
-
-Note: If you decide to discard the 'base', make sure to call [Node.QueueFree], because it's not freed automatically.
-
-	MakeTooltipForPath := func(path string, metadata map[string]any, base Control.Instance) Control.Instance {
-		var t_rect = TextureRect.New()
-		editorResourceTooltipPlugin.RequestThumbnail(path, t_rect)
-		base.AsNode().AddChild(t_rect.AsNode())
-		return base
-	}
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[EditorResourcePreviewGenerator.Generate]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePreviewGenerator#Instance.Generate
-[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
-[RequestThumbnail]: https://pkg.go.dev/graphics.gd/classdb/EditorResourceTooltipPlugin#Instance.RequestThumbnail
-[ResourceLoader.Load]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Load
-[VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
-*/
 func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.Readable, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -344,13 +312,6 @@ func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.
 	}
 }
 
-/*
-Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
-
-[EditorResourcePreview]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePreview
-[TextureRect]: https://pkg.go.dev/graphics.gd/classdb/TextureRect
-*/
-//go:nosplit
 func (self class) RequestThumbnail(path String.Readable, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_thumbnail, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path    gdextension.String

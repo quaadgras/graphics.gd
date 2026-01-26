@@ -195,31 +195,22 @@ func (self Instance) SetPressed(value bool) Instance { //gd:InputEventJoypadButt
 	return self
 }
 
-//go:nosplit
 func (self class) SetButtonIndex(button_index Input.JoyButton) { //gd:InputEventJoypadButton.set_button_index
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.JoyButton }{button_index})
 }
-
-//go:nosplit
 func (self class) GetButtonIndex() Input.JoyButton { //gd:InputEventJoypadButton.get_button_index
 	var r_ret = noescape.Call[Input.JoyButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventJoypadButton.set_pressure
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
 }
-
-//go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventJoypadButton.get_pressure
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventJoypadButton.set_pressed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }

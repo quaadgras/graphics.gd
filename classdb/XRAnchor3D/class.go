@@ -180,20 +180,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the estimated size of the plane that was detected. Say when the anchor relates to a table in the real world, this is the estimated size of the surface of that table.
-*/
-//go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:XRAnchor3D.get_size
 	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a plane aligned with our anchor; handy for intersection testing.
-*/
-//go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:XRAnchor3D.get_plane
 	var r_ret = noescape.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_plane, gdextension.SizePlane, &struct{}{})
 	var ret = r_ret

@@ -243,47 +243,20 @@ func (self Instance) SetLanguage(value Rendering.ShaderLanguage) Instance { //gd
 	return self
 }
 
-/*
-Sets 'source' code for the specified shader 'stage'. Equivalent to setting one of [SourceCompute], [SourceFragment], [SourceTesselationControl], [SourceTesselationEvaluation] or [SourceVertex].
-
-Note: If you set the compute shader source code using this method directly, remember to remove the Godot-specific hint #[compute].
-
-[SourceCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceCompute
-[SourceFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceFragment
-[SourceTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationControl
-[SourceTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationEvaluation
-[SourceVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceVertex
-*/
-//go:nosplit
 func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_source, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		stage  Rendering.ShaderStage
 		source gdextension.String
 	}{stage, pointers.Get(gd.InternalString(source))})
 }
-
-/*
-Returns source code for the specified shader 'stage'. Equivalent to getting one of [SourceCompute], [SourceFragment], [SourceTesselationControl], [SourceTesselationEvaluation] or [SourceVertex].
-
-[SourceCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceCompute
-[SourceFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceFragment
-[SourceTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationControl
-[SourceTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationEvaluation
-[SourceVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceVertex
-*/
-//go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_source, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), &struct{ language Rendering.ShaderLanguage }{language})
 }
-
-//go:nosplit
 func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
 	var r_ret = noescape.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

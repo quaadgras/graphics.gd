@@ -184,24 +184,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
-
-[AudioStreamOggVorbis]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis
-*/
-//go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gdclass.NewAudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
-
-[AudioStreamOggVorbis]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis
-*/
-//go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gdclass.NewAudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

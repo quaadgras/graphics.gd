@@ -390,13 +390,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [AddImportOption] and [AddImportOptionAdvanced].
-
-[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
-[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
-*/
 func (class) _get_internal_import_options(impl func(ptr gdclass.Receiver, category int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
@@ -404,10 +397,6 @@ func (class) _get_internal_import_options(impl func(ptr gdclass.Receiver, catego
 		impl(self, category)
 	}
 }
-
-/*
-Should return true to show the given option, false to hide the given option, or null to ignore.
-*/
 func (class) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, category int64, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
@@ -424,10 +413,6 @@ func (class) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, cat
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Should return true if the 3D view of the import dialog needs to update when changing the given option.
-*/
 func (class) _get_internal_option_update_view_required(impl func(ptr gdclass.Receiver, category int64, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
@@ -443,10 +428,6 @@ func (class) _get_internal_option_update_view_required(impl func(ptr gdclass.Rec
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Process a specific node or resource for a given category.
-*/
 func (class) _internal_process(impl func(ptr gdclass.Receiver, category int64, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
@@ -463,13 +444,6 @@ func (class) _internal_process(impl func(ptr gdclass.Receiver, category int64, b
 		impl(self, category, base_node, node, resource)
 	}
 }
-
-/*
-Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
-
-[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
-[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
-*/
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -478,10 +452,6 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 		impl(self, path)
 	}
 }
-
-/*
-Should return true to show the given option, false to hide the given option, or null to ignore.
-*/
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -499,12 +469,6 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Pre-process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
-
-Pre-process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
-*/
 func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -514,10 +478,6 @@ func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 		impl(self, scene)
 	}
 }
-
-/*
-Post-process the scene. This function is called after the final scene has been configured.
-*/
 func (class) _post_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -528,37 +488,17 @@ func (class) _post_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node
 	}
 }
 
-/*
-Query the value of an option. This function can only be called from those querying visibility, or processing.
-*/
-//go:nosplit
 func (self class) GetOptionValue(name String.Name) variant.Any { //gd:EditorScenePostImportPlugin.get_option_value
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_option_value, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Add a specific import option (name and default value only). This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
-
-[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
-[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
-*/
-//go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorScenePostImportPlugin.add_import_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Add a specific import option. This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
-
-[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
-[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
-*/
-//go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option_advanced, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
 		atype         variant.Type

@@ -191,24 +191,17 @@ func (self Instance) SetVolumeLinear(value Float.X) Instance { //gd:AudioEffectA
 	return self
 }
 
-//go:nosplit
 func (self class) SetVolumeDb(volume float64) { //gd:AudioEffectAmplify.set_volume_db
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
 }
-
-//go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioEffectAmplify.get_volume_db
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetVolumeLinear(volume float64) { //gd:AudioEffectAmplify.set_volume_linear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
 }
-
-//go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioEffectAmplify.get_volume_linear
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret

@@ -198,36 +198,25 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) Instance { //gd:Pa
 	return self
 }
 
-//go:nosplit
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetStreamPeer(peer[0])))})
 }
-
-//go:nosplit
 func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.get_stream_peer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_peer, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeer{gdclass.NewStreamPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetInputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_input_buffer_max_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_buffer_max_size, 0|(gdextension.SizeInt<<4), &struct{ max_size_bytes int64 }{max_size_bytes})
 }
-
-//go:nosplit
 func (self class) SetOutputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_output_buffer_max_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_buffer_max_size, 0|(gdextension.SizeInt<<4), &struct{ max_size_bytes int64 }{max_size_bytes})
 }
-
-//go:nosplit
 func (self class) GetInputBufferMaxSize() int64 { //gd:PacketPeerStream.get_input_buffer_max_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_buffer_max_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) GetOutputBufferMaxSize() int64 { //gd:PacketPeerStream.get_output_buffer_max_size
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_buffer_max_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

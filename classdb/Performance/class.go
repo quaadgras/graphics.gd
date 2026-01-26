@@ -224,50 +224,12 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPerformance(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Returns the value of one of the available built-in monitors. You should provide one of the [Monitor] constants as the argument, like this:
-
-
-	fmt.Println(Performance.GetMonitor(Performance.TimeFps)) // Prints the FPS to the console.
-
-
-See [GetCustomMonitor] to query custom performance monitors' values.
-*/
-//go:nosplit
 func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_monitor
 	once.Do(singleton)
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_monitor, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ monitor Monitor }{monitor})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a custom monitor with the name 'id'. You can specify the category of the monitor using slash delimiters in 'id' (for example: "Game/NumberOfNPCs"). If there is more than one slash delimiter, then the default category is used. The default category is "Custom". Prints an error if given 'id' is already present.
-
-
-	var monitorValue = func() int {
-		return rand.IntN(25)
-	}
-	// Adds monitor with name "MyName" to category "MyCategory".
-	Performance.AddCustomMonitor("MyCategory/MyMonitor", Callable.New(monitorValue), nil)
-
-	// Adds monitor with name "MyName" to category "Custom".
-	// Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
-	Performance.AddCustomMonitor("MyMonitor", Callable.New(monitorValue), nil)
-
-	// Adds monitor with name "MyName" to category "Custom".
-	// Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
-	Performance.AddCustomMonitor("Custom/MyMonitor", Callable.New(monitorValue), nil)
-
-	// Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
-	Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", Callable.New(monitorValue), nil)
-
-
-The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
-
-Callables are called with arguments supplied in argument array.
-*/
-//go:nosplit
 func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12), &struct {
@@ -276,55 +238,28 @@ func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, a
 		arguments gdextension.Array
 	}{pointers.Get(gd.InternalStringName(id)), pointers.Get(gd.InternalCallable(callable)), pointers.Get(gd.InternalArray(arguments))})
 }
-
-/*
-Removes the custom monitor with given 'id'. Prints an error if the given 'id' is already absent.
-*/
-//go:nosplit
 func (self class) RemoveCustomMonitor(id String.Name) { //gd:Performance.remove_custom_monitor
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_monitor, 0|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 }
-
-/*
-Returns true if custom monitor with the given 'id' is present, false otherwise.
-*/
-//go:nosplit
 func (self class) HasCustomMonitor(id String.Name) bool { //gd:Performance.has_custom_monitor
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_custom_monitor, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the value of custom monitor with given 'id'. The callable is called to get the value of custom monitor. See also [HasCustomMonitor]. Prints an error if the given 'id' is absent.
-*/
-//go:nosplit
 func (self class) GetCustomMonitor(id String.Name) variant.Any { //gd:Performance.get_custom_monitor
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_custom_monitor, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ id gdextension.StringName }{pointers.Get(gd.InternalStringName(id))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-
-/*
-Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [Time.GetTicksUsec] when the monitor is updated.
-
-[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
-*/
-//go:nosplit
 func (self class) GetMonitorModificationTime() int64 { //gd:Performance.get_monitor_modification_time
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_monitor_modification_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the names of active custom monitors in an slice.
-*/
-//go:nosplit
 func (self class) GetCustomMonitorNames() Array.Contains[String.Name] { //gd:Performance.get_custom_monitor_names
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_custom_monitor_names, gdextension.SizeArray, &struct{}{})

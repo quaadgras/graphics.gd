@@ -705,24 +705,14 @@ func (self Instance) SetFallbacks(value []Instance) Instance { //gd:Font.fallbac
 	return self
 }
 
-//go:nosplit
 func (self class) SetFallbacks(fallbacks Array.Contains[[1]gdclass.Font]) { //gd:Font.set_fallbacks
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallbacks, 0|(gdextension.SizeArray<<4), &struct{ fallbacks gdextension.Array }{pointers.Get(gd.InternalArray(fallbacks))})
 }
-
-//go:nosplit
 func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get_fallbacks
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_fallbacks, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Font]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns [TextServer] RID of the font cache for specific variation.
-
-[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
-*/
-//go:nosplit
 func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), &struct {
 		variation_coordinates gdextension.Dictionary
@@ -738,194 +728,82 @@ func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns slice of valid [Font] [Resource.ID]s, which can be passed to the [TextServer] methods.
-
-[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
-*/
-//go:nosplit
 func (self class) GetRids() Array.Contains[RID.Any] { //gd:Font.get_rids
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the total average font height (ascent plus descent) in pixels.
-
-Note: Real height of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the height of empty line).
-*/
-//go:nosplit
 func (self class) GetHeight(font_size int64) float64 { //gd:Font.get_height
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the average font ascent (number of pixels above the baseline).
-
-Note: Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
-*/
-//go:nosplit
 func (self class) GetAscent(font_size int64) float64 { //gd:Font.get_ascent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ascent, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the average font descent (number of pixels below the baseline).
-
-Note: Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
-*/
-//go:nosplit
 func (self class) GetDescent(font_size int64) float64 { //gd:Font.get_descent
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_descent, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns average pixel offset of the underline below the baseline.
-
-Note: Real underline position of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
-*/
-//go:nosplit
 func (self class) GetUnderlinePosition(font_size int64) float64 { //gd:Font.get_underline_position
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_underline_position, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns average thickness of the underline.
-
-Note: Real underline thickness of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
-*/
-//go:nosplit
 func (self class) GetUnderlineThickness(font_size int64) float64 { //gd:Font.get_underline_thickness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_underline_thickness, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns font family name.
-*/
-//go:nosplit
 func (self class) GetFontName() String.Readable { //gd:Font.get_font_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_font_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns font style name.
-*/
-//go:nosplit
 func (self class) GetFontStyleName() String.Readable { //gd:Font.get_font_style_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_font_style_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns data structure with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
-*/
-//go:nosplit
 func (self class) GetOtNameStrings() Dictionary.Any { //gd:Font.get_ot_name_strings
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_ot_name_strings, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns font style flags.
-*/
-//go:nosplit
 func (self class) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
 	var r_ret = noescape.Call[TextServer.FontStyle](gd.ObjectChecked(self.AsObject()), methods.get_font_style, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns weight (boldness) of the font. A value in the 100...999 range, normal font weight is 400, bold font weight is 700.
-*/
-//go:nosplit
 func (self class) GetFontWeight() int64 { //gd:Font.get_font_weight
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_weight, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns font stretch amount, compared to a normal width. A percentage value between 50% and 200%.
-*/
-//go:nosplit
 func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_stretch, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the amount of spacing for the given 'spacing' type.
-*/
-//go:nosplit
 func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spacing, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ spacing TextServer.SpacingType }{spacing})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a set of OpenType feature tags. More info: [OpenType feature tags].
-
-[OpenType feature tags]: https://docs.microsoft.com/en-us/typography/opentype/spec/featuretags
-*/
-//go:nosplit
 func (self class) GetOpentypeFeatures() Dictionary.Any { //gd:Font.get_opentype_features
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_opentype_features, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Sets LRU cache capacity for draw_* methods.
-*/
-//go:nosplit
 func (self class) SetCacheCapacity(single_line int64, multi_line int64) { //gd:Font.set_cache_capacity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cache_capacity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		single_line int64
 		multi_line  int64
 	}{single_line, multi_line})
 }
-
-/*
-Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [GetMultilineStringSize] and [DrawString].
-
-For example, to get the string size as displayed by a single-line Label, use:
-
-
-	var string_size = label.AsControl().GetThemeFont("font").MoreArgs().GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
-		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
-
-
-Note: Since kerning, advance and subpixel positioning are taken into account by [GetStringSize], using separate [GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [GetStringSize] call on the full string.
-
-Note: Real height of the string is context-dependent and can be significantly different from the value returned by [GetHeight].
-
-[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
-[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
-[GetMultilineStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetMultilineStringSize
-[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
-*/
-//go:nosplit
 func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_string_size, gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		text                gdextension.String
@@ -939,15 +817,6 @@ func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAl
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the size of a bounding box of a string broken into the lines, taking kerning and advance into account.
-
-See also [DrawMultilineString].
-
-[DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
-*/
-//go:nosplit
 func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_multiline_string_size, gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		text                gdextension.String
@@ -963,15 +832,6 @@ func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.Hor
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-See also [CanvasItem.DrawString].
-
-[CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
-*/
-//go:nosplit
 func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeFloat<<44), &struct {
 		canvas_item         RID.Any
@@ -987,15 +847,6 @@ func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Re
 		oversampling        float64
 	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-See also [CanvasItem.DrawMultilineString].
-
-[CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
-*/
-//go:nosplit
 func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeFloat<<52), &struct {
 		canvas_item         RID.Any
@@ -1013,15 +864,6 @@ func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text 
 		oversampling        float64
 	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-See also [CanvasItem.DrawStringOutline].
-
-[CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
-*/
-//go:nosplit
 func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeFloat<<48), &struct {
 		canvas_item         RID.Any
@@ -1038,15 +880,6 @@ func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text St
 		oversampling        float64
 	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-See also [CanvasItem.DrawMultilineStringOutline].
-
-[CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
-*/
-//go:nosplit
 func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string_outline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52)|(gdextension.SizeFloat<<56), &struct {
 		canvas_item         RID.Any
@@ -1065,17 +898,6 @@ func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY
 		oversampling        float64
 	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
-
-/*
-Returns the size of a character. Does not take kerning into account.
-
-Note: Do not use this function to calculate width of the string character by character, use [GetStringSize] or [TextLine] instead. The height returned is the font height (see also [GetHeight]) and has no relation to the glyph height.
-
-[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
-[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
-[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
-*/
-//go:nosplit
 func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Font.get_char_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_char_size, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		char      int64
@@ -1084,16 +906,6 @@ func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Fon
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
-
-[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
-[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
-*/
-//go:nosplit
 func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		canvas_item  RID.Any
@@ -1106,16 +918,6 @@ func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font
 	var ret = r_ret
 	return ret
 }
-
-/*
-Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
-
-Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
-
-[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
-[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
-*/
-//go:nosplit
 func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char_outline
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char_outline, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28), &struct {
 		canvas_item  RID.Any
@@ -1129,98 +931,36 @@ func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int6
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if a Unicode 'char' is available in the font.
-*/
-//go:nosplit
 func (self class) HasChar(char int64) bool { //gd:Font.has_char
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_char, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ char int64 }{char})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns a string containing all the characters available in the font.
-
-If a given character is included in more than one font data source, it appears only once in the returned string.
-*/
-//go:nosplit
 func (self class) GetSupportedChars() String.Readable { //gd:Font.get_supported_chars
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_supported_chars, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns true, if font supports given language ([ISO 639] code).
-
-[ISO 639]: https://en.wikipedia.org/wiki/ISO_639-1
-*/
-//go:nosplit
 func (self class) IsLanguageSupported(language String.Readable) bool { //gd:Font.is_language_supported
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_language_supported, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true, if font supports given script ([ISO 15924] code).
-
-[ISO 15924]: https://en.wikipedia.org/wiki/ISO_15924
-*/
-//go:nosplit
 func (self class) IsScriptSupported(script String.Readable) bool { //gd:Font.is_script_supported
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_script_supported, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ script gdextension.String }{pointers.Get(gd.InternalString(script))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns list of OpenType features supported by font.
-*/
-//go:nosplit
 func (self class) GetSupportedFeatureList() Dictionary.Any { //gd:Font.get_supported_feature_list
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_supported_feature_list, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns list of supported [variation coordinates], each coordinate is returned as tag: Vector3i(min_value,max_value,default_value).
-
-Font variations allow for continuous change of glyph characteristics along some given design axis, such as weight, width or slant.
-
-To print available variation axes of a variable font:
-
-
-	var fv = FontVariation.New()
-	fv.AsFontVariation().SetBaseFont(Resource.Load[Font.Instance]("res://RobotoFlex.ttf"))
-	var variation_list = fv.AsFont().GetSupportedVariationList()
-	for tag := range variation_list {
-		var name = TextServerManager.GetPrimaryInterface().TagToName(tag)
-		var values = variation_list[tag]
-		fmt.Printf("variation axis: %s (%d)\n\tmin, max, default: %v\n", name, tag, values)
-	}
-
-
-Note: To set and get variation coordinates of a [FontVariation], use [FontVariation.VariationOpentype].
-
-[FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
-[FontVariation.VariationOpentype]: https://pkg.go.dev/graphics.gd/classdb/FontVariation#Instance.VariationOpentype
-[variation coordinates]: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
-*/
-//go:nosplit
 func (self class) GetSupportedVariationList() Dictionary.Any { //gd:Font.get_supported_variation_list
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_supported_variation_list, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns number of faces in the TrueType / OpenType collection.
-*/
-//go:nosplit
 func (self class) GetFaceCount() int64 { //gd:Font.get_face_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_face_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

@@ -198,37 +198,22 @@ func (self Instance) SetMargin(value Float.X) Instance { //gd:Shape3D.margin
 	return self
 }
 
-//go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape3D.set_custom_solver_bias
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
-
-//go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape3D.get_custom_solver_bias
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMargin(margin float64) { //gd:Shape3D.set_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
-
-//go:nosplit
 func (self class) GetMargin() float64 { //gd:Shape3D.get_margin
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
-
-[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
-[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
-*/
-//go:nosplit
 func (self class) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_debug_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}

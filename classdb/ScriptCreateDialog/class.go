@@ -194,10 +194,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Prefills required fields to configure the ScriptCreateDialog for use.
-*/
-//go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		inherits         gdextension.String

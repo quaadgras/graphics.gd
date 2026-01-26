@@ -315,12 +315,6 @@ func (self Instance) SetNeedsSeparateSpecular(value bool) Instance { //gd:Compos
 	class(self).SetNeedsSeparateSpecular(value)
 	return self
 }
-
-/*
-Implement this function with your custom rendering code. 'effect_callback_type' should always match the effect callback type you've specified in [EffectCallbackType]. 'render_data' provides access to the rendering state, it is only valid during rendering and should not be stored.
-
-[EffectCallbackType]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Instance.EffectCallbackType
-*/
 func (class) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_type int64, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
@@ -332,84 +326,57 @@ func (class) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_ty
 	}
 }
 
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:CompositorEffect.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) GetEnabled() bool { //gd:CompositorEffect.get_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetEffectCallbackType(effect_callback_type EffectCallbackType) { //gd:CompositorEffect.set_effect_callback_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effect_callback_type, 0|(gdextension.SizeInt<<4), &struct{ effect_callback_type EffectCallbackType }{effect_callback_type})
 }
-
-//go:nosplit
 func (self class) GetEffectCallbackType() EffectCallbackType { //gd:CompositorEffect.get_effect_callback_type
 	var r_ret = noescape.Call[EffectCallbackType](gd.ObjectChecked(self.AsObject()), methods.get_effect_callback_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessResolvedColor(enable bool) { //gd:CompositorEffect.set_access_resolved_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_color, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetAccessResolvedColor() bool { //gd:CompositorEffect.get_access_resolved_color
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_color, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAccessResolvedDepth(enable bool) { //gd:CompositorEffect.set_access_resolved_depth
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_depth, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetAccessResolvedDepth() bool { //gd:CompositorEffect.get_access_resolved_depth
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_depth, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNeedsMotionVectors(enable bool) { //gd:CompositorEffect.set_needs_motion_vectors
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_motion_vectors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetNeedsMotionVectors() bool { //gd:CompositorEffect.get_needs_motion_vectors
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_motion_vectors, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNeedsNormalRoughness(enable bool) { //gd:CompositorEffect.set_needs_normal_roughness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_normal_roughness, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetNeedsNormalRoughness() bool { //gd:CompositorEffect.get_needs_normal_roughness
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_normal_roughness, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetNeedsSeparateSpecular(enable bool) { //gd:CompositorEffect.set_needs_separate_specular
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_separate_specular, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) GetNeedsSeparateSpecular() bool { //gd:CompositorEffect.get_needs_separate_specular
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_separate_specular, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

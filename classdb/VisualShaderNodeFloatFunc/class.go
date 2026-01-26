@@ -172,12 +172,9 @@ func (self Instance) SetFunction(value Function) Instance { //gd:VisualShaderNod
 	return self
 }
 
-//go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeFloatFunc.set_function
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
-
-//go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeFloatFunc.get_function
 	var r_ret = noescape.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

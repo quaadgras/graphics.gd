@@ -588,12 +588,6 @@ func (self Instance) SetFilterEnabled(value bool) Instance { //gd:AnimationNode.
 	class(self).SetFilterEnabled(value)
 	return self
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a name: node dictionary.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -606,13 +600,6 @@ func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (c
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [Object.GetPropertyList].
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-*/
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -625,12 +612,6 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its 'name'.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -645,12 +626,6 @@ func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a 'parameter'. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parameter String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -665,12 +640,6 @@ func (class) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parame
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return whether the 'parameter' is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _is_parameter_read_only(impl func(ptr gdclass.Receiver, parameter String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -680,21 +649,6 @@ func (class) _is_parameter_read_only(impl func(ptr gdclass.Receiver, parameter S
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to run some code when this animation node is processed. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute.
-
-Here, call the [BlendInput], [BlendNode] or [BlendAnimation] functions. You can also use [GetParameter] and [SetParameter] to modify local memory.
-
-This function should return the delta.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-[BlendAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.BlendAnimation
-[BlendInput]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.BlendInput
-[BlendNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.BlendNode
-[GetParameter]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.GetParameter
-[SetParameter]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode#Instance.SetParameter
-*/
 func (class) _process(impl func(ptr gdclass.Receiver, time float64, seek bool, is_external_seeking bool, test_only bool) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
@@ -706,12 +660,6 @@ func (class) _process(impl func(ptr gdclass.Receiver, time float64, seek bool, i
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _get_caption(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -724,12 +672,6 @@ func (class) _get_caption(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
 func (class) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -738,30 +680,14 @@ func (class) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionC
 	}
 }
 
-/*
-Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns false.
-
-[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
-*/
-//go:nosplit
 func (self class) AddInput(name String.Readable) bool { //gd:AnimationNode.add_input
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_input, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes an input, call this only when inactive.
-*/
-//go:nosplit
 func (self class) RemoveInput(index int64) { //gd:AnimationNode.remove_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Sets the name of the input at the given 'input' index. If the setting fails, returns false.
-*/
-//go:nosplit
 func (self class) SetInputName(input int64, name String.Readable) bool { //gd:AnimationNode.set_input_name
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.set_input_name, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		input int64
@@ -770,105 +696,50 @@ func (self class) SetInputName(input int64, name String.Readable) bool { //gd:An
 	var ret = r_ret
 	return ret
 }
-
-/*
-Gets the name of an input by index.
-*/
-//go:nosplit
 func (self class) GetInputName(input int64) String.Readable { //gd:AnimationNode.get_input_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ input int64 }{input})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Amount of inputs in this animation node, only useful for animation nodes that go into [AnimationNodeBlendTree].
-
-[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
-*/
-//go:nosplit
 func (self class) GetInputCount() int64 { //gd:AnimationNode.get_input_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the input index which corresponds to 'name'. If not found, returns -1.
-*/
-//go:nosplit
 func (self class) FindInput(name String.Readable) int64 { //gd:AnimationNode.find_input
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_input, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds or removes a path for the filter.
-*/
-//go:nosplit
 func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationNode.set_filter_path
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_path, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
 		path   gdextension.NodePath
 		enable bool
 	}{pointers.Get(gd.InternalNodePath(path)), enable})
 }
-
-/*
-Returns true if the given path is filtered.
-*/
-//go:nosplit
 func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_filtered, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFilterEnabled(enable bool) { //gd:AnimationNode.set_filter_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsFilterEnabled() bool { //gd:AnimationNode.is_filter_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filter_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the object id of the [AnimationTree] that owns this node.
-
-Note: This method should only be called from within the [AnimationNodeExtension.ProcessAnimationNode] method, and will return an invalid id otherwise.
-
-[AnimationNodeExtension.ProcessAnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeExtension#Instance.ProcessAnimationNode
-[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
-*/
-//go:nosplit
 func (self class) GetProcessingAnimationTreeInstanceId() int64 { //gd:AnimationNode.get_processing_animation_tree_instance_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_processing_animation_tree_instance_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns true if this animation node is being processed in test-only mode.
-*/
-//go:nosplit
 func (self class) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_process_testing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Blends an animation by 'blend' amount (name must be valid in the linked [AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
-
-A 'looped_flag' is used by internal processing immediately after the loop.
-
-[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
-*/
-//go:nosplit
 func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.blend_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28), &struct {
 		animation           gdextension.StringName
@@ -880,13 +751,6 @@ func (self class) BlendAnimation(animation String.Name, time float64, delta floa
 		looped_flag         Animation.LoopedFlag
 	}{pointers.Get(gd.InternalStringName(animation)), time, delta, seeked, is_external_seeking, blend, looped_flag})
 }
-
-/*
-Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
-
-[AnimationRootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationRootNode
-*/
-//go:nosplit
 func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_node
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_node, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeBool<<36), &struct {
 		name                gdextension.StringName
@@ -902,13 +766,6 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 	var ret = r_ret
 	return ret
 }
-
-/*
-Blends an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed.
-
-[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
-*/
-//go:nosplit
 func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.blend_input, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeBool<<32), &struct {
 		input_index         int64
@@ -923,22 +780,12 @@ func (self class) BlendInput(input_index int64, time float64, seek bool, is_exte
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
-*/
-//go:nosplit
 func (self class) SetParameter(name String.Name, value variant.Any) { //gd:AnimationNode.set_parameter
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
-
-/*
-Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
-*/
-//go:nosplit
 func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNode.get_parameter
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))

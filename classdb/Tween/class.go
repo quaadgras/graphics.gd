@@ -651,24 +651,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates and appends a [PropertyTweener]. This method tweens a 'property' of an 'object' between an initial value and 'final_val' in a span of time equal to 'duration', in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
-
-
-
-will move the sprite to position (100, 200) and then to (200, 300). If you use [PropertyTweener.From] or [PropertyTweener.FromCurrent], the starting position will be overwritten by the given value instead. See other methods in [PropertyTweener] to see how the tweening can be tweaked further.
-
-Note: You can find the correct property name by hovering over the property in the Inspector. You can also provide the components of a property directly by using "property:component" (eg. position:x), where it would only apply to that particular component.
-
-Example: Moving an object twice from the same position, with different transition types:
-
-
-
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-[PropertyTweener.From]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener#Instance.From
-[PropertyTweener.FromCurrent]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener#Instance.FromCurrent
-*/
-//go:nosplit
 func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_val variant.Any, duration float64) [1]gdclass.PropertyTweener { //gd:Tween.tween_property
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
 		obj       gdextension.Object
@@ -679,71 +661,16 @@ func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_va
 	var ret = [1]gdclass.PropertyTweener{gdclass.NewPropertyTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates and appends an [IntervalTweener]. This method can be used to create delays in the tween animation, as an alternative to using the delay in other [Tweener]s, or when there's no animation (in which case the [Tween] acts as a timer). 'time' is the length of the interval, in seconds.
-
-Example: Creating an interval in code execution:
-
-
-
-Example: Creating an object that moves back and forth and jumps every few seconds:
-
-
-
-[IntervalTweener]: https://pkg.go.dev/graphics.gd/classdb/IntervalTweener
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) TweenInterval(time float64) [1]gdclass.IntervalTweener { //gd:Tween.tween_interval
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_interval, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ time float64 }{time})
 	var ret = [1]gdclass.IntervalTweener{gdclass.NewIntervalTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates and appends a [CallbackTweener]. This method can be used to call an arbitrary method in any object. Use [Callable.Bind] to bind additional arguments for the call.
-
-Example: Object that keeps shooting every 1 second:
-
-
-
-Example: Turning a sprite red and then blue, with 2 second delay:
-
-
-
-[Callable.Bind]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.Bind
-[CallbackTweener]: https://pkg.go.dev/graphics.gd/classdb/CallbackTweener
-*/
-//go:nosplit
 func (self class) TweenCallback(callback Callable.Function) [1]gdclass.CallbackTweener { //gd:Tween.tween_callback
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = [1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates and appends a [MethodTweener]. This method is similar to a combination of [TweenCallback] and [TweenProperty]. It calls a method over time with a tweened value provided as an argument. The value is tweened between 'from' and 'to' over the time specified by 'duration', in seconds. Use [Callable.Bind] to bind additional arguments for the call. You can use [MethodTweener.SetEase] and [MethodTweener.SetTrans] to tweak the easing and transition of the value or [MethodTweener.SetDelay] to delay the tweening.
-
-Example: Making a 3D object look from one point to another point:
-
-
-
-Example: Setting the text of a [Label], using an intermediate method and after a delay:
-
-
-
-[Callable.Bind]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.Bind
-[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
-[MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
-[MethodTweener.SetDelay]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener#Instance.SetDelay
-[MethodTweener.SetEase]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener#Instance.SetEase
-[MethodTweener.SetTrans]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener#Instance.SetTrans
-[TweenCallback]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenCallback
-[TweenProperty]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenProperty
-*/
-//go:nosplit
 func (self class) TweenMethod(method Callable.Function, from variant.Any, to variant.Any, duration float64) [1]gdclass.MethodTweener { //gd:Tween.tween_method
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_method, gdextension.SizeObject|(gdextension.SizeCallable<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeFloat<<16), &struct {
 		method   gdextension.Callable
@@ -754,348 +681,103 @@ func (self class) TweenMethod(method Callable.Function, from variant.Any, to var
 	var ret = [1]gdclass.MethodTweener{gdclass.NewMethodTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Creates and appends a [SubtweenTweener]. This method can be used to nest 'subtween' within this [Tween], allowing for the creation of more complex and composable sequences.
-
-
-
-Note: The methods [Pause], [Stop], and [SetLoops] can cause the parent [Tween] to get stuck on the subtween step; see the documentation for those methods for more information.
-
-Note: The pause and process modes set by [SetPauseMode] and [SetProcessMode] on 'subtween' will be overridden by the parent [Tween]'s settings.
-
-[Pause]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Pause
-[SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
-[SetPauseMode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetPauseMode
-[SetProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetProcessMode
-[Stop]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Stop
-[SubtweenTweener]: https://pkg.go.dev/graphics.gd/classdb/SubtweenTweener
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTween(subtween[0])))})
 	var ret = [1]gdclass.SubtweenTweener{gdclass.NewSubtweenTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Processes the [Tween] by the given 'delta' value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting 'delta' longer than the whole duration of the [Tween] animation.
-
-Returns true if the [Tween] still has [Tweener]s that haven't finished.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) CustomStep(delta float64) bool { //gd:Tween.custom_step
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.custom_step, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Stops the tweening and resets the [Tween] to its initial state. This will not remove any appended [Tweener]s.
-
-Note: This does not reset targets of [PropertyTweener]s to their values when the [Tween] first started.
-
-
-
-Note: If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [SceneTree.GetProcessedTweens].
-
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-[SceneTree.GetProcessedTweens]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetProcessedTweens
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) Stop() { //gd:Tween.stop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
-
-/*
-Pauses the tweening. The animation can be resumed by using [Play].
-
-Note: If a Tween is paused and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [SceneTree.GetProcessedTweens].
-
-[Play]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Play
-[SceneTree.GetProcessedTweens]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetProcessedTweens
-*/
-//go:nosplit
 func (self class) Pause() { //gd:Tween.pause
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
 }
-
-/*
-Resumes a paused or stopped [Tween].
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) Play() { //gd:Tween.play
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0, &struct{}{})
 }
-
-/*
-Aborts all tweening operations and invalidates the [Tween].
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) Kill() { //gd:Tween.kill
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.kill, 0, &struct{}{})
 }
-
-/*
-Returns the total time in seconds the [Tween] has been animating (i.e. the time since it started, not counting pauses etc.). The time is affected by [SetSpeedScale], and [Stop] will reset it to 0.
-
-Note: As it results from accumulating frame deltas, the time returned after the [Tween] has finished animating will be slightly greater than the actual [Tween] duration.
-
-[SetSpeedScale]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetSpeedScale
-[Stop]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Stop
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) GetTotalElapsedTime() float64 { //gd:Tween.get_total_elapsed_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_elapsed_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether the [Tween] is currently running, i.e. it wasn't paused and it's not finished.
-
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) IsRunning() bool { //gd:Tween.is_running
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_running, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether the [Tween] is valid. A valid [Tween] is a [Tween] contained by the scene tree (i.e. the array from [SceneTree.GetProcessedTweens] will contain this [Tween]). A [Tween] might become invalid when it has finished tweening, is killed, or when created with Tween.new(). Invalid [Tween]s can't have [Tweener]s appended.
-
-[SceneTree.GetProcessedTweens]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetProcessedTweens
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) IsValid() bool { //gd:Tween.is_valid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Binds this [Tween] with the given 'node'. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [TweenPauseBound] will make the pausing behavior dependent on the bound node.
-
-For a shorter way to create and bind a [Tween], you can use [Node.CreateTween].
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-[Node.CreateTween]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CreateTween
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Determines whether the [Tween] should run after process frames (see [Node.Process]) or physics frames (see [Node.PhysicsProcess]).
-
-Default value is [TweenProcessIdle].
-
-[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetProcessMode(mode TweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenProcessMode }{mode})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Determines the behavior of the [Tween] when the [SceneTree] is paused.
-
-Default value is [TweenPauseBound].
-
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetPauseMode(mode TweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_pause_mode, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ mode TweenPauseMode }{mode})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-If 'ignore' is true, the tween will ignore [Engine.TimeScale] and update with the real, elapsed time. This affects all [Tweener]s and their delays. Default value is false.
-
-[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) SetIgnoreTimeScale(ignore bool) [1]gdclass.Tween { //gd:Tween.set_ignore_time_scale
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-If 'parallel' is true, the [Tweener]s appended after this method will by default run simultaneously, as opposed to sequentially.
-
-Note: Just like with [Parallel], the tweener added right before this method will also be part of the parallel step.
-
-
-
-[Parallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Parallel
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) SetParallel(parallel bool) [1]gdclass.Tween { //gd:Tween.set_parallel
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_parallel, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ parallel bool }{parallel})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the number of times the tweening sequence will be repeated, i.e. set_loops(2) will run the animation twice.
-
-Calling this method without arguments will make the [Tween] run infinitely, until either it is killed with [Kill], the [Tween]'s bound node is freed, or all the animated objects have been freed (which makes further animation impossible).
-
-Warning: Make sure to always add some duration/delay when using infinite loops. To prevent the game freezing, 0-duration looped animations (e.g. a single [CallbackTweener] with no delay) are stopped after a small number of loops, which may produce unexpected results. If a [Tween]'s lifetime depends on some node, always use [BindNode].
-
-[BindNode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.BindNode
-[CallbackTweener]: https://pkg.go.dev/graphics.gd/classdb/CallbackTweener
-[Kill]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Kill
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) SetLoops(loops int64) [1]gdclass.Tween { //gd:Tween.set_loops
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_loops, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ loops int64 }{loops})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the number of remaining loops for this [Tween] (see [SetLoops]). A return value of -1 indicates an infinitely looping [Tween], and a return value of 0 indicates that the [Tween] has already finished.
-
-[SetLoops]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetLoops
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) GetLoopsLeft() int64 { //gd:Tween.get_loops_left
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loops_left, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Scales the speed of tweening. This affects all [Tweener]s and their delays.
-
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) SetSpeedScale(speed float64) [1]gdclass.Tween { //gd:Tween.set_speed_scale
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the default transition type for [PropertyTweener]s and [MethodTweener]s appended after this method.
-
-Before this method is called, the default transition type is [TransLinear].
-
-
-
-[MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-*/
-//go:nosplit
 func (self class) SetTrans(trans TransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans TransitionType }{trans})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Sets the default ease type for [PropertyTweener]s and [MethodTweener]s appended after this method.
-
-Before this method is called, the default ease type is [EaseInOut].
-
-
-
-[MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
-[PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
-*/
-//go:nosplit
 func (self class) SetEase(ease EaseType) [1]gdclass.Tween { //gd:Tween.set_ease
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease EaseType }{ease})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Makes the next [Tweener] run parallelly to the previous one.
-
-
-
-All [Tweener]s in the example will run at the same time.
-
-You can make the [Tween] parallel by default by using [SetParallel].
-
-[SetParallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetParallel
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) Parallel() [1]gdclass.Tween { //gd:Tween.parallel
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.parallel, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Used to chain two [Tweener]s after [SetParallel] is called with true.
-
-
-
-[SetParallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetParallel
-[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
-*/
-//go:nosplit
 func (self class) Chain() [1]gdclass.Tween { //gd:Tween.chain
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Tween{gdclass.NewTween(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-This method can be used for manual interpolation of a value, when you don't want [Tween] to do animating for you. It's similar to [@GlobalScope.Lerp], but with support for custom transition and easing.
-
-'initial_value' is the starting value of the interpolation.
-
-'delta_value' is the change of the value in the interpolation, i.e. it's equal to final_value - initial_value.
-
-'elapsed_time' is the time in seconds that passed after the interpolation started and it's used to control the position of the interpolation. E.g. when it's equal to half of the 'duration', the interpolated value will be halfway between initial and final values. This value can also be greater than 'duration' or lower than 0, which will extrapolate the value.
-
-'duration' is the total time of the interpolation.
-
-Note: If 'duration' is equal to 0, the method will always return the final value, regardless of 'elapsed_time' provided.
-
-[@GlobalScope.Lerp]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Lerp
-[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
-*/
-//go:nosplit
 func (self class) InterpolateValue(initial_value variant.Any, delta_value variant.Any, elapsed_time float64, duration float64, trans_type TransitionType, ease_type EaseType) variant.Any { //gd:Tween.interpolate_value
 	var r_ret = noescape.CallStatic[gdextension.Variant](methods.interpolate_value, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		initial_value gdextension.Variant

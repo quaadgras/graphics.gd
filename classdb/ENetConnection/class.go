@@ -417,12 +417,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Creates an ENetHost bound to the given 'bind_address' and 'bind_port' that allows up to 'max_peers' connected peers, each allocating up to 'max_channels' channels, optionally limiting bandwidth to 'in_bandwidth' and 'out_bandwidth' (if greater than zero).
-
-Note: It is necessary to create a host in both client and server in order to establish a connection.
-*/
-//go:nosplit
 func (self class) CreateHostBound(bind_address String.Readable, bind_port int64, max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host_bound
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host_bound, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		bind_address  gdextension.String
@@ -435,17 +429,6 @@ func (self class) CreateHostBound(bind_address String.Readable, bind_port int64,
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Creates an ENetHost that allows up to 'max_peers' connected peers, each allocating up to 'max_channels' channels, optionally limiting bandwidth to 'in_bandwidth' and 'out_bandwidth' (if greater than zero).
-
-This method binds a random available dynamic UDP port on the host machine at the unspecified address. Use [CreateHostBound] to specify the address and port.
-
-Note: It is necessary to create a host in both client and server in order to establish a connection.
-
-[CreateHostBound]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHostBound
-*/
-//go:nosplit
 func (self class) CreateHost(max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_host, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		max_peers     int64
@@ -456,24 +439,9 @@ func (self class) CreateHost(max_peers int64, max_channels int64, in_bandwidth i
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Destroys the host and all resources associated with it.
-*/
-//go:nosplit
 func (self class) Destroy() { //gd:ENetConnection.destroy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.destroy, 0, &struct{}{})
 }
-
-/*
-Initiates a connection to a foreign 'address' using the specified 'port' and allocating the requested 'channels'. Optional 'data' can be passed during connection in the form of a 32 bit integer.
-
-Note: You must call either [CreateHost] or [CreateHostBound] on both ends before calling this method.
-
-[CreateHost]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHost
-[CreateHostBound]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHostBound
-*/
-//go:nosplit
 func (self class) ConnectToHost(address String.Readable, port int64, channels int64, data int64) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		address  gdextension.String
@@ -484,56 +452,23 @@ func (self class) ConnectToHost(address String.Readable, port int64, channels in
 	var ret = [1]gdclass.ENetPacketPeer{gdclass.NewENetPacketPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Waits for events on this connection and shuttles packets between the host and its peers, with the given 'timeout' (in milliseconds). The returned slice will have 4 elements. An [EventType], the [ENetPacketPeer] which generated the event, the event associated data (if any), the event associated channel (if any). If the generated event is [EventReceive], the received packet will be queued to the associated [ENetPacketPeer].
-
-Call this function regularly to handle connections, disconnections, and to receive new packets.
-
-Note: This method must be called on both ends involved in the event (sending and receiving hosts).
-
-[ENetPacketPeer]: https://pkg.go.dev/graphics.gd/classdb/ENetPacketPeer
-*/
-//go:nosplit
 func (self class) Service(timeout int64) Array.Any { //gd:ENetConnection.service
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.service, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ timeout int64 }{timeout})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sends any queued packets on the host specified to its designated peers.
-*/
-//go:nosplit
 func (self class) Flush() { //gd:ENetConnection.flush
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush, 0, &struct{}{})
 }
-
-/*
-Adjusts the bandwidth limits of a host.
-*/
-//go:nosplit
 func (self class) BandwidthLimit(in_bandwidth int64, out_bandwidth int64) { //gd:ENetConnection.bandwidth_limit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bandwidth_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		in_bandwidth  int64
 		out_bandwidth int64
 	}{in_bandwidth, out_bandwidth})
 }
-
-/*
-Limits the maximum allowed channels of future incoming connections.
-*/
-//go:nosplit
 func (self class) ChannelLimit(limit int64) { //gd:ENetConnection.channel_limit
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.channel_limit, 0|(gdextension.SizeInt<<4), &struct{ limit int64 }{limit})
 }
-
-/*
-Queues a 'packet' to be sent to all peers associated with the host over the specified 'channel'. See [ENetPacketPeer] FLAG_* constants for available packet flags.
-
-[ENetPacketPeer]: https://pkg.go.dev/graphics.gd/classdb/ENetPacketPeer
-*/
-//go:nosplit
 func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { //gd:ENetConnection.broadcast
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.broadcast, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		channel int64
@@ -541,40 +476,14 @@ func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { /
 		flags   int64
 	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet.Array))), flags})
 }
-
-/*
-Sets the compression method used for network packets. These have different tradeoffs of compression speed versus bandwidth, you may need to test which one works best for your use case if you use compression at all.
-
-Note: Most games' network design involve sending many small packets frequently (smaller than 4 KB each). If in doubt, it is recommended to keep the default compression algorithm as it works best on these small packets.
-
-Note: The compression mode must be set to the same value on both the server and all its clients. Clients will fail to connect if the compression mode set on the client differs from the one set on the server.
-*/
-//go:nosplit
 func (self class) Compress(mode CompressionMode) { //gd:ENetConnection.compress
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compress, 0|(gdextension.SizeInt<<4), &struct{ mode CompressionMode }{mode})
 }
-
-/*
-Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [CreateHostBound] to have ENet expect peers to connect using DTLS. See [TLSOptions.Server].
-
-[CreateHostBound]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.CreateHostBound
-[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
-*/
-//go:nosplit
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTLSOptions(server_options[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [ConnectToHost] to have ENet connect using DTLS validating the server certificate against 'hostname'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
-
-[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.ConnectToHost
-[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
-[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
-*/
-//go:nosplit
 func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_client_setup
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		hostname       gdextension.String
@@ -583,71 +492,29 @@ func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gd
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Configures the DTLS server to automatically drop new connections.
-
-Note: This method is only relevant after calling [DtlsServerSetup].
-
-[DtlsServerSetup]: https://pkg.go.dev/graphics.gd/classdb/ENetConnection#Instance.DtlsServerSetup
-*/
-//go:nosplit
 func (self class) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse_new_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.refuse_new_connections, 0|(gdextension.SizeBool<<4), &struct{ refuse bool }{refuse})
 }
-
-/*
-Returns and resets host statistics.
-*/
-//go:nosplit
 func (self class) PopStatistic(statistic HostStatistic) float64 { //gd:ENetConnection.pop_statistic
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pop_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ statistic HostStatistic }{statistic})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the maximum number of channels allowed for connected peers.
-*/
-//go:nosplit
 func (self class) GetMaxChannels() int64 { //gd:ENetConnection.get_max_channels
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_channels, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the local port to which this peer is bound.
-*/
-//go:nosplit
 func (self class) GetLocalPort() int64 { //gd:ENetConnection.get_local_port
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the list of peers associated with this host.
-
-Note: This list might include some peers that are not fully connected or are still being disconnected.
-*/
-//go:nosplit
 func (self class) GetPeers() Array.Contains[[1]gdclass.ENetPacketPeer] { //gd:ENetConnection.get_peers
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Sends a 'packet' toward a destination from the address and port currently bound by this ENetConnection instance.
-
-This is useful as it serves to establish entries in NAT routing tables on all devices between this bound instance and the public facing internet, allowing a prospective client's connection packets to be routed backward through the NAT device(s) between the public internet and this host.
-
-This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [STUN] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
-
-[STUN]: https://en.wikipedia.org/wiki/STUN
-*/
-//go:nosplit
 func (self class) SocketSend(destination_address String.Readable, destination_port int64, packet Packed.Bytes) { //gd:ENetConnection.socket_send
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.socket_send, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		destination_address gdextension.String

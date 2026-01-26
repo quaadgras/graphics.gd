@@ -177,22 +177,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [OpenXRBindingModifier] currently being edited.
-
-[OpenXRBindingModifier]: https://pkg.go.dev/graphics.gd/classdb/OpenXRBindingModifier
-*/
-//go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRBindingModifier{gdclass.NewOpenXRBindingModifier(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Setup this editor for the provided 'action_map' and 'binding_modifier'.
-*/
-//go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map       gdextension.Object

@@ -350,112 +350,56 @@ func New() Instance {
 	return casted
 }
 
-/*
-Adds a new 'anim' animation to the library.
-*/
-//go:nosplit
 func (self class) AddAnimation(anim String.Name) { //gd:SpriteFrames.add_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_animation, 0|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 }
-
-/*
-Returns true if the 'anim' animation exists.
-*/
-//go:nosplit
 func (self class) HasAnimation(anim String.Name) bool { //gd:SpriteFrames.has_animation
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Duplicates the animation 'anim_from' to a new animation named 'anim_to'. Fails if 'anim_to' already exists, or if 'anim_from' does not exist.
-*/
-//go:nosplit
 func (self class) DuplicateAnimation(anim_from String.Name, anim_to String.Name) { //gd:SpriteFrames.duplicate_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		anim_from gdextension.StringName
 		anim_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(anim_from)), pointers.Get(gd.InternalStringName(anim_to))})
 }
-
-/*
-Removes the 'anim' animation.
-*/
-//go:nosplit
 func (self class) RemoveAnimation(anim String.Name) { //gd:SpriteFrames.remove_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_animation, 0|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 }
-
-/*
-Changes the 'anim' animation's name to 'newname'.
-*/
-//go:nosplit
 func (self class) RenameAnimation(anim String.Name, newname String.Name) { //gd:SpriteFrames.rename_animation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		anim    gdextension.StringName
 		newname gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(anim)), pointers.Get(gd.InternalStringName(newname))})
 }
-
-/*
-Returns an array containing the names associated to each animation. Values are placed in alphabetical order.
-*/
-//go:nosplit
 func (self class) GetAnimationNames() Packed.Strings { //gd:SpriteFrames.get_animation_names
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_animation_names, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Sets the speed for the 'anim' animation in frames per second.
-*/
-//go:nosplit
 func (self class) SetAnimationSpeed(anim String.Name, fps float64) { //gd:SpriteFrames.set_animation_speed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_speed, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		anim gdextension.StringName
 		fps  float64
 	}{pointers.Get(gd.InternalStringName(anim)), fps})
 }
-
-/*
-Returns the speed in frames per second for the 'anim' animation.
-*/
-//go:nosplit
 func (self class) GetAnimationSpeed(anim String.Name) float64 { //gd:SpriteFrames.get_animation_speed
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_animation_speed, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If 'loop' is true, the 'anim' animation will loop when it reaches the end, or the start if it is played in reverse.
-*/
-//go:nosplit
 func (self class) SetAnimationLoop(anim String.Name, loop bool) { //gd:SpriteFrames.set_animation_loop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_loop, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		anim gdextension.StringName
 		loop bool
 	}{pointers.Get(gd.InternalStringName(anim)), loop})
 }
-
-/*
-Returns true if the given animation is configured to loop when it finishes playing. Otherwise, returns false.
-*/
-//go:nosplit
 func (self class) GetAnimationLoop(anim String.Name) bool { //gd:SpriteFrames.get_animation_loop
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animation_loop, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a frame to the 'anim' animation. If 'at_position' is -1, the frame will be added to the end of the animation. 'duration' specifies the relative duration, see [GetFrameDuration] for details.
-
-[GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
-*/
-//go:nosplit
 func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, duration float64, at_position int64) { //gd:SpriteFrames.add_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
 		anim        gdextension.StringName
@@ -464,13 +408,6 @@ func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, durat
 		at_position int64
 	}{pointers.Get(gd.InternalStringName(anim)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), duration, at_position})
 }
-
-/*
-Sets the 'texture' and the 'duration' of the frame 'idx' in the 'anim' animation. 'duration' specifies the relative duration, see [GetFrameDuration] for details.
-
-[GetFrameDuration]: https://pkg.go.dev/graphics.gd/classdb/SpriteFrames#Instance.GetFrameDuration
-*/
-//go:nosplit
 func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Texture2D, duration float64) { //gd:SpriteFrames.set_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16), &struct {
 		anim     gdextension.StringName
@@ -479,32 +416,17 @@ func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Textu
 		duration float64
 	}{pointers.Get(gd.InternalStringName(anim)), idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), duration})
 }
-
-/*
-Removes the 'anim' animation's frame 'idx'.
-*/
-//go:nosplit
 func (self class) RemoveFrame(anim String.Name, idx int64) { //gd:SpriteFrames.remove_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		anim gdextension.StringName
 		idx  int64
 	}{pointers.Get(gd.InternalStringName(anim)), idx})
 }
-
-/*
-Returns the number of frames for the 'anim' animation.
-*/
-//go:nosplit
 func (self class) GetFrameCount(anim String.Name) int64 { //gd:SpriteFrames.get_frame_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_count, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the texture of the frame 'idx' in the 'anim' animation.
-*/
-//go:nosplit
 func (self class) GetFrameTexture(anim String.Name, idx int64) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_frame_texture, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		anim gdextension.StringName
@@ -513,20 +435,6 @@ func (self class) GetFrameTexture(anim String.Name, idx int64) [1]gdclass.Textur
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns a relative duration of the frame 'idx' in the 'anim' animation (defaults to 1.0). For example, a frame with a duration of 2.0 is displayed twice as long as a frame with a duration of 1.0. You can calculate the absolute duration (in seconds) of a frame using the following formula:
-
-
-	absolute_duration := relative_duration / (animation_fps * Float.Abs(playing_speed))
-
-
-In this example, playing_speed refers to either [AnimatedSprite2D.GetPlayingSpeed] or [AnimatedSprite3D.GetPlayingSpeed].
-
-[AnimatedSprite2D.GetPlayingSpeed]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.GetPlayingSpeed
-[AnimatedSprite3D.GetPlayingSpeed]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D#Instance.GetPlayingSpeed
-*/
-//go:nosplit
 func (self class) GetFrameDuration(anim String.Name, idx int64) float64 { //gd:SpriteFrames.get_frame_duration
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_duration, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		anim gdextension.StringName
@@ -535,19 +443,9 @@ func (self class) GetFrameDuration(anim String.Name, idx int64) float64 { //gd:S
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes all frames from the 'anim' animation.
-*/
-//go:nosplit
 func (self class) Clear(anim String.Name) { //gd:SpriteFrames.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 }
-
-/*
-Removes all animations. An empty default animation will be created.
-*/
-//go:nosplit
 func (self class) ClearAll() { //gd:SpriteFrames.clear_all
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_all, 0, &struct{}{})
 }

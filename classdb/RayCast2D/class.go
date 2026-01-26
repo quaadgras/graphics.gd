@@ -445,256 +445,116 @@ func (self Instance) SetCollideWithBodies(value bool) Instance { //gd:RayCast2D.
 	return self
 }
 
-//go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:RayCast2D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
-
-//go:nosplit
 func (self class) IsEnabled() bool { //gd:RayCast2D.is_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTargetPosition(local_point Vector2.XY) { //gd:RayCast2D.set_target_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector2<<4), &struct{ local_point Vector2.XY }{local_point})
 }
-
-//go:nosplit
 func (self class) GetTargetPosition() Vector2.XY { //gd:RayCast2D.get_target_position
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether any object is intersecting with the ray's vector (considering the vector length).
-*/
-//go:nosplit
 func (self class) IsColliding() bool { //gd:RayCast2D.is_colliding
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Updates the collision information for the ray immediately, without waiting for the next _physics_process call. Use this method, for example, when the ray or its parent has changed state.
-
-Note: [Enabled] does not need to be true for this to work.
-
-[Enabled]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.Enabled
-*/
-//go:nosplit
 func (self class) ForceRaycastUpdate() { //gd:RayCast2D.force_raycast_update
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_raycast_update, 0, &struct{}{})
 }
-
-/*
-Returns the first object that the ray intersects, or null if no object is intersecting the ray (i.e. [IsColliding] returns false).
-
-Note: This object is not guaranteed to be a [CollisionObject2D]. For example, if the ray intersects a [TileMapLayer], the method will return a [TileMapLayer] instance.
-
-[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.IsColliding
-[TileMapLayer]: https://pkg.go.dev/graphics.gd/classdb/TileMapLayer
-*/
-//go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:RayCast2D.get_collider
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
-
-/*
-Returns the [Resource.ID] of the first object that the ray intersects, or an empty [Resource.ID] if no object is intersecting the ray (i.e. [IsColliding] returns false).
-
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.IsColliding
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:RayCast2D.get_collider_rid
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the shape ID of the first object that the ray intersects, or 0 if no object is intersecting the ray (i.e. [IsColliding] returns false).
-
-To get the intersected shape node, for a [CollisionObject2D] target, use:
-
-
-	var target = Object.To[CollisionObject2D.Instance](rayCast2D.GetCollider()) // A CollisionObject2D.
-	var shapeID int = rayCast2D.GetColliderShape()
-	var ownerID int = target.ShapeFindOwner(shapeID) // The owner ID in the collider.
-	var shape = target.ShapeOwnerGetOwner(ownerID)
-
-
-[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.IsColliding
-*/
-//go:nosplit
 func (self class) GetColliderShape() int64 { //gd:RayCast2D.get_collider_shape
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the collision point at which the ray intersects the closest object, in the global coordinate system. If [HitFromInside] is true and the ray starts inside of a collision shape, this function will return the origin point of the ray.
-
-Note: Check that [IsColliding] returns true before calling this method to ensure the returned point is valid and up-to-date.
-
-[HitFromInside]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.HitFromInside
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.IsColliding
-*/
-//go:nosplit
 func (self class) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_point
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the normal of the intersecting object's shape at the collision point, or Vector2(0, 0) if the ray starts inside the shape and [HitFromInside] is true.
-
-Note: Check that [IsColliding] returns true before calling this method to ensure the returned normal is valid and up-to-date.
-
-[HitFromInside]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.HitFromInside
-[IsColliding]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.IsColliding
-*/
-//go:nosplit
 func (self class) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a collision exception so the ray does not report collisions with the specified [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) AddExceptionRid(rid RID.Any) { //gd:RayCast2D.add_exception_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Adds a collision exception so the ray does not report collisions with the specified 'node'.
-*/
-//go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetCollisionObject2D(node[0])[0]))})
 }
-
-/*
-Removes a collision exception so the ray can report collisions with the specified [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast2D.remove_exception_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
-
-/*
-Removes a collision exception so the ray can report collisions with the specified specified 'node'.
-*/
-//go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionObject2D(node[0])))})
 }
-
-/*
-Removes all collision exceptions for this ray.
-*/
-//go:nosplit
 func (self class) ClearExceptions() { //gd:RayCast2D.clear_exceptions
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:RayCast2D.set_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
-
-//go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:RayCast2D.get_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:RayCast2D.set_collision_mask_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
 }
-
-/*
-Returns whether or not the specified layer of the [CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
-
-[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/RayCast2D#Instance.CollisionMask
-*/
-//go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:RayCast2D.get_collision_mask_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetExcludeParentBody(mask bool) { //gd:RayCast2D.set_exclude_parent_body
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
 }
-
-//go:nosplit
 func (self class) GetExcludeParentBody() bool { //gd:RayCast2D.get_exclude_parent_body
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:RayCast2D.set_collide_with_areas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:RayCast2D.is_collide_with_areas_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:RayCast2D.set_collide_with_bodies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:RayCast2D.is_collide_with_bodies_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetHitFromInside(enable bool) { //gd:RayCast2D.set_hit_from_inside
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsHitFromInsideEnabled() bool { //gd:RayCast2D.is_hit_from_inside_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

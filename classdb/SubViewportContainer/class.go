@@ -261,12 +261,6 @@ func (self Instance) SetMouseTarget(value bool) Instance { //gd:SubViewportConta
 	class(self).SetMouseTarget(value)
 	return self
 }
-
-/*
-Virtual method to be implemented by the user. If it returns true, the 'event' is propagated to [SubViewport] children. Propagation doesn't happen if it returns false. If the function is not implemented, all events are propagated to SubViewports.
-
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-*/
 func (class) _propagate_input_event(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -278,36 +272,25 @@ func (class) _propagate_input_event(impl func(ptr gdclass.Receiver, event [1]gdc
 	}
 }
 
-//go:nosplit
 func (self class) SetStretch(enable bool) { //gd:SubViewportContainer.set_stretch
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsStretchEnabled() bool { //gd:SubViewportContainer.is_stretch_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stretch_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetStretchShrink(amount int64) { //gd:SubViewportContainer.set_stretch_shrink
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_shrink, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
-
-//go:nosplit
 func (self class) GetStretchShrink() int64 { //gd:SubViewportContainer.get_stretch_shrink
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_shrink, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMouseTarget(amount bool) { //gd:SubViewportContainer.set_mouse_target
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_target, 0|(gdextension.SizeBool<<4), &struct{ amount bool }{amount})
 }
-
-//go:nosplit
 func (self class) IsMouseTargetEnabled() bool { //gd:SubViewportContainer.is_mouse_target_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_target_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

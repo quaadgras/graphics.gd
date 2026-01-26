@@ -175,7 +175,6 @@ func (self Instance) SetSize(value Vector2.XY) Instance { //gd:PlaceholderTextur
 	return self
 }
 
-//go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaceholderTexture2D.set_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }

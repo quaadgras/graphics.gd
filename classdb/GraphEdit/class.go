@@ -1096,27 +1096,6 @@ func (self Instance) SetShowArrangeButton(value bool) Instance { //gd:GraphEdit.
 	class(self).SetShowArrangeButton(value)
 	return self
 }
-
-/*
-Returns whether the 'mouse_position' is in the input hot zone.
-
-By default, a hot zone is a [Rect2.PositionSize] positioned such that its center is at 'in_node'.[GraphNode.GetInputPortPosition]('in_port') (For output's case, call [GraphNode.GetOutputPortPosition] instead). The hot zone's width is twice the Theme Property port_grab_distance_horizontal, and its height is twice the port_grab_distance_vertical.
-
-Below is a sample code to help get started:
-
-	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
-		in_node := Object.To[GraphNode.Instance](in)
-		port_size := Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
-		port_pos := Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetInputPortPosition(in_port)), Vector2.DivX(port_size, 2))
-		var rect = Rect2.PositionSize{port_pos, port_size}
-
-		return Rect2.HasPoint(rect, mouse_position)
-	}
-
-[GraphNode.GetInputPortPosition]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.GetInputPortPosition
-[GraphNode.GetOutputPortPosition]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.GetOutputPortPosition
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
 func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -1128,23 +1107,6 @@ func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Returns whether the 'mouse_position' is in the output hot zone. For more information on hot zones, see [IsInInputHotzone].
-
-Below is a sample code to help get started:
-
-	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
-		var in_node = Object.To[GraphNode.Instance](in)
-		var port_size = Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
-		var port_pos = Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetOutputPortPosition(in_port)), Vector2.DivX(port_size, 2))
-		var rect = Rect2.PositionSize{port_pos, port_size}
-
-		return Rect2.HasPoint(rect, mouse_position)
-	}
-
-[IsInInputHotzone]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Interface
-*/
 func (class) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -1156,10 +1118,6 @@ func (class) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Virtual method which can be overridden to customize how connections are drawn.
-*/
 func (class) _get_connection_line(impl func(ptr gdclass.Receiver, from_position Vector2.XY, to_position Vector2.XY) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
@@ -1174,18 +1132,6 @@ func (class) _get_connection_line(impl func(ptr gdclass.Receiver, from_position 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-This virtual method can be used to insert additional error detection while the user is dragging a connection over a valid port.
-
-Return true if the connection is indeed valid or return false if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
-
-In this example a connection to same node is suppressed:
-
-	IsNodeHoverValid := func(from string, from_port int, to string, to_port int) bool {
-		return from != to
-	}
-*/
 func (class) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
@@ -1200,14 +1146,6 @@ func (class) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node Stri
 	}
 }
 
-/*
-Create a connection between the 'from_port' of the 'from_node' [GraphNode] and the 'to_port' of the 'to_node' [GraphNode]. If the connection already exists, no connection is created.
-
-Connections with 'keep_alive' set to false may be deleted automatically if invalid during a redraw.
-
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-*/
-//go:nosplit
 func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64, keep_alive bool) Error.Code { //gd:GraphEdit.connect_node
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_node, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
 		from_node  gdextension.StringName
@@ -1219,13 +1157,6 @@ func (self class) ConnectNode(from_node String.Name, from_port int64, to_node St
 	var ret = Error.Code(r_ret)
 	return ret
 }
-
-/*
-Returns true if the 'from_port' of the 'from_node' [GraphNode] is connected to the 'to_port' of the 'to_node' [GraphNode].
-
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-*/
-//go:nosplit
 func (self class) IsNodeConnected(from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool { //gd:GraphEdit.is_node_connected
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_connected, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeInt<<16), &struct {
 		from_node gdextension.StringName
@@ -1236,13 +1167,6 @@ func (self class) IsNodeConnected(from_node String.Name, from_port int64, to_nod
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the connection between the 'from_port' of the 'from_node' [GraphNode] and the 'to_port' of the 'to_node' [GraphNode]. If the connection does not exist, no connection is removed.
-
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-*/
-//go:nosplit
 func (self class) DisconnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64) { //gd:GraphEdit.disconnect_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeInt<<16), &struct {
 		from_node gdextension.StringName
@@ -1251,11 +1175,6 @@ func (self class) DisconnectNode(from_node String.Name, from_port int64, to_node
 		to_port   int64
 	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port})
 }
-
-/*
-Sets the coloration of the connection between 'from_node''s 'from_port' and 'to_node''s 'to_port' with the color provided in the theme's 'activity' theme property. The color is linearly interpolated between the connection color and the activity color using 'amount' as weight.
-*/
-//go:nosplit
 func (self class) SetConnectionActivity(from_node String.Name, from_port int64, to_node String.Name, to_port int64, amount float64) { //gd:GraphEdit.set_connection_activity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection_activity, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20), &struct {
 		from_node gdextension.StringName
@@ -1265,23 +1184,14 @@ func (self class) SetConnectionActivity(from_node String.Name, from_port int64, 
 		amount    float64
 	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port, amount})
 }
-
-//go:nosplit
 func (self class) SetConnections(connections Array.Contains[Dictionary.Any]) { //gd:GraphEdit.set_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connections, 0|(gdextension.SizeArray<<4), &struct{ connections gdextension.Array }{pointers.Get(gd.InternalArray(connections))})
 }
-
-//go:nosplit
 func (self class) GetConnectionList() Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connection_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns the number of connections from 'from_port' of 'from_node'.
-*/
-//go:nosplit
 func (self class) GetConnectionCount(from_node String.Name, from_port int64) int64 { //gd:GraphEdit.get_connection_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_count, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		from_node gdextension.StringName
@@ -1290,27 +1200,6 @@ func (self class) GetConnectionCount(from_node String.Name, from_port int64) int
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the closest connection to the given point in screen space. If no connection is found within 'max_distance' pixels, an empty data structure is returned.
-
-A connection is represented as a data structure in the form of:
-
-
-	type Connection struct {
-		FromNode  string `gd:"from_node"`
-		FromPort  int    `gd:"from_port"`
-		ToNode    string `gd:"to_node"`
-		ToPort    int    `gd:"to_port"`
-		KeepAlive bool   `gd:"keep_alive"`
-	}
-
-
-For example, getting a connection at a given mouse position can be achieved like this:
-
-
-*/
-//go:nosplit
 func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance float64) Dictionary.Any { //gd:GraphEdit.get_closest_connection_at_point
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_closest_connection_at_point, gdextension.SizeDictionary|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), &struct {
 		point        Vector2.XY
@@ -1319,180 +1208,54 @@ func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance flo
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Returns an slice containing a list of all connections for 'node'.
-
-A connection is represented as a data structure in the form of:
-
-
-	type Connection struct {
-		FromNode  string `json:"from_node"`
-		FromPort  int    `json:"from_port"`
-		ToNode    string `json:"to_node"`
-		ToPort    int    `json:"to_port"`
-		KeepAlive bool   `json:"keep_alive"`
-	}
-
-
-Example: Get all connections on a specific port:
-
-
-*/
-//go:nosplit
 func (self class) GetConnectionListFromNode(node String.Name) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list_from_node
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connection_list_from_node, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ node gdextension.StringName }{pointers.Get(gd.InternalStringName(node))})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns an slice containing the list of connections that intersect with the given [Rect2.PositionSize].
-
-A connection is represented as a data structure in the form of:
-
-
-	type Connection struct {
-		FromNode  string `gd:"from_node"`
-		FromPort  int    `gd:"from_port"`
-		ToNode    string `gd:"to_node"`
-		ToPort    int    `gd:"to_port"`
-		KeepAlive bool   `gd:"keep_alive"`
-	}
-
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-*/
-//go:nosplit
 func (self class) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connections_intersecting_with_rect, gdextension.SizeArray|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Removes all connections between nodes.
-*/
-//go:nosplit
 func (self class) ClearConnections() { //gd:GraphEdit.clear_connections
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_connections, 0, &struct{}{})
 }
-
-/*
-Ends the creation of the current connection. In other words, if you are dragging a connection you can use this method to abort the process and remove the line that followed your cursor.
-
-This is best used together with [OnConnectionDragStarted] and [OnConnectionDragEnded] to add custom behavior like node addition through shortcuts.
-
-Note: This method suppresses any other connection request signals apart from [OnConnectionDragEnded].
-
-[OnConnectionDragEnded]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.OnConnectionDragEnded
-[OnConnectionDragStarted]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.OnConnectionDragStarted
-*/
-//go:nosplit
 func (self class) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_drag_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_connection_drag_end, 0, &struct{}{})
 }
-
-//go:nosplit
 func (self class) GetScrollOffset() Vector2.XY { //gd:GraphEdit.get_scroll_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetScrollOffset(offset Vector2.XY) { //gd:GraphEdit.set_scroll_offset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
-
-/*
-Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [RemoveValidRightDisconnectType].
-
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-[RemoveValidRightDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.RemoveValidRightDisconnectType
-*/
-//go:nosplit
 func (self class) AddValidRightDisconnectType(atype int64) { //gd:GraphEdit.add_valid_right_disconnect_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_valid_right_disconnect_type, 0|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 }
-
-/*
-Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [AddValidRightDisconnectType].
-
-[AddValidRightDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidRightDisconnectType
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-*/
-//go:nosplit
 func (self class) RemoveValidRightDisconnectType(atype int64) { //gd:GraphEdit.remove_valid_right_disconnect_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_valid_right_disconnect_type, 0|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 }
-
-/*
-Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [RemoveValidLeftDisconnectType].
-
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-[RemoveValidLeftDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.RemoveValidLeftDisconnectType
-*/
-//go:nosplit
 func (self class) AddValidLeftDisconnectType(atype int64) { //gd:GraphEdit.add_valid_left_disconnect_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_valid_left_disconnect_type, 0|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 }
-
-/*
-Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [AddValidLeftDisconnectType].
-
-[AddValidLeftDisconnectType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidLeftDisconnectType
-[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
-*/
-//go:nosplit
 func (self class) RemoveValidLeftDisconnectType(atype int64) { //gd:GraphEdit.remove_valid_left_disconnect_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_valid_left_disconnect_type, 0|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 }
-
-/*
-Allows the connection between two different port types. The port type is defined individually for the left and the right port of each slot with the [GraphNode.SetSlot] method.
-
-See also [IsValidConnectionType] and [RemoveValidConnectionType].
-
-[GraphNode.SetSlot]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.SetSlot
-[IsValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.IsValidConnectionType
-[RemoveValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.RemoveValidConnectionType
-*/
-//go:nosplit
 func (self class) AddValidConnectionType(from_type int64, to_type int64) { //gd:GraphEdit.add_valid_connection_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_valid_connection_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_type int64
 		to_type   int64
 	}{from_type, to_type})
 }
-
-/*
-Disallows the connection between two different port types previously allowed by [AddValidConnectionType]. The port type is defined individually for the left and the right port of each slot with the [GraphNode.SetSlot] method.
-
-See also [IsValidConnectionType].
-
-[AddValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidConnectionType
-[GraphNode.SetSlot]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.SetSlot
-[IsValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.IsValidConnectionType
-*/
-//go:nosplit
 func (self class) RemoveValidConnectionType(from_type int64, to_type int64) { //gd:GraphEdit.remove_valid_connection_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_valid_connection_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_type int64
 		to_type   int64
 	}{from_type, to_type})
 }
-
-/*
-Returns whether it's possible to make a connection between two different port types. The port type is defined individually for the left and the right port of each slot with the [GraphNode.SetSlot] method.
-
-See also [AddValidConnectionType] and [RemoveValidConnectionType].
-
-[AddValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.AddValidConnectionType
-[GraphNode.SetSlot]: https://pkg.go.dev/graphics.gd/classdb/GraphNode#Instance.SetSlot
-[RemoveValidConnectionType]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit#Instance.RemoveValidConnectionType
-*/
-//go:nosplit
 func (self class) IsValidConnectionType(from_type int64, to_type int64) bool { //gd:GraphEdit.is_valid_connection_type
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_connection_type, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_type int64
@@ -1501,11 +1264,6 @@ func (self class) IsValidConnectionType(from_type int64, to_type int64) bool { /
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the points which would make up a connection between 'from_node' and 'to_node'.
-*/
-//go:nosplit
 func (self class) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) Packed.Array[Vector2.XY] { //gd:GraphEdit.get_connection_line
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_connection_line, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		from_node Vector2.XY
@@ -1514,360 +1272,217 @@ func (self class) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) Pa
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
-
-/*
-Attaches the 'element' [GraphElement] to the 'frame' [GraphFrame].
-
-[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
-[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
-*/
-//go:nosplit
 func (self class) AttachGraphElementToFrame(element String.Name, frame_ String.Name) { //gd:GraphEdit.attach_graph_element_to_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.attach_graph_element_to_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		element gdextension.StringName
 		frame_  gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(element)), pointers.Get(gd.InternalStringName(frame_))})
 }
-
-/*
-Detaches the 'element' [GraphElement] from the [GraphFrame] it is currently attached to.
-
-[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
-[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
-*/
-//go:nosplit
 func (self class) DetachGraphElementFromFrame(element String.Name) { //gd:GraphEdit.detach_graph_element_from_frame
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.detach_graph_element_from_frame, 0|(gdextension.SizeStringName<<4), &struct{ element gdextension.StringName }{pointers.Get(gd.InternalStringName(element))})
 }
-
-/*
-Returns the [GraphFrame] that contains the [GraphElement] with the given name.
-
-[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
-[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
-*/
-//go:nosplit
 func (self class) GetElementFrame(element String.Name) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_element_frame, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ element gdextension.StringName }{pointers.Get(gd.InternalStringName(element))})
 	var ret = [1]gdclass.GraphFrame{gdclass.NewGraphFrame(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Returns an array of node names that are attached to the [GraphFrame] with the given name.
-
-[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
-*/
-//go:nosplit
 func (self class) GetAttachedNodesOfFrame(frame_ String.Name) Array.Contains[String.Name] { //gd:GraphEdit.get_attached_nodes_of_frame
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attached_nodes_of_frame, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ frame_ gdextension.StringName }{pointers.Get(gd.InternalStringName(frame_))})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-//go:nosplit
 func (self class) SetPanningScheme(scheme PanningScheme) { //gd:GraphEdit.set_panning_scheme
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panning_scheme, 0|(gdextension.SizeInt<<4), &struct{ scheme PanningScheme }{scheme})
 }
-
-//go:nosplit
 func (self class) GetPanningScheme() PanningScheme { //gd:GraphEdit.get_panning_scheme
 	var r_ret = noescape.Call[PanningScheme](gd.ObjectChecked(self.AsObject()), methods.get_panning_scheme, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZoom(zoom float64) { //gd:GraphEdit.set_zoom
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom, 0|(gdextension.SizeFloat<<4), &struct{ zoom float64 }{zoom})
 }
-
-//go:nosplit
 func (self class) GetZoom() float64 { //gd:GraphEdit.get_zoom
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_zoom, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZoomMin(zoom_min float64) { //gd:GraphEdit.set_zoom_min
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom_min, 0|(gdextension.SizeFloat<<4), &struct{ zoom_min float64 }{zoom_min})
 }
-
-//go:nosplit
 func (self class) GetZoomMin() float64 { //gd:GraphEdit.get_zoom_min
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_zoom_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZoomMax(zoom_max float64) { //gd:GraphEdit.set_zoom_max
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom_max, 0|(gdextension.SizeFloat<<4), &struct{ zoom_max float64 }{zoom_max})
 }
-
-//go:nosplit
 func (self class) GetZoomMax() float64 { //gd:GraphEdit.get_zoom_max
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_zoom_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetZoomStep(zoom_step float64) { //gd:GraphEdit.set_zoom_step
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom_step, 0|(gdextension.SizeFloat<<4), &struct{ zoom_step float64 }{zoom_step})
 }
-
-//go:nosplit
 func (self class) GetZoomStep() float64 { //gd:GraphEdit.get_zoom_step
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_zoom_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowGrid(enable bool) { //gd:GraphEdit.set_show_grid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_grid, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsShowingGrid() bool { //gd:GraphEdit.is_showing_grid
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_grid, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGridPattern(pattern GridPattern) { //gd:GraphEdit.set_grid_pattern
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_grid_pattern, 0|(gdextension.SizeInt<<4), &struct{ pattern GridPattern }{pattern})
 }
-
-//go:nosplit
 func (self class) GetGridPattern() GridPattern { //gd:GraphEdit.get_grid_pattern
 	var r_ret = noescape.Call[GridPattern](gd.ObjectChecked(self.AsObject()), methods.get_grid_pattern, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSnappingEnabled(enable bool) { //gd:GraphEdit.set_snapping_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snapping_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsSnappingEnabled() bool { //gd:GraphEdit.is_snapping_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snapping_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSnappingDistance(pixels int64) { //gd:GraphEdit.set_snapping_distance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snapping_distance, 0|(gdextension.SizeInt<<4), &struct{ pixels int64 }{pixels})
 }
-
-//go:nosplit
 func (self class) GetSnappingDistance() int64 { //gd:GraphEdit.get_snapping_distance
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_snapping_distance, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetConnectionLinesCurvature(curvature float64) { //gd:GraphEdit.set_connection_lines_curvature
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection_lines_curvature, 0|(gdextension.SizeFloat<<4), &struct{ curvature float64 }{curvature})
 }
-
-//go:nosplit
 func (self class) GetConnectionLinesCurvature() float64 { //gd:GraphEdit.get_connection_lines_curvature
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_connection_lines_curvature, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetConnectionLinesThickness(pixels float64) { //gd:GraphEdit.set_connection_lines_thickness
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection_lines_thickness, 0|(gdextension.SizeFloat<<4), &struct{ pixels float64 }{pixels})
 }
-
-//go:nosplit
 func (self class) GetConnectionLinesThickness() float64 { //gd:GraphEdit.get_connection_lines_thickness
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_connection_lines_thickness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetConnectionLinesAntialiased(pixels bool) { //gd:GraphEdit.set_connection_lines_antialiased
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection_lines_antialiased, 0|(gdextension.SizeBool<<4), &struct{ pixels bool }{pixels})
 }
-
-//go:nosplit
 func (self class) IsConnectionLinesAntialiased() bool { //gd:GraphEdit.is_connection_lines_antialiased
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_lines_antialiased, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMinimapSize(size Vector2.XY) { //gd:GraphEdit.set_minimap_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimap_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetMinimapSize() Vector2.XY { //gd:GraphEdit.get_minimap_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimap_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMinimapOpacity(opacity float64) { //gd:GraphEdit.set_minimap_opacity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimap_opacity, 0|(gdextension.SizeFloat<<4), &struct{ opacity float64 }{opacity})
 }
-
-//go:nosplit
 func (self class) GetMinimapOpacity() float64 { //gd:GraphEdit.get_minimap_opacity
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimap_opacity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMinimapEnabled(enable bool) { //gd:GraphEdit.set_minimap_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimap_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsMinimapEnabled() bool { //gd:GraphEdit.is_minimap_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_minimap_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowMenu(hidden bool) { //gd:GraphEdit.set_show_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_menu, 0|(gdextension.SizeBool<<4), &struct{ hidden bool }{hidden})
 }
-
-//go:nosplit
 func (self class) IsShowingMenu() bool { //gd:GraphEdit.is_showing_menu
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_menu, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowZoomLabel(enable bool) { //gd:GraphEdit.set_show_zoom_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_zoom_label, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsShowingZoomLabel() bool { //gd:GraphEdit.is_showing_zoom_label
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_zoom_label, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowGridButtons(hidden bool) { //gd:GraphEdit.set_show_grid_buttons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_grid_buttons, 0|(gdextension.SizeBool<<4), &struct{ hidden bool }{hidden})
 }
-
-//go:nosplit
 func (self class) IsShowingGridButtons() bool { //gd:GraphEdit.is_showing_grid_buttons
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_grid_buttons, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowZoomButtons(hidden bool) { //gd:GraphEdit.set_show_zoom_buttons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_zoom_buttons, 0|(gdextension.SizeBool<<4), &struct{ hidden bool }{hidden})
 }
-
-//go:nosplit
 func (self class) IsShowingZoomButtons() bool { //gd:GraphEdit.is_showing_zoom_buttons
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_zoom_buttons, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowMinimapButton(hidden bool) { //gd:GraphEdit.set_show_minimap_button
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_minimap_button, 0|(gdextension.SizeBool<<4), &struct{ hidden bool }{hidden})
 }
-
-//go:nosplit
 func (self class) IsShowingMinimapButton() bool { //gd:GraphEdit.is_showing_minimap_button
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_minimap_button, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowArrangeButton(hidden bool) { //gd:GraphEdit.set_show_arrange_button
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_arrange_button, 0|(gdextension.SizeBool<<4), &struct{ hidden bool }{hidden})
 }
-
-//go:nosplit
 func (self class) IsShowingArrangeButton() bool { //gd:GraphEdit.is_showing_arrange_button
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_arrange_button, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRightDisconnects(enable bool) { //gd:GraphEdit.set_right_disconnects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_disconnects, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) IsRightDisconnectsEnabled() bool { //gd:GraphEdit.is_right_disconnects_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_right_disconnects_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTypeNames(type_names Dictionary.Any) { //gd:GraphEdit.set_type_names
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_type_names, 0|(gdextension.SizeDictionary<<4), &struct{ type_names gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(type_names))})
 }
-
-//go:nosplit
 func (self class) GetTypeNames() Dictionary.Any { //gd:GraphEdit.get_type_names
 	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_type_names, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-
-/*
-Gets the [HBoxContainer] that contains the zooming and grid snap controls in the top left of the graph. You can use this method to reposition the toolbar or to add your own custom controls to it.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [CanvasItem.Visible] property.
-
-[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
-[HBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/HBoxContainer
-*/
-//go:nosplit
 func (self class) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu_hbox, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HBoxContainer{gdclass.NewHBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
-
-/*
-Rearranges selected nodes in a layout with minimum crossings between connections and uniform horizontal and vertical gap between nodes.
-*/
-//go:nosplit
 func (self class) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.arrange_nodes, 0, &struct{}{})
 }
-
-/*
-Sets the specified 'node' as the one selected.
-*/
-//go:nosplit
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }

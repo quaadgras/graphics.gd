@@ -272,84 +272,57 @@ func (self Instance) SetSidechain(value string) Instance { //gd:AudioEffectCompr
 	return self
 }
 
-//go:nosplit
 func (self class) SetThreshold(threshold float64) { //gd:AudioEffectCompressor.set_threshold
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threshold, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
-
-//go:nosplit
 func (self class) GetThreshold() float64 { //gd:AudioEffectCompressor.get_threshold
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_threshold, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRatio(ratio float64) { //gd:AudioEffectCompressor.set_ratio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
-
-//go:nosplit
 func (self class) GetRatio() float64 { //gd:AudioEffectCompressor.get_ratio
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetGain(gain float64) { //gd:AudioEffectCompressor.set_gain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gain, 0|(gdextension.SizeFloat<<4), &struct{ gain float64 }{gain})
 }
-
-//go:nosplit
 func (self class) GetGain() float64 { //gd:AudioEffectCompressor.get_gain
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gain, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetAttackUs(attack_us float64) { //gd:AudioEffectCompressor.set_attack_us
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attack_us, 0|(gdextension.SizeFloat<<4), &struct{ attack_us float64 }{attack_us})
 }
-
-//go:nosplit
 func (self class) GetAttackUs() float64 { //gd:AudioEffectCompressor.get_attack_us
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attack_us, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetReleaseMs(release_ms float64) { //gd:AudioEffectCompressor.set_release_ms
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release_ms, 0|(gdextension.SizeFloat<<4), &struct{ release_ms float64 }{release_ms})
 }
-
-//go:nosplit
 func (self class) GetReleaseMs() float64 { //gd:AudioEffectCompressor.get_release_ms
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release_ms, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMix(mix float64) { //gd:AudioEffectCompressor.set_mix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix, 0|(gdextension.SizeFloat<<4), &struct{ mix float64 }{mix})
 }
-
-//go:nosplit
 func (self class) GetMix() float64 { //gd:AudioEffectCompressor.get_mix
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetSidechain(sidechain String.Name) { //gd:AudioEffectCompressor.set_sidechain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sidechain, 0|(gdextension.SizeStringName<<4), &struct{ sidechain gdextension.StringName }{pointers.Get(gd.InternalStringName(sidechain))})
 }
-
-//go:nosplit
 func (self class) GetSidechain() String.Name { //gd:AudioEffectCompressor.get_sidechain
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_sidechain, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))

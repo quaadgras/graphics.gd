@@ -214,10 +214,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Return whether this importer is active.
-*/
 func (class) _is_active(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -225,10 +221,6 @@ func (class) _is_active(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCl
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Return the file extensions supported.
-*/
 func (class) _get_file_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -241,10 +233,6 @@ func (class) _get_file_extensions(impl func(ptr gdclass.Receiver) Packed.Strings
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Query support. Return false if import must not continue.
-*/
 func (class) _query(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)

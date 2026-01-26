@@ -293,13 +293,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called when creating a context menu, custom options can be added by using the [AddContextMenuItem] or [AddContextMenuItemFromShortcut] functions. 'paths' contains currently selected paths (depending on menu), which can be used to conditionally add options.
-
-[AddContextMenuItem]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddContextMenuItem
-[AddContextMenuItemFromShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddContextMenuItemFromShortcut
-*/
 func (class) _popup_menu(impl func(ptr gdclass.Receiver, paths Packed.Strings)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
@@ -309,35 +302,12 @@ func (class) _popup_menu(impl func(ptr gdclass.Receiver, paths Packed.Strings)) 
 	}
 }
 
-/*
-Registers a shortcut associated with the plugin's context menu. This method should be called once (e.g. in plugin's [Object.Init]). 'callback' will be called when user presses the specified 'shortcut' while the menu's context is in effect (e.g. FileSystem dock is focused). Callback should take single slice argument; array contents depend on context menu slot.
-
-
-	editorContextMenuPlugin.AddMenuShortcut(shortcut, func(array []any) {})
-
-
-[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
-*/
-//go:nosplit
 func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callable.Function) { //gd:EditorContextMenuPlugin.add_menu_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), &struct {
 		shortcut gdextension.Object
 		callback gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), pointers.Get(gd.InternalCallable(callback))})
 }
-
-/*
-Add custom option to the context menu of the plugin's specified slot. When the option is activated, 'callback' will be called. Callback should take single slice argument; array contents depend on context menu slot.
-
-
-	editorContextMenuPlugin.AddContextMenuItem("File Custom options", func(array []any) {})
-
-
-If you want to assign shortcut to the menu item, use [AddContextMenuItemFromShortcut] instead.
-
-[AddContextMenuItemFromShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddContextMenuItemFromShortcut
-*/
-//go:nosplit
 func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
@@ -345,18 +315,6 @@ func (self class) AddContextMenuItem(name String.Readable, callback Callable.Fun
 		icon     gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Add custom option to the context menu of the plugin's specified slot. The option will have the 'shortcut' assigned and reuse its callback. The shortcut has to be registered beforehand with [AddMenuShortcut].
-
-
-	editorContextMenuPlugin.AddMenuShortcut(shortcut, func(array []any) {})
-	editorContextMenuPlugin.MoreArgs().AddContextMenuItemFromShortcut("File Custom options", shortcut, icon)
-
-
-[AddMenuShortcut]: https://pkg.go.dev/graphics.gd/classdb/EditorContextMenuPlugin#Instance.AddMenuShortcut
-*/
-//go:nosplit
 func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
@@ -364,21 +322,6 @@ func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut 
 		icon     gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
-
-/*
-Add a submenu to the context menu of the plugin's specified slot. The submenu is not automatically handled, you need to connect to its signals yourself. Also the submenu is freed on every popup, so provide a new [PopupMenu] every time.
-
-
-	var popup_menu = PopupMenu.New()
-	popup_menu.AddItem("Blue")
-	popup_menu.AddItem("White")
-	popup_menu.OnIdPressed(func(id int) {})
-	editorContextMenuPlugin.AddContextSubmenuItem("Set Node Color", popup_menu)
-
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-//go:nosplit
 func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name gdextension.String

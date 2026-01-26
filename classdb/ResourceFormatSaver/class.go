@@ -291,12 +291,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Saves the given resource object to a file at the target 'path'. 'flags' is a bitmask composed with [ResourceSaver.SaverFlags] constants.
-
-Returns [Ok] on success, or an [Error] constant in case of failure.
-*/
 func (class) _save(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, path String.Readable, flags int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -315,10 +309,6 @@ func (class) _save(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource,
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Sets a new UID for the resource at the given 'path'. Returns [Ok] on success, or an [Error] constant in case of failure.
-*/
 func (class) _set_uid(impl func(ptr gdclass.Receiver, path String.Readable, uid int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
@@ -334,10 +324,6 @@ func (class) _set_uid(impl func(ptr gdclass.Receiver, path String.Readable, uid 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns whether the given resource object can be saved by this saver.
-*/
 func (class) _recognize(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -348,12 +334,6 @@ func (class) _recognize(impl func(ptr gdclass.Receiver, resource [1]gdclass.Reso
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
-/*
-Returns the list of extensions available for saving the resource object, provided it is recognized (see [Recognize]).
-
-[Recognize]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver#Interface
-*/
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
@@ -369,14 +349,6 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver, resource
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-
-/*
-Returns true if this saver handles a given save path and false otherwise.
-
-If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [GetRecognizedExtensions].
-
-[GetRecognizedExtensions]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver#Interface
-*/
 func (class) _recognize_path(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}

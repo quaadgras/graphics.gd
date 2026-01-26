@@ -240,48 +240,33 @@ func (self Instance) SetFilterClip(value bool) Instance { //gd:AtlasTexture.filt
 	return self
 }
 
-//go:nosplit
 func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_atlas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_atlas, 0|(gdextension.SizeObject<<4), &struct{ atlas gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(atlas[0])))})
 }
-
-//go:nosplit
 func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_atlas, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetRegion(region Rect2.PositionSize) { //gd:AtlasTexture.set_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region, 0|(gdextension.SizeRect2<<4), &struct{ region Rect2.PositionSize }{region})
 }
-
-//go:nosplit
 func (self class) GetRegion() Rect2.PositionSize { //gd:AtlasTexture.get_region
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetMargin(margin Rect2.PositionSize) { //gd:AtlasTexture.set_margin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeRect2<<4), &struct{ margin Rect2.PositionSize }{margin})
 }
-
-//go:nosplit
 func (self class) GetMargin() Rect2.PositionSize { //gd:AtlasTexture.get_margin
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetFilterClip(enable bool) { //gd:AtlasTexture.set_filter_clip
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filter_clip, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
-
-//go:nosplit
 func (self class) HasFilterClip() bool { //gd:AtlasTexture.has_filter_clip
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_filter_clip, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

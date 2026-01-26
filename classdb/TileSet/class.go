@@ -1071,29 +1071,11 @@ func (self Instance) SetUvClipping(value bool) Instance { //gd:TileSet.uv_clippi
 	return self
 }
 
-/*
-Returns a new unused source ID. This generated ID is the same that a call to [AddSource] would return.
-
-[AddSource]: https://pkg.go.dev/graphics.gd/classdb/TileSet#Instance.AddSource
-*/
-//go:nosplit
 func (self class) GetNextSourceId() int64 { //gd:TileSet.get_next_source_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_source_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a [TileSetSource] to the TileSet. If 'atlas_source_id_override' is not -1, also set its source ID. Otherwise, a unique identifier is automatically generated.
-
-The function returns the added source ID or -1 if the source could not be added.
-
-Warning: A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
-
-[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
-[TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
-*/
-//go:nosplit
 func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_override int64) int64 { //gd:TileSet.add_source
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_source, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		source                   gdextension.Object
@@ -1102,417 +1084,214 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes the source with the given source ID.
-*/
-//go:nosplit
 func (self class) RemoveSource(source_id int64) { //gd:TileSet.remove_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_source, 0|(gdextension.SizeInt<<4), &struct{ source_id int64 }{source_id})
 }
-
-/*
-Changes a source's ID.
-*/
-//go:nosplit
 func (self class) SetSourceId(source_id int64, new_source_id int64) { //gd:TileSet.set_source_id
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		source_id     int64
 		new_source_id int64
 	}{source_id, new_source_id})
 }
-
-/*
-Returns the number of [TileSetSource] in this TileSet.
-
-[TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
-*/
-//go:nosplit
 func (self class) GetSourceCount() int64 { //gd:TileSet.get_source_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_source_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the source ID for source with index 'index'.
-*/
-//go:nosplit
 func (self class) GetSourceId(index int64) int64 { //gd:TileSet.get_source_id
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_source_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns if this TileSet has a source for the given source ID.
-*/
-//go:nosplit
 func (self class) HasSource(source_id int64) bool { //gd:TileSet.has_source
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_source, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ source_id int64 }{source_id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [TileSetSource] with ID 'source_id'.
-
-[TileSetSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetSource
-*/
-//go:nosplit
 func (self class) GetSource(source_id int64) [1]gdclass.TileSetSource { //gd:TileSet.get_source
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ source_id int64 }{source_id})
 	var ret = [1]gdclass.TileSetSource{gdclass.NewTileSetSource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTileShape(shape TileShape) { //gd:TileSet.set_tile_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_shape, 0|(gdextension.SizeInt<<4), &struct{ shape TileShape }{shape})
 }
-
-//go:nosplit
 func (self class) GetTileShape() TileShape { //gd:TileSet.get_tile_shape
 	var r_ret = noescape.Call[TileShape](gd.ObjectChecked(self.AsObject()), methods.get_tile_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTileLayout(layout TileLayout) { //gd:TileSet.set_tile_layout
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_layout, 0|(gdextension.SizeInt<<4), &struct{ layout TileLayout }{layout})
 }
-
-//go:nosplit
 func (self class) GetTileLayout() TileLayout { //gd:TileSet.get_tile_layout
 	var r_ret = noescape.Call[TileLayout](gd.ObjectChecked(self.AsObject()), methods.get_tile_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTileOffsetAxis(alignment TileOffsetAxis) { //gd:TileSet.set_tile_offset_axis
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_offset_axis, 0|(gdextension.SizeInt<<4), &struct{ alignment TileOffsetAxis }{alignment})
 }
-
-//go:nosplit
 func (self class) GetTileOffsetAxis() TileOffsetAxis { //gd:TileSet.get_tile_offset_axis
 	var r_ret = noescape.Call[TileOffsetAxis](gd.ObjectChecked(self.AsObject()), methods.get_tile_offset_axis, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetTileSize(size Vector2i.XY) { //gd:TileSet.set_tile_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
-
-//go:nosplit
 func (self class) GetTileSize() Vector2i.XY { //gd:TileSet.get_tile_size
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetUvClipping(uv_clipping bool) { //gd:TileSet.set_uv_clipping
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uv_clipping, 0|(gdextension.SizeBool<<4), &struct{ uv_clipping bool }{uv_clipping})
 }
-
-//go:nosplit
 func (self class) IsUvClipping() bool { //gd:TileSet.is_uv_clipping
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uv_clipping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the occlusion layers count.
-*/
-//go:nosplit
 func (self class) GetOcclusionLayersCount() int64 { //gd:TileSet.get_occlusion_layers_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occlusion_layers_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds an occlusion layer to the TileSet at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-
-Occlusion layers allow assigning occlusion polygons to atlas tiles.
-*/
-//go:nosplit
 func (self class) AddOcclusionLayer(to_position int64) { //gd:TileSet.add_occlusion_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_occlusion_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
-
-/*
-Moves the occlusion layer at index 'layer_index' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MoveOcclusionLayer(layer_index int64, to_position int64) { //gd:TileSet.move_occlusion_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_occlusion_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		to_position int64
 	}{layer_index, to_position})
 }
-
-/*
-Removes the occlusion layer at index 'layer_index'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemoveOcclusionLayer(layer_index int64) { //gd:TileSet.remove_occlusion_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_occlusion_layer, 0|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 }
-
-/*
-Sets the occlusion layer (as in the rendering server) for occluders in the given TileSet occlusion layer.
-*/
-//go:nosplit
 func (self class) SetOcclusionLayerLightMask(layer_index int64, light_mask int64) { //gd:TileSet.set_occlusion_layer_light_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occlusion_layer_light_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		light_mask  int64
 	}{layer_index, light_mask})
 }
-
-/*
-Returns the light mask of the occlusion layer.
-*/
-//go:nosplit
 func (self class) GetOcclusionLayerLightMask(layer_index int64) int64 { //gd:TileSet.get_occlusion_layer_light_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occlusion_layer_light_mask, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Enables or disables SDF collision for occluders in the given TileSet occlusion layer.
-*/
-//go:nosplit
 func (self class) SetOcclusionLayerSdfCollision(layer_index int64, sdf_collision bool) { //gd:TileSet.set_occlusion_layer_sdf_collision
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occlusion_layer_sdf_collision, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_index   int64
 		sdf_collision bool
 	}{layer_index, sdf_collision})
 }
-
-/*
-Returns if the occluders from this layer use sdf_collision.
-*/
-//go:nosplit
 func (self class) GetOcclusionLayerSdfCollision(layer_index int64) bool { //gd:TileSet.get_occlusion_layer_sdf_collision
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_occlusion_layer_sdf_collision, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the physics layers count.
-*/
-//go:nosplit
 func (self class) GetPhysicsLayersCount() int64 { //gd:TileSet.get_physics_layers_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_layers_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a physics layer to the TileSet at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-
-Physics layers allow assigning collision polygons to atlas tiles.
-*/
-//go:nosplit
 func (self class) AddPhysicsLayer(to_position int64) { //gd:TileSet.add_physics_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_physics_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
-
-/*
-Moves the physics layer at index 'layer_index' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MovePhysicsLayer(layer_index int64, to_position int64) { //gd:TileSet.move_physics_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_physics_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		to_position int64
 	}{layer_index, to_position})
 }
-
-/*
-Removes the physics layer at index 'layer_index'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemovePhysicsLayer(layer_index int64) { //gd:TileSet.remove_physics_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_physics_layer, 0|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 }
-
-/*
-Sets the collision layer (as in the physics server) for bodies in the given TileSet physics layer.
-*/
-//go:nosplit
 func (self class) SetPhysicsLayerCollisionLayer(layer_index int64, layer int64) { //gd:TileSet.set_physics_layer_collision_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_collision_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		layer       int64
 	}{layer_index, layer})
 }
-
-/*
-Returns the collision layer (as in the physics server) bodies on the given TileSet's physics layer are in.
-*/
-//go:nosplit
 func (self class) GetPhysicsLayerCollisionLayer(layer_index int64) int64 { //gd:TileSet.get_physics_layer_collision_layer
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_collision_layer, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the collision mask for bodies in the given TileSet physics layer.
-*/
-//go:nosplit
 func (self class) SetPhysicsLayerCollisionMask(layer_index int64, mask int64) { //gd:TileSet.set_physics_layer_collision_mask
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_collision_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		mask        int64
 	}{layer_index, mask})
 }
-
-/*
-Returns the collision mask of bodies on the given TileSet's physics layer.
-*/
-//go:nosplit
 func (self class) GetPhysicsLayerCollisionMask(layer_index int64) int64 { //gd:TileSet.get_physics_layer_collision_mask
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_collision_mask, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the collision priority for bodies in the given TileSet physics layer.
-*/
-//go:nosplit
 func (self class) SetPhysicsLayerCollisionPriority(layer_index int64, priority float64) { //gd:TileSet.set_physics_layer_collision_priority
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_collision_priority, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		layer_index int64
 		priority    float64
 	}{layer_index, priority})
 }
-
-/*
-Returns the collision priority of bodies on the given TileSet's physics layer.
-*/
-//go:nosplit
 func (self class) GetPhysicsLayerCollisionPriority(layer_index int64) float64 { //gd:TileSet.get_physics_layer_collision_priority
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_collision_priority, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the physics material for bodies in the given TileSet physics layer.
-*/
-//go:nosplit
 func (self class) SetPhysicsLayerPhysicsMaterial(layer_index int64, physics_material [1]gdclass.PhysicsMaterial) { //gd:TileSet.set_physics_layer_physics_material
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_physics_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_index      int64
 		physics_material gdextension.Object
 	}{layer_index, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(physics_material[0])))})
 }
-
-/*
-Returns the physics material of bodies on the given TileSet's physics layer.
-*/
-//go:nosplit
 func (self class) GetPhysicsLayerPhysicsMaterial(layer_index int64) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_physics_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Returns the terrain sets count.
-*/
-//go:nosplit
 func (self class) GetTerrainSetsCount() int64 { //gd:TileSet.get_terrain_sets_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrain_sets_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new terrain set at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-*/
-//go:nosplit
 func (self class) AddTerrainSet(to_position int64) { //gd:TileSet.add_terrain_set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_terrain_set, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
-
-/*
-Moves the terrain set at index 'terrain_set' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MoveTerrainSet(terrain_set int64, to_position int64) { //gd:TileSet.move_terrain_set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_terrain_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set int64
 		to_position int64
 	}{terrain_set, to_position})
 }
-
-/*
-Removes the terrain set at index 'terrain_set'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemoveTerrainSet(terrain_set int64) { //gd:TileSet.remove_terrain_set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_terrain_set, 0|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
 }
-
-/*
-Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
-*/
-//go:nosplit
 func (self class) SetTerrainSetMode(terrain_set int64, mode TerrainMode) { //gd:TileSet.set_terrain_set_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set int64
 		mode        TerrainMode
 	}{terrain_set, mode})
 }
-
-/*
-Returns a terrain set mode.
-*/
-//go:nosplit
 func (self class) GetTerrainSetMode(terrain_set int64) TerrainMode { //gd:TileSet.get_terrain_set_mode
 	var r_ret = noescape.Call[TerrainMode](gd.ObjectChecked(self.AsObject()), methods.get_terrain_set_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the number of terrains in the given terrain set.
-*/
-//go:nosplit
 func (self class) GetTerrainsCount(terrain_set int64) int64 { //gd:TileSet.get_terrains_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_terrains_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new terrain to the given terrain set 'terrain_set' at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-*/
-//go:nosplit
 func (self class) AddTerrain(terrain_set int64, to_position int64) { //gd:TileSet.add_terrain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_terrain, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set int64
 		to_position int64
 	}{terrain_set, to_position})
 }
-
-/*
-Moves the terrain at index 'terrain_index' for terrain set 'terrain_set' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MoveTerrain(terrain_set int64, terrain_index int64, to_position int64) { //gd:TileSet.move_terrain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_terrain, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		terrain_set   int64
@@ -1520,22 +1299,12 @@ func (self class) MoveTerrain(terrain_set int64, terrain_index int64, to_positio
 		to_position   int64
 	}{terrain_set, terrain_index, to_position})
 }
-
-/*
-Removes the terrain at index 'terrain_index' in the given terrain set 'terrain_set'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemoveTerrain(terrain_set int64, terrain_index int64) { //gd:TileSet.remove_terrain
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_terrain, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set   int64
 		terrain_index int64
 	}{terrain_set, terrain_index})
 }
-
-/*
-Sets a terrain's name.
-*/
-//go:nosplit
 func (self class) SetTerrainName(terrain_set int64, terrain_index int64, name String.Readable) { //gd:TileSet.set_terrain_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		terrain_set   int64
@@ -1543,11 +1312,6 @@ func (self class) SetTerrainName(terrain_set int64, terrain_index int64, name St
 		name          gdextension.String
 	}{terrain_set, terrain_index, pointers.Get(gd.InternalString(name))})
 }
-
-/*
-Returns a terrain's name.
-*/
-//go:nosplit
 func (self class) GetTerrainName(terrain_set int64, terrain_index int64) String.Readable { //gd:TileSet.get_terrain_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_terrain_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set   int64
@@ -1556,11 +1320,6 @@ func (self class) GetTerrainName(terrain_set int64, terrain_index int64) String.
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets a terrain's color. This color is used for identifying the different terrains in the TileSet editor.
-*/
-//go:nosplit
 func (self class) SetTerrainColor(terrain_set int64, terrain_index int64, color Color.RGBA) { //gd:TileSet.set_terrain_color
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), &struct {
 		terrain_set   int64
@@ -1568,11 +1327,6 @@ func (self class) SetTerrainColor(terrain_set int64, terrain_index int64, color 
 		color         Color.RGBA
 	}{terrain_set, terrain_index, color})
 }
-
-/*
-Returns a terrain's color.
-*/
-//go:nosplit
 func (self class) GetTerrainColor(terrain_set int64, terrain_index int64) Color.RGBA { //gd:TileSet.get_terrain_color
 	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_terrain_color, gdextension.SizeColor|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		terrain_set   int64
@@ -1581,71 +1335,34 @@ func (self class) GetTerrainColor(terrain_set int64, terrain_index int64) Color.
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the navigation layers count.
-*/
-//go:nosplit
 func (self class) GetNavigationLayersCount() int64 { //gd:TileSet.get_navigation_layers_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a navigation layer to the TileSet at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-
-Navigation layers allow assigning a navigable area to atlas tiles.
-*/
-//go:nosplit
 func (self class) AddNavigationLayer(to_position int64) { //gd:TileSet.add_navigation_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_navigation_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
-
-/*
-Moves the navigation layer at index 'layer_index' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MoveNavigationLayer(layer_index int64, to_position int64) { //gd:TileSet.move_navigation_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_navigation_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		to_position int64
 	}{layer_index, to_position})
 }
-
-/*
-Removes the navigation layer at index 'layer_index'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemoveNavigationLayer(layer_index int64) { //gd:TileSet.remove_navigation_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_navigation_layer, 0|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 }
-
-/*
-Sets the navigation layers (as in the navigation server) for navigation regions in the given TileSet navigation layer.
-*/
-//go:nosplit
 func (self class) SetNavigationLayerLayers(layer_index int64, layers int64) { //gd:TileSet.set_navigation_layer_layers
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_layers, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		layers      int64
 	}{layer_index, layers})
 }
-
-/*
-Returns the navigation layers (as in the Navigation server) of the given TileSet navigation layer.
-*/
-//go:nosplit
 func (self class) GetNavigationLayerLayers(layer_index int64) int64 { //gd:TileSet.get_navigation_layer_layers
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_layers, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Based on 'value', enables or disables the specified navigation layer of the TileSet navigation data layer identified by the given 'layer_index', given a navigation_layers 'layer_number' between 1 and 32.
-*/
-//go:nosplit
 func (self class) SetNavigationLayerLayerValue(layer_index int64, layer_number int64, value bool) { //gd:TileSet.set_navigation_layer_layer_value
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		layer_index  int64
@@ -1653,11 +1370,6 @@ func (self class) SetNavigationLayerLayerValue(layer_index int64, layer_number i
 		value        bool
 	}{layer_index, layer_number, value})
 }
-
-/*
-Returns whether or not the specified navigation layer of the TileSet navigation data layer identified by the given 'layer_index' is enabled, given a navigation_layers 'layer_number' between 1 and 32.
-*/
-//go:nosplit
 func (self class) GetNavigationLayerLayerValue(layer_index int64, layer_number int64) bool { //gd:TileSet.get_navigation_layer_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index  int64
@@ -1666,157 +1378,74 @@ func (self class) GetNavigationLayerLayerValue(layer_index int64, layer_number i
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the custom data layers count.
-*/
-//go:nosplit
 func (self class) GetCustomDataLayersCount() int64 { //gd:TileSet.get_custom_data_layers_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_layers_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a custom data layer to the TileSet at the given position 'to_position' in the array. If 'to_position' is -1, adds it at the end of the array.
-
-Custom data layers allow assigning custom properties to atlas tiles.
-*/
-//go:nosplit
 func (self class) AddCustomDataLayer(to_position int64) { //gd:TileSet.add_custom_data_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_data_layer, 0|(gdextension.SizeInt<<4), &struct{ to_position int64 }{to_position})
 }
-
-/*
-Moves the custom data layer at index 'layer_index' to the given position 'to_position' in the array. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) MoveCustomDataLayer(layer_index int64, to_position int64) { //gd:TileSet.move_custom_data_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_custom_data_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		to_position int64
 	}{layer_index, to_position})
 }
-
-/*
-Removes the custom data layer at index 'layer_index'. Also updates the atlas tiles accordingly.
-*/
-//go:nosplit
 func (self class) RemoveCustomDataLayer(layer_index int64) { //gd:TileSet.remove_custom_data_layer
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_data_layer, 0|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 }
-
-/*
-Returns the index of the custom data layer identified by the given name.
-*/
-//go:nosplit
 func (self class) GetCustomDataLayerByName(layer_name String.Readable) int64 { //gd:TileSet.get_custom_data_layer_by_name
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_layer_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Sets the name of the custom data layer identified by the given index. Names are identifiers of the layer therefore if the name is already taken it will fail and raise an error.
-*/
-//go:nosplit
 func (self class) SetCustomDataLayerName(layer_index int64, layer_name String.Readable) { //gd:TileSet.set_custom_data_layer_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data_layer_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		layer_index int64
 		layer_name  gdextension.String
 	}{layer_index, pointers.Get(gd.InternalString(layer_name))})
 }
-
-/*
-Returns if there is a custom data layer named 'layer_name'.
-*/
-//go:nosplit
 func (self class) HasCustomDataLayerByName(layer_name String.Readable) bool { //gd:TileSet.has_custom_data_layer_by_name
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_custom_data_layer_by_name, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the name of the custom data layer identified by the given index.
-*/
-//go:nosplit
 func (self class) GetCustomDataLayerName(layer_index int64) String.Readable { //gd:TileSet.get_custom_data_layer_name
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_layer_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Sets the type of the custom data layer identified by the given index.
-*/
-//go:nosplit
 func (self class) SetCustomDataLayerType(layer_index int64, layer_type variant.Type) { //gd:TileSet.set_custom_data_layer_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_data_layer_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		layer_index int64
 		layer_type  variant.Type
 	}{layer_index, layer_type})
 }
-
-/*
-Returns the type of the custom data layer identified by the given index.
-*/
-//go:nosplit
 func (self class) GetCustomDataLayerType(layer_index int64) variant.Type { //gd:TileSet.get_custom_data_layer_type
 	var r_ret = noescape.Call[variant.Type](gd.ObjectChecked(self.AsObject()), methods.get_custom_data_layer_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Creates a source-level proxy for the given source ID. A proxy will map set of tile identifiers to another set of identifiers. Both the atlas coordinates ID and the alternative tile ID are kept the same when using source-level proxies.
-
-Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
-*/
-//go:nosplit
 func (self class) SetSourceLevelTileProxy(source_from int64, source_to int64) { //gd:TileSet.set_source_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		source_from int64
 		source_to   int64
 	}{source_from, source_to})
 }
-
-/*
-Returns the source-level proxy for the given source identifier.
-
-If the TileSet has no proxy for the given identifier, returns -1.
-*/
-//go:nosplit
 func (self class) GetSourceLevelTileProxy(source_from int64) int64 { //gd:TileSet.get_source_level_tile_proxy
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_source_level_tile_proxy, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ source_from int64 }{source_from})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns if there is a source-level proxy for the given source ID.
-*/
-//go:nosplit
 func (self class) HasSourceLevelTileProxy(source_from int64) bool { //gd:TileSet.has_source_level_tile_proxy
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_source_level_tile_proxy, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ source_from int64 }{source_from})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes a source-level tile proxy.
-*/
-//go:nosplit
 func (self class) RemoveSourceLevelTileProxy(source_from int64) { //gd:TileSet.remove_source_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_source_level_tile_proxy, 0|(gdextension.SizeInt<<4), &struct{ source_from int64 }{source_from})
 }
-
-/*
-Creates a coordinates-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers. The alternative tile ID is kept the same when using coordinates-level proxies.
-
-Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
-*/
-//go:nosplit
 func (self class) SetCoordsLevelTileProxy(p_source_from int64, coords_from Vector2i.XY, source_to int64, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_coords_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16), &struct {
 		p_source_from int64
@@ -1825,13 +1454,6 @@ func (self class) SetCoordsLevelTileProxy(p_source_from int64, coords_from Vecto
 		coords_to     Vector2i.XY
 	}{p_source_from, coords_from, source_to, coords_to})
 }
-
-/*
-Returns the coordinate-level proxy for the given identifiers. The returned array contains the two target identifiers of the proxy (source ID and atlas coordinates ID).
-
-If the TileSet has no proxy for the given identifiers, returns an empty Array.
-*/
-//go:nosplit
 func (self class) GetCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY) Array.Any { //gd:TileSet.get_coords_level_tile_proxy
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_coords_level_tile_proxy, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {
 		source_from int64
@@ -1840,11 +1462,6 @@ func (self class) GetCoordsLevelTileProxy(source_from int64, coords_from Vector2
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns if there is a coodinates-level proxy for the given identifiers.
-*/
-//go:nosplit
 func (self class) HasCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY) bool { //gd:TileSet.has_coords_level_tile_proxy
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_coords_level_tile_proxy, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {
 		source_from int64
@@ -1853,24 +1470,12 @@ func (self class) HasCoordsLevelTileProxy(source_from int64, coords_from Vector2
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes a coordinates-level proxy for the given identifiers.
-*/
-//go:nosplit
 func (self class) RemoveCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY) { //gd:TileSet.remove_coords_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_coords_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {
 		source_from int64
 		coords_from Vector2i.XY
 	}{source_from, coords_from})
 }
-
-/*
-Create an alternative-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers.
-
-Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
-*/
-//go:nosplit
 func (self class) SetAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64, source_to int64, coords_to Vector2i.XY, alternative_to int64) { //gd:TileSet.set_alternative_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alternative_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeVector2i<<20)|(gdextension.SizeInt<<24), &struct {
 		source_from      int64
@@ -1881,13 +1486,6 @@ func (self class) SetAlternativeLevelTileProxy(source_from int64, coords_from Ve
 		alternative_to   int64
 	}{source_from, coords_from, alternative_from, source_to, coords_to, alternative_to})
 }
-
-/*
-Returns the alternative-level proxy for the given identifiers. The returned array contains the three proxie's target identifiers (source ID, atlas coords ID and alternative tile ID).
-
-If the TileSet has no proxy for the given identifiers, returns an empty Array.
-*/
-//go:nosplit
 func (self class) GetAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) Array.Any { //gd:TileSet.get_alternative_level_tile_proxy
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_alternative_level_tile_proxy, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {
 		source_from      int64
@@ -1897,11 +1495,6 @@ func (self class) GetAlternativeLevelTileProxy(source_from int64, coords_from Ve
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Returns if there is an alternative-level proxy for the given identifiers.
-*/
-//go:nosplit
 func (self class) HasAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) bool { //gd:TileSet.has_alternative_level_tile_proxy
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alternative_level_tile_proxy, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {
 		source_from      int64
@@ -1911,11 +1504,6 @@ func (self class) HasAlternativeLevelTileProxy(source_from int64, coords_from Ve
 	var ret = r_ret
 	return ret
 }
-
-/*
-Removes an alternative-level proxy for the given identifiers.
-*/
-//go:nosplit
 func (self class) RemoveAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) { //gd:TileSet.remove_alternative_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_alternative_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {
 		source_from      int64
@@ -1923,15 +1511,6 @@ func (self class) RemoveAlternativeLevelTileProxy(source_from int64, coords_from
 		alternative_from int64
 	}{source_from, coords_from, alternative_from})
 }
-
-/*
-According to the configured proxies, maps the provided identifiers to a new set of identifiers. The source ID, atlas coordinates ID and alternative tile ID are returned as a 3 elements Array.
-
-This function first look for matching alternative-level proxies, then coordinates-level proxies, then source-level proxies.
-
-If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
-*/
-//go:nosplit
 func (self class) MapTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) Array.Any { //gd:TileSet.map_tile_proxy
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.map_tile_proxy, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), &struct {
 		source_from      int64
@@ -1941,29 +1520,12 @@ func (self class) MapTileProxy(source_from int64, coords_from Vector2i.XY, alter
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-
-/*
-Clears tile proxies pointing to invalid tiles.
-*/
-//go:nosplit
 func (self class) CleanupInvalidTileProxies() { //gd:TileSet.cleanup_invalid_tile_proxies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cleanup_invalid_tile_proxies, 0, &struct{}{})
 }
-
-/*
-Clears all tile proxies.
-*/
-//go:nosplit
 func (self class) ClearTileProxies() { //gd:TileSet.clear_tile_proxies
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tile_proxies, 0, &struct{}{})
 }
-
-/*
-Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given 'index'.
-
-[TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
-*/
-//go:nosplit
 func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int64 { //gd:TileSet.add_pattern
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_pattern, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		pattern gdextension.Object
@@ -1972,35 +1534,14 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [TileMapPattern] at the given 'index'.
-
-[TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
-*/
-//go:nosplit
 func (self class) GetPattern(index int64) [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.TileMapPattern{gdclass.NewTileMapPattern(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-
-/*
-Remove the [TileMapPattern] at the given index.
-
-[TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
-*/
-//go:nosplit
 func (self class) RemovePattern(index int64) { //gd:TileSet.remove_pattern
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_pattern, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
-
-/*
-Returns the number of [TileMapPattern] this tile set handles.
-
-[TileMapPattern]: https://pkg.go.dev/graphics.gd/classdb/TileMapPattern
-*/
-//go:nosplit
 func (self class) GetPatternsCount() int64 { //gd:TileSet.get_patterns_count
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_patterns_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

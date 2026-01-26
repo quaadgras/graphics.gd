@@ -188,24 +188,17 @@ func (self Instance) SetB(value Vector2.XY) Instance { //gd:SegmentShape2D.b
 	return self
 }
 
-//go:nosplit
 func (self class) SetA(a Vector2.XY) { //gd:SegmentShape2D.set_a
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_a, 0|(gdextension.SizeVector2<<4), &struct{ a Vector2.XY }{a})
 }
-
-//go:nosplit
 func (self class) GetA() Vector2.XY { //gd:SegmentShape2D.get_a
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_a, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetB(b Vector2.XY) { //gd:SegmentShape2D.set_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_b, 0|(gdextension.SizeVector2<<4), &struct{ b Vector2.XY }{b})
 }
-
-//go:nosplit
 func (self class) GetB() Vector2.XY { //gd:SegmentShape2D.get_b
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_b, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret

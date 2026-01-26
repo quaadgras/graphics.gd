@@ -274,15 +274,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
-/*
-Called by the [PhysicsServer3D] to set the position for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
-
-Note: The 'vertex' parameter used to be of type const void* prior to Godot 4.2.
-
-[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
 func (class) _set_vertex(impl func(ptr gdclass.Receiver, vertex_id int64, vertex Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
@@ -291,15 +282,6 @@ func (class) _set_vertex(impl func(ptr gdclass.Receiver, vertex_id int64, vertex
 		impl(self, vertex_id, vertex)
 	}
 }
-
-/*
-Called by the [PhysicsServer3D] to set the normal for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
-
-Note: The 'normal' parameter used to be of type const void* prior to Godot 4.2.
-
-[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
 func (class) _set_normal(impl func(ptr gdclass.Receiver, vertex_id int64, normal Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
@@ -308,13 +290,6 @@ func (class) _set_normal(impl func(ptr gdclass.Receiver, vertex_id int64, normal
 		impl(self, vertex_id, normal)
 	}
 }
-
-/*
-Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
-
-[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
 func (class) _set_aabb(impl func(ptr gdclass.Receiver, aabb AABB.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var aabb = gd.UnsafeGet[AABB.PositionSize](p_args, 0)
@@ -323,38 +298,18 @@ func (class) _set_aabb(impl func(ptr gdclass.Receiver, aabb AABB.PositionSize)) 
 	}
 }
 
-/*
-Sets the position for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
-
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
-//go:nosplit
 func (self class) SetVertex(vertex_id int64, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		vertex_id int64
 		vertex    Vector3.XYZ
 	}{vertex_id, vertex})
 }
-
-/*
-Sets the normal for the [SoftBody3D] vertex at the index specified by 'vertex_id'.
-
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
-//go:nosplit
 func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		vertex_id int64
 		normal    Vector3.XYZ
 	}{vertex_id, normal})
 }
-
-/*
-Sets the bounding box for the [SoftBody3D].
-
-[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
-*/
-//go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }

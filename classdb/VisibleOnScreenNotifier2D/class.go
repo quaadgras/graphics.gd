@@ -210,38 +210,22 @@ func (self Instance) SetShowRect(value bool) Instance { //gd:VisibleOnScreenNoti
 	return self
 }
 
-//go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifier2D.set_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
-
-//go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.get_rect
 	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-//go:nosplit
 func (self class) SetShowRect(show_rect bool) { //gd:VisibleOnScreenNotifier2D.set_show_rect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rect, 0|(gdextension.SizeBool<<4), &struct{ show_rect bool }{show_rect})
 }
-
-//go:nosplit
 func (self class) IsShowingRect() bool { //gd:VisibleOnScreenNotifier2D.is_showing_rect
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_rect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-If true, the bounding rectangle is on the screen.
-
-Note: It takes one frame for the [VisibleOnScreenNotifier2D]'s visibility to be determined once added to the scene tree, so this method will always return false right after it is instantiated, before the draw pass.
-
-[VisibleOnScreenNotifier2D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D
-*/
-//go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret

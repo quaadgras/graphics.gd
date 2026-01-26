@@ -185,7 +185,6 @@ func New() Instance {
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
-
 func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
@@ -195,7 +194,6 @@ func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFra
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-
 func (class) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
@@ -204,7 +202,6 @@ func (class) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) float64) 
 	}
 }
 
-//go:nosplit
 func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_resample, 0, &struct{}{})
 }

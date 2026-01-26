@@ -244,69 +244,36 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetResourceUID(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
-/*
-Converts the given UID to a uid:// string value.
-*/
-//go:nosplit
 func (self class) IdToText(id int64) String.Readable { //gd:ResourceUID.id_to_text
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.id_to_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Extracts the UID value from the given uid:// string.
-*/
-//go:nosplit
 func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.text_to_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.text_to_id, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ text_id gdextension.String }{pointers.Get(gd.InternalString(text_id))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Generates a random resource UID which is guaranteed to be unique within the list of currently loaded UIDs.
-
-In order for this UID to be registered, you must call [AddId] or [SetId].
-*/
-//go:nosplit
 func (self class) CreateId() int64 { //gd:ResourceUID.create_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Like [CreateId], but the UID is seeded with the provided 'path' and project name. UIDs generated for that path will be always the same within the current project.
-*/
-//go:nosplit
 func (self class) CreateIdForPath(path String.Readable) int64 { //gd:ResourceUID.create_id_for_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns whether the given UID value is known to the cache.
-*/
-//go:nosplit
 func (self class) HasId(id int64) bool { //gd:ResourceUID.has_id
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_id, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Adds a new UID value which is mapped to the given resource path.
-
-Fails with an error if the UID already exists, so be sure to check [HasId] beforehand, or use [SetId] instead.
-*/
-//go:nosplit
 func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_id
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
@@ -314,13 +281,6 @@ func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_i
 		path gdextension.String
 	}{id, pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Updates the resource path of an existing UID.
-
-Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand, or use [AddId] instead.
-*/
-//go:nosplit
 func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_id
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
@@ -328,57 +288,28 @@ func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_i
 		path gdextension.String
 	}{id, pointers.Get(gd.InternalString(path))})
 }
-
-/*
-Returns the path that the given UID value refers to.
-
-Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
-*/
-//go:nosplit
 func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Removes a loaded UID value from the cache.
-
-Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
-*/
-//go:nosplit
 func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
-
-/*
-Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
-*/
-//go:nosplit
 func (self class) UidToPath(uid String.Readable) String.Readable { //gd:ResourceUID.uid_to_path
 	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.uid_to_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ uid gdextension.String }{pointers.Get(gd.InternalString(uid))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Converts the provided resource 'path' to a UID. Returns the unchanged path if it has no associated UID.
-*/
-//go:nosplit
 func (self class) PathToUid(path String.Readable) String.Readable { //gd:ResourceUID.path_to_uid
 	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.path_to_uid, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-
-/*
-Returns a path, converting 'path_or_uid' if necessary. Prints an error if provided an invalid UID.
-*/
-//go:nosplit
 func (self class) EnsurePath(path_or_uid String.Readable) String.Readable { //gd:ResourceUID.ensure_path
 	once.Do(singleton)
 	var r_ret = noescape.CallStatic[gdextension.String](methods.ensure_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path_or_uid gdextension.String }{pointers.Get(gd.InternalString(path_or_uid))})

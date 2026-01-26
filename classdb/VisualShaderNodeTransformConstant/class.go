@@ -180,12 +180,9 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) Instance { //gd:
 	return self
 }
 
-//go:nosplit
 func (self class) SetConstant(constant Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformConstant.set_constant
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeTransform3D<<4), &struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)})
 }
-
-//go:nosplit
 func (self class) GetConstant() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformConstant.get_constant
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)

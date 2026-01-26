@@ -176,12 +176,9 @@ func (self Instance) SetOmniShadowMode(value ShadowMode) Instance { //gd:OmniLig
 	return self
 }
 
-//go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:OmniLight3D.set_shadow_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ShadowMode }{mode})
 }
-
-//go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:OmniLight3D.get_shadow_mode
 	var r_ret = noescape.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret

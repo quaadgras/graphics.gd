@@ -198,31 +198,11 @@ func New() Instance {
 	return casted
 }
 
-/*
-Returns the [Resource.ID] owned by this SkinReference, as returned by [RenderingServer.SkeletonCreate].
-
-[RenderingServer.SkeletonCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#SkeletonCreate
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-//go:nosplit
 func (self class) GetSkeleton() RID.Any { //gd:SkinReference.get_skeleton
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
-
-/*
-Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance3D] with no [MeshInstance3D.Skin] assigned, this will reference an internal default [Skin] owned by that [MeshInstance3D].
-
-Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
-
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[MeshInstance3D.Skin]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.Skin
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[Skin]: https://pkg.go.dev/graphics.gd/classdb/Skin
-[SkinReference]: https://pkg.go.dev/graphics.gd/classdb/SkinReference
-*/
-//go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gdclass.NewSkin(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
