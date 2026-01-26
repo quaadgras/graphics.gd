@@ -1,10 +1,12 @@
 package builder
 
 import (
+	"bytes"
 	"embed"
 	"errors"
 	"fmt"
 	"os"
+	"os/user"
 	"path/filepath"
 	"runtime"
 
@@ -22,7 +24,7 @@ var (
 
 type Musl struct{}
 
-func (Musl) Build(args ...string) error {
+func (musl Musl) Build(args ...string) error {
 	if !project.IncludesGo {
 		return nil
 	}
@@ -35,6 +37,9 @@ func (Musl) Build(args ...string) error {
 		return xray.New(err)
 	}
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
+		return xray.New(err)
+	}
+	if err := musl.patch(); err != nil {
 		return xray.New(err)
 	}
 	GOROOT, err := tooling.Go.Output("env", "GOROOT")
@@ -54,12 +59,12 @@ func (Musl) Build(args ...string) error {
 	switch GOARCH {
 	case "amd64":
 		target = "x86_64-linux-musl"
-		if err := os.Setenv("CC", zig+" cc -target x86_64-linux-musl"); err != nil {
+		if err := os.Setenv("CC", zig+" cc -target x86_64-linux-musl -static"); err != nil {
 			return xray.New(err)
 		}
 	case "arm64":
 		target = "aarch64-linux-musl"
-		if err := os.Setenv("CC", zig+" cc -target aarch64-linux-musl"); err != nil {
+		if err := os.Setenv("CC", zig+" cc -target aarch64-linux-musl -static"); err != nil {
 			return xray.New(err)
 		}
 	default:
@@ -73,10 +78,34 @@ func (Musl) Build(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, "-dynamic", libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
+	if err := tooling.Zig.Exec("cc", "-target", target, libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
 		return xray.New(err)
 	}
 	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+	return nil
+}
+
+func (musl Musl) patch() error {
+	my, err := user.Current()
+	if err != nil {
+		return xray.New(err)
+	}
+	HOME := my.HomeDir
+	var GDPATH = os.Getenv("GDPATH")
+	if GDPATH == "" {
+		GDPATH = filepath.Join(HOME, "gd")
+	}
+	musl_malloc := filepath.Join(GDPATH, "bin", "lib", "libc", "musl", "src", "malloc", "mallocng", "malloc.c")
+	file, err := os.ReadFile(musl_malloc)
+	if err != nil {
+		return xray.New(err)
+	}
+	file = bytes.Replace(file,
+		[]byte(`struct malloc_context ctx = { 0 };`),
+		[]byte(`struct malloc_context ctx = { .brk = -1 };`), 1)
+	if err := os.WriteFile(musl_malloc, file, 0644); err != nil {
+		return xray.New(err)
+	}
 	return nil
 }
 
@@ -101,7 +130,7 @@ func (linux Musl) Run(args ...string) error {
 	return tooling.Godot.Exec(args...)
 }
 
-func (Musl) Test(args ...string) error {
+func (musl Musl) Test(args ...string) error {
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
@@ -114,6 +143,9 @@ func (Musl) Test(args ...string) error {
 		return xray.New(err)
 	}
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
+		return xray.New(err)
+	}
+	if err := musl.patch(); err != nil {
 		return xray.New(err)
 	}
 	GOROOT, err := tooling.Go.Output("env", "GOROOT")
@@ -152,7 +184,7 @@ func (Musl) Test(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, "-dynamic", libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
+	if err := tooling.Zig.Exec("cc", "-target", target, libgodot, libgo, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
 		return xray.New(err)
 	}
 	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
