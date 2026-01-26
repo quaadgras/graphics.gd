@@ -45,7 +45,6 @@ type Builder interface {
 func builderFor(goos string) Builder {
 	switch goos {
 	case "linux", "ubuntu", "arch", "debian", "nix", "musl":
-		os.Setenv("GOOS", "linux")
 		if goos == "musl" {
 			return &builder.Musl{}
 		}

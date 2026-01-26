@@ -1,7 +1,6 @@
 package startup
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
@@ -76,7 +75,6 @@ func (*editorPlugin) Build() bool {
 		Engine.Raise(err)
 		return false
 	}
-	fmt.Println("BUILT!")
 	return true
 }
 
