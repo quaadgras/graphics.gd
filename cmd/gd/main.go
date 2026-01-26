@@ -178,7 +178,7 @@ func gd(args ...string) error {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
 			converted := []string{}
-			for _, arg := range os.Args[1:] {
+			for _, arg := range args[1:] {
 				switch arg {
 				case "-bench", "-benchmem", "-benchtime", "blockprofile",
 					"-blockprofilerate", "-count", "-coverprofile", "-cpu",
