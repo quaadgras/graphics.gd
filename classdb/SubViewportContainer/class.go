@@ -156,7 +156,7 @@ func (Instance) _propagate_input_event(impl func(ptr gdclass.Receiver, event Inp
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -272,7 +272,7 @@ func (class) _propagate_input_event(impl func(ptr gdclass.Receiver, event [1]gdc
 		var event = [1]gdclass.InputEvent{gdclass.NewInputEvent(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -352,7 +352,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_propagate_input_event":
-		return reflect.ValueOf(self._propagate_input_event)
+		return gd.ValueOf(self._propagate_input_event)
 	default:
 		return gd.VirtualByName(Container.Advanced(self.AsContainer()), name)
 	}
@@ -361,7 +361,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_propagate_input_event":
-		return reflect.ValueOf(self._propagate_input_event)
+		return gd.ValueOf(self._propagate_input_event)
 	default:
 		return gd.VirtualByName(Container.Instance(self.AsContainer()), name)
 	}

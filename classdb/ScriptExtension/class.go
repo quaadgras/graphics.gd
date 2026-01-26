@@ -200,7 +200,7 @@ func (self implementation) IsPlaceholderFallbackEnabled() (_ bool)             {
 func (self implementation) GetRpcConfig() (_ any)                              { return }
 func (Instance) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -208,20 +208,20 @@ func (Instance) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) boo
 func (Instance) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var placeholder = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, placeholder)
 	}
 }
 func (Instance) _can_instantiate(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_base_script(impl func(ptr gdclass.Receiver) Script.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
 
@@ -233,7 +233,7 @@ func (Instance) _get_base_script(impl func(ptr gdclass.Receiver) Script.Instance
 }
 func (Instance) _get_global_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -248,14 +248,14 @@ func (Instance) _inherits_script(impl func(ptr gdclass.Receiver, script Script.I
 		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetScript(script[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, script)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_instance_base_type(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -269,7 +269,7 @@ func (Instance) _instance_create(impl func(ptr gdclass.Receiver, for_object Obje
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(for_object[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -278,7 +278,7 @@ func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(for_object[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -287,21 +287,21 @@ func (Instance) _instance_has(impl func(ptr gdclass.Receiver, obj Object.Instanc
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _has_source_code(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_source_code(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -315,14 +315,14 @@ func (Instance) _set_source_code(impl func(ptr gdclass.Receiver, code string)) (
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, code.String())
 	}
 }
 func (Instance) _reload(impl func(ptr gdclass.Receiver, keep_state bool) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var keep_state = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, keep_state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -334,7 +334,7 @@ func (Instance) _reload(impl func(ptr gdclass.Receiver, keep_state bool) error) 
 }
 func (Instance) _get_doc_class_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -346,7 +346,7 @@ func (Instance) _get_doc_class_name(impl func(ptr gdclass.Receiver) string) (cb 
 }
 func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) [][]ClassDoc) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -358,7 +358,7 @@ func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) [][]ClassDoc)
 }
 func (Instance) _get_class_icon_path(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -372,7 +372,7 @@ func (Instance) _has_method(impl func(ptr gdclass.Receiver, method string) bool)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -381,7 +381,7 @@ func (Instance) _has_static_method(impl func(ptr gdclass.Receiver, method string
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -394,7 +394,7 @@ func (Instance) _get_script_method_argument_count(impl func(ptr gdclass.Receiver
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method.String())
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -408,7 +408,7 @@ func (Instance) _get_method_info(impl func(ptr gdclass.Receiver, method string) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method.String())
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -420,14 +420,14 @@ func (Instance) _get_method_info(impl func(ptr gdclass.Receiver, method string) 
 }
 func (Instance) _is_tool(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _is_valid(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -438,14 +438,14 @@ Returns true if the script is an abstract script. Abstract scripts cannot be ins
 */
 func (Instance) _is_abstract(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_language(impl func(ptr gdclass.Receiver) ScriptLanguage.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetScriptLanguage(ret[0])[0])
 
@@ -459,14 +459,14 @@ func (Instance) _has_script_signal(impl func(ptr gdclass.Receiver, signal string
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var signal = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(signal))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, signal.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -480,7 +480,7 @@ func (Instance) _has_property_default_value(impl func(ptr gdclass.Receiver, prop
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(property))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, property.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -489,7 +489,7 @@ func (Instance) _get_property_default_value(impl func(ptr gdclass.Receiver, prop
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(property))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, property.String())
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -501,13 +501,13 @@ func (Instance) _get_property_default_value(impl func(ptr gdclass.Receiver, prop
 }
 func (Instance) _update_exports(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
 func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -519,7 +519,7 @@ func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]stru
 }
 func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -533,14 +533,14 @@ func (Instance) _get_member_line(impl func(ptr gdclass.Receiver, member string) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var member = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(member))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, member.String())
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -552,7 +552,7 @@ func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]interf
 }
 func (Instance) _get_members(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[String.Name]](ret)))
 
@@ -564,14 +564,14 @@ func (Instance) _get_members(impl func(ptr gdclass.Receiver) []string) (cb gd.Ex
 }
 func (Instance) _is_placeholder_fallback_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_rpc_config(impl func(ptr gdclass.Receiver) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -627,7 +627,7 @@ func New() Instance {
 
 func (class) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -636,14 +636,14 @@ func (class) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) 
 func (class) _placeholder_erased(impl func(ptr gdclass.Receiver, placeholder gdextension.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var placeholder = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, placeholder)
 	}
 }
 
 func (class) _can_instantiate(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -651,7 +651,7 @@ func (class) _can_instantiate(impl func(ptr gdclass.Receiver) bool) (cb gd.Exten
 
 func (class) _get_base_script(impl func(ptr gdclass.Receiver) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetScript(ret[0])[0])
 
@@ -664,7 +664,7 @@ func (class) _get_base_script(impl func(ptr gdclass.Receiver) [1]gdclass.Script)
 
 func (class) _get_global_name(impl func(ptr gdclass.Receiver) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -680,7 +680,7 @@ func (class) _inherits_script(impl func(ptr gdclass.Receiver, script [1]gdclass.
 		var script = [1]gdclass.Script{gdclass.NewScript(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetScript(script[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, script)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -688,7 +688,7 @@ func (class) _inherits_script(impl func(ptr gdclass.Receiver, script [1]gdclass.
 
 func (class) _get_instance_base_type(impl func(ptr gdclass.Receiver) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -703,7 +703,7 @@ func (class) _instance_create(impl func(ptr gdclass.Receiver, for_object [1]gd.O
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(for_object[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -713,7 +713,7 @@ func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_ob
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(for_object[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, for_object)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -723,7 +723,7 @@ func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gd.Object) boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -731,7 +731,7 @@ func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gd.Object) boo
 
 func (class) _has_source_code(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -739,7 +739,7 @@ func (class) _has_source_code(impl func(ptr gdclass.Receiver) bool) (cb gd.Exten
 
 func (class) _get_source_code(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -754,7 +754,7 @@ func (class) _set_source_code(impl func(ptr gdclass.Receiver, code String.Readab
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, code)
 	}
 }
@@ -762,7 +762,7 @@ func (class) _set_source_code(impl func(ptr gdclass.Receiver, code String.Readab
 func (class) _reload(impl func(ptr gdclass.Receiver, keep_state bool) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var keep_state = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, keep_state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -775,7 +775,7 @@ func (class) _reload(impl func(ptr gdclass.Receiver, keep_state bool) Error.Code
 
 func (class) _get_doc_class_name(impl func(ptr gdclass.Receiver) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -788,7 +788,7 @@ func (class) _get_doc_class_name(impl func(ptr gdclass.Receiver) String.Name) (c
 
 func (class) _get_documentation(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -801,7 +801,7 @@ func (class) _get_documentation(impl func(ptr gdclass.Receiver) Array.Contains[D
 
 func (class) _get_class_icon_path(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -816,7 +816,7 @@ func (class) _has_method(impl func(ptr gdclass.Receiver, method String.Name) boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -826,7 +826,7 @@ func (class) _has_static_method(impl func(ptr gdclass.Receiver, method String.Na
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -839,7 +839,7 @@ func (class) _get_script_method_argument_count(impl func(ptr gdclass.Receiver, m
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -854,7 +854,7 @@ func (class) _get_method_info(impl func(ptr gdclass.Receiver, method String.Name
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, method)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -867,7 +867,7 @@ func (class) _get_method_info(impl func(ptr gdclass.Receiver, method String.Name
 
 func (class) _is_tool(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -875,7 +875,7 @@ func (class) _is_tool(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClas
 
 func (class) _is_valid(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -886,7 +886,7 @@ Returns true if the script is an abstract script. Abstract scripts cannot be ins
 */
 func (class) _is_abstract(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -894,7 +894,7 @@ func (class) _is_abstract(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 
 func (class) _get_language(impl func(ptr gdclass.Receiver) [1]gdclass.ScriptLanguage) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetScriptLanguage(ret[0])[0])
 
@@ -909,7 +909,7 @@ func (class) _has_script_signal(impl func(ptr gdclass.Receiver, signal String.Na
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var signal = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(signal))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, signal)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -917,7 +917,7 @@ func (class) _has_script_signal(impl func(ptr gdclass.Receiver, signal String.Na
 
 func (class) _get_script_signal_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -932,7 +932,7 @@ func (class) _has_property_default_value(impl func(ptr gdclass.Receiver, propert
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(property))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, property)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -942,7 +942,7 @@ func (class) _get_property_default_value(impl func(ptr gdclass.Receiver, propert
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var property = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(property))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, property)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -955,14 +955,14 @@ func (class) _get_property_default_value(impl func(ptr gdclass.Receiver, propert
 
 func (class) _update_exports(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
 
 func (class) _get_script_method_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -975,7 +975,7 @@ func (class) _get_script_method_list(impl func(ptr gdclass.Receiver) Array.Conta
 
 func (class) _get_script_property_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -990,7 +990,7 @@ func (class) _get_member_line(impl func(ptr gdclass.Receiver, member String.Name
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var member = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(member))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, member)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -998,7 +998,7 @@ func (class) _get_member_line(impl func(ptr gdclass.Receiver, member String.Name
 
 func (class) _get_constants(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -1011,7 +1011,7 @@ func (class) _get_constants(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb 
 
 func (class) _get_members(impl func(ptr gdclass.Receiver) Array.Contains[String.Name]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -1024,7 +1024,7 @@ func (class) _get_members(impl func(ptr gdclass.Receiver) Array.Contains[String.
 
 func (class) _is_placeholder_fallback_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1032,7 +1032,7 @@ func (class) _is_placeholder_fallback_enabled(impl func(ptr gdclass.Receiver) bo
 
 func (class) _get_rpc_config(impl func(ptr gdclass.Receiver) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -1075,79 +1075,79 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_editor_can_reload_from_file":
-		return reflect.ValueOf(self._editor_can_reload_from_file)
+		return gd.ValueOf(self._editor_can_reload_from_file)
 	case "_placeholder_erased":
-		return reflect.ValueOf(self._placeholder_erased)
+		return gd.ValueOf(self._placeholder_erased)
 	case "_can_instantiate":
-		return reflect.ValueOf(self._can_instantiate)
+		return gd.ValueOf(self._can_instantiate)
 	case "_get_base_script":
-		return reflect.ValueOf(self._get_base_script)
+		return gd.ValueOf(self._get_base_script)
 	case "_get_global_name":
-		return reflect.ValueOf(self._get_global_name)
+		return gd.ValueOf(self._get_global_name)
 	case "_inherits_script":
-		return reflect.ValueOf(self._inherits_script)
+		return gd.ValueOf(self._inherits_script)
 	case "_get_instance_base_type":
-		return reflect.ValueOf(self._get_instance_base_type)
+		return gd.ValueOf(self._get_instance_base_type)
 	case "_instance_create":
-		return reflect.ValueOf(self._instance_create)
+		return gd.ValueOf(self._instance_create)
 	case "_placeholder_instance_create":
-		return reflect.ValueOf(self._placeholder_instance_create)
+		return gd.ValueOf(self._placeholder_instance_create)
 	case "_instance_has":
-		return reflect.ValueOf(self._instance_has)
+		return gd.ValueOf(self._instance_has)
 	case "_has_source_code":
-		return reflect.ValueOf(self._has_source_code)
+		return gd.ValueOf(self._has_source_code)
 	case "_get_source_code":
-		return reflect.ValueOf(self._get_source_code)
+		return gd.ValueOf(self._get_source_code)
 	case "_set_source_code":
-		return reflect.ValueOf(self._set_source_code)
+		return gd.ValueOf(self._set_source_code)
 	case "_reload":
-		return reflect.ValueOf(self._reload)
+		return gd.ValueOf(self._reload)
 	case "_get_doc_class_name":
-		return reflect.ValueOf(self._get_doc_class_name)
+		return gd.ValueOf(self._get_doc_class_name)
 	case "_get_documentation":
-		return reflect.ValueOf(self._get_documentation)
+		return gd.ValueOf(self._get_documentation)
 	case "_get_class_icon_path":
-		return reflect.ValueOf(self._get_class_icon_path)
+		return gd.ValueOf(self._get_class_icon_path)
 	case "_has_method":
-		return reflect.ValueOf(self._has_method)
+		return gd.ValueOf(self._has_method)
 	case "_has_static_method":
-		return reflect.ValueOf(self._has_static_method)
+		return gd.ValueOf(self._has_static_method)
 	case "_get_script_method_argument_count":
-		return reflect.ValueOf(self._get_script_method_argument_count)
+		return gd.ValueOf(self._get_script_method_argument_count)
 	case "_get_method_info":
-		return reflect.ValueOf(self._get_method_info)
+		return gd.ValueOf(self._get_method_info)
 	case "_is_tool":
-		return reflect.ValueOf(self._is_tool)
+		return gd.ValueOf(self._is_tool)
 	case "_is_valid":
-		return reflect.ValueOf(self._is_valid)
+		return gd.ValueOf(self._is_valid)
 	case "_is_abstract":
-		return reflect.ValueOf(self._is_abstract)
+		return gd.ValueOf(self._is_abstract)
 	case "_get_language":
-		return reflect.ValueOf(self._get_language)
+		return gd.ValueOf(self._get_language)
 	case "_has_script_signal":
-		return reflect.ValueOf(self._has_script_signal)
+		return gd.ValueOf(self._has_script_signal)
 	case "_get_script_signal_list":
-		return reflect.ValueOf(self._get_script_signal_list)
+		return gd.ValueOf(self._get_script_signal_list)
 	case "_has_property_default_value":
-		return reflect.ValueOf(self._has_property_default_value)
+		return gd.ValueOf(self._has_property_default_value)
 	case "_get_property_default_value":
-		return reflect.ValueOf(self._get_property_default_value)
+		return gd.ValueOf(self._get_property_default_value)
 	case "_update_exports":
-		return reflect.ValueOf(self._update_exports)
+		return gd.ValueOf(self._update_exports)
 	case "_get_script_method_list":
-		return reflect.ValueOf(self._get_script_method_list)
+		return gd.ValueOf(self._get_script_method_list)
 	case "_get_script_property_list":
-		return reflect.ValueOf(self._get_script_property_list)
+		return gd.ValueOf(self._get_script_property_list)
 	case "_get_member_line":
-		return reflect.ValueOf(self._get_member_line)
+		return gd.ValueOf(self._get_member_line)
 	case "_get_constants":
-		return reflect.ValueOf(self._get_constants)
+		return gd.ValueOf(self._get_constants)
 	case "_get_members":
-		return reflect.ValueOf(self._get_members)
+		return gd.ValueOf(self._get_members)
 	case "_is_placeholder_fallback_enabled":
-		return reflect.ValueOf(self._is_placeholder_fallback_enabled)
+		return gd.ValueOf(self._is_placeholder_fallback_enabled)
 	case "_get_rpc_config":
-		return reflect.ValueOf(self._get_rpc_config)
+		return gd.ValueOf(self._get_rpc_config)
 	default:
 		return gd.VirtualByName(Script.Advanced(self.AsScript()), name)
 	}
@@ -1156,79 +1156,79 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_editor_can_reload_from_file":
-		return reflect.ValueOf(self._editor_can_reload_from_file)
+		return gd.ValueOf(self._editor_can_reload_from_file)
 	case "_placeholder_erased":
-		return reflect.ValueOf(self._placeholder_erased)
+		return gd.ValueOf(self._placeholder_erased)
 	case "_can_instantiate":
-		return reflect.ValueOf(self._can_instantiate)
+		return gd.ValueOf(self._can_instantiate)
 	case "_get_base_script":
-		return reflect.ValueOf(self._get_base_script)
+		return gd.ValueOf(self._get_base_script)
 	case "_get_global_name":
-		return reflect.ValueOf(self._get_global_name)
+		return gd.ValueOf(self._get_global_name)
 	case "_inherits_script":
-		return reflect.ValueOf(self._inherits_script)
+		return gd.ValueOf(self._inherits_script)
 	case "_get_instance_base_type":
-		return reflect.ValueOf(self._get_instance_base_type)
+		return gd.ValueOf(self._get_instance_base_type)
 	case "_instance_create":
-		return reflect.ValueOf(self._instance_create)
+		return gd.ValueOf(self._instance_create)
 	case "_placeholder_instance_create":
-		return reflect.ValueOf(self._placeholder_instance_create)
+		return gd.ValueOf(self._placeholder_instance_create)
 	case "_instance_has":
-		return reflect.ValueOf(self._instance_has)
+		return gd.ValueOf(self._instance_has)
 	case "_has_source_code":
-		return reflect.ValueOf(self._has_source_code)
+		return gd.ValueOf(self._has_source_code)
 	case "_get_source_code":
-		return reflect.ValueOf(self._get_source_code)
+		return gd.ValueOf(self._get_source_code)
 	case "_set_source_code":
-		return reflect.ValueOf(self._set_source_code)
+		return gd.ValueOf(self._set_source_code)
 	case "_reload":
-		return reflect.ValueOf(self._reload)
+		return gd.ValueOf(self._reload)
 	case "_get_doc_class_name":
-		return reflect.ValueOf(self._get_doc_class_name)
+		return gd.ValueOf(self._get_doc_class_name)
 	case "_get_documentation":
-		return reflect.ValueOf(self._get_documentation)
+		return gd.ValueOf(self._get_documentation)
 	case "_get_class_icon_path":
-		return reflect.ValueOf(self._get_class_icon_path)
+		return gd.ValueOf(self._get_class_icon_path)
 	case "_has_method":
-		return reflect.ValueOf(self._has_method)
+		return gd.ValueOf(self._has_method)
 	case "_has_static_method":
-		return reflect.ValueOf(self._has_static_method)
+		return gd.ValueOf(self._has_static_method)
 	case "_get_script_method_argument_count":
-		return reflect.ValueOf(self._get_script_method_argument_count)
+		return gd.ValueOf(self._get_script_method_argument_count)
 	case "_get_method_info":
-		return reflect.ValueOf(self._get_method_info)
+		return gd.ValueOf(self._get_method_info)
 	case "_is_tool":
-		return reflect.ValueOf(self._is_tool)
+		return gd.ValueOf(self._is_tool)
 	case "_is_valid":
-		return reflect.ValueOf(self._is_valid)
+		return gd.ValueOf(self._is_valid)
 	case "_is_abstract":
-		return reflect.ValueOf(self._is_abstract)
+		return gd.ValueOf(self._is_abstract)
 	case "_get_language":
-		return reflect.ValueOf(self._get_language)
+		return gd.ValueOf(self._get_language)
 	case "_has_script_signal":
-		return reflect.ValueOf(self._has_script_signal)
+		return gd.ValueOf(self._has_script_signal)
 	case "_get_script_signal_list":
-		return reflect.ValueOf(self._get_script_signal_list)
+		return gd.ValueOf(self._get_script_signal_list)
 	case "_has_property_default_value":
-		return reflect.ValueOf(self._has_property_default_value)
+		return gd.ValueOf(self._has_property_default_value)
 	case "_get_property_default_value":
-		return reflect.ValueOf(self._get_property_default_value)
+		return gd.ValueOf(self._get_property_default_value)
 	case "_update_exports":
-		return reflect.ValueOf(self._update_exports)
+		return gd.ValueOf(self._update_exports)
 	case "_get_script_method_list":
-		return reflect.ValueOf(self._get_script_method_list)
+		return gd.ValueOf(self._get_script_method_list)
 	case "_get_script_property_list":
-		return reflect.ValueOf(self._get_script_property_list)
+		return gd.ValueOf(self._get_script_property_list)
 	case "_get_member_line":
-		return reflect.ValueOf(self._get_member_line)
+		return gd.ValueOf(self._get_member_line)
 	case "_get_constants":
-		return reflect.ValueOf(self._get_constants)
+		return gd.ValueOf(self._get_constants)
 	case "_get_members":
-		return reflect.ValueOf(self._get_members)
+		return gd.ValueOf(self._get_members)
 	case "_is_placeholder_fallback_enabled":
-		return reflect.ValueOf(self._is_placeholder_fallback_enabled)
+		return gd.ValueOf(self._is_placeholder_fallback_enabled)
 	case "_get_rpc_config":
-		return reflect.ValueOf(self._get_rpc_config)
+		return gd.ValueOf(self._get_rpc_config)
 	default:
 		return gd.VirtualByName(Script.Instance(self.AsScript()), name)
 	}

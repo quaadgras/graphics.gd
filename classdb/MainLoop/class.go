@@ -203,7 +203,7 @@ Called once during initialization.
 */
 func (Instance) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -226,7 +226,7 @@ Note: Accumulated 'delta' may diverge from real world seconds.
 func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -253,7 +253,7 @@ Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enable
 func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -264,7 +264,7 @@ Called before the program exits.
 */
 func (Instance) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -316,7 +316,7 @@ Called once during initialization.
 */
 func (class) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -339,7 +339,7 @@ Note: Accumulated 'delta' may diverge from real world seconds.
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -366,7 +366,7 @@ Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enable
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -377,7 +377,7 @@ Called before the program exits.
 */
 func (class) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -405,13 +405,13 @@ func (self *Extension[T]) AsMainLoop() Instance { return self.Super().AsMainLoop
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize":
-		return reflect.ValueOf(self._initialize)
+		return gd.ValueOf(self._initialize)
 	case "_physics_process":
-		return reflect.ValueOf(self._physics_process)
+		return gd.ValueOf(self._physics_process)
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_finalize":
-		return reflect.ValueOf(self._finalize)
+		return gd.ValueOf(self._finalize)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -420,13 +420,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize":
-		return reflect.ValueOf(self._initialize)
+		return gd.ValueOf(self._initialize)
 	case "_physics_process":
-		return reflect.ValueOf(self._physics_process)
+		return gd.ValueOf(self._physics_process)
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_finalize":
-		return reflect.ValueOf(self._finalize)
+		return gd.ValueOf(self._finalize)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}

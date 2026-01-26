@@ -306,7 +306,7 @@ Gets the unique name of the importer.
 */
 func (Instance) _get_importer_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -322,7 +322,7 @@ Gets the name to display in the import window. You should choose this name as a 
 */
 func (Instance) _get_visible_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -341,7 +341,7 @@ Gets the number of initial presets defined by the plugin. Use [GetImportOptions]
 */
 func (Instance) _get_preset_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -353,7 +353,7 @@ Gets the name of the options preset at this index.
 func (Instance) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(preset_index))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -369,7 +369,7 @@ Gets the list of file extensions to associate with this loader (case-insensitive
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -394,7 +394,7 @@ func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string,
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String(), int(preset_index))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -412,7 +412,7 @@ Gets the extension used to save this resource in the .godot/imported directory (
 */
 func (Instance) _get_save_extension(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -428,7 +428,7 @@ Gets the Godot resource type associated with this loader. e.g. "Mesh" or "Animat
 */
 func (Instance) _get_resource_type(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -444,7 +444,7 @@ Gets the priority of this plugin for the recognized extension. Higher priority p
 */
 func (Instance) _get_priority(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -455,7 +455,7 @@ Gets the order of this importer to be run when importing resources. Importers wi
 */
 func (Instance) _get_import_order(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -466,7 +466,7 @@ Gets the format version of this importer. Increment this version when making inc
 */
 func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -483,7 +483,7 @@ func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path stri
 		defer pointers.End(gd.InternalStringName(option_name))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String(), option_name.String(), gd.DictionaryAs[map[string]interface{}](options))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -512,7 +512,7 @@ func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, source_file.String(), save_path.String(), gd.DictionaryAs[map[string]interface{}](options), gd.ArrayAs[[]string](gd.InternalArray(platform_variants)), gd.ArrayAs[[]string](gd.InternalArray(gen_files)))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -532,7 +532,7 @@ If this importer's implementation is thread-safe and can be run in parallel, ove
 */
 func (Instance) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -604,7 +604,7 @@ Gets the unique name of the importer.
 */
 func (class) _get_importer_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -620,7 +620,7 @@ Gets the name to display in the import window. You should choose this name as a 
 */
 func (class) _get_visible_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -639,7 +639,7 @@ Gets the number of initial presets defined by the plugin. Use [GetImportOptions]
 */
 func (class) _get_preset_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -651,7 +651,7 @@ Gets the name of the options preset at this index.
 func (class) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, preset_index)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -667,7 +667,7 @@ Gets the list of file extensions to associate with this loader (case-insensitive
 */
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -686,7 +686,7 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path, preset_index)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -704,7 +704,7 @@ Gets the extension used to save this resource in the .godot/imported directory (
 */
 func (class) _get_save_extension(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -720,7 +720,7 @@ Gets the Godot resource type associated with this loader. e.g. "Mesh" or "Animat
 */
 func (class) _get_resource_type(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -736,7 +736,7 @@ Gets the priority of this plugin for the recognized extension. Higher priority p
 */
 func (class) _get_priority(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -747,7 +747,7 @@ Gets the order of this importer to be run when importing resources. Importers wi
 */
 func (class) _get_import_order(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -758,7 +758,7 @@ Gets the format version of this importer. Increment this version when making inc
 */
 func (class) _get_format_version(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -775,7 +775,7 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 		defer pointers.End(gd.InternalStringName(option_name))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path, option_name, options)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -804,7 +804,7 @@ func (class) _import(impl func(ptr gdclass.Receiver, source_file String.Readable
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, source_file, save_path, options, platform_variants, gen_files)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -824,7 +824,7 @@ If this importer's implementation is thread-safe and can be run in parallel, ove
 */
 func (class) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -873,33 +873,33 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_importer_name":
-		return reflect.ValueOf(self._get_importer_name)
+		return gd.ValueOf(self._get_importer_name)
 	case "_get_visible_name":
-		return reflect.ValueOf(self._get_visible_name)
+		return gd.ValueOf(self._get_visible_name)
 	case "_get_preset_count":
-		return reflect.ValueOf(self._get_preset_count)
+		return gd.ValueOf(self._get_preset_count)
 	case "_get_preset_name":
-		return reflect.ValueOf(self._get_preset_name)
+		return gd.ValueOf(self._get_preset_name)
 	case "_get_recognized_extensions":
-		return reflect.ValueOf(self._get_recognized_extensions)
+		return gd.ValueOf(self._get_recognized_extensions)
 	case "_get_import_options":
-		return reflect.ValueOf(self._get_import_options)
+		return gd.ValueOf(self._get_import_options)
 	case "_get_save_extension":
-		return reflect.ValueOf(self._get_save_extension)
+		return gd.ValueOf(self._get_save_extension)
 	case "_get_resource_type":
-		return reflect.ValueOf(self._get_resource_type)
+		return gd.ValueOf(self._get_resource_type)
 	case "_get_priority":
-		return reflect.ValueOf(self._get_priority)
+		return gd.ValueOf(self._get_priority)
 	case "_get_import_order":
-		return reflect.ValueOf(self._get_import_order)
+		return gd.ValueOf(self._get_import_order)
 	case "_get_format_version":
-		return reflect.ValueOf(self._get_format_version)
+		return gd.ValueOf(self._get_format_version)
 	case "_get_option_visibility":
-		return reflect.ValueOf(self._get_option_visibility)
+		return gd.ValueOf(self._get_option_visibility)
 	case "_import":
-		return reflect.ValueOf(self._import)
+		return gd.ValueOf(self._import)
 	case "_can_import_threaded":
-		return reflect.ValueOf(self._can_import_threaded)
+		return gd.ValueOf(self._can_import_threaded)
 	default:
 		return gd.VirtualByName(ResourceImporter.Advanced(self.AsResourceImporter()), name)
 	}
@@ -908,33 +908,33 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_importer_name":
-		return reflect.ValueOf(self._get_importer_name)
+		return gd.ValueOf(self._get_importer_name)
 	case "_get_visible_name":
-		return reflect.ValueOf(self._get_visible_name)
+		return gd.ValueOf(self._get_visible_name)
 	case "_get_preset_count":
-		return reflect.ValueOf(self._get_preset_count)
+		return gd.ValueOf(self._get_preset_count)
 	case "_get_preset_name":
-		return reflect.ValueOf(self._get_preset_name)
+		return gd.ValueOf(self._get_preset_name)
 	case "_get_recognized_extensions":
-		return reflect.ValueOf(self._get_recognized_extensions)
+		return gd.ValueOf(self._get_recognized_extensions)
 	case "_get_import_options":
-		return reflect.ValueOf(self._get_import_options)
+		return gd.ValueOf(self._get_import_options)
 	case "_get_save_extension":
-		return reflect.ValueOf(self._get_save_extension)
+		return gd.ValueOf(self._get_save_extension)
 	case "_get_resource_type":
-		return reflect.ValueOf(self._get_resource_type)
+		return gd.ValueOf(self._get_resource_type)
 	case "_get_priority":
-		return reflect.ValueOf(self._get_priority)
+		return gd.ValueOf(self._get_priority)
 	case "_get_import_order":
-		return reflect.ValueOf(self._get_import_order)
+		return gd.ValueOf(self._get_import_order)
 	case "_get_format_version":
-		return reflect.ValueOf(self._get_format_version)
+		return gd.ValueOf(self._get_format_version)
 	case "_get_option_visibility":
-		return reflect.ValueOf(self._get_option_visibility)
+		return gd.ValueOf(self._get_option_visibility)
 	case "_import":
-		return reflect.ValueOf(self._import)
+		return gd.ValueOf(self._import)
 	case "_can_import_threaded":
-		return reflect.ValueOf(self._can_import_threaded)
+		return gd.ValueOf(self._can_import_threaded)
 	default:
 		return gd.VirtualByName(ResourceImporter.Instance(self.AsResourceImporter()), name)
 	}

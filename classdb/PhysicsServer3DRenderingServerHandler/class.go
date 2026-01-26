@@ -157,7 +157,7 @@ func (Instance) _set_vertex(impl func(ptr gdclass.Receiver, vertex_id int, verte
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
 		var vertex = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(vertex_id), vertex)
 	}
 }
@@ -174,7 +174,7 @@ func (Instance) _set_normal(impl func(ptr gdclass.Receiver, vertex_id int, norma
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(vertex_id), normal)
 	}
 }
@@ -188,7 +188,7 @@ Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
 func (Instance) _set_aabb(impl func(ptr gdclass.Receiver, aabb AABB.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var aabb = gd.UnsafeGet[AABB.PositionSize](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, aabb)
 	}
 }
@@ -287,7 +287,7 @@ func (class) _set_vertex(impl func(ptr gdclass.Receiver, vertex_id int64, vertex
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
 		var vertex = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, vertex_id, vertex)
 	}
 }
@@ -304,7 +304,7 @@ func (class) _set_normal(impl func(ptr gdclass.Receiver, vertex_id int64, normal
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var vertex_id = gd.UnsafeGet[int64](p_args, 0)
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, vertex_id, normal)
 	}
 }
@@ -318,7 +318,7 @@ Called by the [PhysicsServer3D] to set the bounding box for the [SoftBody3D].
 func (class) _set_aabb(impl func(ptr gdclass.Receiver, aabb AABB.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var aabb = gd.UnsafeGet[AABB.PositionSize](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, aabb)
 	}
 }
@@ -371,11 +371,11 @@ func (self *Extension[T]) AsPhysicsServer3DRenderingServerHandler() Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_vertex":
-		return reflect.ValueOf(self._set_vertex)
+		return gd.ValueOf(self._set_vertex)
 	case "_set_normal":
-		return reflect.ValueOf(self._set_normal)
+		return gd.ValueOf(self._set_normal)
 	case "_set_aabb":
-		return reflect.ValueOf(self._set_aabb)
+		return gd.ValueOf(self._set_aabb)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -384,11 +384,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_vertex":
-		return reflect.ValueOf(self._set_vertex)
+		return gd.ValueOf(self._set_vertex)
 	case "_set_normal":
-		return reflect.ValueOf(self._set_normal)
+		return gd.ValueOf(self._set_normal)
 	case "_set_aabb":
-		return reflect.ValueOf(self._set_aabb)
+		return gd.ValueOf(self._set_aabb)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}

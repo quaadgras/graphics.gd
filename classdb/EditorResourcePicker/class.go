@@ -171,7 +171,7 @@ func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Ob
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, menu_node)
 	}
 }
@@ -184,7 +184,7 @@ This virtual method can be implemented to handle context menu items not handled 
 func (Instance) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -320,7 +320,7 @@ func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, menu_node)
 	}
 }
@@ -333,7 +333,7 @@ This virtual method can be implemented to handle context menu items not handled 
 func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -498,9 +498,9 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_create_options":
-		return reflect.ValueOf(self._set_create_options)
+		return gd.ValueOf(self._set_create_options)
 	case "_handle_menu_selected":
-		return reflect.ValueOf(self._handle_menu_selected)
+		return gd.ValueOf(self._handle_menu_selected)
 	default:
 		return gd.VirtualByName(HBoxContainer.Advanced(self.AsHBoxContainer()), name)
 	}
@@ -509,9 +509,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_set_create_options":
-		return reflect.ValueOf(self._set_create_options)
+		return gd.ValueOf(self._set_create_options)
 	case "_handle_menu_selected":
-		return reflect.ValueOf(self._handle_menu_selected)
+		return gd.ValueOf(self._handle_menu_selected)
 	default:
 		return gd.VirtualByName(HBoxContainer.Instance(self.AsHBoxContainer()), name)
 	}

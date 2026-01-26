@@ -147,7 +147,7 @@ func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []a
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, enable, gd.ArrayAs[[]any](gd.InternalArray(options)))
 	}
 }
@@ -161,7 +161,7 @@ func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.E
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, gd.ArrayAs[[]any](gd.InternalArray(data)))
 	}
 }
@@ -175,7 +175,7 @@ func (Instance) _tick(impl func(ptr gdclass.Receiver, frame_time Float.X, proces
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, Float.X(frame_time), Float.X(process_time), Float.X(physics_time), Float.X(physics_frame_time))
 	}
 }
@@ -231,7 +231,7 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, enable, options)
 	}
 }
@@ -245,7 +245,7 @@ func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, data)
 	}
 }
@@ -259,7 +259,7 @@ func (class) _tick(impl func(ptr gdclass.Receiver, frame_time float64, process_t
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, frame_time, process_time, physics_time, physics_frame_time)
 	}
 }
@@ -282,11 +282,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_toggle":
-		return reflect.ValueOf(self._toggle)
+		return gd.ValueOf(self._toggle)
 	case "_add_frame":
-		return reflect.ValueOf(self._add_frame)
+		return gd.ValueOf(self._add_frame)
 	case "_tick":
-		return reflect.ValueOf(self._tick)
+		return gd.ValueOf(self._tick)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -295,11 +295,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_toggle":
-		return reflect.ValueOf(self._toggle)
+		return gd.ValueOf(self._toggle)
 	case "_add_frame":
-		return reflect.ValueOf(self._add_frame)
+		return gd.ValueOf(self._add_frame)
 	case "_tick":
-		return reflect.ValueOf(self._tick)
+		return gd.ValueOf(self._tick)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

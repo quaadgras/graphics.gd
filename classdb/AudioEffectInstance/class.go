@@ -155,7 +155,7 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, src_buffer gdextension.
 		var src_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, src_buffer, dst_buffer, int(frame_count))
 	}
 }
@@ -170,7 +170,7 @@ Should return true to force the [AudioServer] to always call [Process], even if 
 */
 func (Instance) _process_silence(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -232,7 +232,7 @@ func (class) _process(impl func(ptr gdclass.Receiver, src_buffer gdextension.Poi
 		var src_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, src_buffer, dst_buffer, frame_count)
 	}
 }
@@ -247,7 +247,7 @@ Should return true to force the [AudioServer] to always call [Process], even if 
 */
 func (class) _process_silence(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -273,9 +273,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_process_silence":
-		return reflect.ValueOf(self._process_silence)
+		return gd.ValueOf(self._process_silence)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -284,9 +284,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_process_silence":
-		return reflect.ValueOf(self._process_silence)
+		return gd.ValueOf(self._process_silence)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

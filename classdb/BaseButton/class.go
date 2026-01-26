@@ -170,7 +170,7 @@ Called when the button is pressed. If you need to know the button's pressed stat
 */
 func (Instance) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -183,7 +183,7 @@ Called when the button is toggled (only if [ToggleMode] is active).
 func (Instance) _toggled(impl func(ptr gdclass.Receiver, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, toggled_on)
 	}
 }
@@ -409,7 +409,7 @@ Called when the button is pressed. If you need to know the button's pressed stat
 */
 func (class) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -422,7 +422,7 @@ Called when the button is toggled (only if [ToggleMode] is active).
 func (class) _toggled(impl func(ptr gdclass.Receiver, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, toggled_on)
 	}
 }
@@ -684,9 +684,9 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_pressed":
-		return reflect.ValueOf(self._pressed)
+		return gd.ValueOf(self._pressed)
 	case "_toggled":
-		return reflect.ValueOf(self._toggled)
+		return gd.ValueOf(self._toggled)
 	default:
 		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
@@ -695,9 +695,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_pressed":
-		return reflect.ValueOf(self._pressed)
+		return gd.ValueOf(self._pressed)
 	case "_toggled":
-		return reflect.ValueOf(self._toggled)
+		return gd.ValueOf(self._toggled)
 	default:
 		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}

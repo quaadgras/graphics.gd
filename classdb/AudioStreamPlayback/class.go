@@ -194,7 +194,7 @@ Override this method to customize what happens when the playback starts at the g
 func (Instance) _start(impl func(ptr gdclass.Receiver, from_pos Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, Float.X(from_pos))
 	}
 }
@@ -206,7 +206,7 @@ Override this method to customize what happens when the playback is stopped, suc
 */
 func (Instance) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -216,7 +216,7 @@ Overridable method. Should return true if this playback is active and playing it
 */
 func (Instance) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -227,7 +227,7 @@ Overridable method. Should return how many times this audio stream has looped. M
 */
 func (Instance) _get_loop_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -238,7 +238,7 @@ Overridable method. Should return the current progress along the audio stream, i
 */
 func (Instance) _get_playback_position(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -252,7 +252,7 @@ Override this method to customize what happens when seeking this audio stream at
 func (Instance) _seek(impl func(ptr gdclass.Receiver, position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, Float.X(position))
 	}
 }
@@ -267,7 +267,7 @@ func (Instance) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_sc
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, buffer, Float.X(rate_scale), int(frames))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -280,7 +280,7 @@ Overridable method. Called whenever the audio stream is mixed if the playback is
 */
 func (Instance) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -296,7 +296,7 @@ func (Instance) _set_parameter(impl func(ptr gdclass.Receiver, name string, valu
 		defer pointers.End(gd.InternalStringName(name))
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, name.String(), value.Interface())
 	}
 }
@@ -310,7 +310,7 @@ func (Instance) _get_parameter(impl func(ptr gdclass.Receiver, name string) any)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, name.String())
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -464,7 +464,7 @@ Override this method to customize what happens when the playback starts at the g
 func (class) _start(impl func(ptr gdclass.Receiver, from_pos float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, from_pos)
 	}
 }
@@ -476,7 +476,7 @@ Override this method to customize what happens when the playback is stopped, suc
 */
 func (class) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -486,7 +486,7 @@ Overridable method. Should return true if this playback is active and playing it
 */
 func (class) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -497,7 +497,7 @@ Overridable method. Should return how many times this audio stream has looped. M
 */
 func (class) _get_loop_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -508,7 +508,7 @@ Overridable method. Should return the current progress along the audio stream, i
 */
 func (class) _get_playback_position(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -522,7 +522,7 @@ Override this method to customize what happens when seeking this audio stream at
 func (class) _seek(impl func(ptr gdclass.Receiver, position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, position)
 	}
 }
@@ -537,7 +537,7 @@ func (class) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, buffer, rate_scale, frames)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -550,7 +550,7 @@ Overridable method. Called whenever the audio stream is mixed if the playback is
 */
 func (class) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -566,7 +566,7 @@ func (class) _set_parameter(impl func(ptr gdclass.Receiver, name String.Name, va
 		defer pointers.End(gd.InternalStringName(name))
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(value))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, name, value)
 	}
 }
@@ -580,7 +580,7 @@ func (class) _get_parameter(impl func(ptr gdclass.Receiver, name String.Name) va
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, name)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -707,25 +707,25 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_start":
-		return reflect.ValueOf(self._start)
+		return gd.ValueOf(self._start)
 	case "_stop":
-		return reflect.ValueOf(self._stop)
+		return gd.ValueOf(self._stop)
 	case "_is_playing":
-		return reflect.ValueOf(self._is_playing)
+		return gd.ValueOf(self._is_playing)
 	case "_get_loop_count":
-		return reflect.ValueOf(self._get_loop_count)
+		return gd.ValueOf(self._get_loop_count)
 	case "_get_playback_position":
-		return reflect.ValueOf(self._get_playback_position)
+		return gd.ValueOf(self._get_playback_position)
 	case "_seek":
-		return reflect.ValueOf(self._seek)
+		return gd.ValueOf(self._seek)
 	case "_mix":
-		return reflect.ValueOf(self._mix)
+		return gd.ValueOf(self._mix)
 	case "_tag_used_streams":
-		return reflect.ValueOf(self._tag_used_streams)
+		return gd.ValueOf(self._tag_used_streams)
 	case "_set_parameter":
-		return reflect.ValueOf(self._set_parameter)
+		return gd.ValueOf(self._set_parameter)
 	case "_get_parameter":
-		return reflect.ValueOf(self._get_parameter)
+		return gd.ValueOf(self._get_parameter)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -734,25 +734,25 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_start":
-		return reflect.ValueOf(self._start)
+		return gd.ValueOf(self._start)
 	case "_stop":
-		return reflect.ValueOf(self._stop)
+		return gd.ValueOf(self._stop)
 	case "_is_playing":
-		return reflect.ValueOf(self._is_playing)
+		return gd.ValueOf(self._is_playing)
 	case "_get_loop_count":
-		return reflect.ValueOf(self._get_loop_count)
+		return gd.ValueOf(self._get_loop_count)
 	case "_get_playback_position":
-		return reflect.ValueOf(self._get_playback_position)
+		return gd.ValueOf(self._get_playback_position)
 	case "_seek":
-		return reflect.ValueOf(self._seek)
+		return gd.ValueOf(self._seek)
 	case "_mix":
-		return reflect.ValueOf(self._mix)
+		return gd.ValueOf(self._mix)
 	case "_tag_used_streams":
-		return reflect.ValueOf(self._tag_used_streams)
+		return gd.ValueOf(self._tag_used_streams)
 	case "_set_parameter":
-		return reflect.ValueOf(self._set_parameter)
+		return gd.ValueOf(self._set_parameter)
 	case "_get_parameter":
-		return reflect.ValueOf(self._get_parameter)
+		return gd.ValueOf(self._get_parameter)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

@@ -158,7 +158,7 @@ Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
 */
 func (Instance) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -171,7 +171,7 @@ Implement this in GDExtension to return the camera [Projection.XYZW].
 */
 func (Instance) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -182,7 +182,7 @@ Implement this in GDExtension to return the view count.
 */
 func (Instance) _get_view_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -194,7 +194,7 @@ Implement this in GDExtension to return the eye offset for the given 'view'.
 func (Instance) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(view))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
@@ -208,7 +208,7 @@ Implement this in GDExtension to return the view [Projection.XYZW] for the given
 func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(view))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -221,7 +221,7 @@ Implement this in GDExtension to return the [Resource.ID] of the uniform buffer 
 */
 func (Instance) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.UniformSet) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -276,7 +276,7 @@ Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
 */
 func (class) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -289,7 +289,7 @@ Implement this in GDExtension to return the camera [Projection.XYZW].
 */
 func (class) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -300,7 +300,7 @@ Implement this in GDExtension to return the view count.
 */
 func (class) _get_view_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -312,7 +312,7 @@ Implement this in GDExtension to return the eye offset for the given 'view'.
 func (class) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, view)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -326,7 +326,7 @@ Implement this in GDExtension to return the view [Projection.XYZW] for the given
 func (class) _get_view_projection(impl func(ptr gdclass.Receiver, view int64) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, view)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -339,7 +339,7 @@ Implement this in GDExtension to return the [Resource.ID] of the uniform buffer 
 */
 func (class) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -367,17 +367,17 @@ func (self Instance) AsRenderSceneData() RenderSceneData.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_cam_transform":
-		return reflect.ValueOf(self._get_cam_transform)
+		return gd.ValueOf(self._get_cam_transform)
 	case "_get_cam_projection":
-		return reflect.ValueOf(self._get_cam_projection)
+		return gd.ValueOf(self._get_cam_projection)
 	case "_get_view_count":
-		return reflect.ValueOf(self._get_view_count)
+		return gd.ValueOf(self._get_view_count)
 	case "_get_view_eye_offset":
-		return reflect.ValueOf(self._get_view_eye_offset)
+		return gd.ValueOf(self._get_view_eye_offset)
 	case "_get_view_projection":
-		return reflect.ValueOf(self._get_view_projection)
+		return gd.ValueOf(self._get_view_projection)
 	case "_get_uniform_buffer":
-		return reflect.ValueOf(self._get_uniform_buffer)
+		return gd.ValueOf(self._get_uniform_buffer)
 	default:
 		return gd.VirtualByName(RenderSceneData.Advanced(self.AsRenderSceneData()), name)
 	}
@@ -386,17 +386,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_cam_transform":
-		return reflect.ValueOf(self._get_cam_transform)
+		return gd.ValueOf(self._get_cam_transform)
 	case "_get_cam_projection":
-		return reflect.ValueOf(self._get_cam_projection)
+		return gd.ValueOf(self._get_cam_projection)
 	case "_get_view_count":
-		return reflect.ValueOf(self._get_view_count)
+		return gd.ValueOf(self._get_view_count)
 	case "_get_view_eye_offset":
-		return reflect.ValueOf(self._get_view_eye_offset)
+		return gd.ValueOf(self._get_view_eye_offset)
 	case "_get_view_projection":
-		return reflect.ValueOf(self._get_view_projection)
+		return gd.ValueOf(self._get_view_projection)
 	case "_get_uniform_buffer":
-		return reflect.ValueOf(self._get_uniform_buffer)
+		return gd.ValueOf(self._get_uniform_buffer)
 	default:
 		return gd.VirtualByName(RenderSceneData.Instance(self.AsRenderSceneData()), name)
 	}

@@ -162,7 +162,7 @@ This method is executed by the Editor when File > Run is used.
 */
 func (Instance) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -241,7 +241,7 @@ This method is executed by the Editor when File > Run is used.
 */
 func (class) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -296,7 +296,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_run":
-		return reflect.ValueOf(self._run)
+		return gd.ValueOf(self._run)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -305,7 +305,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_run":
-		return reflect.ValueOf(self._run)
+		return gd.ValueOf(self._run)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

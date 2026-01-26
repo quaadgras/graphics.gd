@@ -168,7 +168,7 @@ func (Instance) _get_build_dependencies(impl func(ptr gdclass.Receiver, path str
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String())
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -241,7 +241,7 @@ func (class) _get_build_dependencies(impl func(ptr gdclass.Receiver, path String
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -270,7 +270,7 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_build_dependencies":
-		return reflect.ValueOf(self._get_build_dependencies)
+		return gd.ValueOf(self._get_build_dependencies)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -279,7 +279,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_build_dependencies":
-		return reflect.ValueOf(self._get_build_dependencies)
+		return gd.ValueOf(self._get_build_dependencies)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

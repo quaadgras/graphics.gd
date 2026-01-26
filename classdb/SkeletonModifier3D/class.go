@@ -181,7 +181,7 @@ Override this virtual method to implement a custom skeleton modifier. You should
 func (Instance) _process_modification_with_delta(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, Float.X(delta))
 	}
 }
@@ -197,7 +197,7 @@ Override this virtual method to implement a custom skeleton modifier. You should
 */
 func (Instance) _process_modification(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -213,7 +213,7 @@ func (Instance) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton S
 		var new_skeleton = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetSkeleton3D(new_skeleton[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, old_skeleton, new_skeleton)
 	}
 }
@@ -223,7 +223,7 @@ Called when bone name and index need to be validated such as the timing of the e
 */
 func (Instance) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -327,7 +327,7 @@ Override this virtual method to implement a custom skeleton modifier. You should
 func (class) _process_modification_with_delta(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, delta)
 	}
 }
@@ -343,7 +343,7 @@ Override this virtual method to implement a custom skeleton modifier. You should
 */
 func (class) _process_modification(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -359,7 +359,7 @@ func (class) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton [1]g
 		var new_skeleton = [1]gdclass.Skeleton3D{gdclass.NewSkeleton3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
 		defer pointers.End(gdclass.GetSkeleton3D(new_skeleton[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, old_skeleton, new_skeleton)
 	}
 }
@@ -369,7 +369,7 @@ Called when bone name and index need to be validated such as the timing of the e
 */
 func (class) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -454,13 +454,13 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_modification_with_delta":
-		return reflect.ValueOf(self._process_modification_with_delta)
+		return gd.ValueOf(self._process_modification_with_delta)
 	case "_process_modification":
-		return reflect.ValueOf(self._process_modification)
+		return gd.ValueOf(self._process_modification)
 	case "_skeleton_changed":
-		return reflect.ValueOf(self._skeleton_changed)
+		return gd.ValueOf(self._skeleton_changed)
 	case "_validate_bone_names":
-		return reflect.ValueOf(self._validate_bone_names)
+		return gd.ValueOf(self._validate_bone_names)
 	default:
 		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
@@ -469,13 +469,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_process_modification_with_delta":
-		return reflect.ValueOf(self._process_modification_with_delta)
+		return gd.ValueOf(self._process_modification_with_delta)
 	case "_process_modification":
-		return reflect.ValueOf(self._process_modification)
+		return gd.ValueOf(self._process_modification)
 	case "_skeleton_changed":
-		return reflect.ValueOf(self._skeleton_changed)
+		return gd.ValueOf(self._skeleton_changed)
 	case "_validate_bone_names":
-		return reflect.ValueOf(self._validate_bone_names)
+		return gd.ValueOf(self._validate_bone_names)
 	default:
 		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}

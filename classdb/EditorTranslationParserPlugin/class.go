@@ -218,7 +218,7 @@ func (Instance) _parse_file(impl func(ptr gdclass.Receiver, path string) [][]str
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](ret)))
 
@@ -234,7 +234,7 @@ Gets the list of file extensions to associate with this parser, e.g. ["csv"].
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -297,7 +297,7 @@ func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) A
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -313,7 +313,7 @@ Gets the list of file extensions to associate with this parser, e.g. ["csv"].
 */
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -344,9 +344,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_parse_file":
-		return reflect.ValueOf(self._parse_file)
+		return gd.ValueOf(self._parse_file)
 	case "_get_recognized_extensions":
-		return reflect.ValueOf(self._get_recognized_extensions)
+		return gd.ValueOf(self._get_recognized_extensions)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -355,9 +355,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_parse_file":
-		return reflect.ValueOf(self._parse_file)
+		return gd.ValueOf(self._parse_file)
 	case "_get_recognized_extensions":
-		return reflect.ValueOf(self._get_recognized_extensions)
+		return gd.ValueOf(self._get_recognized_extensions)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

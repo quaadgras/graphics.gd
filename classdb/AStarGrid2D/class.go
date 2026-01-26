@@ -220,7 +220,7 @@ func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, en
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -237,7 +237,7 @@ func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Point, to_
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -647,7 +647,7 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -664,7 +664,7 @@ func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1006,9 +1006,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_estimate_cost":
-		return reflect.ValueOf(self._estimate_cost)
+		return gd.ValueOf(self._estimate_cost)
 	case "_compute_cost":
-		return reflect.ValueOf(self._compute_cost)
+		return gd.ValueOf(self._compute_cost)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -1017,9 +1017,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_estimate_cost":
-		return reflect.ValueOf(self._estimate_cost)
+		return gd.ValueOf(self._estimate_cost)
 	case "_compute_cost":
-		return reflect.ValueOf(self._compute_cost)
+		return gd.ValueOf(self._compute_cost)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}
