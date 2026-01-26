@@ -290,30 +290,30 @@ func (self Instance) HasVarying(name string) bool { //gd:VisualShader.has_varyin
 type Advanced = class
 type class [1]gdclass.VisualShader
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetVisualShader(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.VisualShader](obj[0])
+		self[0] = gdclass.NewVisualShader(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.VisualShader](obj[0])
+		self[0] = gdclass.NewVisualShader(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetVisualShader(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.VisualShader{pointers.Add[gdclass.VisualShader]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.VisualShader{gdclass.NewVisualShader(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetVisualShader(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -323,7 +323,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.VisualShader{pointers.New[gdclass.VisualShader]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.VisualShader{gdclass.NewVisualShader(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -360,7 +360,7 @@ func (self class) AddNode(atype Type, node [1]gdclass.VisualShaderNode, position
 		node     gdextension.Object
 		position Vector2.XY
 		id       int64
-	}{atype, gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position, id})
+	}{atype, gdextension.Object(gd.ObjectChecked(gdclass.GetVisualShaderNode(node[0]))), position, id})
 }
 
 /*
@@ -372,7 +372,7 @@ func (self class) GetNode(atype Type, id int64) [1]gdclass.VisualShaderNode { //
 		atype Type
 		id    int64
 	}{atype, id})
-	var ret = [1]gdclass.VisualShaderNode{gd.PointerWithOwnershipTransferredToGo[gdclass.VisualShaderNode](r_ret)}
+	var ret = [1]gdclass.VisualShaderNode{gdclass.NewVisualShaderNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -595,32 +595,32 @@ func (self class) GetGraphOffset() Vector2.XY { //gd:VisualShader.get_graph_offs
 	return ret
 }
 func (self class) AsVisualShader() Advanced {
-	return Advanced{pointers.AsA[gdclass.VisualShader](self[0])}
+	return Advanced{gdclass.NewVisualShader(self.AsObject()[0])}
 }
 func (self Instance) AsVisualShader() Instance {
-	return Instance{pointers.AsA[gdclass.VisualShader](self[0])}
+	return Instance{gdclass.NewVisualShader(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualShader() Instance { return self.Super().AsVisualShader() }
 func (self class) AsShader() Shader.Advanced {
-	return Shader.Advanced{pointers.AsA[gdclass.Shader](self[0])}
+	return Shader.Advanced{gdclass.NewShader(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsShader() Shader.Instance { return self.Super().AsShader() }
 func (self Instance) AsShader() Shader.Instance {
-	return Shader.Instance{pointers.AsA[gdclass.Shader](self[0])}
+	return Shader.Instance{gdclass.NewShader(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -637,7 +637,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShader", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.VisualShader](ptr)} })
+	gdclass.Register("VisualShader", func(ptr gd.Object) any { return Instance{gdclass.NewVisualShader(ptr)} })
 }
 
 type Type int //gd:VisualShader.Type

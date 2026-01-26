@@ -194,30 +194,30 @@ func (self Instance) SetInput(name string, value any) Instance { //gd:XRPosition
 type Advanced = class
 type class [1]gdclass.XRPositionalTracker
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetXRPositionalTracker(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRPositionalTracker](obj[0])
+		self[0] = gdclass.NewXRPositionalTracker(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRPositionalTracker](obj[0])
+		self[0] = gdclass.NewXRPositionalTracker(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetXRPositionalTracker(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.XRPositionalTracker{pointers.Add[gdclass.XRPositionalTracker]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.XRPositionalTracker{gdclass.NewXRPositionalTracker(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetXRPositionalTracker(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -227,7 +227,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.XRPositionalTracker{pointers.New[gdclass.XRPositionalTracker]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.XRPositionalTracker{gdclass.NewXRPositionalTracker(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -301,7 +301,7 @@ Returns the current [XRPose] state object for the bound 'name' pose.
 //go:nosplit
 func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
+	var ret = [1]gdclass.XRPose{gdclass.NewXRPose(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -362,7 +362,7 @@ func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance), flags ...Signa
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pose_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pose_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -378,7 +378,7 @@ func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pose_lost_tracking"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pose_lost_tracking"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -394,7 +394,7 @@ func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -410,7 +410,7 @@ func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -426,7 +426,7 @@ func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -442,7 +442,7 @@ func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.X
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -458,7 +458,7 @@ func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -467,27 +467,27 @@ func (self class) ProfileChanged() Signal.Any {
 }
 
 func (self class) AsXRPositionalTracker() Advanced {
-	return Advanced{pointers.AsA[gdclass.XRPositionalTracker](self[0])}
+	return Advanced{gdclass.NewXRPositionalTracker(self.AsObject()[0])}
 }
 func (self Instance) AsXRPositionalTracker() Instance {
-	return Instance{pointers.AsA[gdclass.XRPositionalTracker](self[0])}
+	return Instance{gdclass.NewXRPositionalTracker(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsXRPositionalTracker() Instance {
 	return self.Super().AsXRPositionalTracker()
 }
 func (self class) AsXRTracker() XRTracker.Advanced {
-	return XRTracker.Advanced{pointers.AsA[gdclass.XRTracker](self[0])}
+	return XRTracker.Advanced{gdclass.NewXRTracker(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
 func (self Instance) AsXRTracker() XRTracker.Instance {
-	return XRTracker.Instance{pointers.AsA[gdclass.XRTracker](self[0])}
+	return XRTracker.Instance{gdclass.NewXRTracker(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -504,7 +504,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRPositionalTracker", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.XRPositionalTracker](ptr)} })
+	gdclass.Register("XRPositionalTracker", func(ptr gd.Object) any { return Instance{gdclass.NewXRPositionalTracker(ptr)} })
 }
 
 type TrackerHand int //gd:XRPositionalTracker.TrackerHand

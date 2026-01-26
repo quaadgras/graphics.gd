@@ -499,30 +499,30 @@ func (self Instance) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame
 type Advanced = class
 type class [1]gdclass.TileSetAtlasSource
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTileSetAtlasSource(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileSetAtlasSource](obj[0])
+		self[0] = gdclass.NewTileSetAtlasSource(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileSetAtlasSource](obj[0])
+		self[0] = gdclass.NewTileSetAtlasSource(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTileSetAtlasSource(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TileSetAtlasSource{pointers.Add[gdclass.TileSetAtlasSource]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TileSetAtlasSource{gdclass.NewTileSetAtlasSource(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTileSetAtlasSource(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -532,7 +532,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TileSetAtlasSource{pointers.New[gdclass.TileSetAtlasSource]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TileSetAtlasSource{gdclass.NewTileSetAtlasSource(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -607,13 +607,13 @@ func (self Instance) SetUseTexturePadding(value bool) Instance { //gd:TileSetAtl
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TileSetAtlasSource.set_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -739,7 +739,7 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 		margins             Vector2i.XY
 		separation          Vector2i.XY
 		texture_region_size Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), margins, separation, texture_region_size})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), margins, separation, texture_region_size})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -983,7 +983,7 @@ func (self class) GetTileData(atlas_coords Vector2i.XY, alternative_tile int64) 
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 	}{atlas_coords, alternative_tile})
-	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret)}
+	var ret = [1]gdclass.TileData{gdclass.NewTileData(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1024,7 +1024,7 @@ If [UseTexturePadding] is false, returns [Texture]. Otherwise, returns and inter
 //go:nosplit
 func (self class) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_runtime_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1047,34 +1047,34 @@ func (self class) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ i
 	return ret
 }
 func (self class) AsTileSetAtlasSource() Advanced {
-	return Advanced{pointers.AsA[gdclass.TileSetAtlasSource](self[0])}
+	return Advanced{gdclass.NewTileSetAtlasSource(self.AsObject()[0])}
 }
 func (self Instance) AsTileSetAtlasSource() Instance {
-	return Instance{pointers.AsA[gdclass.TileSetAtlasSource](self[0])}
+	return Instance{gdclass.NewTileSetAtlasSource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTileSetAtlasSource() Instance { return self.Super().AsTileSetAtlasSource() }
 func (self class) AsTileSetSource() TileSetSource.Advanced {
-	return TileSetSource.Advanced{pointers.AsA[gdclass.TileSetSource](self[0])}
+	return TileSetSource.Advanced{gdclass.NewTileSetSource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTileSetSource() TileSetSource.Instance {
 	return self.Super().AsTileSetSource()
 }
 func (self Instance) AsTileSetSource() TileSetSource.Instance {
-	return TileSetSource.Instance{pointers.AsA[gdclass.TileSetSource](self[0])}
+	return TileSetSource.Instance{gdclass.NewTileSetSource(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1091,7 +1091,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileSetAtlasSource", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TileSetAtlasSource](ptr)} })
+	gdclass.Register("TileSetAtlasSource", func(ptr gd.Object) any { return Instance{gdclass.NewTileSetAtlasSource(ptr)} })
 }
 
 type TileAnimationMode int //gd:TileSetAtlasSource.TileAnimationMode

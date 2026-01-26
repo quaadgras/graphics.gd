@@ -154,30 +154,30 @@ func (self Instance) SetAdditionalData(extension_name string, additional_data an
 type Advanced = class
 type class [1]gdclass.GLTFMesh
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFMesh(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFMesh](obj[0])
+		self[0] = gdclass.NewGLTFMesh(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFMesh](obj[0])
+		self[0] = gdclass.NewGLTFMesh(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFMesh(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFMesh{pointers.Add[gdclass.GLTFMesh]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFMesh{gdclass.NewGLTFMesh(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFMesh(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -187,7 +187,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFMesh{pointers.New[gdclass.GLTFMesh]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFMesh{gdclass.NewGLTFMesh(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -262,13 +262,13 @@ func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFMesh
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
+	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImporterMesh(mesh[0])))})
 }
 
 //go:nosplit
@@ -327,22 +327,22 @@ func (self class) SetAdditionalData(extension_name String.Name, additional_data 
 		additional_data gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))})
 }
-func (self class) AsGLTFMesh() Advanced         { return Advanced{pointers.AsA[gdclass.GLTFMesh](self[0])} }
-func (self Instance) AsGLTFMesh() Instance      { return Instance{pointers.AsA[gdclass.GLTFMesh](self[0])} }
+func (self class) AsGLTFMesh() Advanced         { return Advanced{gdclass.NewGLTFMesh(self.AsObject()[0])} }
+func (self Instance) AsGLTFMesh() Instance      { return Instance{gdclass.NewGLTFMesh(self.AsObject()[0])} }
 func (self *Extension[T]) AsGLTFMesh() Instance { return self.Super().AsGLTFMesh() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -359,5 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFMesh", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFMesh](ptr)} })
+	gdclass.Register("GLTFMesh", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFMesh(ptr)} })
 }

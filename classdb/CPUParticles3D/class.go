@@ -272,30 +272,30 @@ func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:CPUPar
 type Advanced = class
 type class [1]gdclass.CPUParticles3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCPUParticles3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CPUParticles3D](obj[0])
+		self[0] = gdclass.NewCPUParticles3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CPUParticles3D](obj[0])
+		self[0] = gdclass.NewCPUParticles3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCPUParticles3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CPUParticles3D{pointers.Add[gdclass.CPUParticles3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CPUParticles3D{gdclass.NewCPUParticles3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCPUParticles3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -305,7 +305,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CPUParticles3D{pointers.New[gdclass.CPUParticles3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CPUParticles3D{gdclass.NewCPUParticles3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1562,13 +1562,13 @@ func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles3D.get_draw_order
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CPUParticles3D.set_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(mesh[0])))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:CPUParticles3D.get_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
+	var ret = [1]gdclass.Mesh{gdclass.NewMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1717,7 +1717,7 @@ func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		param Parameter
 		curve gdextension.Object
-	}{param, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	}{param, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
 
 /*
@@ -1728,7 +1728,7 @@ Returns the [Curve] of the parameter specified by [Parameter].
 //go:nosplit
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles3D.get_param_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_param_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ param Parameter }{param})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1746,25 +1746,25 @@ func (self class) GetColor() Color.RGBA { //gd:CPUParticles3D.get_color
 
 //go:nosplit
 func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.set_color_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(ramp[0])))})
 }
 
 //go:nosplit
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
+	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.set_color_initial_ramp
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGradient(ramp[0])))})
 }
 
 //go:nosplit
 func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_initial_ramp
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
+	var ret = [1]gdclass.Gradient{gdclass.NewGradient(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1954,37 +1954,37 @@ func (self class) SetSplitScale(split_scale bool) { //gd:CPUParticles3D.set_spli
 //go:nosplit
 func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_x
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_x, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_x
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(scale_curve[0])))})
 }
 
 //go:nosplit
 func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_y
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_y, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_y
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(scale_curve[0])))})
 }
 
 //go:nosplit
 func (self class) GetScaleCurveZ() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_z
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_z, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleCurveZ(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_z
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_z, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_z, 0|(gdextension.SizeObject<<4), &struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(scale_curve[0])))})
 }
 
 /*
@@ -1995,7 +1995,7 @@ Sets this node's properties to match a given [GPUParticles3D] node with an assig
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles3D.convert_from_particles
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(particles[0])))})
 }
 
 /*
@@ -2008,7 +2008,7 @@ func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2017,41 +2017,41 @@ func (self class) Finished() Signal.Any {
 }
 
 func (self class) AsCPUParticles3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.CPUParticles3D](self[0])}
+	return Advanced{gdclass.NewCPUParticles3D(self.AsObject()[0])}
 }
 func (self Instance) AsCPUParticles3D() Instance {
-	return Instance{pointers.AsA[gdclass.CPUParticles3D](self[0])}
+	return Instance{gdclass.NewCPUParticles3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCPUParticles3D() Instance { return self.Super().AsCPUParticles3D() }
 func (self class) AsGeometryInstance3D() GeometryInstance3D.Advanced {
-	return GeometryInstance3D.Advanced{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Advanced{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
 	return self.Super().AsGeometryInstance3D()
 }
 func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
-	return GeometryInstance3D.Instance{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Instance{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2068,7 +2068,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CPUParticles3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CPUParticles3D](ptr)} })
+	gdclass.Register("CPUParticles3D", func(ptr gd.Object) any { return Instance{gdclass.NewCPUParticles3D(ptr)} })
 }
 
 type DrawOrder int //gd:CPUParticles3D.DrawOrder

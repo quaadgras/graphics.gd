@@ -193,30 +193,30 @@ func (self Instance) FitChildInRect(child Control.Instance, rect Rect2.PositionS
 type Advanced = class
 type class [1]gdclass.Container
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetContainer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Container](obj[0])
+		self[0] = gdclass.NewContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Container](obj[0])
+		self[0] = gdclass.NewContainer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetContainer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Container{pointers.Add[gdclass.Container]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Container{gdclass.NewContainer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -226,7 +226,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Container{pointers.New[gdclass.Container]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Container{gdclass.NewContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -283,7 +283,7 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		child gdextension.Object
 		rect  Rect2.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(child[0]))), rect})
 }
 
 /*
@@ -294,7 +294,7 @@ func (self Instance) OnPreSortChildren(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -310,7 +310,7 @@ func (self Instance) OnSortChildren(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("sort_children"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("sort_children"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -318,29 +318,29 @@ func (self class) SortChildren() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`sort_children`))))
 }
 
-func (self class) AsContainer() Advanced { return Advanced{pointers.AsA[gdclass.Container](self[0])} }
+func (self class) AsContainer() Advanced { return Advanced{gdclass.NewContainer(self.AsObject()[0])} }
 func (self Instance) AsContainer() Instance {
-	return Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Instance { return self.Super().AsContainer() }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -365,7 +365,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Container", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Container](ptr)} })
+	gdclass.Register("Container", func(ptr gd.Object) any { return Instance{gdclass.NewContainer(ptr)} })
 }
 
 const NotificationPreSortChildren Object.Notification = 50 //gd:Container.NOTIFICATION_PRE_SORT_CHILDREN

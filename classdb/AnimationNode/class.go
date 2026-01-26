@@ -275,7 +275,7 @@ func (Instance) _get_child_by_name(impl func(ptr gdclass.Receiver, name string) 
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, name.String())
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetAnimationNode(ret[0])[0])
 
 		if !ok {
 			return
@@ -537,30 +537,30 @@ func (self Instance) GetParameter(name string) any { //gd:AnimationNode.get_para
 type Advanced = class
 type class [1]gdclass.AnimationNode
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimationNode(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationNode](obj[0])
+		self[0] = gdclass.NewAnimationNode(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimationNode](obj[0])
+		self[0] = gdclass.NewAnimationNode(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimationNode(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimationNode{pointers.Add[gdclass.AnimationNode]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AnimationNode{gdclass.NewAnimationNode(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimationNode(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -570,7 +570,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimationNode{pointers.New[gdclass.AnimationNode]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AnimationNode{gdclass.NewAnimationNode(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -637,7 +637,7 @@ func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, name)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetAnimationNode(ret[0])[0])
 
 		if !ok {
 			return
@@ -898,7 +898,7 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 		filter              FilterAction
 		sync                bool
 		test_only           bool
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), time, seek, is_external_seeking, blend, filter, sync, test_only})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetAnimationNode(node[0]))), time, seek, is_external_seeking, blend, filter, sync, test_only})
 	var ret = r_ret
 	return ret
 }
@@ -959,7 +959,7 @@ func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -980,7 +980,7 @@ func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name stri
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1001,7 +1001,7 @@ func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string),
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1010,25 +1010,25 @@ func (self class) AnimationNodeRemoved() Signal.Any {
 }
 
 func (self class) AsAnimationNode() Advanced {
-	return Advanced{pointers.AsA[gdclass.AnimationNode](self[0])}
+	return Advanced{gdclass.NewAnimationNode(self.AsObject()[0])}
 }
 func (self Instance) AsAnimationNode() Instance {
-	return Instance{pointers.AsA[gdclass.AnimationNode](self[0])}
+	return Instance{gdclass.NewAnimationNode(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimationNode() Instance { return self.Super().AsAnimationNode() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1077,7 +1077,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationNode", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimationNode](ptr)} })
+	gdclass.Register("AnimationNode", func(ptr gd.Object) any { return Instance{gdclass.NewAnimationNode(ptr)} })
 }
 
 type FilterAction int //gd:AnimationNode.FilterAction

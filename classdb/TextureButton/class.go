@@ -152,30 +152,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.TextureButton
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTextureButton(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextureButton](obj[0])
+		self[0] = gdclass.NewTextureButton(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TextureButton](obj[0])
+		self[0] = gdclass.NewTextureButton(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTextureButton(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TextureButton{pointers.Add[gdclass.TextureButton]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TextureButton{gdclass.NewTextureButton(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTextureButton(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -185,7 +185,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TextureButton{pointers.New[gdclass.TextureButton]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TextureButton{gdclass.NewTextureButton(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -341,32 +341,32 @@ func (self Instance) SetFlipV(value bool) Instance { //gd:TextureButton.flip_v
 
 //go:nosplit
 func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_normal
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_pressed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) SetTextureHover(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_hover
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_hover, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_hover, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) SetTextureDisabled(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_disabled
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_disabled, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_disabled, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) SetTextureFocused(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_focused
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_focused, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_focused, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) SetClickMask(mask [1]gdclass.BitMap) { //gd:TextureButton.set_click_mask
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_click_mask, 0|(gdextension.SizeObject<<4), &struct{ mask gdextension.Object }{gdextension.Object(gd.ObjectChecked(mask[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_click_mask, 0|(gdextension.SizeObject<<4), &struct{ mask gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetBitMap(mask[0])))})
 }
 
 //go:nosplit
@@ -406,42 +406,42 @@ func (self class) IsFlippedV() bool { //gd:TextureButton.is_flipped_v
 //go:nosplit
 func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_normal
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_normal, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_pressed
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_pressed, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTextureHover() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_hover
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_hover, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTextureDisabled() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_disabled
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_disabled, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTextureFocused() [1]gdclass.Texture2D { //gd:TextureButton.get_texture_focused
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_focused, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetClickMask() [1]gdclass.BitMap { //gd:TextureButton.get_click_mask
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_click_mask, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.BitMap{gd.PointerWithOwnershipTransferredToGo[gdclass.BitMap](r_ret)}
+	var ret = [1]gdclass.BitMap{gdclass.NewBitMap(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -459,37 +459,37 @@ func (self class) GetStretchMode() StretchMode { //gd:TextureButton.get_stretch_
 	return ret
 }
 func (self class) AsTextureButton() Advanced {
-	return Advanced{pointers.AsA[gdclass.TextureButton](self[0])}
+	return Advanced{gdclass.NewTextureButton(self.AsObject()[0])}
 }
 func (self Instance) AsTextureButton() Instance {
-	return Instance{pointers.AsA[gdclass.TextureButton](self[0])}
+	return Instance{gdclass.NewTextureButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextureButton() Instance { return self.Super().AsTextureButton() }
 func (self class) AsBaseButton() BaseButton.Advanced {
-	return BaseButton.Advanced{pointers.AsA[gdclass.BaseButton](self[0])}
+	return BaseButton.Advanced{gdclass.NewBaseButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBaseButton() BaseButton.Instance { return self.Super().AsBaseButton() }
 func (self Instance) AsBaseButton() BaseButton.Instance {
-	return BaseButton.Instance{pointers.AsA[gdclass.BaseButton](self[0])}
+	return BaseButton.Instance{gdclass.NewBaseButton(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -506,7 +506,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextureButton", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TextureButton](ptr)} })
+	gdclass.Register("TextureButton", func(ptr gd.Object) any { return Instance{gdclass.NewTextureButton(ptr)} })
 }
 
 type StretchMode int //gd:TextureButton.StretchMode

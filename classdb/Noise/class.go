@@ -268,30 +268,30 @@ func (self MoreArgs) GetSeamlessImage3d(width int, height int, depth int, invert
 type Advanced = class
 type class [1]gdclass.Noise
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetNoise(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Noise](obj[0])
+		self[0] = gdclass.NewNoise(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Noise](obj[0])
+		self[0] = gdclass.NewNoise(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNoise(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Noise{pointers.Add[gdclass.Noise]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Noise{gdclass.NewNoise(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetNoise(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -301,7 +301,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Noise{pointers.New[gdclass.Noise]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Noise{gdclass.NewNoise(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -380,7 +380,7 @@ func (self class) GetImage(width int64, height int64, invert bool, in_3d_space b
 		in_3d_space bool
 		normalize   bool
 	}{width, height, invert, in_3d_space, normalize})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -401,7 +401,7 @@ func (self class) GetSeamlessImage(width int64, height int64, invert bool, in_3d
 		skirt       float64
 		normalize   bool
 	}{width, height, invert, in_3d_space, skirt, normalize})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -447,22 +447,22 @@ func (self class) GetSeamlessImage3d(width int64, height int64, depth int64, inv
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-func (self class) AsNoise() Advanced         { return Advanced{pointers.AsA[gdclass.Noise](self[0])} }
-func (self Instance) AsNoise() Instance      { return Instance{pointers.AsA[gdclass.Noise](self[0])} }
+func (self class) AsNoise() Advanced         { return Advanced{gdclass.NewNoise(self.AsObject()[0])} }
+func (self Instance) AsNoise() Instance      { return Instance{gdclass.NewNoise(self.AsObject()[0])} }
 func (self *Extension[T]) AsNoise() Instance { return self.Super().AsNoise() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -479,5 +479,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Noise", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Noise](ptr)} })
+	gdclass.Register("Noise", func(ptr gd.Object) any { return Instance{gdclass.NewNoise(ptr)} })
 }

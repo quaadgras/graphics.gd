@@ -1243,30 +1243,30 @@ func (self Instance) MenuOption(option int) { //gd:RichTextLabel.menu_option
 type Advanced = class
 type class [1]gdclass.RichTextLabel
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRichTextLabel(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RichTextLabel](obj[0])
+		self[0] = gdclass.NewRichTextLabel(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RichTextLabel](obj[0])
+		self[0] = gdclass.NewRichTextLabel(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRichTextLabel(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RichTextLabel{pointers.Add[gdclass.RichTextLabel]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RichTextLabel{gdclass.NewRichTextLabel(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRichTextLabel(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1276,7 +1276,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RichTextLabel{pointers.New[gdclass.RichTextLabel]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RichTextLabel{gdclass.NewRichTextLabel(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1789,7 +1789,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64
 		width_in_percent  bool
 		height_in_percent bool
 		alt_text          gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(image[0]))), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
 }
 
 /*
@@ -1812,7 +1812,7 @@ func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gd
 		tooltip           gdextension.String
 		width_in_percent  bool
 		height_in_percent bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(image[0]))), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
 }
 
 /*
@@ -1862,7 +1862,7 @@ func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTex
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		font      gdextension.Object
 		font_size int64
-	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), font_size})
 }
 
 /*
@@ -2057,7 +2057,7 @@ func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int6
 		color           Color.RGBA
 		outline_size    int64
 		outline_color   Color.RGBA
-	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), size, dropcap_margins, color, outline_size, outline_color})
+	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0]))), size, dropcap_margins, color, outline_size, outline_color})
 }
 
 /*
@@ -2171,7 +2171,7 @@ func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), &struct {
 		effect gdextension.Object
 		env    gdextension.Dictionary
-	}{gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), pointers.Get(gd.InternalDictionary(env))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRichTextEffect(effect[0]))), pointers.Get(gd.InternalDictionary(env))})
 }
 
 /*
@@ -2416,7 +2416,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -3076,7 +3076,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -3112,7 +3112,7 @@ func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3128,7 +3128,7 @@ func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3144,7 +3144,7 @@ func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3162,7 +3162,7 @@ func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3171,30 +3171,30 @@ func (self class) Finished() Signal.Any {
 }
 
 func (self class) AsRichTextLabel() Advanced {
-	return Advanced{pointers.AsA[gdclass.RichTextLabel](self[0])}
+	return Advanced{gdclass.NewRichTextLabel(self.AsObject()[0])}
 }
 func (self Instance) AsRichTextLabel() Instance {
-	return Instance{pointers.AsA[gdclass.RichTextLabel](self[0])}
+	return Instance{gdclass.NewRichTextLabel(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRichTextLabel() Instance { return self.Super().AsRichTextLabel() }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -3211,7 +3211,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RichTextLabel", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RichTextLabel](ptr)} })
+	gdclass.Register("RichTextLabel", func(ptr gd.Object) any { return Instance{gdclass.NewRichTextLabel(ptr)} })
 }
 
 type ListType int //gd:RichTextLabel.ListType

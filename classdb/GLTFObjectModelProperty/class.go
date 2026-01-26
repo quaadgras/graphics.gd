@@ -208,30 +208,30 @@ func (self Instance) SetTypes(variant_type variant.Type, obj_model_type GLTFObje
 type Advanced = class
 type class [1]gdclass.GLTFObjectModelProperty
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFObjectModelProperty(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFObjectModelProperty](obj[0])
+		self[0] = gdclass.NewGLTFObjectModelProperty(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFObjectModelProperty](obj[0])
+		self[0] = gdclass.NewGLTFObjectModelProperty(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFObjectModelProperty(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFObjectModelProperty{pointers.Add[gdclass.GLTFObjectModelProperty]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFObjectModelProperty(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -241,7 +241,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFObjectModelProperty{pointers.New[gdclass.GLTFObjectModelProperty]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -383,25 +383,25 @@ func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObj
 //go:nosplit
 func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_gltf_to_godot_expression
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gltf_to_godot_expression, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
+	var ret = [1]gdclass.Expression{gdclass.NewExpression(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetExpression(gltf_to_godot_expr[0])))})
 }
 
 //go:nosplit
 func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_godot_to_gltf_expression
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
+	var ret = [1]gdclass.Expression{gdclass.NewExpression(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetExpression(godot_to_gltf_expr[0])))})
 }
 
 //go:nosplit
@@ -492,20 +492,20 @@ func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectM
 	}{variant_type, obj_model_type})
 }
 func (self class) AsGLTFObjectModelProperty() Advanced {
-	return Advanced{pointers.AsA[gdclass.GLTFObjectModelProperty](self[0])}
+	return Advanced{gdclass.NewGLTFObjectModelProperty(self.AsObject()[0])}
 }
 func (self Instance) AsGLTFObjectModelProperty() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFObjectModelProperty](self[0])}
+	return Instance{gdclass.NewGLTFObjectModelProperty(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFObjectModelProperty() Instance {
 	return self.Super().AsGLTFObjectModelProperty()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -522,7 +522,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFObjectModelProperty", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFObjectModelProperty](ptr)} })
+	gdclass.Register("GLTFObjectModelProperty", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFObjectModelProperty(ptr)} })
 }
 
 type GLTFObjectModelType int //gd:GLTFObjectModelProperty.GLTFObjectModelType

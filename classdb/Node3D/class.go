@@ -673,30 +673,30 @@ func (self Instance) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D
 type Advanced = class
 type class [1]gdclass.Node3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetNode3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Node3D](obj[0])
+		self[0] = gdclass.NewNode3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Node3D](obj[0])
+		self[0] = gdclass.NewNode3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetNode3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Node3D{pointers.Add[gdclass.Node3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Node3D{gdclass.NewNode3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetNode3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -706,7 +706,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Node3D{pointers.New[gdclass.Node3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1227,7 +1227,7 @@ Note: This method is not always equivalent to [Node.GetParent], which does not t
 //go:nosplit
 func (self class) GetParentNode3d() [1]gdclass.Node3D { //gd:Node3D.get_parent_node_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_node_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret)}
+	var ret = [1]gdclass.Node3D{gdclass.NewNode3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1297,7 +1297,7 @@ Usually, this is the same as the world used by this node's viewport (see [Node.G
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Node3D.get_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
+	var ret = [1]gdclass.World3D{gdclass.NewWorld3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1347,7 +1347,7 @@ Note: 'gizmo' should be an [EditorNode3DGizmo]. The argument type is [Node3DGizm
 */
 //go:nosplit
 func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), &struct{ gizmo gdextension.Object }{gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), &struct{ gizmo gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode3DGizmo(gizmo[0])))})
 }
 
 /*
@@ -1386,7 +1386,7 @@ func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, t
 		gizmo     gdextension.Object
 		id        int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject())), id, gd.Transposed(transform)})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode3DGizmo(gizmo[0]))), id, gd.Transposed(transform)})
 }
 
 /*
@@ -1741,7 +1741,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1749,13 +1749,13 @@ func (self class) VisibilityChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`visibility_changed`))))
 }
 
-func (self class) AsNode3D() Advanced            { return Advanced{pointers.AsA[gdclass.Node3D](self[0])} }
-func (self Instance) AsNode3D() Instance         { return Instance{pointers.AsA[gdclass.Node3D](self[0])} }
+func (self class) AsNode3D() Advanced            { return Advanced{gdclass.NewNode3D(self.AsObject()[0])} }
+func (self Instance) AsNode3D() Instance         { return Instance{gdclass.NewNode3D(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode3D() Instance    { return self.Super().AsNode3D() }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1772,7 +1772,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Node3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Node3D](ptr)} })
+	gdclass.Register("Node3D", func(ptr gd.Object) any { return Instance{gdclass.NewNode3D(ptr)} })
 }
 
 type RotationEditMode int //gd:Node3D.RotationEditMode

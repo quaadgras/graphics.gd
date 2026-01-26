@@ -4,6 +4,8 @@ import (
 	gd "graphics.gd/internal"
 )
 
+type Locked struct{}
+
 type Object = gd.Object
 type RefCounted = gd.RefCounted
 

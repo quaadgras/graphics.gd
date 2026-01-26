@@ -394,7 +394,7 @@ var self [1]gdclass.DisplayServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.DisplayServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewDisplayServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -3316,22 +3316,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.DisplayServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetDisplayServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.DisplayServer](obj[0])
+		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.DisplayServer](obj[0])
+		self[0] = gdclass.NewDisplayServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetDisplayServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -3507,7 +3507,7 @@ func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdcla
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -3539,7 +3539,7 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -3606,7 +3606,7 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, ico
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index})
 	var ret = r_ret
 	return ret
 }
@@ -3944,7 +3944,7 @@ func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx int64) [1
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -4213,7 +4213,7 @@ func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, ic
 		menu_root gdextension.String
 		idx       int64
 		icon      gdextension.Object
-	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -4583,7 +4583,7 @@ Note: This method uses the copied pixel data, e.g. from an image editing softwar
 func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -4886,7 +4886,7 @@ Note: On macOS, this method requires the "Screen Recording" permission. If permi
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -4903,7 +4903,7 @@ Note: On macOS, this method requires the "Screen Recording" permission. If permi
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
+	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -6745,7 +6745,7 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 		cursor  gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(gd.ObjectChecked(cursor[0].AsObject())), shape, hotspot})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(cursor[0]))), shape, hotspot})
 }
 
 /*
@@ -7073,7 +7073,7 @@ Note: Requires support for [FeatureIcon].
 //go:nosplit
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(image[0])))})
 }
 
 /*
@@ -7090,7 +7090,7 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip Strin
 		icon     gdextension.Object
 		tooltip  gdextension.String
 		callback gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(tooltip)), pointers.Get(gd.InternalCallable(callback))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0]))), pointers.Get(gd.InternalString(tooltip)), pointers.Get(gd.InternalCallable(callback))})
 	var ret = r_ret
 	return ret
 }
@@ -7106,7 +7106,7 @@ func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id   int64
 		icon gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{id, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -7264,7 +7264,7 @@ This can be used to prevent Godot from skipping rendering when no normal windows
 //go:nosplit
 func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 
 /*
@@ -7275,7 +7275,7 @@ Unregisters an [Object] representing an additional output, that was registered v
 //go:nosplit
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 }
 
 /*
@@ -7302,7 +7302,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DisplayServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.DisplayServer](ptr)} })
+	gdclass.Register("DisplayServer", func(ptr gd.Object) any { return Instance{gdclass.NewDisplayServer(ptr)} })
 }
 
 type Feature int //gd:DisplayServer.Feature

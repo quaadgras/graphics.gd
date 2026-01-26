@@ -764,30 +764,30 @@ func Get(peer Node.Instance) Instance { //gd:Node.get_viewport
 type Advanced = class
 type class [1]gdclass.Viewport
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetViewport(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Viewport](obj[0])
+		self[0] = gdclass.NewViewport(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Viewport](obj[0])
+		self[0] = gdclass.NewViewport(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetViewport(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Viewport{pointers.Add[gdclass.Viewport]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Viewport{gdclass.NewViewport(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetViewport(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -797,7 +797,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Viewport{gdclass.NewViewport(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1600,13 +1600,13 @@ func (self Instance) SetOversamplingOverride(value Float.X) Instance { //gd:View
 
 //go:nosplit
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_2d[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld2D(world_2d[0])))})
 }
 
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
+	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1619,7 +1619,7 @@ Returns the first valid [World2D] for this viewport, searching the [World2d] pro
 //go:nosplit
 func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_2d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
+	var ret = [1]gdclass.World2D{gdclass.NewWorld2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1873,7 +1873,7 @@ Note: When [UseHdr2d] is true the returned texture will be an HDR image encoded 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ViewportTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ViewportTexture](r_ret)}
+	var ret = [1]gdclass.ViewportTexture{gdclass.NewViewportTexture(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1978,7 +1978,7 @@ func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
 }
 
 /*
@@ -2015,7 +2015,7 @@ func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coord
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), in_local_coords})
 }
 
 /*
@@ -2173,7 +2173,7 @@ Returns the currently focused [Control] within this viewport. If no [Control] is
 //go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_focus_owner, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2188,7 +2188,7 @@ Typically the leaf [Control] node or deepest level of the subtree which claims h
 //go:nosplit
 func (self class) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_hovered_control, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2474,7 +2474,7 @@ Returns the currently active 2D audio listener. Returns null if there are no act
 //go:nosplit
 func (self class) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_2d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.AudioListener2D{gd.PointerLifetimeBoundTo[gdclass.AudioListener2D](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.AudioListener2D{gdclass.NewAudioListener2D(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2484,19 +2484,19 @@ Returns the currently active 2D camera. Returns null if there are no active came
 //go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_2d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Camera2D{gd.PointerMustAssertInstanceID[gdclass.Camera2D](r_ret)}
+	var ret = [1]gdclass.Camera2D{gdclass.NewCamera2D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), &struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_3d[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), &struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetWorld3D(world_3d[0])))})
 }
 
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
+	var ret = [1]gdclass.World3D{gdclass.NewWorld3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2509,7 +2509,7 @@ Returns the first valid [World3D] for this viewport, searching the [World3d] pro
 //go:nosplit
 func (self class) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
+	var ret = [1]gdclass.World3D{gdclass.NewWorld3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2531,7 +2531,7 @@ Returns the currently active 3D audio listener. Returns null if there are no act
 //go:nosplit
 func (self class) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.AudioListener3D{gd.PointerLifetimeBoundTo[gdclass.AudioListener3D](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.AudioListener3D{gdclass.NewAudioListener3D(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2541,7 +2541,7 @@ Returns the currently active 3D camera.
 //go:nosplit
 func (self class) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_3d, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Camera3D{gd.PointerMustAssertInstanceID[gdclass.Camera3D](r_ret)}
+	var ret = [1]gdclass.Camera3D{gdclass.NewCamera3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2667,13 +2667,13 @@ func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_updat
 
 //go:nosplit
 func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vrs_texture, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2685,7 +2685,7 @@ func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2703,7 +2703,7 @@ func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2711,13 +2711,13 @@ func (self class) GuiFocusChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gui_focus_changed`))))
 }
 
-func (self class) AsViewport() Advanced          { return Advanced{pointers.AsA[gdclass.Viewport](self[0])} }
-func (self Instance) AsViewport() Instance       { return Instance{pointers.AsA[gdclass.Viewport](self[0])} }
+func (self class) AsViewport() Advanced          { return Advanced{gdclass.NewViewport(self.AsObject()[0])} }
+func (self Instance) AsViewport() Instance       { return Instance{gdclass.NewViewport(self.AsObject()[0])} }
 func (self *Extension[T]) AsViewport() Instance  { return self.Super().AsViewport() }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2734,7 +2734,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Viewport", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Viewport](ptr)} })
+	gdclass.Register("Viewport", func(ptr gd.Object) any { return Instance{gdclass.NewViewport(ptr)} })
 }
 
 type PositionalShadowAtlasQuadrantSubdiv int //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv

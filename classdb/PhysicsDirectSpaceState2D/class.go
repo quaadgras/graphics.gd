@@ -314,30 +314,30 @@ func (self Instance) GetRestInfo(parameters PhysicsShapeQueryParameters2D.Instan
 type Advanced = class
 type class [1]gdclass.PhysicsDirectSpaceState2D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsDirectSpaceState2D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsDirectSpaceState2D](obj[0])
+		self[0] = gdclass.NewPhysicsDirectSpaceState2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsDirectSpaceState2D](obj[0])
+		self[0] = gdclass.NewPhysicsDirectSpaceState2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsDirectSpaceState2D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PhysicsDirectSpaceState2D{pointers.Add[gdclass.PhysicsDirectSpaceState2D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PhysicsDirectSpaceState2D{gdclass.NewPhysicsDirectSpaceState2D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPhysicsDirectSpaceState2D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -347,7 +347,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PhysicsDirectSpaceState2D{pointers.New[gdclass.PhysicsDirectSpaceState2D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PhysicsDirectSpaceState2D{gdclass.NewPhysicsDirectSpaceState2D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -377,7 +377,7 @@ func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParamete
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_point, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsPointQueryParameters2D(parameters[0]))), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -405,7 +405,7 @@ If the ray did not intersect anything, then an empty dictionary is returned inst
 */
 //go:nosplit
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.intersect_ray
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.intersect_ray, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsRayQueryParameters2D(parameters[0])))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -431,7 +431,7 @@ func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParamete
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0]))), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -449,7 +449,7 @@ Note: Any [Shape2D]s that the shape is already colliding with e.g. inside of, wi
 */
 //go:nosplit
 func (self class) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Packed.Array[float32] { //gd:PhysicsDirectSpaceState2D.cast_motion
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.cast_motion, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -467,7 +467,7 @@ func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.collide_shape, gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parameters  gdextension.Object
 		max_results int64
-	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0]))), max_results})
 	var ret = Array.Through(gd.ArrayProxy[Vector2.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -496,15 +496,15 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 */
 //go:nosplit
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info
-	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_rest_info, gdextension.SizeDictionary|(gdextension.SizeObject<<4), &struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsShapeQueryParameters2D(parameters[0])))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) AsPhysicsDirectSpaceState2D() Advanced {
-	return Advanced{pointers.AsA[gdclass.PhysicsDirectSpaceState2D](self[0])}
+	return Advanced{gdclass.NewPhysicsDirectSpaceState2D(self.AsObject()[0])}
 }
 func (self Instance) AsPhysicsDirectSpaceState2D() Instance {
-	return Instance{pointers.AsA[gdclass.PhysicsDirectSpaceState2D](self[0])}
+	return Instance{gdclass.NewPhysicsDirectSpaceState2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPhysicsDirectSpaceState2D() Instance {
 	return self.Super().AsPhysicsDirectSpaceState2D()
@@ -524,7 +524,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsDirectSpaceState2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsDirectSpaceState2D](ptr)} })
+	gdclass.Register("PhysicsDirectSpaceState2D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsDirectSpaceState2D(ptr)} })
 }
 
 type PhysicsDirectSpaceState2D_Intersection struct {

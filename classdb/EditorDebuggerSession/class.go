@@ -219,30 +219,30 @@ func (self Instance) SetBreakpoint(path string, line int, enabled bool) Instance
 type Advanced = class
 type class [1]gdclass.EditorDebuggerSession
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorDebuggerSession(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorDebuggerSession](obj[0])
+		self[0] = gdclass.NewEditorDebuggerSession(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorDebuggerSession](obj[0])
+		self[0] = gdclass.NewEditorDebuggerSession(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorDebuggerSession(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorDebuggerSession{pointers.Add[gdclass.EditorDebuggerSession]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorDebuggerSession{gdclass.NewEditorDebuggerSession(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorDebuggerSession(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -252,7 +252,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorDebuggerSession{pointers.New[gdclass.EditorDebuggerSession]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorDebuggerSession{gdclass.NewEditorDebuggerSession(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -320,7 +320,7 @@ Adds the given 'control' to the debug session UI in the debugger bottom panel. T
 */
 //go:nosplit
 func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(control[0])[0]))})
 }
 
 /*
@@ -328,7 +328,7 @@ Removes the given 'control' from the debug session UI in the debugger bottom pan
 */
 //go:nosplit
 func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 
 /*
@@ -351,7 +351,7 @@ func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -367,7 +367,7 @@ func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("stopped"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("stopped"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -383,7 +383,7 @@ func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) I
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("breaked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("breaked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -399,7 +399,7 @@ func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("continued"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("continued"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -408,20 +408,20 @@ func (self class) Continued() Signal.Any {
 }
 
 func (self class) AsEditorDebuggerSession() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorDebuggerSession](self[0])}
+	return Advanced{gdclass.NewEditorDebuggerSession(self.AsObject()[0])}
 }
 func (self Instance) AsEditorDebuggerSession() Instance {
-	return Instance{pointers.AsA[gdclass.EditorDebuggerSession](self[0])}
+	return Instance{gdclass.NewEditorDebuggerSession(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorDebuggerSession() Instance {
 	return self.Super().AsEditorDebuggerSession()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -438,5 +438,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorDebuggerSession", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorDebuggerSession](ptr)} })
+	gdclass.Register("EditorDebuggerSession", func(ptr gd.Object) any { return Instance{gdclass.NewEditorDebuggerSession(ptr)} })
 }

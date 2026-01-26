@@ -206,30 +206,30 @@ func (self Instance) ReimportFiles(files []string) { //gd:EditorFileSystem.reimp
 type Advanced = class
 type class [1]gdclass.EditorFileSystem
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorFileSystem(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorFileSystem](obj[0])
+		self[0] = gdclass.NewEditorFileSystem(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorFileSystem](obj[0])
+		self[0] = gdclass.NewEditorFileSystem(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorFileSystem(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorFileSystem{pointers.Add[gdclass.EditorFileSystem]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorFileSystem{gdclass.NewEditorFileSystem(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorFileSystem(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -239,7 +239,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorFileSystem{pointers.New[gdclass.EditorFileSystem]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorFileSystem{gdclass.NewEditorFileSystem(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -250,7 +250,7 @@ Gets the root directory object.
 //go:nosplit
 func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -309,7 +309,7 @@ Returns a view into the filesystem at 'path'.
 //go:nosplit
 func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem_path, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.EditorFileSystemDirectory{gdclass.NewEditorFileSystemDirectory(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -350,7 +350,7 @@ func (self Instance) OnFilesystemChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -366,7 +366,7 @@ func (self Instance) OnScriptClassesUpdated(cb func(), flags ...Signal.Flags) In
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("script_classes_updated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("script_classes_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -382,7 +382,7 @@ func (self Instance) OnSourcesChanged(cb func(exist bool), flags ...Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("sources_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("sources_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -398,7 +398,7 @@ func (self Instance) OnResourcesReimporting(cb func(resources []string), flags .
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimporting"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resources_reimporting"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -414,7 +414,7 @@ func (self Instance) OnResourcesReimported(cb func(resources []string), flags ..
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reimported"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resources_reimported"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -430,7 +430,7 @@ func (self Instance) OnResourcesReload(cb func(resources []string), flags ...Sig
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resources_reload"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resources_reload"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -439,16 +439,16 @@ func (self class) ResourcesReload() Signal.Any {
 }
 
 func (self class) AsEditorFileSystem() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorFileSystem](self[0])}
+	return Advanced{gdclass.NewEditorFileSystem(self.AsObject()[0])}
 }
 func (self Instance) AsEditorFileSystem() Instance {
-	return Instance{pointers.AsA[gdclass.EditorFileSystem](self[0])}
+	return Instance{gdclass.NewEditorFileSystem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorFileSystem() Instance { return self.Super().AsEditorFileSystem() }
-func (self class) AsNode() Node.Advanced                { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced                { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance        { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -465,5 +465,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorFileSystem", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorFileSystem](ptr)} })
+	gdclass.Register("EditorFileSystem", func(ptr gd.Object) any { return Instance{gdclass.NewEditorFileSystem(ptr)} })
 }

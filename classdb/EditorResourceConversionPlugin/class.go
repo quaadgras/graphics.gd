@@ -200,9 +200,9 @@ Called to determine whether a particular [Resource] can be converted to the targ
 */
 func (Instance) _handles(impl func(ptr gdclass.Receiver, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(resource[0])
+		defer pointers.End(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
@@ -217,12 +217,12 @@ Takes an input [Resource] and converts it to the type given in [ConvertsTo]. The
 */
 func (Instance) _convert(impl func(ptr gdclass.Receiver, resource Resource.Instance) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(resource[0])
+		defer pointers.End(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetResource(ret[0])[0])
 
 		if !ok {
 			return
@@ -235,30 +235,32 @@ func (Instance) _convert(impl func(ptr gdclass.Receiver, resource Resource.Insta
 type Advanced = class
 type class [1]gdclass.EditorResourceConversionPlugin
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorResourceConversionPlugin(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorResourceConversionPlugin](obj[0])
+		self[0] = gdclass.NewEditorResourceConversionPlugin(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorResourceConversionPlugin](obj[0])
+		self[0] = gdclass.NewEditorResourceConversionPlugin(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object {
+	return gdclass.GetEditorResourceConversionPlugin(self[0])
+}
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorResourceConversionPlugin{pointers.Add[gdclass.EditorResourceConversionPlugin]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorResourceConversionPlugin{gdclass.NewEditorResourceConversionPlugin(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorResourceConversionPlugin(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -268,7 +270,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorResourceConversionPlugin{pointers.New[gdclass.EditorResourceConversionPlugin]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorResourceConversionPlugin{gdclass.NewEditorResourceConversionPlugin(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -299,9 +301,9 @@ Called to determine whether a particular [Resource] can be converted to the targ
 */
 func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(resource[0])
+		defer pointers.End(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
@@ -316,12 +318,12 @@ Takes an input [Resource] and converts it to the type given in [ConvertsTo]. The
 */
 func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(resource[0])
+		defer pointers.End(gdclass.GetResource(resource[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetResource(ret[0])[0])
 
 		if !ok {
 			return
@@ -331,20 +333,20 @@ func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resour
 }
 
 func (self class) AsEditorResourceConversionPlugin() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorResourceConversionPlugin](self[0])}
+	return Advanced{gdclass.NewEditorResourceConversionPlugin(self.AsObject()[0])}
 }
 func (self Instance) AsEditorResourceConversionPlugin() Instance {
-	return Instance{pointers.AsA[gdclass.EditorResourceConversionPlugin](self[0])}
+	return Instance{gdclass.NewEditorResourceConversionPlugin(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorResourceConversionPlugin() Instance {
 	return self.Super().AsEditorResourceConversionPlugin()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -373,5 +375,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourceConversionPlugin", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorResourceConversionPlugin](ptr)} })
+	gdclass.Register("EditorResourceConversionPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorResourceConversionPlugin(ptr)} })
 }

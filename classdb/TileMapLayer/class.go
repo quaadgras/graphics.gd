@@ -287,9 +287,9 @@ Note: If the properties of 'tile_data' object should change over time, use [Noti
 func (Instance) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY, tile_data TileData.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(tile_data[0])
+		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, coords, tile_data)
 	}
@@ -720,30 +720,30 @@ func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:TileMapLayer.
 type Advanced = class
 type class [1]gdclass.TileMapLayer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTileMapLayer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileMapLayer](obj[0])
+		self[0] = gdclass.NewTileMapLayer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileMapLayer](obj[0])
+		self[0] = gdclass.NewTileMapLayer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTileMapLayer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TileMapLayer{pointers.Add[gdclass.TileMapLayer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TileMapLayer{gdclass.NewTileMapLayer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTileMapLayer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -753,7 +753,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TileMapLayer{pointers.New[gdclass.TileMapLayer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TileMapLayer{gdclass.NewTileMapLayer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -990,9 +990,9 @@ Note: If the properties of 'tile_data' object should change over time, use [Noti
 func (class) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		var tile_data = [1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(tile_data[0])
+		defer pointers.End(gdclass.GetTileData(tile_data[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, coords, tile_data)
 	}
@@ -1133,7 +1133,7 @@ Returns the [TileData] object associated with the given cell, or null if the cel
 //go:nosplit
 func (self class) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { //gd:TileMapLayer.get_cell_tile_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cell_tile_data, gdextension.SizeObject|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
-	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret)}
+	var ret = [1]gdclass.TileData{gdclass.NewTileData(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1219,7 +1219,7 @@ Creates and returns a new [TileMapPattern] from the given array of cells. See al
 //go:nosplit
 func (self class) GetPattern(coords_array Array.Contains[Vector2i.XY]) [1]gdclass.TileMapPattern { //gd:TileMapLayer.get_pattern
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeArray<<4), &struct{ coords_array gdextension.Array }{pointers.Get(gd.InternalArray(coords_array))})
-	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret)}
+	var ret = [1]gdclass.TileMapPattern{gdclass.NewTileMapPattern(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1234,7 +1234,7 @@ func (self class) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pattern, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeObject<<8), &struct {
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{position, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))})
+	}{position, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
 }
 
 /*
@@ -1345,7 +1345,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))})
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -1429,13 +1429,13 @@ func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
 
 //go:nosplit
 func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), &struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(tile_set[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), &struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTileSet(tile_set[0])))})
 }
 
 //go:nosplit
 func (self class) GetTileSet() [1]gdclass.TileSet { //gd:TileMapLayer.get_tile_set
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_set, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret)}
+	var ret = [1]gdclass.TileSet{gdclass.NewTileSet(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1602,7 +1602,7 @@ func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1611,30 +1611,30 @@ func (self class) Changed() Signal.Any {
 }
 
 func (self class) AsTileMapLayer() Advanced {
-	return Advanced{pointers.AsA[gdclass.TileMapLayer](self[0])}
+	return Advanced{gdclass.NewTileMapLayer(self.AsObject()[0])}
 }
 func (self Instance) AsTileMapLayer() Instance {
-	return Instance{pointers.AsA[gdclass.TileMapLayer](self[0])}
+	return Instance{gdclass.NewTileMapLayer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTileMapLayer() Instance { return self.Super().AsTileMapLayer() }
 func (self class) AsNode2D() Node2D.Advanced {
-	return Node2D.Advanced{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Advanced{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
 func (self Instance) AsNode2D() Node2D.Instance {
-	return Node2D.Instance{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Instance{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1663,7 +1663,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileMapLayer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TileMapLayer](ptr)} })
+	gdclass.Register("TileMapLayer", func(ptr gd.Object) any { return Instance{gdclass.NewTileMapLayer(ptr)} })
 }
 
 type DebugVisibilityMode int //gd:TileMapLayer.DebugVisibilityMode

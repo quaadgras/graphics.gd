@@ -438,30 +438,30 @@ func (self Instance) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_l
 type Advanced = class
 type class [1]gdclass.ImporterMesh
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetImporterMesh(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ImporterMesh](obj[0])
+		self[0] = gdclass.NewImporterMesh(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ImporterMesh](obj[0])
+		self[0] = gdclass.NewImporterMesh(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetImporterMesh(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ImporterMesh{pointers.Add[gdclass.ImporterMesh]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ImporterMesh{gdclass.NewImporterMesh(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetImporterMesh(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -471,7 +471,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ImporterMesh{pointers.New[gdclass.ImporterMesh]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ImporterMesh{gdclass.NewImporterMesh(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -553,7 +553,7 @@ func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, ble
 		material     gdextension.Object
 		name         gdextension.String
 		flags        int64
-	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.ObjectChecked(material[0].AsObject())), pointers.Get(gd.InternalString(name)), flags})
+	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0]))), pointers.Get(gd.InternalString(name)), flags})
 }
 
 /*
@@ -657,7 +657,7 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 //go:nosplit
 func (self class) GetSurfaceMaterial(surface_idx int64) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ surface_idx int64 }{surface_idx})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -692,7 +692,7 @@ func (self class) SetSurfaceMaterial(surface_idx int64, material [1]gdclass.Mate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		surface_idx int64
 		material    gdextension.Object
-	}{surface_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	}{surface_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 /*
@@ -733,8 +733,8 @@ If not yet cached and 'base_mesh' is provided, 'base_mesh' will be used and muta
 */
 //go:nosplit
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_mesh[0].AsObject()))})
-	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(base_mesh[0])))})
+	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -766,25 +766,25 @@ func (self class) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_ligh
 	return ret
 }
 func (self class) AsImporterMesh() Advanced {
-	return Advanced{pointers.AsA[gdclass.ImporterMesh](self[0])}
+	return Advanced{gdclass.NewImporterMesh(self.AsObject()[0])}
 }
 func (self Instance) AsImporterMesh() Instance {
-	return Instance{pointers.AsA[gdclass.ImporterMesh](self[0])}
+	return Instance{gdclass.NewImporterMesh(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsImporterMesh() Instance { return self.Super().AsImporterMesh() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -801,5 +801,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImporterMesh", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ImporterMesh](ptr)} })
+	gdclass.Register("ImporterMesh", func(ptr gd.Object) any { return Instance{gdclass.NewImporterMesh(ptr)} })
 }

@@ -598,30 +598,30 @@ func (self Instance) CommitToArrays() []any { //gd:SurfaceTool.commit_to_arrays
 type Advanced = class
 type class [1]gdclass.SurfaceTool
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetSurfaceTool(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SurfaceTool](obj[0])
+		self[0] = gdclass.NewSurfaceTool(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SurfaceTool](obj[0])
+		self[0] = gdclass.NewSurfaceTool(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetSurfaceTool(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.SurfaceTool{pointers.Add[gdclass.SurfaceTool]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.SurfaceTool{gdclass.NewSurfaceTool(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetSurfaceTool(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -631,7 +631,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.SurfaceTool{pointers.New[gdclass.SurfaceTool]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.SurfaceTool{gdclass.NewSurfaceTool(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -908,7 +908,7 @@ Sets [Material] to be used by the [Mesh] you are constructing.
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 /*
@@ -939,7 +939,7 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:Sur
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
 		surface  int64
-	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface})
 }
 
 /*
@@ -970,7 +970,7 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, 
 		existing    gdextension.Object
 		surface     int64
 		blend_shape gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface, pointers.Get(gd.InternalString(blend_shape))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, pointers.Get(gd.InternalString(blend_shape))})
 }
 
 /*
@@ -985,7 +985,7 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform 
 		existing  gdextension.Object
 		surface   int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface, gd.Transposed(transform)})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetMesh(existing[0]))), surface, gd.Transposed(transform)})
 }
 
 /*
@@ -1000,8 +1000,8 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.commit, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		existing gdextension.Object
 		flags    int64
-	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), flags})
-	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetArrayMesh(existing[0]))), flags})
+	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1021,18 +1021,18 @@ func (self class) CommitToArrays() Array.Any { //gd:SurfaceTool.commit_to_arrays
 	return ret
 }
 func (self class) AsSurfaceTool() Advanced {
-	return Advanced{pointers.AsA[gdclass.SurfaceTool](self[0])}
+	return Advanced{gdclass.NewSurfaceTool(self.AsObject()[0])}
 }
 func (self Instance) AsSurfaceTool() Instance {
-	return Instance{pointers.AsA[gdclass.SurfaceTool](self[0])}
+	return Instance{gdclass.NewSurfaceTool(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSurfaceTool() Instance { return self.Super().AsSurfaceTool() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1049,7 +1049,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SurfaceTool", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.SurfaceTool](ptr)} })
+	gdclass.Register("SurfaceTool", func(ptr gd.Object) any { return Instance{gdclass.NewSurfaceTool(ptr)} })
 }
 
 type CustomFormat int //gd:SurfaceTool.CustomFormat

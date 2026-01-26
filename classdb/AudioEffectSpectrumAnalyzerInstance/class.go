@@ -147,30 +147,34 @@ func (self MoreArgs) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.
 type Advanced = class
 type class [1]gdclass.AudioEffectSpectrumAnalyzerInstance
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object {
+	return gdclass.GetAudioEffectSpectrumAnalyzerInstance(self[0])
+}
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioEffectSpectrumAnalyzerInstance](obj[0])
+		self[0] = gdclass.NewAudioEffectSpectrumAnalyzerInstance(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioEffectSpectrumAnalyzerInstance](obj[0])
+		self[0] = gdclass.NewAudioEffectSpectrumAnalyzerInstance(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object {
+	return gdclass.GetAudioEffectSpectrumAnalyzerInstance(self[0])
+}
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AudioEffectSpectrumAnalyzerInstance{pointers.Add[gdclass.AudioEffectSpectrumAnalyzerInstance]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AudioEffectSpectrumAnalyzerInstance{gdclass.NewAudioEffectSpectrumAnalyzerInstance(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAudioEffectSpectrumAnalyzerInstance(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -180,7 +184,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AudioEffectSpectrumAnalyzerInstance{pointers.New[gdclass.AudioEffectSpectrumAnalyzerInstance]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AudioEffectSpectrumAnalyzerInstance{gdclass.NewAudioEffectSpectrumAnalyzerInstance(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -202,29 +206,29 @@ func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, 
 	return ret
 }
 func (self class) AsAudioEffectSpectrumAnalyzerInstance() Advanced {
-	return Advanced{pointers.AsA[gdclass.AudioEffectSpectrumAnalyzerInstance](self[0])}
+	return Advanced{gdclass.NewAudioEffectSpectrumAnalyzerInstance(self.AsObject()[0])}
 }
 func (self Instance) AsAudioEffectSpectrumAnalyzerInstance() Instance {
-	return Instance{pointers.AsA[gdclass.AudioEffectSpectrumAnalyzerInstance](self[0])}
+	return Instance{gdclass.NewAudioEffectSpectrumAnalyzerInstance(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioEffectSpectrumAnalyzerInstance() Instance {
 	return self.Super().AsAudioEffectSpectrumAnalyzerInstance()
 }
 func (self class) AsAudioEffectInstance() AudioEffectInstance.Advanced {
-	return AudioEffectInstance.Advanced{pointers.AsA[gdclass.AudioEffectInstance](self[0])}
+	return AudioEffectInstance.Advanced{gdclass.NewAudioEffectInstance(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioEffectInstance() AudioEffectInstance.Instance {
 	return self.Super().AsAudioEffectInstance()
 }
 func (self Instance) AsAudioEffectInstance() AudioEffectInstance.Instance {
-	return AudioEffectInstance.Instance{pointers.AsA[gdclass.AudioEffectInstance](self[0])}
+	return AudioEffectInstance.Instance{gdclass.NewAudioEffectInstance(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -241,9 +245,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any {
-		return Instance{pointers.AsA[gdclass.AudioEffectSpectrumAnalyzerInstance](ptr)}
-	})
+	gdclass.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any { return Instance{gdclass.NewAudioEffectSpectrumAnalyzerInstance(ptr)} })
 }
 
 type MagnitudeMode int //gd:AudioEffectSpectrumAnalyzerInstance.MagnitudeMode

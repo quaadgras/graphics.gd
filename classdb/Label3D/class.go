@@ -196,30 +196,30 @@ func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:Label3D
 type Advanced = class
 type class [1]gdclass.Label3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetLabel3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Label3D](obj[0])
+		self[0] = gdclass.NewLabel3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Label3D](obj[0])
+		self[0] = gdclass.NewLabel3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetLabel3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Label3D{pointers.Add[gdclass.Label3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Label3D{gdclass.NewLabel3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetLabel3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -229,7 +229,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Label3D{pointers.New[gdclass.Label3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Label3D{gdclass.NewLabel3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -841,13 +841,13 @@ func (self class) GetOutlineRenderPriority() int64 { //gd:Label3D.get_outline_re
 
 //go:nosplit
 func (self class) SetFont(font [1]gdclass.Font) { //gd:Label3D.set_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
 
 //go:nosplit
 func (self class) GetFont() [1]gdclass.Font { //gd:Label3D.get_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1075,41 +1075,41 @@ Returns a [TriangleMesh] with the label's vertices following its current configu
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_triangle_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret)}
+	var ret = [1]gdclass.TriangleMesh{gdclass.NewTriangleMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) AsLabel3D() Advanced         { return Advanced{pointers.AsA[gdclass.Label3D](self[0])} }
-func (self Instance) AsLabel3D() Instance      { return Instance{pointers.AsA[gdclass.Label3D](self[0])} }
+func (self class) AsLabel3D() Advanced         { return Advanced{gdclass.NewLabel3D(self.AsObject()[0])} }
+func (self Instance) AsLabel3D() Instance      { return Instance{gdclass.NewLabel3D(self.AsObject()[0])} }
 func (self *Extension[T]) AsLabel3D() Instance { return self.Super().AsLabel3D() }
 func (self class) AsGeometryInstance3D() GeometryInstance3D.Advanced {
-	return GeometryInstance3D.Advanced{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Advanced{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
 	return self.Super().AsGeometryInstance3D()
 }
 func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
-	return GeometryInstance3D.Instance{pointers.AsA[gdclass.GeometryInstance3D](self[0])}
+	return GeometryInstance3D.Instance{gdclass.NewGeometryInstance3D(self.AsObject()[0])}
 }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1126,7 +1126,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Label3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Label3D](ptr)} })
+	gdclass.Register("Label3D", func(ptr gd.Object) any { return Instance{gdclass.NewLabel3D(ptr)} })
 }
 
 type DrawFlags int //gd:Label3D.DrawFlags

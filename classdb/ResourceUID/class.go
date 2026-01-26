@@ -124,7 +124,7 @@ var self [1]gdclass.ResourceUID
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.ResourceUID]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewResourceUID(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -226,22 +226,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.ResourceUID
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetResourceUID(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceUID](obj[0])
+		self[0] = gdclass.NewResourceUID(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceUID](obj[0])
+		self[0] = gdclass.NewResourceUID(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetResourceUID(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -399,7 +399,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ResourceUID", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ResourceUID](ptr)} })
+	gdclass.Register("ResourceUID", func(ptr gd.Object) any { return Instance{gdclass.NewResourceUID(ptr)} })
 }
 
 const InvalidId Resource.UID = -1 //gd:ResourceUID.INVALID_ID

@@ -290,9 +290,9 @@ Called when the [MultiplayerAPI.MultiplayerPeer] is set.
 */
 func (Instance) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_peer MultiplayerPeer.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(multiplayer_peer[0])
+		defer pointers.End(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, multiplayer_peer)
 	}
@@ -307,7 +307,7 @@ func (Instance) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) Multiplaye
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetMultiplayerPeer(ret[0])[0])
 
 		if !ok {
 			return
@@ -433,30 +433,30 @@ func (Instance) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj
 type Advanced = class
 type class [1]gdclass.MultiplayerAPIExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMultiplayerAPIExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerAPIExtension](obj[0])
+		self[0] = gdclass.NewMultiplayerAPIExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerAPIExtension](obj[0])
+		self[0] = gdclass.NewMultiplayerAPIExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMultiplayerAPIExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MultiplayerAPIExtension{pointers.Add[gdclass.MultiplayerAPIExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMultiplayerAPIExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -466,7 +466,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MultiplayerAPIExtension{pointers.New[gdclass.MultiplayerAPIExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MultiplayerAPIExtension{gdclass.NewMultiplayerAPIExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -497,9 +497,9 @@ Called when the [MultiplayerAPI.MultiplayerPeer] is set.
 */
 func (class) _set_multiplayer_peer(impl func(ptr gdclass.Receiver, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var multiplayer_peer = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(multiplayer_peer[0])
+		defer pointers.End(gdclass.GetMultiplayerPeer(multiplayer_peer[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, multiplayer_peer)
 	}
@@ -514,7 +514,7 @@ func (class) _get_multiplayer_peer(impl func(ptr gdclass.Receiver) [1]gdclass.Mu
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetMultiplayerPeer(ret[0])[0])
 
 		if !ok {
 			return
@@ -637,29 +637,29 @@ func (class) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj [1
 }
 
 func (self class) AsMultiplayerAPIExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.MultiplayerAPIExtension](self[0])}
+	return Advanced{gdclass.NewMultiplayerAPIExtension(self.AsObject()[0])}
 }
 func (self Instance) AsMultiplayerAPIExtension() Instance {
-	return Instance{pointers.AsA[gdclass.MultiplayerAPIExtension](self[0])}
+	return Instance{gdclass.NewMultiplayerAPIExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerAPIExtension() Instance {
 	return self.Super().AsMultiplayerAPIExtension()
 }
 func (self class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
-	return MultiplayerAPI.Advanced{pointers.AsA[gdclass.MultiplayerAPI](self[0])}
+	return MultiplayerAPI.Advanced{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerAPI() MultiplayerAPI.Instance {
 	return self.Super().AsMultiplayerAPI()
 }
 func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
-	return MultiplayerAPI.Instance{pointers.AsA[gdclass.MultiplayerAPI](self[0])}
+	return MultiplayerAPI.Instance{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -712,5 +712,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerAPIExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MultiplayerAPIExtension](ptr)} })
+	gdclass.Register("MultiplayerAPIExtension", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerAPIExtension(ptr)} })
 }

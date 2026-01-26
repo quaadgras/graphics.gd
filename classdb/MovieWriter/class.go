@@ -273,9 +273,9 @@ Called at the end of every rendered frame. The 'frame_image' and 'audio_frame_bl
 */
 func (Instance) _write_frame(impl func(ptr gdclass.Receiver, frame_image Image.Instance, audio_frame_block gdextension.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var frame_image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(frame_image[0])
+		defer pointers.End(gdclass.GetImage(frame_image[0])[0])
 		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
@@ -319,30 +319,30 @@ func AddWriter(writer Instance) { //gd:MovieWriter.add_writer
 type Advanced = class
 type class [1]gdclass.MovieWriter
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMovieWriter(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MovieWriter](obj[0])
+		self[0] = gdclass.NewMovieWriter(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MovieWriter](obj[0])
+		self[0] = gdclass.NewMovieWriter(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMovieWriter(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MovieWriter{pointers.Add[gdclass.MovieWriter]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MovieWriter{gdclass.NewMovieWriter(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMovieWriter(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -352,7 +352,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MovieWriter{pointers.New[gdclass.MovieWriter]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MovieWriter{gdclass.NewMovieWriter(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -430,9 +430,9 @@ Called at the end of every rendered frame. The 'frame_image' and 'audio_frame_bl
 */
 func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass.Image, audio_frame_block gdextension.Pointer) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var frame_image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(frame_image[0])
+		defer pointers.End(gdclass.GetImage(frame_image[0])[0])
 		var audio_frame_block = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, frame_image, audio_frame_block)
@@ -469,13 +469,13 @@ Note: [AddWriter] must be called early enough in the engine initialization to wo
 */
 //go:nosplit
 func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
-	noescape.CallStatic[struct{}](methods.add_writer, 0|(gdextension.SizeObject<<4), &struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))})
+	noescape.CallStatic[struct{}](methods.add_writer, 0|(gdextension.SizeObject<<4), &struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetMovieWriter(writer[0])[0]))})
 }
 func (self class) AsMovieWriter() Advanced {
-	return Advanced{pointers.AsA[gdclass.MovieWriter](self[0])}
+	return Advanced{gdclass.NewMovieWriter(self.AsObject()[0])}
 }
 func (self Instance) AsMovieWriter() Instance {
-	return Instance{pointers.AsA[gdclass.MovieWriter](self[0])}
+	return Instance{gdclass.NewMovieWriter(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMovieWriter() Instance { return self.Super().AsMovieWriter() }
 
@@ -517,5 +517,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MovieWriter", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MovieWriter](ptr)} })
+	gdclass.Register("MovieWriter", func(ptr gd.Object) any { return Instance{gdclass.NewMovieWriter(ptr)} })
 }

@@ -319,7 +319,7 @@ func Register[T Class](exports ...any) {
 			if node, ok := singleton.(Node.Any); ok {
 				Callable.Defer(Callable.New(func() {
 					ptrs := pointers.Get(node.AsNode().AsObject()[0])
-					SceneTree.Add(Node.Instance{pointers.New[gdclass.Node]([3]uint64{ptrs[0]})})
+					SceneTree.Add(Node.Instance{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{ptrs[0]}))})
 				}))
 			}
 		}
@@ -858,7 +858,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := Object.As[Node.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
+	parent, ok := Object.As[Node.Instance](Object.Instance(gdclass.GetObjectFromInterface(instance.Value)))
 	if !ok {
 		return
 	}
@@ -953,19 +953,19 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		return
 	}
 	var node = Node.Advanced(parent).GetNode(path)
-	native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(node[0])[0]))
+	native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(gdclass.GetNode(node[0])[0])[0]))
 	if native != nil {
 		if reflect.ValueOf(native).Type() != rvalue.Elem().Type() {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
 		rvalue.Elem().Set(reflect.ValueOf(native))
-		pointers.End(node[0])
+		pointers.End(gdclass.GetNode(node[0])[0])
 	} else {
-		if !class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(node[0]))}) {
+		if !class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(gdclass.GetNode(node[0])[0]))}) {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		pointers.End(node[0])
+		pointers.End(gdclass.GetNode(node[0])[0])
 	}
 }

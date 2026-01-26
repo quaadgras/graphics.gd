@@ -554,30 +554,30 @@ func GetFromWrapper(peer OpenXRExtensionWrapper.Instance) Instance { //gd:OpenXR
 type Advanced = class
 type class [1]gdclass.OpenXRAPIExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRAPIExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRAPIExtension](obj[0])
+		self[0] = gdclass.NewOpenXRAPIExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRAPIExtension](obj[0])
+		self[0] = gdclass.NewOpenXRAPIExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRAPIExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRAPIExtension{pointers.Add[gdclass.OpenXRAPIExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.OpenXRAPIExtension{gdclass.NewOpenXRAPIExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetOpenXRAPIExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -587,7 +587,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRAPIExtension{pointers.New[gdclass.OpenXRAPIExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.OpenXRAPIExtension{gdclass.NewOpenXRAPIExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -860,7 +860,7 @@ Registers the given extension as a composition layer provider.
 */
 //go:nosplit
 func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_composition_layer_provider
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 
 /*
@@ -868,7 +868,7 @@ Unregisters the given extension as a composition layer provider.
 */
 //go:nosplit
 func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
 
 /*
@@ -876,7 +876,7 @@ Registers the given extension as a provider of additional data structures to pro
 */
 //go:nosplit
 func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_projection_views_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 
 /*
@@ -884,7 +884,7 @@ Unregisters the given extension as a provider of additional data structures to p
 */
 //go:nosplit
 func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
 
 /*
@@ -896,7 +896,7 @@ Registers the given extension as modifying frame info via the [OpenXRExtensionWr
 */
 //go:nosplit
 func (self class) RegisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_frame_info_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 
 /*
@@ -904,7 +904,7 @@ Unregisters the given extension as modifying frame info.
 */
 //go:nosplit
 func (self class) UnregisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRExtensionWrapper(extension[0])))})
 }
 
 /*
@@ -1065,18 +1065,18 @@ func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSup
 	return ret
 }
 func (self class) AsOpenXRAPIExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.OpenXRAPIExtension](self[0])}
+	return Advanced{gdclass.NewOpenXRAPIExtension(self.AsObject()[0])}
 }
 func (self Instance) AsOpenXRAPIExtension() Instance {
-	return Instance{pointers.AsA[gdclass.OpenXRAPIExtension](self[0])}
+	return Instance{gdclass.NewOpenXRAPIExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRAPIExtension() Instance { return self.Super().AsOpenXRAPIExtension() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1093,7 +1093,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRAPIExtension](ptr)} })
+	gdclass.Register("OpenXRAPIExtension", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRAPIExtension(ptr)} })
 }
 
 type OpenXRAlphaBlendModeSupport int //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport

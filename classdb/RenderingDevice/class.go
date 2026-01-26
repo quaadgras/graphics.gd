@@ -1925,30 +1925,30 @@ func (self Instance) GetDeviceAllocsByObjectType(atype int) int { //gd:Rendering
 type Advanced = class
 type class [1]gdclass.RenderingDevice
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderingDevice(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderingDevice](obj[0])
+		self[0] = gdclass.NewRenderingDevice(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderingDevice](obj[0])
+		self[0] = gdclass.NewRenderingDevice(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderingDevice(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RenderingDevice{pointers.Add[gdclass.RenderingDevice]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRenderingDevice(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1958,7 +1958,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RenderingDevice{pointers.New[gdclass.RenderingDevice]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1983,7 +1983,7 @@ func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdcla
 		format gdextension.Object
 		view   gdextension.Object
 		data   gdextension.Array
-	}{gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), pointers.Get(gd.InternalArray(data))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureFormat(format[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), pointers.Get(gd.InternalArray(data))})
 	var ret = r_ret
 	return ret
 }
@@ -1996,7 +1996,7 @@ func (self class) TextureCreateShared(view [1]gdclass.RDTextureView, with_textur
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8), &struct {
 		view         gdextension.Object
 		with_texture RID.Any
-	}{gdextension.Object(gd.ObjectChecked(view[0].AsObject())), with_texture})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), with_texture})
 	var ret = r_ret
 	return ret
 }
@@ -2019,7 +2019,7 @@ func (self class) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, wi
 		mipmap       int64
 		mipmaps      int64
 		slice_type   Rendering.TextureSliceType
-	}{gdextension.Object(gd.ObjectChecked(view[0].AsObject())), with_texture, layer, mipmap, mipmaps, slice_type})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDTextureView(view[0]))), with_texture, layer, mipmap, mipmaps, slice_type})
 	var ret = r_ret
 	return ret
 }
@@ -2260,7 +2260,7 @@ Returns the data format used to create this texture.
 //go:nosplit
 func (self class) TextureGetFormat(texture RID.Any) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_get_format, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
-	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
+	var ret = [1]gdclass.RDTextureFormat{gdclass.NewRDTextureFormat(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2414,7 +2414,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) SamplerCreate(state [1]gdclass.RDSamplerState) RID.Any { //gd:RenderingDevice.sampler_create
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetRDSamplerState(state[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -2526,8 +2526,8 @@ func (self class) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShader
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shader_compile_spirv_from_source, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		shader_source gdextension.Object
 		allow_cache   bool
-	}{gdextension.Object(gd.ObjectChecked(shader_source[0].AsObject())), allow_cache})
-	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSource(shader_source[0]))), allow_cache})
+	var ret = [1]gdclass.RDShaderSPIRV{gdclass.NewRDShaderSPIRV(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2543,7 +2543,7 @@ func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPI
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.shader_compile_binary_from_spirv, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(spirv_data[0]))), pointers.Get(gd.InternalString(name))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -2562,7 +2562,7 @@ func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, nam
 	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_spirv, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetRDShaderSPIRV(spirv_data[0]))), pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -2853,7 +2853,7 @@ func (self class) RenderPipelineCreate(shader RID.Any, framebuffer_format int64,
 		dynamic_state_flags      Rendering.PipelineDynamicStateFlags
 		for_render_pass          int64
 		specialization_constants gdextension.Array
-	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gd.ObjectChecked(rasterization_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(multisample_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(stencil_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(color_blend_state[0].AsObject())), dynamic_state_flags, for_render_pass, pointers.Get(gd.InternalArray(specialization_constants))})
+	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineRasterizationState(rasterization_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineMultisampleState(multisample_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineDepthStencilState(stencil_state[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetRDPipelineColorBlendState(color_blend_state[0]))), dynamic_state_flags, for_render_pass, pointers.Get(gd.InternalArray(specialization_constants))})
 	var ret = r_ret
 	return ret
 }
@@ -3461,7 +3461,7 @@ Create a new local [RenderingDevice]. This is most useful for performing compute
 //go:nosplit
 func (self class) CreateLocalDevice() [1]gdclass.RenderingDevice { //gd:RenderingDevice.create_local_device
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_device, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
+	var ret = [1]gdclass.RenderingDevice{gdclass.NewRenderingDevice(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -3798,10 +3798,10 @@ func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:Renderin
 	return ret
 }
 func (self class) AsRenderingDevice() Advanced {
-	return Advanced{pointers.AsA[gdclass.RenderingDevice](self[0])}
+	return Advanced{gdclass.NewRenderingDevice(self.AsObject()[0])}
 }
 func (self Instance) AsRenderingDevice() Instance {
-	return Instance{pointers.AsA[gdclass.RenderingDevice](self[0])}
+	return Instance{gdclass.NewRenderingDevice(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderingDevice() Instance { return self.Super().AsRenderingDevice() }
 
@@ -3819,7 +3819,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderingDevice", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderingDevice](ptr)} })
+	gdclass.Register("RenderingDevice", func(ptr gd.Object) any { return Instance{gdclass.NewRenderingDevice(ptr)} })
 }
 
 const InvalidId = -1       //gd:RenderingDevice.INVALID_ID

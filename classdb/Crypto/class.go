@@ -270,30 +270,30 @@ func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool {
 type Advanced = class
 type class [1]gdclass.Crypto
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCrypto(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Crypto](obj[0])
+		self[0] = gdclass.NewCrypto(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Crypto](obj[0])
+		self[0] = gdclass.NewCrypto(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCrypto(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Crypto{pointers.Add[gdclass.Crypto]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Crypto{gdclass.NewCrypto(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCrypto(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -303,7 +303,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Crypto{pointers.New[gdclass.Crypto]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Crypto{gdclass.NewCrypto(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -328,7 +328,7 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
-	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
+	var ret = [1]gdclass.CryptoKey{gdclass.NewCryptoKey(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -349,8 +349,8 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 		issuer_name gdextension.String
 		not_before  gdextension.String
 		not_after   gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))})
-	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))})
+	var ret = [1]gdclass.X509Certificate{gdclass.NewX509Certificate(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -363,7 +363,7 @@ func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), gdextension.Object(gd.ObjectChecked(key[0].AsObject()))})
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0])))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -378,7 +378,7 @@ func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, s
 		hash      gdextension.PackedArray[byte]
 		signature gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature.Array))), gdextension.Object(gd.ObjectChecked(key[0].AsObject()))})
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature.Array))), gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -393,7 +393,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key       gdextension.Object
 		plaintext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext.Array)))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -408,7 +408,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key        gdextension.Object
 		ciphertext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext.Array)))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetCryptoKey(key[0]))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -447,15 +447,15 @@ func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Byte
 	var ret = r_ret
 	return ret
 }
-func (self class) AsCrypto() Advanced         { return Advanced{pointers.AsA[gdclass.Crypto](self[0])} }
-func (self Instance) AsCrypto() Instance      { return Instance{pointers.AsA[gdclass.Crypto](self[0])} }
+func (self class) AsCrypto() Advanced         { return Advanced{gdclass.NewCrypto(self.AsObject()[0])} }
+func (self Instance) AsCrypto() Instance      { return Instance{gdclass.NewCrypto(self.AsObject()[0])} }
 func (self *Extension[T]) AsCrypto() Instance { return self.Super().AsCrypto() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -472,5 +472,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Crypto", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Crypto](ptr)} })
+	gdclass.Register("Crypto", func(ptr gd.Object) any { return Instance{gdclass.NewCrypto(ptr)} })
 }

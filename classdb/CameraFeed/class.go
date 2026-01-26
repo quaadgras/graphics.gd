@@ -278,30 +278,30 @@ func (self Instance) SetFormat(index int, parameters FormatParameters) bool { //
 type Advanced = class
 type class [1]gdclass.CameraFeed
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCameraFeed(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CameraFeed](obj[0])
+		self[0] = gdclass.NewCameraFeed(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CameraFeed](obj[0])
+		self[0] = gdclass.NewCameraFeed(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCameraFeed(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CameraFeed{pointers.Add[gdclass.CameraFeed]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CameraFeed{gdclass.NewCameraFeed(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCameraFeed(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -311,7 +311,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CameraFeed{pointers.New[gdclass.CameraFeed]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CameraFeed{gdclass.NewCameraFeed(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -446,7 +446,7 @@ Sets RGB image for this feed.
 */
 //go:nosplit
 func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(rgb_image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), &struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(rgb_image[0])))})
 }
 
 /*
@@ -454,7 +454,7 @@ Sets YCbCr image for this feed.
 */
 //go:nosplit
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(ycbcr_image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), &struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImage(ycbcr_image[0])))})
 }
 
 /*
@@ -524,7 +524,7 @@ func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -540,7 +540,7 @@ func (self Instance) OnFormatChanged(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("format_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("format_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -548,17 +548,17 @@ func (self class) FormatChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`format_changed`))))
 }
 
-func (self class) AsCameraFeed() Advanced { return Advanced{pointers.AsA[gdclass.CameraFeed](self[0])} }
+func (self class) AsCameraFeed() Advanced { return Advanced{gdclass.NewCameraFeed(self.AsObject()[0])} }
 func (self Instance) AsCameraFeed() Instance {
-	return Instance{pointers.AsA[gdclass.CameraFeed](self[0])}
+	return Instance{gdclass.NewCameraFeed(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCameraFeed() Instance { return self.Super().AsCameraFeed() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -583,7 +583,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CameraFeed", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CameraFeed](ptr)} })
+	gdclass.Register("CameraFeed", func(ptr gd.Object) any { return Instance{gdclass.NewCameraFeed(ptr)} })
 }
 
 type FeedDataType int //gd:CameraFeed.FeedDataType

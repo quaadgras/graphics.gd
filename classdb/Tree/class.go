@@ -623,30 +623,30 @@ func Get(peer TreeItem.Instance) Instance { //gd:TreeItem.get_tree
 type Advanced = class
 type class [1]gdclass.Tree
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTree(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Tree](obj[0])
+		self[0] = gdclass.NewTree(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Tree](obj[0])
+		self[0] = gdclass.NewTree(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTree(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Tree{pointers.Add[gdclass.Tree]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Tree{gdclass.NewTree(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTree(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -656,7 +656,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Tree{pointers.New[gdclass.Tree]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Tree{gdclass.NewTree(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -864,8 +864,8 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_item, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		parent gdextension.Object
 		index  int64
-	}{gdextension.Object(gd.ObjectChecked(parent[0].AsObject())), index})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(parent[0]))), index})
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -875,7 +875,7 @@ Returns the tree's root item, or null if the tree is empty.
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -996,8 +996,8 @@ If 'from' is null, this returns the first selected item.
 */
 //go:nosplit
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(from[0])))})
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1013,7 +1013,7 @@ To get the currently selected item(s), use [GetNextSelected].
 //go:nosplit
 func (self class) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1027,7 +1027,7 @@ func (self class) SetSelected(item [1]gdclass.TreeItem, column int64) { //gd:Tre
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		item   gdextension.Object
 		column int64
-	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), column})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), column})
 }
 
 /*
@@ -1098,7 +1098,7 @@ Returns the currently edited item. Can be used with [OnItemEdited] to get the it
 //go:nosplit
 func (self class) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1151,7 +1151,7 @@ func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button
 		item         gdextension.Object
 		column       int64
 		button_index int64
-	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), column, button_index})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), column, button_index})
 	var ret = r_ret
 	return ret
 }
@@ -1162,7 +1162,7 @@ Returns the tree item at the specified position (relative to the tree origin pos
 //go:nosplit
 func (self class) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_at_position, gdextension.SizeObject|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
-	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
+	var ret = [1]gdclass.TreeItem{gdclass.NewTreeItem(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1331,7 +1331,7 @@ func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		item           gdextension.Object
 		center_on_item bool
-	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), center_on_item})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTreeItem(item[0]))), center_on_item})
 }
 
 //go:nosplit
@@ -1450,7 +1450,7 @@ func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1466,7 +1466,7 @@ func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1485,7 +1485,7 @@ func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int,
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1501,7 +1501,7 @@ func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mous
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1517,7 +1517,7 @@ func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_but
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1533,7 +1533,7 @@ func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1549,7 +1549,7 @@ func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1567,7 +1567,7 @@ func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) I
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1585,7 +1585,7 @@ func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...S
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1603,7 +1603,7 @@ func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, col
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1621,7 +1621,7 @@ func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int,
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1637,7 +1637,7 @@ func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...S
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1653,7 +1653,7 @@ func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1669,7 +1669,7 @@ func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1685,7 +1685,7 @@ func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1693,27 +1693,27 @@ func (self class) NothingSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`nothing_selected`))))
 }
 
-func (self class) AsTree() Advanced         { return Advanced{pointers.AsA[gdclass.Tree](self[0])} }
-func (self Instance) AsTree() Instance      { return Instance{pointers.AsA[gdclass.Tree](self[0])} }
+func (self class) AsTree() Advanced         { return Advanced{gdclass.NewTree(self.AsObject()[0])} }
+func (self Instance) AsTree() Instance      { return Instance{gdclass.NewTree(self.AsObject()[0])} }
 func (self *Extension[T]) AsTree() Instance { return self.Super().AsTree() }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1730,7 +1730,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Tree", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Tree](ptr)} })
+	gdclass.Register("Tree", func(ptr gd.Object) any { return Instance{gdclass.NewTree(ptr)} })
 }
 
 type SelectMode int //gd:Tree.SelectMode

@@ -137,30 +137,30 @@ func (self Instance) SetDelay(delay Float.X) Instance { //gd:CallbackTweener.set
 type Advanced = class
 type class [1]gdclass.CallbackTweener
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCallbackTweener(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CallbackTweener](obj[0])
+		self[0] = gdclass.NewCallbackTweener(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CallbackTweener](obj[0])
+		self[0] = gdclass.NewCallbackTweener(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCallbackTweener(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CallbackTweener{pointers.Add[gdclass.CallbackTweener]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCallbackTweener(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -170,7 +170,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CallbackTweener{pointers.New[gdclass.CallbackTweener]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -191,29 +191,29 @@ Example: Call [Node.QueueFree] after 2 seconds:
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
-	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret)}
+	var ret = [1]gdclass.CallbackTweener{gdclass.NewCallbackTweener(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AsCallbackTweener() Advanced {
-	return Advanced{pointers.AsA[gdclass.CallbackTweener](self[0])}
+	return Advanced{gdclass.NewCallbackTweener(self.AsObject()[0])}
 }
 func (self Instance) AsCallbackTweener() Instance {
-	return Instance{pointers.AsA[gdclass.CallbackTweener](self[0])}
+	return Instance{gdclass.NewCallbackTweener(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCallbackTweener() Instance { return self.Super().AsCallbackTweener() }
 func (self class) AsTweener() Tweener.Advanced {
-	return Tweener.Advanced{pointers.AsA[gdclass.Tweener](self[0])}
+	return Tweener.Advanced{gdclass.NewTweener(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTweener() Tweener.Instance { return self.Super().AsTweener() }
 func (self Instance) AsTweener() Tweener.Instance {
-	return Tweener.Instance{pointers.AsA[gdclass.Tweener](self[0])}
+	return Tweener.Instance{gdclass.NewTweener(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -230,5 +230,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CallbackTweener", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CallbackTweener](ptr)} })
+	gdclass.Register("CallbackTweener", func(ptr gd.Object) any { return Instance{gdclass.NewCallbackTweener(ptr)} })
 }

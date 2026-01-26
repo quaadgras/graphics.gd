@@ -411,30 +411,30 @@ func (self Instance) Undo() bool { //gd:UndoRedo.undo
 type Advanced = class
 type class [1]gdclass.UndoRedo
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetUndoRedo(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.UndoRedo](obj[0])
+		self[0] = gdclass.NewUndoRedo(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.UndoRedo](obj[0])
+		self[0] = gdclass.NewUndoRedo(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetUndoRedo(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.UndoRedo{pointers.Add[gdclass.UndoRedo]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.UndoRedo{gdclass.NewUndoRedo(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetUndoRedo(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -444,7 +444,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.UndoRedo{pointers.New[gdclass.UndoRedo]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.UndoRedo{gdclass.NewUndoRedo(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -532,7 +532,7 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value va
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -544,7 +544,7 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -558,7 +558,7 @@ When the "do" history is deleted, if the object is a [RefCounted], it will be un
 */
 //go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 
 /*
@@ -572,7 +572,7 @@ When the "undo" history is deleted, if the object is a [RefCounted], it will be 
 */
 //go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:UndoRedo.add_undo_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 
 /*
@@ -722,7 +722,7 @@ func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -730,8 +730,8 @@ func (self class) VersionChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`version_changed`))))
 }
 
-func (self class) AsUndoRedo() Advanced         { return Advanced{pointers.AsA[gdclass.UndoRedo](self[0])} }
-func (self Instance) AsUndoRedo() Instance      { return Instance{pointers.AsA[gdclass.UndoRedo](self[0])} }
+func (self class) AsUndoRedo() Advanced         { return Advanced{gdclass.NewUndoRedo(self.AsObject()[0])} }
+func (self Instance) AsUndoRedo() Instance      { return Instance{gdclass.NewUndoRedo(self.AsObject()[0])} }
 func (self *Extension[T]) AsUndoRedo() Instance { return self.Super().AsUndoRedo() }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -748,7 +748,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.UndoRedo](ptr)} })
+	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return Instance{gdclass.NewUndoRedo(ptr)} })
 }
 
 type MergeMode int //gd:UndoRedo.MergeMode

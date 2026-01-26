@@ -127,30 +127,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.Path3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPath3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Path3D](obj[0])
+		self[0] = gdclass.NewPath3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Path3D](obj[0])
+		self[0] = gdclass.NewPath3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPath3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Path3D{pointers.Add[gdclass.Path3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Path3D{gdclass.NewPath3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPath3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -160,7 +160,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Path3D{pointers.New[gdclass.Path3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Path3D{gdclass.NewPath3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -197,13 +197,13 @@ func (self Instance) SetDebugCustomColor(value Color.RGBA) Instance { //gd:Path3
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCurve3D(curve[0])))})
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve3D { //gd:Path3D.get_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Curve3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve3D](r_ret)}
+	var ret = [1]gdclass.Curve3D{gdclass.NewCurve3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -229,7 +229,7 @@ func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("curve_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("curve_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -247,7 +247,7 @@ func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("debug_color_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("debug_color_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -255,20 +255,20 @@ func (self class) DebugColorChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`debug_color_changed`))))
 }
 
-func (self class) AsPath3D() Advanced         { return Advanced{pointers.AsA[gdclass.Path3D](self[0])} }
-func (self Instance) AsPath3D() Instance      { return Instance{pointers.AsA[gdclass.Path3D](self[0])} }
+func (self class) AsPath3D() Advanced         { return Advanced{gdclass.NewPath3D(self.AsObject()[0])} }
+func (self Instance) AsPath3D() Instance      { return Instance{gdclass.NewPath3D(self.AsObject()[0])} }
 func (self *Extension[T]) AsPath3D() Instance { return self.Super().AsPath3D() }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -285,5 +285,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Path3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Path3D](ptr)} })
+	gdclass.Register("Path3D", func(ptr gd.Object) any { return Instance{gdclass.NewPath3D(ptr)} })
 }

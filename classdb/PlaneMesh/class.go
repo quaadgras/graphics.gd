@@ -137,30 +137,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.PlaneMesh
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPlaneMesh(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PlaneMesh](obj[0])
+		self[0] = gdclass.NewPlaneMesh(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PlaneMesh](obj[0])
+		self[0] = gdclass.NewPlaneMesh(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPlaneMesh(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PlaneMesh{pointers.Add[gdclass.PlaneMesh]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PlaneMesh{gdclass.NewPlaneMesh(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPlaneMesh(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -170,7 +170,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PlaneMesh{pointers.New[gdclass.PlaneMesh]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PlaneMesh{gdclass.NewPlaneMesh(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -302,38 +302,38 @@ func (self class) GetOrientation() Orientation { //gd:PlaneMesh.get_orientation
 	var ret = r_ret
 	return ret
 }
-func (self class) AsPlaneMesh() Advanced { return Advanced{pointers.AsA[gdclass.PlaneMesh](self[0])} }
+func (self class) AsPlaneMesh() Advanced { return Advanced{gdclass.NewPlaneMesh(self.AsObject()[0])} }
 func (self Instance) AsPlaneMesh() Instance {
-	return Instance{pointers.AsA[gdclass.PlaneMesh](self[0])}
+	return Instance{gdclass.NewPlaneMesh(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPlaneMesh() Instance { return self.Super().AsPlaneMesh() }
 func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
-	return PrimitiveMesh.Advanced{pointers.AsA[gdclass.PrimitiveMesh](self[0])}
+	return PrimitiveMesh.Advanced{gdclass.NewPrimitiveMesh(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return self.Super().AsPrimitiveMesh()
 }
 func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
-	return PrimitiveMesh.Instance{pointers.AsA[gdclass.PrimitiveMesh](self[0])}
+	return PrimitiveMesh.Instance{gdclass.NewPrimitiveMesh(self.AsObject()[0])}
 }
-func (self class) AsMesh() Mesh.Advanced         { return Mesh.Advanced{pointers.AsA[gdclass.Mesh](self[0])} }
+func (self class) AsMesh() Mesh.Advanced         { return Mesh.Advanced{gdclass.NewMesh(self.AsObject()[0])} }
 func (self *Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
 func (self Instance) AsMesh() Mesh.Instance {
-	return Mesh.Instance{pointers.AsA[gdclass.Mesh](self[0])}
+	return Mesh.Instance{gdclass.NewMesh(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -350,7 +350,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PlaneMesh", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PlaneMesh](ptr)} })
+	gdclass.Register("PlaneMesh", func(ptr gd.Object) any { return Instance{gdclass.NewPlaneMesh(ptr)} })
 }
 
 type Orientation int //gd:PlaneMesh.Orientation

@@ -168,30 +168,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.ReflectionProbe
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetReflectionProbe(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ReflectionProbe](obj[0])
+		self[0] = gdclass.NewReflectionProbe(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ReflectionProbe](obj[0])
+		self[0] = gdclass.NewReflectionProbe(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetReflectionProbe(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ReflectionProbe{pointers.Add[gdclass.ReflectionProbe]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ReflectionProbe{gdclass.NewReflectionProbe(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetReflectionProbe(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -201,7 +201,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ReflectionProbe{pointers.New[gdclass.ReflectionProbe]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ReflectionProbe{gdclass.NewReflectionProbe(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -631,32 +631,32 @@ func (self class) GetUpdateMode() UpdateMode { //gd:ReflectionProbe.get_update_m
 	return ret
 }
 func (self class) AsReflectionProbe() Advanced {
-	return Advanced{pointers.AsA[gdclass.ReflectionProbe](self[0])}
+	return Advanced{gdclass.NewReflectionProbe(self.AsObject()[0])}
 }
 func (self Instance) AsReflectionProbe() Instance {
-	return Instance{pointers.AsA[gdclass.ReflectionProbe](self[0])}
+	return Instance{gdclass.NewReflectionProbe(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsReflectionProbe() Instance { return self.Super().AsReflectionProbe() }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -673,7 +673,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ReflectionProbe", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ReflectionProbe](ptr)} })
+	gdclass.Register("ReflectionProbe", func(ptr gd.Object) any { return Instance{gdclass.NewReflectionProbe(ptr)} })
 }
 
 type UpdateMode int //gd:ReflectionProbe.UpdateMode

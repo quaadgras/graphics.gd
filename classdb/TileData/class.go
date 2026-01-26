@@ -488,30 +488,30 @@ func (self Instance) GetCustomDataByLayerId(layer_id int) any { //gd:TileData.ge
 type Advanced = class
 type class [1]gdclass.TileData
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTileData(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileData](obj[0])
+		self[0] = gdclass.NewTileData(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileData](obj[0])
+		self[0] = gdclass.NewTileData(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTileData(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TileData{pointers.Add[gdclass.TileData]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TileData{gdclass.NewTileData(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTileData(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -521,7 +521,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TileData{gdclass.NewTileData(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -714,13 +714,13 @@ func (self class) GetTranspose() bool { //gd:TileData.get_transpose
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(material[0])))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:TileData.get_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -821,7 +821,7 @@ func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygo
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.Object
-	}{layer_id, polygon_index, gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))})
+	}{layer_id, polygon_index, gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(polygon[0])))})
 }
 
 /*
@@ -838,7 +838,7 @@ func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h
 		flip_v        bool
 		transpose     bool
 	}{layer_id, polygon_index, flip_h, flip_v, transpose})
-	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret)}
+	var ret = [1]gdclass.OccluderPolygon2D{gdclass.NewOccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -850,7 +850,7 @@ func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.Occlud
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id         int64
 		occluder_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.ObjectChecked(occluder_polygon[0].AsObject()))})
+	}{layer_id, gdextension.Object(gd.ObjectChecked(gdclass.GetOccluderPolygon2D(occluder_polygon[0])))})
 }
 
 /*
@@ -866,7 +866,7 @@ func (self class) GetOccluder(layer_id int64, flip_h bool, flip_v bool, transpos
 		flip_v    bool
 		transpose bool
 	}{layer_id, flip_h, flip_v, transpose})
-	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret)}
+	var ret = [1]gdclass.OccluderPolygon2D{gdclass.NewOccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1094,7 +1094,7 @@ func (self class) SetNavigationPolygon(layer_id int64, navigation_polygon [1]gdc
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_id           int64
 		navigation_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))})
+	}{layer_id, gdextension.Object(gd.ObjectChecked(gdclass.GetNavigationPolygon(navigation_polygon[0])))})
 }
 
 /*
@@ -1110,7 +1110,7 @@ func (self class) GetNavigationPolygon(layer_id int64, flip_h bool, flip_v bool,
 		flip_v    bool
 		transpose bool
 	}{layer_id, flip_h, flip_v, transpose})
-	var ret = [1]gdclass.NavigationPolygon{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPolygon](r_ret)}
+	var ret = [1]gdclass.NavigationPolygon{gdclass.NewNavigationPolygon(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1188,7 +1188,7 @@ func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1196,8 +1196,8 @@ func (self class) Changed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`changed`))))
 }
 
-func (self class) AsTileData() Advanced         { return Advanced{pointers.AsA[gdclass.TileData](self[0])} }
-func (self Instance) AsTileData() Instance      { return Instance{pointers.AsA[gdclass.TileData](self[0])} }
+func (self class) AsTileData() Advanced         { return Advanced{gdclass.NewTileData(self.AsObject()[0])} }
+func (self Instance) AsTileData() Instance      { return Instance{gdclass.NewTileData(self.AsObject()[0])} }
 func (self *Extension[T]) AsTileData() Instance { return self.Super().AsTileData() }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1214,5 +1214,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileData", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TileData](ptr)} })
+	gdclass.Register("TileData", func(ptr gd.Object) any { return Instance{gdclass.NewTileData(ptr)} })
 }

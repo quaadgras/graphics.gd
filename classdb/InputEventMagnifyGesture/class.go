@@ -125,30 +125,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.InputEventMagnifyGesture
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetInputEventMagnifyGesture(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEventMagnifyGesture](obj[0])
+		self[0] = gdclass.NewInputEventMagnifyGesture(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.InputEventMagnifyGesture](obj[0])
+		self[0] = gdclass.NewInputEventMagnifyGesture(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetInputEventMagnifyGesture(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.InputEventMagnifyGesture{pointers.Add[gdclass.InputEventMagnifyGesture]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.InputEventMagnifyGesture{gdclass.NewInputEventMagnifyGesture(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetInputEventMagnifyGesture(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -158,7 +158,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.InputEventMagnifyGesture{pointers.New[gdclass.InputEventMagnifyGesture]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.InputEventMagnifyGesture{gdclass.NewInputEventMagnifyGesture(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -189,61 +189,61 @@ func (self class) GetFactor() float64 { //gd:InputEventMagnifyGesture.get_factor
 	return ret
 }
 func (self class) AsInputEventMagnifyGesture() Advanced {
-	return Advanced{pointers.AsA[gdclass.InputEventMagnifyGesture](self[0])}
+	return Advanced{gdclass.NewInputEventMagnifyGesture(self.AsObject()[0])}
 }
 func (self Instance) AsInputEventMagnifyGesture() Instance {
-	return Instance{pointers.AsA[gdclass.InputEventMagnifyGesture](self[0])}
+	return Instance{gdclass.NewInputEventMagnifyGesture(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEventMagnifyGesture() Instance {
 	return self.Super().AsInputEventMagnifyGesture()
 }
 func (self class) AsInputEventGesture() InputEventGesture.Advanced {
-	return InputEventGesture.Advanced{pointers.AsA[gdclass.InputEventGesture](self[0])}
+	return InputEventGesture.Advanced{gdclass.NewInputEventGesture(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEventGesture() InputEventGesture.Instance {
 	return self.Super().AsInputEventGesture()
 }
 func (self Instance) AsInputEventGesture() InputEventGesture.Instance {
-	return InputEventGesture.Instance{pointers.AsA[gdclass.InputEventGesture](self[0])}
+	return InputEventGesture.Instance{gdclass.NewInputEventGesture(self.AsObject()[0])}
 }
 func (self class) AsInputEventWithModifiers() InputEventWithModifiers.Advanced {
-	return InputEventWithModifiers.Advanced{pointers.AsA[gdclass.InputEventWithModifiers](self[0])}
+	return InputEventWithModifiers.Advanced{gdclass.NewInputEventWithModifiers(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
 	return self.Super().AsInputEventWithModifiers()
 }
 func (self Instance) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
-	return InputEventWithModifiers.Instance{pointers.AsA[gdclass.InputEventWithModifiers](self[0])}
+	return InputEventWithModifiers.Instance{gdclass.NewInputEventWithModifiers(self.AsObject()[0])}
 }
 func (self class) AsInputEventFromWindow() InputEventFromWindow.Advanced {
-	return InputEventFromWindow.Advanced{pointers.AsA[gdclass.InputEventFromWindow](self[0])}
+	return InputEventFromWindow.Advanced{gdclass.NewInputEventFromWindow(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
 	return self.Super().AsInputEventFromWindow()
 }
 func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
-	return InputEventFromWindow.Instance{pointers.AsA[gdclass.InputEventFromWindow](self[0])}
+	return InputEventFromWindow.Instance{gdclass.NewInputEventFromWindow(self.AsObject()[0])}
 }
 func (self class) AsInputEvent() InputEvent.Advanced {
-	return InputEvent.Advanced{pointers.AsA[gdclass.InputEvent](self[0])}
+	return InputEvent.Advanced{gdclass.NewInputEvent(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
 func (self Instance) AsInputEvent() InputEvent.Instance {
-	return InputEvent.Instance{pointers.AsA[gdclass.InputEvent](self[0])}
+	return InputEvent.Instance{gdclass.NewInputEvent(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -260,5 +260,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventMagnifyGesture", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.InputEventMagnifyGesture](ptr)} })
+	gdclass.Register("InputEventMagnifyGesture", func(ptr gd.Object) any { return Instance{gdclass.NewInputEventMagnifyGesture(ptr)} })
 }

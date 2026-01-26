@@ -348,30 +348,30 @@ func (self MoreArgs) ClearHistory(id int, increase_version bool) { //gd:EditorUn
 type Advanced = class
 type class [1]gdclass.EditorUndoRedoManager
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorUndoRedoManager(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorUndoRedoManager](obj[0])
+		self[0] = gdclass.NewEditorUndoRedoManager(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorUndoRedoManager](obj[0])
+		self[0] = gdclass.NewEditorUndoRedoManager(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorUndoRedoManager(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorUndoRedoManager{pointers.Add[gdclass.EditorUndoRedoManager]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorUndoRedoManager(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -381,7 +381,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorUndoRedoManager{pointers.New[gdclass.EditorUndoRedoManager]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorUndoRedoManager{gdclass.NewEditorUndoRedoManager(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -411,7 +411,7 @@ func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMo
 		custom_context    gdextension.Object
 		backward_undo_ops bool
 		mark_unsaved      bool
-	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0])), backward_undo_ops, mark_unsaved})
+	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(custom_context[0])[0])), backward_undo_ops, mark_unsaved})
 }
 
 /*
@@ -497,7 +497,7 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value va
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -511,7 +511,7 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -519,7 +519,7 @@ Register a reference for "do" that will be erased if the "do" history is lost. T
 */
 //go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_do_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 
 /*
@@ -527,7 +527,7 @@ Register a reference for "undo" that will be erased if the "undo" history is los
 */
 //go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_undo_reference
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0]))})
 }
 
 /*
@@ -537,7 +537,7 @@ Returns the history ID deduced from the given 'object'. It can be used with [Get
 */
 //go:nosplit
 func (self class) GetObjectHistoryId(obj [1]gd.Object) int64 { //gd:EditorUndoRedoManager.get_object_history_id
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -555,7 +555,7 @@ Best used with [GetObjectHistoryId]. This method is only provided in case you ne
 //go:nosplit
 func (self class) GetHistoryUndoRedo(id int64) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_history_undo_redo, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
-	var ret = [1]gdclass.UndoRedo{gd.PointerLifetimeBoundTo[gdclass.UndoRedo](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.UndoRedo{gdclass.NewUndoRedo(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -590,7 +590,7 @@ func (self Instance) OnHistoryChanged(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("history_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("history_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -606,7 +606,7 @@ func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -615,10 +615,10 @@ func (self class) VersionChanged() Signal.Any {
 }
 
 func (self class) AsEditorUndoRedoManager() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorUndoRedoManager](self[0])}
+	return Advanced{gdclass.NewEditorUndoRedoManager(self.AsObject()[0])}
 }
 func (self Instance) AsEditorUndoRedoManager() Instance {
-	return Instance{pointers.AsA[gdclass.EditorUndoRedoManager](self[0])}
+	return Instance{gdclass.NewEditorUndoRedoManager(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorUndoRedoManager() Instance {
 	return self.Super().AsEditorUndoRedoManager()
@@ -638,7 +638,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorUndoRedoManager](ptr)} })
+	gdclass.Register("EditorUndoRedoManager", func(ptr gd.Object) any { return Instance{gdclass.NewEditorUndoRedoManager(ptr)} })
 }
 
 type SpecialHistory int //gd:EditorUndoRedoManager.SpecialHistory

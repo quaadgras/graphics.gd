@@ -143,30 +143,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.OpenXRDpadBindingModifier
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRDpadBindingModifier(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRDpadBindingModifier](obj[0])
+		self[0] = gdclass.NewOpenXRDpadBindingModifier(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRDpadBindingModifier](obj[0])
+		self[0] = gdclass.NewOpenXRDpadBindingModifier(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRDpadBindingModifier(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRDpadBindingModifier{pointers.Add[gdclass.OpenXRDpadBindingModifier]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.OpenXRDpadBindingModifier{gdclass.NewOpenXRDpadBindingModifier(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetOpenXRDpadBindingModifier(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -176,7 +176,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRDpadBindingModifier{pointers.New[gdclass.OpenXRDpadBindingModifier]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.OpenXRDpadBindingModifier{gdclass.NewOpenXRDpadBindingModifier(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -305,13 +305,13 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) Instance { //
 
 //go:nosplit
 func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), &struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRActionSet(action_set[0])))})
 }
 
 //go:nosplit
 func (self class) GetActionSet() [1]gdclass.OpenXRActionSet { //gd:OpenXRDpadBindingModifier.get_action_set
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action_set, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
+	var ret = [1]gdclass.OpenXRActionSet{gdclass.NewOpenXRActionSet(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -389,67 +389,67 @@ func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sti
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
 }
 
 //go:nosplit
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_on_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
+	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), &struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRHapticBase(haptic[0])))})
 }
 
 //go:nosplit
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_off_haptic
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
+	var ret = [1]gdclass.OpenXRHapticBase{gdclass.NewOpenXRHapticBase(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AsOpenXRDpadBindingModifier() Advanced {
-	return Advanced{pointers.AsA[gdclass.OpenXRDpadBindingModifier](self[0])}
+	return Advanced{gdclass.NewOpenXRDpadBindingModifier(self.AsObject()[0])}
 }
 func (self Instance) AsOpenXRDpadBindingModifier() Instance {
-	return Instance{pointers.AsA[gdclass.OpenXRDpadBindingModifier](self[0])}
+	return Instance{gdclass.NewOpenXRDpadBindingModifier(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRDpadBindingModifier() Instance {
 	return self.Super().AsOpenXRDpadBindingModifier()
 }
 func (self class) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Advanced {
-	return OpenXRIPBindingModifier.Advanced{pointers.AsA[gdclass.OpenXRIPBindingModifier](self[0])}
+	return OpenXRIPBindingModifier.Advanced{gdclass.NewOpenXRIPBindingModifier(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
 	return self.Super().AsOpenXRIPBindingModifier()
 }
 func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
-	return OpenXRIPBindingModifier.Instance{pointers.AsA[gdclass.OpenXRIPBindingModifier](self[0])}
+	return OpenXRIPBindingModifier.Instance{gdclass.NewOpenXRIPBindingModifier(self.AsObject()[0])}
 }
 func (self class) AsOpenXRBindingModifier() OpenXRBindingModifier.Advanced {
-	return OpenXRBindingModifier.Advanced{pointers.AsA[gdclass.OpenXRBindingModifier](self[0])}
+	return OpenXRBindingModifier.Advanced{gdclass.NewOpenXRBindingModifier(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
 	return self.Super().AsOpenXRBindingModifier()
 }
 func (self Instance) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
-	return OpenXRBindingModifier.Instance{pointers.AsA[gdclass.OpenXRBindingModifier](self[0])}
+	return OpenXRBindingModifier.Instance{gdclass.NewOpenXRBindingModifier(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -466,5 +466,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRDpadBindingModifier", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRDpadBindingModifier](ptr)} })
+	gdclass.Register("OpenXRDpadBindingModifier", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRDpadBindingModifier(ptr)} })
 }

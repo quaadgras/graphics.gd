@@ -139,7 +139,7 @@ var self [1]gdclass.TranslationServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.TranslationServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewTranslationServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -336,22 +336,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.TranslationServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTranslationServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TranslationServer](obj[0])
+		self[0] = gdclass.NewTranslationServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TranslationServer](obj[0])
+		self[0] = gdclass.NewTranslationServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTranslationServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -557,7 +557,7 @@ Adds a translation to the main translation domain.
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
 }
 
 /*
@@ -566,7 +566,7 @@ Removes the given translation from the main translation domain.
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTranslation(translation[0])))})
 }
 
 /*
@@ -578,7 +578,7 @@ Returns the [Translation] instance that best matches 'locale' in the main transl
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
-	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret)}
+	var ret = [1]gdclass.Translation{gdclass.NewTranslation(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -600,7 +600,7 @@ Returns the translation domain with the specified name. An empty translation dom
 func (self class) GetOrAddDomain(domain String.Name) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_or_add_domain, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ domain gdextension.StringName }{pointers.Get(gd.InternalStringName(domain))})
-	var ret = [1]gdclass.TranslationDomain{gd.PointerWithOwnershipTransferredToGo[gdclass.TranslationDomain](r_ret)}
+	var ret = [1]gdclass.TranslationDomain{gdclass.NewTranslationDomain(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -684,5 +684,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TranslationServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TranslationServer](ptr)} })
+	gdclass.Register("TranslationServer", func(ptr gd.Object) any { return Instance{gdclass.NewTranslationServer(ptr)} })
 }

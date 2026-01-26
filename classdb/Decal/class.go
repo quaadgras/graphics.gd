@@ -161,30 +161,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.Decal
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetDecal(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Decal](obj[0])
+		self[0] = gdclass.NewDecal(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Decal](obj[0])
+		self[0] = gdclass.NewDecal(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetDecal(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Decal{pointers.Add[gdclass.Decal]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Decal{gdclass.NewDecal(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetDecal(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -194,7 +194,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Decal{pointers.New[gdclass.Decal]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Decal{gdclass.NewDecal(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -499,7 +499,7 @@ func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		atype   DecalTexture
 		texture gdextension.Object
-	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{atype, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -520,7 +520,7 @@ One case where this is better than accessing the texture directly is when you wa
 //go:nosplit
 func (self class) GetTexture(atype DecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ atype DecalTexture }{atype})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -643,29 +643,29 @@ func (self class) GetCullMask() int64 { //gd:Decal.get_cull_mask
 	var ret = r_ret
 	return ret
 }
-func (self class) AsDecal() Advanced         { return Advanced{pointers.AsA[gdclass.Decal](self[0])} }
-func (self Instance) AsDecal() Instance      { return Instance{pointers.AsA[gdclass.Decal](self[0])} }
+func (self class) AsDecal() Advanced         { return Advanced{gdclass.NewDecal(self.AsObject()[0])} }
+func (self Instance) AsDecal() Instance      { return Instance{gdclass.NewDecal(self.AsObject()[0])} }
 func (self *Extension[T]) AsDecal() Instance { return self.Super().AsDecal() }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Advanced{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
+	return VisualInstance3D.Instance{gdclass.NewVisualInstance3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -682,7 +682,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Decal", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Decal](ptr)} })
+	gdclass.Register("Decal", func(ptr gd.Object) any { return Instance{gdclass.NewDecal(ptr)} })
 }
 
 type DecalTexture int //gd:Decal.DecalTexture

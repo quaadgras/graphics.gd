@@ -182,30 +182,30 @@ func (self Instance) CancelFuture(future int) { //gd:OpenXRFutureExtension.cance
 type Advanced = class
 type class [1]gdclass.OpenXRFutureExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRFutureExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRFutureExtension](obj[0])
+		self[0] = gdclass.NewOpenXRFutureExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRFutureExtension](obj[0])
+		self[0] = gdclass.NewOpenXRFutureExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRFutureExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRFutureExtension{pointers.Add[gdclass.OpenXRFutureExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.OpenXRFutureExtension{gdclass.NewOpenXRFutureExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetOpenXRFutureExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -215,7 +215,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRFutureExtension{pointers.New[gdclass.OpenXRFutureExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.OpenXRFutureExtension{gdclass.NewOpenXRFutureExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -255,7 +255,7 @@ func (self class) RegisterFuture(future int64, on_success Callable.Function) [1]
 		future     int64
 		on_success gdextension.Callable
 	}{future, pointers.Get(gd.InternalCallable(on_success))})
-	var ret = [1]gdclass.OpenXRFutureResult{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRFutureResult](r_ret)}
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -267,22 +267,22 @@ func (self class) CancelFuture(future int64) { //gd:OpenXRFutureExtension.cancel
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0|(gdextension.SizeInt<<4), &struct{ future int64 }{future})
 }
 func (self class) AsOpenXRFutureExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.OpenXRFutureExtension](self[0])}
+	return Advanced{gdclass.NewOpenXRFutureExtension(self.AsObject()[0])}
 }
 func (self Instance) AsOpenXRFutureExtension() Instance {
-	return Instance{pointers.AsA[gdclass.OpenXRFutureExtension](self[0])}
+	return Instance{gdclass.NewOpenXRFutureExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRFutureExtension() Instance {
 	return self.Super().AsOpenXRFutureExtension()
 }
 func (self class) AsOpenXRExtensionWrapper() OpenXRExtensionWrapper.Advanced {
-	return OpenXRExtensionWrapper.Advanced{pointers.AsA[gdclass.OpenXRExtensionWrapper](self[0])}
+	return OpenXRExtensionWrapper.Advanced{gdclass.NewOpenXRExtensionWrapper(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRExtensionWrapper() OpenXRExtensionWrapper.Instance {
 	return self.Super().AsOpenXRExtensionWrapper()
 }
 func (self Instance) AsOpenXRExtensionWrapper() OpenXRExtensionWrapper.Instance {
-	return OpenXRExtensionWrapper.Instance{pointers.AsA[gdclass.OpenXRExtensionWrapper](self[0])}
+	return OpenXRExtensionWrapper.Instance{gdclass.NewOpenXRExtensionWrapper(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -299,5 +299,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRFutureExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRFutureExtension](ptr)} })
+	gdclass.Register("OpenXRFutureExtension", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRFutureExtension(ptr)} })
 }

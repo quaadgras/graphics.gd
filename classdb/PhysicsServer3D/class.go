@@ -306,7 +306,7 @@ var self [1]gdclass.PhysicsServer3D
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.PhysicsServer3D]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewPhysicsServer3D(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 func WorldBoundaryShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.world_boundary_shape_create
 	return RID.Shape3D(RID.Shape3D(Advanced().WorldBoundaryShapeCreate()))
@@ -1606,22 +1606,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.PhysicsServer3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsServer3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer3D](obj[0])
+		self[0] = gdclass.NewPhysicsServer3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer3D](obj[0])
+		self[0] = gdclass.NewPhysicsServer3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 //go:nosplit
@@ -1835,7 +1835,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be 
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
-	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
+	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gdclass.NewPhysicsDirectSpaceState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2906,7 +2906,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))})
+	}{body, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionParameters3D(parameters[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionResult3D(result[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -2920,7 +2920,7 @@ Returns the [PhysicsDirectBodyState3D] of the body. Returns null if the body is 
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
-	var ret = [1]gdclass.PhysicsDirectBodyState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState3D](r_ret)}
+	var ret = [1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2946,7 +2946,7 @@ func (self class) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_h
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
 		body                     RID.Any
 		rendering_server_handler gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(rendering_server_handler[0].AsObject()))})
+	}{body, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsServer3DRenderingServerHandler(rendering_server_handler[0])))})
 }
 
 /*
@@ -3825,7 +3825,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsServer3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsServer3D](ptr)} })
+	gdclass.Register("PhysicsServer3D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsServer3D(ptr)} })
 }
 
 type JointType int //gd:PhysicsServer3D.JointType

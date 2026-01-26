@@ -289,9 +289,9 @@ Override this method to define which Node3D nodes have a gizmo from this plugin.
 */
 func (Instance) _has_gizmo(impl func(ptr gdclass.Receiver, for_node_3d Node3D.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_node_3d = [1]gdclass.Node3D{pointers.New[gdclass.Node3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(for_node_3d[0])
+		defer pointers.End(gdclass.GetNode3D(for_node_3d[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_node_3d)
 		gd.UnsafeSet(p_back, ret)
@@ -306,12 +306,12 @@ Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of 
 */
 func (Instance) _create_gizmo(impl func(ptr gdclass.Receiver, for_node_3d Node3D.Instance) EditorNode3DGizmo.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_node_3d = [1]gdclass.Node3D{pointers.New[gdclass.Node3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(for_node_3d[0])
+		defer pointers.End(gdclass.GetNode3D(for_node_3d[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_node_3d)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetEditorNode3DGizmo(ret[0])[0])
 
 		if !ok {
 			return
@@ -378,9 +378,9 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (Instance) _redraw(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gizmo)
 	}
@@ -393,9 +393,9 @@ Override this method to provide gizmo's handle names. The 'secondary' argument i
 */
 func (Instance) _get_handle_name(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -416,9 +416,9 @@ Override this method to return true whenever to given handle should be highlight
 */
 func (Instance) _is_handle_highlighted(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -439,9 +439,9 @@ Called for this plugin's active gizmos.
 */
 func (Instance) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -456,9 +456,9 @@ func (Instance) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo EditorNo
 }
 func (Instance) _begin_handle_action(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -477,14 +477,14 @@ Called for this plugin's active gizmos.
 */
 func (Instance) _set_handle(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool, camera Camera3D.Instance, screen_pos Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gizmo, int(handle_id), secondary, camera, screen_pos)
@@ -506,9 +506,9 @@ Called for this plugin's active gizmos.
 */
 func (Instance) _commit_handle(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, handle_id int, secondary bool, restore any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3))))
@@ -527,12 +527,12 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a 'c
 */
 func (Instance) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, camera Camera3D.Instance, screen_pos Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, camera, screen_pos)
@@ -549,12 +549,12 @@ Override this method to allow selecting subgizmos using mouse drag box selection
 */
 func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, camera Camera3D.Instance, frustum_planes []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -575,9 +575,9 @@ Override this method to return the current transform of a subgizmo. As with all 
 */
 func (Instance) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, subgizmo_id int) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, int(subgizmo_id))
@@ -593,9 +593,9 @@ Override this method to update the node properties during subgizmo editing (see 
 */
 func (Instance) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, subgizmo_id int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -614,9 +614,9 @@ If the 'cancel' argument is true, the 'restores' transforms should be directly s
 */
 func (Instance) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo EditorNode3DGizmo.Instance, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
@@ -731,30 +731,30 @@ func Get(peer EditorNode3DGizmo.Instance) Instance { //gd:EditorNode3DGizmo.get_
 type Advanced = class
 type class [1]gdclass.EditorNode3DGizmoPlugin
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorNode3DGizmoPlugin(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorNode3DGizmoPlugin](obj[0])
+		self[0] = gdclass.NewEditorNode3DGizmoPlugin(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorNode3DGizmoPlugin](obj[0])
+		self[0] = gdclass.NewEditorNode3DGizmoPlugin(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorNode3DGizmoPlugin(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorNode3DGizmoPlugin{pointers.Add[gdclass.EditorNode3DGizmoPlugin]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorNode3DGizmoPlugin{gdclass.NewEditorNode3DGizmoPlugin(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorNode3DGizmoPlugin(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -764,7 +764,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorNode3DGizmoPlugin{pointers.New[gdclass.EditorNode3DGizmoPlugin]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorNode3DGizmoPlugin{gdclass.NewEditorNode3DGizmoPlugin(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -778,9 +778,9 @@ Override this method to define which Node3D nodes have a gizmo from this plugin.
 */
 func (class) _has_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclass.Node3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_node_3d = [1]gdclass.Node3D{pointers.New[gdclass.Node3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(for_node_3d[0])
+		defer pointers.End(gdclass.GetNode3D(for_node_3d[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_node_3d)
 		gd.UnsafeSet(p_back, ret)
@@ -795,12 +795,12 @@ Override this method to return a custom [EditorNode3DGizmo] for the 3D nodes of 
 */
 func (class) _create_gizmo(impl func(ptr gdclass.Receiver, for_node_3d [1]gdclass.Node3D) [1]gdclass.EditorNode3DGizmo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var for_node_3d = [1]gdclass.Node3D{pointers.New[gdclass.Node3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var for_node_3d = [1]gdclass.Node3D{gdclass.NewNode3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(for_node_3d[0])
+		defer pointers.End(gdclass.GetNode3D(for_node_3d[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_node_3d)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetEditorNode3DGizmo(ret[0])[0])
 
 		if !ok {
 			return
@@ -867,9 +867,9 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (class) _redraw(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gizmo)
 	}
@@ -882,9 +882,9 @@ Override this method to provide gizmo's handle names. The 'secondary' argument i
 */
 func (class) _get_handle_name(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -905,9 +905,9 @@ Override this method to return true whenever to given handle should be highlight
 */
 func (class) _is_handle_highlighted(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -928,9 +928,9 @@ Called for this plugin's active gizmos.
 */
 func (class) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -946,9 +946,9 @@ func (class) _get_handle_value(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.
 
 func (class) _begin_handle_action(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -967,14 +967,14 @@ Called for this plugin's active gizmos.
 */
 func (class) _set_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool, camera [1]gdclass.Camera3D, screen_pos Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gizmo, handle_id, secondary, camera, screen_pos)
@@ -996,9 +996,9 @@ Called for this plugin's active gizmos.
 */
 func (class) _commit_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, handle_id int64, secondary bool, restore variant.Any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3))))
@@ -1017,12 +1017,12 @@ Override this method to allow selecting subgizmos using mouse clicks. Given a 'c
 */
 func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, screen_pos Vector2.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, camera, screen_pos)
@@ -1039,12 +1039,12 @@ Override this method to allow selecting subgizmos using mouse drag box selection
 */
 func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, camera [1]gdclass.Camera3D, frustum_planes Array.Contains[Plane.NormalD]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
-		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
+		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(camera[0])
+		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1065,9 +1065,9 @@ Override this method to return the current transform of a subgizmo. As with all 
 */
 func (class) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int64) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, subgizmo_id)
@@ -1083,9 +1083,9 @@ Override this method to update the node properties during subgizmo editing (see 
 */
 func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, subgizmo_id int64, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1104,9 +1104,9 @@ If the 'cancel' argument is true, the 'restores' transforms should be directly s
 */
 func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.EditorNode3DGizmo, ids Packed.Array[int32], restores Array.Contains[Transform3D.BasisOrigin], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var gizmo = [1]gdclass.EditorNode3DGizmo{pointers.New[gdclass.EditorNode3DGizmo]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var gizmo = [1]gdclass.EditorNode3DGizmo{gdclass.NewEditorNode3DGizmo(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(gizmo[0])
+		defer pointers.End(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
@@ -1148,7 +1148,7 @@ func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Te
 		texture gdextension.Object
 		on_top  bool
 		color   Color.RGBA
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), on_top, color})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), on_top, color})
 }
 
 /*
@@ -1165,7 +1165,7 @@ func (self class) CreateHandleMaterial(name String.Readable, billboard bool, tex
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -1178,7 +1178,7 @@ func (self class) AddMaterial(name String.Readable, material [1]gdclass.Standard
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.String
 		material gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStandardMaterial3D(material[0])))})
 }
 
 /*
@@ -1191,32 +1191,32 @@ func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name  gdextension.String
 		gizmo gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))})
-	var ret = [1]gdclass.StandardMaterial3D{gd.PointerWithOwnershipTransferredToGo[gdclass.StandardMaterial3D](r_ret)}
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEditorNode3DGizmo(gizmo[0])))})
+	var ret = [1]gdclass.StandardMaterial3D{gdclass.NewStandardMaterial3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) AsEditorNode3DGizmoPlugin() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorNode3DGizmoPlugin](self[0])}
+	return Advanced{gdclass.NewEditorNode3DGizmoPlugin(self.AsObject()[0])}
 }
 func (self Instance) AsEditorNode3DGizmoPlugin() Instance {
-	return Instance{pointers.AsA[gdclass.EditorNode3DGizmoPlugin](self[0])}
+	return Instance{gdclass.NewEditorNode3DGizmoPlugin(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorNode3DGizmoPlugin() Instance {
 	return self.Super().AsEditorNode3DGizmoPlugin()
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1305,5 +1305,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorNode3DGizmoPlugin", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorNode3DGizmoPlugin](ptr)} })
+	gdclass.Register("EditorNode3DGizmoPlugin", func(ptr gd.Object) any { return Instance{gdclass.NewEditorNode3DGizmoPlugin(ptr)} })
 }

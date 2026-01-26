@@ -11,11 +11,11 @@ import (
 func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	fmt.Fprintf(file, "func New() Instance {\n")
 	fmt.Fprintf(file, `if !gd.Linked {
-		var placeholder = Instance([1]gdclass.%[1]s{pointers.Add[gdclass.%[1]s]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.%[1]s{gdclass.New%[1]s(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.Get%[1]s(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -26,7 +26,7 @@ func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 		return placeholder
 	}
 `, class.Name)
-	fmt.Fprintf(file, "\tcasted := Instance([1]gdclass.%[1]s{pointers.New[gdclass.%[1]s]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})\n", class.Name)
+	fmt.Fprintf(file, "\tcasted := Instance([1]gdclass.%[1]s{gdclass.New%[1]s(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})\n", class.Name)
 	if class.IsRefcounted {
 		fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].InitRef()\n")
 	}

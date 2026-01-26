@@ -136,7 +136,7 @@ var self [1]gdclass.ResourceLoader
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.ResourceLoader]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewResourceLoader(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -355,22 +355,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.ResourceLoader
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetResourceLoader(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceLoader](obj[0])
+		self[0] = gdclass.NewResourceLoader(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ResourceLoader](obj[0])
+		self[0] = gdclass.NewResourceLoader(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetResourceLoader(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -420,7 +420,7 @@ If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus
 func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.load_threaded_get
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.load_threaded_get, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -456,7 +456,7 @@ func (self class) Load(path String.Readable, type_hint String.Readable, cache_mo
 		type_hint  gdextension.String
 		cache_mode CacheMode
 	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(type_hint)), cache_mode})
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -484,7 +484,7 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		format_loader gdextension.Object
 		at_front      bool
-	}{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject())), at_front})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatLoader(format_loader[0]))), at_front})
 }
 
 /*
@@ -495,7 +495,7 @@ Unregisters the given [ResourceFormatLoader].
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), &struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), &struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResourceFormatLoader(format_loader[0])))})
 }
 
 /*
@@ -557,7 +557,7 @@ Note: If the resource is not cached, the returned [Resource] will be invalid.
 func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cached_ref, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -630,7 +630,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ResourceLoader", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ResourceLoader](ptr)} })
+	gdclass.Register("ResourceLoader", func(ptr gd.Object) any { return Instance{gdclass.NewResourceLoader(ptr)} })
 }
 
 type ThreadLoadStatus int //gd:ResourceLoader.ThreadLoadStatus

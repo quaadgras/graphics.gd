@@ -147,30 +147,30 @@ func (self Instance) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_r
 type Advanced = class
 type class [1]gdclass.AudioStreamPlaybackResampled
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAudioStreamPlaybackResampled(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioStreamPlaybackResampled](obj[0])
+		self[0] = gdclass.NewAudioStreamPlaybackResampled(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioStreamPlaybackResampled](obj[0])
+		self[0] = gdclass.NewAudioStreamPlaybackResampled(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAudioStreamPlaybackResampled(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AudioStreamPlaybackResampled{pointers.Add[gdclass.AudioStreamPlaybackResampled]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AudioStreamPlaybackResampled{gdclass.NewAudioStreamPlaybackResampled(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAudioStreamPlaybackResampled(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -180,7 +180,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AudioStreamPlaybackResampled{pointers.New[gdclass.AudioStreamPlaybackResampled]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AudioStreamPlaybackResampled{gdclass.NewAudioStreamPlaybackResampled(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -209,29 +209,29 @@ func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_resample, 0, &struct{}{})
 }
 func (self class) AsAudioStreamPlaybackResampled() Advanced {
-	return Advanced{pointers.AsA[gdclass.AudioStreamPlaybackResampled](self[0])}
+	return Advanced{gdclass.NewAudioStreamPlaybackResampled(self.AsObject()[0])}
 }
 func (self Instance) AsAudioStreamPlaybackResampled() Instance {
-	return Instance{pointers.AsA[gdclass.AudioStreamPlaybackResampled](self[0])}
+	return Instance{gdclass.NewAudioStreamPlaybackResampled(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioStreamPlaybackResampled() Instance {
 	return self.Super().AsAudioStreamPlaybackResampled()
 }
 func (self class) AsAudioStreamPlayback() AudioStreamPlayback.Advanced {
-	return AudioStreamPlayback.Advanced{pointers.AsA[gdclass.AudioStreamPlayback](self[0])}
+	return AudioStreamPlayback.Advanced{gdclass.NewAudioStreamPlayback(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAudioStreamPlayback() AudioStreamPlayback.Instance {
 	return self.Super().AsAudioStreamPlayback()
 }
 func (self Instance) AsAudioStreamPlayback() AudioStreamPlayback.Instance {
-	return AudioStreamPlayback.Instance{pointers.AsA[gdclass.AudioStreamPlayback](self[0])}
+	return AudioStreamPlayback.Instance{gdclass.NewAudioStreamPlayback(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -256,5 +256,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamPlaybackResampled", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AudioStreamPlaybackResampled](ptr)} })
+	gdclass.Register("AudioStreamPlaybackResampled", func(ptr gd.Object) any { return Instance{gdclass.NewAudioStreamPlaybackResampled(ptr)} })
 }

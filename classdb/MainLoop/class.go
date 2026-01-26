@@ -273,30 +273,30 @@ func (Instance) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClass
 type Advanced = class
 type class [1]gdclass.MainLoop
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMainLoop(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MainLoop](obj[0])
+		self[0] = gdclass.NewMainLoop(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MainLoop](obj[0])
+		self[0] = gdclass.NewMainLoop(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMainLoop(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MainLoop{pointers.Add[gdclass.MainLoop]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MainLoop{gdclass.NewMainLoop(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMainLoop(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -306,7 +306,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MainLoop{pointers.New[gdclass.MainLoop]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MainLoop{gdclass.NewMainLoop(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -390,7 +390,7 @@ func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, gra
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("on_request_permissions_result"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("on_request_permissions_result"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -398,8 +398,8 @@ func (self class) OnRequestPermissionsResult() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`on_request_permissions_result`))))
 }
 
-func (self class) AsMainLoop() Advanced         { return Advanced{pointers.AsA[gdclass.MainLoop](self[0])} }
-func (self Instance) AsMainLoop() Instance      { return Instance{pointers.AsA[gdclass.MainLoop](self[0])} }
+func (self class) AsMainLoop() Advanced         { return Advanced{gdclass.NewMainLoop(self.AsObject()[0])} }
+func (self Instance) AsMainLoop() Instance      { return Instance{gdclass.NewMainLoop(self.AsObject()[0])} }
 func (self *Extension[T]) AsMainLoop() Instance { return self.Super().AsMainLoop() }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -432,7 +432,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MainLoop", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MainLoop](ptr)} })
+	gdclass.Register("MainLoop", func(ptr gd.Object) any { return Instance{gdclass.NewMainLoop(ptr)} })
 }
 
 const NotificationOsMemoryWarning Object.Notification = 2009     //gd:MainLoop.NOTIFICATION_OS_MEMORY_WARNING

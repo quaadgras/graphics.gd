@@ -132,30 +132,30 @@ func (self Instance) AddSpacer(begin bool) Control.Instance { //gd:BoxContainer.
 type Advanced = class
 type class [1]gdclass.BoxContainer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetBoxContainer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.BoxContainer](obj[0])
+		self[0] = gdclass.NewBoxContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.BoxContainer](obj[0])
+		self[0] = gdclass.NewBoxContainer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetBoxContainer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.BoxContainer{pointers.Add[gdclass.BoxContainer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.BoxContainer{gdclass.NewBoxContainer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetBoxContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -165,7 +165,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.BoxContainer{pointers.New[gdclass.BoxContainer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.BoxContainer{gdclass.NewBoxContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -210,7 +210,7 @@ Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ begin bool }{begin})
-	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -238,37 +238,37 @@ func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
 	return ret
 }
 func (self class) AsBoxContainer() Advanced {
-	return Advanced{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return Advanced{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self Instance) AsBoxContainer() Instance {
-	return Instance{pointers.AsA[gdclass.BoxContainer](self[0])}
+	return Instance{gdclass.NewBoxContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBoxContainer() Instance { return self.Super().AsBoxContainer() }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -285,7 +285,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BoxContainer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.BoxContainer](ptr)} })
+	gdclass.Register("BoxContainer", func(ptr gd.Object) any { return Instance{gdclass.NewBoxContainer(ptr)} })
 }
 
 type AlignmentMode int //gd:BoxContainer.AlignmentMode

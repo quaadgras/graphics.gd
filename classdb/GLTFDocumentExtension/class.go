@@ -382,9 +382,9 @@ The return value is used to determine if this [GLTFDocumentExtension] instance s
 */
 func (Instance) _import_preflight(impl func(ptr gdclass.Receiver, state GLTFState.Instance, extensions []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var extensions = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -430,12 +430,12 @@ Runs when parsing the node extensions of a GLTFNode. This method can be used to 
 */
 func (Instance) _parse_node_extensions(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, extensions map[string]interface{}) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var extensions = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(extensions))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -459,16 +459,16 @@ Runs when parsing image data from a glTF file. The data could be sourced from a 
 */
 func (Instance) _parse_image_data(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image_data []byte, mime_type string, ret_image Image.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var image_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data.Array)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
-		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var ret_image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(ret_image[0])
+		defer pointers.End(gdclass.GetImage(ret_image[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, image_data.Bytes(), mime_type.String(), ret_image)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -508,14 +508,14 @@ Runs when parsing the texture JSON from the glTF textures array. This can be use
 */
 func (Instance) _parse_texture_json(impl func(ptr gdclass.Receiver, state GLTFState.Instance, texture_json map[string]interface{}, ret_gltf_texture GLTFTexture.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(texture_json))
-		var ret_gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var ret_gltf_texture = [1]gdclass.GLTFTexture{gdclass.NewGLTFTexture(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(ret_gltf_texture[0])
+		defer pointers.End(gdclass.GetGLTFTexture(ret_gltf_texture[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gd.DictionaryAs[map[string]interface{}](texture_json), ret_gltf_texture)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -541,16 +541,16 @@ In many cases, 'partial_paths' will contain the start of a path, allowing the ex
 */
 func (Instance) _import_object_model_property(impl func(ptr gdclass.Receiver, state GLTFState.Instance, split_json_pointer []string, partial_paths []string) GLTFObjectModelProperty.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var split_json_pointer = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(split_json_pointer))
 		var partial_paths = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
 		defer pointers.End(gd.InternalArray(partial_paths))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, split_json_pointer.Strings(), gd.ArrayAs[[]string](gd.InternalArray(partial_paths)))
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetGLTFObjectModelProperty(ret[0])[0])
 
 		if !ok {
 			return
@@ -569,9 +569,9 @@ This method can be used to modify any of the data imported so far after parsing 
 */
 func (Instance) _import_post_parse(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -593,9 +593,9 @@ This method can be used to modify or read from any of the processed data structu
 */
 func (Instance) _import_pre_generate(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -619,18 +619,18 @@ Note: The 'scene_parent' parameter may be null if this is the single root node.
 */
 func (Instance) _generate_scene_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_parent Node.Instance) Node3D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
-		var scene_parent = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
+		var scene_parent = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(scene_parent[0])
+		defer pointers.End(gdclass.GetNode(scene_parent[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, scene_parent)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetNode3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -649,17 +649,17 @@ This method can be used to make modifications to each of the generated Godot sce
 */
 func (Instance) _import_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[string]interface{}, node Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(json))
-		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(node[0])
+		defer pointers.End(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[string]interface{}](json), node)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -678,12 +678,12 @@ This method can be used to modify the final Godot scene generated by the import 
 */
 func (Instance) _import_post(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -704,12 +704,12 @@ The return value is used to determine if this [GLTFDocumentExtension] instance s
 */
 func (Instance) _export_preflight(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -732,15 +732,15 @@ Runs when converting the data from a Godot scene node. This method can be used t
 */
 func (Instance) _convert_scene_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_node Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
-		var scene_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
+		var scene_node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(scene_node[0])
+		defer pointers.End(gdclass.GetNode(scene_node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, state, gltf_node, scene_node)
 	}
@@ -756,12 +756,12 @@ This method can be used to modify the converted node data structures before seri
 */
 func (Instance) _export_post_convert(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -785,9 +785,9 @@ This method can be used to alter the state before performing serialization. It r
 */
 func (Instance) _export_preserialize(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -814,21 +814,21 @@ The parameters provide context for the property, including the NodePath, the God
 */
 func (Instance) _export_object_model_property(impl func(ptr gdclass.Receiver, state GLTFState.Instance, node_path string, godot_node Node.Instance, gltf_node_index int, target_object Object.Instance, target_depth int) GLTFObjectModelProperty.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var node_path = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](gd.UnsafeGet[gdextension.NodePath](p_args, 1)))))
 		defer pointers.End(gd.InternalNodePath(node_path))
-		var godot_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var godot_node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(godot_node[0])
+		defer pointers.End(gdclass.GetNode(godot_node[0])[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
 		var target_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 4))})}
 		defer pointers.End(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, node_path.String(), godot_node, int(gltf_node_index), target_object, int(target_depth))
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetGLTFObjectModelProperty(ret[0])[0])
 
 		if !ok {
 			return
@@ -877,12 +877,12 @@ This method must set the image MIME type in the 'image_dict' with the "mimeType"
 */
 func (Instance) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image Image.Instance, image_dict map[string][]uint8, image_format string, lossy_quality Float.X) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(image[0])
+		defer pointers.End(gdclass.GetImage(image[0])[0])
 		var image_dict = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
@@ -911,12 +911,12 @@ This method is run when saving images separately from the glTF file. When images
 */
 func (Instance) _save_image_at_path(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image Image.Instance, file_path string, image_format string, lossy_quality Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(image[0])
+		defer pointers.End(gdclass.GetImage(image[0])[0])
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(file_path))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
@@ -946,14 +946,14 @@ This method can be used to set up the extensions for the texture JSON by editing
 */
 func (Instance) _serialize_texture_json(impl func(ptr gdclass.Receiver, state GLTFState.Instance, texture_json map[string]interface{}, gltf_texture GLTFTexture.Instance, image_format string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(texture_json))
-		var gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var gltf_texture = [1]gdclass.GLTFTexture{gdclass.NewGLTFTexture(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(gltf_texture[0])
+		defer pointers.End(gdclass.GetGLTFTexture(gltf_texture[0])[0])
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -980,17 +980,17 @@ This method can be used to modify the final JSON of each node. Data should be pr
 */
 func (Instance) _export_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[string]interface{}, node Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(json))
-		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(node[0])
+		defer pointers.End(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, gd.DictionaryAs[map[string]interface{}](json), node)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -1009,9 +1009,9 @@ This method can be used to modify the final JSON of the generated glTF file.
 */
 func (Instance) _export_post(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -1027,30 +1027,30 @@ func (Instance) _export_post(impl func(ptr gdclass.Receiver, state GLTFState.Ins
 type Advanced = class
 type class [1]gdclass.GLTFDocumentExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFDocumentExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFDocumentExtension](obj[0])
+		self[0] = gdclass.NewGLTFDocumentExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFDocumentExtension](obj[0])
+		self[0] = gdclass.NewGLTFDocumentExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFDocumentExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFDocumentExtension{pointers.Add[gdclass.GLTFDocumentExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFDocumentExtension{gdclass.NewGLTFDocumentExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFDocumentExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1060,7 +1060,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFDocumentExtension{pointers.New[gdclass.GLTFDocumentExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFDocumentExtension{gdclass.NewGLTFDocumentExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -1075,9 +1075,9 @@ The return value is used to determine if this [GLTFDocumentExtension] instance s
 */
 func (class) _import_preflight(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, extensions Packed.Strings) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var extensions = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(extensions))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1123,12 +1123,12 @@ Runs when parsing the node extensions of a GLTFNode. This method can be used to 
 */
 func (class) _parse_node_extensions(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, extensions Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var extensions = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(extensions))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1152,16 +1152,16 @@ Runs when parsing image data from a glTF file. The data could be sourced from a 
 */
 func (class) _parse_image_data(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image_data Packed.Bytes, mime_type String.Readable, ret_image [1]gdclass.Image) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var image_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data.Array)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
-		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var ret_image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(ret_image[0])
+		defer pointers.End(gdclass.GetImage(ret_image[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, image_data, mime_type, ret_image)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1201,14 +1201,14 @@ Runs when parsing the texture JSON from the glTF textures array. This can be use
 */
 func (class) _parse_texture_json(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, texture_json Dictionary.Any, ret_gltf_texture [1]gdclass.GLTFTexture) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(texture_json))
-		var ret_gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var ret_gltf_texture = [1]gdclass.GLTFTexture{gdclass.NewGLTFTexture(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(ret_gltf_texture[0])
+		defer pointers.End(gdclass.GetGLTFTexture(ret_gltf_texture[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, texture_json, ret_gltf_texture)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1234,16 +1234,16 @@ In many cases, 'partial_paths' will contain the start of a path, allowing the ex
 */
 func (class) _import_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, split_json_pointer Packed.Strings, partial_paths Array.Contains[Path.ToNode]) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var split_json_pointer = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(split_json_pointer))
 		var partial_paths = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
 		defer pointers.End(gd.InternalArray(partial_paths))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, split_json_pointer, partial_paths)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetGLTFObjectModelProperty(ret[0])[0])
 
 		if !ok {
 			return
@@ -1262,9 +1262,9 @@ This method can be used to modify any of the data imported so far after parsing 
 */
 func (class) _import_post_parse(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1286,9 +1286,9 @@ This method can be used to modify or read from any of the processed data structu
 */
 func (class) _import_pre_generate(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1312,18 +1312,18 @@ Note: The 'scene_parent' parameter may be null if this is the single root node.
 */
 func (class) _generate_scene_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, scene_parent [1]gdclass.Node) [1]gdclass.Node3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
-		var scene_parent = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
+		var scene_parent = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(scene_parent[0])
+		defer pointers.End(gdclass.GetNode(scene_parent[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, scene_parent)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetNode3D(ret[0])[0])
 
 		if !ok {
 			return
@@ -1342,17 +1342,17 @@ This method can be used to make modifications to each of the generated Godot sce
 */
 func (class) _import_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(json))
-		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(node[0])
+		defer pointers.End(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, json, node)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1371,12 +1371,12 @@ This method can be used to modify the final Godot scene generated by the import 
 */
 func (class) _import_post(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1397,12 +1397,12 @@ The return value is used to determine if this [GLTFDocumentExtension] instance s
 */
 func (class) _export_preflight(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1425,15 +1425,15 @@ Runs when converting the data from a Godot scene node. This method can be used t
 */
 func (class) _convert_scene_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, scene_node [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
-		var scene_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
+		var scene_node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(scene_node[0])
+		defer pointers.End(gdclass.GetNode(scene_node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, state, gltf_node, scene_node)
 	}
@@ -1449,12 +1449,12 @@ This method can be used to modify the converted node data structures before seri
 */
 func (class) _export_post_convert(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var root = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var root = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(root[0])
+		defer pointers.End(gdclass.GetNode(root[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, root)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1478,9 +1478,9 @@ This method can be used to alter the state before performing serialization. It r
 */
 func (class) _export_preserialize(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1507,21 +1507,21 @@ The parameters provide context for the property, including the NodePath, the God
 */
 func (class) _export_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64, target_object [1]gd.Object, target_depth int64) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var node_path = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](gd.UnsafeGet[gdextension.NodePath](p_args, 1)))))
 		defer pointers.End(gd.InternalNodePath(node_path))
-		var godot_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var godot_node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(godot_node[0])
+		defer pointers.End(gdclass.GetNode(godot_node[0])[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
 		var target_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 4))})}
 		defer pointers.End(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, node_path, godot_node, gltf_node_index, target_object, target_depth)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetGLTFObjectModelProperty(ret[0])[0])
 
 		if !ok {
 			return
@@ -1570,12 +1570,12 @@ This method must set the image MIME type in the 'image_dict' with the "mimeType"
 */
 func (class) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality float64) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(image[0])
+		defer pointers.End(gdclass.GetImage(image[0])[0])
 		var image_dict = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(image_dict))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
@@ -1604,12 +1604,12 @@ This method is run when saving images separately from the glTF file. When images
 */
 func (class) _save_image_at_path(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image [1]gdclass.Image, file_path String.Readable, image_format String.Readable, lossy_quality float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var image = [1]gdclass.Image{gdclass.NewImage(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(image[0])
+		defer pointers.End(gdclass.GetImage(image[0])[0])
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(file_path))
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
@@ -1639,14 +1639,14 @@ This method can be used to set up the extensions for the texture JSON by editing
 */
 func (class) _serialize_texture_json(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, texture_json Dictionary.Any, gltf_texture [1]gdclass.GLTFTexture, image_format String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		var texture_json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(texture_json))
-		var gltf_texture = [1]gdclass.GLTFTexture{pointers.New[gdclass.GLTFTexture]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
+		var gltf_texture = [1]gdclass.GLTFTexture{gdclass.NewGLTFTexture(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))}))}
 
-		defer pointers.End(gltf_texture[0])
+		defer pointers.End(gdclass.GetGLTFTexture(gltf_texture[0])[0])
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1673,17 +1673,17 @@ This method can be used to modify the final JSON of each node. Data should be pr
 */
 func (class) _export_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
-		var gltf_node = [1]gdclass.GLTFNode{pointers.New[gdclass.GLTFNode]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
+		var gltf_node = [1]gdclass.GLTFNode{gdclass.NewGLTFNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))}))}
 
-		defer pointers.End(gltf_node[0])
+		defer pointers.End(gdclass.GetGLTFNode(gltf_node[0])[0])
 		var json = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(json))
-		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
+		var node = [1]gdclass.Node{gdclass.NewNode(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))}))}
 
-		defer pointers.End(node[0])
+		defer pointers.End(gdclass.GetNode(node[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, gltf_node, json, node)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1702,9 +1702,9 @@ This method can be used to modify the final JSON of the generated glTF file.
 */
 func (class) _export_post(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+		var state = [1]gdclass.GLTFState{gdclass.NewGLTFState(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
-		defer pointers.End(state[0])
+		defer pointers.End(gdclass.GetGLTFState(state[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1717,27 +1717,27 @@ func (class) _export_post(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFS
 }
 
 func (self class) AsGLTFDocumentExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.GLTFDocumentExtension](self[0])}
+	return Advanced{gdclass.NewGLTFDocumentExtension(self.AsObject()[0])}
 }
 func (self Instance) AsGLTFDocumentExtension() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFDocumentExtension](self[0])}
+	return Instance{gdclass.NewGLTFDocumentExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFDocumentExtension() Instance {
 	return self.Super().AsGLTFDocumentExtension()
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1846,5 +1846,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFDocumentExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFDocumentExtension](ptr)} })
+	gdclass.Register("GLTFDocumentExtension", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFDocumentExtension(ptr)} })
 }

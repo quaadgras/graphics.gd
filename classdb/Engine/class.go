@@ -153,7 +153,7 @@ var self [1]gdclass.Engine
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.Engine]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewEngine(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -509,22 +509,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.Engine
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEngine(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Engine](obj[0])
+		self[0] = gdclass.NewEngine(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Engine](obj[0])
+		self[0] = gdclass.NewEngine(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEngine(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -838,7 +838,7 @@ Note: The type instantiated as the main loop can changed with [ProjectSettings] 
 func (self class) GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_main_loop, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.MainLoop{gd.PointerLifetimeBoundTo[gdclass.MainLoop](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.MainLoop{gdclass.NewMainLoop(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -1055,7 +1055,7 @@ func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_singleton, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		instance gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(instance[0].AsObject()[0]))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(instance[0])[0]))})
 }
 
 /*
@@ -1094,7 +1094,7 @@ Returns:
 //go:nosplit
 func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.register_script_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.register_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.register_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetScriptLanguage(language[0])[0]))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1113,7 +1113,7 @@ Returns:
 //go:nosplit
 func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
 	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(language[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0])))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1138,7 +1138,7 @@ Returns an instance of a [ScriptLanguage] with the given 'index'.
 func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_language, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.ScriptLanguage{gd.PointerMustAssertInstanceID[gdclass.ScriptLanguage](r_ret)}
+	var ret = [1]gdclass.ScriptLanguage{gdclass.NewScriptLanguage(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1254,7 +1254,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Engine", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Engine](ptr)} })
+	gdclass.Register("Engine", func(ptr gd.Object) any { return Instance{gdclass.NewEngine(ptr)} })
 }
 
 type AuthorInfo struct {

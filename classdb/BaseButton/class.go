@@ -223,30 +223,30 @@ func (self Instance) GetDrawMode() DrawMode { //gd:BaseButton.get_draw_mode
 type Advanced = class
 type class [1]gdclass.BaseButton
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetBaseButton(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.BaseButton](obj[0])
+		self[0] = gdclass.NewBaseButton(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.BaseButton](obj[0])
+		self[0] = gdclass.NewBaseButton(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetBaseButton(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.BaseButton{pointers.Add[gdclass.BaseButton]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetBaseButton(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -256,7 +256,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.BaseButton{pointers.New[gdclass.BaseButton]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.BaseButton{gdclass.NewBaseButton(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -560,25 +560,25 @@ func (self class) IsShortcutFeedback() bool { //gd:BaseButton.is_shortcut_feedba
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.set_shortcut
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0])))})
 }
 
 //go:nosplit
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(button_group[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_group, 0|(gdextension.SizeObject<<4), &struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetButtonGroup(button_group[0])))})
 }
 
 //go:nosplit
 func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_button_group
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_button_group, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[gdclass.ButtonGroup](r_ret)}
+	var ret = [1]gdclass.ButtonGroup{gdclass.NewButtonGroup(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -598,7 +598,7 @@ func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -614,7 +614,7 @@ func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -630,7 +630,7 @@ func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -648,7 +648,7 @@ func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -656,29 +656,29 @@ func (self class) Toggled() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`toggled`))))
 }
 
-func (self class) AsBaseButton() Advanced { return Advanced{pointers.AsA[gdclass.BaseButton](self[0])} }
+func (self class) AsBaseButton() Advanced { return Advanced{gdclass.NewBaseButton(self.AsObject()[0])} }
 func (self Instance) AsBaseButton() Instance {
-	return Instance{pointers.AsA[gdclass.BaseButton](self[0])}
+	return Instance{gdclass.NewBaseButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBaseButton() Instance { return self.Super().AsBaseButton() }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -703,7 +703,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BaseButton", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.BaseButton](ptr)} })
+	gdclass.Register("BaseButton", func(ptr gd.Object) any { return Instance{gdclass.NewBaseButton(ptr)} })
 }
 
 type DrawMode int //gd:BaseButton.DrawMode

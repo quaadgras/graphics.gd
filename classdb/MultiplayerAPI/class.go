@@ -288,30 +288,30 @@ func CreateDefaultInterface() Instance { //gd:MultiplayerAPI.create_default_inte
 type Advanced = class
 type class [1]gdclass.MultiplayerAPI
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMultiplayerAPI(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerAPI](obj[0])
+		self[0] = gdclass.NewMultiplayerAPI(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MultiplayerAPI](obj[0])
+		self[0] = gdclass.NewMultiplayerAPI(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMultiplayerAPI(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MultiplayerAPI{pointers.Add[gdclass.MultiplayerAPI]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMultiplayerAPI(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -321,7 +321,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MultiplayerAPI{pointers.New[gdclass.MultiplayerAPI]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -357,13 +357,13 @@ func (self class) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplaye
 //go:nosplit
 func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:MultiplayerAPI.get_multiplayer_peer
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_peer, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.MultiplayerPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerPeer](r_ret)}
+	var ret = [1]gdclass.MultiplayerPeer{gdclass.NewMultiplayerPeer(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), &struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMultiplayerPeer(peer[0])))})
 }
 
 /*
@@ -435,7 +435,7 @@ func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, argument
 		obj       gdextension.Object
 		method    gdextension.StringName
 		arguments gdextension.Array
-	}{peer, gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(arguments))})
+	}{peer, gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(arguments))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -454,7 +454,7 @@ func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_add, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetObject(obj[0])[0])), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -473,7 +473,7 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration vari
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), &struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -518,7 +518,7 @@ Returns a new instance of the default MultiplayerAPI.
 //go:nosplit
 func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_default_interface, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
+	var ret = [1]gdclass.MultiplayerAPI{gdclass.NewMultiplayerAPI(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -532,7 +532,7 @@ func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -550,7 +550,7 @@ func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -568,7 +568,7 @@ func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -586,7 +586,7 @@ func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -604,7 +604,7 @@ func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -613,18 +613,18 @@ func (self class) ServerDisconnected() Signal.Any {
 }
 
 func (self class) AsMultiplayerAPI() Advanced {
-	return Advanced{pointers.AsA[gdclass.MultiplayerAPI](self[0])}
+	return Advanced{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
 }
 func (self Instance) AsMultiplayerAPI() Instance {
-	return Instance{pointers.AsA[gdclass.MultiplayerAPI](self[0])}
+	return Instance{gdclass.NewMultiplayerAPI(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMultiplayerAPI() Instance { return self.Super().AsMultiplayerAPI() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -641,7 +641,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MultiplayerAPI](ptr)} })
+	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any { return Instance{gdclass.NewMultiplayerAPI(ptr)} })
 }
 
 type RPCMode int //gd:MultiplayerAPI.RPCMode

@@ -155,30 +155,30 @@ func (self Instance) GetShaderParameter(param string) any { //gd:ShaderMaterial.
 type Advanced = class
 type class [1]gdclass.ShaderMaterial
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetShaderMaterial(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ShaderMaterial](obj[0])
+		self[0] = gdclass.NewShaderMaterial(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ShaderMaterial](obj[0])
+		self[0] = gdclass.NewShaderMaterial(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetShaderMaterial(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ShaderMaterial{pointers.Add[gdclass.ShaderMaterial]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ShaderMaterial{gdclass.NewShaderMaterial(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetShaderMaterial(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -188,7 +188,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ShaderMaterial{pointers.New[gdclass.ShaderMaterial]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ShaderMaterial{gdclass.NewShaderMaterial(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -211,13 +211,13 @@ func (self Instance) SetShader(value Shader.Instance) Instance { //gd:ShaderMate
 
 //go:nosplit
 func (self class) SetShader(shader [1]gdclass.Shader) { //gd:ShaderMaterial.set_shader
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader, 0|(gdextension.SizeObject<<4), &struct{ shader gdextension.Object }{gdextension.Object(gd.ObjectChecked(shader[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shader, 0|(gdextension.SizeObject<<4), &struct{ shader gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShader(shader[0])))})
 }
 
 //go:nosplit
 func (self class) GetShader() [1]gdclass.Shader { //gd:ShaderMaterial.get_shader
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shader, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Shader{gd.PointerWithOwnershipTransferredToGo[gdclass.Shader](r_ret)}
+	var ret = [1]gdclass.Shader{gdclass.NewShader(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -250,32 +250,32 @@ func (self class) GetShaderParameter(param String.Name) variant.Any { //gd:Shade
 	return ret
 }
 func (self class) AsShaderMaterial() Advanced {
-	return Advanced{pointers.AsA[gdclass.ShaderMaterial](self[0])}
+	return Advanced{gdclass.NewShaderMaterial(self.AsObject()[0])}
 }
 func (self Instance) AsShaderMaterial() Instance {
-	return Instance{pointers.AsA[gdclass.ShaderMaterial](self[0])}
+	return Instance{gdclass.NewShaderMaterial(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsShaderMaterial() Instance { return self.Super().AsShaderMaterial() }
 func (self class) AsMaterial() Material.Advanced {
-	return Material.Advanced{pointers.AsA[gdclass.Material](self[0])}
+	return Material.Advanced{gdclass.NewMaterial(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
 func (self Instance) AsMaterial() Material.Instance {
-	return Material.Instance{pointers.AsA[gdclass.Material](self[0])}
+	return Material.Instance{gdclass.NewMaterial(self.AsObject()[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -292,5 +292,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ShaderMaterial", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ShaderMaterial](ptr)} })
+	gdclass.Register("ShaderMaterial", func(ptr gd.Object) any { return Instance{gdclass.NewShaderMaterial(ptr)} })
 }

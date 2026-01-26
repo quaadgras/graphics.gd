@@ -118,7 +118,7 @@ var self [1]gdclass.GDExtensionManager
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.GDExtensionManager]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewGDExtensionManager(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -178,22 +178,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.GDExtensionManager
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGDExtensionManager(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GDExtensionManager](obj[0])
+		self[0] = gdclass.NewGDExtensionManager(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GDExtensionManager](obj[0])
+		self[0] = gdclass.NewGDExtensionManager(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGDExtensionManager(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -268,7 +268,7 @@ Returns the [GDExtension] at the given file 'path', or null if it has not been l
 func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_extension, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = [1]gdclass.GDExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.GDExtension](r_ret)}
+	var ret = [1]gdclass.GDExtension{gdclass.NewGDExtension(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -281,7 +281,7 @@ func OnExtensionsReloaded(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetGDExtensionManager(self[0])[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionsReloaded() Signal.Any {
@@ -300,7 +300,7 @@ func OnExtensionLoaded(cb func(extension GDExtension.Instance), flags ...Signal.
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetGDExtensionManager(self[0])[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionLoaded() Signal.Any {
@@ -319,7 +319,7 @@ func OnExtensionUnloading(cb func(extension GDExtension.Instance), flags ...Sign
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetGDExtensionManager(self[0])[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) ExtensionUnloading() Signal.Any {
@@ -341,7 +341,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GDExtensionManager", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GDExtensionManager](ptr)} })
+	gdclass.Register("GDExtensionManager", func(ptr gd.Object) any { return Instance{gdclass.NewGDExtensionManager(ptr)} })
 }
 
 type LoadStatus int //gd:GDExtensionManager.LoadStatus

@@ -220,30 +220,30 @@ func (self Instance) SetNoDelay(enabled bool) Instance { //gd:StreamPeerTCP.set_
 type Advanced = class
 type class [1]gdclass.StreamPeerTCP
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetStreamPeerTCP(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.StreamPeerTCP](obj[0])
+		self[0] = gdclass.NewStreamPeerTCP(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.StreamPeerTCP](obj[0])
+		self[0] = gdclass.NewStreamPeerTCP(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetStreamPeerTCP(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.StreamPeerTCP{pointers.Add[gdclass.StreamPeerTCP]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.StreamPeerTCP{gdclass.NewStreamPeerTCP(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetStreamPeerTCP(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -253,7 +253,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.StreamPeerTCP{pointers.New[gdclass.StreamPeerTCP]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.StreamPeerTCP{gdclass.NewStreamPeerTCP(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -361,25 +361,25 @@ func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) AsStreamPeerTCP() Advanced {
-	return Advanced{pointers.AsA[gdclass.StreamPeerTCP](self[0])}
+	return Advanced{gdclass.NewStreamPeerTCP(self.AsObject()[0])}
 }
 func (self Instance) AsStreamPeerTCP() Instance {
-	return Instance{pointers.AsA[gdclass.StreamPeerTCP](self[0])}
+	return Instance{gdclass.NewStreamPeerTCP(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsStreamPeerTCP() Instance { return self.Super().AsStreamPeerTCP() }
 func (self class) AsStreamPeer() StreamPeer.Advanced {
-	return StreamPeer.Advanced{pointers.AsA[gdclass.StreamPeer](self[0])}
+	return StreamPeer.Advanced{gdclass.NewStreamPeer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsStreamPeer() StreamPeer.Instance { return self.Super().AsStreamPeer() }
 func (self Instance) AsStreamPeer() StreamPeer.Instance {
-	return StreamPeer.Instance{pointers.AsA[gdclass.StreamPeer](self[0])}
+	return StreamPeer.Instance{gdclass.NewStreamPeer(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -396,7 +396,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StreamPeerTCP", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.StreamPeerTCP](ptr)} })
+	gdclass.Register("StreamPeerTCP", func(ptr gd.Object) any { return Instance{gdclass.NewStreamPeerTCP(ptr)} })
 }
 
 type Status int //gd:StreamPeerTCP.Status

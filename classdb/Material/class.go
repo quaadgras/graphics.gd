@@ -226,30 +226,30 @@ func (self Instance) CreatePlaceholder() Resource.Instance { //gd:Material.creat
 type Advanced = class
 type class [1]gdclass.Material
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMaterial(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Material](obj[0])
+		self[0] = gdclass.NewMaterial(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Material](obj[0])
+		self[0] = gdclass.NewMaterial(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMaterial(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Material{pointers.Add[gdclass.Material]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Material{gdclass.NewMaterial(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMaterial(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -259,7 +259,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Material{gdclass.NewMaterial(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -362,13 +362,13 @@ func (class) _can_use_render_priority(impl func(ptr gdclass.Receiver) bool) (cb 
 
 //go:nosplit
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMaterial(next_pass[0])))})
 }
 
 //go:nosplit
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
+	var ret = [1]gdclass.Material{gdclass.NewMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -402,25 +402,25 @@ Creates a placeholder version of this resource ([PlaceholderMaterial]).
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
-func (self class) AsMaterial() Advanced         { return Advanced{pointers.AsA[gdclass.Material](self[0])} }
-func (self Instance) AsMaterial() Instance      { return Instance{pointers.AsA[gdclass.Material](self[0])} }
+func (self class) AsMaterial() Advanced         { return Advanced{gdclass.NewMaterial(self.AsObject()[0])} }
+func (self Instance) AsMaterial() Instance      { return Instance{gdclass.NewMaterial(self.AsObject()[0])} }
 func (self *Extension[T]) AsMaterial() Instance { return self.Super().AsMaterial() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -453,7 +453,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Material", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Material](ptr)} })
+	gdclass.Register("Material", func(ptr gd.Object) any { return Instance{gdclass.NewMaterial(ptr)} })
 }
 
 type RenderPriority int

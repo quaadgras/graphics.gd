@@ -160,30 +160,30 @@ func (self Instance) GetCameraAttributes() RID.CameraAttributes { //gd:RenderDat
 type Advanced = class
 type class [1]gdclass.RenderData
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderData(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderData](obj[0])
+		self[0] = gdclass.NewRenderData(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderData](obj[0])
+		self[0] = gdclass.NewRenderData(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderData(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RenderData{pointers.Add[gdclass.RenderData]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RenderData{gdclass.NewRenderData(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRenderData(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -193,7 +193,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RenderData{gdclass.NewRenderData(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -206,7 +206,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret)}
+	var ret = [1]gdclass.RenderSceneBuffers{gdclass.NewRenderSceneBuffers(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -218,7 +218,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderSceneData{gd.PointerMustAssertInstanceID[gdclass.RenderSceneData](r_ret)}
+	var ret = [1]gdclass.RenderSceneData{gdclass.NewRenderSceneData(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -247,9 +247,9 @@ func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_att
 	var ret = r_ret
 	return ret
 }
-func (self class) AsRenderData() Advanced { return Advanced{pointers.AsA[gdclass.RenderData](self[0])} }
+func (self class) AsRenderData() Advanced { return Advanced{gdclass.NewRenderData(self.AsObject()[0])} }
 func (self Instance) AsRenderData() Instance {
-	return Instance{pointers.AsA[gdclass.RenderData](self[0])}
+	return Instance{gdclass.NewRenderData(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderData() Instance { return self.Super().AsRenderData() }
 
@@ -267,5 +267,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderData", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderData](ptr)} })
+	gdclass.Register("RenderData", func(ptr gd.Object) any { return Instance{gdclass.NewRenderData(ptr)} })
 }

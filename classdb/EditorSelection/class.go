@@ -175,30 +175,30 @@ func (self Instance) GetTransformableSelectedNodes() []Node.Instance { //gd:Edit
 type Advanced = class
 type class [1]gdclass.EditorSelection
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorSelection(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorSelection](obj[0])
+		self[0] = gdclass.NewEditorSelection(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorSelection](obj[0])
+		self[0] = gdclass.NewEditorSelection(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorSelection(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorSelection{pointers.Add[gdclass.EditorSelection]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorSelection{gdclass.NewEditorSelection(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorSelection(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -208,7 +208,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorSelection{pointers.New[gdclass.EditorSelection]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorSelection{gdclass.NewEditorSelection(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -230,7 +230,7 @@ Note: The newly selected node will not be automatically edited in the inspector.
 */
 //go:nosplit
 func (self class) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0]))})
 }
 
 /*
@@ -238,7 +238,7 @@ Removes a node from the selection.
 */
 //go:nosplit
 func (self class) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0])))})
 }
 
 /*
@@ -283,7 +283,7 @@ func (self Instance) OnSelectionChanged(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("selection_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("selection_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -292,10 +292,10 @@ func (self class) SelectionChanged() Signal.Any {
 }
 
 func (self class) AsEditorSelection() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorSelection](self[0])}
+	return Advanced{gdclass.NewEditorSelection(self.AsObject()[0])}
 }
 func (self Instance) AsEditorSelection() Instance {
-	return Instance{pointers.AsA[gdclass.EditorSelection](self[0])}
+	return Instance{gdclass.NewEditorSelection(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorSelection() Instance { return self.Super().AsEditorSelection() }
 
@@ -313,5 +313,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorSelection", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorSelection](ptr)} })
+	gdclass.Register("EditorSelection", func(ptr gd.Object) any { return Instance{gdclass.NewEditorSelection(ptr)} })
 }

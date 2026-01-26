@@ -217,30 +217,30 @@ func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsShape.to_diction
 type Advanced = class
 type class [1]gdclass.GLTFPhysicsShape
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFPhysicsShape(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFPhysicsShape](obj[0])
+		self[0] = gdclass.NewGLTFPhysicsShape(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFPhysicsShape](obj[0])
+		self[0] = gdclass.NewGLTFPhysicsShape(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFPhysicsShape(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFPhysicsShape{pointers.Add[gdclass.GLTFPhysicsShape]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFPhysicsShape(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -250,7 +250,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFPhysicsShape{pointers.New[gdclass.GLTFPhysicsShape]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -361,8 +361,8 @@ Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] 
 */
 //go:nosplit
 func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_node[0].AsObject()))})
-	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCollisionShape3D(shape_node[0])))})
+	var ret = [1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -374,7 +374,7 @@ Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 //go:nosplit
 func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
-	var ret = [1]gdclass.CollisionShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionShape3D](r_ret)}
+	var ret = [1]gdclass.CollisionShape3D{gdclass.NewCollisionShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -385,8 +385,8 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))})
-	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetShape3D(shape_resource[0])))})
+	var ret = [1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -398,7 +398,7 @@ Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 //go:nosplit
 func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_resource, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
-	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
+	var ret = [1]gdclass.Shape3D{gdclass.NewShape3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -408,7 +408,7 @@ Creates a new GLTFPhysicsShape instance by parsing the given data structure.
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
-	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
+	var ret = [1]gdclass.GLTFPhysicsShape{gdclass.NewGLTFPhysicsShape(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -497,34 +497,34 @@ func (self class) SetMeshIndex(mesh_index int64) { //gd:GLTFPhysicsShape.set_mes
 //go:nosplit
 func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsShape.get_importer_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_importer_mesh, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
+	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetImporterMesh(importer_mesh[0])))})
 }
 func (self class) AsGLTFPhysicsShape() Advanced {
-	return Advanced{pointers.AsA[gdclass.GLTFPhysicsShape](self[0])}
+	return Advanced{gdclass.NewGLTFPhysicsShape(self.AsObject()[0])}
 }
 func (self Instance) AsGLTFPhysicsShape() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFPhysicsShape](self[0])}
+	return Instance{gdclass.NewGLTFPhysicsShape(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFPhysicsShape() Instance { return self.Super().AsGLTFPhysicsShape() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -541,7 +541,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFPhysicsShape", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFPhysicsShape](ptr)} })
+	gdclass.Register("GLTFPhysicsShape", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFPhysicsShape(ptr)} })
 }
 
 type Structure map[interface{}]interface{}

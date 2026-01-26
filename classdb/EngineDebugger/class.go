@@ -134,7 +134,7 @@ var self [1]gdclass.EngineDebugger
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.EngineDebugger]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewEngineDebugger(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -326,22 +326,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.EngineDebugger
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEngineDebugger(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EngineDebugger](obj[0])
+		self[0] = gdclass.NewEngineDebugger(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EngineDebugger](obj[0])
+		self[0] = gdclass.NewEngineDebugger(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEngineDebugger(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -366,7 +366,7 @@ func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineP
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_profiler, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		profiler gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(profiler[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetEngineProfiler(profiler[0])))})
 }
 
 /*
@@ -507,7 +507,7 @@ func (self class) ScriptDebug(language [1]gdclass.ScriptLanguage, can_continue b
 		language            gdextension.Object
 		can_continue        bool
 		is_error_breakpoint bool
-	}{gdextension.Object(gd.ObjectChecked(language[0].AsObject())), can_continue, is_error_breakpoint})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetScriptLanguage(language[0]))), can_continue, is_error_breakpoint})
 }
 
 /*
@@ -621,5 +621,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EngineDebugger", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EngineDebugger](ptr)} })
+	gdclass.Register("EngineDebugger", func(ptr gd.Object) any { return Instance{gdclass.NewEngineDebugger(ptr)} })
 }

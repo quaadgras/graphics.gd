@@ -334,30 +334,30 @@ func (self Instance) GetAvailableDisplayRefreshRates() []float32 { //gd:WebXRInt
 type Advanced = class
 type class [1]gdclass.WebXRInterface
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetWebXRInterface(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.WebXRInterface](obj[0])
+		self[0] = gdclass.NewWebXRInterface(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.WebXRInterface](obj[0])
+		self[0] = gdclass.NewWebXRInterface(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetWebXRInterface(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.WebXRInterface{pointers.Add[gdclass.WebXRInterface]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetWebXRInterface(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -367,7 +367,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.WebXRInterface{pointers.New[gdclass.WebXRInterface]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.WebXRInterface{gdclass.NewWebXRInterface(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -622,7 +622,7 @@ Use this method to get information about the input source that triggered one of 
 //go:nosplit
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_input_source_tracker, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
-	var ret = [1]gdclass.XRControllerTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRControllerTracker](r_ret)}
+	var ret = [1]gdclass.XRControllerTracker{gdclass.NewXRControllerTracker(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -689,7 +689,7 @@ func (self Instance) OnSessionSupported(cb func(session_mode string, supported b
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -709,7 +709,7 @@ func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -727,7 +727,7 @@ func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -747,7 +747,7 @@ func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -768,7 +768,7 @@ func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -789,7 +789,7 @@ func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -810,7 +810,7 @@ func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.F
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -831,7 +831,7 @@ func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signa
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -852,7 +852,7 @@ func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -873,7 +873,7 @@ func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -891,7 +891,7 @@ func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -914,7 +914,7 @@ func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -930,7 +930,7 @@ func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -939,25 +939,25 @@ func (self class) DisplayRefreshRateChanged() Signal.Any {
 }
 
 func (self class) AsWebXRInterface() Advanced {
-	return Advanced{pointers.AsA[gdclass.WebXRInterface](self[0])}
+	return Advanced{gdclass.NewWebXRInterface(self.AsObject()[0])}
 }
 func (self Instance) AsWebXRInterface() Instance {
-	return Instance{pointers.AsA[gdclass.WebXRInterface](self[0])}
+	return Instance{gdclass.NewWebXRInterface(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsWebXRInterface() Instance { return self.Super().AsWebXRInterface() }
 func (self class) AsXRInterface() XRInterface.Advanced {
-	return XRInterface.Advanced{pointers.AsA[gdclass.XRInterface](self[0])}
+	return XRInterface.Advanced{gdclass.NewXRInterface(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
 func (self Instance) AsXRInterface() XRInterface.Instance {
-	return XRInterface.Instance{pointers.AsA[gdclass.XRInterface](self[0])}
+	return XRInterface.Instance{gdclass.NewXRInterface(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -974,7 +974,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("WebXRInterface", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.WebXRInterface](ptr)} })
+	gdclass.Register("WebXRInterface", func(ptr gd.Object) any { return Instance{gdclass.NewWebXRInterface(ptr)} })
 }
 
 type TargetRayMode int //gd:WebXRInterface.TargetRayMode

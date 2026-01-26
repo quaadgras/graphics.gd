@@ -1250,30 +1250,30 @@ func (self Instance) IsSystemMenu() bool { //gd:PopupMenu.is_system_menu
 type Advanced = class
 type class [1]gdclass.PopupMenu
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPopupMenu(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PopupMenu](obj[0])
+		self[0] = gdclass.NewPopupMenu(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PopupMenu](obj[0])
+		self[0] = gdclass.NewPopupMenu(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPopupMenu(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PopupMenu{pointers.Add[gdclass.PopupMenu]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPopupMenu(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1283,7 +1283,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PopupMenu{pointers.New[gdclass.PopupMenu]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PopupMenu{gdclass.NewPopupMenu(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1425,7 +1425,7 @@ func (self class) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_on
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.activate_item_by_event, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		for_global_only bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), for_global_only})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetInputEvent(event[0]))), for_global_only})
 	var ret = r_ret
 	return ret
 }
@@ -1489,7 +1489,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
 
 /*
@@ -1528,7 +1528,7 @@ func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Re
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
 
 /*
@@ -1562,7 +1562,7 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), pointers.Get(gd.InternalString(label)), id, accel})
 }
 
 /*
@@ -1621,7 +1621,7 @@ func (self class) AddShortcut(shortcut [1]gdclass.Shortcut, id int64, global boo
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global, allow_echo})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
 }
 
 /*
@@ -1641,7 +1641,7 @@ func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdcl
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global, allow_echo})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global, allow_echo})
 }
 
 /*
@@ -1660,7 +1660,7 @@ func (self class) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, globa
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
 
 /*
@@ -1680,7 +1680,7 @@ func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
 
 /*
@@ -1699,7 +1699,7 @@ func (self class) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, 
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
 
 /*
@@ -1714,7 +1714,7 @@ func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortc
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), id, global})
 }
 
 /*
@@ -1748,7 +1748,7 @@ func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.P
 		label   gdextension.String
 		submenu gdextension.Object
 		id      int64
-	}{pointers.Get(gd.InternalString(label)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0])), id})
+	}{pointers.Get(gd.InternalString(label)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0])), id})
 }
 
 /*
@@ -1809,7 +1809,7 @@ func (self class) SetItemIcon(index int64, icon [1]gdclass.Texture2D) { //gd:Pop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		icon  gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -1921,7 +1921,7 @@ func (self class) SetItemSubmenuNode(index int64, submenu [1]gdclass.PopupMenu) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index   int64
 		submenu gdextension.Object
-	}{index, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))})
+	}{index, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetPopupMenu(submenu[0])[0]))})
 }
 
 /*
@@ -1981,7 +1981,7 @@ func (self class) SetItemShortcut(index int64, shortcut [1]gdclass.Shortcut, glo
 		index    int64
 		shortcut gdextension.Object
 		global   bool
-	}{index, gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), global})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetShortcut(shortcut[0]))), global})
 }
 
 /*
@@ -2098,7 +2098,7 @@ Returns the icon of the item at the given 'index'.
 //go:nosplit
 func (self class) GetItemIcon(index int64) [1]gdclass.Texture2D { //gd:PopupMenu.get_item_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2212,7 +2212,7 @@ Returns the submenu of the item at the given 'index', or null if no submenu was 
 //go:nosplit
 func (self class) GetItemSubmenuNode(index int64) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.PopupMenu{gdclass.NewPopupMenu(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -2280,7 +2280,7 @@ Returns the [Shortcut] associated with the item at the given 'index'.
 //go:nosplit
 func (self class) GetItemShortcut(index int64) [1]gdclass.Shortcut { //gd:PopupMenu.get_item_shortcut
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_shortcut, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
+	var ret = [1]gdclass.Shortcut{gdclass.NewShortcut(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2479,7 +2479,7 @@ func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2497,7 +2497,7 @@ func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2513,7 +2513,7 @@ func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) I
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2529,7 +2529,7 @@ func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2537,36 +2537,36 @@ func (self class) MenuChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`menu_changed`))))
 }
 
-func (self class) AsPopupMenu() Advanced { return Advanced{pointers.AsA[gdclass.PopupMenu](self[0])} }
+func (self class) AsPopupMenu() Advanced { return Advanced{gdclass.NewPopupMenu(self.AsObject()[0])} }
 func (self Instance) AsPopupMenu() Instance {
-	return Instance{pointers.AsA[gdclass.PopupMenu](self[0])}
+	return Instance{gdclass.NewPopupMenu(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPopupMenu() Instance { return self.Super().AsPopupMenu() }
 func (self class) AsPopup() Popup.Advanced {
-	return Popup.Advanced{pointers.AsA[gdclass.Popup](self[0])}
+	return Popup.Advanced{gdclass.NewPopup(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPopup() Popup.Instance { return self.Super().AsPopup() }
 func (self Instance) AsPopup() Popup.Instance {
-	return Popup.Instance{pointers.AsA[gdclass.Popup](self[0])}
+	return Popup.Instance{gdclass.NewPopup(self.AsObject()[0])}
 }
 func (self class) AsWindow() Window.Advanced {
-	return Window.Advanced{pointers.AsA[gdclass.Window](self[0])}
+	return Window.Advanced{gdclass.NewWindow(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
 func (self Instance) AsWindow() Window.Instance {
-	return Window.Instance{pointers.AsA[gdclass.Window](self[0])}
+	return Window.Instance{gdclass.NewWindow(self.AsObject()[0])}
 }
 func (self class) AsViewport() Viewport.Advanced {
-	return Viewport.Advanced{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Advanced{gdclass.NewViewport(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
-	return Viewport.Instance{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Instance{gdclass.NewViewport(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2583,5 +2583,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PopupMenu", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PopupMenu](ptr)} })
+	gdclass.Register("PopupMenu", func(ptr gd.Object) any { return Instance{gdclass.NewPopupMenu(ptr)} })
 }

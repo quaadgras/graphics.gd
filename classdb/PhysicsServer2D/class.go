@@ -248,7 +248,7 @@ var self [1]gdclass.PhysicsServer2D
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.PhysicsServer2D]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewPhysicsServer2D(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -1295,22 +1295,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.PhysicsServer2D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsServer2D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer2D](obj[0])
+		self[0] = gdclass.NewPhysicsServer2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer2D](obj[0])
+		self[0] = gdclass.NewPhysicsServer2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer2D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -1546,7 +1546,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
-	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret)}
+	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gdclass.NewPhysicsDirectSpaceState2D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2669,7 +2669,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))})
+	}{body, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionParameters2D(parameters[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsTestMotionResult2D(result[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -2683,7 +2683,7 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns null if the body is 
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
-	var ret = [1]gdclass.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState2D](r_ret)}
+	var ret = [1]gdclass.PhysicsDirectBodyState2D{gdclass.NewPhysicsDirectBodyState2D(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2948,7 +2948,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsServer2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsServer2D](ptr)} })
+	gdclass.Register("PhysicsServer2D", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsServer2D(ptr)} })
 }
 
 type SpaceParameter int //gd:PhysicsServer2D.SpaceParameter

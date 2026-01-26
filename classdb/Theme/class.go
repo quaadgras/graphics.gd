@@ -907,30 +907,30 @@ func (self Instance) Clear() { //gd:Theme.clear
 type Advanced = class
 type class [1]gdclass.Theme
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTheme(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Theme](obj[0])
+		self[0] = gdclass.NewTheme(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Theme](obj[0])
+		self[0] = gdclass.NewTheme(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTheme(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Theme{pointers.Add[gdclass.Theme]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Theme{gdclass.NewTheme(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTheme(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -940,7 +940,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Theme{pointers.New[gdclass.Theme]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Theme{gdclass.NewTheme(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -1011,7 +1011,7 @@ func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]g
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -1028,7 +1028,7 @@ func (self class) GetIcon(name String.Name, theme_type String.Name) [1]gdclass.T
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1117,7 +1117,7 @@ func (self class) SetStylebox(name String.Name, theme_type String.Name, texture 
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(texture[0])))})
 }
 
 /*
@@ -1135,7 +1135,7 @@ func (self class) GetStylebox(name String.Name, theme_type String.Name) [1]gdcla
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret)}
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1229,7 +1229,7 @@ func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		font       gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
 
 /*
@@ -1251,7 +1251,7 @@ func (self class) GetFont(name String.Name, theme_type String.Name) [1]gdclass.F
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1687,13 +1687,13 @@ func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 
 //go:nosplit
 func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_font
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
 
 //go:nosplit
 func (self class) GetDefaultFont() [1]gdclass.Font { //gd:Theme.get_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_font, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1978,7 +1978,7 @@ Note: This modifies the current theme. If you want to merge two themes together 
 */
 //go:nosplit
 func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), &struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(other[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), &struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(other[0])))})
 }
 
 /*
@@ -1988,22 +1988,22 @@ Removes all the theme properties defined on the theme resource.
 func (self class) Clear() { //gd:Theme.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
-func (self class) AsTheme() Advanced         { return Advanced{pointers.AsA[gdclass.Theme](self[0])} }
-func (self Instance) AsTheme() Instance      { return Instance{pointers.AsA[gdclass.Theme](self[0])} }
+func (self class) AsTheme() Advanced         { return Advanced{gdclass.NewTheme(self.AsObject()[0])} }
+func (self Instance) AsTheme() Instance      { return Instance{gdclass.NewTheme(self.AsObject()[0])} }
 func (self *Extension[T]) AsTheme() Instance { return self.Super().AsTheme() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2020,7 +2020,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Theme", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Theme](ptr)} })
+	gdclass.Register("Theme", func(ptr gd.Object) any { return Instance{gdclass.NewTheme(ptr)} })
 }
 
 type DataType int //gd:Theme.DataType

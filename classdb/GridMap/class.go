@@ -441,30 +441,30 @@ func (self MoreArgs) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_siz
 type Advanced = class
 type class [1]gdclass.GridMap
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGridMap(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GridMap](obj[0])
+		self[0] = gdclass.NewGridMap(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GridMap](obj[0])
+		self[0] = gdclass.NewGridMap(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGridMap(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GridMap{pointers.Add[gdclass.GridMap]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GridMap{gdclass.NewGridMap(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGridMap(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -474,7 +474,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GridMap{pointers.New[gdclass.GridMap]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GridMap{gdclass.NewGridMap(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -739,13 +739,13 @@ func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_pr
 
 //go:nosplit
 func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd:GridMap.set_physics_material
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(material[0])))})
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
+	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -787,13 +787,13 @@ func (self class) GetNavigationMap() RID.Any { //gd:GridMap.get_navigation_map
 
 //go:nosplit
 func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:GridMap.set_mesh_library
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh_library[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_library, 0|(gdextension.SizeObject<<4), &struct{ mesh_library gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetMeshLibrary(mesh_library[0])))})
 }
 
 //go:nosplit
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh_library, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.MeshLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.MeshLibrary](r_ret)}
+	var ret = [1]gdclass.MeshLibrary{gdclass.NewMeshLibrary(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -934,7 +934,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetResource(resource[0])))})
 }
 
 //go:nosplit
@@ -1082,7 +1082,7 @@ func (self Instance) OnCellSizeChanged(cb func(cell_size Vector3.XYZ), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("cell_size_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("cell_size_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1100,7 +1100,7 @@ func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1108,20 +1108,20 @@ func (self class) Changed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`changed`))))
 }
 
-func (self class) AsGridMap() Advanced         { return Advanced{pointers.AsA[gdclass.GridMap](self[0])} }
-func (self Instance) AsGridMap() Instance      { return Instance{pointers.AsA[gdclass.GridMap](self[0])} }
+func (self class) AsGridMap() Advanced         { return Advanced{gdclass.NewGridMap(self.AsObject()[0])} }
+func (self Instance) AsGridMap() Instance      { return Instance{gdclass.NewGridMap(self.AsObject()[0])} }
 func (self *Extension[T]) AsGridMap() Instance { return self.Super().AsGridMap() }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1138,7 +1138,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GridMap", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GridMap](ptr)} })
+	gdclass.Register("GridMap", func(ptr gd.Object) any { return Instance{gdclass.NewGridMap(ptr)} })
 }
 
 type CellItem int

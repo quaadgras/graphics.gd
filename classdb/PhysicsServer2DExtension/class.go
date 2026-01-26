@@ -1276,7 +1276,7 @@ func (Instance) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RI
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Space2D(space))
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -2653,7 +2653,7 @@ func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Body2D(body))
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetPhysicsDirectBodyState2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -3096,30 +3096,30 @@ func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool { //gd:Physic
 type Advanced = class
 type class [1]gdclass.PhysicsServer2DExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetPhysicsServer2DExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer2DExtension](obj[0])
+		self[0] = gdclass.NewPhysicsServer2DExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.PhysicsServer2DExtension](obj[0])
+		self[0] = gdclass.NewPhysicsServer2DExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetPhysicsServer2DExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.PhysicsServer2DExtension{pointers.Add[gdclass.PhysicsServer2DExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.PhysicsServer2DExtension{gdclass.NewPhysicsServer2DExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetPhysicsServer2DExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -3129,7 +3129,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.PhysicsServer2DExtension{pointers.New[gdclass.PhysicsServer2DExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.PhysicsServer2DExtension{gdclass.NewPhysicsServer2DExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -3426,7 +3426,7 @@ func (class) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.A
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, space)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetPhysicsDirectSpaceState2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -4803,7 +4803,7 @@ func (class) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Any
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, body)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetPhysicsDirectBodyState2D(ret[0])[0])
 
 		if !ok {
 			return
@@ -5248,10 +5248,10 @@ func (self class) BodyTestMotionIsExcludingObject(obj int64) bool { //gd:Physics
 	return ret
 }
 func (self class) AsPhysicsServer2DExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.PhysicsServer2DExtension](self[0])}
+	return Advanced{gdclass.NewPhysicsServer2DExtension(self.AsObject()[0])}
 }
 func (self Instance) AsPhysicsServer2DExtension() Instance {
-	return Instance{pointers.AsA[gdclass.PhysicsServer2DExtension](self[0])}
+	return Instance{gdclass.NewPhysicsServer2DExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsPhysicsServer2DExtension() Instance {
 	return self.Super().AsPhysicsServer2DExtension()
@@ -5823,5 +5823,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsServer2DExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsServer2DExtension](ptr)} })
+	gdclass.Register("PhysicsServer2DExtension", func(ptr gd.Object) any { return Instance{gdclass.NewPhysicsServer2DExtension(ptr)} })
 }

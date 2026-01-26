@@ -998,30 +998,30 @@ func (self Instance) Reset() { //gd:SpringBoneSimulator3D.reset
 type Advanced = class
 type class [1]gdclass.SpringBoneSimulator3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetSpringBoneSimulator3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SpringBoneSimulator3D](obj[0])
+		self[0] = gdclass.NewSpringBoneSimulator3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.SpringBoneSimulator3D](obj[0])
+		self[0] = gdclass.NewSpringBoneSimulator3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetSpringBoneSimulator3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.SpringBoneSimulator3D{pointers.Add[gdclass.SpringBoneSimulator3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.SpringBoneSimulator3D{gdclass.NewSpringBoneSimulator3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetSpringBoneSimulator3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1031,7 +1031,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.SpringBoneSimulator3D{pointers.New[gdclass.SpringBoneSimulator3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.SpringBoneSimulator3D{gdclass.NewSpringBoneSimulator3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -1412,7 +1412,7 @@ func (self class) SetRadiusDampingCurve(index int64, curve [1]gdclass.Curve) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
 
 /*
@@ -1421,7 +1421,7 @@ Returns the joint radius damping curve of the bone chain.
 //go:nosplit
 func (self class) GetRadiusDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_radius_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1460,7 +1460,7 @@ func (self class) SetStiffnessDampingCurve(index int64, curve [1]gdclass.Curve) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
 
 /*
@@ -1469,7 +1469,7 @@ Returns the stiffness force damping curve of the bone chain.
 //go:nosplit
 func (self class) GetStiffnessDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stiffness_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1506,7 +1506,7 @@ func (self class) SetDragDampingCurve(index int64, curve [1]gdclass.Curve) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
 
 /*
@@ -1515,7 +1515,7 @@ Returns the drag force damping curve of the bone chain.
 //go:nosplit
 func (self class) GetDragDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1555,7 +1555,7 @@ func (self class) SetGravityDampingCurve(index int64, curve [1]gdclass.Curve) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	}{index, gdextension.Object(gd.ObjectChecked(gdclass.GetCurve(curve[0])))})
 }
 
 /*
@@ -1564,7 +1564,7 @@ Returns the gravity amount damping curve of the bone chain.
 //go:nosplit
 func (self class) GetGravityDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gravity_damping_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
+	var ret = [1]gdclass.Curve{gdclass.NewCurve(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2057,34 +2057,34 @@ func (self class) Reset() { //gd:SpringBoneSimulator3D.reset
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 func (self class) AsSpringBoneSimulator3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.SpringBoneSimulator3D](self[0])}
+	return Advanced{gdclass.NewSpringBoneSimulator3D(self.AsObject()[0])}
 }
 func (self Instance) AsSpringBoneSimulator3D() Instance {
-	return Instance{pointers.AsA[gdclass.SpringBoneSimulator3D](self[0])}
+	return Instance{gdclass.NewSpringBoneSimulator3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSpringBoneSimulator3D() Instance {
 	return self.Super().AsSpringBoneSimulator3D()
 }
 func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
-	return SkeletonModifier3D.Advanced{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Advanced{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
 	return self.Super().AsSkeletonModifier3D()
 }
 func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
-	return SkeletonModifier3D.Instance{pointers.AsA[gdclass.SkeletonModifier3D](self[0])}
+	return SkeletonModifier3D.Instance{gdclass.NewSkeletonModifier3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2101,7 +2101,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SpringBoneSimulator3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.SpringBoneSimulator3D](ptr)} })
+	gdclass.Register("SpringBoneSimulator3D", func(ptr gd.Object) any { return Instance{gdclass.NewSpringBoneSimulator3D(ptr)} })
 }
 
 type BoneDirection int //gd:SpringBoneSimulator3D.BoneDirection

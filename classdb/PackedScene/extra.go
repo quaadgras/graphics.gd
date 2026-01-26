@@ -44,7 +44,7 @@ func (self Is[T]) Virtual(name string) reflect.Value {
 	}
 }
 
-func (self Is[T]) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self Is[T]) AsObject() [1]gd.Object { return self.AsObject() }
 
 //go:nosplit
 func (self *Is[T]) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }

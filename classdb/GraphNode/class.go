@@ -533,30 +533,30 @@ func (self Instance) GetOutputPortSlot(port_idx int) int { //gd:GraphNode.get_ou
 type Advanced = class
 type class [1]gdclass.GraphNode
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGraphNode(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GraphNode](obj[0])
+		self[0] = gdclass.NewGraphNode(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GraphNode](obj[0])
+		self[0] = gdclass.NewGraphNode(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGraphNode(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GraphNode{pointers.Add[gdclass.GraphNode]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GraphNode{gdclass.NewGraphNode(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGraphNode(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -566,7 +566,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GraphNode{pointers.New[gdclass.GraphNode]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GraphNode{gdclass.NewGraphNode(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -652,7 +652,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.HBoxContainer{gdclass.NewHBoxContainer(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -689,7 +689,7 @@ func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int
 		custom_icon_left  gdextension.Object
 		custom_icon_right gdextension.Object
 		draw_stylebox     bool
-	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.ObjectChecked(custom_icon_left[0].AsObject())), gdextension.Object(gd.ObjectChecked(custom_icon_right[0].AsObject())), draw_stylebox})
+	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_left[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon_right[0]))), draw_stylebox})
 }
 
 /*
@@ -785,7 +785,7 @@ func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))})
+	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
 }
 
 /*
@@ -796,7 +796,7 @@ Returns the left (input) custom [Texture2D] of the slot with the given 'slot_ind
 //go:nosplit
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -877,7 +877,7 @@ func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclas
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))})
+	}{slot_index, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(custom_icon[0])))})
 }
 
 /*
@@ -888,7 +888,7 @@ Returns the right (output) custom [Texture2D] of the slot with the given 'slot_i
 //go:nosplit
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ slot_index int64 }{slot_index})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1053,7 +1053,7 @@ func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("slot_updated"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("slot_updated"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1069,7 +1069,7 @@ func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("slot_sizes_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("slot_sizes_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1077,45 +1077,45 @@ func (self class) SlotSizesChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`slot_sizes_changed`))))
 }
 
-func (self class) AsGraphNode() Advanced { return Advanced{pointers.AsA[gdclass.GraphNode](self[0])} }
+func (self class) AsGraphNode() Advanced { return Advanced{gdclass.NewGraphNode(self.AsObject()[0])} }
 func (self Instance) AsGraphNode() Instance {
-	return Instance{pointers.AsA[gdclass.GraphNode](self[0])}
+	return Instance{gdclass.NewGraphNode(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGraphNode() Instance { return self.Super().AsGraphNode() }
 func (self class) AsGraphElement() GraphElement.Advanced {
-	return GraphElement.Advanced{pointers.AsA[gdclass.GraphElement](self[0])}
+	return GraphElement.Advanced{gdclass.NewGraphElement(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGraphElement() GraphElement.Instance {
 	return self.Super().AsGraphElement()
 }
 func (self Instance) AsGraphElement() GraphElement.Instance {
-	return GraphElement.Instance{pointers.AsA[gdclass.GraphElement](self[0])}
+	return GraphElement.Instance{gdclass.NewGraphElement(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1136,5 +1136,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GraphNode", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GraphNode](ptr)} })
+	gdclass.Register("GraphNode", func(ptr gd.Object) any { return Instance{gdclass.NewGraphNode(ptr)} })
 }

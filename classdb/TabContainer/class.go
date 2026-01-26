@@ -421,30 +421,30 @@ func (self Instance) GetPopup() Popup.Instance { //gd:TabContainer.get_popup
 type Advanced = class
 type class [1]gdclass.TabContainer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTabContainer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TabContainer](obj[0])
+		self[0] = gdclass.NewTabContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TabContainer](obj[0])
+		self[0] = gdclass.NewTabContainer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTabContainer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TabContainer{pointers.Add[gdclass.TabContainer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTabContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -454,7 +454,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TabContainer{pointers.New[gdclass.TabContainer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TabContainer{gdclass.NewTabContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -679,7 +679,7 @@ Returns the child [Control] node located at the active tab index.
 //go:nosplit
 func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_tab_control, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -694,7 +694,7 @@ Warning: This is a required internal node, removing and freeing it or editing it
 //go:nosplit
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.TabBar{gd.PointerLifetimeBoundTo[gdclass.TabBar](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.TabBar{gdclass.NewTabBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -706,7 +706,7 @@ Returns the [Control] node from the tab at index 'tab_idx'.
 //go:nosplit
 func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabContainer.get_tab_control
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_control, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
+	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -824,7 +824,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -835,7 +835,7 @@ Returns the [Texture2D] for the tab at index 'tab_idx' or null if the tab has no
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -935,7 +935,7 @@ func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { /
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(icon[0])))})
 }
 
 /*
@@ -944,7 +944,7 @@ Returns the button icon from the tab at index 'tab_idx'.
 //go:nosplit
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_button_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ tab_idx int64 }{tab_idx})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -965,7 +965,7 @@ Returns the index of the tab tied to the given 'control'. The control must be a 
 */
 //go:nosplit
 func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:TabContainer.get_tab_idx_from_control
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -978,7 +978,7 @@ If set on a [Popup] node instance, a popup menu icon appears in the top-right co
 */
 //go:nosplit
 func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup, 0|(gdextension.SizeObject<<4), &struct{ popup gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(popup[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup, 0|(gdextension.SizeObject<<4), &struct{ popup gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(popup[0])[0]))})
 }
 
 /*
@@ -993,7 +993,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Popup{gd.PointerMustAssertInstanceID[gdclass.Popup](r_ret)}
+	var ret = [1]gdclass.Popup{gdclass.NewPopup(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1067,7 +1067,7 @@ func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1083,7 +1083,7 @@ func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1099,7 +1099,7 @@ func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1115,7 +1115,7 @@ func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1131,7 +1131,7 @@ func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) Inst
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1147,7 +1147,7 @@ func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1167,7 +1167,7 @@ func (self Instance) OnPrePopupPressed(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pre_popup_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pre_popup_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -1176,37 +1176,37 @@ func (self class) PrePopupPressed() Signal.Any {
 }
 
 func (self class) AsTabContainer() Advanced {
-	return Advanced{pointers.AsA[gdclass.TabContainer](self[0])}
+	return Advanced{gdclass.NewTabContainer(self.AsObject()[0])}
 }
 func (self Instance) AsTabContainer() Instance {
-	return Instance{pointers.AsA[gdclass.TabContainer](self[0])}
+	return Instance{gdclass.NewTabContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTabContainer() Instance { return self.Super().AsTabContainer() }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1223,7 +1223,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TabContainer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TabContainer](ptr)} })
+	gdclass.Register("TabContainer", func(ptr gd.Object) any { return Instance{gdclass.NewTabContainer(ptr)} })
 }
 
 type TabPosition int //gd:TabContainer.TabPosition

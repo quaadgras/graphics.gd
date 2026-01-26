@@ -123,30 +123,30 @@ type Any interface {
 type Advanced = class
 type class [1]gdclass.MissingNode
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetMissingNode(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MissingNode](obj[0])
+		self[0] = gdclass.NewMissingNode(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.MissingNode](obj[0])
+		self[0] = gdclass.NewMissingNode(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetMissingNode(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.MissingNode{pointers.Add[gdclass.MissingNode]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.MissingNode{gdclass.NewMissingNode(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetMissingNode(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -156,7 +156,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.MissingNode{pointers.New[gdclass.MissingNode]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.MissingNode{gdclass.NewMissingNode(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -238,16 +238,16 @@ func (self class) IsRecordingProperties() bool { //gd:MissingNode.is_recording_p
 	return ret
 }
 func (self class) AsMissingNode() Advanced {
-	return Advanced{pointers.AsA[gdclass.MissingNode](self[0])}
+	return Advanced{gdclass.NewMissingNode(self.AsObject()[0])}
 }
 func (self Instance) AsMissingNode() Instance {
-	return Instance{pointers.AsA[gdclass.MissingNode](self[0])}
+	return Instance{gdclass.NewMissingNode(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsMissingNode() Instance { return self.Super().AsMissingNode() }
-func (self class) AsNode() Node.Advanced           { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced           { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance   { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -264,5 +264,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MissingNode", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.MissingNode](ptr)} })
+	gdclass.Register("MissingNode", func(ptr gd.Object) any { return Instance{gdclass.NewMissingNode(ptr)} })
 }

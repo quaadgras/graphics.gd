@@ -1352,30 +1352,30 @@ func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusiv
 type Advanced = class
 type class [1]gdclass.Window
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetWindow(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Window](obj[0])
+		self[0] = gdclass.NewWindow(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.Window](obj[0])
+		self[0] = gdclass.NewWindow(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetWindow(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.Window{pointers.Add[gdclass.Window]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.Window{gdclass.NewWindow(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetWindow(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1385,7 +1385,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Window{pointers.New[gdclass.Window]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.Window{gdclass.NewWindow(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -2538,13 +2538,13 @@ func (self class) ChildControlsChanged() { //gd:Window.child_controls_changed
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), &struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTheme(theme[0])))})
 }
 
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Window.get_theme
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
+	var ret = [1]gdclass.Theme{gdclass.NewTheme(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2593,7 +2593,7 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 /*
@@ -2611,7 +2611,7 @@ func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetStyleBox(stylebox[0])))})
 }
 
 /*
@@ -2628,7 +2628,7 @@ func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(gdclass.GetFont(font[0])))})
 }
 
 /*
@@ -2758,7 +2758,7 @@ func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2777,7 +2777,7 @@ func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret)}
+	var ret = [1]gdclass.StyleBox{gdclass.NewStyleBox(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2796,7 +2796,7 @@ func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -3084,7 +3084,7 @@ See [Control.GetThemeColor] for details.
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Window.get_theme_default_font
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
+	var ret = [1]gdclass.Font{gdclass.NewFont(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -3144,7 +3144,7 @@ Returns the focused window.
 //go:nosplit
 func (self class) GetFocusedWindow() [1]gdclass.Window { //gd:Window.get_focused_window
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.get_focused_window, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
+	var ret = [1]gdclass.Window{gdclass.NewWindow(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -3293,7 +3293,7 @@ func (self class) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.Position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
 		from_node gdextension.Object
 		rect      Rect2i.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), rect})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), rect})
 }
 
 /*
@@ -3310,7 +3310,7 @@ func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_on_parent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), &struct {
 		from_node   gdextension.Object
 		parent_rect Rect2i.PositionSize
-	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), parent_rect})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), parent_rect})
 }
 
 /*
@@ -3327,7 +3327,7 @@ func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), &struct {
 		from_node gdextension.Object
 		minsize   Vector2i.XY
-	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), minsize})
 }
 
 /*
@@ -3344,7 +3344,7 @@ func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio f
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_exclusive_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), &struct {
 		from_node gdextension.Object
 		ratio     float64
-	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), ratio})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), ratio})
 }
 
 /*
@@ -3362,7 +3362,7 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 		from_node      gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
-	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize, fallback_ratio})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(from_node[0]))), minsize, fallback_ratio})
 }
 
 /*
@@ -3375,7 +3375,7 @@ func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3396,7 +3396,7 @@ func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Fla
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3416,7 +3416,7 @@ func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3436,7 +3436,7 @@ func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3454,7 +3454,7 @@ func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3472,7 +3472,7 @@ func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3494,7 +3494,7 @@ func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) Instance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3510,7 +3510,7 @@ func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3528,7 +3528,7 @@ func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3547,7 +3547,7 @@ func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3563,7 +3563,7 @@ func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3583,7 +3583,7 @@ func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3599,7 +3599,7 @@ func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3615,7 +3615,7 @@ func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -3623,20 +3623,20 @@ func (self class) TitleChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`title_changed`))))
 }
 
-func (self class) AsWindow() Advanced         { return Advanced{pointers.AsA[gdclass.Window](self[0])} }
-func (self Instance) AsWindow() Instance      { return Instance{pointers.AsA[gdclass.Window](self[0])} }
+func (self class) AsWindow() Advanced         { return Advanced{gdclass.NewWindow(self.AsObject()[0])} }
+func (self Instance) AsWindow() Instance      { return Instance{gdclass.NewWindow(self.AsObject()[0])} }
 func (self *Extension[T]) AsWindow() Instance { return self.Super().AsWindow() }
 func (self class) AsViewport() Viewport.Advanced {
-	return Viewport.Advanced{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Advanced{gdclass.NewViewport(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
-	return Viewport.Instance{pointers.AsA[gdclass.Viewport](self[0])}
+	return Viewport.Instance{gdclass.NewViewport(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -3657,7 +3657,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Window", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Window](ptr)} })
+	gdclass.Register("Window", func(ptr gd.Object) any { return Instance{gdclass.NewWindow(ptr)} })
 }
 
 type Mode int //gd:Window.Mode

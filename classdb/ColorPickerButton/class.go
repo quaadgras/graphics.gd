@@ -162,30 +162,30 @@ func (self Instance) GetPopup() PopupPanel.Instance { //gd:ColorPickerButton.get
 type Advanced = class
 type class [1]gdclass.ColorPickerButton
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetColorPickerButton(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ColorPickerButton](obj[0])
+		self[0] = gdclass.NewColorPickerButton(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ColorPickerButton](obj[0])
+		self[0] = gdclass.NewColorPickerButton(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetColorPickerButton(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ColorPickerButton{pointers.Add[gdclass.ColorPickerButton]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ColorPickerButton{gdclass.NewColorPickerButton(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetColorPickerButton(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -195,7 +195,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ColorPickerButton{pointers.New[gdclass.ColorPickerButton]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ColorPickerButton{gdclass.NewColorPickerButton(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -266,7 +266,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_picker, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.ColorPicker{gdclass.NewColorPicker(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -281,7 +281,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.PopupPanel{gdclass.NewPopupPanel(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -317,7 +317,7 @@ func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.F
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -335,7 +335,7 @@ func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("popup_closed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("popup_closed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -353,7 +353,7 @@ func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("picker_created"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("picker_created"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -362,44 +362,44 @@ func (self class) PickerCreated() Signal.Any {
 }
 
 func (self class) AsColorPickerButton() Advanced {
-	return Advanced{pointers.AsA[gdclass.ColorPickerButton](self[0])}
+	return Advanced{gdclass.NewColorPickerButton(self.AsObject()[0])}
 }
 func (self Instance) AsColorPickerButton() Instance {
-	return Instance{pointers.AsA[gdclass.ColorPickerButton](self[0])}
+	return Instance{gdclass.NewColorPickerButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsColorPickerButton() Instance { return self.Super().AsColorPickerButton() }
 func (self class) AsButton() Button.Advanced {
-	return Button.Advanced{pointers.AsA[gdclass.Button](self[0])}
+	return Button.Advanced{gdclass.NewButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsButton() Button.Instance { return self.Super().AsButton() }
 func (self Instance) AsButton() Button.Instance {
-	return Button.Instance{pointers.AsA[gdclass.Button](self[0])}
+	return Button.Instance{gdclass.NewButton(self.AsObject()[0])}
 }
 func (self class) AsBaseButton() BaseButton.Advanced {
-	return BaseButton.Advanced{pointers.AsA[gdclass.BaseButton](self[0])}
+	return BaseButton.Advanced{gdclass.NewBaseButton(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsBaseButton() BaseButton.Instance { return self.Super().AsBaseButton() }
 func (self Instance) AsBaseButton() BaseButton.Instance {
-	return BaseButton.Instance{pointers.AsA[gdclass.BaseButton](self[0])}
+	return BaseButton.Instance{gdclass.NewBaseButton(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -416,5 +416,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ColorPickerButton", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ColorPickerButton](ptr)} })
+	gdclass.Register("ColorPickerButton", func(ptr gd.Object) any { return Instance{gdclass.NewColorPickerButton(ptr)} })
 }

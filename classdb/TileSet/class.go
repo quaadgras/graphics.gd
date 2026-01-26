@@ -965,30 +965,30 @@ func (self Instance) GetPatternsCount() int { //gd:TileSet.get_patterns_count
 type Advanced = class
 type class [1]gdclass.TileSet
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetTileSet(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileSet](obj[0])
+		self[0] = gdclass.NewTileSet(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.TileSet](obj[0])
+		self[0] = gdclass.NewTileSet(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetTileSet(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.TileSet{pointers.Add[gdclass.TileSet]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.TileSet{gdclass.NewTileSet(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetTileSet(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -998,7 +998,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TileSet{pointers.New[gdclass.TileSet]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.TileSet{gdclass.NewTileSet(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -1098,7 +1098,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_source, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		source                   gdextension.Object
 		atlas_source_id_override int64
-	}{gdextension.Object(gd.ObjectChecked(source[0].AsObject())), atlas_source_id_override})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTileSetSource(source[0]))), atlas_source_id_override})
 	var ret = r_ret
 	return ret
 }
@@ -1162,7 +1162,7 @@ Returns the [TileSetSource] with ID 'source_id'.
 //go:nosplit
 func (self class) GetSource(source_id int64) [1]gdclass.TileSetSource { //gd:TileSet.get_source
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ source_id int64 }{source_id})
-	var ret = [1]gdclass.TileSetSource{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSetSource](r_ret)}
+	var ret = [1]gdclass.TileSetSource{gdclass.NewTileSetSource(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1417,7 +1417,7 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index int64, physics_mate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_physics_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		layer_index      int64
 		physics_material gdextension.Object
-	}{layer_index, gdextension.Object(gd.ObjectChecked(physics_material[0].AsObject()))})
+	}{layer_index, gdextension.Object(gd.ObjectChecked(gdclass.GetPhysicsMaterial(physics_material[0])))})
 }
 
 /*
@@ -1426,7 +1426,7 @@ Returns the physics material of bodies on the given TileSet's physics layer.
 //go:nosplit
 func (self class) GetPhysicsLayerPhysicsMaterial(layer_index int64) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_layer_physics_material, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ layer_index int64 }{layer_index})
-	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
+	var ret = [1]gdclass.PhysicsMaterial{gdclass.NewPhysicsMaterial(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1968,7 +1968,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_pattern, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		pattern gdextension.Object
 		index   int64
-	}{gdextension.Object(gd.ObjectChecked(pattern[0].AsObject())), index})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetTileMapPattern(pattern[0]))), index})
 	var ret = r_ret
 	return ret
 }
@@ -1981,7 +1981,7 @@ Returns the [TileMapPattern] at the given 'index'.
 //go:nosplit
 func (self class) GetPattern(index int64) [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret)}
+	var ret = [1]gdclass.TileMapPattern{gdclass.NewTileMapPattern(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -2006,22 +2006,22 @@ func (self class) GetPatternsCount() int64 { //gd:TileSet.get_patterns_count
 	var ret = r_ret
 	return ret
 }
-func (self class) AsTileSet() Advanced         { return Advanced{pointers.AsA[gdclass.TileSet](self[0])} }
-func (self Instance) AsTileSet() Instance      { return Instance{pointers.AsA[gdclass.TileSet](self[0])} }
+func (self class) AsTileSet() Advanced         { return Advanced{gdclass.NewTileSet(self.AsObject()[0])} }
+func (self Instance) AsTileSet() Instance      { return Instance{gdclass.NewTileSet(self.AsObject()[0])} }
 func (self *Extension[T]) AsTileSet() Instance { return self.Super().AsTileSet() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2038,7 +2038,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileSet", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TileSet](ptr)} })
+	gdclass.Register("TileSet", func(ptr gd.Object) any { return Instance{gdclass.NewTileSet(ptr)} })
 }
 
 type TileShape int //gd:TileSet.TileShape

@@ -34,8 +34,12 @@ func SetObject(class Pointer, obj [1]gd.Object) {
 	class.setObject(obj)
 }
 
-func GetObject(class Interface) [1]gd.Object {
+func GetObjectFromInterface(class Interface) [1]gd.Object {
 	return class.getObject()
+}
+
+func GetObject(class Object) [1]gd.Object {
+	return [1]gd.Object{class}
 }
 
 var Registered sync.Map

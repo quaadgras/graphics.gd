@@ -173,30 +173,30 @@ func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path str
 type Advanced = class
 type class [1]gdclass.EditorInspector
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetEditorInspector(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorInspector](obj[0])
+		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.EditorInspector](obj[0])
+		self[0] = gdclass.NewEditorInspector(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetEditorInspector(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.EditorInspector{pointers.Add[gdclass.EditorInspector]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetEditorInspector(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -206,7 +206,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.EditorInspector{pointers.New[gdclass.EditorInspector]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.EditorInspector{gdclass.NewEditorInspector(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -220,7 +220,7 @@ Note: If you want to edit an object in the editor's main inspector, use the edit
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0])))})
 }
 
 /*
@@ -256,8 +256,8 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 		hint_text gdextension.String
 		usage     int64
 		wide      bool
-	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
-	var ret = [1]gdclass.EditorProperty{gd.PointerMustAssertInstanceID[gdclass.EditorProperty](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetObject(obj[0]))), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
+	var ret = [1]gdclass.EditorProperty{gdclass.NewEditorProperty(gd.PointerMustAssertInstanceID[gd.Object](r_ret))}
 	return ret
 }
 
@@ -269,7 +269,7 @@ func (self Instance) OnPropertySelected(cb func(property string), flags ...Signa
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("property_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -285,7 +285,7 @@ func (self Instance) OnPropertyKeyed(cb func(property string, value any, advance
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -301,7 +301,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -317,7 +317,7 @@ func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -335,7 +335,7 @@ func (self Instance) OnObjectIdSelected(cb func(id int), flags ...Signal.Flags) 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -351,7 +351,7 @@ func (self Instance) OnPropertyEdited(cb func(property string), flags ...Signal.
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("property_edited"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -369,7 +369,7 @@ func (self Instance) OnPropertyToggled(cb func(property string, checked bool), f
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("property_toggled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -385,7 +385,7 @@ func (self Instance) OnEditedObjectChanged(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("edited_object_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -401,7 +401,7 @@ func (self Instance) OnRestartRequested(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -410,46 +410,46 @@ func (self class) RestartRequested() Signal.Any {
 }
 
 func (self class) AsEditorInspector() Advanced {
-	return Advanced{pointers.AsA[gdclass.EditorInspector](self[0])}
+	return Advanced{gdclass.NewEditorInspector(self.AsObject()[0])}
 }
 func (self Instance) AsEditorInspector() Instance {
-	return Instance{pointers.AsA[gdclass.EditorInspector](self[0])}
+	return Instance{gdclass.NewEditorInspector(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsEditorInspector() Instance { return self.Super().AsEditorInspector() }
 func (self class) AsScrollContainer() ScrollContainer.Advanced {
-	return ScrollContainer.Advanced{pointers.AsA[gdclass.ScrollContainer](self[0])}
+	return ScrollContainer.Advanced{gdclass.NewScrollContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScrollContainer() ScrollContainer.Instance {
 	return self.Super().AsScrollContainer()
 }
 func (self Instance) AsScrollContainer() ScrollContainer.Instance {
-	return ScrollContainer.Instance{pointers.AsA[gdclass.ScrollContainer](self[0])}
+	return ScrollContainer.Instance{gdclass.NewScrollContainer(self.AsObject()[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -466,5 +466,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInspector", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorInspector](ptr)} })
+	gdclass.Register("EditorInspector", func(ptr gd.Object) any { return Instance{gdclass.NewEditorInspector(ptr)} })
 }

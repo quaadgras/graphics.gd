@@ -185,30 +185,30 @@ func (self Instance) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRC
 type Advanced = class
 type class [1]gdclass.XRController3D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetXRController3D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRController3D](obj[0])
+		self[0] = gdclass.NewXRController3D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.XRController3D](obj[0])
+		self[0] = gdclass.NewXRController3D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetXRController3D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.XRController3D{pointers.Add[gdclass.XRController3D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.XRController3D{gdclass.NewXRController3D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetXRController3D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -218,7 +218,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.XRController3D{pointers.New[gdclass.XRController3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.XRController3D{gdclass.NewXRController3D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -298,7 +298,7 @@ func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -314,7 +314,7 @@ func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -330,7 +330,7 @@ func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -346,7 +346,7 @@ func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -362,7 +362,7 @@ func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -371,30 +371,30 @@ func (self class) ProfileChanged() Signal.Any {
 }
 
 func (self class) AsXRController3D() Advanced {
-	return Advanced{pointers.AsA[gdclass.XRController3D](self[0])}
+	return Advanced{gdclass.NewXRController3D(self.AsObject()[0])}
 }
 func (self Instance) AsXRController3D() Instance {
-	return Instance{pointers.AsA[gdclass.XRController3D](self[0])}
+	return Instance{gdclass.NewXRController3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsXRController3D() Instance { return self.Super().AsXRController3D() }
 func (self class) AsXRNode3D() XRNode3D.Advanced {
-	return XRNode3D.Advanced{pointers.AsA[gdclass.XRNode3D](self[0])}
+	return XRNode3D.Advanced{gdclass.NewXRNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsXRNode3D() XRNode3D.Instance { return self.Super().AsXRNode3D() }
 func (self Instance) AsXRNode3D() XRNode3D.Instance {
-	return XRNode3D.Instance{pointers.AsA[gdclass.XRNode3D](self[0])}
+	return XRNode3D.Instance{gdclass.NewXRNode3D(self.AsObject()[0])}
 }
 func (self class) AsNode3D() Node3D.Advanced {
-	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Advanced{gdclass.NewNode3D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
 func (self Instance) AsNode3D() Node3D.Instance {
-	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+	return Node3D.Instance{gdclass.NewNode3D(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -411,5 +411,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRController3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.XRController3D](ptr)} })
+	gdclass.Register("XRController3D", func(ptr gd.Object) any { return Instance{gdclass.NewXRController3D(ptr)} })
 }

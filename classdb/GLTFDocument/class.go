@@ -322,30 +322,30 @@ func GetSupportedGltfExtensions() []string { //gd:GLTFDocument.get_supported_glt
 type Advanced = class
 type class [1]gdclass.GLTFDocument
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFDocument(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFDocument](obj[0])
+		self[0] = gdclass.NewGLTFDocument(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFDocument](obj[0])
+		self[0] = gdclass.NewGLTFDocument(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFDocument(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFDocument{pointers.Add[gdclass.GLTFDocument]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFDocument{gdclass.NewGLTFDocument(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFDocument(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -355,7 +355,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFDocument{pointers.New[gdclass.GLTFDocument]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFDocument{gdclass.NewGLTFDocument(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -539,7 +539,7 @@ func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFStat
 		state     gdextension.Object
 		flags     int64
 		base_path gdextension.String
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags, pointers.Get(gd.InternalString(base_path))})
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags, pointers.Get(gd.InternalString(base_path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -559,7 +559,7 @@ func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable
 		base_path gdextension.String
 		state     gdextension.Object
 		flags     int64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -575,7 +575,7 @@ func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFSta
 		node  gdextension.Object
 		state gdextension.Object
 		flags int64
-	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetNode(node[0]))), gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -594,8 +594,8 @@ func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, tr
 		bake_fps                float64
 		trimming                bool
 		remove_immutable_tracks bool
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), bake_fps, trimming, remove_immutable_tracks})
-	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), bake_fps, trimming, remove_immutable_tracks})
+	var ret = [1]gdclass.Node{gdclass.NewNode(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -606,7 +606,7 @@ Takes a [GLTFState] object through the 'state' parameter and returns a glTF []by
 */
 //go:nosplit
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0])))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -623,7 +623,7 @@ func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Read
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_to_filesystem, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state gdextension.Object
 		path  gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalString(path))})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -639,8 +639,8 @@ func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_poi
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.import_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		state        gdextension.Object
 		json_pointer gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalString(json_pointer))})
-	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalString(json_pointer))})
+	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -657,8 +657,8 @@ func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_pat
 		node_path       gdextension.NodePath
 		godot_node      gdextension.Object
 		gltf_node_index int64
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gd.ObjectChecked(godot_node[0].AsObject())), gltf_node_index})
-	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFState(state[0]))), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gd.ObjectChecked(gdclass.GetNode(godot_node[0]))), gltf_node_index})
+	var ret = [1]gdclass.GLTFObjectModelProperty{gdclass.NewGLTFObjectModelProperty(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -676,7 +676,7 @@ func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumen
 	noescape.CallStatic[struct{}](methods.register_gltf_document_extension, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		extension      gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(extension[0].AsObject())), first_priority})
+	}{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0]))), first_priority})
 }
 
 /*
@@ -686,7 +686,7 @@ Unregisters the given [GLTFDocumentExtension] instance.
 */
 //go:nosplit
 func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
-	noescape.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
+	noescape.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetGLTFDocumentExtension(extension[0])))})
 }
 
 /*
@@ -703,25 +703,25 @@ func (self class) GetSupportedGltfExtensions() Packed.Strings { //gd:GLTFDocumen
 	return ret
 }
 func (self class) AsGLTFDocument() Advanced {
-	return Advanced{pointers.AsA[gdclass.GLTFDocument](self[0])}
+	return Advanced{gdclass.NewGLTFDocument(self.AsObject()[0])}
 }
 func (self Instance) AsGLTFDocument() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFDocument](self[0])}
+	return Instance{gdclass.NewGLTFDocument(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFDocument() Instance { return self.Super().AsGLTFDocument() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -738,7 +738,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFDocument", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFDocument](ptr)} })
+	gdclass.Register("GLTFDocument", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFDocument(ptr)} })
 }
 
 type RootNodeMode int //gd:GLTFDocument.RootNodeMode

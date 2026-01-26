@@ -166,7 +166,7 @@ var self [1]gdclass.AudioServer
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.AudioServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewAudioServer(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -549,22 +549,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.AudioServer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAudioServer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioServer](obj[0])
+		self[0] = gdclass.NewAudioServer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AudioServer](obj[0])
+		self[0] = gdclass.NewAudioServer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAudioServer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -877,7 +877,7 @@ func (self class) AddBusEffect(bus_idx int64, effect [1]gdclass.AudioEffect, at_
 		bus_idx     int64
 		effect      gdextension.Object
 		at_position int64
-	}{bus_idx, gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), at_position})
+	}{bus_idx, gdextension.Object(gd.ObjectChecked(gdclass.GetAudioEffect(effect[0]))), at_position})
 }
 
 /*
@@ -915,7 +915,7 @@ func (self class) GetBusEffect(bus_idx int64, effect_idx int64) [1]gdclass.Audio
 		bus_idx    int64
 		effect_idx int64
 	}{bus_idx, effect_idx})
-	var ret = [1]gdclass.AudioEffect{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffect](r_ret)}
+	var ret = [1]gdclass.AudioEffect{gdclass.NewAudioEffect(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -932,7 +932,7 @@ func (self class) GetBusEffectInstance(bus_idx int64, effect_idx int64, channel 
 		effect_idx int64
 		channel    int64
 	}{bus_idx, effect_idx, channel})
-	var ret = [1]gdclass.AudioEffectInstance{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioEffectInstance](r_ret)}
+	var ret = [1]gdclass.AudioEffectInstance{gdclass.NewAudioEffectInstance(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1188,7 +1188,7 @@ Overwrites the currently used [AudioBusLayout].
 //go:nosplit
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(bus_layout[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), &struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioBusLayout(bus_layout[0])))})
 }
 
 /*
@@ -1200,7 +1200,7 @@ Generates an [AudioBusLayout] using the available buses and effects.
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_bus_layout, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.AudioBusLayout{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioBusLayout](r_ret)}
+	var ret = [1]gdclass.AudioBusLayout{gdclass.NewAudioBusLayout(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -1226,7 +1226,7 @@ If false, the stream will have to be registered before playing it. To prevent la
 //go:nosplit
 func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
 	var ret = r_ret
 	return ret
 }
@@ -1239,7 +1239,7 @@ Note: Lag spikes may occur when calling this method, especially on single-thread
 //go:nosplit
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	once.Do(singleton)
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetAudioStream(stream[0])))})
 }
 
 /*
@@ -1251,7 +1251,7 @@ func OnBusLayoutChanged(cb func(), flags ...Signal.Flags) {
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetAudioServer(self[0])[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) BusLayoutChanged() Signal.Any {
@@ -1268,7 +1268,7 @@ func OnBusRenamed(cb func(bus_index Bus, old_name string, new_name string), flag
 		flags_together |= flag
 	}
 	once.Do(singleton)
-	self[0].AsObject()[0].Connect(gd.NewStringName("bus_renamed"), gd.NewCallable(cb), int64(flags_together))
+	gdclass.GetAudioServer(self[0])[0].Connect(gd.NewStringName("bus_renamed"), gd.NewCallable(cb), int64(flags_together))
 }
 
 func (self class) BusRenamed() Signal.Any {
@@ -1290,7 +1290,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioServer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AudioServer](ptr)} })
+	gdclass.Register("AudioServer", func(ptr gd.Object) any { return Instance{gdclass.NewAudioServer(ptr)} })
 }
 
 type SpeakerMode int //gd:AudioServer.SpeakerMode

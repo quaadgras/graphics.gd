@@ -135,7 +135,7 @@ var self [1]gdclass.JavaClassWrapper
 var once sync.Once
 
 func singleton() {
-	self[0] = pointers.Raw[gdclass.JavaClassWrapper]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
+	self[0] = gdclass.NewJavaClassWrapper(pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))}))
 }
 
 /*
@@ -168,22 +168,22 @@ func Advanced() class { once.Do(singleton); return self }
 
 type class [1]gdclass.JavaClassWrapper
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetJavaClassWrapper(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.JavaClassWrapper](obj[0])
+		self[0] = gdclass.NewJavaClassWrapper(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.JavaClassWrapper](obj[0])
+		self[0] = gdclass.NewJavaClassWrapper(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetJavaClassWrapper(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
@@ -204,7 +204,7 @@ Note: This method only works on Android. On every other platform, this method do
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
-	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
+	var ret = [1]gdclass.JavaClass{gdclass.NewJavaClass(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -217,7 +217,7 @@ Note: This method only works on Android. On every other platform, this method wi
 func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_exception, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret)}
+	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
@@ -234,5 +234,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("JavaClassWrapper", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.JavaClassWrapper](ptr)} })
+	gdclass.Register("JavaClassWrapper", func(ptr gd.Object) any { return Instance{gdclass.NewJavaClassWrapper(ptr)} })
 }

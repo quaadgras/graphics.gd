@@ -153,7 +153,7 @@ func (Instance) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) Render
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetRenderSceneBuffers(ret[0])[0])
 
 		if !ok {
 			return
@@ -171,7 +171,7 @@ func (Instance) _get_render_scene_data(impl func(ptr gdclass.Receiver) RenderSce
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetRenderSceneData(ret[0])[0])
 
 		if !ok {
 			return
@@ -210,30 +210,30 @@ func (Instance) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Camer
 type Advanced = class
 type class [1]gdclass.RenderDataExtension
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetRenderDataExtension(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderDataExtension](obj[0])
+		self[0] = gdclass.NewRenderDataExtension(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.RenderDataExtension](obj[0])
+		self[0] = gdclass.NewRenderDataExtension(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetRenderDataExtension(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.RenderDataExtension{pointers.Add[gdclass.RenderDataExtension]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.RenderDataExtension{gdclass.NewRenderDataExtension(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetRenderDataExtension(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -243,7 +243,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.RenderDataExtension{pointers.New[gdclass.RenderDataExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.RenderDataExtension{gdclass.NewRenderDataExtension(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -257,7 +257,7 @@ func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclas
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetRenderSceneBuffers(ret[0])[0])
 
 		if !ok {
 			return
@@ -275,7 +275,7 @@ func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(ret[0])
+		ptr, ok := pointers.End(gdclass.GetRenderSceneData(ret[0])[0])
 
 		if !ok {
 			return
@@ -311,20 +311,20 @@ func (class) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb
 }
 
 func (self class) AsRenderDataExtension() Advanced {
-	return Advanced{pointers.AsA[gdclass.RenderDataExtension](self[0])}
+	return Advanced{gdclass.NewRenderDataExtension(self.AsObject()[0])}
 }
 func (self Instance) AsRenderDataExtension() Instance {
-	return Instance{pointers.AsA[gdclass.RenderDataExtension](self[0])}
+	return Instance{gdclass.NewRenderDataExtension(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderDataExtension() Instance {
 	return self.Super().AsRenderDataExtension()
 }
 func (self class) AsRenderData() RenderData.Advanced {
-	return RenderData.Advanced{pointers.AsA[gdclass.RenderData](self[0])}
+	return RenderData.Advanced{gdclass.NewRenderData(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
 func (self Instance) AsRenderData() RenderData.Instance {
-	return RenderData.Instance{pointers.AsA[gdclass.RenderData](self[0])}
+	return RenderData.Instance{gdclass.NewRenderData(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -357,5 +357,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderDataExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.RenderDataExtension](ptr)} })
+	gdclass.Register("RenderDataExtension", func(ptr gd.Object) any { return Instance{gdclass.NewRenderDataExtension(ptr)} })
 }

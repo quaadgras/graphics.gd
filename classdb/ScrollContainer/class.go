@@ -186,30 +186,30 @@ func (self Instance) EnsureControlVisible(control Control.Instance) { //gd:Scrol
 type Advanced = class
 type class [1]gdclass.ScrollContainer
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetScrollContainer(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScrollContainer](obj[0])
+		self[0] = gdclass.NewScrollContainer(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.ScrollContainer](obj[0])
+		self[0] = gdclass.NewScrollContainer(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetScrollContainer(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.ScrollContainer{pointers.Add[gdclass.ScrollContainer]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.ScrollContainer{gdclass.NewScrollContainer(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetScrollContainer(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -219,7 +219,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ScrollContainer{pointers.New[gdclass.ScrollContainer]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.ScrollContainer{gdclass.NewScrollContainer(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -465,7 +465,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.HScrollBar{gdclass.NewHScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -481,7 +481,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
+	var ret = [1]gdclass.VScrollBar{gdclass.NewVScrollBar(gd.PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret))}
 	return ret
 }
 
@@ -502,7 +502,7 @@ Note: This will not work on a node that was just added during the same frame. If
 */
 //go:nosplit
 func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetControl(control[0])))})
 }
 
 //go:nosplit
@@ -529,7 +529,7 @@ func (self Instance) OnScrollStarted(cb func(), flags ...Signal.Flags) Instance 
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -549,7 +549,7 @@ func (self Instance) OnScrollEnded(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -558,37 +558,37 @@ func (self class) ScrollEnded() Signal.Any {
 }
 
 func (self class) AsScrollContainer() Advanced {
-	return Advanced{pointers.AsA[gdclass.ScrollContainer](self[0])}
+	return Advanced{gdclass.NewScrollContainer(self.AsObject()[0])}
 }
 func (self Instance) AsScrollContainer() Instance {
-	return Instance{pointers.AsA[gdclass.ScrollContainer](self[0])}
+	return Instance{gdclass.NewScrollContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsScrollContainer() Instance { return self.Super().AsScrollContainer() }
 func (self class) AsContainer() Container.Advanced {
-	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Advanced{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
+	return Container.Instance{gdclass.NewContainer(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -605,7 +605,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScrollContainer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ScrollContainer](ptr)} })
+	gdclass.Register("ScrollContainer", func(ptr gd.Object) any { return Instance{gdclass.NewScrollContainer(ptr)} })
 }
 
 type ScrollMode int //gd:ScrollContainer.ScrollMode

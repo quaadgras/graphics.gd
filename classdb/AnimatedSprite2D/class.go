@@ -266,30 +266,30 @@ func (self Instance) GetPlayingSpeed() Float.X { //gd:AnimatedSprite2D.get_playi
 type Advanced = class
 type class [1]gdclass.AnimatedSprite2D
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetAnimatedSprite2D(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimatedSprite2D](obj[0])
+		self[0] = gdclass.NewAnimatedSprite2D(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.AnimatedSprite2D](obj[0])
+		self[0] = gdclass.NewAnimatedSprite2D(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetAnimatedSprite2D(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.AnimatedSprite2D{pointers.Add[gdclass.AnimatedSprite2D]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.AnimatedSprite2D{gdclass.NewAnimatedSprite2D(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetAnimatedSprite2D(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -299,7 +299,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AnimatedSprite2D{pointers.New[gdclass.AnimatedSprite2D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.AnimatedSprite2D{gdclass.NewAnimatedSprite2D(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -451,13 +451,13 @@ func (self Instance) SetFlipV(value bool) Instance { //gd:AnimatedSprite2D.flip_
 
 //go:nosplit
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite2D.set_sprite_frames
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetSpriteFrames(sprite_frames[0])))})
 }
 
 //go:nosplit
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite2D.get_sprite_frames
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[gdclass.SpriteFrames](r_ret)}
+	var ret = [1]gdclass.SpriteFrames{gdclass.NewSpriteFrames(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -683,7 +683,7 @@ func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) Ins
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -701,7 +701,7 @@ func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) Instan
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -719,7 +719,7 @@ func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) Instance {
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -735,7 +735,7 @@ func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) Instanc
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -753,7 +753,7 @@ func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) Insta
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -762,30 +762,30 @@ func (self class) AnimationFinished() Signal.Any {
 }
 
 func (self class) AsAnimatedSprite2D() Advanced {
-	return Advanced{pointers.AsA[gdclass.AnimatedSprite2D](self[0])}
+	return Advanced{gdclass.NewAnimatedSprite2D(self.AsObject()[0])}
 }
 func (self Instance) AsAnimatedSprite2D() Instance {
-	return Instance{pointers.AsA[gdclass.AnimatedSprite2D](self[0])}
+	return Instance{gdclass.NewAnimatedSprite2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsAnimatedSprite2D() Instance { return self.Super().AsAnimatedSprite2D() }
 func (self class) AsNode2D() Node2D.Advanced {
-	return Node2D.Advanced{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Advanced{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
 func (self Instance) AsNode2D() Node2D.Instance {
-	return Node2D.Instance{pointers.AsA[gdclass.Node2D](self[0])}
+	return Node2D.Instance{gdclass.NewNode2D(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -802,5 +802,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimatedSprite2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimatedSprite2D](ptr)} })
+	gdclass.Register("AnimatedSprite2D", func(ptr gd.Object) any { return Instance{gdclass.NewAnimatedSprite2D(ptr)} })
 }

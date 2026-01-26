@@ -999,30 +999,30 @@ func (self Instance) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 type Advanced = class
 type class [1]gdclass.CodeEdit
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetCodeEdit(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CodeEdit](obj[0])
+		self[0] = gdclass.NewCodeEdit(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.CodeEdit](obj[0])
+		self[0] = gdclass.NewCodeEdit(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetCodeEdit(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.CodeEdit{pointers.Add[gdclass.CodeEdit]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.CodeEdit{gdclass.NewCodeEdit(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetCodeEdit(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -1032,7 +1032,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CodeEdit{pointers.New[gdclass.CodeEdit]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.CodeEdit{gdclass.NewCodeEdit(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -2187,7 +2187,7 @@ func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text
 		icon         gdextension.Object
 		value        gdextension.Variant
 		location     int64
-	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location})
+	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gd.ObjectChecked(gdclass.GetResource(icon[0]))), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location})
 }
 
 /*
@@ -2411,7 +2411,7 @@ func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flag
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2430,7 +2430,7 @@ func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2446,7 +2446,7 @@ func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int)
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2467,7 +2467,7 @@ func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Fl
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2489,7 +2489,7 @@ func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -2497,34 +2497,34 @@ func (self class) SymbolHovered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`symbol_hovered`))))
 }
 
-func (self class) AsCodeEdit() Advanced         { return Advanced{pointers.AsA[gdclass.CodeEdit](self[0])} }
-func (self Instance) AsCodeEdit() Instance      { return Instance{pointers.AsA[gdclass.CodeEdit](self[0])} }
+func (self class) AsCodeEdit() Advanced         { return Advanced{gdclass.NewCodeEdit(self.AsObject()[0])} }
+func (self Instance) AsCodeEdit() Instance      { return Instance{gdclass.NewCodeEdit(self.AsObject()[0])} }
 func (self *Extension[T]) AsCodeEdit() Instance { return self.Super().AsCodeEdit() }
 func (self class) AsTextEdit() TextEdit.Advanced {
-	return TextEdit.Advanced{pointers.AsA[gdclass.TextEdit](self[0])}
+	return TextEdit.Advanced{gdclass.NewTextEdit(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsTextEdit() TextEdit.Instance { return self.Super().AsTextEdit() }
 func (self Instance) AsTextEdit() TextEdit.Instance {
-	return TextEdit.Instance{pointers.AsA[gdclass.TextEdit](self[0])}
+	return TextEdit.Instance{gdclass.NewTextEdit(self.AsObject()[0])}
 }
 func (self class) AsControl() Control.Advanced {
-	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Advanced{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
+	return Control.Instance{gdclass.NewControl(self.AsObject()[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Advanced{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
+	return CanvasItem.Instance{gdclass.NewCanvasItem(self.AsObject()[0])}
 }
-func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -2553,7 +2553,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.CodeEdit](ptr)} })
+	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return Instance{gdclass.NewCodeEdit(ptr)} })
 }
 
 type CodeCompletionKind int //gd:CodeEdit.CodeCompletionKind

@@ -177,30 +177,30 @@ func (self Instance) RemovePath(path string) { //gd:OpenXRIPBinding.remove_path
 type Advanced = class
 type class [1]gdclass.OpenXRIPBinding
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetOpenXRIPBinding(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRIPBinding](obj[0])
+		self[0] = gdclass.NewOpenXRIPBinding(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.OpenXRIPBinding](obj[0])
+		self[0] = gdclass.NewOpenXRIPBinding(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetOpenXRIPBinding(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.OpenXRIPBinding{pointers.Add[gdclass.OpenXRIPBinding]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.OpenXRIPBinding{gdclass.NewOpenXRIPBinding(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetOpenXRIPBinding(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -210,7 +210,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRIPBinding{pointers.New[gdclass.OpenXRIPBinding]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.OpenXRIPBinding{gdclass.NewOpenXRIPBinding(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -277,13 +277,13 @@ func (self Instance) SetPaths(value []string) Instance { //gd:OpenXRIPBinding.pa
 
 //go:nosplit
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetOpenXRAction(action[0])))})
 }
 
 //go:nosplit
 func (self class) GetAction() [1]gdclass.OpenXRAction { //gd:OpenXRIPBinding.get_action
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.OpenXRAction{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAction](r_ret)}
+	var ret = [1]gdclass.OpenXRAction{gdclass.NewOpenXRAction(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -317,7 +317,7 @@ Get the [OpenXRBindingModifier] at this index.
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	var ret = [1]gdclass.OpenXRActionBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionBindingModifier](r_ret)}
+	var ret = [1]gdclass.OpenXRActionBindingModifier{gdclass.NewOpenXRActionBindingModifier(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -383,25 +383,25 @@ func (self class) RemovePath(path String.Readable) { //gd:OpenXRIPBinding.remove
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) AsOpenXRIPBinding() Advanced {
-	return Advanced{pointers.AsA[gdclass.OpenXRIPBinding](self[0])}
+	return Advanced{gdclass.NewOpenXRIPBinding(self.AsObject()[0])}
 }
 func (self Instance) AsOpenXRIPBinding() Instance {
-	return Instance{pointers.AsA[gdclass.OpenXRIPBinding](self[0])}
+	return Instance{gdclass.NewOpenXRIPBinding(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsOpenXRIPBinding() Instance { return self.Super().AsOpenXRIPBinding() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -418,5 +418,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRIPBinding", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRIPBinding](ptr)} })
+	gdclass.Register("OpenXRIPBinding", func(ptr gd.Object) any { return Instance{gdclass.NewOpenXRIPBinding(ptr)} })
 }

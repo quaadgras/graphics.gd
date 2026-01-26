@@ -164,30 +164,30 @@ func (self Instance) ToDictionary() Structure { //gd:GLTFCamera.to_dictionary
 type Advanced = class
 type class [1]gdclass.GLTFCamera
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetGLTFCamera(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFCamera](obj[0])
+		self[0] = gdclass.NewGLTFCamera(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.GLTFCamera](obj[0])
+		self[0] = gdclass.NewGLTFCamera(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetGLTFCamera(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.GLTFCamera{pointers.Add[gdclass.GLTFCamera]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetGLTFCamera(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -197,7 +197,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.GLTFCamera{pointers.New[gdclass.GLTFCamera]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
@@ -281,8 +281,8 @@ Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
 //go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_node[0].AsObject()))})
-	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret)}
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetCamera3D(camera_node[0])))})
+	var ret = [1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -294,7 +294,7 @@ Converts this GLTFCamera instance into a Godot [Camera3D] node.
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Camera3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Camera3D](r_ret)}
+	var ret = [1]gdclass.Camera3D{gdclass.NewCamera3D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -304,7 +304,7 @@ Creates a new GLTFCamera instance by parsing the given data structure.
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
-	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret)}
+	var ret = [1]gdclass.GLTFCamera{gdclass.NewGLTFCamera(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -377,24 +377,24 @@ func (self class) GetDepthNear() float64 { //gd:GLTFCamera.get_depth_near
 func (self class) SetDepthNear(zdepth_near float64) { //gd:GLTFCamera.set_depth_near
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_near, 0|(gdextension.SizeFloat<<4), &struct{ zdepth_near float64 }{zdepth_near})
 }
-func (self class) AsGLTFCamera() Advanced { return Advanced{pointers.AsA[gdclass.GLTFCamera](self[0])} }
+func (self class) AsGLTFCamera() Advanced { return Advanced{gdclass.NewGLTFCamera(self.AsObject()[0])} }
 func (self Instance) AsGLTFCamera() Instance {
-	return Instance{pointers.AsA[gdclass.GLTFCamera](self[0])}
+	return Instance{gdclass.NewGLTFCamera(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsGLTFCamera() Instance { return self.Super().AsGLTFCamera() }
 func (self class) AsResource() Resource.Advanced {
-	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Advanced{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
+	return Resource.Instance{gdclass.NewResource(self.AsObject()[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
+	return [1]gd.RefCounted{gd.RefCounted(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -411,7 +411,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFCamera", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.GLTFCamera](ptr)} })
+	gdclass.Register("GLTFCamera", func(ptr gd.Object) any { return Instance{gdclass.NewGLTFCamera(ptr)} })
 }
 
 type Structure map[interface{}]interface{}

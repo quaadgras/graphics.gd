@@ -133,30 +133,30 @@ func (self Instance) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rec
 type Advanced = class
 type class [1]gdclass.StatusIndicator
 
-func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self class) AsObject() [1]gd.Object { return gdclass.GetStatusIndicator(self[0]) }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.StatusIndicator](obj[0])
+		self[0] = gdclass.NewStatusIndicator(obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = pointers.AsA[gdclass.StatusIndicator](obj[0])
+		self[0] = gdclass.NewStatusIndicator(obj[0])
 		return true
 	}
 	return false
 }
-func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
+func (self Instance) AsObject() [1]gd.Object      { return gdclass.GetStatusIndicator(self[0]) }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
 	if !gd.Linked {
-		var placeholder = Instance([1]gdclass.StatusIndicator{pointers.Add[gdclass.StatusIndicator]([3]uint64{})})
+		var placeholder = Instance([1]gdclass.StatusIndicator{gdclass.NewStatusIndicator(pointers.Add[gd.Object]([3]uint64{}))})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
+				pointers.Set(gdclass.GetStatusIndicator(placeholder[0])[0], raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -166,7 +166,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.StatusIndicator{pointers.New[gdclass.StatusIndicator]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted := Instance([1]gdclass.StatusIndicator{gdclass.NewStatusIndicator(pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))}))})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
@@ -242,13 +242,13 @@ func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_toolti
 
 //go:nosplit
 func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.set_icon
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(gdclass.GetTexture2D(texture[0])))})
 }
 
 //go:nosplit
 func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo[gd.Object](r_ret))}
 	return ret
 }
 
@@ -296,7 +296,7 @@ func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+	self.AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
@@ -305,16 +305,16 @@ func (self class) Pressed() Signal.Any {
 }
 
 func (self class) AsStatusIndicator() Advanced {
-	return Advanced{pointers.AsA[gdclass.StatusIndicator](self[0])}
+	return Advanced{gdclass.NewStatusIndicator(self.AsObject()[0])}
 }
 func (self Instance) AsStatusIndicator() Instance {
-	return Instance{pointers.AsA[gdclass.StatusIndicator](self[0])}
+	return Instance{gdclass.NewStatusIndicator(self.AsObject()[0])}
 }
 func (self *Extension[T]) AsStatusIndicator() Instance { return self.Super().AsStatusIndicator() }
-func (self class) AsNode() Node.Advanced               { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self class) AsNode() Node.Advanced               { return Node.Advanced{gdclass.NewNode(self.AsObject()[0])} }
 func (self *Extension[T]) AsNode() Node.Instance       { return self.Super().AsNode() }
 func (self Instance) AsNode() Node.Instance {
-	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+	return Node.Instance{gdclass.NewNode(self.AsObject()[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -331,5 +331,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StatusIndicator", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.StatusIndicator](ptr)} })
+	gdclass.Register("StatusIndicator", func(ptr gd.Object) any { return Instance{gdclass.NewStatusIndicator(ptr)} })
 }
