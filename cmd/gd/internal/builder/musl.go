@@ -30,6 +30,7 @@ type Musl struct {
 }
 
 func (musl Musl) Build(args ...string) (err error) {
+	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
 	defer os.Setenv("GOOS", goos)
@@ -139,9 +140,7 @@ func (musl Musl) patch() error {
 }
 
 func (musl Musl) BuildMain(args ...string) error {
-	if err := os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension")); err != nil {
-		return xray.New(err)
-	}
+	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
@@ -192,6 +191,7 @@ func (musl Musl) Run(args ...string) error {
 }
 
 func (musl Musl) Test(args ...string) error {
+	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	os.Setenv("GOOS", "linux")
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
