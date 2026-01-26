@@ -30,7 +30,9 @@ type Musl struct {
 }
 
 func (musl Musl) Build(args ...string) (err error) {
+	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
+	defer os.Setenv("GOOS", goos)
 	if built_musl {
 		return nil
 	}
