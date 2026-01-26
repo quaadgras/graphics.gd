@@ -234,7 +234,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_child_nodes(impl func(ptr gdclass.Receiver) map[string]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -253,7 +253,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
 
@@ -273,7 +273,7 @@ func (Instance) _get_child_by_name(impl func(ptr gdclass.Receiver, name string) 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, name.String())
 		ptr, ok := pointers.End(gdclass.GetAnimationNode(ret[0])[0])
 
@@ -293,7 +293,7 @@ func (Instance) _get_parameter_default_value(impl func(ptr gdclass.Receiver, par
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, parameter.String())
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -313,7 +313,7 @@ func (Instance) _is_parameter_read_only(impl func(ptr gdclass.Receiver, paramete
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, parameter.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -339,7 +339,7 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, time Float.X, seek bool
 		var seek = gd.UnsafeGet[bool](p_args, 1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, Float.X(time), seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -352,7 +352,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to overr
 */
 func (Instance) _get_caption(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -370,7 +370,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -596,7 +596,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -615,7 +615,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -635,7 +635,7 @@ func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, name)
 		ptr, ok := pointers.End(gdclass.GetAnimationNode(ret[0])[0])
 
@@ -655,7 +655,7 @@ func (class) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parame
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, parameter)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -675,7 +675,7 @@ func (class) _is_parameter_read_only(impl func(ptr gdclass.Receiver, parameter S
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, parameter)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -701,7 +701,7 @@ func (class) _process(impl func(ptr gdclass.Receiver, time float64, seek bool, i
 		var seek = gd.UnsafeGet[bool](p_args, 1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, time, seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -714,7 +714,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to overr
 */
 func (class) _get_caption(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -732,7 +732,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1034,21 +1034,21 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_child_nodes":
-		return reflect.ValueOf(self._get_child_nodes)
+		return gd.ValueOf(self._get_child_nodes)
 	case "_get_parameter_list":
-		return reflect.ValueOf(self._get_parameter_list)
+		return gd.ValueOf(self._get_parameter_list)
 	case "_get_child_by_name":
-		return reflect.ValueOf(self._get_child_by_name)
+		return gd.ValueOf(self._get_child_by_name)
 	case "_get_parameter_default_value":
-		return reflect.ValueOf(self._get_parameter_default_value)
+		return gd.ValueOf(self._get_parameter_default_value)
 	case "_is_parameter_read_only":
-		return reflect.ValueOf(self._is_parameter_read_only)
+		return gd.ValueOf(self._is_parameter_read_only)
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_get_caption":
-		return reflect.ValueOf(self._get_caption)
+		return gd.ValueOf(self._get_caption)
 	case "_has_filter":
-		return reflect.ValueOf(self._has_filter)
+		return gd.ValueOf(self._has_filter)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -1057,21 +1057,21 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_child_nodes":
-		return reflect.ValueOf(self._get_child_nodes)
+		return gd.ValueOf(self._get_child_nodes)
 	case "_get_parameter_list":
-		return reflect.ValueOf(self._get_parameter_list)
+		return gd.ValueOf(self._get_parameter_list)
 	case "_get_child_by_name":
-		return reflect.ValueOf(self._get_child_by_name)
+		return gd.ValueOf(self._get_child_by_name)
 	case "_get_parameter_default_value":
-		return reflect.ValueOf(self._get_parameter_default_value)
+		return gd.ValueOf(self._get_parameter_default_value)
 	case "_is_parameter_read_only":
-		return reflect.ValueOf(self._is_parameter_read_only)
+		return gd.ValueOf(self._is_parameter_read_only)
 	case "_process":
-		return reflect.ValueOf(self._process)
+		return gd.ValueOf(self._process)
 	case "_get_caption":
-		return reflect.ValueOf(self._get_caption)
+		return gd.ValueOf(self._get_caption)
 	case "_has_filter":
-		return reflect.ValueOf(self._has_filter)
+		return gd.ValueOf(self._has_filter)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

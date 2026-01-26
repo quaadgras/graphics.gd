@@ -79,6 +79,9 @@ func builderFor(goos string) Builder {
 }
 
 func gd(args ...string) error {
+	if _, gogc := os.LookupEnv("GOGC"); !gogc {
+		os.Setenv("GOGC", "400")
+	}
 	var GOARCH = runtime.GOARCH
 	var GOOS = runtime.GOOS
 	if goos := os.Getenv("GOOS"); goos != "" {

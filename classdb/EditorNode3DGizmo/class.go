@@ -252,7 +252,7 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (Instance) _redraw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -268,7 +268,7 @@ func (Instance) _get_handle_name(impl func(ptr gdclass.Receiver, id int, seconda
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(id), secondary)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -290,7 +290,7 @@ func (Instance) _is_handle_highlighted(impl func(ptr gdclass.Receiver, id int, s
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(id), secondary)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -308,7 +308,7 @@ func (Instance) _get_handle_value(impl func(ptr gdclass.Receiver, id int, second
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(id), secondary)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -322,7 +322,7 @@ func (Instance) _begin_handle_action(impl func(ptr gdclass.Receiver, id int, sec
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(id), secondary)
 	}
 }
@@ -342,7 +342,7 @@ func (Instance) _set_handle(impl func(ptr gdclass.Receiver, id int, secondary bo
 
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(id), secondary, camera, point)
 	}
 }
@@ -364,7 +364,7 @@ func (Instance) _commit_handle(impl func(ptr gdclass.Receiver, id int, secondary
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(id), secondary, restore.Interface(), cancel)
 	}
 }
@@ -381,7 +381,7 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera 
 
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -401,7 +401,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, cam
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var frustum = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(frustum))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, camera, gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(frustum)))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -423,7 +423,7 @@ func (Instance) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(id), transform)
 	}
 }
@@ -436,7 +436,7 @@ Override this method to return the current transform of a subgizmo. This transfo
 func (Instance) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, id int) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -458,7 +458,7 @@ func (Instance) _commit_subgizmos(impl func(ptr gdclass.Receiver, ids []int32, r
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, slices.Collect(ids.Values()), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
 	}
 }
@@ -671,7 +671,7 @@ Override this method to add all the gizmo elements whenever a gizmo update is re
 */
 func (class) _redraw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -687,7 +687,7 @@ func (class) _get_handle_name(impl func(ptr gdclass.Receiver, id int64, secondar
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, id, secondary)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -709,7 +709,7 @@ func (class) _is_handle_highlighted(impl func(ptr gdclass.Receiver, id int64, se
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, id, secondary)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -727,7 +727,7 @@ func (class) _get_handle_value(impl func(ptr gdclass.Receiver, id int64, seconda
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, id, secondary)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -742,7 +742,7 @@ func (class) _begin_handle_action(impl func(ptr gdclass.Receiver, id int64, seco
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, id, secondary)
 	}
 }
@@ -762,7 +762,7 @@ func (class) _set_handle(impl func(ptr gdclass.Receiver, id int64, secondary boo
 
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, id, secondary, camera, point)
 	}
 }
@@ -784,7 +784,7 @@ func (class) _commit_handle(impl func(ptr gdclass.Receiver, id int64, secondary 
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, id, secondary, restore, cancel)
 	}
 }
@@ -801,7 +801,7 @@ func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera [1]
 
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, camera, point)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -821,7 +821,7 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera
 		defer pointers.End(gdclass.GetCamera3D(camera[0])[0])
 		var frustum = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(frustum))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, camera, frustum)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -843,7 +843,7 @@ func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int64, t
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, id, transform)
 	}
 }
@@ -856,7 +856,7 @@ Override this method to return the current transform of a subgizmo. This transfo
 func (class) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, id int64) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -878,7 +878,7 @@ func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, ids Packed.Array[
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, ids, restores, cancel)
 	}
 }
@@ -1071,29 +1071,29 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_redraw":
-		return reflect.ValueOf(self._redraw)
+		return gd.ValueOf(self._redraw)
 	case "_get_handle_name":
-		return reflect.ValueOf(self._get_handle_name)
+		return gd.ValueOf(self._get_handle_name)
 	case "_is_handle_highlighted":
-		return reflect.ValueOf(self._is_handle_highlighted)
+		return gd.ValueOf(self._is_handle_highlighted)
 	case "_get_handle_value":
-		return reflect.ValueOf(self._get_handle_value)
+		return gd.ValueOf(self._get_handle_value)
 	case "_begin_handle_action":
-		return reflect.ValueOf(self._begin_handle_action)
+		return gd.ValueOf(self._begin_handle_action)
 	case "_set_handle":
-		return reflect.ValueOf(self._set_handle)
+		return gd.ValueOf(self._set_handle)
 	case "_commit_handle":
-		return reflect.ValueOf(self._commit_handle)
+		return gd.ValueOf(self._commit_handle)
 	case "_subgizmos_intersect_ray":
-		return reflect.ValueOf(self._subgizmos_intersect_ray)
+		return gd.ValueOf(self._subgizmos_intersect_ray)
 	case "_subgizmos_intersect_frustum":
-		return reflect.ValueOf(self._subgizmos_intersect_frustum)
+		return gd.ValueOf(self._subgizmos_intersect_frustum)
 	case "_set_subgizmo_transform":
-		return reflect.ValueOf(self._set_subgizmo_transform)
+		return gd.ValueOf(self._set_subgizmo_transform)
 	case "_get_subgizmo_transform":
-		return reflect.ValueOf(self._get_subgizmo_transform)
+		return gd.ValueOf(self._get_subgizmo_transform)
 	case "_commit_subgizmos":
-		return reflect.ValueOf(self._commit_subgizmos)
+		return gd.ValueOf(self._commit_subgizmos)
 	default:
 		return gd.VirtualByName(Node3DGizmo.Advanced(self.AsNode3DGizmo()), name)
 	}
@@ -1102,29 +1102,29 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_redraw":
-		return reflect.ValueOf(self._redraw)
+		return gd.ValueOf(self._redraw)
 	case "_get_handle_name":
-		return reflect.ValueOf(self._get_handle_name)
+		return gd.ValueOf(self._get_handle_name)
 	case "_is_handle_highlighted":
-		return reflect.ValueOf(self._is_handle_highlighted)
+		return gd.ValueOf(self._is_handle_highlighted)
 	case "_get_handle_value":
-		return reflect.ValueOf(self._get_handle_value)
+		return gd.ValueOf(self._get_handle_value)
 	case "_begin_handle_action":
-		return reflect.ValueOf(self._begin_handle_action)
+		return gd.ValueOf(self._begin_handle_action)
 	case "_set_handle":
-		return reflect.ValueOf(self._set_handle)
+		return gd.ValueOf(self._set_handle)
 	case "_commit_handle":
-		return reflect.ValueOf(self._commit_handle)
+		return gd.ValueOf(self._commit_handle)
 	case "_subgizmos_intersect_ray":
-		return reflect.ValueOf(self._subgizmos_intersect_ray)
+		return gd.ValueOf(self._subgizmos_intersect_ray)
 	case "_subgizmos_intersect_frustum":
-		return reflect.ValueOf(self._subgizmos_intersect_frustum)
+		return gd.ValueOf(self._subgizmos_intersect_frustum)
 	case "_set_subgizmo_transform":
-		return reflect.ValueOf(self._set_subgizmo_transform)
+		return gd.ValueOf(self._set_subgizmo_transform)
 	case "_get_subgizmo_transform":
-		return reflect.ValueOf(self._get_subgizmo_transform)
+		return gd.ValueOf(self._get_subgizmo_transform)
 	case "_commit_subgizmos":
-		return reflect.ValueOf(self._commit_subgizmos)
+		return gd.ValueOf(self._commit_subgizmos)
 	default:
 		return gd.VirtualByName(Node3DGizmo.Instance(self.AsNode3DGizmo()), name)
 	}

@@ -151,7 +151,7 @@ Implement this in GDExtension to return the implementation's [RenderSceneBuffers
 */
 func (Instance) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) RenderSceneBuffers.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetRenderSceneBuffers(ret[0])[0])
 
@@ -169,7 +169,7 @@ Implement this in GDExtension to return the implementation's [RenderSceneDataExt
 */
 func (Instance) _get_render_scene_data(impl func(ptr gdclass.Receiver) RenderSceneData.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetRenderSceneData(ret[0])[0])
 
@@ -187,7 +187,7 @@ Implement this in GDExtension to return the [Resource.ID] of the implementation'
 */
 func (Instance) _get_environment(impl func(ptr gdclass.Receiver) RID.Environment) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -200,7 +200,7 @@ Implement this in GDExtension to return the [Resource.ID] for the implementation
 */
 func (Instance) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.CameraAttributes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -255,7 +255,7 @@ Implement this in GDExtension to return the implementation's [RenderSceneBuffers
 */
 func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetRenderSceneBuffers(ret[0])[0])
 
@@ -273,7 +273,7 @@ Implement this in GDExtension to return the implementation's [RenderSceneDataExt
 */
 func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gdclass.GetRenderSceneData(ret[0])[0])
 
@@ -291,7 +291,7 @@ Implement this in GDExtension to return the [Resource.ID] of the implementation'
 */
 func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -304,7 +304,7 @@ Implement this in GDExtension to return the [Resource.ID] for the implementation
 */
 func (class) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -330,13 +330,13 @@ func (self Instance) AsRenderData() RenderData.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_render_scene_buffers":
-		return reflect.ValueOf(self._get_render_scene_buffers)
+		return gd.ValueOf(self._get_render_scene_buffers)
 	case "_get_render_scene_data":
-		return reflect.ValueOf(self._get_render_scene_data)
+		return gd.ValueOf(self._get_render_scene_data)
 	case "_get_environment":
-		return reflect.ValueOf(self._get_environment)
+		return gd.ValueOf(self._get_environment)
 	case "_get_camera_attributes":
-		return reflect.ValueOf(self._get_camera_attributes)
+		return gd.ValueOf(self._get_camera_attributes)
 	default:
 		return gd.VirtualByName(RenderData.Advanced(self.AsRenderData()), name)
 	}
@@ -345,13 +345,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_render_scene_buffers":
-		return reflect.ValueOf(self._get_render_scene_buffers)
+		return gd.ValueOf(self._get_render_scene_buffers)
 	case "_get_render_scene_data":
-		return reflect.ValueOf(self._get_render_scene_data)
+		return gd.ValueOf(self._get_render_scene_data)
 	case "_get_environment":
-		return reflect.ValueOf(self._get_environment)
+		return gd.ValueOf(self._get_environment)
 	case "_get_camera_attributes":
-		return reflect.ValueOf(self._get_camera_attributes)
+		return gd.ValueOf(self._get_camera_attributes)
 	default:
 		return gd.VirtualByName(RenderData.Instance(self.AsRenderData()), name)
 	}

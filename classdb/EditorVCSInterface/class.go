@@ -221,7 +221,7 @@ func (Instance) _initialize(impl func(ptr gdclass.Receiver, project_path string)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var project_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(project_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, project_path.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -242,7 +242,7 @@ func (Instance) _set_credentials(impl func(ptr gdclass.Receiver, username string
 		defer pointers.End(gd.InternalString(ssh_private_key_path))
 		var ssh_passphrase = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
 		defer pointers.End(gd.InternalString(ssh_passphrase))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, username.String(), password.String(), ssh_public_key_path.String(), ssh_private_key_path.String(), ssh_passphrase.String())
 	}
 }
@@ -254,7 +254,7 @@ Returns an slice of data structure items (see [CreateStatusFile]), each containi
 */
 func (Instance) _get_modified_files_data(impl func(ptr gdclass.Receiver) [][]StatusFile) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -272,7 +272,7 @@ func (Instance) _stage_file(impl func(ptr gdclass.Receiver, file_path string)) (
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path.String())
 	}
 }
@@ -284,7 +284,7 @@ func (Instance) _unstage_file(impl func(ptr gdclass.Receiver, file_path string))
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path.String())
 	}
 }
@@ -296,7 +296,7 @@ func (Instance) _discard_file(impl func(ptr gdclass.Receiver, file_path string))
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path.String())
 	}
 }
@@ -308,7 +308,7 @@ func (Instance) _commit(impl func(ptr gdclass.Receiver, msg string)) (cb gd.Exte
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var msg = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(msg))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, msg.String())
 	}
 }
@@ -327,7 +327,7 @@ func (Instance) _get_diff(impl func(ptr gdclass.Receiver, identifier string, are
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
 		var area = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, identifier.String(), int(area))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -343,7 +343,7 @@ Shuts down VCS plugin instance. Called when the user either closes the editor or
 */
 func (Instance) _shut_down(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -354,7 +354,7 @@ Returns the name of the underlying VCS provider.
 */
 func (Instance) _get_vcs_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -373,7 +373,7 @@ Returns an slice of data structure items (see [CreateCommit]), each containing t
 func (Instance) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits int) [][]Commit) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(max_commits))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -389,7 +389,7 @@ Gets an instance of an slice of strings containing available branch names in the
 */
 func (Instance) _get_branch_list(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[String.Readable]](ret)))
 
@@ -405,7 +405,7 @@ Returns an slice of strings, each containing the name of a remote configured in 
 */
 func (Instance) _get_remotes(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[String.Readable]](ret)))
 
@@ -423,7 +423,7 @@ func (Instance) _create_branch(impl func(ptr gdclass.Receiver, branch_name strin
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, branch_name.String())
 	}
 }
@@ -435,7 +435,7 @@ func (Instance) _remove_branch(impl func(ptr gdclass.Receiver, branch_name strin
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, branch_name.String())
 	}
 }
@@ -449,7 +449,7 @@ func (Instance) _create_remote(impl func(ptr gdclass.Receiver, remote_name strin
 		defer pointers.End(gd.InternalString(remote_name))
 		var remote_url = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(remote_url))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote_name.String(), remote_url.String())
 	}
 }
@@ -461,7 +461,7 @@ func (Instance) _remove_remote(impl func(ptr gdclass.Receiver, remote_name strin
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote_name.String())
 	}
 }
@@ -471,7 +471,7 @@ Gets the current branch name defined in the VCS.
 */
 func (Instance) _get_current_branch_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -489,7 +489,7 @@ func (Instance) _checkout_branch(impl func(ptr gdclass.Receiver, branch_name str
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, branch_name.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -502,7 +502,7 @@ func (Instance) _pull(impl func(ptr gdclass.Receiver, remote string)) (cb gd.Ext
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote.String())
 	}
 }
@@ -515,7 +515,7 @@ func (Instance) _push(impl func(ptr gdclass.Receiver, remote string, force bool)
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
 		var force = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote.String(), force)
 	}
 }
@@ -527,7 +527,7 @@ func (Instance) _fetch(impl func(ptr gdclass.Receiver, remote string)) (cb gd.Ex
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote.String())
 	}
 }
@@ -543,7 +543,7 @@ func (Instance) _get_line_diff(impl func(ptr gdclass.Receiver, file_path string,
 		defer pointers.End(gd.InternalString(file_path))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(text))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, file_path.String(), text.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -659,7 +659,7 @@ func (class) _initialize(impl func(ptr gdclass.Receiver, project_path String.Rea
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var project_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(project_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, project_path)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -680,7 +680,7 @@ func (class) _set_credentials(impl func(ptr gdclass.Receiver, username String.Re
 		defer pointers.End(gd.InternalString(ssh_private_key_path))
 		var ssh_passphrase = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
 		defer pointers.End(gd.InternalString(ssh_passphrase))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, username, password, ssh_public_key_path, ssh_private_key_path, ssh_passphrase)
 	}
 }
@@ -692,7 +692,7 @@ Returns an slice of data structure items (see [CreateStatusFile]), each containi
 */
 func (class) _get_modified_files_data(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -710,7 +710,7 @@ func (class) _stage_file(impl func(ptr gdclass.Receiver, file_path String.Readab
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path)
 	}
 }
@@ -722,7 +722,7 @@ func (class) _unstage_file(impl func(ptr gdclass.Receiver, file_path String.Read
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path)
 	}
 }
@@ -734,7 +734,7 @@ func (class) _discard_file(impl func(ptr gdclass.Receiver, file_path String.Read
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(file_path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, file_path)
 	}
 }
@@ -746,7 +746,7 @@ func (class) _commit(impl func(ptr gdclass.Receiver, msg String.Readable)) (cb g
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var msg = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(msg))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, msg)
 	}
 }
@@ -765,7 +765,7 @@ func (class) _get_diff(impl func(ptr gdclass.Receiver, identifier String.Readabl
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
 		var area = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, identifier, area)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -781,7 +781,7 @@ Shuts down VCS plugin instance. Called when the user either closes the editor or
 */
 func (class) _shut_down(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -792,7 +792,7 @@ Returns the name of the underlying VCS provider.
 */
 func (class) _get_vcs_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -811,7 +811,7 @@ Returns an slice of data structure items (see [CreateCommit]), each containing t
 func (class) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, max_commits)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -827,7 +827,7 @@ Gets an instance of an slice of strings containing available branch names in the
 */
 func (class) _get_branch_list(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -843,7 +843,7 @@ Returns an slice of strings, each containing the name of a remote configured in 
 */
 func (class) _get_remotes(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -861,7 +861,7 @@ func (class) _create_branch(impl func(ptr gdclass.Receiver, branch_name String.R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, branch_name)
 	}
 }
@@ -873,7 +873,7 @@ func (class) _remove_branch(impl func(ptr gdclass.Receiver, branch_name String.R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, branch_name)
 	}
 }
@@ -887,7 +887,7 @@ func (class) _create_remote(impl func(ptr gdclass.Receiver, remote_name String.R
 		defer pointers.End(gd.InternalString(remote_name))
 		var remote_url = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(remote_url))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote_name, remote_url)
 	}
 }
@@ -899,7 +899,7 @@ func (class) _remove_remote(impl func(ptr gdclass.Receiver, remote_name String.R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote_name)
 	}
 }
@@ -909,7 +909,7 @@ Gets the current branch name defined in the VCS.
 */
 func (class) _get_current_branch_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -927,7 +927,7 @@ func (class) _checkout_branch(impl func(ptr gdclass.Receiver, branch_name String
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var branch_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(branch_name))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, branch_name)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -940,7 +940,7 @@ func (class) _pull(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote)
 	}
 }
@@ -953,7 +953,7 @@ func (class) _push(impl func(ptr gdclass.Receiver, remote String.Readable, force
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
 		var force = gd.UnsafeGet[bool](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote, force)
 	}
 }
@@ -965,7 +965,7 @@ func (class) _fetch(impl func(ptr gdclass.Receiver, remote String.Readable)) (cb
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, remote)
 	}
 }
@@ -981,7 +981,7 @@ func (class) _get_line_diff(impl func(ptr gdclass.Receiver, file_path String.Rea
 		defer pointers.End(gd.InternalString(file_path))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(text))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, file_path, text)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -1109,51 +1109,51 @@ func (self *Extension[T]) AsEditorVCSInterface() Instance { return self.Super().
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize":
-		return reflect.ValueOf(self._initialize)
+		return gd.ValueOf(self._initialize)
 	case "_set_credentials":
-		return reflect.ValueOf(self._set_credentials)
+		return gd.ValueOf(self._set_credentials)
 	case "_get_modified_files_data":
-		return reflect.ValueOf(self._get_modified_files_data)
+		return gd.ValueOf(self._get_modified_files_data)
 	case "_stage_file":
-		return reflect.ValueOf(self._stage_file)
+		return gd.ValueOf(self._stage_file)
 	case "_unstage_file":
-		return reflect.ValueOf(self._unstage_file)
+		return gd.ValueOf(self._unstage_file)
 	case "_discard_file":
-		return reflect.ValueOf(self._discard_file)
+		return gd.ValueOf(self._discard_file)
 	case "_commit":
-		return reflect.ValueOf(self._commit)
+		return gd.ValueOf(self._commit)
 	case "_get_diff":
-		return reflect.ValueOf(self._get_diff)
+		return gd.ValueOf(self._get_diff)
 	case "_shut_down":
-		return reflect.ValueOf(self._shut_down)
+		return gd.ValueOf(self._shut_down)
 	case "_get_vcs_name":
-		return reflect.ValueOf(self._get_vcs_name)
+		return gd.ValueOf(self._get_vcs_name)
 	case "_get_previous_commits":
-		return reflect.ValueOf(self._get_previous_commits)
+		return gd.ValueOf(self._get_previous_commits)
 	case "_get_branch_list":
-		return reflect.ValueOf(self._get_branch_list)
+		return gd.ValueOf(self._get_branch_list)
 	case "_get_remotes":
-		return reflect.ValueOf(self._get_remotes)
+		return gd.ValueOf(self._get_remotes)
 	case "_create_branch":
-		return reflect.ValueOf(self._create_branch)
+		return gd.ValueOf(self._create_branch)
 	case "_remove_branch":
-		return reflect.ValueOf(self._remove_branch)
+		return gd.ValueOf(self._remove_branch)
 	case "_create_remote":
-		return reflect.ValueOf(self._create_remote)
+		return gd.ValueOf(self._create_remote)
 	case "_remove_remote":
-		return reflect.ValueOf(self._remove_remote)
+		return gd.ValueOf(self._remove_remote)
 	case "_get_current_branch_name":
-		return reflect.ValueOf(self._get_current_branch_name)
+		return gd.ValueOf(self._get_current_branch_name)
 	case "_checkout_branch":
-		return reflect.ValueOf(self._checkout_branch)
+		return gd.ValueOf(self._checkout_branch)
 	case "_pull":
-		return reflect.ValueOf(self._pull)
+		return gd.ValueOf(self._pull)
 	case "_push":
-		return reflect.ValueOf(self._push)
+		return gd.ValueOf(self._push)
 	case "_fetch":
-		return reflect.ValueOf(self._fetch)
+		return gd.ValueOf(self._fetch)
 	case "_get_line_diff":
-		return reflect.ValueOf(self._get_line_diff)
+		return gd.ValueOf(self._get_line_diff)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -1162,51 +1162,51 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_initialize":
-		return reflect.ValueOf(self._initialize)
+		return gd.ValueOf(self._initialize)
 	case "_set_credentials":
-		return reflect.ValueOf(self._set_credentials)
+		return gd.ValueOf(self._set_credentials)
 	case "_get_modified_files_data":
-		return reflect.ValueOf(self._get_modified_files_data)
+		return gd.ValueOf(self._get_modified_files_data)
 	case "_stage_file":
-		return reflect.ValueOf(self._stage_file)
+		return gd.ValueOf(self._stage_file)
 	case "_unstage_file":
-		return reflect.ValueOf(self._unstage_file)
+		return gd.ValueOf(self._unstage_file)
 	case "_discard_file":
-		return reflect.ValueOf(self._discard_file)
+		return gd.ValueOf(self._discard_file)
 	case "_commit":
-		return reflect.ValueOf(self._commit)
+		return gd.ValueOf(self._commit)
 	case "_get_diff":
-		return reflect.ValueOf(self._get_diff)
+		return gd.ValueOf(self._get_diff)
 	case "_shut_down":
-		return reflect.ValueOf(self._shut_down)
+		return gd.ValueOf(self._shut_down)
 	case "_get_vcs_name":
-		return reflect.ValueOf(self._get_vcs_name)
+		return gd.ValueOf(self._get_vcs_name)
 	case "_get_previous_commits":
-		return reflect.ValueOf(self._get_previous_commits)
+		return gd.ValueOf(self._get_previous_commits)
 	case "_get_branch_list":
-		return reflect.ValueOf(self._get_branch_list)
+		return gd.ValueOf(self._get_branch_list)
 	case "_get_remotes":
-		return reflect.ValueOf(self._get_remotes)
+		return gd.ValueOf(self._get_remotes)
 	case "_create_branch":
-		return reflect.ValueOf(self._create_branch)
+		return gd.ValueOf(self._create_branch)
 	case "_remove_branch":
-		return reflect.ValueOf(self._remove_branch)
+		return gd.ValueOf(self._remove_branch)
 	case "_create_remote":
-		return reflect.ValueOf(self._create_remote)
+		return gd.ValueOf(self._create_remote)
 	case "_remove_remote":
-		return reflect.ValueOf(self._remove_remote)
+		return gd.ValueOf(self._remove_remote)
 	case "_get_current_branch_name":
-		return reflect.ValueOf(self._get_current_branch_name)
+		return gd.ValueOf(self._get_current_branch_name)
 	case "_checkout_branch":
-		return reflect.ValueOf(self._checkout_branch)
+		return gd.ValueOf(self._checkout_branch)
 	case "_pull":
-		return reflect.ValueOf(self._pull)
+		return gd.ValueOf(self._pull)
 	case "_push":
-		return reflect.ValueOf(self._push)
+		return gd.ValueOf(self._push)
 	case "_fetch":
-		return reflect.ValueOf(self._fetch)
+		return gd.ValueOf(self._fetch)
 	case "_get_line_diff":
-		return reflect.ValueOf(self._get_line_diff)
+		return gd.ValueOf(self._get_line_diff)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}

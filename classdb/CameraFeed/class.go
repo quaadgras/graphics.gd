@@ -158,7 +158,7 @@ Called when the camera feed is activated.
 */
 func (Instance) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -169,7 +169,7 @@ Called when the camera feed is deactivated.
 */
 func (Instance) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -355,7 +355,7 @@ Called when the camera feed is activated.
 */
 func (class) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -366,7 +366,7 @@ Called when the camera feed is deactivated.
 */
 func (class) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -564,9 +564,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_activate_feed":
-		return reflect.ValueOf(self._activate_feed)
+		return gd.ValueOf(self._activate_feed)
 	case "_deactivate_feed":
-		return reflect.ValueOf(self._deactivate_feed)
+		return gd.ValueOf(self._deactivate_feed)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -575,9 +575,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_activate_feed":
-		return reflect.ValueOf(self._activate_feed)
+		return gd.ValueOf(self._activate_feed)
 	case "_deactivate_feed":
-		return reflect.ValueOf(self._deactivate_feed)
+		return gd.ValueOf(self._deactivate_feed)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

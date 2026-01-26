@@ -188,7 +188,7 @@ Called when the [TextureLayered]'s format is queried.
 */
 func (Instance) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -201,7 +201,7 @@ Called when the layers' type in the [TextureLayered] is queried.
 */
 func (Instance) _get_layered_type(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -214,7 +214,7 @@ Called when the [TextureLayered]'s width queried.
 */
 func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -227,7 +227,7 @@ Called when the [TextureLayered]'s height is queried.
 */
 func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -240,7 +240,7 @@ Called when the number of layers in the [TextureLayered] is queried.
 */
 func (Instance) _get_layers(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -253,7 +253,7 @@ Called when the presence of mipmaps in the [TextureLayered] is queried.
 */
 func (Instance) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -267,7 +267,7 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (Instance) _get_layer_data(impl func(ptr gdclass.Receiver, layer_index int) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(layer_index))
 		ptr, ok := pointers.End(gdclass.GetImage(ret[0])[0])
 
@@ -383,7 +383,7 @@ Called when the [TextureLayered]'s format is queried.
 */
 func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -396,7 +396,7 @@ Called when the layers' type in the [TextureLayered] is queried.
 */
 func (class) _get_layered_type(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -409,7 +409,7 @@ Called when the [TextureLayered]'s width queried.
 */
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -422,7 +422,7 @@ Called when the [TextureLayered]'s height is queried.
 */
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -435,7 +435,7 @@ Called when the number of layers in the [TextureLayered] is queried.
 */
 func (class) _get_layers(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -448,7 +448,7 @@ Called when the presence of mipmaps in the [TextureLayered] is queried.
 */
 func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -462,7 +462,7 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (class) _get_layer_data(impl func(ptr gdclass.Receiver, layer_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, layer_index)
 		ptr, ok := pointers.End(gdclass.GetImage(ret[0])[0])
 
@@ -580,19 +580,19 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_format":
-		return reflect.ValueOf(self._get_format)
+		return gd.ValueOf(self._get_format)
 	case "_get_layered_type":
-		return reflect.ValueOf(self._get_layered_type)
+		return gd.ValueOf(self._get_layered_type)
 	case "_get_width":
-		return reflect.ValueOf(self._get_width)
+		return gd.ValueOf(self._get_width)
 	case "_get_height":
-		return reflect.ValueOf(self._get_height)
+		return gd.ValueOf(self._get_height)
 	case "_get_layers":
-		return reflect.ValueOf(self._get_layers)
+		return gd.ValueOf(self._get_layers)
 	case "_has_mipmaps":
-		return reflect.ValueOf(self._has_mipmaps)
+		return gd.ValueOf(self._has_mipmaps)
 	case "_get_layer_data":
-		return reflect.ValueOf(self._get_layer_data)
+		return gd.ValueOf(self._get_layer_data)
 	default:
 		return gd.VirtualByName(Texture.Advanced(self.AsTexture()), name)
 	}
@@ -601,19 +601,19 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_format":
-		return reflect.ValueOf(self._get_format)
+		return gd.ValueOf(self._get_format)
 	case "_get_layered_type":
-		return reflect.ValueOf(self._get_layered_type)
+		return gd.ValueOf(self._get_layered_type)
 	case "_get_width":
-		return reflect.ValueOf(self._get_width)
+		return gd.ValueOf(self._get_width)
 	case "_get_height":
-		return reflect.ValueOf(self._get_height)
+		return gd.ValueOf(self._get_height)
 	case "_get_layers":
-		return reflect.ValueOf(self._get_layers)
+		return gd.ValueOf(self._get_layers)
 	case "_has_mipmaps":
-		return reflect.ValueOf(self._has_mipmaps)
+		return gd.ValueOf(self._has_mipmaps)
 	case "_get_layer_data":
-		return reflect.ValueOf(self._get_layer_data)
+		return gd.ValueOf(self._get_layer_data)
 	default:
 		return gd.VirtualByName(Texture.Instance(self.AsTexture()), name)
 	}

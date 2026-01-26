@@ -182,7 +182,7 @@ Returns the class name of the target type of [Resource] that this plugin convert
 */
 func (Instance) _converts_to(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -203,7 +203,7 @@ func (Instance) _handles(impl func(ptr gdclass.Receiver, resource Resource.Insta
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetResource(resource[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -220,7 +220,7 @@ func (Instance) _convert(impl func(ptr gdclass.Receiver, resource Resource.Insta
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetResource(resource[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(gdclass.GetResource(ret[0])[0])
 
@@ -283,7 +283,7 @@ Returns the class name of the target type of [Resource] that this plugin convert
 */
 func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -304,7 +304,7 @@ func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resour
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetResource(resource[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -321,7 +321,7 @@ func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resour
 		var resource = [1]gdclass.Resource{gdclass.NewResource(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetResource(resource[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(gdclass.GetResource(ret[0])[0])
 
@@ -352,11 +352,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_converts_to":
-		return reflect.ValueOf(self._converts_to)
+		return gd.ValueOf(self._converts_to)
 	case "_handles":
-		return reflect.ValueOf(self._handles)
+		return gd.ValueOf(self._handles)
 	case "_convert":
-		return reflect.ValueOf(self._convert)
+		return gd.ValueOf(self._convert)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -365,11 +365,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_converts_to":
-		return reflect.ValueOf(self._converts_to)
+		return gd.ValueOf(self._converts_to)
 	case "_handles":
-		return reflect.ValueOf(self._handles)
+		return gd.ValueOf(self._handles)
 	case "_convert":
-		return reflect.ValueOf(self._convert)
+		return gd.ValueOf(self._convert)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

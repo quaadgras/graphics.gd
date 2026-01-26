@@ -167,7 +167,7 @@ Called when the [Range]'s value is changed (following the same conditions as [On
 func (Instance) _value_changed(impl func(ptr gdclass.Receiver, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var new_value = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, Float.X(new_value))
 	}
 }
@@ -413,7 +413,7 @@ Called when the [Range]'s value is changed (following the same conditions as [On
 func (class) _value_changed(impl func(ptr gdclass.Receiver, new_value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var new_value = gd.UnsafeGet[float64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, new_value)
 	}
 }
@@ -640,7 +640,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_value_changed":
-		return reflect.ValueOf(self._value_changed)
+		return gd.ValueOf(self._value_changed)
 	default:
 		return gd.VirtualByName(Control.Advanced(self.AsControl()), name)
 	}
@@ -649,7 +649,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_value_changed":
-		return reflect.ValueOf(self._value_changed)
+		return gd.ValueOf(self._value_changed)
 	default:
 		return gd.VirtualByName(Control.Instance(self.AsControl()), name)
 	}

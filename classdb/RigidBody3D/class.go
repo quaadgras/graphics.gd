@@ -229,7 +229,7 @@ func (Instance) _integrate_forces(impl func(ptr gdclass.Receiver, state PhysicsD
 		var state = [1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetPhysicsDirectBodyState3D(state[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, state)
 	}
 }
@@ -834,7 +834,7 @@ func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.
 		var state = [1]gdclass.PhysicsDirectBodyState3D{gdclass.NewPhysicsDirectBodyState3D(pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))}))}
 
 		defer pointers.End(gdclass.GetPhysicsDirectBodyState3D(state[0])[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, state)
 	}
 }
@@ -1465,7 +1465,7 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_integrate_forces":
-		return reflect.ValueOf(self._integrate_forces)
+		return gd.ValueOf(self._integrate_forces)
 	default:
 		return gd.VirtualByName(PhysicsBody3D.Advanced(self.AsPhysicsBody3D()), name)
 	}
@@ -1474,7 +1474,7 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_integrate_forces":
-		return reflect.ValueOf(self._integrate_forces)
+		return gd.ValueOf(self._integrate_forces)
 	default:
 		return gd.VirtualByName(PhysicsBody3D.Instance(self.AsPhysicsBody3D()), name)
 	}

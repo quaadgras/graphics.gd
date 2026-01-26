@@ -230,7 +230,7 @@ func (Instance) _input_event(impl func(ptr gdclass.Receiver, viewport Viewport.I
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, viewport, event, int(shape_idx))
 	}
 }
@@ -244,7 +244,7 @@ Called when the mouse pointer enters any of this object's shapes. Requires [Inpu
 */
 func (Instance) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -258,7 +258,7 @@ Called when the mouse pointer exits all this object's shapes. Requires [InputPic
 */
 func (Instance) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -273,7 +273,7 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (Instance) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(shape_idx))
 	}
 }
@@ -288,7 +288,7 @@ Called when the mouse pointer exits any of this object's shapes. 'shape_idx' is 
 func (Instance) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(shape_idx))
 	}
 }
@@ -632,7 +632,7 @@ func (class) _input_event(impl func(ptr gdclass.Receiver, viewport [1]gdclass.Vi
 
 		defer pointers.End(gdclass.GetInputEvent(event[0])[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, viewport, event, shape_idx)
 	}
 }
@@ -646,7 +646,7 @@ Called when the mouse pointer enters any of this object's shapes. Requires [Inpu
 */
 func (class) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -660,7 +660,7 @@ Called when the mouse pointer exits all this object's shapes. Requires [InputPic
 */
 func (class) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -675,7 +675,7 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (class) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, shape_idx)
 	}
 }
@@ -690,7 +690,7 @@ Called when the mouse pointer exits any of this object's shapes. 'shape_idx' is 
 func (class) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, shape_idx)
 	}
 }
@@ -1163,15 +1163,15 @@ func (self Instance) AsNode() Node.Instance {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_input_event":
-		return reflect.ValueOf(self._input_event)
+		return gd.ValueOf(self._input_event)
 	case "_mouse_enter":
-		return reflect.ValueOf(self._mouse_enter)
+		return gd.ValueOf(self._mouse_enter)
 	case "_mouse_exit":
-		return reflect.ValueOf(self._mouse_exit)
+		return gd.ValueOf(self._mouse_exit)
 	case "_mouse_shape_enter":
-		return reflect.ValueOf(self._mouse_shape_enter)
+		return gd.ValueOf(self._mouse_shape_enter)
 	case "_mouse_shape_exit":
-		return reflect.ValueOf(self._mouse_shape_exit)
+		return gd.ValueOf(self._mouse_shape_exit)
 	default:
 		return gd.VirtualByName(Node2D.Advanced(self.AsNode2D()), name)
 	}
@@ -1180,15 +1180,15 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_input_event":
-		return reflect.ValueOf(self._input_event)
+		return gd.ValueOf(self._input_event)
 	case "_mouse_enter":
-		return reflect.ValueOf(self._mouse_enter)
+		return gd.ValueOf(self._mouse_enter)
 	case "_mouse_exit":
-		return reflect.ValueOf(self._mouse_exit)
+		return gd.ValueOf(self._mouse_exit)
 	case "_mouse_shape_enter":
-		return reflect.ValueOf(self._mouse_shape_enter)
+		return gd.ValueOf(self._mouse_shape_enter)
 	case "_mouse_shape_exit":
-		return reflect.ValueOf(self._mouse_shape_exit)
+		return gd.ValueOf(self._mouse_shape_exit)
 	default:
 		return gd.VirtualByName(Node2D.Instance(self.AsNode2D()), name)
 	}

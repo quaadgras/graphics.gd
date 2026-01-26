@@ -203,3 +203,8 @@ type IsClass interface {
 type IsClassCastable interface {
 	SetObject([1]Object) bool
 }
+
+//go:noinline
+func ValueOf(v any) reflect.Value {
+	return reflect.ValueOf(v)
+}

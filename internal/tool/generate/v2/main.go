@@ -440,7 +440,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "\tswitch name {\n")
 			for _, method := range class.Methods {
 				if method.IsVirtual {
-					fmt.Fprintf(file, "\tcase \"%v\": return reflect.ValueOf(self.%v);\n", method.Name, method.Name)
+					// Use gd.ValueOf (noinline wrapper) instead of reflect.ValueOf to reduce inlining
+					fmt.Fprintf(file, "\tcase \"%v\": return gd.ValueOf(self.%v)\n", method.Name, method.Name)
 				}
 			}
 			if class.Inherits != "" && !classDB[class.Inherits].IsSingleton {

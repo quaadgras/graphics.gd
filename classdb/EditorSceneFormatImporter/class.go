@@ -169,7 +169,7 @@ Return supported file extensions for this scene importer.
 */
 func (Instance) _get_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -193,7 +193,7 @@ func (Instance) _import_scene(impl func(ptr gdclass.Receiver, path string, flags
 		var flags = gd.UnsafeGet[int64](p_args, 1)
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String(), Flags(flags), gd.DictionaryAs[map[string]interface{}](options))
 		ptr, ok := pointers.End(ret[0])
 
@@ -220,7 +220,7 @@ func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, path.String())
 	}
 }
@@ -235,7 +235,7 @@ func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path stri
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(option))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path.String(), for_animation, option.String())
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -321,7 +321,7 @@ Return supported file extensions for this scene importer.
 */
 func (class) _get_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -345,7 +345,7 @@ func (class) _import_scene(impl func(ptr gdclass.Receiver, path String.Readable,
 		var flags = gd.UnsafeGet[int64](p_args, 1)
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path, flags, options)
 		ptr, ok := pointers.End(ret[0])
 
@@ -372,7 +372,7 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, path)
 	}
 }
@@ -387,7 +387,7 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(option))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, path, for_animation, option)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -447,13 +447,13 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_extensions":
-		return reflect.ValueOf(self._get_extensions)
+		return gd.ValueOf(self._get_extensions)
 	case "_import_scene":
-		return reflect.ValueOf(self._import_scene)
+		return gd.ValueOf(self._import_scene)
 	case "_get_import_options":
-		return reflect.ValueOf(self._get_import_options)
+		return gd.ValueOf(self._get_import_options)
 	case "_get_option_visibility":
-		return reflect.ValueOf(self._get_option_visibility)
+		return gd.ValueOf(self._get_option_visibility)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -462,13 +462,13 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_extensions":
-		return reflect.ValueOf(self._get_extensions)
+		return gd.ValueOf(self._get_extensions)
 	case "_import_scene":
-		return reflect.ValueOf(self._import_scene)
+		return gd.ValueOf(self._import_scene)
 	case "_get_import_options":
-		return reflect.ValueOf(self._get_import_options)
+		return gd.ValueOf(self._get_import_options)
 	case "_get_option_visibility":
-		return reflect.ValueOf(self._get_option_visibility)
+		return gd.ValueOf(self._get_option_visibility)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

@@ -167,7 +167,7 @@ func (Instance) _get_plural_message(impl func(ptr gdclass.Receiver, src_message 
 		var n = gd.UnsafeGet[int64](p_args, 2)
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, src_message.String(), src_plural_message.String(), int(n), context.String())
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -189,7 +189,7 @@ func (Instance) _get_message(impl func(ptr gdclass.Receiver, src_message string,
 		defer pointers.End(gd.InternalStringName(src_message))
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(context))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, src_message.String(), context.String())
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -389,7 +389,7 @@ func (class) _get_plural_message(impl func(ptr gdclass.Receiver, src_message Str
 		var n = gd.UnsafeGet[int64](p_args, 2)
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, src_message, src_plural_message, n, context)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -411,7 +411,7 @@ func (class) _get_message(impl func(ptr gdclass.Receiver, src_message String.Nam
 		defer pointers.End(gd.InternalStringName(src_message))
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(context))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, src_message, context)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -565,9 +565,9 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_plural_message":
-		return reflect.ValueOf(self._get_plural_message)
+		return gd.ValueOf(self._get_plural_message)
 	case "_get_message":
-		return reflect.ValueOf(self._get_message)
+		return gd.ValueOf(self._get_message)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -576,9 +576,9 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_plural_message":
-		return reflect.ValueOf(self._get_plural_message)
+		return gd.ValueOf(self._get_plural_message)
 	case "_get_message":
-		return reflect.ValueOf(self._get_message)
+		return gd.ValueOf(self._get_message)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}

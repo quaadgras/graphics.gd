@@ -262,7 +262,7 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 func (Instance) _setup_session(impl func(ptr gdclass.Receiver, session_id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var session_id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, int(session_id))
 	}
 }
@@ -276,7 +276,7 @@ func (Instance) _has_capture(impl func(ptr gdclass.Receiver, capture string) boo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var capture = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(capture))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, capture.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -295,7 +295,7 @@ func (Instance) _capture(impl func(ptr gdclass.Receiver, message string, data []
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, message.String(), gd.ArrayAs[[]any](gd.InternalArray(data)), int(session_id))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -310,7 +310,7 @@ func (Instance) _goto_script_line(impl func(ptr gdclass.Receiver, script Script.
 
 		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, script, int(line))
 	}
 }
@@ -320,7 +320,7 @@ Override this method to be notified when all breakpoints are cleared in the edit
 */
 func (Instance) _breakpoints_cleared_in_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -335,7 +335,7 @@ func (Instance) _breakpoint_set_in_tree(impl func(ptr gdclass.Receiver, script S
 		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
 		var enabled = gd.UnsafeGet[bool](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, script, int(line), enabled)
 	}
 }
@@ -412,7 +412,7 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 func (class) _setup_session(impl func(ptr gdclass.Receiver, session_id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var session_id = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, session_id)
 	}
 }
@@ -426,7 +426,7 @@ func (class) _has_capture(impl func(ptr gdclass.Receiver, capture String.Readabl
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var capture = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(capture))
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, capture)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -445,7 +445,7 @@ func (class) _capture(impl func(ptr gdclass.Receiver, message String.Readable, d
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[int64](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, message, data, session_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -460,7 +460,7 @@ func (class) _goto_script_line(impl func(ptr gdclass.Receiver, script [1]gdclass
 
 		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, script, line)
 	}
 }
@@ -470,7 +470,7 @@ Override this method to be notified when all breakpoints are cleared in the edit
 */
 func (class) _breakpoints_cleared_in_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -485,7 +485,7 @@ func (class) _breakpoint_set_in_tree(impl func(ptr gdclass.Receiver, script [1]g
 		defer pointers.End(gdclass.GetScript(script[0])[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
 		var enabled = gd.UnsafeGet[bool](p_args, 2)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self, script, line, enabled)
 	}
 }
@@ -536,17 +536,17 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_session":
-		return reflect.ValueOf(self._setup_session)
+		return gd.ValueOf(self._setup_session)
 	case "_has_capture":
-		return reflect.ValueOf(self._has_capture)
+		return gd.ValueOf(self._has_capture)
 	case "_capture":
-		return reflect.ValueOf(self._capture)
+		return gd.ValueOf(self._capture)
 	case "_goto_script_line":
-		return reflect.ValueOf(self._goto_script_line)
+		return gd.ValueOf(self._goto_script_line)
 	case "_breakpoints_cleared_in_tree":
-		return reflect.ValueOf(self._breakpoints_cleared_in_tree)
+		return gd.ValueOf(self._breakpoints_cleared_in_tree)
 	case "_breakpoint_set_in_tree":
-		return reflect.ValueOf(self._breakpoint_set_in_tree)
+		return gd.ValueOf(self._breakpoint_set_in_tree)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -555,17 +555,17 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_setup_session":
-		return reflect.ValueOf(self._setup_session)
+		return gd.ValueOf(self._setup_session)
 	case "_has_capture":
-		return reflect.ValueOf(self._has_capture)
+		return gd.ValueOf(self._has_capture)
 	case "_capture":
-		return reflect.ValueOf(self._capture)
+		return gd.ValueOf(self._capture)
 	case "_goto_script_line":
-		return reflect.ValueOf(self._goto_script_line)
+		return gd.ValueOf(self._goto_script_line)
 	case "_breakpoints_cleared_in_tree":
-		return reflect.ValueOf(self._breakpoints_cleared_in_tree)
+		return gd.ValueOf(self._breakpoints_cleared_in_tree)
 	case "_breakpoint_set_in_tree":
-		return reflect.ValueOf(self._breakpoint_set_in_tree)
+		return gd.ValueOf(self._breakpoint_set_in_tree)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

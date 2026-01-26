@@ -155,7 +155,7 @@ See [GetLineSyntaxHighlighting] for more details.
 func (Instance) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line int) map[int]Entry) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, int(line))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -171,7 +171,7 @@ Virtual method which can be overridden to clear any local caches.
 */
 func (Instance) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -181,7 +181,7 @@ Virtual method which can be overridden to update any local caches.
 */
 func (Instance) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -300,7 +300,7 @@ See [GetLineSyntaxHighlighting] for more details.
 func (class) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		ret := impl(self, line)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -316,7 +316,7 @@ Virtual method which can be overridden to clear any local caches.
 */
 func (class) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -326,7 +326,7 @@ Virtual method which can be overridden to update any local caches.
 */
 func (class) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		self := gdclass.ReceiverOf(class)
 		impl(self)
 	}
 }
@@ -420,11 +420,11 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_line_syntax_highlighting":
-		return reflect.ValueOf(self._get_line_syntax_highlighting)
+		return gd.ValueOf(self._get_line_syntax_highlighting)
 	case "_clear_highlighting_cache":
-		return reflect.ValueOf(self._clear_highlighting_cache)
+		return gd.ValueOf(self._clear_highlighting_cache)
 	case "_update_cache":
-		return reflect.ValueOf(self._update_cache)
+		return gd.ValueOf(self._update_cache)
 	default:
 		return gd.VirtualByName(Resource.Advanced(self.AsResource()), name)
 	}
@@ -433,11 +433,11 @@ func (self class) Virtual(name string) reflect.Value {
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_get_line_syntax_highlighting":
-		return reflect.ValueOf(self._get_line_syntax_highlighting)
+		return gd.ValueOf(self._get_line_syntax_highlighting)
 	case "_clear_highlighting_cache":
-		return reflect.ValueOf(self._clear_highlighting_cache)
+		return gd.ValueOf(self._clear_highlighting_cache)
 	case "_update_cache":
-		return reflect.ValueOf(self._update_cache)
+		return gd.ValueOf(self._update_cache)
 	default:
 		return gd.VirtualByName(Resource.Instance(self.AsResource()), name)
 	}
