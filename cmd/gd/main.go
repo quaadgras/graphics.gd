@@ -144,7 +144,7 @@ func gd(args ...string) error {
 		if err := os.Chdir(project.Directory); err != nil {
 			return xray.New(err)
 		}
-		if err := platform.Build(); err != nil {
+		if err := platform.Build("-gcflags=graphics.gd/classdb/...=-N -l"); err != nil {
 			return xray.New(err)
 		}
 		if err := os.Chdir(project.GraphicsDirectory); err != nil {
