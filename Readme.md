@@ -15,6 +15,7 @@ _Why use graphics.gd?_
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
 * Neither Xcode nor macOS is needed to build macOS/iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with `.gd` script projects.
+* Export static `GOOS=musl` binaries that will run on any linux system (no more libc issues).
 
 Not just a 1:1 wrapper for gdextension! `graphics.gd` has been designed from the ground up to
 provide a cohesive and curated experience for using [Go](https://go.dev/) on top of
